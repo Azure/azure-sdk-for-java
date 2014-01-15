@@ -34,43 +34,52 @@ public class GatewayGetDeviceConfigurationScriptParameters
     /**
     * The device OS Family.
     */
-    public String getOSFamily() { return this.oSFamily; }
+    public String getOSFamily()
+    {
+        return this.oSFamily;
+    }
     
     /**
     * The device OS Family.
     */
-    public void setOSFamily(String oSFamily) { this.oSFamily = oSFamily; }
+    public void setOSFamily(String oSFamily)
+    {
+        this.oSFamily = oSFamily;
+    }
     
     private String platform;
     
     /**
     * The device platform.
     */
-    public String getPlatform() { return this.platform; }
+    public String getPlatform()
+    {
+        return this.platform;
+    }
     
     /**
     * The device platform.
     */
-    public void setPlatform(String platform) { this.platform = platform; }
+    public void setPlatform(String platform)
+    {
+        this.platform = platform;
+    }
     
     private String vendor;
     
     /**
     * The name of the device vendor.
     */
-    public String getVendor() { return this.vendor; }
+    public String getVendor()
+    {
+        return this.vendor;
+    }
     
     /**
     * The name of the device vendor.
     */
-    public void setVendor(String vendor) { this.vendor = vendor; }
-    
-    /**
-    * Initializes a new instance of the
-    * GatewayGetDeviceConfigurationScriptParameters class.
-    *
-    */
-    public GatewayGetDeviceConfigurationScriptParameters()
+    public void setVendor(String vendor)
     {
+        this.vendor = vendor;
     }
 }

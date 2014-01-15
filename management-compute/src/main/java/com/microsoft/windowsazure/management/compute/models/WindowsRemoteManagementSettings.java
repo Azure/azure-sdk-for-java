@@ -37,13 +37,19 @@ public class WindowsRemoteManagementSettings
     * Required. Contains a collection of information for enabling remote
     * Windows PowerShell.
     */
-    public ArrayList<WindowsRemoteManagementListener> getListeners() { return this.listeners; }
+    public ArrayList<WindowsRemoteManagementListener> getListeners()
+    {
+        return this.listeners;
+    }
     
     /**
     * Required. Contains a collection of information for enabling remote
     * Windows PowerShell.
     */
-    public void setListeners(ArrayList<WindowsRemoteManagementListener> listeners) { this.listeners = listeners; }
+    public void setListeners(ArrayList<WindowsRemoteManagementListener> listeners)
+    {
+        this.listeners = listeners;
+    }
     
     /**
     * Initializes a new instance of the WindowsRemoteManagementSettings class.

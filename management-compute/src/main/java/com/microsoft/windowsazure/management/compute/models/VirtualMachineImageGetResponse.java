@@ -41,7 +41,10 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * the value is NULL and the element is not displayed in the response.
     * This value is NULL for platform images.
     */
-    public String getAffinityGroup() { return this.affinityGroup; }
+    public String getAffinityGroup()
+    {
+        return this.affinityGroup;
+    }
     
     /**
     * The affinity in which the media is located. The AffinityGroup value is
@@ -50,7 +53,10 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * the value is NULL and the element is not displayed in the response.
     * This value is NULL for platform images.
     */
-    public void setAffinityGroup(String affinityGroup) { this.affinityGroup = affinityGroup; }
+    public void setAffinityGroup(String affinityGroup)
+    {
+        this.affinityGroup = affinityGroup;
+    }
     
     private String category;
     
@@ -58,25 +64,37 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * The repository classification of the image. All user images have the
     * category User.
     */
-    public String getCategory() { return this.category; }
+    public String getCategory()
+    {
+        return this.category;
+    }
     
     /**
     * The repository classification of the image. All user images have the
     * category User.
     */
-    public void setCategory(String category) { this.category = category; }
+    public void setCategory(String category)
+    {
+        this.category = category;
+    }
     
     private String description;
     
     /**
     * Specifies the description of the image.
     */
-    public String getDescription() { return this.description; }
+    public String getDescription()
+    {
+        return this.description;
+    }
     
     /**
     * Specifies the description of the image.
     */
-    public void setDescription(String description) { this.description = description; }
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
     
     private String eula;
     
@@ -85,38 +103,56 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * image. The value for this element is a string, but it is recommended
     * that the value be a URL that points to a EULA.
     */
-    public String getEula() { return this.eula; }
+    public String getEula()
+    {
+        return this.eula;
+    }
     
     /**
     * Specifies the End User License Agreement that is associated with the
     * image. The value for this element is a string, but it is recommended
     * that the value be a URL that points to a EULA.
     */
-    public void setEula(String eula) { this.eula = eula; }
+    public void setEula(String eula)
+    {
+        this.eula = eula;
+    }
     
     private URI iconUri;
     
     /**
     * Provides the URI to the icon for this Operating System Image.
     */
-    public URI getIconUri() { return this.iconUri; }
+    public URI getIconUri()
+    {
+        return this.iconUri;
+    }
     
     /**
     * Provides the URI to the icon for this Operating System Image.
     */
-    public void setIconUri(URI iconUri) { this.iconUri = iconUri; }
+    public void setIconUri(URI iconUri)
+    {
+        this.iconUri = iconUri;
+    }
     
     private String imageFamily;
     
     /**
     * Specifies a value that can be used to group images.
     */
-    public String getImageFamily() { return this.imageFamily; }
+    public String getImageFamily()
+    {
+        return this.imageFamily;
+    }
     
     /**
     * Specifies a value that can be used to group images.
     */
-    public void setImageFamily(String imageFamily) { this.imageFamily = imageFamily; }
+    public void setImageFamily(String imageFamily)
+    {
+        this.imageFamily = imageFamily;
+    }
     
     private Boolean isPremium;
     
@@ -125,26 +161,38 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * will incur charges above the core price for the virtual machine. For
     * additional details, see the PricingDetailLink element.
     */
-    public Boolean getIsPremium() { return this.isPremium; }
+    public Boolean getIsPremium()
+    {
+        return this.isPremium;
+    }
     
     /**
     * Indicates whether the image contains software or associated services that
     * will incur charges above the core price for the virtual machine. For
     * additional details, see the PricingDetailLink element.
     */
-    public void setIsPremium(Boolean isPremium) { this.isPremium = isPremium; }
+    public void setIsPremium(Boolean isPremium)
+    {
+        this.isPremium = isPremium;
+    }
     
     private String label;
     
     /**
     * An identifier for the image.
     */
-    public String getLabel() { return this.label; }
+    public String getLabel()
+    {
+        return this.label;
+    }
     
     /**
     * An identifier for the image.
     */
-    public void setLabel(String label) { this.label = label; }
+    public void setLabel(String label)
+    {
+        this.label = label;
+    }
     
     private String language;
     
@@ -152,13 +200,19 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * Specifies the language of the image.  The Language element is only
     * available using version 2013-03-01 or higher.
     */
-    public String getLanguage() { return this.language; }
+    public String getLanguage()
+    {
+        return this.language;
+    }
     
     /**
     * Specifies the language of the image.  The Language element is only
     * available using version 2013-03-01 or higher.
     */
-    public void setLanguage(String language) { this.language = language; }
+    public void setLanguage(String language)
+    {
+        this.language = language;
+    }
     
     private String location;
     
@@ -170,7 +224,10 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * locations are returned for platform images; otherwise, this value is
     * NULL for platform images.
     */
-    public String getLocation() { return this.location; }
+    public String getLocation()
+    {
+        return this.location;
+    }
     
     /**
     * The geo-location in which this media is located. The Location value is
@@ -180,19 +237,28 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * locations are returned for platform images; otherwise, this value is
     * NULL for platform images.
     */
-    public void setLocation(String location) { this.location = location; }
+    public void setLocation(String location)
+    {
+        this.location = location;
+    }
     
     private double logicalSizeInGB;
     
     /**
     * The size, in GB, of the image.
     */
-    public double getLogicalSizeInGB() { return this.logicalSizeInGB; }
+    public double getLogicalSizeInGB()
+    {
+        return this.logicalSizeInGB;
+    }
     
     /**
     * The size, in GB, of the image.
     */
-    public void setLogicalSizeInGB(double logicalSizeInGB) { this.logicalSizeInGB = logicalSizeInGB; }
+    public void setLogicalSizeInGB(double logicalSizeInGB)
+    {
+        this.logicalSizeInGB = logicalSizeInGB;
+    }
     
     private URI mediaLinkUri;
     
@@ -202,7 +268,10 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * SubscriptionId value in the operation call.  Example:
     * http://example.blob.core.windows.net/disks/myimage.vhd
     */
-    public URI getMediaLinkUri() { return this.mediaLinkUri; }
+    public URI getMediaLinkUri()
+    {
+        return this.mediaLinkUri;
+    }
     
     /**
     * The location of the blob in Windows Azure storage. The blob location
@@ -210,7 +279,10 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * SubscriptionId value in the operation call.  Example:
     * http://example.blob.core.windows.net/disks/myimage.vhd
     */
-    public void setMediaLinkUri(URI mediaLinkUri) { this.mediaLinkUri = mediaLinkUri; }
+    public void setMediaLinkUri(URI mediaLinkUri)
+    {
+        this.mediaLinkUri = mediaLinkUri;
+    }
     
     private String name;
     
@@ -218,13 +290,19 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * The name of the operating system image. This is the name that is used
     * when creating one or more virtual machines using the image.
     */
-    public String getName() { return this.name; }
+    public String getName()
+    {
+        return this.name;
+    }
     
     /**
     * The name of the operating system image. This is the name that is used
     * when creating one or more virtual machines using the image.
     */
-    public void setName(String name) { this.name = name; }
+    public void setName(String name)
+    {
+        this.name = name;
+    }
     
     private String operatingSystemType;
     
@@ -232,13 +310,19 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * The operating system type of the OS image. Possible values are: Linux,
     * Windows.
     */
-    public String getOperatingSystemType() { return this.operatingSystemType; }
+    public String getOperatingSystemType()
+    {
+        return this.operatingSystemType;
+    }
     
     /**
     * The operating system type of the OS image. Possible values are: Linux,
     * Windows.
     */
-    public void setOperatingSystemType(String operatingSystemType) { this.operatingSystemType = operatingSystemType; }
+    public void setOperatingSystemType(String operatingSystemType)
+    {
+        this.operatingSystemType = operatingSystemType;
+    }
     
     private URI privacyUri;
     
@@ -246,37 +330,55 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * Specifies the URI that points to a document that contains the privacy
     * policy related to the image.
     */
-    public URI getPrivacyUri() { return this.privacyUri; }
+    public URI getPrivacyUri()
+    {
+        return this.privacyUri;
+    }
     
     /**
     * Specifies the URI that points to a document that contains the privacy
     * policy related to the image.
     */
-    public void setPrivacyUri(URI privacyUri) { this.privacyUri = privacyUri; }
+    public void setPrivacyUri(URI privacyUri)
+    {
+        this.privacyUri = privacyUri;
+    }
     
     private Calendar publishedDate;
     
     /**
     * Specifies the date when the image was added to the image repository.
     */
-    public Calendar getPublishedDate() { return this.publishedDate; }
+    public Calendar getPublishedDate()
+    {
+        return this.publishedDate;
+    }
     
     /**
     * Specifies the date when the image was added to the image repository.
     */
-    public void setPublishedDate(Calendar publishedDate) { this.publishedDate = publishedDate; }
+    public void setPublishedDate(Calendar publishedDate)
+    {
+        this.publishedDate = publishedDate;
+    }
     
     private String publisherName;
     
     /**
     * The name of the publisher of this OS Image in Windows Azure.
     */
-    public String getPublisherName() { return this.publisherName; }
+    public String getPublisherName()
+    {
+        return this.publisherName;
+    }
     
     /**
     * The name of the publisher of this OS Image in Windows Azure.
     */
-    public void setPublisherName(String publisherName) { this.publisherName = publisherName; }
+    public void setPublisherName(String publisherName)
+    {
+        this.publisherName = publisherName;
+    }
     
     private VirtualMachineRoleSize recommendedVMSize;
     
@@ -284,25 +386,37 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * Optional. Specifies the size to use for the virtual machine that is
     * created from the OS image.
     */
-    public VirtualMachineRoleSize getRecommendedVMSize() { return this.recommendedVMSize; }
+    public VirtualMachineRoleSize getRecommendedVMSize()
+    {
+        return this.recommendedVMSize;
+    }
     
     /**
     * Optional. Specifies the size to use for the virtual machine that is
     * created from the OS image.
     */
-    public void setRecommendedVMSize(VirtualMachineRoleSize recommendedVMSize) { this.recommendedVMSize = recommendedVMSize; }
+    public void setRecommendedVMSize(VirtualMachineRoleSize recommendedVMSize)
+    {
+        this.recommendedVMSize = recommendedVMSize;
+    }
     
     private Boolean showInGui;
     
     /**
     * Indicates whther the image should be shown in the windows azure portal.
     */
-    public Boolean getShowInGui() { return this.showInGui; }
+    public Boolean getShowInGui()
+    {
+        return this.showInGui;
+    }
     
     /**
     * Indicates whther the image should be shown in the windows azure portal.
     */
-    public void setShowInGui(Boolean showInGui) { this.showInGui = showInGui; }
+    public void setShowInGui(Boolean showInGui)
+    {
+        this.showInGui = showInGui;
+    }
     
     private URI smallIconUri;
     
@@ -311,20 +425,18 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * presented in the Windows Azure Management Portal.  The SmallIconUri
     * element is only available using version 2013-03-01 or higher.
     */
-    public URI getSmallIconUri() { return this.smallIconUri; }
+    public URI getSmallIconUri()
+    {
+        return this.smallIconUri;
+    }
     
     /**
     * Specifies the URI to the small icon that is displayed when the image is
     * presented in the Windows Azure Management Portal.  The SmallIconUri
     * element is only available using version 2013-03-01 or higher.
     */
-    public void setSmallIconUri(URI smallIconUri) { this.smallIconUri = smallIconUri; }
-    
-    /**
-    * Initializes a new instance of the VirtualMachineImageGetResponse class.
-    *
-    */
-    public VirtualMachineImageGetResponse()
+    public void setSmallIconUri(URI smallIconUri)
     {
+        this.smallIconUri = smallIconUri;
     }
 }

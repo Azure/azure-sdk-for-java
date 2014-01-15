@@ -28,11 +28,4 @@ package com.microsoft.windowsazure.management.monitoring.alerts.models;
 */
 public abstract class RuleCondition
 {
-    /**
-    * Initializes a new instance of the RuleCondition class.
-    *
-    */
-    public RuleCondition()
-    {
-    }
 }

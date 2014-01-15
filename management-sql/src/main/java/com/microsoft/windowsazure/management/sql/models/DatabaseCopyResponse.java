@@ -35,210 +35,304 @@ public class DatabaseCopyResponse extends OperationResponse
     /**
     * The name of the destination database.
     */
-    public String getDestinationDatabaseName() { return this.destinationDatabaseName; }
+    public String getDestinationDatabaseName()
+    {
+        return this.destinationDatabaseName;
+    }
     
     /**
     * The name of the destination database.
     */
-    public void setDestinationDatabaseName(String destinationDatabaseName) { this.destinationDatabaseName = destinationDatabaseName; }
+    public void setDestinationDatabaseName(String destinationDatabaseName)
+    {
+        this.destinationDatabaseName = destinationDatabaseName;
+    }
     
     private String destinationServerName;
     
     /**
     * The name of the destination server.
     */
-    public String getDestinationServerName() { return this.destinationServerName; }
+    public String getDestinationServerName()
+    {
+        return this.destinationServerName;
+    }
     
     /**
     * The name of the destination server.
     */
-    public void setDestinationServerName(String destinationServerName) { this.destinationServerName = destinationServerName; }
+    public void setDestinationServerName(String destinationServerName)
+    {
+        this.destinationServerName = destinationServerName;
+    }
     
     private boolean isContinuous;
     
     /**
     * Whether the copy is continous.
     */
-    public boolean getIsContinuous() { return this.isContinuous; }
+    public boolean isContinuous()
+    {
+        return this.isContinuous;
+    }
     
     /**
     * Whether the copy is continous.
     */
-    public void setIsContinuous(boolean isContinuous) { this.isContinuous = isContinuous; }
+    public void setIsContinuous(boolean isContinuous)
+    {
+        this.isContinuous = isContinuous;
+    }
     
     private Boolean isForcedTerminate;
     
     /**
     * Whether database copy termination will be forced.
     */
-    public Boolean getIsForcedTerminate() { return this.isForcedTerminate; }
+    public Boolean isForcedTerminate()
+    {
+        return this.isForcedTerminate;
+    }
     
     /**
     * Whether database copy termination will be forced.
     */
-    public void setIsForcedTerminate(Boolean isForcedTerminate) { this.isForcedTerminate = isForcedTerminate; }
+    public void setIsForcedTerminate(Boolean isForcedTerminate)
+    {
+        this.isForcedTerminate = isForcedTerminate;
+    }
     
     private boolean isInterlinkConnected;
     
     /**
     * Whether the database copy is interlink connected.
     */
-    public boolean getIsInterlinkConnected() { return this.isInterlinkConnected; }
+    public boolean isInterlinkConnected()
+    {
+        return this.isInterlinkConnected;
+    }
     
     /**
     * Whether the database copy is interlink connected.
     */
-    public void setIsInterlinkConnected(boolean isInterlinkConnected) { this.isInterlinkConnected = isInterlinkConnected; }
+    public void setIsInterlinkConnected(boolean isInterlinkConnected)
+    {
+        this.isInterlinkConnected = isInterlinkConnected;
+    }
     
     private boolean isLocalDatabaseReplicationTarget;
     
     /**
     * Whether the local database is a replication target.
     */
-    public boolean getIsLocalDatabaseReplicationTarget() { return this.isLocalDatabaseReplicationTarget; }
+    public boolean isLocalDatabaseReplicationTarget()
+    {
+        return this.isLocalDatabaseReplicationTarget;
+    }
     
     /**
     * Whether the local database is a replication target.
     */
-    public void setIsLocalDatabaseReplicationTarget(boolean isLocalDatabaseReplicationTarget) { this.isLocalDatabaseReplicationTarget = isLocalDatabaseReplicationTarget; }
+    public void setIsLocalDatabaseReplicationTarget(boolean isLocalDatabaseReplicationTarget)
+    {
+        this.isLocalDatabaseReplicationTarget = isLocalDatabaseReplicationTarget;
+    }
     
     private int localDatabaseId;
     
     /**
     * The ID of the local database.
     */
-    public int getLocalDatabaseId() { return this.localDatabaseId; }
+    public int getLocalDatabaseId()
+    {
+        return this.localDatabaseId;
+    }
     
     /**
     * The ID of the local database.
     */
-    public void setLocalDatabaseId(int localDatabaseId) { this.localDatabaseId = localDatabaseId; }
+    public void setLocalDatabaseId(int localDatabaseId)
+    {
+        this.localDatabaseId = localDatabaseId;
+    }
     
     private Integer maxLagInMinutes;
     
     /**
     * The RPO for the copy.
     */
-    public Integer getMaxLagInMinutes() { return this.maxLagInMinutes; }
+    public Integer getMaxLagInMinutes()
+    {
+        return this.maxLagInMinutes;
+    }
     
     /**
     * The RPO for the copy.
     */
-    public void setMaxLagInMinutes(Integer maxLagInMinutes) { this.maxLagInMinutes = maxLagInMinutes; }
+    public void setMaxLagInMinutes(Integer maxLagInMinutes)
+    {
+        this.maxLagInMinutes = maxLagInMinutes;
+    }
     
     private String name;
     
     /**
     * A unique identifier for the database copy.
     */
-    public String getName() { return this.name; }
+    public String getName()
+    {
+        return this.name;
+    }
     
     /**
     * A unique identifier for the database copy.
     */
-    public void setName(String name) { this.name = name; }
+    public void setName(String name)
+    {
+        this.name = name;
+    }
     
     private Float percentComplete;
     
     /**
     * Progress towards copy completion.
     */
-    public Float getPercentComplete() { return this.percentComplete; }
+    public Float getPercentComplete()
+    {
+        return this.percentComplete;
+    }
     
     /**
     * Progress towards copy completion.
     */
-    public void setPercentComplete(Float percentComplete) { this.percentComplete = percentComplete; }
+    public void setPercentComplete(Float percentComplete)
+    {
+        this.percentComplete = percentComplete;
+    }
     
     private byte replicationState;
     
     /**
     * A value indicating the replication state for the database.
     */
-    public byte getReplicationState() { return this.replicationState; }
+    public byte getReplicationState()
+    {
+        return this.replicationState;
+    }
     
     /**
     * A value indicating the replication state for the database.
     */
-    public void setReplicationState(byte replicationState) { this.replicationState = replicationState; }
+    public void setReplicationState(byte replicationState)
+    {
+        this.replicationState = replicationState;
+    }
     
     private String replicationStateDescription;
     
     /**
     * A description of the replication state for the database.
     */
-    public String getReplicationStateDescription() { return this.replicationStateDescription; }
+    public String getReplicationStateDescription()
+    {
+        return this.replicationStateDescription;
+    }
     
     /**
     * A description of the replication state for the database.
     */
-    public void setReplicationStateDescription(String replicationStateDescription) { this.replicationStateDescription = replicationStateDescription; }
+    public void setReplicationStateDescription(String replicationStateDescription)
+    {
+        this.replicationStateDescription = replicationStateDescription;
+    }
     
     private String sourceDatabaseName;
     
     /**
     * The name of the source database.
     */
-    public String getSourceDatabaseName() { return this.sourceDatabaseName; }
+    public String getSourceDatabaseName()
+    {
+        return this.sourceDatabaseName;
+    }
     
     /**
     * The name of the source database.
     */
-    public void setSourceDatabaseName(String sourceDatabaseName) { this.sourceDatabaseName = sourceDatabaseName; }
+    public void setSourceDatabaseName(String sourceDatabaseName)
+    {
+        this.sourceDatabaseName = sourceDatabaseName;
+    }
     
     private String sourceServerName;
     
     /**
     * The name of the source server.
     */
-    public String getSourceServerName() { return this.sourceServerName; }
+    public String getSourceServerName()
+    {
+        return this.sourceServerName;
+    }
     
     /**
     * The name of the source server.
     */
-    public void setSourceServerName(String sourceServerName) { this.sourceServerName = sourceServerName; }
+    public void setSourceServerName(String sourceServerName)
+    {
+        this.sourceServerName = sourceServerName;
+    }
     
     private String state;
     
     /**
     * The state of the database copy.
     */
-    public String getState() { return this.state; }
+    public String getState()
+    {
+        return this.state;
+    }
     
     /**
     * The state of the database copy.
     */
-    public void setState(String state) { this.state = state; }
+    public void setState(String state)
+    {
+        this.state = state;
+    }
     
     private String textModifyDate;
     
     /**
     * The UTC date when the database copy became transactionally consistent.
     */
-    public String getTextModifyDate() { return this.textModifyDate; }
+    public String getTextModifyDate()
+    {
+        return this.textModifyDate;
+    }
     
     /**
     * The UTC date when the database copy became transactionally consistent.
     */
-    public void setTextModifyDate(String textModifyDate) { this.textModifyDate = textModifyDate; }
+    public void setTextModifyDate(String textModifyDate)
+    {
+        this.textModifyDate = textModifyDate;
+    }
     
     private String textStartDate;
     
     /**
     * The UTC date when the database copy was initiated.
     */
-    public String getTextStartDate() { return this.textStartDate; }
+    public String getTextStartDate()
+    {
+        return this.textStartDate;
+    }
     
     /**
     * The UTC date when the database copy was initiated.
     */
-    public void setTextStartDate(String textStartDate) { this.textStartDate = textStartDate; }
-    
-    /**
-    * Initializes a new instance of the DatabaseCopyResponse class.
-    *
-    */
-    public DatabaseCopyResponse()
+    public void setTextStartDate(String textStartDate)
     {
+        this.textStartDate = textStartDate;
     }
 }

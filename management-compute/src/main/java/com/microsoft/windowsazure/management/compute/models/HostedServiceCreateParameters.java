@@ -40,7 +40,10 @@ public class HostedServiceCreateParameters
     * AffinityGroup, but not both. To list available affinity groups, use the
     * List Affinity Groups operation.
     */
-    public String getAffinityGroup() { return this.affinityGroup; }
+    public String getAffinityGroup()
+    {
+        return this.affinityGroup;
+    }
     
     /**
     * Required if Location is not specified. The name of an existing affinity
@@ -50,7 +53,10 @@ public class HostedServiceCreateParameters
     * AffinityGroup, but not both. To list available affinity groups, use the
     * List Affinity Groups operation.
     */
-    public void setAffinityGroup(String affinityGroup) { this.affinityGroup = affinityGroup; }
+    public void setAffinityGroup(String affinityGroup)
+    {
+        this.affinityGroup = affinityGroup;
+    }
     
     private String description;
     
@@ -58,13 +64,19 @@ public class HostedServiceCreateParameters
     * Optional. A description for the cloud service. The description can be up
     * to 1024 characters in length.
     */
-    public String getDescription() { return this.description; }
+    public String getDescription()
+    {
+        return this.description;
+    }
     
     /**
     * Optional. A description for the cloud service. The description can be up
     * to 1024 characters in length.
     */
-    public void setDescription(String description) { this.description = description; }
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
     
     private HashMap<String, String> extendedProperties;
     
@@ -80,7 +92,10 @@ public class HostedServiceCreateParameters
     * code 400 (Bad Request) error.  Each extended property value has a
     * maximum length of 255 characters.
     */
-    public HashMap<String, String> getExtendedProperties() { return this.extendedProperties; }
+    public HashMap<String, String> getExtendedProperties()
+    {
+        return this.extendedProperties;
+    }
     
     /**
     * Optional. Represents the name of an extended cloud service property. Each
@@ -94,7 +109,10 @@ public class HostedServiceCreateParameters
     * code 400 (Bad Request) error.  Each extended property value has a
     * maximum length of 255 characters.
     */
-    public void setExtendedProperties(HashMap<String, String> extendedProperties) { this.extendedProperties = extendedProperties; }
+    public void setExtendedProperties(HashMap<String, String> extendedProperties)
+    {
+        this.extendedProperties = extendedProperties;
+    }
     
     private String label;
     
@@ -120,7 +138,10 @@ public class HostedServiceCreateParameters
     * characters in length. The name can be used to identify the storage
     * account for your tracking purposes.
     */
-    public void setLabel(String label) { this.label = label; }
+    public void setLabel(String label)
+    {
+        this.label = label;
+    }
     
     private String location;
     
@@ -129,14 +150,20 @@ public class HostedServiceCreateParameters
     * service will be created.  Specify either Location or AffinityGroup, but
     * not both. To list available locations, use the List Locations operation.
     */
-    public String getLocation() { return this.location; }
+    public String getLocation()
+    {
+        return this.location;
+    }
     
     /**
     * Required if AffinityGroup is not specified. The location where the cloud
     * service will be created.  Specify either Location or AffinityGroup, but
     * not both. To list available locations, use the List Locations operation.
     */
-    public void setLocation(String location) { this.location = location; }
+    public void setLocation(String location)
+    {
+        this.location = location;
+    }
     
     private String serviceName;
     
@@ -145,14 +172,20 @@ public class HostedServiceCreateParameters
     * Azure. This name is the DNS prefix name and can be used to access the
     * service.
     */
-    public String getServiceName() { return this.serviceName; }
+    public String getServiceName()
+    {
+        return this.serviceName;
+    }
     
     /**
     * Required. A name for the cloud service that is unique within Windows
     * Azure. This name is the DNS prefix name and can be used to access the
     * service.
     */
-    public void setServiceName(String serviceName) { this.serviceName = serviceName; }
+    public void setServiceName(String serviceName)
+    {
+        this.serviceName = serviceName;
+    }
     
     /**
     * Initializes a new instance of the HostedServiceCreateParameters class.

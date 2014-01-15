@@ -35,18 +35,16 @@ public class MetricSettingListResponse extends OperationResponse
     /**
     * The retrieved metric settings.
     */
-    public MetricSettingCollection getMetricSettingCollection() { return this.metricSettingCollection; }
+    public MetricSettingCollection getMetricSettingCollection()
+    {
+        return this.metricSettingCollection;
+    }
     
     /**
     * The retrieved metric settings.
     */
-    public void setMetricSettingCollection(MetricSettingCollection metricSettingCollection) { this.metricSettingCollection = metricSettingCollection; }
-    
-    /**
-    * Initializes a new instance of the MetricSettingListResponse class.
-    *
-    */
-    public MetricSettingListResponse()
+    public void setMetricSettingCollection(MetricSettingCollection metricSettingCollection)
     {
+        this.metricSettingCollection = metricSettingCollection;
     }
 }

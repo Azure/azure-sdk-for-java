@@ -37,12 +37,18 @@ public class HostedServiceListExtensionsResponse extends OperationResponse imple
     /**
     * The extensions that were added to a cloud service.
     */
-    public ArrayList<HostedServiceListExtensionsResponse.Extension> getExtensions() { return this.extensions; }
+    public ArrayList<HostedServiceListExtensionsResponse.Extension> getExtensions()
+    {
+        return this.extensions;
+    }
     
     /**
     * The extensions that were added to a cloud service.
     */
-    public void setExtensions(ArrayList<HostedServiceListExtensionsResponse.Extension> extensions) { this.extensions = extensions; }
+    public void setExtensions(ArrayList<HostedServiceListExtensionsResponse.Extension> extensions)
+    {
+        this.extensions = extensions;
+    }
     
     /**
     * Initializes a new instance of the HostedServiceListExtensionsResponse
@@ -51,6 +57,7 @@ public class HostedServiceListExtensionsResponse extends OperationResponse imple
     */
     public HostedServiceListExtensionsResponse()
     {
+        super();
         this.extensions = new ArrayList<HostedServiceListExtensionsResponse.Extension>();
     }
     
@@ -73,12 +80,18 @@ public class HostedServiceListExtensionsResponse extends OperationResponse imple
         /**
         * The identifier of the extension.
         */
-        public String getId() { return this.id; }
+        public String getId()
+        {
+            return this.id;
+        }
         
         /**
         * The identifier of the extension.
         */
-        public void setId(String id) { this.id = id; }
+        public void setId(String id)
+        {
+            this.id = id;
+        }
         
         private String providerNamespace;
         
@@ -86,13 +99,19 @@ public class HostedServiceListExtensionsResponse extends OperationResponse imple
         * The provider namespace of the extension. The provider namespace for
         * Windows Azure extensions is Microsoft.Windows.Azure.Extensions.
         */
-        public String getProviderNamespace() { return this.providerNamespace; }
+        public String getProviderNamespace()
+        {
+            return this.providerNamespace;
+        }
         
         /**
         * The provider namespace of the extension. The provider namespace for
         * Windows Azure extensions is Microsoft.Windows.Azure.Extensions.
         */
-        public void setProviderNamespace(String providerNamespace) { this.providerNamespace = providerNamespace; }
+        public void setProviderNamespace(String providerNamespace)
+        {
+            this.providerNamespace = providerNamespace;
+        }
         
         private String publicConfiguration;
         
@@ -100,13 +119,19 @@ public class HostedServiceListExtensionsResponse extends OperationResponse imple
         * The public configuration that is defined using the schema returned by
         * the List Available Extensions operation.
         */
-        public String getPublicConfiguration() { return this.publicConfiguration; }
+        public String getPublicConfiguration()
+        {
+            return this.publicConfiguration;
+        }
         
         /**
         * The public configuration that is defined using the schema returned by
         * the List Available Extensions operation.
         */
-        public void setPublicConfiguration(String publicConfiguration) { this.publicConfiguration = publicConfiguration; }
+        public void setPublicConfiguration(String publicConfiguration)
+        {
+            this.publicConfiguration = publicConfiguration;
+        }
         
         private String thumbprint;
         
@@ -116,7 +141,10 @@ public class HostedServiceListExtensionsResponse extends OperationResponse imple
         * not specified, a certificate may be automatically generated and
         * added to the cloud service.
         */
-        public String getThumbprint() { return this.thumbprint; }
+        public String getThumbprint()
+        {
+            return this.thumbprint;
+        }
         
         /**
         * The thumbprint of the certificate that is used to encrypt the
@@ -124,7 +152,10 @@ public class HostedServiceListExtensionsResponse extends OperationResponse imple
         * not specified, a certificate may be automatically generated and
         * added to the cloud service.
         */
-        public void setThumbprint(String thumbprint) { this.thumbprint = thumbprint; }
+        public void setThumbprint(String thumbprint)
+        {
+            this.thumbprint = thumbprint;
+        }
         
         private String thumbprintAlgorithm;
         
@@ -132,44 +163,54 @@ public class HostedServiceListExtensionsResponse extends OperationResponse imple
         * The thumbprint algorithm of the certificate that is used toencrypt
         * the configuration specified in PrivateConfiguration.
         */
-        public String getThumbprintAlgorithm() { return this.thumbprintAlgorithm; }
+        public String getThumbprintAlgorithm()
+        {
+            return this.thumbprintAlgorithm;
+        }
         
         /**
         * The thumbprint algorithm of the certificate that is used toencrypt
         * the configuration specified in PrivateConfiguration.
         */
-        public void setThumbprintAlgorithm(String thumbprintAlgorithm) { this.thumbprintAlgorithm = thumbprintAlgorithm; }
+        public void setThumbprintAlgorithm(String thumbprintAlgorithm)
+        {
+            this.thumbprintAlgorithm = thumbprintAlgorithm;
+        }
         
         private String type;
         
         /**
         * Required. The type of the extension.
         */
-        public String getType() { return this.type; }
+        public String getType()
+        {
+            return this.type;
+        }
         
         /**
         * Required. The type of the extension.
         */
-        public void setType(String type) { this.type = type; }
+        public void setType(String type)
+        {
+            this.type = type;
+        }
         
         private String version;
         
         /**
         * The version of the extension.
         */
-        public String getVersion() { return this.version; }
+        public String getVersion()
+        {
+            return this.version;
+        }
         
         /**
         * The version of the extension.
         */
-        public void setVersion(String version) { this.version = version; }
-        
-        /**
-        * Initializes a new instance of the Extension class.
-        *
-        */
-        public Extension()
+        public void setVersion(String version)
         {
+            this.version = version;
         }
     }
 }

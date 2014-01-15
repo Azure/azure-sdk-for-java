@@ -36,12 +36,18 @@ public class ManagementCertificateGetResponse extends OperationResponse
     /**
     * The time that the management certificate was created, in UTC.
     */
-    public Calendar getCreated() { return this.created; }
+    public Calendar getCreated()
+    {
+        return this.created;
+    }
     
     /**
     * The time that the management certificate was created, in UTC.
     */
-    public void setCreated(Calendar created) { this.created = created; }
+    public void setCreated(Calendar created)
+    {
+        this.created = created;
+    }
     
     private byte[] data;
     
@@ -49,25 +55,37 @@ public class ManagementCertificateGetResponse extends OperationResponse
     * A base64 representation of the raw data contained in the management
     * certificate in .cer format.
     */
-    public byte[] getData() { return this.data; }
+    public byte[] getData()
+    {
+        return this.data;
+    }
     
     /**
     * A base64 representation of the raw data contained in the management
     * certificate in .cer format.
     */
-    public void setData(byte[] data) { this.data = data; }
+    public void setData(byte[] data)
+    {
+        this.data = data;
+    }
     
     private byte[] publicKey;
     
     /**
     * A base64 representation of the management certificate public key.
     */
-    public byte[] getPublicKey() { return this.publicKey; }
+    public byte[] getPublicKey()
+    {
+        return this.publicKey;
+    }
     
     /**
     * A base64 representation of the management certificate public key.
     */
-    public void setPublicKey(byte[] publicKey) { this.publicKey = publicKey; }
+    public void setPublicKey(byte[] publicKey)
+    {
+        this.publicKey = publicKey;
+    }
     
     private String thumbprint;
     
@@ -75,19 +93,17 @@ public class ManagementCertificateGetResponse extends OperationResponse
     * The thumb print that uniquely identifies the management certificate. This
     * thumb print is the same value as the one specified by the request URI.
     */
-    public String getThumbprint() { return this.thumbprint; }
+    public String getThumbprint()
+    {
+        return this.thumbprint;
+    }
     
     /**
     * The thumb print that uniquely identifies the management certificate. This
     * thumb print is the same value as the one specified by the request URI.
     */
-    public void setThumbprint(String thumbprint) { this.thumbprint = thumbprint; }
-    
-    /**
-    * Initializes a new instance of the ManagementCertificateGetResponse class.
-    *
-    */
-    public ManagementCertificateGetResponse()
+    public void setThumbprint(String thumbprint)
     {
+        this.thumbprint = thumbprint;
     }
 }

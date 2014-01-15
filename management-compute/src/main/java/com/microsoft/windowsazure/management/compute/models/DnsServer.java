@@ -35,30 +35,34 @@ public class DnsServer
     /**
     * The DNS server address.
     */
-    public InetAddress getAddress() { return this.address; }
+    public InetAddress getAddress()
+    {
+        return this.address;
+    }
     
     /**
     * The DNS server address.
     */
-    public void setAddress(InetAddress address) { this.address = address; }
+    public void setAddress(InetAddress address)
+    {
+        this.address = address;
+    }
     
     private String name;
     
     /**
     * The name of the DNS server.
     */
-    public String getName() { return this.name; }
+    public String getName()
+    {
+        return this.name;
+    }
     
     /**
     * The name of the DNS server.
     */
-    public void setName(String name) { this.name = name; }
-    
-    /**
-    * Initializes a new instance of the DnsServer class.
-    *
-    */
-    public DnsServer()
+    public void setName(String name)
     {
+        this.name = name;
     }
 }

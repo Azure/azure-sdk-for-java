@@ -65,7 +65,10 @@ public class CommaStringBuilder
     public String toString()
     {
         if (sb.length() == 0)
+        {
             return null;
+        }
+
         return sb.toString();
     }
 }

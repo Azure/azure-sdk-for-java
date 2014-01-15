@@ -37,12 +37,18 @@ public class ServiceBusConnectionDetailsResponse extends OperationResponse imple
     /**
     * The set of connection details for a service bus entitiy.
     */
-    public ArrayList<ServiceBusConnectionDetail> getConnectionDetails() { return this.connectionDetails; }
+    public ArrayList<ServiceBusConnectionDetail> getConnectionDetails()
+    {
+        return this.connectionDetails;
+    }
     
     /**
     * The set of connection details for a service bus entitiy.
     */
-    public void setConnectionDetails(ArrayList<ServiceBusConnectionDetail> connectionDetails) { this.connectionDetails = connectionDetails; }
+    public void setConnectionDetails(ArrayList<ServiceBusConnectionDetail> connectionDetails)
+    {
+        this.connectionDetails = connectionDetails;
+    }
     
     /**
     * Initializes a new instance of the ServiceBusConnectionDetailsResponse
@@ -51,6 +57,7 @@ public class ServiceBusConnectionDetailsResponse extends OperationResponse imple
     */
     public ServiceBusConnectionDetailsResponse()
     {
+        super();
         this.connectionDetails = new ArrayList<ServiceBusConnectionDetail>();
     }
     

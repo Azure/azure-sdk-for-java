@@ -58,6 +58,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -89,7 +90,10 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
     * Gets a reference to the
     * microsoft.windowsazure.management.compute.ComputeManagementClientImpl.
     */
-    public ComputeManagementClientImpl getClient() { return this.client; }
+    public ComputeManagementClientImpl getClient()
+    {
+        return this.client;
+    }
     
     /**
     * The Add Service Certificate operation adds a certificate to a hosted
@@ -218,7 +222,7 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
+        if (statusCode != HttpStatus.SC_ACCEPTED)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -338,7 +342,7 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
+        if (statusCode != HttpStatus.SC_ACCEPTED)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -458,14 +462,26 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;
@@ -570,14 +586,26 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;
@@ -677,7 +705,7 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -697,11 +725,11 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
         Document responseDoc = documentBuilder.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagName("Certificate");
-        Element certificateElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element certificateElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (certificateElement != null)
         {
             NodeList elements2 = certificateElement.getElementsByTagName("Data");
-            Element dataElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+            Element dataElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
             if (dataElement != null)
             {
                 byte[] dataInstance;
@@ -795,7 +823,7 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -815,17 +843,17 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
         Document responseDoc = documentBuilder.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagName("Certificates");
-        Element certificatesSequenceElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element certificatesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (certificatesSequenceElement != null)
         {
             for (int i1 = 0; i1 < certificatesSequenceElement.getElementsByTagName("Certificate").getLength(); i1 = i1 + 1)
             {
-                org.w3c.dom.Element certificatesElement = ((org.w3c.dom.Element)certificatesSequenceElement.getElementsByTagName("Certificate").item(i1));
+                org.w3c.dom.Element certificatesElement = ((org.w3c.dom.Element) certificatesSequenceElement.getElementsByTagName("Certificate").item(i1));
                 ServiceCertificateListResponse.Certificate certificateInstance = new ServiceCertificateListResponse.Certificate();
                 result.getCertificates().add(certificateInstance);
                 
                 NodeList elements2 = certificatesElement.getElementsByTagName("CertificateUrl");
-                Element certificateUrlElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+                Element certificateUrlElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                 if (certificateUrlElement != null)
                 {
                     URI certificateUrlInstance;
@@ -834,7 +862,7 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
                 }
                 
                 NodeList elements3 = certificatesElement.getElementsByTagName("Thumbprint");
-                Element thumbprintElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
+                Element thumbprintElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                 if (thumbprintElement != null)
                 {
                     String thumbprintInstance;
@@ -843,7 +871,7 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
                 }
                 
                 NodeList elements4 = certificatesElement.getElementsByTagName("ThumbprintAlgorithm");
-                Element thumbprintAlgorithmElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
+                Element thumbprintAlgorithmElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                 if (thumbprintAlgorithmElement != null)
                 {
                     String thumbprintAlgorithmInstance;
@@ -852,7 +880,7 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
                 }
                 
                 NodeList elements5 = certificatesElement.getElementsByTagName("Data");
-                Element dataElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
+                Element dataElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                 if (dataElement != null)
                 {
                     byte[] dataInstance;

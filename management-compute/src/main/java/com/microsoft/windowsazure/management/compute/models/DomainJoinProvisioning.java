@@ -33,18 +33,16 @@ public class DomainJoinProvisioning
     /**
     * The account infor for joining the domain.
     */
-    public String getAccountData() { return this.accountData; }
+    public String getAccountData()
+    {
+        return this.accountData;
+    }
     
     /**
     * The account infor for joining the domain.
     */
-    public void setAccountData(String accountData) { this.accountData = accountData; }
-    
-    /**
-    * Initializes a new instance of the DomainJoinProvisioning class.
-    *
-    */
-    public DomainJoinProvisioning()
+    public void setAccountData(String accountData)
     {
+        this.accountData = accountData;
     }
 }

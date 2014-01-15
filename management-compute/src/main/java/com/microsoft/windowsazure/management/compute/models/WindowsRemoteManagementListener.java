@@ -37,7 +37,10 @@ public class WindowsRemoteManagementListener
     * WinRM HTTPS listener. If this value is not specified, a self-signed
     * certificate is generated and used for the virtual machine.
     */
-    public String getCertificateThumbprint() { return this.certificateThumbprint; }
+    public String getCertificateThumbprint()
+    {
+        return this.certificateThumbprint;
+    }
     
     /**
     * Optional. Specifies the certificate thumbprint for the secure connection.
@@ -46,7 +49,10 @@ public class WindowsRemoteManagementListener
     * WinRM HTTPS listener. If this value is not specified, a self-signed
     * certificate is generated and used for the virtual machine.
     */
-    public void setCertificateThumbprint(String certificateThumbprint) { this.certificateThumbprint = certificateThumbprint; }
+    public void setCertificateThumbprint(String certificateThumbprint)
+    {
+        this.certificateThumbprint = certificateThumbprint;
+    }
     
     private VirtualMachineWindowsRemoteManagementListenerType listenerType;
     
@@ -54,19 +60,17 @@ public class WindowsRemoteManagementListener
     * Specifies the type of listener. This value can be Http or Https. The
     * value is case sensitive.
     */
-    public VirtualMachineWindowsRemoteManagementListenerType getListenerType() { return this.listenerType; }
+    public VirtualMachineWindowsRemoteManagementListenerType getListenerType()
+    {
+        return this.listenerType;
+    }
     
     /**
     * Specifies the type of listener. This value can be Http or Https. The
     * value is case sensitive.
     */
-    public void setListenerType(VirtualMachineWindowsRemoteManagementListenerType listenerType) { this.listenerType = listenerType; }
-    
-    /**
-    * Initializes a new instance of the WindowsRemoteManagementListener class.
-    *
-    */
-    public WindowsRemoteManagementListener()
+    public void setListenerType(VirtualMachineWindowsRemoteManagementListenerType listenerType)
     {
+        this.listenerType = listenerType;
     }
 }

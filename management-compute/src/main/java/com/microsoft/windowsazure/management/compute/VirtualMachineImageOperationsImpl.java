@@ -60,6 +60,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
@@ -93,7 +94,10 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
     * Gets a reference to the
     * microsoft.windowsazure.management.compute.ComputeManagementClientImpl.
     */
-    public ComputeManagementClientImpl getClient() { return this.client; }
+    public ComputeManagementClientImpl getClient()
+    {
+        return this.client;
+    }
     
     /**
     * The Add OS Image operation adds an operating system image that is stored
@@ -296,7 +300,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -316,11 +320,11 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
         Document responseDoc = documentBuilder2.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagName("OSImage");
-        Element oSImageElement2 = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element oSImageElement2 = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (oSImageElement2 != null)
         {
             NodeList elements2 = oSImageElement2.getElementsByTagName("Location");
-            Element locationElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+            Element locationElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
             if (locationElement != null)
             {
                 String locationInstance;
@@ -329,7 +333,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             }
             
             NodeList elements3 = oSImageElement2.getElementsByTagName("Category");
-            Element categoryElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
+            Element categoryElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
             if (categoryElement != null)
             {
                 String categoryInstance;
@@ -338,7 +342,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             }
             
             NodeList elements4 = oSImageElement2.getElementsByTagName("Label");
-            Element labelElement2 = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
+            Element labelElement2 = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
             if (labelElement2 != null)
             {
                 String labelInstance;
@@ -347,7 +351,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             }
             
             NodeList elements5 = oSImageElement2.getElementsByTagName("LogicalSizeInGB");
-            Element logicalSizeInGBElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
+            Element logicalSizeInGBElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
             if (logicalSizeInGBElement != null)
             {
                 double logicalSizeInGBInstance;
@@ -356,7 +360,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             }
             
             NodeList elements6 = oSImageElement2.getElementsByTagName("MediaLink");
-            Element mediaLinkElement2 = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
+            Element mediaLinkElement2 = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
             if (mediaLinkElement2 != null)
             {
                 URI mediaLinkInstance;
@@ -365,7 +369,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             }
             
             NodeList elements7 = oSImageElement2.getElementsByTagName("Name");
-            Element nameElement2 = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
+            Element nameElement2 = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
             if (nameElement2 != null)
             {
                 String nameInstance;
@@ -374,7 +378,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             }
             
             NodeList elements8 = oSImageElement2.getElementsByTagName("OS");
-            Element osElement2 = elements8.getLength() > 0 ? ((Element)elements8.item(0)) : null;
+            Element osElement2 = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
             if (osElement2 != null)
             {
                 String osInstance;
@@ -383,7 +387,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             }
             
             NodeList elements9 = oSImageElement2.getElementsByTagName("Eula");
-            Element eulaElement2 = elements9.getLength() > 0 ? ((Element)elements9.item(0)) : null;
+            Element eulaElement2 = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
             if (eulaElement2 != null)
             {
                 String eulaInstance;
@@ -392,7 +396,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             }
             
             NodeList elements10 = oSImageElement2.getElementsByTagName("Description");
-            Element descriptionElement2 = elements10.getLength() > 0 ? ((Element)elements10.item(0)) : null;
+            Element descriptionElement2 = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
             if (descriptionElement2 != null)
             {
                 String descriptionInstance;
@@ -401,7 +405,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             }
             
             NodeList elements11 = oSImageElement2.getElementsByTagName("ImageFamily");
-            Element imageFamilyElement2 = elements11.getLength() > 0 ? ((Element)elements11.item(0)) : null;
+            Element imageFamilyElement2 = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
             if (imageFamilyElement2 != null)
             {
                 String imageFamilyInstance;
@@ -410,7 +414,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             }
             
             NodeList elements12 = oSImageElement2.getElementsByTagName("PublishedDate");
-            Element publishedDateElement2 = elements12.getLength() > 0 ? ((Element)elements12.item(0)) : null;
+            Element publishedDateElement2 = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
             if (publishedDateElement2 != null && (publishedDateElement2.getTextContent() != null && publishedDateElement2.getTextContent().isEmpty() != true) == false)
             {
                 Calendar publishedDateInstance;
@@ -422,7 +426,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             }
             
             NodeList elements13 = oSImageElement2.getElementsByTagName("PublisherName");
-            Element publisherNameElement = elements13.getLength() > 0 ? ((Element)elements13.item(0)) : null;
+            Element publisherNameElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
             if (publisherNameElement != null)
             {
                 String publisherNameInstance;
@@ -431,7 +435,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             }
             
             NodeList elements14 = oSImageElement2.getElementsByTagName("IsPremium");
-            Element isPremiumElement2 = elements14.getLength() > 0 ? ((Element)elements14.item(0)) : null;
+            Element isPremiumElement2 = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
             if (isPremiumElement2 != null && (isPremiumElement2.getTextContent() != null && isPremiumElement2.getTextContent().isEmpty() != true) == false)
             {
                 boolean isPremiumInstance;
@@ -440,7 +444,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             }
             
             NodeList elements15 = oSImageElement2.getElementsByTagName("ShowInGui");
-            Element showInGuiElement2 = elements15.getLength() > 0 ? ((Element)elements15.item(0)) : null;
+            Element showInGuiElement2 = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
             if (showInGuiElement2 != null && (showInGuiElement2.getTextContent() != null && showInGuiElement2.getTextContent().isEmpty() != true) == false)
             {
                 boolean showInGuiInstance;
@@ -449,7 +453,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             }
             
             NodeList elements16 = oSImageElement2.getElementsByTagName("PrivacyUri");
-            Element privacyUriElement2 = elements16.getLength() > 0 ? ((Element)elements16.item(0)) : null;
+            Element privacyUriElement2 = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
             if (privacyUriElement2 != null)
             {
                 URI privacyUriInstance;
@@ -458,7 +462,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             }
             
             NodeList elements17 = oSImageElement2.getElementsByTagName("IconUri");
-            Element iconUriElement2 = elements17.getLength() > 0 ? ((Element)elements17.item(0)) : null;
+            Element iconUriElement2 = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
             if (iconUriElement2 != null)
             {
                 URI iconUriInstance;
@@ -467,7 +471,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             }
             
             NodeList elements18 = oSImageElement2.getElementsByTagName("RecommendedVMSize");
-            Element recommendedVMSizeElement2 = elements18.getLength() > 0 ? ((Element)elements18.item(0)) : null;
+            Element recommendedVMSizeElement2 = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
             if (recommendedVMSizeElement2 != null)
             {
                 VirtualMachineRoleSize recommendedVMSizeInstance;
@@ -476,7 +480,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             }
             
             NodeList elements19 = oSImageElement2.getElementsByTagName("SmallIconUri");
-            Element smallIconUriElement2 = elements19.getLength() > 0 ? ((Element)elements19.item(0)) : null;
+            Element smallIconUriElement2 = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
             if (smallIconUriElement2 != null)
             {
                 URI smallIconUriInstance;
@@ -485,7 +489,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             }
             
             NodeList elements20 = oSImageElement2.getElementsByTagName("Language");
-            Element languageElement2 = elements20.getLength() > 0 ? ((Element)elements20.item(0)) : null;
+            Element languageElement2 = elements20.getLength() > 0 ? ((Element) elements20.item(0)) : null;
             if (languageElement2 != null)
             {
                 String languageInstance;
@@ -568,7 +572,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
         String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/images/" + imageName + "?";
         if (deleteFromStorage == true)
         {
-            url = url + "&comp=" + URLEncoder.encode("media");
+            url = url + "&comp=" + URLEncoder.encode("media", "UTF-8");
         }
         
         // Create HTTP transport objects
@@ -589,7 +593,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -686,7 +690,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -706,11 +710,11 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
         Document responseDoc = documentBuilder.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagName("OSImage");
-        Element oSImageElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element oSImageElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (oSImageElement != null)
         {
             NodeList elements2 = oSImageElement.getElementsByTagName("AffinityGroup");
-            Element affinityGroupElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+            Element affinityGroupElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
             if (affinityGroupElement != null)
             {
                 String affinityGroupInstance;
@@ -719,7 +723,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             }
             
             NodeList elements3 = oSImageElement.getElementsByTagName("Category");
-            Element categoryElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
+            Element categoryElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
             if (categoryElement != null)
             {
                 String categoryInstance;
@@ -728,7 +732,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             }
             
             NodeList elements4 = oSImageElement.getElementsByTagName("Label");
-            Element labelElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
+            Element labelElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
             if (labelElement != null)
             {
                 String labelInstance;
@@ -737,7 +741,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             }
             
             NodeList elements5 = oSImageElement.getElementsByTagName("Location");
-            Element locationElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
+            Element locationElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
             if (locationElement != null)
             {
                 String locationInstance;
@@ -746,7 +750,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             }
             
             NodeList elements6 = oSImageElement.getElementsByTagName("LogicalSizeInGB");
-            Element logicalSizeInGBElement = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
+            Element logicalSizeInGBElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
             if (logicalSizeInGBElement != null)
             {
                 double logicalSizeInGBInstance;
@@ -755,7 +759,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             }
             
             NodeList elements7 = oSImageElement.getElementsByTagName("MediaLink");
-            Element mediaLinkElement = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
+            Element mediaLinkElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
             if (mediaLinkElement != null)
             {
                 URI mediaLinkInstance;
@@ -764,7 +768,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             }
             
             NodeList elements8 = oSImageElement.getElementsByTagName("Name");
-            Element nameElement = elements8.getLength() > 0 ? ((Element)elements8.item(0)) : null;
+            Element nameElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
             if (nameElement != null)
             {
                 String nameInstance;
@@ -773,7 +777,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             }
             
             NodeList elements9 = oSImageElement.getElementsByTagName("OS");
-            Element osElement = elements9.getLength() > 0 ? ((Element)elements9.item(0)) : null;
+            Element osElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
             if (osElement != null)
             {
                 String osInstance;
@@ -782,7 +786,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             }
             
             NodeList elements10 = oSImageElement.getElementsByTagName("Eula");
-            Element eulaElement = elements10.getLength() > 0 ? ((Element)elements10.item(0)) : null;
+            Element eulaElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
             if (eulaElement != null)
             {
                 String eulaInstance;
@@ -791,7 +795,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             }
             
             NodeList elements11 = oSImageElement.getElementsByTagName("Description");
-            Element descriptionElement = elements11.getLength() > 0 ? ((Element)elements11.item(0)) : null;
+            Element descriptionElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
             if (descriptionElement != null)
             {
                 String descriptionInstance;
@@ -800,7 +804,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             }
             
             NodeList elements12 = oSImageElement.getElementsByTagName("ImageFamily");
-            Element imageFamilyElement = elements12.getLength() > 0 ? ((Element)elements12.item(0)) : null;
+            Element imageFamilyElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
             if (imageFamilyElement != null)
             {
                 String imageFamilyInstance;
@@ -809,7 +813,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             }
             
             NodeList elements13 = oSImageElement.getElementsByTagName("ShowInGui");
-            Element showInGuiElement = elements13.getLength() > 0 ? ((Element)elements13.item(0)) : null;
+            Element showInGuiElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
             if (showInGuiElement != null && (showInGuiElement.getTextContent() != null && showInGuiElement.getTextContent().isEmpty() != true) == false)
             {
                 boolean showInGuiInstance;
@@ -818,7 +822,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             }
             
             NodeList elements14 = oSImageElement.getElementsByTagName("PublishedDate");
-            Element publishedDateElement = elements14.getLength() > 0 ? ((Element)elements14.item(0)) : null;
+            Element publishedDateElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
             if (publishedDateElement != null)
             {
                 Calendar publishedDateInstance;
@@ -830,7 +834,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             }
             
             NodeList elements15 = oSImageElement.getElementsByTagName("IsPremium");
-            Element isPremiumElement = elements15.getLength() > 0 ? ((Element)elements15.item(0)) : null;
+            Element isPremiumElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
             if (isPremiumElement != null && (isPremiumElement.getTextContent() != null && isPremiumElement.getTextContent().isEmpty() != true) == false)
             {
                 boolean isPremiumInstance;
@@ -839,7 +843,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             }
             
             NodeList elements16 = oSImageElement.getElementsByTagName("IconUri");
-            Element iconUriElement = elements16.getLength() > 0 ? ((Element)elements16.item(0)) : null;
+            Element iconUriElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
             if (iconUriElement != null)
             {
                 URI iconUriInstance;
@@ -848,7 +852,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             }
             
             NodeList elements17 = oSImageElement.getElementsByTagName("PrivacyUri");
-            Element privacyUriElement = elements17.getLength() > 0 ? ((Element)elements17.item(0)) : null;
+            Element privacyUriElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
             if (privacyUriElement != null)
             {
                 URI privacyUriInstance;
@@ -857,7 +861,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             }
             
             NodeList elements18 = oSImageElement.getElementsByTagName("RecommendedVMSize");
-            Element recommendedVMSizeElement = elements18.getLength() > 0 ? ((Element)elements18.item(0)) : null;
+            Element recommendedVMSizeElement = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
             if (recommendedVMSizeElement != null)
             {
                 VirtualMachineRoleSize recommendedVMSizeInstance;
@@ -866,7 +870,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             }
             
             NodeList elements19 = oSImageElement.getElementsByTagName("PublisherName");
-            Element publisherNameElement = elements19.getLength() > 0 ? ((Element)elements19.item(0)) : null;
+            Element publisherNameElement = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
             if (publisherNameElement != null)
             {
                 String publisherNameInstance;
@@ -875,7 +879,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             }
             
             NodeList elements20 = oSImageElement.getElementsByTagName("SmallIconUri");
-            Element smallIconUriElement = elements20.getLength() > 0 ? ((Element)elements20.item(0)) : null;
+            Element smallIconUriElement = elements20.getLength() > 0 ? ((Element) elements20.item(0)) : null;
             if (smallIconUriElement != null)
             {
                 URI smallIconUriInstance;
@@ -884,7 +888,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             }
             
             NodeList elements21 = oSImageElement.getElementsByTagName("Language");
-            Element languageElement = elements21.getLength() > 0 ? ((Element)elements21.item(0)) : null;
+            Element languageElement = elements21.getLength() > 0 ? ((Element) elements21.item(0)) : null;
             if (languageElement != null)
             {
                 String languageInstance;
@@ -970,7 +974,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -990,17 +994,17 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
         Document responseDoc = documentBuilder.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagName("Images");
-        Element imagesSequenceElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element imagesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (imagesSequenceElement != null)
         {
             for (int i1 = 0; i1 < imagesSequenceElement.getElementsByTagName("OSImage").getLength(); i1 = i1 + 1)
             {
-                org.w3c.dom.Element imagesElement = ((org.w3c.dom.Element)imagesSequenceElement.getElementsByTagName("OSImage").item(i1));
+                org.w3c.dom.Element imagesElement = ((org.w3c.dom.Element) imagesSequenceElement.getElementsByTagName("OSImage").item(i1));
                 VirtualMachineImageListResponse.VirtualMachineImage oSImageInstance = new VirtualMachineImageListResponse.VirtualMachineImage();
                 result.getImages().add(oSImageInstance);
                 
                 NodeList elements2 = imagesElement.getElementsByTagName("AffinityGroup");
-                Element affinityGroupElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+                Element affinityGroupElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                 if (affinityGroupElement != null)
                 {
                     String affinityGroupInstance;
@@ -1009,7 +1013,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                 }
                 
                 NodeList elements3 = imagesElement.getElementsByTagName("Category");
-                Element categoryElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
+                Element categoryElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                 if (categoryElement != null)
                 {
                     String categoryInstance;
@@ -1018,7 +1022,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                 }
                 
                 NodeList elements4 = imagesElement.getElementsByTagName("Label");
-                Element labelElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
+                Element labelElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                 if (labelElement != null)
                 {
                     String labelInstance;
@@ -1027,7 +1031,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                 }
                 
                 NodeList elements5 = imagesElement.getElementsByTagName("Location");
-                Element locationElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
+                Element locationElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                 if (locationElement != null)
                 {
                     String locationInstance;
@@ -1036,7 +1040,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                 }
                 
                 NodeList elements6 = imagesElement.getElementsByTagName("LogicalSizeInGB");
-                Element logicalSizeInGBElement = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
+                Element logicalSizeInGBElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                 if (logicalSizeInGBElement != null)
                 {
                     double logicalSizeInGBInstance;
@@ -1045,7 +1049,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                 }
                 
                 NodeList elements7 = imagesElement.getElementsByTagName("MediaLink");
-                Element mediaLinkElement = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
+                Element mediaLinkElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                 if (mediaLinkElement != null)
                 {
                     URI mediaLinkInstance;
@@ -1054,7 +1058,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                 }
                 
                 NodeList elements8 = imagesElement.getElementsByTagName("Name");
-                Element nameElement = elements8.getLength() > 0 ? ((Element)elements8.item(0)) : null;
+                Element nameElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
                 if (nameElement != null)
                 {
                     String nameInstance;
@@ -1063,7 +1067,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                 }
                 
                 NodeList elements9 = imagesElement.getElementsByTagName("OS");
-                Element osElement = elements9.getLength() > 0 ? ((Element)elements9.item(0)) : null;
+                Element osElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
                 if (osElement != null)
                 {
                     String osInstance;
@@ -1072,7 +1076,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                 }
                 
                 NodeList elements10 = imagesElement.getElementsByTagName("Eula");
-                Element eulaElement = elements10.getLength() > 0 ? ((Element)elements10.item(0)) : null;
+                Element eulaElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
                 if (eulaElement != null)
                 {
                     String eulaInstance;
@@ -1081,7 +1085,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                 }
                 
                 NodeList elements11 = imagesElement.getElementsByTagName("Description");
-                Element descriptionElement = elements11.getLength() > 0 ? ((Element)elements11.item(0)) : null;
+                Element descriptionElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
                 if (descriptionElement != null)
                 {
                     String descriptionInstance;
@@ -1090,7 +1094,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                 }
                 
                 NodeList elements12 = imagesElement.getElementsByTagName("ImageFamily");
-                Element imageFamilyElement = elements12.getLength() > 0 ? ((Element)elements12.item(0)) : null;
+                Element imageFamilyElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
                 if (imageFamilyElement != null)
                 {
                     String imageFamilyInstance;
@@ -1099,7 +1103,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                 }
                 
                 NodeList elements13 = imagesElement.getElementsByTagName("PublishedDate");
-                Element publishedDateElement = elements13.getLength() > 0 ? ((Element)elements13.item(0)) : null;
+                Element publishedDateElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
                 if (publishedDateElement != null)
                 {
                     Calendar publishedDateInstance;
@@ -1111,7 +1115,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                 }
                 
                 NodeList elements14 = imagesElement.getElementsByTagName("IsPremium");
-                Element isPremiumElement = elements14.getLength() > 0 ? ((Element)elements14.item(0)) : null;
+                Element isPremiumElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
                 if (isPremiumElement != null && (isPremiumElement.getTextContent() != null && isPremiumElement.getTextContent().isEmpty() != true) == false)
                 {
                     boolean isPremiumInstance;
@@ -1120,7 +1124,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                 }
                 
                 NodeList elements15 = imagesElement.getElementsByTagName("PrivacyUri");
-                Element privacyUriElement = elements15.getLength() > 0 ? ((Element)elements15.item(0)) : null;
+                Element privacyUriElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
                 if (privacyUriElement != null)
                 {
                     URI privacyUriInstance;
@@ -1129,7 +1133,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                 }
                 
                 NodeList elements16 = imagesElement.getElementsByTagName("RecommendedVMSize");
-                Element recommendedVMSizeElement = elements16.getLength() > 0 ? ((Element)elements16.item(0)) : null;
+                Element recommendedVMSizeElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
                 if (recommendedVMSizeElement != null)
                 {
                     VirtualMachineRoleSize recommendedVMSizeInstance;
@@ -1138,7 +1142,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                 }
                 
                 NodeList elements17 = imagesElement.getElementsByTagName("PublisherName");
-                Element publisherNameElement = elements17.getLength() > 0 ? ((Element)elements17.item(0)) : null;
+                Element publisherNameElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
                 if (publisherNameElement != null)
                 {
                     String publisherNameInstance;
@@ -1147,7 +1151,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                 }
                 
                 NodeList elements18 = imagesElement.getElementsByTagName("PricingDetailLink");
-                Element pricingDetailLinkElement = elements18.getLength() > 0 ? ((Element)elements18.item(0)) : null;
+                Element pricingDetailLinkElement = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
                 if (pricingDetailLinkElement != null)
                 {
                     URI pricingDetailLinkInstance;
@@ -1156,7 +1160,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                 }
                 
                 NodeList elements19 = imagesElement.getElementsByTagName("SmallIconUri");
-                Element smallIconUriElement = elements19.getLength() > 0 ? ((Element)elements19.item(0)) : null;
+                Element smallIconUriElement = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
                 if (smallIconUriElement != null)
                 {
                     URI smallIconUriInstance;
@@ -1165,7 +1169,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                 }
                 
                 NodeList elements20 = imagesElement.getElementsByTagName("Language");
-                Element languageElement = elements20.getLength() > 0 ? ((Element)elements20.item(0)) : null;
+                Element languageElement = elements20.getLength() > 0 ? ((Element) elements20.item(0)) : null;
                 if (languageElement != null)
                 {
                     String languageInstance;
@@ -1368,7 +1372,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -1388,11 +1392,11 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
         Document responseDoc = documentBuilder2.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagName("OSImage");
-        Element oSImageElement2 = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element oSImageElement2 = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (oSImageElement2 != null)
         {
             NodeList elements2 = oSImageElement2.getElementsByTagName("Location");
-            Element locationElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+            Element locationElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
             if (locationElement != null)
             {
                 String locationInstance;
@@ -1401,7 +1405,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             }
             
             NodeList elements3 = oSImageElement2.getElementsByTagName("Category");
-            Element categoryElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
+            Element categoryElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
             if (categoryElement != null)
             {
                 String categoryInstance;
@@ -1410,7 +1414,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             }
             
             NodeList elements4 = oSImageElement2.getElementsByTagName("Label");
-            Element labelElement2 = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
+            Element labelElement2 = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
             if (labelElement2 != null)
             {
                 String labelInstance;
@@ -1419,7 +1423,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             }
             
             NodeList elements5 = oSImageElement2.getElementsByTagName("LogicalSizeInGB");
-            Element logicalSizeInGBElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
+            Element logicalSizeInGBElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
             if (logicalSizeInGBElement != null)
             {
                 double logicalSizeInGBInstance;
@@ -1428,7 +1432,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             }
             
             NodeList elements6 = oSImageElement2.getElementsByTagName("MediaLink");
-            Element mediaLinkElement = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
+            Element mediaLinkElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
             if (mediaLinkElement != null)
             {
                 URI mediaLinkInstance;
@@ -1437,7 +1441,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             }
             
             NodeList elements7 = oSImageElement2.getElementsByTagName("Name");
-            Element nameElement = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
+            Element nameElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
             if (nameElement != null)
             {
                 String nameInstance;
@@ -1446,7 +1450,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             }
             
             NodeList elements8 = oSImageElement2.getElementsByTagName("OS");
-            Element osElement = elements8.getLength() > 0 ? ((Element)elements8.item(0)) : null;
+            Element osElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
             if (osElement != null)
             {
                 String osInstance;
@@ -1455,7 +1459,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             }
             
             NodeList elements9 = oSImageElement2.getElementsByTagName("Eula");
-            Element eulaElement2 = elements9.getLength() > 0 ? ((Element)elements9.item(0)) : null;
+            Element eulaElement2 = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
             if (eulaElement2 != null)
             {
                 String eulaInstance;
@@ -1464,7 +1468,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             }
             
             NodeList elements10 = oSImageElement2.getElementsByTagName("Description");
-            Element descriptionElement2 = elements10.getLength() > 0 ? ((Element)elements10.item(0)) : null;
+            Element descriptionElement2 = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
             if (descriptionElement2 != null)
             {
                 String descriptionInstance;
@@ -1473,7 +1477,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             }
             
             NodeList elements11 = oSImageElement2.getElementsByTagName("ImageFamily");
-            Element imageFamilyElement2 = elements11.getLength() > 0 ? ((Element)elements11.item(0)) : null;
+            Element imageFamilyElement2 = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
             if (imageFamilyElement2 != null)
             {
                 String imageFamilyInstance;
@@ -1482,7 +1486,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             }
             
             NodeList elements12 = oSImageElement2.getElementsByTagName("PublishedDate");
-            Element publishedDateElement2 = elements12.getLength() > 0 ? ((Element)elements12.item(0)) : null;
+            Element publishedDateElement2 = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
             if (publishedDateElement2 != null && (publishedDateElement2.getTextContent() != null && publishedDateElement2.getTextContent().isEmpty() != true) == false)
             {
                 Calendar publishedDateInstance;
@@ -1494,7 +1498,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             }
             
             NodeList elements13 = oSImageElement2.getElementsByTagName("PublisherName");
-            Element publisherNameElement = elements13.getLength() > 0 ? ((Element)elements13.item(0)) : null;
+            Element publisherNameElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
             if (publisherNameElement != null)
             {
                 String publisherNameInstance;
@@ -1503,7 +1507,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             }
             
             NodeList elements14 = oSImageElement2.getElementsByTagName("IsPremium");
-            Element isPremiumElement2 = elements14.getLength() > 0 ? ((Element)elements14.item(0)) : null;
+            Element isPremiumElement2 = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
             if (isPremiumElement2 != null && (isPremiumElement2.getTextContent() != null && isPremiumElement2.getTextContent().isEmpty() != true) == false)
             {
                 boolean isPremiumInstance;
@@ -1512,7 +1516,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             }
             
             NodeList elements15 = oSImageElement2.getElementsByTagName("ShowInGui");
-            Element showInGuiElement = elements15.getLength() > 0 ? ((Element)elements15.item(0)) : null;
+            Element showInGuiElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
             if (showInGuiElement != null && (showInGuiElement.getTextContent() != null && showInGuiElement.getTextContent().isEmpty() != true) == false)
             {
                 boolean showInGuiInstance;
@@ -1521,7 +1525,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             }
             
             NodeList elements16 = oSImageElement2.getElementsByTagName("PrivacyUri");
-            Element privacyUriElement2 = elements16.getLength() > 0 ? ((Element)elements16.item(0)) : null;
+            Element privacyUriElement2 = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
             if (privacyUriElement2 != null)
             {
                 URI privacyUriInstance;
@@ -1530,7 +1534,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             }
             
             NodeList elements17 = oSImageElement2.getElementsByTagName("IconUri");
-            Element iconUriElement2 = elements17.getLength() > 0 ? ((Element)elements17.item(0)) : null;
+            Element iconUriElement2 = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
             if (iconUriElement2 != null)
             {
                 URI iconUriInstance;
@@ -1539,7 +1543,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             }
             
             NodeList elements18 = oSImageElement2.getElementsByTagName("RecommendedVMSize");
-            Element recommendedVMSizeElement2 = elements18.getLength() > 0 ? ((Element)elements18.item(0)) : null;
+            Element recommendedVMSizeElement2 = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
             if (recommendedVMSizeElement2 != null)
             {
                 VirtualMachineRoleSize recommendedVMSizeInstance;
@@ -1548,7 +1552,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             }
             
             NodeList elements19 = oSImageElement2.getElementsByTagName("SmallIconUri");
-            Element smallIconUriElement2 = elements19.getLength() > 0 ? ((Element)elements19.item(0)) : null;
+            Element smallIconUriElement2 = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
             if (smallIconUriElement2 != null)
             {
                 URI smallIconUriInstance;
@@ -1557,7 +1561,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             }
             
             NodeList elements20 = oSImageElement2.getElementsByTagName("Language");
-            Element languageElement2 = elements20.getLength() > 0 ? ((Element)elements20.item(0)) : null;
+            Element languageElement2 = elements20.getLength() > 0 ? ((Element) elements20.item(0)) : null;
             if (languageElement2 != null)
             {
                 String languageInstance;

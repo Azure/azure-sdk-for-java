@@ -36,24 +36,36 @@ public class VirtualMachineDiskGetDataDiskResponse extends OperationResponse
     /**
     * The description of the data disk.
     */
-    public String getDiskLabel() { return this.diskLabel; }
+    public String getDiskLabel()
+    {
+        return this.diskLabel;
+    }
     
     /**
     * The description of the data disk.
     */
-    public void setDiskLabel(String diskLabel) { this.diskLabel = diskLabel; }
+    public void setDiskLabel(String diskLabel)
+    {
+        this.diskLabel = diskLabel;
+    }
     
     private String diskName;
     
     /**
     * The name of the data disk.
     */
-    public String getDiskName() { return this.diskName; }
+    public String getDiskName()
+    {
+        return this.diskName;
+    }
     
     /**
     * The name of the data disk.
     */
-    public void setDiskName(String diskName) { this.diskName = diskName; }
+    public void setDiskName(String diskName)
+    {
+        this.diskName = diskName;
+    }
     
     private VirtualHardDiskHostCaching hostCaching;
     
@@ -61,25 +73,37 @@ public class VirtualMachineDiskGetDataDiskResponse extends OperationResponse
     * The current value of the platform caching behavior of data disk blob for
     * read/write efficiency. Possible values are: None, ReadOnly, ReadWrite.
     */
-    public VirtualHardDiskHostCaching getHostCaching() { return this.hostCaching; }
+    public VirtualHardDiskHostCaching getHostCaching()
+    {
+        return this.hostCaching;
+    }
     
     /**
     * The current value of the platform caching behavior of data disk blob for
     * read/write efficiency. Possible values are: None, ReadOnly, ReadWrite.
     */
-    public void setHostCaching(VirtualHardDiskHostCaching hostCaching) { this.hostCaching = hostCaching; }
+    public void setHostCaching(VirtualHardDiskHostCaching hostCaching)
+    {
+        this.hostCaching = hostCaching;
+    }
     
     private double logicalDiskSizeInGB;
     
     /**
     * The size, in GB, of the data disk.
     */
-    public double getLogicalDiskSizeInGB() { return this.logicalDiskSizeInGB; }
+    public double getLogicalDiskSizeInGB()
+    {
+        return this.logicalDiskSizeInGB;
+    }
     
     /**
     * The size, in GB, of the data disk.
     */
-    public void setLogicalDiskSizeInGB(double logicalDiskSizeInGB) { this.logicalDiskSizeInGB = logicalDiskSizeInGB; }
+    public void setLogicalDiskSizeInGB(double logicalDiskSizeInGB)
+    {
+        this.logicalDiskSizeInGB = logicalDiskSizeInGB;
+    }
     
     private Integer logicalUnitNumber;
     
@@ -88,14 +112,20 @@ public class VirtualMachineDiskGetDataDiskResponse extends OperationResponse
     * which the data drive appears when mounted for usage by the virtual
     * machine.
     */
-    public Integer getLogicalUnitNumber() { return this.logicalUnitNumber; }
+    public Integer getLogicalUnitNumber()
+    {
+        return this.logicalUnitNumber;
+    }
     
     /**
     * The Logical Unit Number (LUN) for the disk. The LUN specifies the slot in
     * which the data drive appears when mounted for usage by the virtual
     * machine.
     */
-    public void setLogicalUnitNumber(Integer logicalUnitNumber) { this.logicalUnitNumber = logicalUnitNumber; }
+    public void setLogicalUnitNumber(Integer logicalUnitNumber)
+    {
+        this.logicalUnitNumber = logicalUnitNumber;
+    }
     
     private URI mediaLinkUri;
     
@@ -104,21 +134,18 @@ public class VirtualMachineDiskGetDataDiskResponse extends OperationResponse
     * in storage account in the subscription specified by the SubscriptionId
     * value in the operation call.
     */
-    public URI getMediaLinkUri() { return this.mediaLinkUri; }
+    public URI getMediaLinkUri()
+    {
+        return this.mediaLinkUri;
+    }
     
     /**
     * The location of physical blob backing the data disk. The blob location is
     * in storage account in the subscription specified by the SubscriptionId
     * value in the operation call.
     */
-    public void setMediaLinkUri(URI mediaLinkUri) { this.mediaLinkUri = mediaLinkUri; }
-    
-    /**
-    * Initializes a new instance of the VirtualMachineDiskGetDataDiskResponse
-    * class.
-    *
-    */
-    public VirtualMachineDiskGetDataDiskResponse()
+    public void setMediaLinkUri(URI mediaLinkUri)
     {
+        this.mediaLinkUri = mediaLinkUri;
     }
 }

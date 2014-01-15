@@ -35,18 +35,16 @@ public class ClientRootCertificateGetResponse extends OperationResponse
     /**
     * The current client root certificate for the network gateway.
     */
-    public String getCertificate() { return this.certificate; }
+    public String getCertificate()
+    {
+        return this.certificate;
+    }
     
     /**
     * The current client root certificate for the network gateway.
     */
-    public void setCertificate(String certificate) { this.certificate = certificate; }
-    
-    /**
-    * Initializes a new instance of the ClientRootCertificateGetResponse class.
-    *
-    */
-    public ClientRootCertificateGetResponse()
+    public void setCertificate(String certificate)
     {
+        this.certificate = certificate;
     }
 }

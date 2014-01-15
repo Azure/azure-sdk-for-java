@@ -65,7 +65,7 @@ public interface ServiceBusManagementClient extends FilterableService<ServiceBus
     
     /**
     * The Service Bus Management API includes operations for managing Service
-    * Bus queues.
+    * Bus notification hubs.
     */
     NotificationHubOperations getNotificationHubsOperations(); 
     

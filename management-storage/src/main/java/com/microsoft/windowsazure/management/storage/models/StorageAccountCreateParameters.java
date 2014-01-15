@@ -38,7 +38,10 @@ public class StorageAccountCreateParameters
     * or AffinityGroup element in the request body, but not both. To list
     * available affinity groups, use the List Affinity Groups operation.
     */
-    public String getAffinityGroup() { return this.affinityGroup; }
+    public String getAffinityGroup()
+    {
+        return this.affinityGroup;
+    }
     
     /**
     * Required if Location is not specified. The name of an existing affinity
@@ -46,7 +49,10 @@ public class StorageAccountCreateParameters
     * or AffinityGroup element in the request body, but not both. To list
     * available affinity groups, use the List Affinity Groups operation.
     */
-    public void setAffinityGroup(String affinityGroup) { this.affinityGroup = affinityGroup; }
+    public void setAffinityGroup(String affinityGroup)
+    {
+        this.affinityGroup = affinityGroup;
+    }
     
     private String description;
     
@@ -54,13 +60,19 @@ public class StorageAccountCreateParameters
     * Optional. A description for the storage account. The description may be
     * up to 1024 characters in length.
     */
-    public String getDescription() { return this.description; }
+    public String getDescription()
+    {
+        return this.description;
+    }
     
     /**
     * Optional. A description for the storage account. The description may be
     * up to 1024 characters in length.
     */
-    public void setDescription(String description) { this.description = description; }
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
     
     private HashMap<String, String> extendedProperties;
     
@@ -76,7 +88,10 @@ public class StorageAccountCreateParameters
     * will result in a status code 400 (Bad Request) error.  Each extended
     * property value has a maximum length of 255 characters.
     */
-    public HashMap<String, String> getExtendedProperties() { return this.extendedProperties; }
+    public HashMap<String, String> getExtendedProperties()
+    {
+        return this.extendedProperties;
+    }
     
     /**
     * Optional. Represents the name of an extended storage account property.
@@ -90,7 +105,10 @@ public class StorageAccountCreateParameters
     * will result in a status code 400 (Bad Request) error.  Each extended
     * property value has a maximum length of 255 characters.
     */
-    public void setExtendedProperties(HashMap<String, String> extendedProperties) { this.extendedProperties = extendedProperties; }
+    public void setExtendedProperties(HashMap<String, String> extendedProperties)
+    {
+        this.extendedProperties = extendedProperties;
+    }
     
     private boolean geoReplicationEnabled;
     
@@ -101,7 +119,10 @@ public class StorageAccountCreateParameters
     * account is replicated across more than one geographic location so as to
     * enable resilience in the face of catastrophic service loss.
     */
-    public boolean getGeoReplicationEnabled() { return this.geoReplicationEnabled; }
+    public boolean isGeoReplicationEnabled()
+    {
+        return this.geoReplicationEnabled;
+    }
     
     /**
     * Optional. Specifies whether the storage account is created with the
@@ -110,7 +131,10 @@ public class StorageAccountCreateParameters
     * account is replicated across more than one geographic location so as to
     * enable resilience in the face of catastrophic service loss.
     */
-    public void setGeoReplicationEnabled(boolean geoReplicationEnabled) { this.geoReplicationEnabled = geoReplicationEnabled; }
+    public void setGeoReplicationEnabled(boolean geoReplicationEnabled)
+    {
+        this.geoReplicationEnabled = geoReplicationEnabled;
+    }
     
     private String label;
     
@@ -136,7 +160,10 @@ public class StorageAccountCreateParameters
     * string. The name may be up to 100 characters inlength. The name can be
     * used identify the storage account for yourtracking purposes.
     */
-    public void setLabel(String label) { this.label = label; }
+    public void setLabel(String label)
+    {
+        this.label = label;
+    }
     
     private String location;
     
@@ -146,7 +173,10 @@ public class StorageAccountCreateParameters
     * AffinityGroup element in the request body, but not both. To list
     * available locations, use the List Locations operation.
     */
-    public String getLocation() { return this.location; }
+    public String getLocation()
+    {
+        return this.location;
+    }
     
     /**
     * Required if AffinityGroup is not specified. The location where the
@@ -154,7 +184,10 @@ public class StorageAccountCreateParameters
     * AffinityGroup element in the request body, but not both. To list
     * available locations, use the List Locations operation.
     */
-    public void setLocation(String location) { this.location = location; }
+    public void setLocation(String location)
+    {
+        this.location = location;
+    }
     
     private String serviceName;
     
@@ -166,7 +199,10 @@ public class StorageAccountCreateParameters
     * the storage account.  For example:
     * http://ServiceName.blob.core.windows.net/mycontainer/
     */
-    public String getServiceName() { return this.serviceName; }
+    public String getServiceName()
+    {
+        return this.serviceName;
+    }
     
     /**
     * Required. A name for the storage account that is unique within Windows
@@ -176,7 +212,10 @@ public class StorageAccountCreateParameters
     * the storage account.  For example:
     * http://ServiceName.blob.core.windows.net/mycontainer/
     */
-    public void setServiceName(String serviceName) { this.serviceName = serviceName; }
+    public void setServiceName(String serviceName)
+    {
+        this.serviceName = serviceName;
+    }
     
     /**
     * Initializes a new instance of the StorageAccountCreateParameters class.

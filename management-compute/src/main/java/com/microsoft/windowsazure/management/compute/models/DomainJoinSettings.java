@@ -36,25 +36,37 @@ public class DomainJoinSettings
     * Optional. Specifies the values to use to join the virtual machine to the
     * domain.
     */
-    public DomainJoinCredentials getCredentials() { return this.credentials; }
+    public DomainJoinCredentials getCredentials()
+    {
+        return this.credentials;
+    }
     
     /**
     * Optional. Specifies the values to use to join the virtual machine to the
     * domain.
     */
-    public void setCredentials(DomainJoinCredentials credentials) { this.credentials = credentials; }
+    public void setCredentials(DomainJoinCredentials credentials)
+    {
+        this.credentials = credentials;
+    }
     
     private String domainToJoin;
     
     /**
     * Optional. Specifies the domain to join.
     */
-    public String getDomainToJoin() { return this.domainToJoin; }
+    public String getDomainToJoin()
+    {
+        return this.domainToJoin;
+    }
     
     /**
     * Optional. Specifies the domain to join.
     */
-    public void setDomainToJoin(String domainToJoin) { this.domainToJoin = domainToJoin; }
+    public void setDomainToJoin(String domainToJoin)
+    {
+        this.domainToJoin = domainToJoin;
+    }
     
     private String ldapMachineObjectOU;
     
@@ -65,7 +77,10 @@ public class DomainJoinSettings
     * domain controller in the domain to which the computer is being joined.
     * Example: OU=MyOu,OU=MyParentOu,DC=example.com,DC=MyCompany,DC=com
     */
-    public String getLdapMachineObjectOU() { return this.ldapMachineObjectOU; }
+    public String getLdapMachineObjectOU()
+    {
+        return this.ldapMachineObjectOU;
+    }
     
     /**
     * Optional. Specifies the Lightweight Directory Access Protocol (LDAP) X
@@ -74,25 +89,26 @@ public class DomainJoinSettings
     * domain controller in the domain to which the computer is being joined.
     * Example: OU=MyOu,OU=MyParentOu,DC=example.com,DC=MyCompany,DC=com
     */
-    public void setLdapMachineObjectOU(String ldapMachineObjectOU) { this.ldapMachineObjectOU = ldapMachineObjectOU; }
+    public void setLdapMachineObjectOU(String ldapMachineObjectOU)
+    {
+        this.ldapMachineObjectOU = ldapMachineObjectOU;
+    }
     
     private DomainJoinProvisioning provisioning;
     
     /**
     * Additional information for domain join provisioning.
     */
-    public DomainJoinProvisioning getProvisioning() { return this.provisioning; }
+    public DomainJoinProvisioning getProvisioning()
+    {
+        return this.provisioning;
+    }
     
     /**
     * Additional information for domain join provisioning.
     */
-    public void setProvisioning(DomainJoinProvisioning provisioning) { this.provisioning = provisioning; }
-    
-    /**
-    * Initializes a new instance of the DomainJoinSettings class.
-    *
-    */
-    public DomainJoinSettings()
+    public void setProvisioning(DomainJoinProvisioning provisioning)
     {
+        this.provisioning = provisioning;
     }
 }

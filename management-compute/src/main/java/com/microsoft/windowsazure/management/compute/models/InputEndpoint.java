@@ -35,24 +35,36 @@ public class InputEndpoint
     /**
     * Specifies whether direct server return is enabled for the endpoint.
     */
-    public Boolean getEnableDirectServerReturn() { return this.enableDirectServerReturn; }
+    public Boolean getEnableDirectServerReturn()
+    {
+        return this.enableDirectServerReturn;
+    }
     
     /**
     * Specifies whether direct server return is enabled for the endpoint.
     */
-    public void setEnableDirectServerReturn(Boolean enableDirectServerReturn) { this.enableDirectServerReturn = enableDirectServerReturn; }
+    public void setEnableDirectServerReturn(Boolean enableDirectServerReturn)
+    {
+        this.enableDirectServerReturn = enableDirectServerReturn;
+    }
     
     private EndpointAcl endpointAcl;
     
     /**
     * Specifies the list of access control rules for the endpoint.
     */
-    public EndpointAcl getEndpointAcl() { return this.endpointAcl; }
+    public EndpointAcl getEndpointAcl()
+    {
+        return this.endpointAcl;
+    }
     
     /**
     * Specifies the list of access control rules for the endpoint.
     */
-    public void setEndpointAcl(EndpointAcl endpointAcl) { this.endpointAcl = endpointAcl; }
+    public void setEndpointAcl(EndpointAcl endpointAcl)
+    {
+        this.endpointAcl = endpointAcl;
+    }
     
     private String loadBalancedEndpointSetName;
     
@@ -61,14 +73,20 @@ public class InputEndpoint
     * name in multiple endpoints adds them all to the set. This element is
     * only listed for Virtual Machine deployments.
     */
-    public String getLoadBalancedEndpointSetName() { return this.loadBalancedEndpointSetName; }
+    public String getLoadBalancedEndpointSetName()
+    {
+        return this.loadBalancedEndpointSetName;
+    }
     
     /**
     * Specifies a name for a set of load-balanced endpoints. Specifying this
     * name in multiple endpoints adds them all to the set. This element is
     * only listed for Virtual Machine deployments.
     */
-    public void setLoadBalancedEndpointSetName(String loadBalancedEndpointSetName) { this.loadBalancedEndpointSetName = loadBalancedEndpointSetName; }
+    public void setLoadBalancedEndpointSetName(String loadBalancedEndpointSetName)
+    {
+        this.loadBalancedEndpointSetName = loadBalancedEndpointSetName;
+    }
     
     private LoadBalancerProbe loadBalancerProbe;
     
@@ -77,14 +95,20 @@ public class InputEndpoint
     * Azure load balancer uses to monitor the availability of this virtual
     * machine before forwarding traffic to the endpoint.
     */
-    public LoadBalancerProbe getLoadBalancerProbe() { return this.loadBalancerProbe; }
+    public LoadBalancerProbe getLoadBalancerProbe()
+    {
+        return this.loadBalancerProbe;
+    }
     
     /**
     * Contains properties that specify the endpoint settings which the Windows
     * Azure load balancer uses to monitor the availability of this virtual
     * machine before forwarding traffic to the endpoint.
     */
-    public void setLoadBalancerProbe(LoadBalancerProbe loadBalancerProbe) { this.loadBalancerProbe = loadBalancerProbe; }
+    public void setLoadBalancerProbe(LoadBalancerProbe loadBalancerProbe)
+    {
+        this.loadBalancerProbe = loadBalancerProbe;
+    }
     
     private Integer localPort;
     
@@ -93,14 +117,20 @@ public class InputEndpoint
     * serve the endpoint. This element is only listed for Virtual Machine
     * deployments.
     */
-    public Integer getLocalPort() { return this.localPort; }
+    public Integer getLocalPort()
+    {
+        return this.localPort;
+    }
     
     /**
     * Specifies the internal port on which the virtual machine is listening to
     * serve the endpoint. This element is only listed for Virtual Machine
     * deployments.
     */
-    public void setLocalPort(Integer localPort) { this.localPort = localPort; }
+    public void setLocalPort(Integer localPort)
+    {
+        this.localPort = localPort;
+    }
     
     private String name;
     
@@ -108,55 +138,71 @@ public class InputEndpoint
     * Specifies the name for the external endpoint. This element is only listed
     * for Virtual Machine deployments.
     */
-    public String getName() { return this.name; }
+    public String getName()
+    {
+        return this.name;
+    }
     
     /**
     * Specifies the name for the external endpoint. This element is only listed
     * for Virtual Machine deployments.
     */
-    public void setName(String name) { this.name = name; }
+    public void setName(String name)
+    {
+        this.name = name;
+    }
     
     private Integer port;
     
     /**
     * The size of the role instance.
     */
-    public Integer getPort() { return this.port; }
+    public Integer getPort()
+    {
+        return this.port;
+    }
     
     /**
     * The size of the role instance.
     */
-    public void setPort(Integer port) { this.port = port; }
+    public void setPort(Integer port)
+    {
+        this.port = port;
+    }
     
     private String protocol;
     
     /**
     * Specifies the transport protocol for the endpoint.
     */
-    public String getProtocol() { return this.protocol; }
+    public String getProtocol()
+    {
+        return this.protocol;
+    }
     
     /**
     * Specifies the transport protocol for the endpoint.
     */
-    public void setProtocol(String protocol) { this.protocol = protocol; }
+    public void setProtocol(String protocol)
+    {
+        this.protocol = protocol;
+    }
     
     private InetAddress virtualIPAddress;
     
     /**
     * The ip of the role instance.
     */
-    public InetAddress getVirtualIPAddress() { return this.virtualIPAddress; }
+    public InetAddress getVirtualIPAddress()
+    {
+        return this.virtualIPAddress;
+    }
     
     /**
     * The ip of the role instance.
     */
-    public void setVirtualIPAddress(InetAddress virtualIPAddress) { this.virtualIPAddress = virtualIPAddress; }
-    
-    /**
-    * Initializes a new instance of the InputEndpoint class.
-    *
-    */
-    public InputEndpoint()
+    public void setVirtualIPAddress(InetAddress virtualIPAddress)
     {
+        this.virtualIPAddress = virtualIPAddress;
     }
 }

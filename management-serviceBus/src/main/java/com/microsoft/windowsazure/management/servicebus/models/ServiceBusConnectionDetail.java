@@ -35,48 +35,72 @@ public class ServiceBusConnectionDetail
     /**
     * The type of authorization for the connection to the entity.
     */
-    public String getAuthorizationType() { return this.authorizationType; }
+    public String getAuthorizationType()
+    {
+        return this.authorizationType;
+    }
     
     /**
     * The type of authorization for the connection to the entity.
     */
-    public void setAuthorizationType(String authorizationType) { this.authorizationType = authorizationType; }
+    public void setAuthorizationType(String authorizationType)
+    {
+        this.authorizationType = authorizationType;
+    }
     
     private String connectionString;
     
     /**
     * The connection string to the entity.
     */
-    public String getConnectionString() { return this.connectionString; }
+    public String getConnectionString()
+    {
+        return this.connectionString;
+    }
     
     /**
     * The connection string to the entity.
     */
-    public void setConnectionString(String connectionString) { this.connectionString = connectionString; }
+    public void setConnectionString(String connectionString)
+    {
+        this.connectionString = connectionString;
+    }
     
     private String keyName;
     
     /**
     * The name of the key used in the connection.
     */
-    public String getKeyName() { return this.keyName; }
+    public String getKeyName()
+    {
+        return this.keyName;
+    }
     
     /**
     * The name of the key used in the connection.
     */
-    public void setKeyName(String keyName) { this.keyName = keyName; }
+    public void setKeyName(String keyName)
+    {
+        this.keyName = keyName;
+    }
     
     private ArrayList<AccessRight> rights;
     
     /**
     * The rights connections to the entity via the connection string will have.
     */
-    public ArrayList<AccessRight> getRights() { return this.rights; }
+    public ArrayList<AccessRight> getRights()
+    {
+        return this.rights;
+    }
     
     /**
     * The rights connections to the entity via the connection string will have.
     */
-    public void setRights(ArrayList<AccessRight> rights) { this.rights = rights; }
+    public void setRights(ArrayList<AccessRight> rights)
+    {
+        this.rights = rights;
+    }
     
     /**
     * Initializes a new instance of the ServiceBusConnectionDetail class.

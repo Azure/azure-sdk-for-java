@@ -42,7 +42,10 @@ public class SubscriptionListOperationsResponse extends OperationResponse
     * where the last response left off. This element exists only if the
     * complete list of subscription operations was not returned.
     */
-    public String getContinuationToken() { return this.continuationToken; }
+    public String getContinuationToken()
+    {
+        return this.continuationToken;
+    }
     
     /**
     * The string that can be used to return the rest of the list. Subsequent
@@ -50,7 +53,10 @@ public class SubscriptionListOperationsResponse extends OperationResponse
     * where the last response left off. This element exists only if the
     * complete list of subscription operations was not returned.
     */
-    public void setContinuationToken(String continuationToken) { this.continuationToken = continuationToken; }
+    public void setContinuationToken(String continuationToken)
+    {
+        this.continuationToken = continuationToken;
+    }
     
     private ArrayList<SubscriptionListOperationsResponse.SubscriptionOperation> subscriptionOperations;
     
@@ -58,13 +64,19 @@ public class SubscriptionListOperationsResponse extends OperationResponse
     * The list of operations that have been performed on the subscription
     * during the specified timeframe.
     */
-    public ArrayList<SubscriptionListOperationsResponse.SubscriptionOperation> getSubscriptionOperations() { return this.subscriptionOperations; }
+    public ArrayList<SubscriptionListOperationsResponse.SubscriptionOperation> getSubscriptionOperations()
+    {
+        return this.subscriptionOperations;
+    }
     
     /**
     * The list of operations that have been performed on the subscription
     * during the specified timeframe.
     */
-    public void setSubscriptionOperations(ArrayList<SubscriptionListOperationsResponse.SubscriptionOperation> subscriptionOperations) { this.subscriptionOperations = subscriptionOperations; }
+    public void setSubscriptionOperations(ArrayList<SubscriptionListOperationsResponse.SubscriptionOperation> subscriptionOperations)
+    {
+        this.subscriptionOperations = subscriptionOperations;
+    }
     
     /**
     * Initializes a new instance of the SubscriptionListOperationsResponse
@@ -73,6 +85,7 @@ public class SubscriptionListOperationsResponse extends OperationResponse
     */
     public SubscriptionListOperationsResponse()
     {
+        super();
         this.subscriptionOperations = new ArrayList<SubscriptionListOperationsResponse.SubscriptionOperation>();
     }
     
@@ -87,13 +100,19 @@ public class SubscriptionListOperationsResponse extends OperationResponse
         * The IP address of the client computer that initiated the operation.
         * This element is returned only if UsedServiceManagementApi is true.
         */
-        public InetAddress getClientIPAddress() { return this.clientIPAddress; }
+        public InetAddress getClientIPAddress()
+        {
+            return this.clientIPAddress;
+        }
         
         /**
         * The IP address of the client computer that initiated the operation.
         * This element is returned only if UsedServiceManagementApi is true.
         */
-        public void setClientIPAddress(InetAddress clientIPAddress) { this.clientIPAddress = clientIPAddress; }
+        public void setClientIPAddress(InetAddress clientIPAddress)
+        {
+            this.clientIPAddress = clientIPAddress;
+        }
         
         private String subscriptionCertificateThumbprint;
         
@@ -101,13 +120,19 @@ public class SubscriptionListOperationsResponse extends OperationResponse
         * The thumbprint of the subscription certificate used to initiate the
         * operation.
         */
-        public String getSubscriptionCertificateThumbprint() { return this.subscriptionCertificateThumbprint; }
+        public String getSubscriptionCertificateThumbprint()
+        {
+            return this.subscriptionCertificateThumbprint;
+        }
         
         /**
         * The thumbprint of the subscription certificate used to initiate the
         * operation.
         */
-        public void setSubscriptionCertificateThumbprint(String subscriptionCertificateThumbprint) { this.subscriptionCertificateThumbprint = subscriptionCertificateThumbprint; }
+        public void setSubscriptionCertificateThumbprint(String subscriptionCertificateThumbprint)
+        {
+            this.subscriptionCertificateThumbprint = subscriptionCertificateThumbprint;
+        }
         
         private boolean usedServiceManagementApi;
         
@@ -116,14 +141,20 @@ public class SubscriptionListOperationsResponse extends OperationResponse
         * Management API. False if it was initiated by another source, such as
         * the Management Portal.
         */
-        public boolean getUsedServiceManagementApi() { return this.usedServiceManagementApi; }
+        public boolean getUsedServiceManagementApi()
+        {
+            return this.usedServiceManagementApi;
+        }
         
         /**
         * Indicates whether the operation was initiated by using the Service
         * Management API. False if it was initiated by another source, such as
         * the Management Portal.
         */
-        public void setUsedServiceManagementApi(boolean usedServiceManagementApi) { this.usedServiceManagementApi = usedServiceManagementApi; }
+        public void setUsedServiceManagementApi(boolean usedServiceManagementApi)
+        {
+            this.usedServiceManagementApi = usedServiceManagementApi;
+        }
         
         private String userEmailAddress;
         
@@ -132,21 +163,19 @@ public class SubscriptionListOperationsResponse extends OperationResponse
         * initiated the operation from the Management Portal. This element is
         * returned only if UsedServiceManagementApi is false.
         */
-        public String getUserEmailAddress() { return this.userEmailAddress; }
+        public String getUserEmailAddress()
+        {
+            return this.userEmailAddress;
+        }
         
         /**
         * The email associated with the Windows Live ID of the user who
         * initiated the operation from the Management Portal. This element is
         * returned only if UsedServiceManagementApi is false.
         */
-        public void setUserEmailAddress(String userEmailAddress) { this.userEmailAddress = userEmailAddress; }
-        
-        /**
-        * Initializes a new instance of the OperationCallerDetails class.
-        *
-        */
-        public OperationCallerDetails()
+        public void setUserEmailAddress(String userEmailAddress)
         {
+            this.userEmailAddress = userEmailAddress;
         }
     }
     
@@ -162,49 +191,73 @@ public class SubscriptionListOperationsResponse extends OperationResponse
         * A collection of attributes that identifies the source of the
         * operation.
         */
-        public SubscriptionListOperationsResponse.OperationCallerDetails getOperationCaller() { return this.operationCaller; }
+        public SubscriptionListOperationsResponse.OperationCallerDetails getOperationCaller()
+        {
+            return this.operationCaller;
+        }
         
         /**
         * A collection of attributes that identifies the source of the
         * operation.
         */
-        public void setOperationCaller(SubscriptionListOperationsResponse.OperationCallerDetails operationCaller) { this.operationCaller = operationCaller; }
+        public void setOperationCaller(SubscriptionListOperationsResponse.OperationCallerDetails operationCaller)
+        {
+            this.operationCaller = operationCaller;
+        }
         
         private Calendar operationCompletedTime;
         
         /**
         * The time that the operation finished executing.
         */
-        public Calendar getOperationCompletedTime() { return this.operationCompletedTime; }
+        public Calendar getOperationCompletedTime()
+        {
+            return this.operationCompletedTime;
+        }
         
         /**
         * The time that the operation finished executing.
         */
-        public void setOperationCompletedTime(Calendar operationCompletedTime) { this.operationCompletedTime = operationCompletedTime; }
+        public void setOperationCompletedTime(Calendar operationCompletedTime)
+        {
+            this.operationCompletedTime = operationCompletedTime;
+        }
         
         private String operationId;
         
         /**
         * The globally unique identifier (GUID) of the operation.
         */
-        public String getOperationId() { return this.operationId; }
+        public String getOperationId()
+        {
+            return this.operationId;
+        }
         
         /**
         * The globally unique identifier (GUID) of the operation.
         */
-        public void setOperationId(String operationId) { this.operationId = operationId; }
+        public void setOperationId(String operationId)
+        {
+            this.operationId = operationId;
+        }
         
         private String operationName;
         
         /**
         * The name of the performed operation.
         */
-        public String getOperationName() { return this.operationName; }
+        public String getOperationName()
+        {
+            return this.operationName;
+        }
         
         /**
         * The name of the performed operation.
         */
-        public void setOperationName(String operationName) { this.operationName = operationName; }
+        public void setOperationName(String operationName)
+        {
+            this.operationName = operationName;
+        }
         
         private String operationObjectId;
         
@@ -213,38 +266,56 @@ public class SubscriptionListOperationsResponse extends OperationResponse
         * for performing an HTTP GET on the object, and corresponds to the
         * same values for the ObjectIdFilter in the request.
         */
-        public String getOperationObjectId() { return this.operationObjectId; }
+        public String getOperationObjectId()
+        {
+            return this.operationObjectId;
+        }
         
         /**
         * The target object for the operation. This value is equal to the URL
         * for performing an HTTP GET on the object, and corresponds to the
         * same values for the ObjectIdFilter in the request.
         */
-        public void setOperationObjectId(String operationObjectId) { this.operationObjectId = operationObjectId; }
+        public void setOperationObjectId(String operationObjectId)
+        {
+            this.operationObjectId = operationObjectId;
+        }
         
         private HashMap<String, String> operationParameters;
         
         /**
         * The collection of parameters for the performed operation.
         */
-        public HashMap<String, String> getOperationParameters() { return this.operationParameters; }
+        public HashMap<String, String> getOperationParameters()
+        {
+            return this.operationParameters;
+        }
         
         /**
         * The collection of parameters for the performed operation.
         */
-        public void setOperationParameters(HashMap<String, String> operationParameters) { this.operationParameters = operationParameters; }
+        public void setOperationParameters(HashMap<String, String> operationParameters)
+        {
+            this.operationParameters = operationParameters;
+        }
         
         private Calendar operationStartedTime;
         
         /**
         * The time that the operation started to execute.
         */
-        public Calendar getOperationStartedTime() { return this.operationStartedTime; }
+        public Calendar getOperationStartedTime()
+        {
+            return this.operationStartedTime;
+        }
         
         /**
         * The time that the operation started to execute.
         */
-        public void setOperationStartedTime(Calendar operationStartedTime) { this.operationStartedTime = operationStartedTime; }
+        public void setOperationStartedTime(Calendar operationStartedTime)
+        {
+            this.operationStartedTime = operationStartedTime;
+        }
         
         private String operationStatus;
         
@@ -256,7 +327,10 @@ public class SubscriptionListOperationsResponse extends OperationResponse
         * </OperationStatus>  Possible values of the Status element,
         * whichholds the operation status, are: Succeeded, Failed, InProgress.
         */
-        public String getOperationStatus() { return this.operationStatus; }
+        public String getOperationStatus()
+        {
+            return this.operationStatus;
+        }
         
         /**
         * An object that contains information on the current status of the
@@ -266,7 +340,10 @@ public class SubscriptionListOperationsResponse extends OperationResponse
         * </OperationStatus>  Possible values of the Status element,
         * whichholds the operation status, are: Succeeded, Failed, InProgress.
         */
-        public void setOperationStatus(String operationStatus) { this.operationStatus = operationStatus; }
+        public void setOperationStatus(String operationStatus)
+        {
+            this.operationStatus = operationStatus;
+        }
         
         /**
         * Initializes a new instance of the SubscriptionOperation class.

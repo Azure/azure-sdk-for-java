@@ -35,18 +35,16 @@ public class IncidentListResponse extends OperationResponse
     /**
     * The retrieved incidents.
     */
-    public IncidentCollection getIncidentCollection() { return this.incidentCollection; }
+    public IncidentCollection getIncidentCollection()
+    {
+        return this.incidentCollection;
+    }
     
     /**
     * The retrieved incidents.
     */
-    public void setIncidentCollection(IncidentCollection incidentCollection) { this.incidentCollection = incidentCollection; }
-    
-    /**
-    * Initializes a new instance of the IncidentListResponse class.
-    *
-    */
-    public IncidentListResponse()
+    public void setIncidentCollection(IncidentCollection incidentCollection)
     {
+        this.incidentCollection = incidentCollection;
     }
 }

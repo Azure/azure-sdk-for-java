@@ -38,7 +38,10 @@ public class VirtualMachineCaptureParameters
     * after the image is captured by using the specified information in
     * ProvisioningConfiguration.
     */
-    public PostCaptureAction getPostCaptureAction() { return this.postCaptureAction; }
+    public PostCaptureAction getPostCaptureAction()
+    {
+        return this.postCaptureAction;
+    }
     
     /**
     * Required. Specifies the action that is performed after the capture
@@ -48,7 +51,10 @@ public class VirtualMachineCaptureParameters
     * after the image is captured by using the specified information in
     * ProvisioningConfiguration.
     */
-    public void setPostCaptureAction(PostCaptureAction postCaptureAction) { this.postCaptureAction = postCaptureAction; }
+    public void setPostCaptureAction(PostCaptureAction postCaptureAction)
+    {
+        this.postCaptureAction = postCaptureAction;
+    }
     
     private ConfigurationSet provisioningConfiguration;
     
@@ -57,14 +63,20 @@ public class VirtualMachineCaptureParameters
     * after the image has been captured. This element is only used when the
     * PostCaptureAction is set to Reprovision.
     */
-    public ConfigurationSet getProvisioningConfiguration() { return this.provisioningConfiguration; }
+    public ConfigurationSet getProvisioningConfiguration()
+    {
+        return this.provisioningConfiguration;
+    }
     
     /**
     * Optional. Provides information to be used to redeploy the virtual machine
     * after the image has been captured. This element is only used when the
     * PostCaptureAction is set to Reprovision.
     */
-    public void setProvisioningConfiguration(ConfigurationSet provisioningConfiguration) { this.provisioningConfiguration = provisioningConfiguration; }
+    public void setProvisioningConfiguration(ConfigurationSet provisioningConfiguration)
+    {
+        this.provisioningConfiguration = provisioningConfiguration;
+    }
     
     private String targetImageLabel;
     
@@ -73,32 +85,36 @@ public class VirtualMachineCaptureParameters
     * value that appears in the Name column for the image in the Windows Azure
     * Management Portal.
     */
-    public String getTargetImageLabel() { return this.targetImageLabel; }
+    public String getTargetImageLabel()
+    {
+        return this.targetImageLabel;
+    }
     
     /**
     * Required. Specifies the friendly name of the captured image. This is the
     * value that appears in the Name column for the image in the Windows Azure
     * Management Portal.
     */
-    public void setTargetImageLabel(String targetImageLabel) { this.targetImageLabel = targetImageLabel; }
+    public void setTargetImageLabel(String targetImageLabel)
+    {
+        this.targetImageLabel = targetImageLabel;
+    }
     
     private String targetImageName;
     
     /**
     * Required. Specifies the image name of the captured image.
     */
-    public String getTargetImageName() { return this.targetImageName; }
+    public String getTargetImageName()
+    {
+        return this.targetImageName;
+    }
     
     /**
     * Required. Specifies the image name of the captured image.
     */
-    public void setTargetImageName(String targetImageName) { this.targetImageName = targetImageName; }
-    
-    /**
-    * Initializes a new instance of the VirtualMachineCaptureParameters class.
-    *
-    */
-    public VirtualMachineCaptureParameters()
+    public void setTargetImageName(String targetImageName)
     {
+        this.targetImageName = targetImageName;
     }
 }

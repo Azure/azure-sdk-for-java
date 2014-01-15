@@ -41,7 +41,10 @@ public class SubscriptionListOperationsParameters
     * specified, a filter is not applied and the response will begin at the
     * specified StartTime.
     */
-    public String getContinuationToken() { return this.continuationToken; }
+    public String getContinuationToken()
+    {
+        return this.continuationToken;
+    }
     
     /**
     * Optional. When there are too many operations to list, such as when the
@@ -52,7 +55,10 @@ public class SubscriptionListOperationsParameters
     * specified, a filter is not applied and the response will begin at the
     * specified StartTime.
     */
-    public void setContinuationToken(String continuationToken) { this.continuationToken = continuationToken; }
+    public void setContinuationToken(String continuationToken)
+    {
+        this.continuationToken = continuationToken;
+    }
     
     private Calendar endTime;
     
@@ -61,14 +67,20 @@ public class SubscriptionListOperationsParameters
     * operations in UTC format. This parameter and the StartTime parameter
     * indicate the timeframe to retrieve subscription operations.
     */
-    public Calendar getEndTime() { return this.endTime; }
+    public Calendar getEndTime()
+    {
+        return this.endTime;
+    }
     
     /**
     * Required. The end of the timeframe to begin listing subscription
     * operations in UTC format. This parameter and the StartTime parameter
     * indicate the timeframe to retrieve subscription operations.
     */
-    public void setEndTime(Calendar endTime) { this.endTime = endTime; }
+    public void setEndTime(Calendar endTime)
+    {
+        this.endTime = endTime;
+    }
     
     private String objectIdFilter;
     
@@ -78,7 +90,10 @@ public class SubscriptionListOperationsParameters
     * for performing an HTTP GET on the object. If no object is specified, a
     * filter is not applied.
     */
-    public String getObjectIdFilter() { return this.objectIdFilter; }
+    public String getObjectIdFilter()
+    {
+        return this.objectIdFilter;
+    }
     
     /**
     * Optional. Returns subscription operations only for the specified object
@@ -86,7 +101,10 @@ public class SubscriptionListOperationsParameters
     * for performing an HTTP GET on the object. If no object is specified, a
     * filter is not applied.
     */
-    public void setObjectIdFilter(String objectIdFilter) { this.objectIdFilter = objectIdFilter; }
+    public void setObjectIdFilter(String objectIdFilter)
+    {
+        this.objectIdFilter = objectIdFilter;
+    }
     
     private OperationStatus operationStatus;
     
@@ -97,7 +115,10 @@ public class SubscriptionListOperationsParameters
     * object with a specific resultstatus. If no result status is specified, a
     * filter is not applied.
     */
-    public OperationStatus getOperationStatus() { return this.operationStatus; }
+    public OperationStatus getOperationStatus()
+    {
+        return this.operationStatus;
+    }
     
     /**
     * Optional. Returns subscription operations only for thespecified result
@@ -106,7 +127,10 @@ public class SubscriptionListOperationsParameters
     * object with a specific resultstatus. If no result status is specified, a
     * filter is not applied.
     */
-    public void setOperationStatus(OperationStatus operationStatus) { this.operationStatus = operationStatus; }
+    public void setOperationStatus(OperationStatus operationStatus)
+    {
+        this.operationStatus = operationStatus;
+    }
     
     private Calendar startTime;
     
@@ -116,7 +140,10 @@ public class SubscriptionListOperationsParameters
     * indicate the timeframe to retrieve subscription operations. This
     * parameter cannot indicate a start date of more than 90 days in the past.
     */
-    public Calendar getStartTime() { return this.startTime; }
+    public Calendar getStartTime()
+    {
+        return this.startTime;
+    }
     
     /**
     * Required. The start of the timeframe to begin listingsubscription
@@ -124,14 +151,8 @@ public class SubscriptionListOperationsParameters
     * indicate the timeframe to retrieve subscription operations. This
     * parameter cannot indicate a start date of more than 90 days in the past.
     */
-    public void setStartTime(Calendar startTime) { this.startTime = startTime; }
-    
-    /**
-    * Initializes a new instance of the SubscriptionListOperationsParameters
-    * class.
-    *
-    */
-    public SubscriptionListOperationsParameters()
+    public void setStartTime(Calendar startTime)
     {
+        this.startTime = startTime;
     }
 }

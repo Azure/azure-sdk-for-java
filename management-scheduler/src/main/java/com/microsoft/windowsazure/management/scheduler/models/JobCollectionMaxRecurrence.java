@@ -31,31 +31,35 @@ public class JobCollectionMaxRecurrence
     * Defines the maximum recurrences that can be specified in any job in this
     * job collection.
     */
-    public JobCollectionRecurrenceFrequency getFrequency() { return this.frequency; }
+    public JobCollectionRecurrenceFrequency getFrequency()
+    {
+        return this.frequency;
+    }
     
     /**
     * Defines the maximum recurrences that can be specified in any job in this
     * job collection.
     */
-    public void setFrequency(JobCollectionRecurrenceFrequency frequency) { this.frequency = frequency; }
+    public void setFrequency(JobCollectionRecurrenceFrequency frequency)
+    {
+        this.frequency = frequency;
+    }
     
     private int interval;
     
     /**
     * Defines the interval.
     */
-    public int getInterval() { return this.interval; }
+    public int getInterval()
+    {
+        return this.interval;
+    }
     
     /**
     * Defines the interval.
     */
-    public void setInterval(int interval) { this.interval = interval; }
-    
-    /**
-    * Initializes a new instance of the JobCollectionMaxRecurrence class.
-    *
-    */
-    public JobCollectionMaxRecurrence()
+    public void setInterval(int interval)
     {
+        this.interval = interval;
     }
 }

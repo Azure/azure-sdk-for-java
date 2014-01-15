@@ -59,6 +59,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 import javax.xml.datatype.Duration;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
@@ -88,7 +89,10 @@ public class SettingOperationsImpl implements ServiceOperations<AutoscaleClientI
     * Gets a reference to the
     * microsoft.windowsazure.management.monitoring.autoscale.AutoscaleClientImpl.
     */
-    public AutoscaleClientImpl getClient() { return this.client; }
+    public AutoscaleClientImpl getClient()
+    {
+        return this.client;
+    }
     
     /**
     *
@@ -328,7 +332,7 @@ public class SettingOperationsImpl implements ServiceOperations<AutoscaleClientI
                 settingValue.put("Profiles", profilesArray);
             }
             
-            settingValue.put("Enabled", parameters.getSetting().getEnabled());
+            settingValue.put("Enabled", parameters.getSetting().isEnabled());
         }
         
         ObjectMapper objectMapper2 = new ObjectMapper();
@@ -351,7 +355,7 @@ public class SettingOperationsImpl implements ServiceOperations<AutoscaleClientI
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200 && statusCode != 201)
+        if (statusCode != HttpStatus.SC_OK && statusCode != HttpStatus.SC_CREATED)
         {
             ServiceException ex = ServiceException.createFromJson(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -444,7 +448,7 @@ public class SettingOperationsImpl implements ServiceOperations<AutoscaleClientI
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromJson(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -537,7 +541,7 @@ public class SettingOperationsImpl implements ServiceOperations<AutoscaleClientI
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromJson(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -557,286 +561,290 @@ public class SettingOperationsImpl implements ServiceOperations<AutoscaleClientI
         
         if (responseDoc != null)
         {
-            AutoscaleSetting settingInstance = new AutoscaleSetting();
-            result.setSetting(settingInstance);
-            
-            ArrayNode profilesArray = ((ArrayNode)responseDoc.get("Profiles"));
-            if (profilesArray != null)
+            JsonNode settingValue = responseDoc.get("Setting");
+            if (settingValue != null)
             {
-                for (JsonNode profilesValue : profilesArray)
+                AutoscaleSetting settingInstance = new AutoscaleSetting();
+                result.setSetting(settingInstance);
+                
+                ArrayNode profilesArray = ((ArrayNode) settingValue.get("Profiles"));
+                if (profilesArray != null)
                 {
-                    AutoscaleProfile autoscaleProfileInstance = new AutoscaleProfile();
-                    settingInstance.getProfiles().add(autoscaleProfileInstance);
-                    
-                    JsonNode nameValue = profilesValue.get("Name");
-                    if (nameValue != null)
+                    for (JsonNode profilesValue : profilesArray)
                     {
-                        String nameInstance;
-                        nameInstance = nameValue.getTextValue();
-                        autoscaleProfileInstance.setName(nameInstance);
-                    }
-                    
-                    JsonNode capacityValue = profilesValue.get("Capacity");
-                    if (capacityValue != null)
-                    {
-                        ScaleCapacity capacityInstance = new ScaleCapacity();
-                        autoscaleProfileInstance.setCapacity(capacityInstance);
+                        AutoscaleProfile autoscaleProfileInstance = new AutoscaleProfile();
+                        settingInstance.getProfiles().add(autoscaleProfileInstance);
                         
-                        JsonNode minimumValue = capacityValue.get("Minimum");
-                        if (minimumValue != null)
+                        JsonNode nameValue = profilesValue.get("Name");
+                        if (nameValue != null)
                         {
-                            String minimumInstance;
-                            minimumInstance = minimumValue.getTextValue();
-                            capacityInstance.setMinimum(minimumInstance);
+                            String nameInstance;
+                            nameInstance = nameValue.getTextValue();
+                            autoscaleProfileInstance.setName(nameInstance);
                         }
                         
-                        JsonNode maximumValue = capacityValue.get("Maximum");
-                        if (maximumValue != null)
+                        JsonNode capacityValue = profilesValue.get("Capacity");
+                        if (capacityValue != null)
                         {
-                            String maximumInstance;
-                            maximumInstance = maximumValue.getTextValue();
-                            capacityInstance.setMaximum(maximumInstance);
-                        }
-                        
-                        JsonNode defaultValue = capacityValue.get("Default");
-                        if (defaultValue != null)
-                        {
-                            String defaultInstance;
-                            defaultInstance = defaultValue.getTextValue();
-                            capacityInstance.setDefault(defaultInstance);
-                        }
-                    }
-                    
-                    ArrayNode rulesArray = ((ArrayNode)profilesValue.get("Rules"));
-                    if (rulesArray != null)
-                    {
-                        for (JsonNode rulesValue : rulesArray)
-                        {
-                            ScaleRule scaleRuleInstance = new ScaleRule();
-                            autoscaleProfileInstance.getRules().add(scaleRuleInstance);
+                            ScaleCapacity capacityInstance = new ScaleCapacity();
+                            autoscaleProfileInstance.setCapacity(capacityInstance);
                             
-                            JsonNode metricTriggerValue = rulesValue.get("MetricTrigger");
-                            if (metricTriggerValue != null)
+                            JsonNode minimumValue = capacityValue.get("Minimum");
+                            if (minimumValue != null)
                             {
-                                MetricTrigger metricTriggerInstance = new MetricTrigger();
-                                scaleRuleInstance.setMetricTrigger(metricTriggerInstance);
-                                
-                                JsonNode metricNameValue = metricTriggerValue.get("MetricName");
-                                if (metricNameValue != null)
-                                {
-                                    String metricNameInstance;
-                                    metricNameInstance = metricNameValue.getTextValue();
-                                    metricTriggerInstance.setMetricName(metricNameInstance);
-                                }
-                                
-                                JsonNode metricNamespaceValue = metricTriggerValue.get("MetricNamespace");
-                                if (metricNamespaceValue != null)
-                                {
-                                    String metricNamespaceInstance;
-                                    metricNamespaceInstance = metricNamespaceValue.getTextValue();
-                                    metricTriggerInstance.setMetricNamespace(metricNamespaceInstance);
-                                }
-                                
-                                JsonNode metricSourceValue = metricTriggerValue.get("MetricSource");
-                                if (metricSourceValue != null)
-                                {
-                                    String metricSourceInstance;
-                                    metricSourceInstance = metricSourceValue.getTextValue();
-                                    metricTriggerInstance.setMetricSource(metricSourceInstance);
-                                }
-                                
-                                JsonNode timeGrainValue = metricTriggerValue.get("TimeGrain");
-                                if (timeGrainValue != null)
-                                {
-                                    Duration timeGrainInstance;
-                                    timeGrainInstance = TimeSpan8601Converter.parse(timeGrainValue.getTextValue());
-                                    metricTriggerInstance.setTimeGrain(timeGrainInstance);
-                                }
-                                
-                                JsonNode statisticValue = metricTriggerValue.get("Statistic");
-                                if (statisticValue != null)
-                                {
-                                    MetricStatisticType statisticInstance;
-                                    statisticInstance = MetricStatisticType.valueOf(statisticValue.getTextValue());
-                                    metricTriggerInstance.setStatistic(statisticInstance);
-                                }
-                                
-                                JsonNode timeWindowValue = metricTriggerValue.get("TimeWindow");
-                                if (timeWindowValue != null)
-                                {
-                                    Duration timeWindowInstance;
-                                    timeWindowInstance = TimeSpan8601Converter.parse(timeWindowValue.getTextValue());
-                                    metricTriggerInstance.setTimeWindow(timeWindowInstance);
-                                }
-                                
-                                JsonNode timeAggregationValue = metricTriggerValue.get("TimeAggregation");
-                                if (timeAggregationValue != null)
-                                {
-                                    TimeAggregationType timeAggregationInstance;
-                                    timeAggregationInstance = TimeAggregationType.valueOf(timeAggregationValue.getTextValue());
-                                    metricTriggerInstance.setTimeAggregation(timeAggregationInstance);
-                                }
-                                
-                                JsonNode operatorValue = metricTriggerValue.get("Operator");
-                                if (operatorValue != null)
-                                {
-                                    ComparisonOperationType operatorInstance;
-                                    operatorInstance = ComparisonOperationType.valueOf(operatorValue.getTextValue());
-                                    metricTriggerInstance.setOperator(operatorInstance);
-                                }
-                                
-                                JsonNode thresholdValue = metricTriggerValue.get("Threshold");
-                                if (thresholdValue != null)
-                                {
-                                    double thresholdInstance;
-                                    thresholdInstance = thresholdValue.getDoubleValue();
-                                    metricTriggerInstance.setThreshold(thresholdInstance);
-                                }
+                                String minimumInstance;
+                                minimumInstance = minimumValue.getTextValue();
+                                capacityInstance.setMinimum(minimumInstance);
                             }
                             
-                            JsonNode scaleActionValue = rulesValue.get("ScaleAction");
-                            if (scaleActionValue != null)
+                            JsonNode maximumValue = capacityValue.get("Maximum");
+                            if (maximumValue != null)
                             {
-                                ScaleAction scaleActionInstance = new ScaleAction();
-                                scaleRuleInstance.setScaleAction(scaleActionInstance);
+                                String maximumInstance;
+                                maximumInstance = maximumValue.getTextValue();
+                                capacityInstance.setMaximum(maximumInstance);
+                            }
+                            
+                            JsonNode defaultValue = capacityValue.get("Default");
+                            if (defaultValue != null)
+                            {
+                                String defaultInstance;
+                                defaultInstance = defaultValue.getTextValue();
+                                capacityInstance.setDefault(defaultInstance);
+                            }
+                        }
+                        
+                        ArrayNode rulesArray = ((ArrayNode) profilesValue.get("Rules"));
+                        if (rulesArray != null)
+                        {
+                            for (JsonNode rulesValue : rulesArray)
+                            {
+                                ScaleRule scaleRuleInstance = new ScaleRule();
+                                autoscaleProfileInstance.getRules().add(scaleRuleInstance);
                                 
-                                JsonNode directionValue = scaleActionValue.get("Direction");
-                                if (directionValue != null)
+                                JsonNode metricTriggerValue = rulesValue.get("MetricTrigger");
+                                if (metricTriggerValue != null)
                                 {
-                                    ScaleDirection directionInstance;
-                                    directionInstance = ScaleDirection.valueOf(directionValue.getTextValue());
-                                    scaleActionInstance.setDirection(directionInstance);
+                                    MetricTrigger metricTriggerInstance = new MetricTrigger();
+                                    scaleRuleInstance.setMetricTrigger(metricTriggerInstance);
+                                    
+                                    JsonNode metricNameValue = metricTriggerValue.get("MetricName");
+                                    if (metricNameValue != null)
+                                    {
+                                        String metricNameInstance;
+                                        metricNameInstance = metricNameValue.getTextValue();
+                                        metricTriggerInstance.setMetricName(metricNameInstance);
+                                    }
+                                    
+                                    JsonNode metricNamespaceValue = metricTriggerValue.get("MetricNamespace");
+                                    if (metricNamespaceValue != null)
+                                    {
+                                        String metricNamespaceInstance;
+                                        metricNamespaceInstance = metricNamespaceValue.getTextValue();
+                                        metricTriggerInstance.setMetricNamespace(metricNamespaceInstance);
+                                    }
+                                    
+                                    JsonNode metricSourceValue = metricTriggerValue.get("MetricSource");
+                                    if (metricSourceValue != null)
+                                    {
+                                        String metricSourceInstance;
+                                        metricSourceInstance = metricSourceValue.getTextValue();
+                                        metricTriggerInstance.setMetricSource(metricSourceInstance);
+                                    }
+                                    
+                                    JsonNode timeGrainValue = metricTriggerValue.get("TimeGrain");
+                                    if (timeGrainValue != null)
+                                    {
+                                        Duration timeGrainInstance;
+                                        timeGrainInstance = TimeSpan8601Converter.parse(timeGrainValue.getTextValue());
+                                        metricTriggerInstance.setTimeGrain(timeGrainInstance);
+                                    }
+                                    
+                                    JsonNode statisticValue = metricTriggerValue.get("Statistic");
+                                    if (statisticValue != null)
+                                    {
+                                        MetricStatisticType statisticInstance;
+                                        statisticInstance = MetricStatisticType.valueOf(statisticValue.getTextValue());
+                                        metricTriggerInstance.setStatistic(statisticInstance);
+                                    }
+                                    
+                                    JsonNode timeWindowValue = metricTriggerValue.get("TimeWindow");
+                                    if (timeWindowValue != null)
+                                    {
+                                        Duration timeWindowInstance;
+                                        timeWindowInstance = TimeSpan8601Converter.parse(timeWindowValue.getTextValue());
+                                        metricTriggerInstance.setTimeWindow(timeWindowInstance);
+                                    }
+                                    
+                                    JsonNode timeAggregationValue = metricTriggerValue.get("TimeAggregation");
+                                    if (timeAggregationValue != null)
+                                    {
+                                        TimeAggregationType timeAggregationInstance;
+                                        timeAggregationInstance = TimeAggregationType.valueOf(timeAggregationValue.getTextValue());
+                                        metricTriggerInstance.setTimeAggregation(timeAggregationInstance);
+                                    }
+                                    
+                                    JsonNode operatorValue = metricTriggerValue.get("Operator");
+                                    if (operatorValue != null)
+                                    {
+                                        ComparisonOperationType operatorInstance;
+                                        operatorInstance = ComparisonOperationType.valueOf(operatorValue.getTextValue());
+                                        metricTriggerInstance.setOperator(operatorInstance);
+                                    }
+                                    
+                                    JsonNode thresholdValue = metricTriggerValue.get("Threshold");
+                                    if (thresholdValue != null)
+                                    {
+                                        double thresholdInstance;
+                                        thresholdInstance = thresholdValue.getDoubleValue();
+                                        metricTriggerInstance.setThreshold(thresholdInstance);
+                                    }
                                 }
                                 
-                                JsonNode typeValue = scaleActionValue.get("Type");
-                                if (typeValue != null)
+                                JsonNode scaleActionValue = rulesValue.get("ScaleAction");
+                                if (scaleActionValue != null)
                                 {
-                                    ScaleType typeInstance;
-                                    typeInstance = ScaleType.valueOf(typeValue.getTextValue());
-                                    scaleActionInstance.setType(typeInstance);
-                                }
-                                
-                                JsonNode valueValue = scaleActionValue.get("Value");
-                                if (valueValue != null)
-                                {
-                                    String valueInstance;
-                                    valueInstance = valueValue.getTextValue();
-                                    scaleActionInstance.setValue(valueInstance);
-                                }
-                                
-                                JsonNode cooldownValue = scaleActionValue.get("Cooldown");
-                                if (cooldownValue != null)
-                                {
-                                    Duration cooldownInstance;
-                                    cooldownInstance = TimeSpan8601Converter.parse(cooldownValue.getTextValue());
-                                    scaleActionInstance.setCooldown(cooldownInstance);
+                                    ScaleAction scaleActionInstance = new ScaleAction();
+                                    scaleRuleInstance.setScaleAction(scaleActionInstance);
+                                    
+                                    JsonNode directionValue = scaleActionValue.get("Direction");
+                                    if (directionValue != null)
+                                    {
+                                        ScaleDirection directionInstance;
+                                        directionInstance = ScaleDirection.valueOf(directionValue.getTextValue());
+                                        scaleActionInstance.setDirection(directionInstance);
+                                    }
+                                    
+                                    JsonNode typeValue = scaleActionValue.get("Type");
+                                    if (typeValue != null)
+                                    {
+                                        ScaleType typeInstance;
+                                        typeInstance = ScaleType.valueOf(typeValue.getTextValue());
+                                        scaleActionInstance.setType(typeInstance);
+                                    }
+                                    
+                                    JsonNode valueValue = scaleActionValue.get("Value");
+                                    if (valueValue != null)
+                                    {
+                                        String valueInstance;
+                                        valueInstance = valueValue.getTextValue();
+                                        scaleActionInstance.setValue(valueInstance);
+                                    }
+                                    
+                                    JsonNode cooldownValue = scaleActionValue.get("Cooldown");
+                                    if (cooldownValue != null)
+                                    {
+                                        Duration cooldownInstance;
+                                        cooldownInstance = TimeSpan8601Converter.parse(cooldownValue.getTextValue());
+                                        scaleActionInstance.setCooldown(cooldownInstance);
+                                    }
                                 }
                             }
                         }
-                    }
-                    
-                    JsonNode fixedDateValue = profilesValue.get("FixedDate");
-                    if (fixedDateValue != null)
-                    {
-                        TimeWindow fixedDateInstance = new TimeWindow();
-                        autoscaleProfileInstance.setFixedDate(fixedDateInstance);
                         
-                        JsonNode timeZoneValue = fixedDateValue.get("TimeZone");
-                        if (timeZoneValue != null)
+                        JsonNode fixedDateValue = profilesValue.get("FixedDate");
+                        if (fixedDateValue != null)
                         {
-                            String timeZoneInstance;
-                            timeZoneInstance = timeZoneValue.getTextValue();
-                            fixedDateInstance.setTimeZone(timeZoneInstance);
-                        }
-                        
-                        JsonNode startValue = fixedDateValue.get("Start");
-                        if (startValue != null)
-                        {
-                            Calendar startInstance;
-                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                            Calendar calendar = Calendar.getInstance();
-                            calendar.setTime(simpleDateFormat.parse(startValue.getTextValue()));
-                            startInstance = calendar;
-                            fixedDateInstance.setStart(startInstance);
-                        }
-                        
-                        JsonNode endValue = fixedDateValue.get("End");
-                        if (endValue != null)
-                        {
-                            Calendar endInstance;
-                            SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                            Calendar calendar2 = Calendar.getInstance();
-                            calendar2.setTime(simpleDateFormat2.parse(endValue.getTextValue()));
-                            endInstance = calendar2;
-                            fixedDateInstance.setEnd(endInstance);
-                        }
-                    }
-                    
-                    JsonNode recurrenceValue = profilesValue.get("Recurrence");
-                    if (recurrenceValue != null)
-                    {
-                        Recurrence recurrenceInstance = new Recurrence();
-                        autoscaleProfileInstance.setRecurrence(recurrenceInstance);
-                        
-                        JsonNode frequencyValue = recurrenceValue.get("Frequency");
-                        if (frequencyValue != null)
-                        {
-                            RecurrenceFrequency frequencyInstance;
-                            frequencyInstance = RecurrenceFrequency.valueOf(frequencyValue.getTextValue());
-                            recurrenceInstance.setFrequency(frequencyInstance);
-                        }
-                        
-                        JsonNode scheduleValue = recurrenceValue.get("Schedule");
-                        if (scheduleValue != null)
-                        {
-                            RecurrentSchedule scheduleInstance = new RecurrentSchedule();
-                            recurrenceInstance.setSchedule(scheduleInstance);
+                            TimeWindow fixedDateInstance = new TimeWindow();
+                            autoscaleProfileInstance.setFixedDate(fixedDateInstance);
                             
-                            JsonNode timeZoneValue2 = scheduleValue.get("TimeZone");
-                            if (timeZoneValue2 != null)
+                            JsonNode timeZoneValue = fixedDateValue.get("TimeZone");
+                            if (timeZoneValue != null)
                             {
-                                String timeZoneInstance2;
-                                timeZoneInstance2 = timeZoneValue2.getTextValue();
-                                scheduleInstance.setTimeZone(timeZoneInstance2);
+                                String timeZoneInstance;
+                                timeZoneInstance = timeZoneValue.getTextValue();
+                                fixedDateInstance.setTimeZone(timeZoneInstance);
                             }
                             
-                            ArrayNode daysArray = ((ArrayNode)scheduleValue.get("Days"));
-                            if (daysArray != null)
+                            JsonNode startValue = fixedDateValue.get("Start");
+                            if (startValue != null)
                             {
-                                for (JsonNode daysValue : daysArray)
+                                Calendar startInstance;
+                                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                                Calendar calendar = Calendar.getInstance();
+                                calendar.setTime(simpleDateFormat.parse(startValue.getTextValue()));
+                                startInstance = calendar;
+                                fixedDateInstance.setStart(startInstance);
+                            }
+                            
+                            JsonNode endValue = fixedDateValue.get("End");
+                            if (endValue != null)
+                            {
+                                Calendar endInstance;
+                                SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                                Calendar calendar2 = Calendar.getInstance();
+                                calendar2.setTime(simpleDateFormat2.parse(endValue.getTextValue()));
+                                endInstance = calendar2;
+                                fixedDateInstance.setEnd(endInstance);
+                            }
+                        }
+                        
+                        JsonNode recurrenceValue = profilesValue.get("Recurrence");
+                        if (recurrenceValue != null)
+                        {
+                            Recurrence recurrenceInstance = new Recurrence();
+                            autoscaleProfileInstance.setRecurrence(recurrenceInstance);
+                            
+                            JsonNode frequencyValue = recurrenceValue.get("Frequency");
+                            if (frequencyValue != null)
+                            {
+                                RecurrenceFrequency frequencyInstance;
+                                frequencyInstance = RecurrenceFrequency.valueOf(frequencyValue.getTextValue());
+                                recurrenceInstance.setFrequency(frequencyInstance);
+                            }
+                            
+                            JsonNode scheduleValue = recurrenceValue.get("Schedule");
+                            if (scheduleValue != null)
+                            {
+                                RecurrentSchedule scheduleInstance = new RecurrentSchedule();
+                                recurrenceInstance.setSchedule(scheduleInstance);
+                                
+                                JsonNode timeZoneValue2 = scheduleValue.get("TimeZone");
+                                if (timeZoneValue2 != null)
                                 {
-                                    scheduleInstance.getDays().add(daysValue.getTextValue());
+                                    String timeZoneInstance2;
+                                    timeZoneInstance2 = timeZoneValue2.getTextValue();
+                                    scheduleInstance.setTimeZone(timeZoneInstance2);
                                 }
-                            }
-                            
-                            ArrayNode hoursArray = ((ArrayNode)scheduleValue.get("Hours"));
-                            if (hoursArray != null)
-                            {
-                                for (JsonNode hoursValue : hoursArray)
+                                
+                                ArrayNode daysArray = ((ArrayNode) scheduleValue.get("Days"));
+                                if (daysArray != null)
                                 {
-                                    scheduleInstance.getHours().add(hoursValue.getIntValue());
+                                    for (JsonNode daysValue : daysArray)
+                                    {
+                                        scheduleInstance.getDays().add(daysValue.getTextValue());
+                                    }
                                 }
-                            }
-                            
-                            ArrayNode minutesArray = ((ArrayNode)scheduleValue.get("Minutes"));
-                            if (minutesArray != null)
-                            {
-                                for (JsonNode minutesValue : minutesArray)
+                                
+                                ArrayNode hoursArray = ((ArrayNode) scheduleValue.get("Hours"));
+                                if (hoursArray != null)
                                 {
-                                    scheduleInstance.getMinutes().add(minutesValue.getIntValue());
+                                    for (JsonNode hoursValue : hoursArray)
+                                    {
+                                        scheduleInstance.getHours().add(hoursValue.getIntValue());
+                                    }
+                                }
+                                
+                                ArrayNode minutesArray = ((ArrayNode) scheduleValue.get("Minutes"));
+                                if (minutesArray != null)
+                                {
+                                    for (JsonNode minutesValue : minutesArray)
+                                    {
+                                        scheduleInstance.getMinutes().add(minutesValue.getIntValue());
+                                    }
                                 }
                             }
                         }
                     }
                 }
-            }
-            
-            JsonNode enabledValue = responseDoc.get("Enabled");
-            if (enabledValue != null)
-            {
-                boolean enabledInstance;
-                enabledInstance = enabledValue.getBooleanValue();
-                settingInstance.setEnabled(enabledInstance);
+                
+                JsonNode enabledValue = settingValue.get("Enabled");
+                if (enabledValue != null)
+                {
+                    boolean enabledInstance;
+                    enabledInstance = enabledValue.getBooleanValue();
+                    settingInstance.setEnabled(enabledInstance);
+                }
             }
         }
         

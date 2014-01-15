@@ -35,9 +35,15 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
 {
     private ArrayList<NetworkListResponse.VirtualNetworkSite> virtualNetworkSites;
     
-    public ArrayList<NetworkListResponse.VirtualNetworkSite> getVirtualNetworkSites() { return this.virtualNetworkSites; }
+    public ArrayList<NetworkListResponse.VirtualNetworkSite> getVirtualNetworkSites()
+    {
+        return this.virtualNetworkSites;
+    }
     
-    public void setVirtualNetworkSites(ArrayList<NetworkListResponse.VirtualNetworkSite> virtualNetworkSites) { this.virtualNetworkSites = virtualNetworkSites; }
+    public void setVirtualNetworkSites(ArrayList<NetworkListResponse.VirtualNetworkSite> virtualNetworkSites)
+    {
+        this.virtualNetworkSites = virtualNetworkSites;
+    }
     
     /**
     * Initializes a new instance of the NetworkListResponse class.
@@ -45,6 +51,7 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
     */
     public NetworkListResponse()
     {
+        super();
         this.virtualNetworkSites = new ArrayList<NetworkListResponse.VirtualNetworkSite>();
     }
     
@@ -64,12 +71,18 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         /**
         * Address spaces, in CIDR format in the virtual network
         */
-        public ArrayList<String> getAddressPrefixes() { return this.addressPrefixes; }
+        public ArrayList<String> getAddressPrefixes()
+        {
+            return this.addressPrefixes;
+        }
         
         /**
         * Address spaces, in CIDR format in the virtual network
         */
-        public void setAddressPrefixes(ArrayList<String> addressPrefixes) { this.addressPrefixes = addressPrefixes; }
+        public void setAddressPrefixes(ArrayList<String> addressPrefixes)
+        {
+            this.addressPrefixes = addressPrefixes;
+        }
         
         /**
         * Initializes a new instance of the AddressSpace class.
@@ -90,16 +103,14 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
     {
         private LocalNetworkConnectionType type;
         
-        public LocalNetworkConnectionType getType() { return this.type; }
-        
-        public void setType(LocalNetworkConnectionType type) { this.type = type; }
-        
-        /**
-        * Initializes a new instance of the Connection class.
-        *
-        */
-        public Connection()
+        public LocalNetworkConnectionType getType()
         {
+            return this.type;
+        }
+        
+        public void setType(LocalNetworkConnectionType type)
+        {
+            this.type = type;
         }
     }
     
@@ -110,31 +121,35 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         /**
         * The IPv4 address of the DNS server.
         */
-        public InetAddress getAddress() { return this.address; }
+        public InetAddress getAddress()
+        {
+            return this.address;
+        }
         
         /**
         * The IPv4 address of the DNS server.
         */
-        public void setAddress(InetAddress address) { this.address = address; }
+        public void setAddress(InetAddress address)
+        {
+            this.address = address;
+        }
         
         private String name;
         
         /**
         * The name of the DNS server.
         */
-        public String getName() { return this.name; }
+        public String getName()
+        {
+            return this.name;
+        }
         
         /**
         * The name of the DNS server.
         */
-        public void setName(String name) { this.name = name; }
-        
-        /**
-        * Initializes a new instance of the DnsServer class.
-        *
-        */
-        public DnsServer()
+        public void setName(String name)
         {
+            this.name = name;
         }
     }
     
@@ -149,12 +164,18 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         /**
         * The gateway connection size.
         */
-        public GatewayProfile getProfile() { return this.profile; }
+        public GatewayProfile getProfile()
+        {
+            return this.profile;
+        }
         
         /**
         * The gateway connection size.
         */
-        public void setProfile(GatewayProfile profile) { this.profile = profile; }
+        public void setProfile(GatewayProfile profile)
+        {
+            this.profile = profile;
+        }
         
         private ArrayList<NetworkListResponse.LocalNetworkSite> sites;
         
@@ -162,13 +183,19 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         * The list of local network sites that the virtual network can connect
         * to.
         */
-        public ArrayList<NetworkListResponse.LocalNetworkSite> getSites() { return this.sites; }
+        public ArrayList<NetworkListResponse.LocalNetworkSite> getSites()
+        {
+            return this.sites;
+        }
         
         /**
         * The list of local network sites that the virtual network can connect
         * to.
         */
-        public void setSites(ArrayList<NetworkListResponse.LocalNetworkSite> sites) { this.sites = sites; }
+        public void setSites(ArrayList<NetworkListResponse.LocalNetworkSite> sites)
+        {
+            this.sites = sites;
+        }
         
         private NetworkListResponse.VPNClientAddressPool vPNClientAddressPool;
         
@@ -176,13 +203,19 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         * The VPNClientAddressPool reserves a pool of IP addresses for VPN
         * clients. This object is used for point-to-site connectivity.
         */
-        public NetworkListResponse.VPNClientAddressPool getVPNClientAddressPool() { return this.vPNClientAddressPool; }
+        public NetworkListResponse.VPNClientAddressPool getVPNClientAddressPool()
+        {
+            return this.vPNClientAddressPool;
+        }
         
         /**
         * The VPNClientAddressPool reserves a pool of IP addresses for VPN
         * clients. This object is used for point-to-site connectivity.
         */
-        public void setVPNClientAddressPool(NetworkListResponse.VPNClientAddressPool vPNClientAddressPool) { this.vPNClientAddressPool = vPNClientAddressPool; }
+        public void setVPNClientAddressPool(NetworkListResponse.VPNClientAddressPool vPNClientAddressPool)
+        {
+            this.vPNClientAddressPool = vPNClientAddressPool;
+        }
         
         /**
         * Initializes a new instance of the Gateway class.
@@ -204,48 +237,72 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         /**
         * The address space of the local network site.
         */
-        public NetworkListResponse.AddressSpace getAddressSpace() { return this.addressSpace; }
+        public NetworkListResponse.AddressSpace getAddressSpace()
+        {
+            return this.addressSpace;
+        }
         
         /**
         * The address space of the local network site.
         */
-        public void setAddressSpace(NetworkListResponse.AddressSpace addressSpace) { this.addressSpace = addressSpace; }
+        public void setAddressSpace(NetworkListResponse.AddressSpace addressSpace)
+        {
+            this.addressSpace = addressSpace;
+        }
         
         private ArrayList<NetworkListResponse.Connection> connections;
         
         /**
         * Specifies the types of connections to the local network site.
         */
-        public ArrayList<NetworkListResponse.Connection> getConnections() { return this.connections; }
+        public ArrayList<NetworkListResponse.Connection> getConnections()
+        {
+            return this.connections;
+        }
         
         /**
         * Specifies the types of connections to the local network site.
         */
-        public void setConnections(ArrayList<NetworkListResponse.Connection> connections) { this.connections = connections; }
+        public void setConnections(ArrayList<NetworkListResponse.Connection> connections)
+        {
+            this.connections = connections;
+        }
         
         private String name;
         
         /**
         * The name of the local network site.
         */
-        public String getName() { return this.name; }
+        public String getName()
+        {
+            return this.name;
+        }
         
         /**
         * The name of the local network site.
         */
-        public void setName(String name) { this.name = name; }
+        public void setName(String name)
+        {
+            this.name = name;
+        }
         
         private InetAddress vpnGatewayAddress;
         
         /**
         * The IPv4 address of the local network site.
         */
-        public InetAddress getVpnGatewayAddress() { return this.vpnGatewayAddress; }
+        public InetAddress getVpnGatewayAddress()
+        {
+            return this.vpnGatewayAddress;
+        }
         
         /**
         * The IPv4 address of the local network site.
         */
-        public void setVpnGatewayAddress(InetAddress vpnGatewayAddress) { this.vpnGatewayAddress = vpnGatewayAddress; }
+        public void setVpnGatewayAddress(InetAddress vpnGatewayAddress)
+        {
+            this.vpnGatewayAddress = vpnGatewayAddress;
+        }
         
         /**
         * Initializes a new instance of the LocalNetworkSite class.
@@ -264,31 +321,35 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         /**
         * Represents an address space, in CIDR format that defines the subnet
         */
-        public String getAddressPrefix() { return this.addressPrefix; }
+        public String getAddressPrefix()
+        {
+            return this.addressPrefix;
+        }
         
         /**
         * Represents an address space, in CIDR format that defines the subnet
         */
-        public void setAddressPrefix(String addressPrefix) { this.addressPrefix = addressPrefix; }
+        public void setAddressPrefix(String addressPrefix)
+        {
+            this.addressPrefix = addressPrefix;
+        }
         
         private String name;
         
         /**
         * Name for the subnet.
         */
-        public String getName() { return this.name; }
+        public String getName()
+        {
+            return this.name;
+        }
         
         /**
         * Name for the subnet.
         */
-        public void setName(String name) { this.name = name; }
-        
-        /**
-        * Initializes a new instance of the Subnet class.
-        *
-        */
-        public Subnet()
+        public void setName(String name)
         {
+            this.name = name;
         }
     }
     
@@ -306,14 +367,20 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         * represents the overall network space contained within the virtual
         * network site.
         */
-        public NetworkListResponse.AddressSpace getAddressSpace() { return this.addressSpace; }
+        public NetworkListResponse.AddressSpace getAddressSpace()
+        {
+            return this.addressSpace;
+        }
         
         /**
         * The list of network address spaces for a virtual network site. This
         * represents the overall network space contained within the virtual
         * network site.
         */
-        public void setAddressSpace(NetworkListResponse.AddressSpace addressSpace) { this.addressSpace = addressSpace; }
+        public void setAddressSpace(NetworkListResponse.AddressSpace addressSpace)
+        {
+            this.addressSpace = addressSpace;
+        }
         
         private String affinityGroup;
         
@@ -321,25 +388,37 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         * An affinity group, which indirectly refers to the location where the
         * virtual network exists.
         */
-        public String getAffinityGroup() { return this.affinityGroup; }
+        public String getAffinityGroup()
+        {
+            return this.affinityGroup;
+        }
         
         /**
         * An affinity group, which indirectly refers to the location where the
         * virtual network exists.
         */
-        public void setAffinityGroup(String affinityGroup) { this.affinityGroup = affinityGroup; }
+        public void setAffinityGroup(String affinityGroup)
+        {
+            this.affinityGroup = affinityGroup;
+        }
         
         private ArrayList<NetworkListResponse.DnsServer> dnsServers;
         
         /**
         * The list of on DNS Servers associated with the virtual network site.
         */
-        public ArrayList<NetworkListResponse.DnsServer> getDnsServers() { return this.dnsServers; }
+        public ArrayList<NetworkListResponse.DnsServer> getDnsServers()
+        {
+            return this.dnsServers;
+        }
         
         /**
         * The list of on DNS Servers associated with the virtual network site.
         */
-        public void setDnsServers(ArrayList<NetworkListResponse.DnsServer> dnsServers) { this.dnsServers = dnsServers; }
+        public void setDnsServers(ArrayList<NetworkListResponse.DnsServer> dnsServers)
+        {
+            this.dnsServers = dnsServers;
+        }
         
         private NetworkListResponse.Gateway gateway;
         
@@ -348,50 +427,74 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         * Virtual network site to communicate with a customer’s on premise
         * networks.
         */
-        public NetworkListResponse.Gateway getGateway() { return this.gateway; }
+        public NetworkListResponse.Gateway getGateway()
+        {
+            return this.gateway;
+        }
         
         /**
         * Gateway that contains a list of Local Network Sites which enables the
         * Virtual network site to communicate with a customer’s on premise
         * networks.
         */
-        public void setGateway(NetworkListResponse.Gateway gateway) { this.gateway = gateway; }
+        public void setGateway(NetworkListResponse.Gateway gateway)
+        {
+            this.gateway = gateway;
+        }
         
         private String id;
         
         /**
         * A unique string identifier that represents the virtual network site.
         */
-        public String getId() { return this.id; }
+        public String getId()
+        {
+            return this.id;
+        }
         
         /**
         * A unique string identifier that represents the virtual network site.
         */
-        public void setId(String id) { this.id = id; }
+        public void setId(String id)
+        {
+            this.id = id;
+        }
         
         private String label;
         
         /**
         * The friendly identifier of the site.
         */
-        public String getLabel() { return this.label; }
+        public String getLabel()
+        {
+            return this.label;
+        }
         
         /**
         * The friendly identifier of the site.
         */
-        public void setLabel(String label) { this.label = label; }
+        public void setLabel(String label)
+        {
+            this.label = label;
+        }
         
         private String name;
         
         /**
         * Name of the virtual network site.
         */
-        public String getName() { return this.name; }
+        public String getName()
+        {
+            return this.name;
+        }
         
         /**
         * Name of the virtual network site.
         */
-        public void setName(String name) { this.name = name; }
+        public void setName(String name)
+        {
+            this.name = name;
+        }
         
         private String state;
         
@@ -399,13 +502,19 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         * Current status of the virtual network. (Created, Creating, Updating,
         * Deleting, Unavailable)
         */
-        public String getState() { return this.state; }
+        public String getState()
+        {
+            return this.state;
+        }
         
         /**
         * Current status of the virtual network. (Created, Creating, Updating,
         * Deleting, Unavailable)
         */
-        public void setState(String state) { this.state = state; }
+        public void setState(String state)
+        {
+            this.state = state;
+        }
         
         private ArrayList<NetworkListResponse.Subnet> subnets;
         
@@ -414,14 +523,20 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         * subnets must be contained within the overall virtual network address
         * spaces.
         */
-        public ArrayList<NetworkListResponse.Subnet> getSubnets() { return this.subnets; }
+        public ArrayList<NetworkListResponse.Subnet> getSubnets()
+        {
+            return this.subnets;
+        }
         
         /**
         * The list of network subnets for a virtual network site. All network
         * subnets must be contained within the overall virtual network address
         * spaces.
         */
-        public void setSubnets(ArrayList<NetworkListResponse.Subnet> subnets) { this.subnets = subnets; }
+        public void setSubnets(ArrayList<NetworkListResponse.Subnet> subnets)
+        {
+            this.subnets = subnets;
+        }
         
         /**
         * Initializes a new instance of the VirtualNetworkSite class.
@@ -445,12 +560,18 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         /**
         * The CIDR identifiers that identify addresses in the pool.
         */
-        public ArrayList<String> getAddressPrefixes() { return this.addressPrefixes; }
+        public ArrayList<String> getAddressPrefixes()
+        {
+            return this.addressPrefixes;
+        }
         
         /**
         * The CIDR identifiers that identify addresses in the pool.
         */
-        public void setAddressPrefixes(ArrayList<String> addressPrefixes) { this.addressPrefixes = addressPrefixes; }
+        public void setAddressPrefixes(ArrayList<String> addressPrefixes)
+        {
+            this.addressPrefixes = addressPrefixes;
+        }
         
         /**
         * Initializes a new instance of the VPNClientAddressPool class.

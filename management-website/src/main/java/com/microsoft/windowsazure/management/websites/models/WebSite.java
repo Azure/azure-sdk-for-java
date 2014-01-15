@@ -39,12 +39,18 @@ public class WebSite
     /**
     * Read-only. This value is always true.
     */
-    public boolean getAdminEnabled() { return this.adminEnabled; }
+    public boolean isAdminEnabled()
+    {
+        return this.adminEnabled;
+    }
     
     /**
     * Read-only. This value is always true.
     */
-    public void setAdminEnabled(boolean adminEnabled) { this.adminEnabled = adminEnabled; }
+    public void setAdminEnabled(boolean adminEnabled)
+    {
+        this.adminEnabled = adminEnabled;
+    }
     
     private WebSpaceAvailabilityState availabilityState;
     
@@ -55,7 +61,10 @@ public class WebSite
     * available. Limited means that only partial management information for
     * the site is available and that detailed site information is unavailable.
     */
-    public WebSpaceAvailabilityState getAvailabilityState() { return this.availabilityState; }
+    public WebSpaceAvailabilityState getAvailabilityState()
+    {
+        return this.availabilityState;
+    }
     
     /**
     * The state of the availability of management information for the site.
@@ -64,7 +73,10 @@ public class WebSite
     * available. Limited means that only partial management information for
     * the site is available and that detailed site information is unavailable.
     */
-    public void setAvailabilityState(WebSpaceAvailabilityState availabilityState) { this.availabilityState = availabilityState; }
+    public void setAvailabilityState(WebSpaceAvailabilityState availabilityState)
+    {
+        this.availabilityState = availabilityState;
+    }
     
     private WebSiteComputeMode computeMode;
     
@@ -72,13 +84,19 @@ public class WebSite
     * The Compute Mode for the web site. Possible values are Shared or
     * Dedicated.
     */
-    public WebSiteComputeMode getComputeMode() { return this.computeMode; }
+    public WebSiteComputeMode getComputeMode()
+    {
+        return this.computeMode;
+    }
     
     /**
     * The Compute Mode for the web site. Possible values are Shared or
     * Dedicated.
     */
-    public void setComputeMode(WebSiteComputeMode computeMode) { this.computeMode = computeMode; }
+    public void setComputeMode(WebSiteComputeMode computeMode)
+    {
+        this.computeMode = computeMode;
+    }
     
     private boolean enabled;
     
@@ -86,13 +104,19 @@ public class WebSite
     * true if the site is enabled; otherwise, false. Setting this value to
     * false disables the site (takes the site off line).
     */
-    public boolean getEnabled() { return this.enabled; }
+    public boolean isEnabled()
+    {
+        return this.enabled;
+    }
     
     /**
     * true if the site is enabled; otherwise, false. Setting this value to
     * false disables the site (takes the site off line).
     */
-    public void setEnabled(boolean enabled) { this.enabled = enabled; }
+    public void setEnabled(boolean enabled)
+    {
+        this.enabled = enabled;
+    }
     
     private ArrayList<String> enabledHostNames;
     
@@ -101,14 +125,20 @@ public class WebSite
     * default, these are [SiteName].azurewebsites.net and
     * [SiteName].scm.azurewebsites.net.
     */
-    public ArrayList<String> getEnabledHostNames() { return this.enabledHostNames; }
+    public ArrayList<String> getEnabledHostNames()
+    {
+        return this.enabledHostNames;
+    }
     
     /**
     * An array of strings that contains enabled hostnames for the site. By
     * default, these are [SiteName].azurewebsites.net and
     * [SiteName].scm.azurewebsites.net.
     */
-    public void setEnabledHostNames(ArrayList<String> enabledHostNames) { this.enabledHostNames = enabledHostNames; }
+    public void setEnabledHostNames(ArrayList<String> enabledHostNames)
+    {
+        this.enabledHostNames = enabledHostNames;
+    }
     
     private ArrayList<String> hostNames;
     
@@ -120,7 +150,10 @@ public class WebSite
     * of the hostnames for the site that you want to keep, but leave out the
     * one that you wangt to delete.
     */
-    public ArrayList<String> getHostNames() { return this.hostNames; }
+    public ArrayList<String> getHostNames()
+    {
+        return this.hostNames;
+    }
     
     /**
     * An array of strings that contains the public hostnames for the site,
@@ -130,19 +163,28 @@ public class WebSite
     * of the hostnames for the site that you want to keep, but leave out the
     * one that you wangt to delete.
     */
-    public void setHostNames(ArrayList<String> hostNames) { this.hostNames = hostNames; }
+    public void setHostNames(ArrayList<String> hostNames)
+    {
+        this.hostNames = hostNames;
+    }
     
     private ArrayList<WebSite.WebSiteHostNameSslState> hostNameSslStates;
     
     /**
     * SSL states bound to the website.
     */
-    public ArrayList<WebSite.WebSiteHostNameSslState> getHostNameSslStates() { return this.hostNameSslStates; }
+    public ArrayList<WebSite.WebSiteHostNameSslState> getHostNameSslStates()
+    {
+        return this.hostNameSslStates;
+    }
     
     /**
     * SSL states bound to the website.
     */
-    public void setHostNameSslStates(ArrayList<WebSite.WebSiteHostNameSslState> hostNameSslStates) { this.hostNameSslStates = hostNameSslStates; }
+    public void setHostNameSslStates(ArrayList<WebSite.WebSiteHostNameSslState> hostNameSslStates)
+    {
+        this.hostNameSslStates = hostNameSslStates;
+    }
     
     private Calendar lastModifiedTimeUtc;
     
@@ -150,49 +192,73 @@ public class WebSite
     * A dateTime value that contains, in Coordinated Universal Time, the last
     * time the web site was modified.
     */
-    public Calendar getLastModifiedTimeUtc() { return this.lastModifiedTimeUtc; }
+    public Calendar getLastModifiedTimeUtc()
+    {
+        return this.lastModifiedTimeUtc;
+    }
     
     /**
     * A dateTime value that contains, in Coordinated Universal Time, the last
     * time the web site was modified.
     */
-    public void setLastModifiedTimeUtc(Calendar lastModifiedTimeUtc) { this.lastModifiedTimeUtc = lastModifiedTimeUtc; }
+    public void setLastModifiedTimeUtc(Calendar lastModifiedTimeUtc)
+    {
+        this.lastModifiedTimeUtc = lastModifiedTimeUtc;
+    }
     
     private String name;
     
     /**
     * The name of the web site.
     */
-    public String getName() { return this.name; }
+    public String getName()
+    {
+        return this.name;
+    }
     
     /**
     * The name of the web site.
     */
-    public void setName(String name) { this.name = name; }
+    public void setName(String name)
+    {
+        this.name = name;
+    }
     
     private String owner;
     
     /**
     * Owner of the web site.
     */
-    public String getOwner() { return this.owner; }
+    public String getOwner()
+    {
+        return this.owner;
+    }
     
     /**
     * Owner of the web site.
     */
-    public void setOwner(String owner) { this.owner = owner; }
+    public void setOwner(String owner)
+    {
+        this.owner = owner;
+    }
     
     private String repositorySiteName;
     
     /**
     * The name of the repository web site.
     */
-    public String getRepositorySiteName() { return this.repositorySiteName; }
+    public String getRepositorySiteName()
+    {
+        return this.repositorySiteName;
+    }
     
     /**
     * The name of the repository web site.
     */
-    public void setRepositorySiteName(String repositorySiteName) { this.repositorySiteName = repositorySiteName; }
+    public void setRepositorySiteName(String repositorySiteName)
+    {
+        this.repositorySiteName = repositorySiteName;
+    }
     
     private WebSiteRuntimeAvailabilityState runtimeAvailabilityState;
     
@@ -203,7 +269,10 @@ public class WebSite
     * Not Available: due to an unexpected issue, the site has been excluded
     * from provisioning. This typically occurs only for free sites.
     */
-    public WebSiteRuntimeAvailabilityState getRuntimeAvailabilityState() { return this.runtimeAvailabilityState; }
+    public WebSiteRuntimeAvailabilityState getRuntimeAvailabilityState()
+    {
+        return this.runtimeAvailabilityState;
+    }
     
     /**
     * Possible values are Normal, Degraded, or NotAvailable. Normal: the web
@@ -212,19 +281,28 @@ public class WebSite
     * Not Available: due to an unexpected issue, the site has been excluded
     * from provisioning. This typically occurs only for free sites.
     */
-    public void setRuntimeAvailabilityState(WebSiteRuntimeAvailabilityState runtimeAvailabilityState) { this.runtimeAvailabilityState = runtimeAvailabilityState; }
+    public void setRuntimeAvailabilityState(WebSiteRuntimeAvailabilityState runtimeAvailabilityState)
+    {
+        this.runtimeAvailabilityState = runtimeAvailabilityState;
+    }
     
     private String serverFarm;
     
     /**
     * String. If a server farm exists, this value is DefaultServerFarm.
     */
-    public String getServerFarm() { return this.serverFarm; }
+    public String getServerFarm()
+    {
+        return this.serverFarm;
+    }
     
     /**
     * String. If a server farm exists, this value is DefaultServerFarm.
     */
-    public void setServerFarm(String serverFarm) { this.serverFarm = serverFarm; }
+    public void setServerFarm(String serverFarm)
+    {
+        this.serverFarm = serverFarm;
+    }
     
     private WebSiteMode siteMode;
     
@@ -234,7 +312,10 @@ public class WebSite
     * Basic.  Note: The SiteMode value is not used for Reserved mode. Reserved
     * mode uses the ComputeMode setting.
     */
-    public WebSiteMode getSiteMode() { return this.siteMode; }
+    public WebSiteMode getSiteMode()
+    {
+        return this.siteMode;
+    }
     
     /**
     * String that represents the web site mode. If the web site mode is Free,
@@ -242,31 +323,46 @@ public class WebSite
     * Basic.  Note: The SiteMode value is not used for Reserved mode. Reserved
     * mode uses the ComputeMode setting.
     */
-    public void setSiteMode(WebSiteMode siteMode) { this.siteMode = siteMode; }
+    public void setSiteMode(WebSiteMode siteMode)
+    {
+        this.siteMode = siteMode;
+    }
     
     private WebSite.WebSiteProperties siteProperties;
     
     /**
     * Contains AppSettings, Metadata, and Properties for a site.
     */
-    public WebSite.WebSiteProperties getSiteProperties() { return this.siteProperties; }
+    public WebSite.WebSiteProperties getSiteProperties()
+    {
+        return this.siteProperties;
+    }
     
     /**
     * Contains AppSettings, Metadata, and Properties for a site.
     */
-    public void setSiteProperties(WebSite.WebSiteProperties siteProperties) { this.siteProperties = siteProperties; }
+    public void setSiteProperties(WebSite.WebSiteProperties siteProperties)
+    {
+        this.siteProperties = siteProperties;
+    }
     
     private ArrayList<WebSite.WebSiteSslCertificate> sslCertificates;
     
     /**
     * SSL certificates bound to the web site.
     */
-    public ArrayList<WebSite.WebSiteSslCertificate> getSslCertificates() { return this.sslCertificates; }
+    public ArrayList<WebSite.WebSiteSslCertificate> getSslCertificates()
+    {
+        return this.sslCertificates;
+    }
     
     /**
     * SSL certificates bound to the web site.
     */
-    public void setSslCertificates(ArrayList<WebSite.WebSiteSslCertificate> sslCertificates) { this.sslCertificates = sslCertificates; }
+    public void setSslCertificates(ArrayList<WebSite.WebSiteSslCertificate> sslCertificates)
+    {
+        this.sslCertificates = sslCertificates;
+    }
     
     private WebSiteState state;
     
@@ -274,13 +370,19 @@ public class WebSite
     * A string that describes the state of the web site. Possible values are
     * Stopped or Running.
     */
-    public WebSiteState getState() { return this.state; }
+    public WebSiteState getState()
+    {
+        return this.state;
+    }
     
     /**
     * A string that describes the state of the web site. Possible values are
     * Stopped or Running.
     */
-    public void setState(WebSiteState state) { this.state = state; }
+    public void setState(WebSiteState state)
+    {
+        this.state = state;
+    }
     
     private URI uri;
     
@@ -288,13 +390,19 @@ public class WebSite
     * Direct URL to the web site endpoint on Windows Azure Web Sites, including
     * the subscription ID, webspace name, and site name.
     */
-    public URI getUri() { return this.uri; }
+    public URI getUri()
+    {
+        return this.uri;
+    }
     
     /**
     * Direct URL to the web site endpoint on Windows Azure Web Sites, including
     * the subscription ID, webspace name, and site name.
     */
-    public void setUri(URI uri) { this.uri = uri; }
+    public void setUri(URI uri)
+    {
+        this.uri = uri;
+    }
     
     private WebSiteUsageState usageState;
     
@@ -302,13 +410,19 @@ public class WebSite
     * Possible values are Normal or Exceeded. If any quota is exceeded, the
     * UsageState value changes to Exceeded and the site goes off line.
     */
-    public WebSiteUsageState getUsageState() { return this.usageState; }
+    public WebSiteUsageState getUsageState()
+    {
+        return this.usageState;
+    }
     
     /**
     * Possible values are Normal or Exceeded. If any quota is exceeded, the
     * UsageState value changes to Exceeded and the site goes off line.
     */
-    public void setUsageState(WebSiteUsageState usageState) { this.usageState = usageState; }
+    public void setUsageState(WebSiteUsageState usageState)
+    {
+        this.usageState = usageState;
+    }
     
     private String webSpace;
     
@@ -316,13 +430,19 @@ public class WebSite
     * The name of the webspace in which the web site is located. This property
     * is read-only.
     */
-    public String getWebSpace() { return this.webSpace; }
+    public String getWebSpace()
+    {
+        return this.webSpace;
+    }
     
     /**
     * The name of the webspace in which the web site is located. This property
     * is read-only.
     */
-    public void setWebSpace(String webSpace) { this.webSpace = webSpace; }
+    public void setWebSpace(String webSpace)
+    {
+        this.webSpace = webSpace;
+    }
     
     /**
     * Initializes a new instance of the WebSite class.
@@ -346,12 +466,18 @@ public class WebSite
         /**
         * The URL of the web site.
         */
-        public String getName() { return this.name; }
+        public String getName()
+        {
+            return this.name;
+        }
         
         /**
         * The URL of the web site.
         */
-        public void setName(String name) { this.name = name; }
+        public void setName(String name)
+        {
+            this.name = name;
+        }
         
         private WebSiteSslState sslState;
         
@@ -359,25 +485,37 @@ public class WebSite
         * The SSL state. Possible values are Disabled, SniEnabled, or
         * IpBasedEnabled.
         */
-        public WebSiteSslState getSslState() { return this.sslState; }
+        public WebSiteSslState getSslState()
+        {
+            return this.sslState;
+        }
         
         /**
         * The SSL state. Possible values are Disabled, SniEnabled, or
         * IpBasedEnabled.
         */
-        public void setSslState(WebSiteSslState sslState) { this.sslState = sslState; }
+        public void setSslState(WebSiteSslState sslState)
+        {
+            this.sslState = sslState;
+        }
         
         private String thumbprint;
         
         /**
         * A string that contains the thumbprint of the SSL certificate.
         */
-        public String getThumbprint() { return this.thumbprint; }
+        public String getThumbprint()
+        {
+            return this.thumbprint;
+        }
         
         /**
         * A string that contains the thumbprint of the SSL certificate.
         */
-        public void setThumbprint(String thumbprint) { this.thumbprint = thumbprint; }
+        public void setThumbprint(String thumbprint)
+        {
+            this.thumbprint = thumbprint;
+        }
         
         private InetAddress virtualIP;
         
@@ -385,20 +523,18 @@ public class WebSite
         * String. The IP address assigned to the hostname if the hostname uses
         * IP SSL.
         */
-        public InetAddress getVirtualIP() { return this.virtualIP; }
+        public InetAddress getVirtualIP()
+        {
+            return this.virtualIP;
+        }
         
         /**
         * String. The IP address assigned to the hostname if the hostname uses
         * IP SSL.
         */
-        public void setVirtualIP(InetAddress virtualIP) { this.virtualIP = virtualIP; }
-        
-        /**
-        * Initializes a new instance of the WebSiteHostNameSslState class.
-        *
-        */
-        public WebSiteHostNameSslState()
+        public void setVirtualIP(InetAddress virtualIP)
         {
+            this.virtualIP = virtualIP;
         }
     }
     
@@ -410,13 +546,19 @@ public class WebSite
         * A set of name/value pairs that contain application settings for a
         * site.
         */
-        public HashMap<String, String> getAppSettings() { return this.appSettings; }
+        public HashMap<String, String> getAppSettings()
+        {
+            return this.appSettings;
+        }
         
         /**
         * A set of name/value pairs that contain application settings for a
         * site.
         */
-        public void setAppSettings(HashMap<String, String> appSettings) { this.appSettings = appSettings; }
+        public void setAppSettings(HashMap<String, String> appSettings)
+        {
+            this.appSettings = appSettings;
+        }
         
         private HashMap<String, String> metadata;
         
@@ -424,25 +566,37 @@ public class WebSite
         * A set of name/value pairs that contain metadata information for a
         * site.
         */
-        public HashMap<String, String> getMetadata() { return this.metadata; }
+        public HashMap<String, String> getMetadata()
+        {
+            return this.metadata;
+        }
         
         /**
         * A set of name/value pairs that contain metadata information for a
         * site.
         */
-        public void setMetadata(HashMap<String, String> metadata) { this.metadata = metadata; }
+        public void setMetadata(HashMap<String, String> metadata)
+        {
+            this.metadata = metadata;
+        }
         
         private HashMap<String, String> properties;
         
         /**
         * A set of name/value pairs that contain properties for a site.
         */
-        public HashMap<String, String> getProperties() { return this.properties; }
+        public HashMap<String, String> getProperties()
+        {
+            return this.properties;
+        }
         
         /**
         * A set of name/value pairs that contain properties for a site.
         */
-        public void setProperties(HashMap<String, String> properties) { this.properties = properties; }
+        public void setProperties(HashMap<String, String> properties)
+        {
+            this.properties = properties;
+        }
         
         /**
         * Initializes a new instance of the WebSiteProperties class.
@@ -466,24 +620,36 @@ public class WebSite
         /**
         * A dateTime value that contains the expiration date of the certificate.
         */
-        public Calendar getExpirationDate() { return this.expirationDate; }
+        public Calendar getExpirationDate()
+        {
+            return this.expirationDate;
+        }
         
         /**
         * A dateTime value that contains the expiration date of the certificate.
         */
-        public void setExpirationDate(Calendar expirationDate) { this.expirationDate = expirationDate; }
+        public void setExpirationDate(Calendar expirationDate)
+        {
+            this.expirationDate = expirationDate;
+        }
         
         private String friendlyName;
         
         /**
         * A string that contains the friendly name of the certificate.
         */
-        public String getFriendlyName() { return this.friendlyName; }
+        public String getFriendlyName()
+        {
+            return this.friendlyName;
+        }
         
         /**
         * A string that contains the friendly name of the certificate.
         */
-        public void setFriendlyName(String friendlyName) { this.friendlyName = friendlyName; }
+        public void setFriendlyName(String friendlyName)
+        {
+            this.friendlyName = friendlyName;
+        }
         
         private ArrayList<String> hostNames;
         
@@ -491,13 +657,19 @@ public class WebSite
         * An array of strings that contain the hostnames to which the
         * certificate is bound.
         */
-        public ArrayList<String> getHostNames() { return this.hostNames; }
+        public ArrayList<String> getHostNames()
+        {
+            return this.hostNames;
+        }
         
         /**
         * An array of strings that contain the hostnames to which the
         * certificate is bound.
         */
-        public void setHostNames(ArrayList<String> hostNames) { this.hostNames = hostNames; }
+        public void setHostNames(ArrayList<String> hostNames)
+        {
+            this.hostNames = hostNames;
+        }
         
         private Calendar issueDate;
         
@@ -505,73 +677,109 @@ public class WebSite
         * A dateTime value that contains the date that the certificate was
         * issued.
         */
-        public Calendar getIssueDate() { return this.issueDate; }
+        public Calendar getIssueDate()
+        {
+            return this.issueDate;
+        }
         
         /**
         * A dateTime value that contains the date that the certificate was
         * issued.
         */
-        public void setIssueDate(Calendar issueDate) { this.issueDate = issueDate; }
+        public void setIssueDate(Calendar issueDate)
+        {
+            this.issueDate = issueDate;
+        }
         
         private String issuer;
         
         /**
         * A string that identifies the issuer of the certificate.
         */
-        public String getIssuer() { return this.issuer; }
+        public String getIssuer()
+        {
+            return this.issuer;
+        }
         
         /**
         * A string that identifies the issuer of the certificate.
         */
-        public void setIssuer(String issuer) { this.issuer = issuer; }
+        public void setIssuer(String issuer)
+        {
+            this.issuer = issuer;
+        }
         
         private boolean isToBeDeleted;
         
         /**
         * Boolean. true if the certificate is to be deleted.
         */
-        public boolean getIsToBeDeleted() { return this.isToBeDeleted; }
+        public boolean isToBeDeleted()
+        {
+            return this.isToBeDeleted;
+        }
         
         /**
         * Boolean. true if the certificate is to be deleted.
         */
-        public void setIsToBeDeleted(boolean isToBeDeleted) { this.isToBeDeleted = isToBeDeleted; }
+        public void setIsToBeDeleted(boolean isToBeDeleted)
+        {
+            this.isToBeDeleted = isToBeDeleted;
+        }
         
         private boolean isValid;
         
         /**
         * Boolean. true if the certificate is valid; otherwise, false.
         */
-        public boolean getIsValid() { return this.isValid; }
+        public boolean isValid()
+        {
+            return this.isValid;
+        }
         
         /**
         * Boolean. true if the certificate is valid; otherwise, false.
         */
-        public void setIsValid(boolean isValid) { this.isValid = isValid; }
+        public void setIsValid(boolean isValid)
+        {
+            this.isValid = isValid;
+        }
         
         private String password;
         
         /**
         * A string that contains the password for the certificate.
         */
-        public String getPassword() { return this.password; }
+        public String getPassword()
+        {
+            return this.password;
+        }
         
         /**
         * A string that contains the password for the certificate.
         */
-        public void setPassword(String password) { this.password = password; }
+        public void setPassword(String password)
+        {
+            this.password = password;
+        }
         
         private byte[] pfxBlob;
         
         /**
         * A base64Binary value that contains the PfxBlob of the certificate.
         */
-        public byte[] getPfxBlob() { return this.pfxBlob; }
+        public byte[] getPfxBlob()
+        {
+            return this.pfxBlob;
+        }
         
         /**
         * A base64Binary value that contains the PfxBlob of the certificate.
         */
-        public void setPfxBlob(byte[] pfxBlob) { this.pfxBlob = pfxBlob; }
+        public void setPfxBlob(byte[] pfxBlob)
+        {
+            this.pfxBlob = pfxBlob;
+        }
         
         private URI selfLinkUri;
         
@@ -579,13 +787,19 @@ public class WebSite
         * An anyURI value that contains the endpoint of the site to which the
         * certificate is bound.
         */
-        public URI getSelfLinkUri() { return this.selfLinkUri; }
+        public URI getSelfLinkUri()
+        {
+            return this.selfLinkUri;
+        }
         
         /**
         * An anyURI value that contains the endpoint of the site to which the
         * certificate is bound.
         */
-        public void setSelfLinkUri(URI selfLinkUri) { this.selfLinkUri = selfLinkUri; }
+        public void setSelfLinkUri(URI selfLinkUri)
+        {
+            this.selfLinkUri = selfLinkUri;
+        }
         
         private String siteName;
         
@@ -593,13 +807,19 @@ public class WebSite
         * A string that contains the name of the site to which the certificate
         * is bound.
         */
-        public String getSiteName() { return this.siteName; }
+        public String getSiteName()
+        {
+            return this.siteName;
+        }
         
         /**
         * A string that contains the name of the site to which the certificate
         * is bound.
         */
-        public void setSiteName(String siteName) { this.siteName = siteName; }
+        public void setSiteName(String siteName)
+        {
+            this.siteName = siteName;
+        }
         
         private String subjectName;
         
@@ -607,25 +827,37 @@ public class WebSite
         * A string that contains the name of the entity to whom the certificate
         * was issued.
         */
-        public String getSubjectName() { return this.subjectName; }
+        public String getSubjectName()
+        {
+            return this.subjectName;
+        }
         
         /**
         * A string that contains the name of the entity to whom the certificate
         * was issued.
         */
-        public void setSubjectName(String subjectName) { this.subjectName = subjectName; }
+        public void setSubjectName(String subjectName)
+        {
+            this.subjectName = subjectName;
+        }
         
         private String thumbprint;
         
         /**
         * A string that contains the certificate thumbprint.
         */
-        public String getThumbprint() { return this.thumbprint; }
+        public String getThumbprint()
+        {
+            return this.thumbprint;
+        }
         
         /**
         * A string that contains the certificate thumbprint.
         */
-        public void setThumbprint(String thumbprint) { this.thumbprint = thumbprint; }
+        public void setThumbprint(String thumbprint)
+        {
+            this.thumbprint = thumbprint;
+        }
         
         /**
         * Initializes a new instance of the WebSiteSslCertificate class.

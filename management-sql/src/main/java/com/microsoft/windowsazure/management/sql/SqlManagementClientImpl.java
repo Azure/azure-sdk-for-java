@@ -45,7 +45,10 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
     /**
     * The URI used as the base for all SQL requests.
     */
-    public URI getBaseUri() { return this.baseUri; }
+    public URI getBaseUri()
+    {
+        return this.baseUri;
+    }
     
     private SubscriptionCloudCredentials credentials;
     
@@ -57,7 +60,10 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
     * certificates over SSL to ensure that a request made to the service is
     * secure.  No anonymous requests are allowed.
     */
-    public SubscriptionCloudCredentials getCredentials() { return this.credentials; }
+    public SubscriptionCloudCredentials getCredentials()
+    {
+        return this.credentials;
+    }
     
     private DacOperations dac;
     
@@ -65,7 +71,10 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
     * Includes operations for importing and exporting SQL Databases into and
     * out of Windows Azure blob storage.
     */
-    public DacOperations getDacOperations() { return this.dac; }
+    public DacOperations getDacOperations()
+    {
+        return this.dac;
+    }
     
     private DatabaseCopyOperations databaseCopies;
     
@@ -73,7 +82,10 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
     * The SQL Database Management API includes operations for managing SQL
     * Database Copies for a subscription.
     */
-    public DatabaseCopyOperations getDatabaseCopiesOperations() { return this.databaseCopies; }
+    public DatabaseCopyOperations getDatabaseCopiesOperations()
+    {
+        return this.databaseCopies;
+    }
     
     private DatabaseOperationOperations databaseOperations;
     
@@ -81,7 +93,10 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
     * The SQL Database Management API includes operations for get/stop SQL
     * Databases' operations for a subscription.
     */
-    public DatabaseOperationOperations getDatabaseOperationsOperations() { return this.databaseOperations; }
+    public DatabaseOperationOperations getDatabaseOperationsOperations()
+    {
+        return this.databaseOperations;
+    }
     
     private DatabaseOperations databases;
     
@@ -89,7 +104,10 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
     * The SQL Database Management API includes operations for managing SQL
     * Databases for a subscription.
     */
-    public DatabaseOperations getDatabasesOperations() { return this.databases; }
+    public DatabaseOperations getDatabasesOperations()
+    {
+        return this.databases;
+    }
     
     private FirewallRuleOperations firewallRules;
     
@@ -103,7 +121,10 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715276.aspx for
     * more information)
     */
-    public FirewallRuleOperations getFirewallRulesOperations() { return this.firewallRules; }
+    public FirewallRuleOperations getFirewallRulesOperations()
+    {
+        return this.firewallRules;
+    }
     
     private ServerOperations servers;
     
@@ -113,7 +134,10 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715271.aspx for
     * more information)
     */
-    public ServerOperations getServersOperations() { return this.servers; }
+    public ServerOperations getServersOperations()
+    {
+        return this.servers;
+    }
     
     private ServiceObjectiveOperations serviceObjectives;
     
@@ -121,7 +145,10 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
     * The SQL Database Management API includes operations for getting Service
     * Objective for a subscription.
     */
-    public ServiceObjectiveOperations getServiceObjectivesOperations() { return this.serviceObjectives; }
+    public ServiceObjectiveOperations getServiceObjectivesOperations()
+    {
+        return this.serviceObjectives;
+    }
     
     /**
     * Initializes a new instance of the SqlManagementClientImpl class.

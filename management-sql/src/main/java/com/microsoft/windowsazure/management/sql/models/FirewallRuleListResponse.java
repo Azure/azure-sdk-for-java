@@ -38,12 +38,18 @@ public class FirewallRuleListResponse extends OperationResponse implements Itera
     /**
     * Gets or sets the firewall rules for this SQL Database Server.
     */
-    public ArrayList<FirewallRuleListResponse.FirewallRule> getFirewallRules() { return this.firewallRules; }
+    public ArrayList<FirewallRuleListResponse.FirewallRule> getFirewallRules()
+    {
+        return this.firewallRules;
+    }
     
     /**
     * Gets or sets the firewall rules for this SQL Database Server.
     */
-    public void setFirewallRules(ArrayList<FirewallRuleListResponse.FirewallRule> firewallRules) { this.firewallRules = firewallRules; }
+    public void setFirewallRules(ArrayList<FirewallRuleListResponse.FirewallRule> firewallRules)
+    {
+        this.firewallRules = firewallRules;
+    }
     
     /**
     * Initializes a new instance of the FirewallRuleListResponse class.
@@ -51,6 +57,7 @@ public class FirewallRuleListResponse extends OperationResponse implements Itera
     */
     public FirewallRuleListResponse()
     {
+        super();
         this.firewallRules = new ArrayList<FirewallRuleListResponse.FirewallRule>();
     }
     
@@ -73,55 +80,71 @@ public class FirewallRuleListResponse extends OperationResponse implements Itera
         /**
         * Gets or sets the ending IP address applied to this rule.
         */
-        public InetAddress getEndIPAddress() { return this.endIPAddress; }
+        public InetAddress getEndIPAddress()
+        {
+            return this.endIPAddress;
+        }
         
         /**
         * Gets or sets the ending IP address applied to this rule.
         */
-        public void setEndIPAddress(InetAddress endIPAddress) { this.endIPAddress = endIPAddress; }
+        public void setEndIPAddress(InetAddress endIPAddress)
+        {
+            this.endIPAddress = endIPAddress;
+        }
         
         private String name;
         
         /**
         * Gets or sets the name of the Firewall Rule.
         */
-        public String getName() { return this.name; }
+        public String getName()
+        {
+            return this.name;
+        }
         
         /**
         * Gets or sets the name of the Firewall Rule.
         */
-        public void setName(String name) { this.name = name; }
+        public void setName(String name)
+        {
+            this.name = name;
+        }
         
         private InetAddress startIPAddress;
         
         /**
         * Gets or sets the beginning IP address applied to this rule.
         */
-        public InetAddress getStartIPAddress() { return this.startIPAddress; }
+        public InetAddress getStartIPAddress()
+        {
+            return this.startIPAddress;
+        }
         
         /**
         * Gets or sets the beginning IP address applied to this rule.
         */
-        public void setStartIPAddress(InetAddress startIPAddress) { this.startIPAddress = startIPAddress; }
+        public void setStartIPAddress(InetAddress startIPAddress)
+        {
+            this.startIPAddress = startIPAddress;
+        }
         
         private String type;
         
         /**
         * Gets or sets the type of resource.
         */
-        public String getType() { return this.type; }
+        public String getType()
+        {
+            return this.type;
+        }
         
         /**
         * Gets or sets the type of resource.
         */
-        public void setType(String type) { this.type = type; }
-        
-        /**
-        * Initializes a new instance of the FirewallRule class.
-        *
-        */
-        public FirewallRule()
+        public void setType(String type)
         {
+            this.type = type;
         }
     }
 }

@@ -50,6 +50,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
@@ -81,7 +82,10 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
     * Gets a reference to the
     * microsoft.windowsazure.management.sql.SqlManagementClientImpl.
     */
-    public SqlManagementClientImpl getClient() { return this.client; }
+    public SqlManagementClientImpl getClient()
+    {
+        return this.client;
+    }
     
     /**
     * The Create Database Copy operation starts a database copy.
@@ -190,11 +194,11 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
         }
         
         Element isContinuousElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IsContinuous");
-        isContinuousElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.getIsContinuous()).toLowerCase()));
+        isContinuousElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.isContinuous()).toLowerCase()));
         serviceResourceElement.appendChild(isContinuousElement);
         
         Element isForcedTerminateElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IsForcedTerminate");
-        isForcedTerminateElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.getIsForcedTerminate()).toLowerCase()));
+        isForcedTerminateElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.isForcedTerminate()).toLowerCase()));
         serviceResourceElement.appendChild(isForcedTerminateElement);
         
         DOMSource domSource = new DOMSource(requestDoc);
@@ -220,7 +224,7 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 201)
+        if (statusCode != HttpStatus.SC_CREATED)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -240,11 +244,11 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
         Document responseDoc = documentBuilder2.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagName("ServiceResource");
-        Element serviceResourceElement2 = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element serviceResourceElement2 = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (serviceResourceElement2 != null)
         {
             NodeList elements2 = serviceResourceElement2.getElementsByTagName("Name");
-            Element nameElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+            Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
             if (nameElement != null)
             {
                 String nameInstance;
@@ -253,7 +257,7 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
             }
             
             NodeList elements3 = serviceResourceElement2.getElementsByTagName("State");
-            Element stateElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
+            Element stateElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
             if (stateElement != null)
             {
                 String stateInstance;
@@ -262,7 +266,7 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
             }
             
             NodeList elements4 = serviceResourceElement2.getElementsByTagName("SourceServerName");
-            Element sourceServerNameElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
+            Element sourceServerNameElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
             if (sourceServerNameElement != null)
             {
                 String sourceServerNameInstance;
@@ -271,7 +275,7 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
             }
             
             NodeList elements5 = serviceResourceElement2.getElementsByTagName("SourceDatabaseName");
-            Element sourceDatabaseNameElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
+            Element sourceDatabaseNameElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
             if (sourceDatabaseNameElement != null)
             {
                 String sourceDatabaseNameInstance;
@@ -280,7 +284,7 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
             }
             
             NodeList elements6 = serviceResourceElement2.getElementsByTagName("DestinationServerName");
-            Element destinationServerNameElement = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
+            Element destinationServerNameElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
             if (destinationServerNameElement != null)
             {
                 String destinationServerNameInstance;
@@ -289,7 +293,7 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
             }
             
             NodeList elements7 = serviceResourceElement2.getElementsByTagName("DestinationDatabaseName");
-            Element destinationDatabaseNameElement = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
+            Element destinationDatabaseNameElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
             if (destinationDatabaseNameElement != null)
             {
                 String destinationDatabaseNameInstance;
@@ -298,7 +302,7 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
             }
             
             NodeList elements8 = serviceResourceElement2.getElementsByTagName("MaxLagInMinutes");
-            Element maxLagInMinutesElement2 = elements8.getLength() > 0 ? ((Element)elements8.item(0)) : null;
+            Element maxLagInMinutesElement2 = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
             if (maxLagInMinutesElement2 != null && (maxLagInMinutesElement2.getTextContent() != null && maxLagInMinutesElement2.getTextContent().isEmpty() != true) == false)
             {
                 int maxLagInMinutesInstance;
@@ -307,7 +311,7 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
             }
             
             NodeList elements9 = serviceResourceElement2.getElementsByTagName("IsContinuous");
-            Element isContinuousElement2 = elements9.getLength() > 0 ? ((Element)elements9.item(0)) : null;
+            Element isContinuousElement2 = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
             if (isContinuousElement2 != null)
             {
                 boolean isContinuousInstance;
@@ -316,7 +320,7 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
             }
             
             NodeList elements10 = serviceResourceElement2.getElementsByTagName("ReplicationState");
-            Element replicationStateElement = elements10.getLength() > 0 ? ((Element)elements10.item(0)) : null;
+            Element replicationStateElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
             if (replicationStateElement != null)
             {
                 byte replicationStateInstance;
@@ -325,7 +329,7 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
             }
             
             NodeList elements11 = serviceResourceElement2.getElementsByTagName("ReplicationStateDescription");
-            Element replicationStateDescriptionElement = elements11.getLength() > 0 ? ((Element)elements11.item(0)) : null;
+            Element replicationStateDescriptionElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
             if (replicationStateDescriptionElement != null)
             {
                 String replicationStateDescriptionInstance;
@@ -334,7 +338,7 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
             }
             
             NodeList elements12 = serviceResourceElement2.getElementsByTagName("LocalDatabaseId");
-            Element localDatabaseIdElement = elements12.getLength() > 0 ? ((Element)elements12.item(0)) : null;
+            Element localDatabaseIdElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
             if (localDatabaseIdElement != null)
             {
                 int localDatabaseIdInstance;
@@ -343,7 +347,7 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
             }
             
             NodeList elements13 = serviceResourceElement2.getElementsByTagName("IsLocalDatabaseReplicationTarget");
-            Element isLocalDatabaseReplicationTargetElement = elements13.getLength() > 0 ? ((Element)elements13.item(0)) : null;
+            Element isLocalDatabaseReplicationTargetElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
             if (isLocalDatabaseReplicationTargetElement != null)
             {
                 boolean isLocalDatabaseReplicationTargetInstance;
@@ -352,7 +356,7 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
             }
             
             NodeList elements14 = serviceResourceElement2.getElementsByTagName("IsInterlinkConnected");
-            Element isInterlinkConnectedElement = elements14.getLength() > 0 ? ((Element)elements14.item(0)) : null;
+            Element isInterlinkConnectedElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
             if (isInterlinkConnectedElement != null)
             {
                 boolean isInterlinkConnectedInstance;
@@ -361,19 +365,19 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
             }
             
             NodeList elements15 = serviceResourceElement2.getElementsByTagName("TextStartDate");
-            Element textStartDateElement = elements15.getLength() > 0 ? ((Element)elements15.item(0)) : null;
+            Element textStartDateElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
             if (textStartDateElement != null)
             {
             }
             
             NodeList elements16 = serviceResourceElement2.getElementsByTagName("TextModifyDate");
-            Element textModifyDateElement = elements16.getLength() > 0 ? ((Element)elements16.item(0)) : null;
+            Element textModifyDateElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
             if (textModifyDateElement != null)
             {
             }
             
             NodeList elements17 = serviceResourceElement2.getElementsByTagName("PercentComplete");
-            Element percentCompleteElement = elements17.getLength() > 0 ? ((Element)elements17.item(0)) : null;
+            Element percentCompleteElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
             if (percentCompleteElement != null && (percentCompleteElement.getTextContent() != null && percentCompleteElement.getTextContent().isEmpty() != true) == false)
             {
                 float percentCompleteInstance;
@@ -382,7 +386,7 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
             }
             
             NodeList elements18 = serviceResourceElement2.getElementsByTagName("IsForcedTerminate");
-            Element isForcedTerminateElement2 = elements18.getLength() > 0 ? ((Element)elements18.item(0)) : null;
+            Element isForcedTerminateElement2 = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
             if (isForcedTerminateElement2 != null && (isForcedTerminateElement2.getTextContent() != null && isForcedTerminateElement2.getTextContent().isEmpty() != true) == false)
             {
                 boolean isForcedTerminateInstance;
@@ -486,7 +490,7 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -599,7 +603,7 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -619,11 +623,11 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
         Document responseDoc = documentBuilder.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagName("ServiceResource");
-        Element serviceResourceElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element serviceResourceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (serviceResourceElement != null)
         {
             NodeList elements2 = serviceResourceElement.getElementsByTagName("Name");
-            Element nameElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+            Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
             if (nameElement != null)
             {
                 String nameInstance;
@@ -632,7 +636,7 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
             }
             
             NodeList elements3 = serviceResourceElement.getElementsByTagName("State");
-            Element stateElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
+            Element stateElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
             if (stateElement != null)
             {
                 String stateInstance;
@@ -641,7 +645,7 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
             }
             
             NodeList elements4 = serviceResourceElement.getElementsByTagName("SourceServerName");
-            Element sourceServerNameElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
+            Element sourceServerNameElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
             if (sourceServerNameElement != null)
             {
                 String sourceServerNameInstance;
@@ -650,7 +654,7 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
             }
             
             NodeList elements5 = serviceResourceElement.getElementsByTagName("SourceDatabaseName");
-            Element sourceDatabaseNameElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
+            Element sourceDatabaseNameElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
             if (sourceDatabaseNameElement != null)
             {
                 String sourceDatabaseNameInstance;
@@ -659,7 +663,7 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
             }
             
             NodeList elements6 = serviceResourceElement.getElementsByTagName("DestinationServerName");
-            Element destinationServerNameElement = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
+            Element destinationServerNameElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
             if (destinationServerNameElement != null)
             {
                 String destinationServerNameInstance;
@@ -668,7 +672,7 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
             }
             
             NodeList elements7 = serviceResourceElement.getElementsByTagName("DestinationDatabaseName");
-            Element destinationDatabaseNameElement = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
+            Element destinationDatabaseNameElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
             if (destinationDatabaseNameElement != null)
             {
                 String destinationDatabaseNameInstance;
@@ -677,7 +681,7 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
             }
             
             NodeList elements8 = serviceResourceElement.getElementsByTagName("MaxLagInMinutes");
-            Element maxLagInMinutesElement = elements8.getLength() > 0 ? ((Element)elements8.item(0)) : null;
+            Element maxLagInMinutesElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
             if (maxLagInMinutesElement != null && (maxLagInMinutesElement.getTextContent() != null && maxLagInMinutesElement.getTextContent().isEmpty() != true) == false)
             {
                 int maxLagInMinutesInstance;
@@ -686,7 +690,7 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
             }
             
             NodeList elements9 = serviceResourceElement.getElementsByTagName("IsContinuous");
-            Element isContinuousElement = elements9.getLength() > 0 ? ((Element)elements9.item(0)) : null;
+            Element isContinuousElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
             if (isContinuousElement != null)
             {
                 boolean isContinuousInstance;
@@ -695,7 +699,7 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
             }
             
             NodeList elements10 = serviceResourceElement.getElementsByTagName("ReplicationState");
-            Element replicationStateElement = elements10.getLength() > 0 ? ((Element)elements10.item(0)) : null;
+            Element replicationStateElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
             if (replicationStateElement != null)
             {
                 byte replicationStateInstance;
@@ -704,7 +708,7 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
             }
             
             NodeList elements11 = serviceResourceElement.getElementsByTagName("ReplicationStateDescription");
-            Element replicationStateDescriptionElement = elements11.getLength() > 0 ? ((Element)elements11.item(0)) : null;
+            Element replicationStateDescriptionElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
             if (replicationStateDescriptionElement != null)
             {
                 String replicationStateDescriptionInstance;
@@ -713,7 +717,7 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
             }
             
             NodeList elements12 = serviceResourceElement.getElementsByTagName("LocalDatabaseId");
-            Element localDatabaseIdElement = elements12.getLength() > 0 ? ((Element)elements12.item(0)) : null;
+            Element localDatabaseIdElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
             if (localDatabaseIdElement != null)
             {
                 int localDatabaseIdInstance;
@@ -722,7 +726,7 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
             }
             
             NodeList elements13 = serviceResourceElement.getElementsByTagName("IsLocalDatabaseReplicationTarget");
-            Element isLocalDatabaseReplicationTargetElement = elements13.getLength() > 0 ? ((Element)elements13.item(0)) : null;
+            Element isLocalDatabaseReplicationTargetElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
             if (isLocalDatabaseReplicationTargetElement != null)
             {
                 boolean isLocalDatabaseReplicationTargetInstance;
@@ -731,7 +735,7 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
             }
             
             NodeList elements14 = serviceResourceElement.getElementsByTagName("IsInterlinkConnected");
-            Element isInterlinkConnectedElement = elements14.getLength() > 0 ? ((Element)elements14.item(0)) : null;
+            Element isInterlinkConnectedElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
             if (isInterlinkConnectedElement != null)
             {
                 boolean isInterlinkConnectedInstance;
@@ -740,19 +744,19 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
             }
             
             NodeList elements15 = serviceResourceElement.getElementsByTagName("TextStartDate");
-            Element textStartDateElement = elements15.getLength() > 0 ? ((Element)elements15.item(0)) : null;
+            Element textStartDateElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
             if (textStartDateElement != null)
             {
             }
             
             NodeList elements16 = serviceResourceElement.getElementsByTagName("TextModifyDate");
-            Element textModifyDateElement = elements16.getLength() > 0 ? ((Element)elements16.item(0)) : null;
+            Element textModifyDateElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
             if (textModifyDateElement != null)
             {
             }
             
             NodeList elements17 = serviceResourceElement.getElementsByTagName("PercentComplete");
-            Element percentCompleteElement = elements17.getLength() > 0 ? ((Element)elements17.item(0)) : null;
+            Element percentCompleteElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
             if (percentCompleteElement != null && (percentCompleteElement.getTextContent() != null && percentCompleteElement.getTextContent().isEmpty() != true) == false)
             {
                 float percentCompleteInstance;
@@ -761,7 +765,7 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
             }
             
             NodeList elements18 = serviceResourceElement.getElementsByTagName("IsForcedTerminate");
-            Element isForcedTerminateElement = elements18.getLength() > 0 ? ((Element)elements18.item(0)) : null;
+            Element isForcedTerminateElement = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
             if (isForcedTerminateElement != null && (isForcedTerminateElement.getTextContent() != null && isForcedTerminateElement.getTextContent().isEmpty() != true) == false)
             {
                 boolean isForcedTerminateInstance;
@@ -855,7 +859,7 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -875,17 +879,17 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
         Document responseDoc = documentBuilder.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagName("ServiceResources");
-        Element serviceResourcesSequenceElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element serviceResourcesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (serviceResourcesSequenceElement != null)
         {
             for (int i1 = 0; i1 < serviceResourcesSequenceElement.getElementsByTagName("ServiceResource").getLength(); i1 = i1 + 1)
             {
-                org.w3c.dom.Element serviceResourcesElement = ((org.w3c.dom.Element)serviceResourcesSequenceElement.getElementsByTagName("ServiceResource").item(i1));
+                org.w3c.dom.Element serviceResourcesElement = ((org.w3c.dom.Element) serviceResourcesSequenceElement.getElementsByTagName("ServiceResource").item(i1));
                 DatabaseCopyResponse serviceResourceInstance = new DatabaseCopyResponse();
                 result.getDatabaseCopies().add(serviceResourceInstance);
                 
                 NodeList elements2 = serviceResourcesElement.getElementsByTagName("Name");
-                Element nameElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+                Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                 if (nameElement != null)
                 {
                     String nameInstance;
@@ -894,7 +898,7 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
                 }
                 
                 NodeList elements3 = serviceResourcesElement.getElementsByTagName("State");
-                Element stateElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
+                Element stateElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                 if (stateElement != null)
                 {
                     String stateInstance;
@@ -903,7 +907,7 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
                 }
                 
                 NodeList elements4 = serviceResourcesElement.getElementsByTagName("SourceServerName");
-                Element sourceServerNameElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
+                Element sourceServerNameElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                 if (sourceServerNameElement != null)
                 {
                     String sourceServerNameInstance;
@@ -912,7 +916,7 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
                 }
                 
                 NodeList elements5 = serviceResourcesElement.getElementsByTagName("SourceDatabaseName");
-                Element sourceDatabaseNameElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
+                Element sourceDatabaseNameElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                 if (sourceDatabaseNameElement != null)
                 {
                     String sourceDatabaseNameInstance;
@@ -921,7 +925,7 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
                 }
                 
                 NodeList elements6 = serviceResourcesElement.getElementsByTagName("DestinationServerName");
-                Element destinationServerNameElement = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
+                Element destinationServerNameElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                 if (destinationServerNameElement != null)
                 {
                     String destinationServerNameInstance;
@@ -930,7 +934,7 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
                 }
                 
                 NodeList elements7 = serviceResourcesElement.getElementsByTagName("DestinationDatabaseName");
-                Element destinationDatabaseNameElement = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
+                Element destinationDatabaseNameElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                 if (destinationDatabaseNameElement != null)
                 {
                     String destinationDatabaseNameInstance;
@@ -939,7 +943,7 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
                 }
                 
                 NodeList elements8 = serviceResourcesElement.getElementsByTagName("MaxLagInMinutes");
-                Element maxLagInMinutesElement = elements8.getLength() > 0 ? ((Element)elements8.item(0)) : null;
+                Element maxLagInMinutesElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
                 if (maxLagInMinutesElement != null && (maxLagInMinutesElement.getTextContent() != null && maxLagInMinutesElement.getTextContent().isEmpty() != true) == false)
                 {
                     int maxLagInMinutesInstance;
@@ -948,7 +952,7 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
                 }
                 
                 NodeList elements9 = serviceResourcesElement.getElementsByTagName("IsContinuous");
-                Element isContinuousElement = elements9.getLength() > 0 ? ((Element)elements9.item(0)) : null;
+                Element isContinuousElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
                 if (isContinuousElement != null)
                 {
                     boolean isContinuousInstance;
@@ -957,7 +961,7 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
                 }
                 
                 NodeList elements10 = serviceResourcesElement.getElementsByTagName("ReplicationState");
-                Element replicationStateElement = elements10.getLength() > 0 ? ((Element)elements10.item(0)) : null;
+                Element replicationStateElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
                 if (replicationStateElement != null)
                 {
                     byte replicationStateInstance;
@@ -966,7 +970,7 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
                 }
                 
                 NodeList elements11 = serviceResourcesElement.getElementsByTagName("ReplicationStateDescription");
-                Element replicationStateDescriptionElement = elements11.getLength() > 0 ? ((Element)elements11.item(0)) : null;
+                Element replicationStateDescriptionElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
                 if (replicationStateDescriptionElement != null)
                 {
                     String replicationStateDescriptionInstance;
@@ -975,7 +979,7 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
                 }
                 
                 NodeList elements12 = serviceResourcesElement.getElementsByTagName("LocalDatabaseId");
-                Element localDatabaseIdElement = elements12.getLength() > 0 ? ((Element)elements12.item(0)) : null;
+                Element localDatabaseIdElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
                 if (localDatabaseIdElement != null)
                 {
                     int localDatabaseIdInstance;
@@ -984,7 +988,7 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
                 }
                 
                 NodeList elements13 = serviceResourcesElement.getElementsByTagName("IsLocalDatabaseReplicationTarget");
-                Element isLocalDatabaseReplicationTargetElement = elements13.getLength() > 0 ? ((Element)elements13.item(0)) : null;
+                Element isLocalDatabaseReplicationTargetElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
                 if (isLocalDatabaseReplicationTargetElement != null)
                 {
                     boolean isLocalDatabaseReplicationTargetInstance;
@@ -993,7 +997,7 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
                 }
                 
                 NodeList elements14 = serviceResourcesElement.getElementsByTagName("IsInterlinkConnected");
-                Element isInterlinkConnectedElement = elements14.getLength() > 0 ? ((Element)elements14.item(0)) : null;
+                Element isInterlinkConnectedElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
                 if (isInterlinkConnectedElement != null)
                 {
                     boolean isInterlinkConnectedInstance;
@@ -1002,19 +1006,19 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
                 }
                 
                 NodeList elements15 = serviceResourcesElement.getElementsByTagName("TextStartDate");
-                Element textStartDateElement = elements15.getLength() > 0 ? ((Element)elements15.item(0)) : null;
+                Element textStartDateElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
                 if (textStartDateElement != null)
                 {
                 }
                 
                 NodeList elements16 = serviceResourcesElement.getElementsByTagName("TextModifyDate");
-                Element textModifyDateElement = elements16.getLength() > 0 ? ((Element)elements16.item(0)) : null;
+                Element textModifyDateElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
                 if (textModifyDateElement != null)
                 {
                 }
                 
                 NodeList elements17 = serviceResourcesElement.getElementsByTagName("PercentComplete");
-                Element percentCompleteElement = elements17.getLength() > 0 ? ((Element)elements17.item(0)) : null;
+                Element percentCompleteElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
                 if (percentCompleteElement != null && (percentCompleteElement.getTextContent() != null && percentCompleteElement.getTextContent().isEmpty() != true) == false)
                 {
                     float percentCompleteInstance;
@@ -1023,7 +1027,7 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
                 }
                 
                 NodeList elements18 = serviceResourcesElement.getElementsByTagName("IsForcedTerminate");
-                Element isForcedTerminateElement = elements18.getLength() > 0 ? ((Element)elements18.item(0)) : null;
+                Element isForcedTerminateElement = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
                 if (isForcedTerminateElement != null && (isForcedTerminateElement.getTextContent() != null && isForcedTerminateElement.getTextContent().isEmpty() != true) == false)
                 {
                     boolean isForcedTerminateInstance;
@@ -1155,17 +1159,17 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
             serviceResourceElement.appendChild(maxLagInMinutesElement);
         }
         
-        if (parameters.getIsContinuous() != null)
+        if (parameters.isContinuous() != null)
         {
             Element isContinuousElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IsContinuous");
-            isContinuousElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.getIsContinuous()).toLowerCase()));
+            isContinuousElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.isContinuous()).toLowerCase()));
             serviceResourceElement.appendChild(isContinuousElement);
         }
         
-        if (parameters.getIsForcedTerminate() != null)
+        if (parameters.isForcedTerminate() != null)
         {
             Element isForcedTerminateElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IsForcedTerminate");
-            isForcedTerminateElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.getIsForcedTerminate()).toLowerCase()));
+            isForcedTerminateElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.isForcedTerminate()).toLowerCase()));
             serviceResourceElement.appendChild(isForcedTerminateElement);
         }
         
@@ -1192,7 +1196,7 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -1212,11 +1216,11 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
         Document responseDoc = documentBuilder2.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagName("ServiceResource");
-        Element serviceResourceElement2 = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element serviceResourceElement2 = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (serviceResourceElement2 != null)
         {
             NodeList elements2 = serviceResourceElement2.getElementsByTagName("Name");
-            Element nameElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+            Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
             if (nameElement != null)
             {
                 String nameInstance;
@@ -1225,7 +1229,7 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
             }
             
             NodeList elements3 = serviceResourceElement2.getElementsByTagName("State");
-            Element stateElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
+            Element stateElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
             if (stateElement != null)
             {
                 String stateInstance;
@@ -1234,7 +1238,7 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
             }
             
             NodeList elements4 = serviceResourceElement2.getElementsByTagName("SourceServerName");
-            Element sourceServerNameElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
+            Element sourceServerNameElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
             if (sourceServerNameElement != null)
             {
                 String sourceServerNameInstance;
@@ -1243,7 +1247,7 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
             }
             
             NodeList elements5 = serviceResourceElement2.getElementsByTagName("SourceDatabaseName");
-            Element sourceDatabaseNameElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
+            Element sourceDatabaseNameElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
             if (sourceDatabaseNameElement != null)
             {
                 String sourceDatabaseNameInstance;
@@ -1252,7 +1256,7 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
             }
             
             NodeList elements6 = serviceResourceElement2.getElementsByTagName("DestinationServerName");
-            Element destinationServerNameElement = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
+            Element destinationServerNameElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
             if (destinationServerNameElement != null)
             {
                 String destinationServerNameInstance;
@@ -1261,7 +1265,7 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
             }
             
             NodeList elements7 = serviceResourceElement2.getElementsByTagName("DestinationDatabaseName");
-            Element destinationDatabaseNameElement = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
+            Element destinationDatabaseNameElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
             if (destinationDatabaseNameElement != null)
             {
                 String destinationDatabaseNameInstance;
@@ -1270,7 +1274,7 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
             }
             
             NodeList elements8 = serviceResourceElement2.getElementsByTagName("MaxLagInMinutes");
-            Element maxLagInMinutesElement2 = elements8.getLength() > 0 ? ((Element)elements8.item(0)) : null;
+            Element maxLagInMinutesElement2 = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
             if (maxLagInMinutesElement2 != null && (maxLagInMinutesElement2.getTextContent() != null && maxLagInMinutesElement2.getTextContent().isEmpty() != true) == false)
             {
                 int maxLagInMinutesInstance;
@@ -1279,7 +1283,7 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
             }
             
             NodeList elements9 = serviceResourceElement2.getElementsByTagName("IsContinuous");
-            Element isContinuousElement2 = elements9.getLength() > 0 ? ((Element)elements9.item(0)) : null;
+            Element isContinuousElement2 = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
             if (isContinuousElement2 != null)
             {
                 boolean isContinuousInstance;
@@ -1288,7 +1292,7 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
             }
             
             NodeList elements10 = serviceResourceElement2.getElementsByTagName("ReplicationState");
-            Element replicationStateElement = elements10.getLength() > 0 ? ((Element)elements10.item(0)) : null;
+            Element replicationStateElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
             if (replicationStateElement != null)
             {
                 byte replicationStateInstance;
@@ -1297,7 +1301,7 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
             }
             
             NodeList elements11 = serviceResourceElement2.getElementsByTagName("ReplicationStateDescription");
-            Element replicationStateDescriptionElement = elements11.getLength() > 0 ? ((Element)elements11.item(0)) : null;
+            Element replicationStateDescriptionElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
             if (replicationStateDescriptionElement != null)
             {
                 String replicationStateDescriptionInstance;
@@ -1306,7 +1310,7 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
             }
             
             NodeList elements12 = serviceResourceElement2.getElementsByTagName("LocalDatabaseId");
-            Element localDatabaseIdElement = elements12.getLength() > 0 ? ((Element)elements12.item(0)) : null;
+            Element localDatabaseIdElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
             if (localDatabaseIdElement != null)
             {
                 int localDatabaseIdInstance;
@@ -1315,7 +1319,7 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
             }
             
             NodeList elements13 = serviceResourceElement2.getElementsByTagName("IsLocalDatabaseReplicationTarget");
-            Element isLocalDatabaseReplicationTargetElement = elements13.getLength() > 0 ? ((Element)elements13.item(0)) : null;
+            Element isLocalDatabaseReplicationTargetElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
             if (isLocalDatabaseReplicationTargetElement != null)
             {
                 boolean isLocalDatabaseReplicationTargetInstance;
@@ -1324,7 +1328,7 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
             }
             
             NodeList elements14 = serviceResourceElement2.getElementsByTagName("IsInterlinkConnected");
-            Element isInterlinkConnectedElement = elements14.getLength() > 0 ? ((Element)elements14.item(0)) : null;
+            Element isInterlinkConnectedElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
             if (isInterlinkConnectedElement != null)
             {
                 boolean isInterlinkConnectedInstance;
@@ -1333,19 +1337,19 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
             }
             
             NodeList elements15 = serviceResourceElement2.getElementsByTagName("TextStartDate");
-            Element textStartDateElement = elements15.getLength() > 0 ? ((Element)elements15.item(0)) : null;
+            Element textStartDateElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
             if (textStartDateElement != null)
             {
             }
             
             NodeList elements16 = serviceResourceElement2.getElementsByTagName("TextModifyDate");
-            Element textModifyDateElement = elements16.getLength() > 0 ? ((Element)elements16.item(0)) : null;
+            Element textModifyDateElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
             if (textModifyDateElement != null)
             {
             }
             
             NodeList elements17 = serviceResourceElement2.getElementsByTagName("PercentComplete");
-            Element percentCompleteElement = elements17.getLength() > 0 ? ((Element)elements17.item(0)) : null;
+            Element percentCompleteElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
             if (percentCompleteElement != null && (percentCompleteElement.getTextContent() != null && percentCompleteElement.getTextContent().isEmpty() != true) == false)
             {
                 float percentCompleteInstance;
@@ -1354,7 +1358,7 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
             }
             
             NodeList elements18 = serviceResourceElement2.getElementsByTagName("IsForcedTerminate");
-            Element isForcedTerminateElement2 = elements18.getLength() > 0 ? ((Element)elements18.item(0)) : null;
+            Element isForcedTerminateElement2 = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
             if (isForcedTerminateElement2 != null && (isForcedTerminateElement2.getTextContent() != null && isForcedTerminateElement2.getTextContent().isEmpty() != true) == false)
             {
                 boolean isForcedTerminateInstance;

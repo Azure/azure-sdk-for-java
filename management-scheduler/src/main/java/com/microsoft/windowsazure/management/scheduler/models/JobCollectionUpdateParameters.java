@@ -34,37 +34,55 @@ public class JobCollectionUpdateParameters
     * The ETag of the job collection to update.  The update will fail ifthe
     * ETag doesn't match.
     */
-    public String getETag() { return this.eTag; }
+    public String getETag()
+    {
+        return this.eTag;
+    }
     
     /**
     * The ETag of the job collection to update.  The update will fail ifthe
     * ETag doesn't match.
     */
-    public void setETag(String eTag) { this.eTag = eTag; }
+    public void setETag(String eTag)
+    {
+        this.eTag = eTag;
+    }
     
     private JobCollectionIntrinsicSettings intrinsicSettings;
     
     /**
     * Intrinsic settings for the scheduler job collections.
     */
-    public JobCollectionIntrinsicSettings getIntrinsicSettings() { return this.intrinsicSettings; }
+    public JobCollectionIntrinsicSettings getIntrinsicSettings()
+    {
+        return this.intrinsicSettings;
+    }
     
     /**
     * Intrinsic settings for the scheduler job collections.
     */
-    public void setIntrinsicSettings(JobCollectionIntrinsicSettings intrinsicSettings) { this.intrinsicSettings = intrinsicSettings; }
+    public void setIntrinsicSettings(JobCollectionIntrinsicSettings intrinsicSettings)
+    {
+        this.intrinsicSettings = intrinsicSettings;
+    }
     
     private String label;
     
     /**
     * Label for the resource.
     */
-    public String getLabel() { return this.label; }
+    public String getLabel()
+    {
+        return this.label;
+    }
     
     /**
     * Label for the resource.
     */
-    public void setLabel(String label) { this.label = label; }
+    public void setLabel(String label)
+    {
+        this.label = label;
+    }
     
     private String schemaVersion;
     
@@ -73,20 +91,18 @@ public class JobCollectionUpdateParameters
     * specified, you must conform to the contract resource version you
     * registered as default.
     */
-    public String getSchemaVersion() { return this.schemaVersion; }
+    public String getSchemaVersion()
+    {
+        return this.schemaVersion;
+    }
     
     /**
     * The version of the Intrinsic Properties for your Resource. If not
     * specified, you must conform to the contract resource version you
     * registered as default.
     */
-    public void setSchemaVersion(String schemaVersion) { this.schemaVersion = schemaVersion; }
-    
-    /**
-    * Initializes a new instance of the JobCollectionUpdateParameters class.
-    *
-    */
-    public JobCollectionUpdateParameters()
+    public void setSchemaVersion(String schemaVersion)
     {
+        this.schemaVersion = schemaVersion;
     }
 }

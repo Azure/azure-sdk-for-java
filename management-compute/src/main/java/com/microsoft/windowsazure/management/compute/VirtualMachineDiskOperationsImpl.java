@@ -62,6 +62,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
@@ -95,7 +96,10 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
     * Gets a reference to the
     * microsoft.windowsazure.management.compute.ComputeManagementClientImpl.
     */
-    public ComputeManagementClientImpl getClient() { return this.client; }
+    public ComputeManagementClientImpl getClient()
+    {
+        return this.client;
+    }
     
     /**
     * The Delete Data Disk operation removes the specified data disk from a
@@ -175,7 +179,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "/roles/" + roleName + "/DataDisks/" + logicalUnitNumber + "?";
         if (deleteFromStorage == true)
         {
-            url = url + "&comp=" + URLEncoder.encode("media");
+            url = url + "&comp=" + URLEncoder.encode("media", "UTF-8");
         }
         
         // Create HTTP transport objects
@@ -196,7 +200,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
+        if (statusCode != HttpStatus.SC_ACCEPTED)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -413,7 +417,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 201)
+        if (statusCode != HttpStatus.SC_CREATED)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -564,7 +568,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -584,11 +588,11 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         Document responseDoc = documentBuilder2.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagName("Disk");
-        Element diskElement2 = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element diskElement2 = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (diskElement2 != null)
         {
             NodeList elements2 = diskElement2.getElementsByTagName("OS");
-            Element osElement2 = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+            Element osElement2 = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
             if (osElement2 != null)
             {
                 String osInstance;
@@ -597,7 +601,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             }
             
             NodeList elements3 = diskElement2.getElementsByTagName("Label");
-            Element labelElement2 = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
+            Element labelElement2 = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
             if (labelElement2 != null)
             {
                 String labelInstance;
@@ -606,7 +610,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             }
             
             NodeList elements4 = diskElement2.getElementsByTagName("AffinityGroup");
-            Element affinityGroupElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
+            Element affinityGroupElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
             if (affinityGroupElement != null)
             {
                 String affinityGroupInstance;
@@ -615,7 +619,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             }
             
             NodeList elements5 = diskElement2.getElementsByTagName("Location");
-            Element locationElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
+            Element locationElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
             if (locationElement != null)
             {
                 String locationInstance;
@@ -624,7 +628,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             }
             
             NodeList elements6 = diskElement2.getElementsByTagName("LogicalDiskSizeInGB");
-            Element logicalDiskSizeInGBElement = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
+            Element logicalDiskSizeInGBElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
             if (logicalDiskSizeInGBElement != null)
             {
                 double logicalDiskSizeInGBInstance;
@@ -633,7 +637,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             }
             
             NodeList elements7 = diskElement2.getElementsByTagName("MediaLink");
-            Element mediaLinkElement2 = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
+            Element mediaLinkElement2 = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
             if (mediaLinkElement2 != null)
             {
                 URI mediaLinkInstance;
@@ -642,7 +646,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             }
             
             NodeList elements8 = diskElement2.getElementsByTagName("Name");
-            Element nameElement2 = elements8.getLength() > 0 ? ((Element)elements8.item(0)) : null;
+            Element nameElement2 = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
             if (nameElement2 != null)
             {
                 String nameInstance;
@@ -651,7 +655,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             }
             
             NodeList elements9 = diskElement2.getElementsByTagName("SourceImageName");
-            Element sourceImageNameElement = elements9.getLength() > 0 ? ((Element)elements9.item(0)) : null;
+            Element sourceImageNameElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
             if (sourceImageNameElement != null)
             {
                 String sourceImageNameInstance;
@@ -660,14 +664,14 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             }
             
             NodeList elements10 = diskElement2.getElementsByTagName("AttachedTo");
-            Element attachedToElement = elements10.getLength() > 0 ? ((Element)elements10.item(0)) : null;
+            Element attachedToElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
             if (attachedToElement != null)
             {
                 VirtualMachineDiskCreateDiskResponse.VirtualMachineDiskUsageDetails attachedToInstance = new VirtualMachineDiskCreateDiskResponse.VirtualMachineDiskUsageDetails();
                 result.setUsageDetails(attachedToInstance);
                 
                 NodeList elements11 = attachedToElement.getElementsByTagName("HostedServiceName");
-                Element hostedServiceNameElement = elements11.getLength() > 0 ? ((Element)elements11.item(0)) : null;
+                Element hostedServiceNameElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
                 if (hostedServiceNameElement != null)
                 {
                     String hostedServiceNameInstance;
@@ -676,7 +680,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 }
                 
                 NodeList elements12 = attachedToElement.getElementsByTagName("DeploymentName");
-                Element deploymentNameElement = elements12.getLength() > 0 ? ((Element)elements12.item(0)) : null;
+                Element deploymentNameElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
                 if (deploymentNameElement != null)
                 {
                     String deploymentNameInstance;
@@ -685,7 +689,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 }
                 
                 NodeList elements13 = attachedToElement.getElementsByTagName("RoleName");
-                Element roleNameElement = elements13.getLength() > 0 ? ((Element)elements13.item(0)) : null;
+                Element roleNameElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
                 if (roleNameElement != null)
                 {
                     String roleNameInstance;
@@ -695,7 +699,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             }
             
             NodeList elements14 = diskElement2.getElementsByTagName("IsPremium");
-            Element isPremiumElement = elements14.getLength() > 0 ? ((Element)elements14.item(0)) : null;
+            Element isPremiumElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
             if (isPremiumElement != null && (isPremiumElement.getTextContent() != null && isPremiumElement.getTextContent().isEmpty() != true) == false)
             {
                 boolean isPremiumInstance;
@@ -814,14 +818,26 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;
@@ -896,7 +912,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/disks/" + diskName + "?";
         if (deleteFromStorage == true)
         {
-            url = url + "&comp=" + URLEncoder.encode("media");
+            url = url + "&comp=" + URLEncoder.encode("media", "UTF-8");
         }
         
         // Create HTTP transport objects
@@ -917,7 +933,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -1031,7 +1047,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -1051,11 +1067,11 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         Document responseDoc = documentBuilder.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagName("DataVirtualHardDisk");
-        Element dataVirtualHardDiskElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element dataVirtualHardDiskElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (dataVirtualHardDiskElement != null)
         {
             NodeList elements2 = dataVirtualHardDiskElement.getElementsByTagName("HostCaching");
-            Element hostCachingElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+            Element hostCachingElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
             if (hostCachingElement != null)
             {
                 VirtualHardDiskHostCaching hostCachingInstance;
@@ -1064,7 +1080,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             }
             
             NodeList elements3 = dataVirtualHardDiskElement.getElementsByTagName("DiskLabel");
-            Element diskLabelElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
+            Element diskLabelElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
             if (diskLabelElement != null)
             {
                 String diskLabelInstance;
@@ -1073,7 +1089,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             }
             
             NodeList elements4 = dataVirtualHardDiskElement.getElementsByTagName("DiskName");
-            Element diskNameElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
+            Element diskNameElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
             if (diskNameElement != null)
             {
                 String diskNameInstance;
@@ -1082,7 +1098,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             }
             
             NodeList elements5 = dataVirtualHardDiskElement.getElementsByTagName("Lun");
-            Element lunElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
+            Element lunElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
             if (lunElement != null && (lunElement.getTextContent() != null && lunElement.getTextContent().isEmpty() != true) == false)
             {
                 int lunInstance;
@@ -1091,7 +1107,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             }
             
             NodeList elements6 = dataVirtualHardDiskElement.getElementsByTagName("LogicalDiskSizeInGB");
-            Element logicalDiskSizeInGBElement = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
+            Element logicalDiskSizeInGBElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
             if (logicalDiskSizeInGBElement != null)
             {
                 double logicalDiskSizeInGBInstance;
@@ -1100,7 +1116,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             }
             
             NodeList elements7 = dataVirtualHardDiskElement.getElementsByTagName("MediaLink");
-            Element mediaLinkElement = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
+            Element mediaLinkElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
             if (mediaLinkElement != null)
             {
                 URI mediaLinkInstance;
@@ -1193,7 +1209,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -1213,11 +1229,11 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         Document responseDoc = documentBuilder.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagName("Disk");
-        Element diskElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element diskElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (diskElement != null)
         {
             NodeList elements2 = diskElement.getElementsByTagName("AffinityGroup");
-            Element affinityGroupElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+            Element affinityGroupElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
             if (affinityGroupElement != null)
             {
                 String affinityGroupInstance;
@@ -1226,7 +1242,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             }
             
             NodeList elements3 = diskElement.getElementsByTagName("Location");
-            Element locationElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
+            Element locationElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
             if (locationElement != null)
             {
                 String locationInstance;
@@ -1235,7 +1251,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             }
             
             NodeList elements4 = diskElement.getElementsByTagName("Label");
-            Element labelElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
+            Element labelElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
             if (labelElement != null)
             {
                 String labelInstance;
@@ -1244,7 +1260,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             }
             
             NodeList elements5 = diskElement.getElementsByTagName("LogicalDiskSizeInGB");
-            Element logicalDiskSizeInGBElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
+            Element logicalDiskSizeInGBElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
             if (logicalDiskSizeInGBElement != null)
             {
                 double logicalDiskSizeInGBInstance;
@@ -1253,7 +1269,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             }
             
             NodeList elements6 = diskElement.getElementsByTagName("MediaLink");
-            Element mediaLinkElement = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
+            Element mediaLinkElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
             if (mediaLinkElement != null)
             {
                 URI mediaLinkInstance;
@@ -1262,7 +1278,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             }
             
             NodeList elements7 = diskElement.getElementsByTagName("Name");
-            Element nameElement = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
+            Element nameElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
             if (nameElement != null)
             {
                 String nameInstance;
@@ -1271,7 +1287,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             }
             
             NodeList elements8 = diskElement.getElementsByTagName("OS");
-            Element osElement = elements8.getLength() > 0 ? ((Element)elements8.item(0)) : null;
+            Element osElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
             if (osElement != null)
             {
                 String osInstance;
@@ -1280,7 +1296,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             }
             
             NodeList elements9 = diskElement.getElementsByTagName("SourceImageName");
-            Element sourceImageNameElement = elements9.getLength() > 0 ? ((Element)elements9.item(0)) : null;
+            Element sourceImageNameElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
             if (sourceImageNameElement != null)
             {
                 String sourceImageNameInstance;
@@ -1289,14 +1305,14 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             }
             
             NodeList elements10 = diskElement.getElementsByTagName("AttachedTo");
-            Element attachedToElement = elements10.getLength() > 0 ? ((Element)elements10.item(0)) : null;
+            Element attachedToElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
             if (attachedToElement != null)
             {
                 VirtualMachineDiskGetDiskResponse.VirtualMachineDiskUsageDetails attachedToInstance = new VirtualMachineDiskGetDiskResponse.VirtualMachineDiskUsageDetails();
                 result.setUsageDetails(attachedToInstance);
                 
                 NodeList elements11 = attachedToElement.getElementsByTagName("HostedServiceName");
-                Element hostedServiceNameElement = elements11.getLength() > 0 ? ((Element)elements11.item(0)) : null;
+                Element hostedServiceNameElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
                 if (hostedServiceNameElement != null)
                 {
                     String hostedServiceNameInstance;
@@ -1305,7 +1321,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 }
                 
                 NodeList elements12 = attachedToElement.getElementsByTagName("DeploymentName");
-                Element deploymentNameElement = elements12.getLength() > 0 ? ((Element)elements12.item(0)) : null;
+                Element deploymentNameElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
                 if (deploymentNameElement != null)
                 {
                     String deploymentNameInstance;
@@ -1314,7 +1330,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 }
                 
                 NodeList elements13 = attachedToElement.getElementsByTagName("RoleName");
-                Element roleNameElement = elements13.getLength() > 0 ? ((Element)elements13.item(0)) : null;
+                Element roleNameElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
                 if (roleNameElement != null)
                 {
                     String roleNameInstance;
@@ -1324,7 +1340,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             }
             
             NodeList elements14 = diskElement.getElementsByTagName("IsCorrupted");
-            Element isCorruptedElement = elements14.getLength() > 0 ? ((Element)elements14.item(0)) : null;
+            Element isCorruptedElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
             if (isCorruptedElement != null && (isCorruptedElement.getTextContent() != null && isCorruptedElement.getTextContent().isEmpty() != true) == false)
             {
                 boolean isCorruptedInstance;
@@ -1333,7 +1349,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             }
             
             NodeList elements15 = diskElement.getElementsByTagName("IsPremium");
-            Element isPremiumElement = elements15.getLength() > 0 ? ((Element)elements15.item(0)) : null;
+            Element isPremiumElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
             if (isPremiumElement != null && (isPremiumElement.getTextContent() != null && isPremiumElement.getTextContent().isEmpty() != true) == false)
             {
                 boolean isPremiumInstance;
@@ -1419,7 +1435,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -1439,17 +1455,17 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         Document responseDoc = documentBuilder.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagName("Disks");
-        Element disksSequenceElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element disksSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (disksSequenceElement != null)
         {
             for (int i1 = 0; i1 < disksSequenceElement.getElementsByTagName("Disk").getLength(); i1 = i1 + 1)
             {
-                org.w3c.dom.Element disksElement = ((org.w3c.dom.Element)disksSequenceElement.getElementsByTagName("Disk").item(i1));
+                org.w3c.dom.Element disksElement = ((org.w3c.dom.Element) disksSequenceElement.getElementsByTagName("Disk").item(i1));
                 VirtualMachineDiskListResponse.VirtualMachineDisk diskInstance = new VirtualMachineDiskListResponse.VirtualMachineDisk();
                 result.getDisks().add(diskInstance);
                 
                 NodeList elements2 = disksElement.getElementsByTagName("AffinityGroup");
-                Element affinityGroupElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+                Element affinityGroupElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                 if (affinityGroupElement != null)
                 {
                     String affinityGroupInstance;
@@ -1458,7 +1474,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 }
                 
                 NodeList elements3 = disksElement.getElementsByTagName("Location");
-                Element locationElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
+                Element locationElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                 if (locationElement != null)
                 {
                     String locationInstance;
@@ -1467,7 +1483,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 }
                 
                 NodeList elements4 = disksElement.getElementsByTagName("Label");
-                Element labelElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
+                Element labelElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                 if (labelElement != null)
                 {
                     String labelInstance;
@@ -1476,7 +1492,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 }
                 
                 NodeList elements5 = disksElement.getElementsByTagName("LogicalDiskSizeInGB");
-                Element logicalDiskSizeInGBElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
+                Element logicalDiskSizeInGBElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                 if (logicalDiskSizeInGBElement != null)
                 {
                     double logicalDiskSizeInGBInstance;
@@ -1485,7 +1501,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 }
                 
                 NodeList elements6 = disksElement.getElementsByTagName("MediaLink");
-                Element mediaLinkElement = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
+                Element mediaLinkElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                 if (mediaLinkElement != null)
                 {
                     URI mediaLinkInstance;
@@ -1494,7 +1510,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 }
                 
                 NodeList elements7 = disksElement.getElementsByTagName("Name");
-                Element nameElement = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
+                Element nameElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                 if (nameElement != null)
                 {
                     String nameInstance;
@@ -1503,7 +1519,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 }
                 
                 NodeList elements8 = disksElement.getElementsByTagName("OS");
-                Element osElement = elements8.getLength() > 0 ? ((Element)elements8.item(0)) : null;
+                Element osElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
                 if (osElement != null)
                 {
                     String osInstance;
@@ -1512,7 +1528,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 }
                 
                 NodeList elements9 = disksElement.getElementsByTagName("SourceImageName");
-                Element sourceImageNameElement = elements9.getLength() > 0 ? ((Element)elements9.item(0)) : null;
+                Element sourceImageNameElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
                 if (sourceImageNameElement != null)
                 {
                     String sourceImageNameInstance;
@@ -1521,14 +1537,14 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 }
                 
                 NodeList elements10 = disksElement.getElementsByTagName("AttachedTo");
-                Element attachedToElement = elements10.getLength() > 0 ? ((Element)elements10.item(0)) : null;
+                Element attachedToElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
                 if (attachedToElement != null)
                 {
                     VirtualMachineDiskListResponse.VirtualMachineDiskUsageDetails attachedToInstance = new VirtualMachineDiskListResponse.VirtualMachineDiskUsageDetails();
                     diskInstance.setUsageDetails(attachedToInstance);
                     
                     NodeList elements11 = attachedToElement.getElementsByTagName("HostedServiceName");
-                    Element hostedServiceNameElement = elements11.getLength() > 0 ? ((Element)elements11.item(0)) : null;
+                    Element hostedServiceNameElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
                     if (hostedServiceNameElement != null)
                     {
                         String hostedServiceNameInstance;
@@ -1537,7 +1553,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                     }
                     
                     NodeList elements12 = attachedToElement.getElementsByTagName("DeploymentName");
-                    Element deploymentNameElement = elements12.getLength() > 0 ? ((Element)elements12.item(0)) : null;
+                    Element deploymentNameElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
                     if (deploymentNameElement != null)
                     {
                         String deploymentNameInstance;
@@ -1546,7 +1562,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                     }
                     
                     NodeList elements13 = attachedToElement.getElementsByTagName("RoleName");
-                    Element roleNameElement = elements13.getLength() > 0 ? ((Element)elements13.item(0)) : null;
+                    Element roleNameElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
                     if (roleNameElement != null)
                     {
                         String roleNameInstance;
@@ -1556,7 +1572,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 }
                 
                 NodeList elements14 = disksElement.getElementsByTagName("IsCorrupted");
-                Element isCorruptedElement = elements14.getLength() > 0 ? ((Element)elements14.item(0)) : null;
+                Element isCorruptedElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
                 if (isCorruptedElement != null && (isCorruptedElement.getTextContent() != null && isCorruptedElement.getTextContent().isEmpty() != true) == false)
                 {
                     boolean isCorruptedInstance;
@@ -1565,7 +1581,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 }
                 
                 NodeList elements15 = disksElement.getElementsByTagName("IsPremium");
-                Element isPremiumElement = elements15.getLength() > 0 ? ((Element)elements15.item(0)) : null;
+                Element isPremiumElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
                 if (isPremiumElement != null && (isPremiumElement.getTextContent() != null && isPremiumElement.getTextContent().isEmpty() != true) == false)
                 {
                     boolean isPremiumInstance;
@@ -1745,7 +1761,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -1909,7 +1925,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -1929,11 +1945,11 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         Document responseDoc = documentBuilder2.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagName("Disk");
-        Element diskElement2 = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element diskElement2 = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (diskElement2 != null)
         {
             NodeList elements2 = diskElement2.getElementsByTagName("OS");
-            Element osElement2 = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+            Element osElement2 = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
             if (osElement2 != null)
             {
                 String osInstance;
@@ -1942,7 +1958,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             }
             
             NodeList elements3 = diskElement2.getElementsByTagName("Label");
-            Element labelElement2 = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
+            Element labelElement2 = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
             if (labelElement2 != null)
             {
                 String labelInstance;
@@ -1951,7 +1967,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             }
             
             NodeList elements4 = diskElement2.getElementsByTagName("AffinityGroup");
-            Element affinityGroupElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
+            Element affinityGroupElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
             if (affinityGroupElement != null)
             {
                 String affinityGroupInstance;
@@ -1960,7 +1976,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             }
             
             NodeList elements5 = diskElement2.getElementsByTagName("Location");
-            Element locationElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
+            Element locationElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
             if (locationElement != null)
             {
                 String locationInstance;
@@ -1969,7 +1985,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             }
             
             NodeList elements6 = diskElement2.getElementsByTagName("LogicalDiskSizeInGB");
-            Element logicalDiskSizeInGBElement = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
+            Element logicalDiskSizeInGBElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
             if (logicalDiskSizeInGBElement != null)
             {
                 double logicalDiskSizeInGBInstance;
@@ -1978,7 +1994,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             }
             
             NodeList elements7 = diskElement2.getElementsByTagName("MediaLink");
-            Element mediaLinkElement2 = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
+            Element mediaLinkElement2 = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
             if (mediaLinkElement2 != null)
             {
                 URI mediaLinkInstance;
@@ -1987,7 +2003,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             }
             
             NodeList elements8 = diskElement2.getElementsByTagName("Name");
-            Element nameElement2 = elements8.getLength() > 0 ? ((Element)elements8.item(0)) : null;
+            Element nameElement2 = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
             if (nameElement2 != null)
             {
                 String nameInstance;
@@ -1996,7 +2012,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             }
             
             NodeList elements9 = diskElement2.getElementsByTagName("IsPremium");
-            Element isPremiumElement = elements9.getLength() > 0 ? ((Element)elements9.item(0)) : null;
+            Element isPremiumElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
             if (isPremiumElement != null && (isPremiumElement.getTextContent() != null && isPremiumElement.getTextContent().isEmpty() != true) == false)
             {
                 boolean isPremiumInstance;

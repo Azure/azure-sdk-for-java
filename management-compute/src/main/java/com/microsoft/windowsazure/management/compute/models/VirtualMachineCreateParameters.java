@@ -39,7 +39,10 @@ public class VirtualMachineCreateParameters
     * availability set are allocated to different nodes to maximize
     * availability.
     */
-    public String getAvailabilitySetName() { return this.availabilitySetName; }
+    public String getAvailabilitySetName()
+    {
+        return this.availabilitySetName;
+    }
     
     /**
     * Optional. Specifies the name of an availability set to which to add the
@@ -48,7 +51,10 @@ public class VirtualMachineCreateParameters
     * availability set are allocated to different nodes to maximize
     * availability.
     */
-    public void setAvailabilitySetName(String availabilitySetName) { this.availabilitySetName = availabilitySetName; }
+    public void setAvailabilitySetName(String availabilitySetName)
+    {
+        this.availabilitySetName = availabilitySetName;
+    }
     
     private ArrayList<ConfigurationSet> configurationSets;
     
@@ -56,13 +62,19 @@ public class VirtualMachineCreateParameters
     * Contains the collection of configuration sets that contain system and
     * application configuration settings.
     */
-    public ArrayList<ConfigurationSet> getConfigurationSets() { return this.configurationSets; }
+    public ArrayList<ConfigurationSet> getConfigurationSets()
+    {
+        return this.configurationSets;
+    }
     
     /**
     * Contains the collection of configuration sets that contain system and
     * application configuration settings.
     */
-    public void setConfigurationSets(ArrayList<ConfigurationSet> configurationSets) { this.configurationSets = configurationSets; }
+    public void setConfigurationSets(ArrayList<ConfigurationSet> configurationSets)
+    {
+        this.configurationSets = configurationSets;
+    }
     
     private ArrayList<DataVirtualHardDisk> dataVirtualHardDisks;
     
@@ -70,13 +82,19 @@ public class VirtualMachineCreateParameters
     * Contains the parameters Windows Azure used to create the data disk for
     * the virtual machine.
     */
-    public ArrayList<DataVirtualHardDisk> getDataVirtualHardDisks() { return this.dataVirtualHardDisks; }
+    public ArrayList<DataVirtualHardDisk> getDataVirtualHardDisks()
+    {
+        return this.dataVirtualHardDisks;
+    }
     
     /**
     * Contains the parameters Windows Azure used to create the data disk for
     * the virtual machine.
     */
-    public void setDataVirtualHardDisks(ArrayList<DataVirtualHardDisk> dataVirtualHardDisks) { this.dataVirtualHardDisks = dataVirtualHardDisks; }
+    public void setDataVirtualHardDisks(ArrayList<DataVirtualHardDisk> dataVirtualHardDisks)
+    {
+        this.dataVirtualHardDisks = dataVirtualHardDisks;
+    }
     
     private OSVirtualHardDisk oSVirtualHardDisk;
     
@@ -84,13 +102,19 @@ public class VirtualMachineCreateParameters
     * Contains the parameters Windows Azure used to create the operating system
     * disk for the virtual machine.
     */
-    public OSVirtualHardDisk getOSVirtualHardDisk() { return this.oSVirtualHardDisk; }
+    public OSVirtualHardDisk getOSVirtualHardDisk()
+    {
+        return this.oSVirtualHardDisk;
+    }
     
     /**
     * Contains the parameters Windows Azure used to create the operating system
     * disk for the virtual machine.
     */
-    public void setOSVirtualHardDisk(OSVirtualHardDisk oSVirtualHardDisk) { this.oSVirtualHardDisk = oSVirtualHardDisk; }
+    public void setOSVirtualHardDisk(OSVirtualHardDisk oSVirtualHardDisk)
+    {
+        this.oSVirtualHardDisk = oSVirtualHardDisk;
+    }
     
     private String roleName;
     
@@ -98,25 +122,37 @@ public class VirtualMachineCreateParameters
     * Required. Specifies the name for the virtual machine. The name must be
     * unique within the deployment.
     */
-    public String getRoleName() { return this.roleName; }
+    public String getRoleName()
+    {
+        return this.roleName;
+    }
     
     /**
     * Required. Specifies the name for the virtual machine. The name must be
     * unique within the deployment.
     */
-    public void setRoleName(String roleName) { this.roleName = roleName; }
+    public void setRoleName(String roleName)
+    {
+        this.roleName = roleName;
+    }
     
     private VirtualMachineRoleSize roleSize;
     
     /**
     * The size of the virtual machine.
     */
-    public VirtualMachineRoleSize getRoleSize() { return this.roleSize; }
+    public VirtualMachineRoleSize getRoleSize()
+    {
+        return this.roleSize;
+    }
     
     /**
     * The size of the virtual machine.
     */
-    public void setRoleSize(VirtualMachineRoleSize roleSize) { this.roleSize = roleSize; }
+    public void setRoleSize(VirtualMachineRoleSize roleSize)
+    {
+        this.roleSize = roleSize;
+    }
     
     /**
     * Initializes a new instance of the VirtualMachineCreateParameters class.

@@ -33,12 +33,18 @@ public class DatabaseCopyCreateParameters
     /**
     * Whether the copy should be continuous.
     */
-    public boolean getIsContinuous() { return this.isContinuous; }
+    public boolean isContinuous()
+    {
+        return this.isContinuous;
+    }
     
     /**
     * Whether the copy should be continuous.
     */
-    public void setIsContinuous(boolean isContinuous) { this.isContinuous = isContinuous; }
+    public void setIsContinuous(boolean isContinuous)
+    {
+        this.isContinuous = isContinuous;
+    }
     
     private boolean isForcedTerminate;
     
@@ -46,55 +52,71 @@ public class DatabaseCopyCreateParameters
     * Whether a Delete Database Operation will cause a forced or friendly
     * termination.
     */
-    public boolean getIsForcedTerminate() { return this.isForcedTerminate; }
+    public boolean isForcedTerminate()
+    {
+        return this.isForcedTerminate;
+    }
     
     /**
     * Whether a Delete Database Operation will cause a forced or friendly
     * termination.
     */
-    public void setIsForcedTerminate(boolean isForcedTerminate) { this.isForcedTerminate = isForcedTerminate; }
+    public void setIsForcedTerminate(boolean isForcedTerminate)
+    {
+        this.isForcedTerminate = isForcedTerminate;
+    }
     
     private Integer maxLagInMinutes;
     
     /**
     * The RPO for the continous copy operation.
     */
-    public Integer getMaxLagInMinutes() { return this.maxLagInMinutes; }
+    public Integer getMaxLagInMinutes()
+    {
+        return this.maxLagInMinutes;
+    }
     
     /**
     * The RPO for the continous copy operation.
     */
-    public void setMaxLagInMinutes(Integer maxLagInMinutes) { this.maxLagInMinutes = maxLagInMinutes; }
+    public void setMaxLagInMinutes(Integer maxLagInMinutes)
+    {
+        this.maxLagInMinutes = maxLagInMinutes;
+    }
     
     private String partnerDatabase;
     
     /**
     * The name of the destination database for the copy.
     */
-    public String getPartnerDatabase() { return this.partnerDatabase; }
+    public String getPartnerDatabase()
+    {
+        return this.partnerDatabase;
+    }
     
     /**
     * The name of the destination database for the copy.
     */
-    public void setPartnerDatabase(String partnerDatabase) { this.partnerDatabase = partnerDatabase; }
+    public void setPartnerDatabase(String partnerDatabase)
+    {
+        this.partnerDatabase = partnerDatabase;
+    }
     
     private String partnerServer;
     
     /**
     * The name of the destination server for the copy.
     */
-    public String getPartnerServer() { return this.partnerServer; }
+    public String getPartnerServer()
+    {
+        return this.partnerServer;
+    }
     
     /**
     * The name of the destination server for the copy.
     */
-    public void setPartnerServer(String partnerServer) { this.partnerServer = partnerServer; }
-    
-    /**
-    * Initializes a new instance of the DatabaseCopyCreateParameters class.
-    *
-    */
-    public DatabaseCopyCreateParameters()
+    public void setPartnerServer(String partnerServer)
     {
+        this.partnerServer = partnerServer;
     }
 }

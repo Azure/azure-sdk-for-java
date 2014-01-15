@@ -35,12 +35,18 @@ public class MetricDefinitionCollection
     /**
     * The values for the metric definitions.
     */
-    public ArrayList<MetricDefinition> getValue() { return this.value; }
+    public ArrayList<MetricDefinition> getValue()
+    {
+        return this.value;
+    }
     
     /**
     * The values for the metric definitions.
     */
-    public void setValue(ArrayList<MetricDefinition> value) { this.value = value; }
+    public void setValue(ArrayList<MetricDefinition> value)
+    {
+        this.value = value;
+    }
     
     /**
     * Initializes a new instance of the MetricDefinitionCollection class.

@@ -42,6 +42,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.w3c.dom.Document;
@@ -64,7 +65,10 @@ public class ManagementClientImpl extends ServiceClient<ManagementClient> implem
     /**
     * The URI used as the base for all Service Management requests.
     */
-    public URI getBaseUri() { return this.baseUri; }
+    public URI getBaseUri()
+    {
+        return this.baseUri;
+    }
     
     private SubscriptionCloudCredentials credentials;
     
@@ -76,7 +80,10 @@ public class ManagementClientImpl extends ServiceClient<ManagementClient> implem
     * certificates over SSL to ensure that a request made to the service is
     * secure.  No anonymous requests are allowed.
     */
-    public SubscriptionCloudCredentials getCredentials() { return this.credentials; }
+    public SubscriptionCloudCredentials getCredentials()
+    {
+        return this.credentials;
+    }
     
     private AffinityGroupOperations affinityGroups;
     
@@ -85,7 +92,10 @@ public class ManagementClientImpl extends ServiceClient<ManagementClient> implem
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460798.aspx for
     * more information)
     */
-    public AffinityGroupOperations getAffinityGroupsOperations() { return this.affinityGroups; }
+    public AffinityGroupOperations getAffinityGroupsOperations()
+    {
+        return this.affinityGroups;
+    }
     
     private LocationOperations locations;
     
@@ -95,7 +105,10 @@ public class ManagementClientImpl extends ServiceClient<ManagementClient> implem
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441299.aspx for
     * more information)
     */
-    public LocationOperations getLocationsOperations() { return this.locations; }
+    public LocationOperations getLocationsOperations()
+    {
+        return this.locations;
+    }
     
     private ManagementCertificateOperations managementCertificates;
     
@@ -106,7 +119,10 @@ public class ManagementClientImpl extends ServiceClient<ManagementClient> implem
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154124.aspx for
     * more information)
     */
-    public ManagementCertificateOperations getManagementCertificatesOperations() { return this.managementCertificates; }
+    public ManagementCertificateOperations getManagementCertificatesOperations()
+    {
+        return this.managementCertificates;
+    }
     
     private SubscriptionOperations subscriptions;
     
@@ -115,7 +131,10 @@ public class ManagementClientImpl extends ServiceClient<ManagementClient> implem
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715315.aspx for
     * more information)
     */
-    public SubscriptionOperations getSubscriptionsOperations() { return this.subscriptions; }
+    public SubscriptionOperations getSubscriptionsOperations()
+    {
+        return this.subscriptions;
+    }
     
     /**
     * Initializes a new instance of the ManagementClientImpl class.
@@ -291,7 +310,7 @@ public class ManagementClientImpl extends ServiceClient<ManagementClient> implem
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -311,11 +330,11 @@ public class ManagementClientImpl extends ServiceClient<ManagementClient> implem
         Document responseDoc = documentBuilder.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagName("Operation");
-        Element operationElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element operationElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (operationElement != null)
         {
             NodeList elements2 = operationElement.getElementsByTagName("ID");
-            Element idElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+            Element idElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
             if (idElement != null)
             {
                 String idInstance;
@@ -324,7 +343,7 @@ public class ManagementClientImpl extends ServiceClient<ManagementClient> implem
             }
             
             NodeList elements3 = operationElement.getElementsByTagName("Status");
-            Element statusElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
+            Element statusElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
             if (statusElement != null)
             {
                 OperationStatus statusInstance;
@@ -333,7 +352,7 @@ public class ManagementClientImpl extends ServiceClient<ManagementClient> implem
             }
             
             NodeList elements4 = operationElement.getElementsByTagName("HttpStatusCode");
-            Element httpStatusCodeElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
+            Element httpStatusCodeElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
             if (httpStatusCodeElement != null)
             {
                 Integer httpStatusCodeInstance;
@@ -342,14 +361,14 @@ public class ManagementClientImpl extends ServiceClient<ManagementClient> implem
             }
             
             NodeList elements5 = operationElement.getElementsByTagName("Error");
-            Element errorElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
+            Element errorElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
             if (errorElement != null)
             {
                 OperationStatusResponse.ErrorDetails errorInstance = new OperationStatusResponse.ErrorDetails();
                 result.setError(errorInstance);
                 
                 NodeList elements6 = errorElement.getElementsByTagName("Code");
-                Element codeElement = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
+                Element codeElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                 if (codeElement != null)
                 {
                     String codeInstance;
@@ -358,7 +377,7 @@ public class ManagementClientImpl extends ServiceClient<ManagementClient> implem
                 }
                 
                 NodeList elements7 = errorElement.getElementsByTagName("Message");
-                Element messageElement = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
+                Element messageElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                 if (messageElement != null)
                 {
                     String messageInstance;

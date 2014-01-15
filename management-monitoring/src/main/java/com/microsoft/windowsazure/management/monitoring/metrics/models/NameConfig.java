@@ -33,30 +33,34 @@ public class NameConfig
     /**
     * Availability metric name config display name.
     */
-    public String getDisplayName() { return this.displayName; }
+    public String getDisplayName()
+    {
+        return this.displayName;
+    }
     
     /**
     * Availability metric name config display name.
     */
-    public void setDisplayName(String displayName) { this.displayName = displayName; }
+    public void setDisplayName(String displayName)
+    {
+        this.displayName = displayName;
+    }
     
     private String name;
     
     /**
     * Availability metric name config name.
     */
-    public String getName() { return this.name; }
+    public String getName()
+    {
+        return this.name;
+    }
     
     /**
     * Availability metric name config name.
     */
-    public void setName(String name) { this.name = name; }
-    
-    /**
-    * Initializes a new instance of the NameConfig class.
-    *
-    */
-    public NameConfig()
+    public void setName(String name)
     {
+        this.name = name;
     }
 }

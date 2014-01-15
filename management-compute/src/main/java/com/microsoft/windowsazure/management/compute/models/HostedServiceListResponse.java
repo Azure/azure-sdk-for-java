@@ -38,12 +38,18 @@ public class HostedServiceListResponse extends OperationResponse implements Iter
     /**
     * The hosted services associated with your subscription.
     */
-    public ArrayList<HostedServiceListResponse.HostedService> getHostedServices() { return this.hostedServices; }
+    public ArrayList<HostedServiceListResponse.HostedService> getHostedServices()
+    {
+        return this.hostedServices;
+    }
     
     /**
     * The hosted services associated with your subscription.
     */
-    public void setHostedServices(ArrayList<HostedServiceListResponse.HostedService> hostedServices) { this.hostedServices = hostedServices; }
+    public void setHostedServices(ArrayList<HostedServiceListResponse.HostedService> hostedServices)
+    {
+        this.hostedServices = hostedServices;
+    }
     
     /**
     * Initializes a new instance of the HostedServiceListResponse class.
@@ -51,6 +57,7 @@ public class HostedServiceListResponse extends OperationResponse implements Iter
     */
     public HostedServiceListResponse()
     {
+        super();
         this.hostedServices = new ArrayList<HostedServiceListResponse.HostedService>();
     }
     
@@ -73,12 +80,18 @@ public class HostedServiceListResponse extends OperationResponse implements Iter
         /**
         * The properties that are assigned to the cloud service.
         */
-        public HostedServiceProperties getProperties() { return this.properties; }
+        public HostedServiceProperties getProperties()
+        {
+            return this.properties;
+        }
         
         /**
         * The properties that are assigned to the cloud service.
         */
-        public void setProperties(HostedServiceProperties properties) { this.properties = properties; }
+        public void setProperties(HostedServiceProperties properties)
+        {
+            this.properties = properties;
+        }
         
         private String serviceName;
         
@@ -88,7 +101,10 @@ public class HostedServiceListResponse extends OperationResponse implements Iter
         * service name is MyService you could access the cloud service by
         * calling: http://MyService.cloudapp.net
         */
-        public String getServiceName() { return this.serviceName; }
+        public String getServiceName()
+        {
+            return this.serviceName;
+        }
         
         /**
         * The name of the cloud service. This name is the DNS prefix name and
@@ -96,7 +112,10 @@ public class HostedServiceListResponse extends OperationResponse implements Iter
         * service name is MyService you could access the cloud service by
         * calling: http://MyService.cloudapp.net
         */
-        public void setServiceName(String serviceName) { this.serviceName = serviceName; }
+        public void setServiceName(String serviceName)
+        {
+            this.serviceName = serviceName;
+        }
         
         private URI uri;
         
@@ -104,20 +123,18 @@ public class HostedServiceListResponse extends OperationResponse implements Iter
         * The Service Management API request URI used to perform Get Hosted
         * Service Properties requests against the cloud service.
         */
-        public URI getUri() { return this.uri; }
+        public URI getUri()
+        {
+            return this.uri;
+        }
         
         /**
         * The Service Management API request URI used to perform Get Hosted
         * Service Properties requests against the cloud service.
         */
-        public void setUri(URI uri) { this.uri = uri; }
-        
-        /**
-        * Initializes a new instance of the HostedService class.
-        *
-        */
-        public HostedService()
+        public void setUri(URI uri)
         {
+            this.uri = uri;
         }
     }
 }

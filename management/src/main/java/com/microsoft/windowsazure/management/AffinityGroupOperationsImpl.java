@@ -53,6 +53,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
@@ -85,7 +86,10 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
     * Gets a reference to the
     * microsoft.windowsazure.management.ManagementClientImpl.
     */
-    public ManagementClientImpl getClient() { return this.client; }
+    public ManagementClientImpl getClient()
+    {
+        return this.client;
+    }
     
     /**
     * The Create Affinity Group operation creates a new affinity group for the
@@ -222,7 +226,7 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 201)
+        if (statusCode != HttpStatus.SC_CREATED)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -321,7 +325,7 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -420,7 +424,7 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -440,11 +444,11 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
         Document responseDoc = documentBuilder.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagName("AffinityGroup");
-        Element affinityGroupElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element affinityGroupElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (affinityGroupElement != null)
         {
             NodeList elements2 = affinityGroupElement.getElementsByTagName("Name");
-            Element nameElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+            Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
             if (nameElement != null)
             {
                 String nameInstance;
@@ -453,7 +457,7 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
             }
             
             NodeList elements3 = affinityGroupElement.getElementsByTagName("Label");
-            Element labelElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
+            Element labelElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
             if (labelElement != null)
             {
                 String labelInstance;
@@ -462,7 +466,7 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
             }
             
             NodeList elements4 = affinityGroupElement.getElementsByTagName("Description");
-            Element descriptionElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
+            Element descriptionElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
             if (descriptionElement != null)
             {
                 String descriptionInstance;
@@ -471,7 +475,7 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
             }
             
             NodeList elements5 = affinityGroupElement.getElementsByTagName("Location");
-            Element locationElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
+            Element locationElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
             if (locationElement != null)
             {
                 String locationInstance;
@@ -480,17 +484,17 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
             }
             
             NodeList elements6 = affinityGroupElement.getElementsByTagName("HostedServices");
-            Element hostedServicesSequenceElement = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
+            Element hostedServicesSequenceElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
             if (hostedServicesSequenceElement != null)
             {
                 for (int i1 = 0; i1 < hostedServicesSequenceElement.getElementsByTagName("HostedService").getLength(); i1 = i1 + 1)
                 {
-                    org.w3c.dom.Element hostedServicesElement = ((org.w3c.dom.Element)hostedServicesSequenceElement.getElementsByTagName("HostedService").item(i1));
+                    org.w3c.dom.Element hostedServicesElement = ((org.w3c.dom.Element) hostedServicesSequenceElement.getElementsByTagName("HostedService").item(i1));
                     AffinityGroupGetResponse.HostedServiceReference hostedServiceInstance = new AffinityGroupGetResponse.HostedServiceReference();
                     result.getHostedServices().add(hostedServiceInstance);
                     
                     NodeList elements7 = hostedServicesElement.getElementsByTagName("Url");
-                    Element urlElement = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
+                    Element urlElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                     if (urlElement != null)
                     {
                         URI urlInstance;
@@ -499,7 +503,7 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
                     }
                     
                     NodeList elements8 = hostedServicesElement.getElementsByTagName("ServiceName");
-                    Element serviceNameElement = elements8.getLength() > 0 ? ((Element)elements8.item(0)) : null;
+                    Element serviceNameElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
                     if (serviceNameElement != null)
                     {
                         String serviceNameInstance;
@@ -510,17 +514,17 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
             }
             
             NodeList elements9 = affinityGroupElement.getElementsByTagName("StorageServices");
-            Element storageServicesSequenceElement = elements9.getLength() > 0 ? ((Element)elements9.item(0)) : null;
+            Element storageServicesSequenceElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
             if (storageServicesSequenceElement != null)
             {
                 for (int i2 = 0; i2 < storageServicesSequenceElement.getElementsByTagName("StorageService").getLength(); i2 = i2 + 1)
                 {
-                    org.w3c.dom.Element storageServicesElement = ((org.w3c.dom.Element)storageServicesSequenceElement.getElementsByTagName("StorageService").item(i2));
+                    org.w3c.dom.Element storageServicesElement = ((org.w3c.dom.Element) storageServicesSequenceElement.getElementsByTagName("StorageService").item(i2));
                     AffinityGroupGetResponse.StorageServiceReference storageServiceInstance = new AffinityGroupGetResponse.StorageServiceReference();
                     result.getStorageServices().add(storageServiceInstance);
                     
                     NodeList elements10 = storageServicesElement.getElementsByTagName("Url");
-                    Element urlElement2 = elements10.getLength() > 0 ? ((Element)elements10.item(0)) : null;
+                    Element urlElement2 = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
                     if (urlElement2 != null)
                     {
                         URI urlInstance2;
@@ -529,7 +533,7 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
                     }
                     
                     NodeList elements11 = storageServicesElement.getElementsByTagName("ServiceName");
-                    Element serviceNameElement2 = elements11.getLength() > 0 ? ((Element)elements11.item(0)) : null;
+                    Element serviceNameElement2 = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
                     if (serviceNameElement2 != null)
                     {
                         String serviceNameInstance2;
@@ -540,12 +544,12 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
             }
             
             NodeList elements12 = affinityGroupElement.getElementsByTagName("Capabilities");
-            Element capabilitiesSequenceElement = elements12.getLength() > 0 ? ((Element)elements12.item(0)) : null;
+            Element capabilitiesSequenceElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
             if (capabilitiesSequenceElement != null)
             {
                 for (int i3 = 0; i3 < capabilitiesSequenceElement.getElementsByTagName("Capability").getLength(); i3 = i3 + 1)
                 {
-                    org.w3c.dom.Element capabilitiesElement = ((org.w3c.dom.Element)capabilitiesSequenceElement.getElementsByTagName("Capability").item(i3));
+                    org.w3c.dom.Element capabilitiesElement = ((org.w3c.dom.Element) capabilitiesSequenceElement.getElementsByTagName("Capability").item(i3));
                     result.getCapabilities().add(capabilitiesElement.getTextContent());
                 }
             }
@@ -628,7 +632,7 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -648,17 +652,17 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
         Document responseDoc = documentBuilder.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagName("AffinityGroups");
-        Element affinityGroupsSequenceElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element affinityGroupsSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (affinityGroupsSequenceElement != null)
         {
             for (int i1 = 0; i1 < affinityGroupsSequenceElement.getElementsByTagName("AffinityGroup").getLength(); i1 = i1 + 1)
             {
-                org.w3c.dom.Element affinityGroupsElement = ((org.w3c.dom.Element)affinityGroupsSequenceElement.getElementsByTagName("AffinityGroup").item(i1));
+                org.w3c.dom.Element affinityGroupsElement = ((org.w3c.dom.Element) affinityGroupsSequenceElement.getElementsByTagName("AffinityGroup").item(i1));
                 AffinityGroupListResponse.AffinityGroup affinityGroupInstance = new AffinityGroupListResponse.AffinityGroup();
                 result.getAffinityGroups().add(affinityGroupInstance);
                 
                 NodeList elements2 = affinityGroupsElement.getElementsByTagName("Name");
-                Element nameElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+                Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                 if (nameElement != null)
                 {
                     String nameInstance;
@@ -667,7 +671,7 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
                 }
                 
                 NodeList elements3 = affinityGroupsElement.getElementsByTagName("Label");
-                Element labelElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
+                Element labelElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                 if (labelElement != null)
                 {
                     String labelInstance;
@@ -676,7 +680,7 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
                 }
                 
                 NodeList elements4 = affinityGroupsElement.getElementsByTagName("Description");
-                Element descriptionElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
+                Element descriptionElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                 if (descriptionElement != null)
                 {
                     String descriptionInstance;
@@ -685,7 +689,7 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
                 }
                 
                 NodeList elements5 = affinityGroupsElement.getElementsByTagName("Location");
-                Element locationElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
+                Element locationElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                 if (locationElement != null)
                 {
                     String locationInstance;
@@ -694,12 +698,12 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
                 }
                 
                 NodeList elements6 = affinityGroupsElement.getElementsByTagName("Capabilities");
-                Element capabilitiesSequenceElement = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
+                Element capabilitiesSequenceElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                 if (capabilitiesSequenceElement != null)
                 {
                     for (int i2 = 0; i2 < capabilitiesSequenceElement.getElementsByTagName("Capability").getLength(); i2 = i2 + 1)
                     {
-                        org.w3c.dom.Element capabilitiesElement = ((org.w3c.dom.Element)capabilitiesSequenceElement.getElementsByTagName("Capability").item(i2));
+                        org.w3c.dom.Element capabilitiesElement = ((org.w3c.dom.Element) capabilitiesSequenceElement.getElementsByTagName("Capability").item(i2));
                         affinityGroupInstance.getCapabilities().add(capabilitiesElement.getTextContent());
                     }
                 }
@@ -845,7 +849,7 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)

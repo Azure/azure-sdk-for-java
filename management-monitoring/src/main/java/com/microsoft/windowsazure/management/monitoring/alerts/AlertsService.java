@@ -1,6 +1,6 @@
 /**
  * Copyright Microsoft Corporation
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,54 +17,64 @@ package com.microsoft.windowsazure.management.monitoring.alerts;
 import com.microsoft.windowsazure.Configuration;
 
 /**
- * 
+ *
  * Access service management functionality.
- * 
+ *
  */
-public class AlertsService {
-
-    private AlertsService() {
+public final class AlertsService
+{
+    private AlertsService()
+    {
         // class is not instantiated
     }
 
     /**
      * Creates an instance of the <code>AlertsClient</code> API.
-     * 
+     * @return An instance of the <code>AlertsClient</code>.
      */
-    public static AlertsClient create() {
+    public static AlertsClient create()
+    {
         return Configuration.getInstance().create(AlertsClient.class);
     }
 
     /**
-     * Creates an instance of the <code>AlertsClient</code> API using the specified configuration.
-     * 
-     * @param config
-     *            A <code>Configuration</code> object that represents the configuration for the service management.
-     * 
+     * Creates an instance of the <code>AlertsClient</code> API using the
+     * specified configuration.
+     *
+     * @param config A <code>Configuration</code> object that represents the
+     * configuration for the service management.
+     * @return An instance of the <code>AlertsClient</code>.
      */
-    public static AlertsClient create(Configuration config) {
+    public static AlertsClient create(final Configuration config)
+    {
         return config.create(AlertsClient.class);
     }
 
     /**
      * Creates an instance of the <code>AlertsClient</code> API.
-     * 
+     *
      * @param profile
-     *            A <code>String</code> object that representing the profile of the service management service.
-     * 
+     *            A <code>String</code> object that representing the profile of
+     * the service management service.
+     * @return An instance of the <code>AlertsClient</code>.
      */
-    public static AlertsClient create(String profile) {
+    public static AlertsClient create(final String profile)
+    {
         return Configuration.getInstance().create(profile, AlertsClient.class);
     }
 
     /**
-     * Creates an instance of the <code>AlertsClient</code> API using the specified configuration.
-     * 
-     * @param config
-     *            A <code>Configuration</code> object that represents the configuration for the service management.
-     * 
+     * Creates an instance of the <code>AlertsClient</code> API using the
+     * specified configuration.
+     *
+     * @param profile The profile.
+     * @param config A <code>Configuration</code> object that represents the
+     * configuration for the service management.
+     * @return An instance of the <code>AlertsClient</code>.
      */
-    public static AlertsClient create(String profile, Configuration config) {
+    public static AlertsClient create(final String profile,
+            final Configuration config)
+    {
         return config.create(profile, AlertsClient.class);
     }
 }

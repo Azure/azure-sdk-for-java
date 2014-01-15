@@ -39,7 +39,10 @@ public class VirtualMachineDiskUpdateDiskResponse extends OperationResponse
     * media is located. If the storage account does not belong to an affinity
     * group the value is NULL.
     */
-    public String getAffinityGroup() { return this.affinityGroup; }
+    public String getAffinityGroup()
+    {
+        return this.affinityGroup;
+    }
     
     /**
     * The affinity group in which the disk is located. The AffinityGroup value
@@ -47,31 +50,46 @@ public class VirtualMachineDiskUpdateDiskResponse extends OperationResponse
     * media is located. If the storage account does not belong to an affinity
     * group the value is NULL.
     */
-    public void setAffinityGroup(String affinityGroup) { this.affinityGroup = affinityGroup; }
+    public void setAffinityGroup(String affinityGroup)
+    {
+        this.affinityGroup = affinityGroup;
+    }
     
     private Boolean isPremium;
     
     /**
     * Specifies whether the comtained image is a premium image
     */
-    public Boolean getIsPremium() { return this.isPremium; }
+    public Boolean getIsPremium()
+    {
+        return this.isPremium;
+    }
     
     /**
     * Specifies whether the comtained image is a premium image
     */
-    public void setIsPremium(Boolean isPremium) { this.isPremium = isPremium; }
+    public void setIsPremium(Boolean isPremium)
+    {
+        this.isPremium = isPremium;
+    }
     
     private String label;
     
     /**
     * The friendly name of the disk
     */
-    public String getLabel() { return this.label; }
+    public String getLabel()
+    {
+        return this.label;
+    }
     
     /**
     * The friendly name of the disk
     */
-    public void setLabel(String label) { this.label = label; }
+    public void setLabel(String label)
+    {
+        this.label = label;
+    }
     
     private String location;
     
@@ -81,7 +99,10 @@ public class VirtualMachineDiskUpdateDiskResponse extends OperationResponse
     * located. If the storage account belongs to an affinity group the value
     * is NULL.
     */
-    public String getLocation() { return this.location; }
+    public String getLocation()
+    {
+        return this.location;
+    }
     
     /**
     * The geo-location in which the disk is located. The Location value is
@@ -89,19 +110,28 @@ public class VirtualMachineDiskUpdateDiskResponse extends OperationResponse
     * located. If the storage account belongs to an affinity group the value
     * is NULL.
     */
-    public void setLocation(String location) { this.location = location; }
+    public void setLocation(String location)
+    {
+        this.location = location;
+    }
     
     private double logicalSizeInGB;
     
     /**
     * The size, in GB, of the disk.
     */
-    public double getLogicalSizeInGB() { return this.logicalSizeInGB; }
+    public double getLogicalSizeInGB()
+    {
+        return this.logicalSizeInGB;
+    }
     
     /**
     * The size, in GB, of the disk.
     */
-    public void setLogicalSizeInGB(double logicalSizeInGB) { this.logicalSizeInGB = logicalSizeInGB; }
+    public void setLogicalSizeInGB(double logicalSizeInGB)
+    {
+        this.logicalSizeInGB = logicalSizeInGB;
+    }
     
     private URI mediaLinkUri;
     
@@ -111,7 +141,10 @@ public class VirtualMachineDiskUpdateDiskResponse extends OperationResponse
     * subscription specified by the SubscriptionId value in the operation
     * call. Example: http://example.blob.core.windows.net/disks/mydisk.vhd
     */
-    public URI getMediaLinkUri() { return this.mediaLinkUri; }
+    public URI getMediaLinkUri()
+    {
+        return this.mediaLinkUri;
+    }
     
     /**
     * The location of the blob in the blob store in which the media for the
@@ -119,7 +152,10 @@ public class VirtualMachineDiskUpdateDiskResponse extends OperationResponse
     * subscription specified by the SubscriptionId value in the operation
     * call. Example: http://example.blob.core.windows.net/disks/mydisk.vhd
     */
-    public void setMediaLinkUri(URI mediaLinkUri) { this.mediaLinkUri = mediaLinkUri; }
+    public void setMediaLinkUri(URI mediaLinkUri)
+    {
+        this.mediaLinkUri = mediaLinkUri;
+    }
     
     private String name;
     
@@ -127,32 +163,35 @@ public class VirtualMachineDiskUpdateDiskResponse extends OperationResponse
     * The name of the disk. This is the name that is used when creating one or
     * more virtual machines using the disk.
     */
-    public String getName() { return this.name; }
+    public String getName()
+    {
+        return this.name;
+    }
     
     /**
     * The name of the disk. This is the name that is used when creating one or
     * more virtual machines using the disk.
     */
-    public void setName(String name) { this.name = name; }
+    public void setName(String name)
+    {
+        this.name = name;
+    }
     
     private String operatingSystem;
     
     /**
     * The Operating System type for the disk.
     */
-    public String getOperatingSystem() { return this.operatingSystem; }
+    public String getOperatingSystem()
+    {
+        return this.operatingSystem;
+    }
     
     /**
     * The Operating System type for the disk.
     */
-    public void setOperatingSystem(String operatingSystem) { this.operatingSystem = operatingSystem; }
-    
-    /**
-    * Initializes a new instance of the VirtualMachineDiskUpdateDiskResponse
-    * class.
-    *
-    */
-    public VirtualMachineDiskUpdateDiskResponse()
+    public void setOperatingSystem(String operatingSystem)
     {
+        this.operatingSystem = operatingSystem;
     }
 }

@@ -35,18 +35,16 @@ public class WebSiteCreateResponse extends OperationResponse
     /**
     * Details of the created website.
     */
-    public WebSite getWebSite() { return this.webSite; }
+    public WebSite getWebSite()
+    {
+        return this.webSite;
+    }
     
     /**
     * Details of the created website.
     */
-    public void setWebSite(WebSite webSite) { this.webSite = webSite; }
-    
-    /**
-    * Initializes a new instance of the WebSiteCreateResponse class.
-    *
-    */
-    public WebSiteCreateResponse()
+    public void setWebSite(WebSite webSite)
     {
+        this.webSite = webSite;
     }
 }

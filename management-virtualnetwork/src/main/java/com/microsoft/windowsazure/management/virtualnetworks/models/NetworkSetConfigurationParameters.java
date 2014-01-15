@@ -33,18 +33,16 @@ public class NetworkSetConfigurationParameters
     /**
     * The network configuration for this subscription.
     */
-    public String getConfiguration() { return this.configuration; }
+    public String getConfiguration()
+    {
+        return this.configuration;
+    }
     
     /**
     * The network configuration for this subscription.
     */
-    public void setConfiguration(String configuration) { this.configuration = configuration; }
-    
-    /**
-    * Initializes a new instance of the NetworkSetConfigurationParameters class.
-    *
-    */
-    public NetworkSetConfigurationParameters()
+    public void setConfiguration(String configuration)
     {
+        this.configuration = configuration;
     }
 }

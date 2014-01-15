@@ -38,7 +38,10 @@ public class DomainJoinCredentials
     * format (user@fully-qualified-DNS-domain) or the
     * fully-qualified-DNS-domain\\username format.  Example: example.com
     */
-    public String getDomain() { return this.domain; }
+    public String getDomain()
+    {
+        return this.domain;
+    }
     
     /**
     * Optional. Specifies the name of the domain used to authenticate an
@@ -47,19 +50,28 @@ public class DomainJoinCredentials
     * format (user@fully-qualified-DNS-domain) or the
     * fully-qualified-DNS-domain\\username format.  Example: example.com
     */
-    public void setDomain(String domain) { this.domain = domain; }
+    public void setDomain(String domain)
+    {
+        this.domain = domain;
+    }
     
     private String password;
     
     /**
     * Required. Specifies the password to use to join the domain.
     */
-    public String getPassword() { return this.password; }
+    public String getPassword()
+    {
+        return this.password;
+    }
     
     /**
     * Required. Specifies the password to use to join the domain.
     */
-    public void setPassword(String password) { this.password = password; }
+    public void setPassword(String password)
+    {
+        this.password = password;
+    }
     
     private String userName;
     
@@ -67,19 +79,17 @@ public class DomainJoinCredentials
     * Required. Specifies a user name in the domain that can be used to join
     * the domain.
     */
-    public String getUserName() { return this.userName; }
+    public String getUserName()
+    {
+        return this.userName;
+    }
     
     /**
     * Required. Specifies a user name in the domain that can be used to join
     * the domain.
     */
-    public void setUserName(String userName) { this.userName = userName; }
-    
-    /**
-    * Initializes a new instance of the DomainJoinCredentials class.
-    *
-    */
-    public DomainJoinCredentials()
+    public void setUserName(String userName)
     {
+        this.userName = userName;
     }
 }

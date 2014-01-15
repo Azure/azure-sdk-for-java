@@ -37,12 +37,18 @@ public class WebSpacesListGeoRegionsResponse extends OperationResponse implement
     /**
     * The available geo regions.
     */
-    public ArrayList<WebSpacesListGeoRegionsResponse.GeoRegion> getGeoRegions() { return this.geoRegions; }
+    public ArrayList<WebSpacesListGeoRegionsResponse.GeoRegion> getGeoRegions()
+    {
+        return this.geoRegions;
+    }
     
     /**
     * The available geo regions.
     */
-    public void setGeoRegions(ArrayList<WebSpacesListGeoRegionsResponse.GeoRegion> geoRegions) { this.geoRegions = geoRegions; }
+    public void setGeoRegions(ArrayList<WebSpacesListGeoRegionsResponse.GeoRegion> geoRegions)
+    {
+        this.geoRegions = geoRegions;
+    }
     
     /**
     * Initializes a new instance of the WebSpacesListGeoRegionsResponse class.
@@ -50,6 +56,7 @@ public class WebSpacesListGeoRegionsResponse extends OperationResponse implement
     */
     public WebSpacesListGeoRegionsResponse()
     {
+        super();
         this.geoRegions = new ArrayList<WebSpacesListGeoRegionsResponse.GeoRegion>();
     }
     
@@ -72,43 +79,53 @@ public class WebSpacesListGeoRegionsResponse extends OperationResponse implement
         /**
         * Geo Region description.
         */
-        public String getDescription() { return this.description; }
+        public String getDescription()
+        {
+            return this.description;
+        }
         
         /**
         * Geo Region description.
         */
-        public void setDescription(String description) { this.description = description; }
+        public void setDescription(String description)
+        {
+            this.description = description;
+        }
         
         private String name;
         
         /**
         * Name of the region.
         */
-        public String getName() { return this.name; }
+        public String getName()
+        {
+            return this.name;
+        }
         
         /**
         * Name of the region.
         */
-        public void setName(String name) { this.name = name; }
+        public void setName(String name)
+        {
+            this.name = name;
+        }
         
         private int sortOrder;
         
         /**
         * Sort order.
         */
-        public int getSortOrder() { return this.sortOrder; }
+        public int getSortOrder()
+        {
+            return this.sortOrder;
+        }
         
         /**
         * Sort order.
         */
-        public void setSortOrder(int sortOrder) { this.sortOrder = sortOrder; }
-        
-        /**
-        * Initializes a new instance of the GeoRegion class.
-        *
-        */
-        public GeoRegion()
+        public void setSortOrder(int sortOrder)
         {
+            this.sortOrder = sortOrder;
         }
     }
 }

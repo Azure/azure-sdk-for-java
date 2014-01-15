@@ -35,36 +35,54 @@ public class Incident
     /**
     * The time at which the incident got activated.
     */
-    public Calendar getActivatedTime() { return this.activatedTime; }
+    public Calendar getActivatedTime()
+    {
+        return this.activatedTime;
+    }
     
     /**
     * The time at which the incident got activated.
     */
-    public void setActivatedTime(Calendar activatedTime) { this.activatedTime = activatedTime; }
+    public void setActivatedTime(Calendar activatedTime)
+    {
+        this.activatedTime = activatedTime;
+    }
     
     private String id;
     
     /**
     * Incident identifier.
     */
-    public String getId() { return this.id; }
+    public String getId()
+    {
+        return this.id;
+    }
     
     /**
     * Incident identifier.
     */
-    public void setId(String id) { this.id = id; }
+    public void setId(String id)
+    {
+        this.id = id;
+    }
     
     private boolean isActive;
     
     /**
     * A boolean to indicate whether the incident is active or resolved.
     */
-    public boolean getIsActive() { return this.isActive; }
+    public boolean isActive()
+    {
+        return this.isActive;
+    }
     
     /**
     * A boolean to indicate whether the incident is active or resolved.
     */
-    public void setIsActive(boolean isActive) { this.isActive = isActive; }
+    public void setIsActive(boolean isActive)
+    {
+        this.isActive = isActive;
+    }
     
     private Calendar resolvedTime;
     
@@ -72,31 +90,35 @@ public class Incident
     * The time at which the incident got resolved. If null, it means the
     * incident is still active.
     */
-    public Calendar getResolvedTime() { return this.resolvedTime; }
+    public Calendar getResolvedTime()
+    {
+        return this.resolvedTime;
+    }
     
     /**
     * The time at which the incident got resolved. If null, it means the
     * incident is still active.
     */
-    public void setResolvedTime(Calendar resolvedTime) { this.resolvedTime = resolvedTime; }
+    public void setResolvedTime(Calendar resolvedTime)
+    {
+        this.resolvedTime = resolvedTime;
+    }
     
     private String ruleId;
     
     /**
     * Rule identifier that is associated with the incident.
     */
-    public String getRuleId() { return this.ruleId; }
+    public String getRuleId()
+    {
+        return this.ruleId;
+    }
     
     /**
     * Rule identifier that is associated with the incident.
     */
-    public void setRuleId(String ruleId) { this.ruleId = ruleId; }
-    
-    /**
-    * Initializes a new instance of the Incident class.
-    *
-    */
-    public Incident()
+    public void setRuleId(String ruleId)
     {
+        this.ruleId = ruleId;
     }
 }

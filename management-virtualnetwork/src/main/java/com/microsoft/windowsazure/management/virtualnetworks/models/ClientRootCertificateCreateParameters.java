@@ -31,20 +31,17 @@ public class ClientRootCertificateCreateParameters
     * The new client root certificate to upload, represented as a hex encoded
     * string
     */
-    public String getCertificate() { return this.certificate; }
+    public String getCertificate()
+    {
+        return this.certificate;
+    }
     
     /**
     * The new client root certificate to upload, represented as a hex encoded
     * string
     */
-    public void setCertificate(String certificate) { this.certificate = certificate; }
-    
-    /**
-    * Initializes a new instance of the ClientRootCertificateCreateParameters
-    * class.
-    *
-    */
-    public ClientRootCertificateCreateParameters()
+    public void setCertificate(String certificate)
     {
+        this.certificate = certificate;
     }
 }

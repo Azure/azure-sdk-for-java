@@ -36,19 +36,17 @@ public class ServiceCertificateGetResponse extends OperationResponse
     * The public portion of the X.509 service certificate as a form of the .cer
     * file.
     */
-    public byte[] getData() { return this.data; }
+    public byte[] getData()
+    {
+        return this.data;
+    }
     
     /**
     * The public portion of the X.509 service certificate as a form of the .cer
     * file.
     */
-    public void setData(byte[] data) { this.data = data; }
-    
-    /**
-    * Initializes a new instance of the ServiceCertificateGetResponse class.
-    *
-    */
-    public ServiceCertificateGetResponse()
+    public void setData(byte[] data)
     {
+        this.data = data;
     }
 }

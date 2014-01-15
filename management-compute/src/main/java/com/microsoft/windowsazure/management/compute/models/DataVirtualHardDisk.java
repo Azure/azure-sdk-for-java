@@ -36,13 +36,19 @@ public class DataVirtualHardDisk
     * Specifies the friendly name of the VHD to use to create thedata disk for
     * the virtual machine.
     */
-    public String getDiskLabel() { return this.diskLabel; }
+    public String getDiskLabel()
+    {
+        return this.diskLabel;
+    }
     
     /**
     * Specifies the friendly name of the VHD to use to create thedata disk for
     * the virtual machine.
     */
-    public void setDiskLabel(String diskLabel) { this.diskLabel = diskLabel; }
+    public void setDiskLabel(String diskLabel)
+    {
+        this.diskLabel = diskLabel;
+    }
     
     private String diskName;
     
@@ -50,13 +56,19 @@ public class DataVirtualHardDisk
     * Specifies the name of the VHD to use to create thedata disk for the
     * virtual machine.
     */
-    public String getDiskName() { return this.diskName; }
+    public String getDiskName()
+    {
+        return this.diskName;
+    }
     
     /**
     * Specifies the name of the VHD to use to create thedata disk for the
     * virtual machine.
     */
-    public void setDiskName(String diskName) { this.diskName = diskName; }
+    public void setDiskName(String diskName)
+    {
+        this.diskName = diskName;
+    }
     
     private VirtualHardDiskHostCaching hostCaching;
     
@@ -64,13 +76,19 @@ public class DataVirtualHardDisk
     * Specifies the platform caching behavior of the data disk blob for
     * read/write efficiency. The default vault is ReadOnly.
     */
-    public VirtualHardDiskHostCaching getHostCaching() { return this.hostCaching; }
+    public VirtualHardDiskHostCaching getHostCaching()
+    {
+        return this.hostCaching;
+    }
     
     /**
     * Specifies the platform caching behavior of the data disk blob for
     * read/write efficiency. The default vault is ReadOnly.
     */
-    public void setHostCaching(VirtualHardDiskHostCaching hostCaching) { this.hostCaching = hostCaching; }
+    public void setHostCaching(VirtualHardDiskHostCaching hostCaching)
+    {
+        this.hostCaching = hostCaching;
+    }
     
     private int logicalDiskSizeInGB;
     
@@ -81,7 +99,10 @@ public class DataVirtualHardDisk
     * creates the empty VHD based on size preference and attaches the newly
     * created VHD to the virtual machine.
     */
-    public int getLogicalDiskSizeInGB() { return this.logicalDiskSizeInGB; }
+    public int getLogicalDiskSizeInGB()
+    {
+        return this.logicalDiskSizeInGB;
+    }
     
     /**
     * Specifies the size, in GB, of an empty VHD to be attached to the virtual
@@ -90,7 +111,10 @@ public class DataVirtualHardDisk
     * creates the empty VHD based on size preference and attaches the newly
     * created VHD to the virtual machine.
     */
-    public void setLogicalDiskSizeInGB(int logicalDiskSizeInGB) { this.logicalDiskSizeInGB = logicalDiskSizeInGB; }
+    public void setLogicalDiskSizeInGB(int logicalDiskSizeInGB)
+    {
+        this.logicalDiskSizeInGB = logicalDiskSizeInGB;
+    }
     
     private Integer logicalUnitNumber;
     
@@ -100,7 +124,10 @@ public class DataVirtualHardDisk
     * usage by the virtual machine. This element is only listed when more than
     * one data disk is attached to a virtual machine.
     */
-    public Integer getLogicalUnitNumber() { return this.logicalUnitNumber; }
+    public Integer getLogicalUnitNumber()
+    {
+        return this.logicalUnitNumber;
+    }
     
     /**
     * Specifies the Logical Unit Number (LUN) for the data disk. The LUN
@@ -108,25 +135,26 @@ public class DataVirtualHardDisk
     * usage by the virtual machine. This element is only listed when more than
     * one data disk is attached to a virtual machine.
     */
-    public void setLogicalUnitNumber(Integer logicalUnitNumber) { this.logicalUnitNumber = logicalUnitNumber; }
+    public void setLogicalUnitNumber(Integer logicalUnitNumber)
+    {
+        this.logicalUnitNumber = logicalUnitNumber;
+    }
     
     private URI mediaLink;
     
     /**
     * Specifies the location of the disk in Windows Azure storage.
     */
-    public URI getMediaLink() { return this.mediaLink; }
+    public URI getMediaLink()
+    {
+        return this.mediaLink;
+    }
     
     /**
     * Specifies the location of the disk in Windows Azure storage.
     */
-    public void setMediaLink(URI mediaLink) { this.mediaLink = mediaLink; }
-    
-    /**
-    * Initializes a new instance of the DataVirtualHardDisk class.
-    *
-    */
-    public DataVirtualHardDisk()
+    public void setMediaLink(URI mediaLink)
     {
+        this.mediaLink = mediaLink;
     }
 }

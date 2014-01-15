@@ -36,9 +36,15 @@ public class StorageServiceListResponse extends OperationResponse implements Ite
 {
     private ArrayList<StorageServiceListResponse.StorageService> storageServices;
     
-    public ArrayList<StorageServiceListResponse.StorageService> getStorageServices() { return this.storageServices; }
+    public ArrayList<StorageServiceListResponse.StorageService> getStorageServices()
+    {
+        return this.storageServices;
+    }
     
-    public void setStorageServices(ArrayList<StorageServiceListResponse.StorageService> storageServices) { this.storageServices = storageServices; }
+    public void setStorageServices(ArrayList<StorageServiceListResponse.StorageService> storageServices)
+    {
+        this.storageServices = storageServices;
+    }
     
     /**
     * Initializes a new instance of the StorageServiceListResponse class.
@@ -46,6 +52,7 @@ public class StorageServiceListResponse extends OperationResponse implements Ite
     */
     public StorageServiceListResponse()
     {
+        super();
         this.storageServices = new ArrayList<StorageServiceListResponse.StorageService>();
     }
     
@@ -78,7 +85,10 @@ public class StorageServiceListResponse extends OperationResponse implements Ite
         * code 400 (Bad Request) error.  Each extended property value has a
         * maximum length of 255 characters.
         */
-        public HashMap<String, String> getExtendedProperties() { return this.extendedProperties; }
+        public HashMap<String, String> getExtendedProperties()
+        {
+            return this.extendedProperties;
+        }
         
         /**
         * Optional. Represents the name of an extended storage account
@@ -93,19 +103,28 @@ public class StorageServiceListResponse extends OperationResponse implements Ite
         * code 400 (Bad Request) error.  Each extended property value has a
         * maximum length of 255 characters.
         */
-        public void setExtendedProperties(HashMap<String, String> extendedProperties) { this.extendedProperties = extendedProperties; }
+        public void setExtendedProperties(HashMap<String, String> extendedProperties)
+        {
+            this.extendedProperties = extendedProperties;
+        }
         
         private StorageServiceProperties properties;
         
         /**
         * Details about the storage account.
         */
-        public StorageServiceProperties getProperties() { return this.properties; }
+        public StorageServiceProperties getProperties()
+        {
+            return this.properties;
+        }
         
         /**
         * Details about the storage account.
         */
-        public void setProperties(StorageServiceProperties properties) { this.properties = properties; }
+        public void setProperties(StorageServiceProperties properties)
+        {
+            this.properties = properties;
+        }
         
         private String serviceName;
         
@@ -116,7 +135,10 @@ public class StorageServiceListResponse extends OperationResponse implements Ite
         * could access the blob containers by calling:
         * http://MyStorageAccount.blob.core.windows.net/mycontainer/
         */
-        public String getServiceName() { return this.serviceName; }
+        public String getServiceName()
+        {
+            return this.serviceName;
+        }
         
         /**
         * The name of the storage account. This name is the DNS prefix name and
@@ -125,7 +147,10 @@ public class StorageServiceListResponse extends OperationResponse implements Ite
         * could access the blob containers by calling:
         * http://MyStorageAccount.blob.core.windows.net/mycontainer/
         */
-        public void setServiceName(String serviceName) { this.serviceName = serviceName; }
+        public void setServiceName(String serviceName)
+        {
+            this.serviceName = serviceName;
+        }
         
         private URI uri;
         
@@ -133,13 +158,19 @@ public class StorageServiceListResponse extends OperationResponse implements Ite
         * The Service Management API request URI used to perform Get Storage
         * Account Properties requests against the storage account.
         */
-        public URI getUri() { return this.uri; }
+        public URI getUri()
+        {
+            return this.uri;
+        }
         
         /**
         * The Service Management API request URI used to perform Get Storage
         * Account Properties requests against the storage account.
         */
-        public void setUri(URI uri) { this.uri = uri; }
+        public void setUri(URI uri)
+        {
+            this.uri = uri;
+        }
         
         /**
         * Initializes a new instance of the StorageService class.

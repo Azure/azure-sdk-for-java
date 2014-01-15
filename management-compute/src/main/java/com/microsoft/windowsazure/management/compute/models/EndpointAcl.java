@@ -35,12 +35,18 @@ public class EndpointAcl
     /**
     * The set of access control rules for the endpoint.
     */
-    public ArrayList<AccessControlListRule> getRules() { return this.rules; }
+    public ArrayList<AccessControlListRule> getRules()
+    {
+        return this.rules;
+    }
     
     /**
     * The set of access control rules for the endpoint.
     */
-    public void setRules(ArrayList<AccessControlListRule> rules) { this.rules = rules; }
+    public void setRules(ArrayList<AccessControlListRule> rules)
+    {
+        this.rules = rules;
+    }
     
     /**
     * Initializes a new instance of the EndpointAcl class.

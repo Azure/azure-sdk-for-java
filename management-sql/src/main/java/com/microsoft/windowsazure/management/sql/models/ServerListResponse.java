@@ -38,12 +38,18 @@ public class ServerListResponse extends OperationResponse implements Iterable<Se
     /**
     * Gets or sets the SQL Servers that are valid for your subscription.
     */
-    public ArrayList<ServerListResponse.Server> getServers() { return this.servers; }
+    public ArrayList<ServerListResponse.Server> getServers()
+    {
+        return this.servers;
+    }
     
     /**
     * Gets or sets the SQL Servers that are valid for your subscription.
     */
-    public void setServers(ArrayList<ServerListResponse.Server> servers) { this.servers = servers; }
+    public void setServers(ArrayList<ServerListResponse.Server> servers)
+    {
+        this.servers = servers;
+    }
     
     /**
     * Initializes a new instance of the ServerListResponse class.
@@ -51,6 +57,7 @@ public class ServerListResponse extends OperationResponse implements Iterable<Se
     */
     public ServerListResponse()
     {
+        super();
         this.servers = new ArrayList<ServerListResponse.Server>();
     }
     
@@ -73,12 +80,18 @@ public class ServerListResponse extends OperationResponse implements Iterable<Se
         /**
         * Gets or sets the name of an administrator for this server.
         */
-        public String getAdministratorUserName() { return this.administratorUserName; }
+        public String getAdministratorUserName()
+        {
+            return this.administratorUserName;
+        }
         
         /**
         * Gets or sets the name of an administrator for this server.
         */
-        public void setAdministratorUserName(String administratorUserName) { this.administratorUserName = administratorUserName; }
+        public void setAdministratorUserName(String administratorUserName)
+        {
+            this.administratorUserName = administratorUserName;
+        }
         
         private HashMap<String, String> features;
         
@@ -86,13 +99,19 @@ public class ServerListResponse extends OperationResponse implements Iterable<Se
         * Gets or sets the list of features and the type of database server for
         * an individual server.
         */
-        public HashMap<String, String> getFeatures() { return this.features; }
+        public HashMap<String, String> getFeatures()
+        {
+            return this.features;
+        }
         
         /**
         * Gets or sets the list of features and the type of database server for
         * an individual server.
         */
-        public void setFeatures(HashMap<String, String> features) { this.features = features; }
+        public void setFeatures(HashMap<String, String> features)
+        {
+            this.features = features;
+        }
         
         private String location;
         
@@ -100,25 +119,37 @@ public class ServerListResponse extends OperationResponse implements Iterable<Se
         * Gets or sets the name of a data center location that is valid for
         * your subscription.
         */
-        public String getLocation() { return this.location; }
+        public String getLocation()
+        {
+            return this.location;
+        }
         
         /**
         * Gets or sets the name of a data center location that is valid for
         * your subscription.
         */
-        public void setLocation(String location) { this.location = location; }
+        public void setLocation(String location)
+        {
+            this.location = location;
+        }
         
         private String name;
         
         /**
         * Gets or sets the name of a SQL Server running in your subscription.
         */
-        public String getName() { return this.name; }
+        public String getName()
+        {
+            return this.name;
+        }
         
         /**
         * Gets or sets the name of a SQL Server running in your subscription.
         */
-        public void setName(String name) { this.name = name; }
+        public void setName(String name)
+        {
+            this.name = name;
+        }
         
         /**
         * Initializes a new instance of the Server class.

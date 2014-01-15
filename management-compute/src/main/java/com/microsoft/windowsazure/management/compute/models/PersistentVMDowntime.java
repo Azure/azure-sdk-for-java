@@ -36,42 +36,52 @@ public class PersistentVMDowntime
     /**
     * The time that the virtual machine was stopped.
     */
-    public Calendar getEndTime() { return this.endTime; }
+    public Calendar getEndTime()
+    {
+        return this.endTime;
+    }
     
     /**
     * The time that the virtual machine was stopped.
     */
-    public void setEndTime(Calendar endTime) { this.endTime = endTime; }
+    public void setEndTime(Calendar endTime)
+    {
+        this.endTime = endTime;
+    }
     
     private Calendar startTime;
     
     /**
     * The time that the virtual machine was started.
     */
-    public Calendar getStartTime() { return this.startTime; }
+    public Calendar getStartTime()
+    {
+        return this.startTime;
+    }
     
     /**
     * The time that the virtual machine was started.
     */
-    public void setStartTime(Calendar startTime) { this.startTime = startTime; }
+    public void setStartTime(Calendar startTime)
+    {
+        this.startTime = startTime;
+    }
     
     private String status;
     
     /**
     * The status of the virtual machine.
     */
-    public String getStatus() { return this.status; }
+    public String getStatus()
+    {
+        return this.status;
+    }
     
     /**
     * The status of the virtual machine.
     */
-    public void setStatus(String status) { this.status = status; }
-    
-    /**
-    * Initializes a new instance of the PersistentVMDowntime class.
-    *
-    */
-    public PersistentVMDowntime()
+    public void setStatus(String status)
     {
+        this.status = status;
     }
 }

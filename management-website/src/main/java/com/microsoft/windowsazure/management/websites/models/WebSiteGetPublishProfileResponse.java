@@ -38,12 +38,18 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
     /**
     * Contains one or more publish profiles.
     */
-    public ArrayList<WebSiteGetPublishProfileResponse.PublishProfile> getPublishProfiles() { return this.publishProfiles; }
+    public ArrayList<WebSiteGetPublishProfileResponse.PublishProfile> getPublishProfiles()
+    {
+        return this.publishProfiles;
+    }
     
     /**
     * Contains one or more publish profiles.
     */
-    public void setPublishProfiles(ArrayList<WebSiteGetPublishProfileResponse.PublishProfile> publishProfiles) { this.publishProfiles = publishProfiles; }
+    public void setPublishProfiles(ArrayList<WebSiteGetPublishProfileResponse.PublishProfile> publishProfiles)
+    {
+        this.publishProfiles = publishProfiles;
+    }
     
     /**
     * Initializes a new instance of the WebSiteGetPublishProfileResponse class.
@@ -51,6 +57,7 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
     */
     public WebSiteGetPublishProfileResponse()
     {
+        super();
         this.publishProfiles = new ArrayList<WebSiteGetPublishProfileResponse.PublishProfile>();
     }
     
@@ -74,24 +81,36 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         /**
         * Contains a database connection string.
         */
-        public String getConnectionString() { return this.connectionString; }
+        public String getConnectionString()
+        {
+            return this.connectionString;
+        }
         
         /**
         * Contains a database connection string.
         */
-        public void setConnectionString(String connectionString) { this.connectionString = connectionString; }
+        public void setConnectionString(String connectionString)
+        {
+            this.connectionString = connectionString;
+        }
         
         private String name;
         
         /**
         * Contains the friendly name of the connection string.
         */
-        public String getName() { return this.name; }
+        public String getName()
+        {
+            return this.name;
+        }
         
         /**
         * Contains the friendly name of the connection string.
         */
-        public void setName(String name) { this.name = name; }
+        public void setName(String name)
+        {
+            this.name = name;
+        }
         
         private String providerName;
         
@@ -99,26 +118,30 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         * Contains the type of database provider (for example, "SQL" or
         * "MySQL").
         */
-        public String getProviderName() { return this.providerName; }
+        public String getProviderName()
+        {
+            return this.providerName;
+        }
         
         /**
         * Contains the type of database provider (for example, "SQL" or
         * "MySQL").
         */
-        public void setProviderName(String providerName) { this.providerName = providerName; }
+        public void setProviderName(String providerName)
+        {
+            this.providerName = providerName;
+        }
         
         private String type;
         
-        public String getType() { return this.type; }
-        
-        public void setType(String type) { this.type = type; }
-        
-        /**
-        * Initializes a new instance of the Database class.
-        *
-        */
-        public Database()
+        public String getType()
         {
+            return this.type;
+        }
+        
+        public void setType(String type)
+        {
+            this.type = type;
         }
     }
     
@@ -132,12 +155,18 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         /**
         * The URL of the control panel for the web site.
         */
-        public URI getControlPanelUri() { return this.controlPanelUri; }
+        public URI getControlPanelUri()
+        {
+            return this.controlPanelUri;
+        }
         
         /**
         * The URL of the control panel for the web site.
         */
-        public void setControlPanelUri(URI controlPanelUri) { this.controlPanelUri = controlPanelUri; }
+        public void setControlPanelUri(URI controlPanelUri)
+        {
+            this.controlPanelUri = controlPanelUri;
+        }
         
         private ArrayList<WebSiteGetPublishProfileResponse.Database> databases;
         
@@ -145,25 +174,37 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         * Contains connection information for the databases used by the web
         * site application.
         */
-        public ArrayList<WebSiteGetPublishProfileResponse.Database> getDatabases() { return this.databases; }
+        public ArrayList<WebSiteGetPublishProfileResponse.Database> getDatabases()
+        {
+            return this.databases;
+        }
         
         /**
         * Contains connection information for the databases used by the web
         * site application.
         */
-        public void setDatabases(ArrayList<WebSiteGetPublishProfileResponse.Database> databases) { this.databases = databases; }
+        public void setDatabases(ArrayList<WebSiteGetPublishProfileResponse.Database> databases)
+        {
+            this.databases = databases;
+        }
         
         private URI destinationAppUri;
         
         /**
         * The URL of the website that will be published to.
         */
-        public URI getDestinationAppUri() { return this.destinationAppUri; }
+        public URI getDestinationAppUri()
+        {
+            return this.destinationAppUri;
+        }
         
         /**
         * The URL of the website that will be published to.
         */
-        public void setDestinationAppUri(URI destinationAppUri) { this.destinationAppUri = destinationAppUri; }
+        public void setDestinationAppUri(URI destinationAppUri)
+        {
+            this.destinationAppUri = destinationAppUri;
+        }
         
         private boolean ftpPassiveMode;
         
@@ -171,25 +212,37 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         * True or False depending on whether FTP passive mode is being used.
         * This attribute applies only if publishMethod is set to FTP.
         */
-        public boolean getFtpPassiveMode() { return this.ftpPassiveMode; }
+        public boolean isFtpPassiveMode()
+        {
+            return this.ftpPassiveMode;
+        }
         
         /**
         * True or False depending on whether FTP passive mode is being used.
         * This attribute applies only if publishMethod is set to FTP.
         */
-        public void setFtpPassiveMode(boolean ftpPassiveMode) { this.ftpPassiveMode = ftpPassiveMode; }
+        public void setFtpPassiveMode(boolean ftpPassiveMode)
+        {
+            this.ftpPassiveMode = ftpPassiveMode;
+        }
         
         private URI hostingProviderForumUri;
         
         /**
         * The URL of the forum of the hosting provider.
         */
-        public URI getHostingProviderForumUri() { return this.hostingProviderForumUri; }
+        public URI getHostingProviderForumUri()
+        {
+            return this.hostingProviderForumUri;
+        }
         
         /**
         * The URL of the forum of the hosting provider.
         */
-        public void setHostingProviderForumUri(URI hostingProviderForumUri) { this.hostingProviderForumUri = hostingProviderForumUri; }
+        public void setHostingProviderForumUri(URI hostingProviderForumUri)
+        {
+            this.hostingProviderForumUri = hostingProviderForumUri;
+        }
         
         private String mSDeploySite;
         
@@ -197,13 +250,19 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         * The name of the site that will be published to. This attribute
         * applies only if publishMethod is set to MSDeploy.
         */
-        public String getMSDeploySite() { return this.mSDeploySite; }
+        public String getMSDeploySite()
+        {
+            return this.mSDeploySite;
+        }
         
         /**
         * The name of the site that will be published to. This attribute
         * applies only if publishMethod is set to MSDeploy.
         */
-        public void setMSDeploySite(String mSDeploySite) { this.mSDeploySite = mSDeploySite; }
+        public void setMSDeploySite(String mSDeploySite)
+        {
+            this.mSDeploySite = mSDeploySite;
+        }
         
         private String mySqlConnectionString;
         
@@ -211,49 +270,73 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         * The MySQL database connection string for the web site application, if
         * the web site connects to a MySQL database.
         */
-        public String getMySqlConnectionString() { return this.mySqlConnectionString; }
+        public String getMySqlConnectionString()
+        {
+            return this.mySqlConnectionString;
+        }
         
         /**
         * The MySQL database connection string for the web site application, if
         * the web site connects to a MySQL database.
         */
-        public void setMySqlConnectionString(String mySqlConnectionString) { this.mySqlConnectionString = mySqlConnectionString; }
+        public void setMySqlConnectionString(String mySqlConnectionString)
+        {
+            this.mySqlConnectionString = mySqlConnectionString;
+        }
         
         private String profileName;
         
         /**
         * The unique name of the publish profile.
         */
-        public String getProfileName() { return this.profileName; }
+        public String getProfileName()
+        {
+            return this.profileName;
+        }
         
         /**
         * The unique name of the publish profile.
         */
-        public void setProfileName(String profileName) { this.profileName = profileName; }
+        public void setProfileName(String profileName)
+        {
+            this.profileName = profileName;
+        }
         
         private String publishMethod;
         
         /**
         * The publish method, such as MSDeploy or FTP.
         */
-        public String getPublishMethod() { return this.publishMethod; }
+        public String getPublishMethod()
+        {
+            return this.publishMethod;
+        }
         
         /**
         * The publish method, such as MSDeploy or FTP.
         */
-        public void setPublishMethod(String publishMethod) { this.publishMethod = publishMethod; }
+        public void setPublishMethod(String publishMethod)
+        {
+            this.publishMethod = publishMethod;
+        }
         
         private String publishUrl;
         
         /**
         * The URL to which content will be uploaded.
         */
-        public String getPublishUrl() { return this.publishUrl; }
+        public String getPublishUrl()
+        {
+            return this.publishUrl;
+        }
         
         /**
         * The URL to which content will be uploaded.
         */
-        public void setPublishUrl(String publishUrl) { this.publishUrl = publishUrl; }
+        public void setPublishUrl(String publishUrl)
+        {
+            this.publishUrl = publishUrl;
+        }
         
         private String sqlServerConnectionString;
         
@@ -261,37 +344,55 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         * The SQL Server database connection string for the web site
         * application, if the web site connects to a SQL Server database.
         */
-        public String getSqlServerConnectionString() { return this.sqlServerConnectionString; }
+        public String getSqlServerConnectionString()
+        {
+            return this.sqlServerConnectionString;
+        }
         
         /**
         * The SQL Server database connection string for the web site
         * application, if the web site connects to a SQL Server database.
         */
-        public void setSqlServerConnectionString(String sqlServerConnectionString) { this.sqlServerConnectionString = sqlServerConnectionString; }
+        public void setSqlServerConnectionString(String sqlServerConnectionString)
+        {
+            this.sqlServerConnectionString = sqlServerConnectionString;
+        }
         
         private String userName;
         
         /**
         * The name for the identity that will be used for publishing.
         */
-        public String getUserName() { return this.userName; }
+        public String getUserName()
+        {
+            return this.userName;
+        }
         
         /**
         * The name for the identity that will be used for publishing.
         */
-        public void setUserName(String userName) { this.userName = userName; }
+        public void setUserName(String userName)
+        {
+            this.userName = userName;
+        }
         
         private String userPassword;
         
         /**
         * Hash value of the password that will be used for publishing.
         */
-        public String getUserPassword() { return this.userPassword; }
+        public String getUserPassword()
+        {
+            return this.userPassword;
+        }
         
         /**
         * Hash value of the password that will be used for publishing.
         */
-        public void setUserPassword(String userPassword) { this.userPassword = userPassword; }
+        public void setUserPassword(String userPassword)
+        {
+            this.userPassword = userPassword;
+        }
         
         /**
         * Initializes a new instance of the PublishProfile class.

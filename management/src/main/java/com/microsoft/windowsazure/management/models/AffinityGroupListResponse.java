@@ -37,12 +37,18 @@ public class AffinityGroupListResponse extends OperationResponse implements Iter
     /**
     * The affinity groups associated with the specified subscription.
     */
-    public ArrayList<AffinityGroupListResponse.AffinityGroup> getAffinityGroups() { return this.affinityGroups; }
+    public ArrayList<AffinityGroupListResponse.AffinityGroup> getAffinityGroups()
+    {
+        return this.affinityGroups;
+    }
     
     /**
     * The affinity groups associated with the specified subscription.
     */
-    public void setAffinityGroups(ArrayList<AffinityGroupListResponse.AffinityGroup> affinityGroups) { this.affinityGroups = affinityGroups; }
+    public void setAffinityGroups(ArrayList<AffinityGroupListResponse.AffinityGroup> affinityGroups)
+    {
+        this.affinityGroups = affinityGroups;
+    }
     
     /**
     * Initializes a new instance of the AffinityGroupListResponse class.
@@ -50,6 +56,7 @@ public class AffinityGroupListResponse extends OperationResponse implements Iter
     */
     public AffinityGroupListResponse()
     {
+        super();
         this.affinityGroups = new ArrayList<AffinityGroupListResponse.AffinityGroup>();
     }
     
@@ -75,7 +82,10 @@ public class AffinityGroupListResponse extends OperationResponse implements Iter
         * returned by this element. Otherwise, this element will not be
         * present.
         */
-        public ArrayList<String> getCapabilities() { return this.capabilities; }
+        public ArrayList<String> getCapabilities()
+        {
+            return this.capabilities;
+        }
         
         /**
         * Indicates if the affinity group is able to perform virtual machine
@@ -83,19 +93,28 @@ public class AffinityGroupListResponse extends OperationResponse implements Iter
         * returned by this element. Otherwise, this element will not be
         * present.
         */
-        public void setCapabilities(ArrayList<String> capabilities) { this.capabilities = capabilities; }
+        public void setCapabilities(ArrayList<String> capabilities)
+        {
+            this.capabilities = capabilities;
+        }
         
         private String description;
         
         /**
         * The user supplied description of this affinity group.
         */
-        public String getDescription() { return this.description; }
+        public String getDescription()
+        {
+            return this.description;
+        }
         
         /**
         * The user supplied description of this affinity group.
         */
-        public void setDescription(String description) { this.description = description; }
+        public void setDescription(String description)
+        {
+            this.description = description;
+        }
         
         private String label;
         
@@ -103,13 +122,19 @@ public class AffinityGroupListResponse extends OperationResponse implements Iter
         * The user supplied label of the affinity group returned as a base-64
         * encoded string.
         */
-        public String getLabel() { return this.label; }
+        public String getLabel()
+        {
+            return this.label;
+        }
         
         /**
         * The user supplied label of the affinity group returned as a base-64
         * encoded string.
         */
-        public void setLabel(String label) { this.label = label; }
+        public void setLabel(String label)
+        {
+            this.label = label;
+        }
         
         private String location;
         
@@ -117,25 +142,37 @@ public class AffinityGroupListResponse extends OperationResponse implements Iter
         * The user specified data center that this affinity groups is located
         * in.
         */
-        public String getLocation() { return this.location; }
+        public String getLocation()
+        {
+            return this.location;
+        }
         
         /**
         * The user specified data center that this affinity groups is located
         * in.
         */
-        public void setLocation(String location) { this.location = location; }
+        public void setLocation(String location)
+        {
+            this.location = location;
+        }
         
         private String name;
         
         /**
         * The user supplied name of the affinity group.
         */
-        public String getName() { return this.name; }
+        public String getName()
+        {
+            return this.name;
+        }
         
         /**
         * The user supplied name of the affinity group.
         */
-        public void setName(String name) { this.name = name; }
+        public void setName(String name)
+        {
+            this.name = name;
+        }
         
         /**
         * Initializes a new instance of the AffinityGroup class.

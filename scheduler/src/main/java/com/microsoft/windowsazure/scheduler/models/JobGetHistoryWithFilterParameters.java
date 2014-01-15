@@ -24,36 +24,27 @@
 package com.microsoft.windowsazure.scheduler.models;
 
 /**
- * Parameters supplied to the Get Job History With Filter operation.
- */
+* Parameters supplied to the Get Job History With Filter operation.
+*/
 public class JobGetHistoryWithFilterParameters extends JobGetHistoryParameters
 {
     private JobHistoryStatus status;
-
+    
     /**
-     * Filter the job history to have it only return job execution attempts
-     * having a particular Status, 'completed' or 'failed'.
-     */
+    * Filter the job history to have it only return job execution attempts
+    * having a particular Status, 'completed' or 'failed'.
+    */
     public JobHistoryStatus getStatus()
     {
         return this.status;
     }
-
+    
     /**
-     * Filter the job history to have it only return job execution attempts
-     * having a particular Status, 'completed' or 'failed'.
-     */
+    * Filter the job history to have it only return job execution attempts
+    * having a particular Status, 'completed' or 'failed'.
+    */
     public void setStatus(JobHistoryStatus status)
     {
         this.status = status;
-    }
-
-    /**
-     * Initializes a new instance of the JobGetHistoryWithFilterParameters
-     * class.
-     * 
-     */
-    public JobGetHistoryWithFilterParameters()
-    {
     }
 }

@@ -34,67 +34,89 @@ public class NetworkReservedIPCreateParameters
     * An affinity group, which indirectly refers to the location where the
     * virtual network exists.
     */
-    public String getAffinityGroup() { return this.affinityGroup; }
+    public String getAffinityGroup()
+    {
+        return this.affinityGroup;
+    }
     
     /**
     * An affinity group, which indirectly refers to the location where the
     * virtual network exists.
     */
-    public void setAffinityGroup(String affinityGroup) { this.affinityGroup = affinityGroup; }
+    public void setAffinityGroup(String affinityGroup)
+    {
+        this.affinityGroup = affinityGroup;
+    }
     
     private String deploymentName;
     
     /**
     * The name of the deployment the IP belongs to, if being used.
     */
-    public String getDeploymentName() { return this.deploymentName; }
+    public String getDeploymentName()
+    {
+        return this.deploymentName;
+    }
     
     /**
     * The name of the deployment the IP belongs to, if being used.
     */
-    public void setDeploymentName(String deploymentName) { this.deploymentName = deploymentName; }
+    public void setDeploymentName(String deploymentName)
+    {
+        this.deploymentName = deploymentName;
+    }
     
     private String label;
     
     /**
     * The friendly identifier of the site.
     */
-    public String getLabel() { return this.label; }
+    public String getLabel()
+    {
+        return this.label;
+    }
     
     /**
     * The friendly identifier of the site.
     */
-    public void setLabel(String label) { this.label = label; }
+    public void setLabel(String label)
+    {
+        this.label = label;
+    }
     
     private String name;
     
     /**
     * Name of the reserved IP.
     */
-    public String getName() { return this.name; }
+    public String getName()
+    {
+        return this.name;
+    }
     
     /**
     * Name of the reserved IP.
     */
-    public void setName(String name) { this.name = name; }
+    public void setName(String name)
+    {
+        this.name = name;
+    }
     
     private String serviceName;
     
     /**
     * The name of the service the IP belongs to, if being used.
     */
-    public String getServiceName() { return this.serviceName; }
+    public String getServiceName()
+    {
+        return this.serviceName;
+    }
     
     /**
     * The name of the service the IP belongs to, if being used.
     */
-    public void setServiceName(String serviceName) { this.serviceName = serviceName; }
-    
-    /**
-    * Initializes a new instance of the NetworkReservedIPCreateParameters class.
-    *
-    */
-    public NetworkReservedIPCreateParameters()
+    public void setServiceName(String serviceName)
     {
+        this.serviceName = serviceName;
     }
 }

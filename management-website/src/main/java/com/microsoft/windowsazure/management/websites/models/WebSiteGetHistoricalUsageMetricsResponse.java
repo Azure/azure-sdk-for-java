@@ -38,12 +38,18 @@ public class WebSiteGetHistoricalUsageMetricsResponse extends OperationResponse 
     /**
     * Historical metric snapshots for the web site.
     */
-    public ArrayList<WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetric> getUsageMetrics() { return this.usageMetrics; }
+    public ArrayList<WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetric> getUsageMetrics()
+    {
+        return this.usageMetrics;
+    }
     
     /**
     * Historical metric snapshots for the web site.
     */
-    public void setUsageMetrics(ArrayList<WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetric> usageMetrics) { this.usageMetrics = usageMetrics; }
+    public void setUsageMetrics(ArrayList<WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetric> usageMetrics)
+    {
+        this.usageMetrics = usageMetrics;
+    }
     
     /**
     * Initializes a new instance of the
@@ -52,6 +58,7 @@ public class WebSiteGetHistoricalUsageMetricsResponse extends OperationResponse 
     */
     public WebSiteGetHistoricalUsageMetricsResponse()
     {
+        super();
         this.usageMetrics = new ArrayList<WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetric>();
     }
     
@@ -74,43 +81,53 @@ public class WebSiteGetHistoricalUsageMetricsResponse extends OperationResponse 
         /**
         * Reports whether the metric data was returned successfully.
         */
-        public String getCode() { return this.code; }
+        public String getCode()
+        {
+            return this.code;
+        }
         
         /**
         * Reports whether the metric data was returned successfully.
         */
-        public void setCode(String code) { this.code = code; }
+        public void setCode(String code)
+        {
+            this.code = code;
+        }
         
         private WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetricData data;
         
         /**
         * Historical metric snapshot data for the web site.
         */
-        public WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetricData getData() { return this.data; }
+        public WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetricData getData()
+        {
+            return this.data;
+        }
         
         /**
         * Historical metric snapshot data for the web site.
         */
-        public void setData(WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetricData data) { this.data = data; }
+        public void setData(WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetricData data)
+        {
+            this.data = data;
+        }
         
         private String message;
         
         /**
         * A string for optional message content.
         */
-        public String getMessage() { return this.message; }
+        public String getMessage()
+        {
+            return this.message;
+        }
         
         /**
         * A string for optional message content.
         */
-        public void setMessage(String message) { this.message = message; }
-        
-        /**
-        * Initializes a new instance of the HistoricalUsageMetric class.
-        *
-        */
-        public HistoricalUsageMetric()
+        public void setMessage(String message)
         {
+            this.message = message;
         }
     }
     
@@ -124,60 +141,90 @@ public class WebSiteGetHistoricalUsageMetricsResponse extends OperationResponse 
         /**
         * The display name of the metric, including spaces.
         */
-        public String getDisplayName() { return this.displayName; }
+        public String getDisplayName()
+        {
+            return this.displayName;
+        }
         
         /**
         * The display name of the metric, including spaces.
         */
-        public void setDisplayName(String displayName) { this.displayName = displayName; }
+        public void setDisplayName(String displayName)
+        {
+            this.displayName = displayName;
+        }
         
         private Calendar endTime;
         
         /**
         * The end time of the data reported.
         */
-        public Calendar getEndTime() { return this.endTime; }
+        public Calendar getEndTime()
+        {
+            return this.endTime;
+        }
         
         /**
         * The end time of the data reported.
         */
-        public void setEndTime(Calendar endTime) { this.endTime = endTime; }
+        public void setEndTime(Calendar endTime)
+        {
+            this.endTime = endTime;
+        }
         
         private String name;
         
         /**
         * The name of the metric.
         */
-        public String getName() { return this.name; }
+        public String getName()
+        {
+            return this.name;
+        }
         
         /**
         * The name of the metric.
         */
-        public void setName(String name) { this.name = name; }
+        public void setName(String name)
+        {
+            this.name = name;
+        }
         
         private String primaryAggregationType;
         
         /**
         * The primary data aggregation type. This value is usually Total.
         */
-        public String getPrimaryAggregationType() { return this.primaryAggregationType; }
+        public String getPrimaryAggregationType()
+        {
+            return this.primaryAggregationType;
+        }
         
         /**
         * The primary data aggregation type. This value is usually Total.
         */
-        public void setPrimaryAggregationType(String primaryAggregationType) { this.primaryAggregationType = primaryAggregationType; }
+        public void setPrimaryAggregationType(String primaryAggregationType)
+        {
+            this.primaryAggregationType = primaryAggregationType;
+        }
         
         private Calendar startTime;
         
         /**
         * The start time of the data reported.
         */
-        public Calendar getStartTime() { return this.startTime; }
+        public Calendar getStartTime()
+        {
+            return this.startTime;
+        }
         
         /**
         * The start time of the data reported.
         */
-        public void setStartTime(Calendar startTime) { this.startTime = startTime; }
+        public void setStartTime(Calendar startTime)
+        {
+            this.startTime = startTime;
+        }
         
         private String timeGrain;
         
@@ -185,13 +232,19 @@ public class WebSiteGetHistoricalUsageMetricsResponse extends OperationResponse 
         * Length of time (rollup) during which the information was gathered.
         * For more information, see Supported Rollups.
         */
-        public String getTimeGrain() { return this.timeGrain; }
+        public String getTimeGrain()
+        {
+            return this.timeGrain;
+        }
         
         /**
         * Length of time (rollup) during which the information was gathered.
         * For more information, see Supported Rollups.
         */
-        public void setTimeGrain(String timeGrain) { this.timeGrain = timeGrain; }
+        public void setTimeGrain(String timeGrain)
+        {
+            this.timeGrain = timeGrain;
+        }
         
         private String unit;
         
@@ -199,25 +252,37 @@ public class WebSiteGetHistoricalUsageMetricsResponse extends OperationResponse 
         * The unit of measurement for the metric (for example, milliseconds,
         * bytes, or count).
         */
-        public String getUnit() { return this.unit; }
+        public String getUnit()
+        {
+            return this.unit;
+        }
         
         /**
         * The unit of measurement for the metric (for example, milliseconds,
         * bytes, or count).
         */
-        public void setUnit(String unit) { this.unit = unit; }
+        public void setUnit(String unit)
+        {
+            this.unit = unit;
+        }
         
         private ArrayList<WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetricSample> values;
         
         /**
         * One or more MetricSample elements.
         */
-        public ArrayList<WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetricSample> getValues() { return this.values; }
+        public ArrayList<WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetricSample> getValues()
+        {
+            return this.values;
+        }
         
         /**
         * One or more MetricSample elements.
         */
-        public void setValues(ArrayList<WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetricSample> values) { this.values = values; }
+        public void setValues(ArrayList<WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetricSample> values)
+        {
+            this.values = values;
+        }
         
         /**
         * Initializes a new instance of the HistoricalUsageMetricData class.
@@ -239,67 +304,89 @@ public class WebSiteGetHistoricalUsageMetricsResponse extends OperationResponse 
         /**
         * The metric sample count. This value is usually 1.
         */
-        public int getCount() { return this.count; }
+        public int getCount()
+        {
+            return this.count;
+        }
         
         /**
         * The metric sample count. This value is usually 1.
         */
-        public void setCount(int count) { this.count = count; }
+        public void setCount(int count)
+        {
+            this.count = count;
+        }
         
         private String maximum;
         
         /**
         * Maximum value recorded.
         */
-        public String getMaximum() { return this.maximum; }
+        public String getMaximum()
+        {
+            return this.maximum;
+        }
         
         /**
         * Maximum value recorded.
         */
-        public void setMaximum(String maximum) { this.maximum = maximum; }
+        public void setMaximum(String maximum)
+        {
+            this.maximum = maximum;
+        }
         
         private String minimum;
         
         /**
         * Minimum value recorded.
         */
-        public String getMinimum() { return this.minimum; }
+        public String getMinimum()
+        {
+            return this.minimum;
+        }
         
         /**
         * Minimum value recorded.
         */
-        public void setMinimum(String minimum) { this.minimum = minimum; }
+        public void setMinimum(String minimum)
+        {
+            this.minimum = minimum;
+        }
         
         private Calendar timeCreated;
         
         /**
         * Time the metric was taken.
         */
-        public Calendar getTimeCreated() { return this.timeCreated; }
+        public Calendar getTimeCreated()
+        {
+            return this.timeCreated;
+        }
         
         /**
         * Time the metric was taken.
         */
-        public void setTimeCreated(Calendar timeCreated) { this.timeCreated = timeCreated; }
+        public void setTimeCreated(Calendar timeCreated)
+        {
+            this.timeCreated = timeCreated;
+        }
         
         private String total;
         
         /**
         * Value of the metric sample for the time taken.
         */
-        public String getTotal() { return this.total; }
+        public String getTotal()
+        {
+            return this.total;
+        }
         
         /**
         * Value of the metric sample for the time taken.
         */
-        public void setTotal(String total) { this.total = total; }
-        
-        /**
-        * Initializes a new instance of the HistoricalUsageMetricSample class.
-        *
-        */
-        public HistoricalUsageMetricSample()
+        public void setTotal(String total)
         {
+            this.total = total;
         }
     }
 }

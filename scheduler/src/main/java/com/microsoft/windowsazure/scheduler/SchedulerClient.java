@@ -29,13 +29,13 @@ import java.net.URI;
 
 public interface SchedulerClient extends FilterableService<SchedulerClient>
 {
-    URI getBaseUri();
-
-    String getCloudServiceName();
-
-    SubscriptionCloudCredentials getCredentials();
-
-    String getJobCollectionName();
-
-    JobOperations getJobsOperations();
+    URI getBaseUri(); 
+    
+    String getCloudServiceName(); 
+    
+    SubscriptionCloudCredentials getCredentials(); 
+    
+    String getJobCollectionName(); 
+    
+    JobOperations getJobsOperations(); 
 }

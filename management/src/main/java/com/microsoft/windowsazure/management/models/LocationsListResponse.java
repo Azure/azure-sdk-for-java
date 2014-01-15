@@ -37,12 +37,18 @@ public class LocationsListResponse extends OperationResponse implements Iterable
     /**
     * The data center locations that are valid for your subscription.
     */
-    public ArrayList<LocationsListResponse.Location> getLocations() { return this.locations; }
+    public ArrayList<LocationsListResponse.Location> getLocations()
+    {
+        return this.locations;
+    }
     
     /**
     * The data center locations that are valid for your subscription.
     */
-    public void setLocations(ArrayList<LocationsListResponse.Location> locations) { this.locations = locations; }
+    public void setLocations(ArrayList<LocationsListResponse.Location> locations)
+    {
+        this.locations = locations;
+    }
     
     /**
     * Initializes a new instance of the LocationsListResponse class.
@@ -50,6 +56,7 @@ public class LocationsListResponse extends OperationResponse implements Iterable
     */
     public LocationsListResponse()
     {
+        super();
         this.locations = new ArrayList<LocationsListResponse.Location>();
     }
     
@@ -72,24 +79,36 @@ public class LocationsListResponse extends OperationResponse implements Iterable
         /**
         * Indicates the services available at a location.
         */
-        public ArrayList<String> getAvailableServices() { return this.availableServices; }
+        public ArrayList<String> getAvailableServices()
+        {
+            return this.availableServices;
+        }
         
         /**
         * Indicates the services available at a location.
         */
-        public void setAvailableServices(ArrayList<String> availableServices) { this.availableServices = availableServices; }
+        public void setAvailableServices(ArrayList<String> availableServices)
+        {
+            this.availableServices = availableServices;
+        }
         
         private String displayName;
         
         /**
         * The localized name of data center location.
         */
-        public String getDisplayName() { return this.displayName; }
+        public String getDisplayName()
+        {
+            return this.displayName;
+        }
         
         /**
         * The localized name of data center location.
         */
-        public void setDisplayName(String displayName) { this.displayName = displayName; }
+        public void setDisplayName(String displayName)
+        {
+            this.displayName = displayName;
+        }
         
         private String name;
         
@@ -97,13 +116,19 @@ public class LocationsListResponse extends OperationResponse implements Iterable
         * The name of a data center location that is valid for your
         * subscription.
         */
-        public String getName() { return this.name; }
+        public String getName()
+        {
+            return this.name;
+        }
         
         /**
         * The name of a data center location that is valid for your
         * subscription.
         */
-        public void setName(String name) { this.name = name; }
+        public void setName(String name)
+        {
+            this.name = name;
+        }
         
         /**
         * Initializes a new instance of the Location class.

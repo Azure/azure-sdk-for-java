@@ -37,12 +37,18 @@ public class OperatingSystemListResponse extends OperationResponse implements It
     /**
     * The operating systems that are valid for your subscription.
     */
-    public ArrayList<OperatingSystemListResponse.OperatingSystem> getOperatingSystems() { return this.operatingSystems; }
+    public ArrayList<OperatingSystemListResponse.OperatingSystem> getOperatingSystems()
+    {
+        return this.operatingSystems;
+    }
     
     /**
     * The operating systems that are valid for your subscription.
     */
-    public void setOperatingSystems(ArrayList<OperatingSystemListResponse.OperatingSystem> operatingSystems) { this.operatingSystems = operatingSystems; }
+    public void setOperatingSystems(ArrayList<OperatingSystemListResponse.OperatingSystem> operatingSystems)
+    {
+        this.operatingSystems = operatingSystems;
+    }
     
     /**
     * Initializes a new instance of the OperatingSystemListResponse class.
@@ -50,6 +56,7 @@ public class OperatingSystemListResponse extends OperationResponse implements It
     */
     public OperatingSystemListResponse()
     {
+        super();
         this.operatingSystems = new ArrayList<OperatingSystemListResponse.OperatingSystem>();
     }
     
@@ -76,7 +83,10 @@ public class OperatingSystemListResponse extends OperationResponse implements It
         * value of 2 corresponds to the Windows Azure guest operating system
         * that is substantially compatible with Windows Server 2008 R2.
         */
-        public int getFamily() { return this.family; }
+        public int getFamily()
+        {
+            return this.family;
+        }
         
         /**
         * Indicates which operating system family this version belongs to. A
@@ -85,19 +95,28 @@ public class OperatingSystemListResponse extends OperationResponse implements It
         * value of 2 corresponds to the Windows Azure guest operating system
         * that is substantially compatible with Windows Server 2008 R2.
         */
-        public void setFamily(int family) { this.family = family; }
+        public void setFamily(int family)
+        {
+            this.family = family;
+        }
         
         private String familyLabel;
         
         /**
         * The label of the operating system family.
         */
-        public String getFamilyLabel() { return this.familyLabel; }
+        public String getFamilyLabel()
+        {
+            return this.familyLabel;
+        }
         
         /**
         * The label of the operating system family.
         */
-        public void setFamilyLabel(String familyLabel) { this.familyLabel = familyLabel; }
+        public void setFamilyLabel(String familyLabel)
+        {
+            this.familyLabel = familyLabel;
+        }
         
         private boolean isActive;
         
@@ -116,7 +135,10 @@ public class OperatingSystemListResponse extends OperationResponse implements It
         * your service to run on a newer version, or configure your service to
         * use auto-upgrade to manage operating system upgrades.
         */
-        public boolean getIsActive() { return this.isActive; }
+        public boolean getIsActive()
+        {
+            return this.isActive;
+        }
         
         /**
         * Indicates whether this operating system version is currently active
@@ -133,7 +155,10 @@ public class OperatingSystemListResponse extends OperationResponse implements It
         * your service to run on a newer version, or configure your service to
         * use auto-upgrade to manage operating system upgrades.
         */
-        public void setIsActive(boolean isActive) { this.isActive = isActive; }
+        public void setIsActive(boolean isActive)
+        {
+            this.isActive = isActive;
+        }
         
         private boolean isDefault;
         
@@ -146,7 +171,10 @@ public class OperatingSystemListResponse extends OperationResponse implements It
         * which the IsDefault element is set to true; for all other versions,
         * IsDefault is set to false.
         */
-        public boolean getIsDefault() { return this.isDefault; }
+        public boolean getIsDefault()
+        {
+            return this.isDefault;
+        }
         
         /**
         * Indicates whether this operating system version is the default
@@ -157,19 +185,28 @@ public class OperatingSystemListResponse extends OperationResponse implements It
         * which the IsDefault element is set to true; for all other versions,
         * IsDefault is set to false.
         */
-        public void setIsDefault(boolean isDefault) { this.isDefault = isDefault; }
+        public void setIsDefault(boolean isDefault)
+        {
+            this.isDefault = isDefault;
+        }
         
         private String label;
         
         /**
         * The label of the operating system version.
         */
-        public String getLabel() { return this.label; }
+        public String getLabel()
+        {
+            return this.label;
+        }
         
         /**
         * The label of the operating system version.
         */
-        public void setLabel(String label) { this.label = label; }
+        public void setLabel(String label)
+        {
+            this.label = label;
+        }
         
         private String version;
         
@@ -180,7 +217,10 @@ public class OperatingSystemListResponse extends OperationResponse implements It
         * Configuring Settings for the Windows Azure Guest OS for additional
         * details.
         */
-        public String getVersion() { return this.version; }
+        public String getVersion()
+        {
+            return this.version;
+        }
         
         /**
         * The operating system version. This value corresponds to the
@@ -189,14 +229,9 @@ public class OperatingSystemListResponse extends OperationResponse implements It
         * Configuring Settings for the Windows Azure Guest OS for additional
         * details.
         */
-        public void setVersion(String version) { this.version = version; }
-        
-        /**
-        * Initializes a new instance of the OperatingSystem class.
-        *
-        */
-        public OperatingSystem()
+        public void setVersion(String version)
         {
+            this.version = version;
         }
     }
 }

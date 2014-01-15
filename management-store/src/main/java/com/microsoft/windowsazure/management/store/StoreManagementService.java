@@ -21,50 +21,60 @@ import com.microsoft.windowsazure.Configuration;
  * Access service management functionality.
  * 
  */
-public class StoreManagementService {
-
-    private StoreManagementService() {
+public final class StoreManagementService
+{
+    private StoreManagementService()
+    {
         // class is not instantiated
     }
 
     /**
-     * Creates an instance of the <code>ManagementClient</code> API.
-     * 
+     * Creates an instance of the <code>StoreManagementClient</code> API.
+     * @return An instance of the <code>StoreManagementClient</code> API.
      */
-    public static StoreManagementClient create() {
+    public static StoreManagementClient create()
+    {
         return Configuration.getInstance().create(StoreManagementClient.class);
     }
 
     /**
-     * Creates an instance of the <code>ManagementClient</code> API using the specified configuration.
-     * 
-     * @param config
-     *            A <code>Configuration</code> object that represents the configuration for the service management.
-     * 
+     * Creates an instance of the <code>StoreManagementClient</code> API using
+     * the specified configuration.
+     *
+     * @param config A <code>Configuration</code> object that represents the
+     * configuration for the service management.
+     * @return An instance of the <code>StoreManagementClient</code> API.
      */
-    public static StoreManagementClient create(Configuration config) {
+    public static StoreManagementClient create(final Configuration config)
+    {
         return config.create(StoreManagementClient.class);
     }
 
     /**
-     * Creates an instance of the <code>ManagementClient</code> API.
+     * Creates an instance of the <code>StoreManagementClient</code> API.
      * 
-     * @param profile
-     *            A <code>String</code> object that representing the profile of the service management service.
-     * 
+     * @param profile A <code>String</code> object that representing the profile
+     * of the service management service.
+     * @return An instance of the <code>StoreManagementClient</code> API.
      */
-    public static StoreManagementClient create(String profile) {
-        return Configuration.getInstance().create(profile, StoreManagementClient.class);
+    public static StoreManagementClient create(final String profile)
+    {
+        return Configuration.getInstance().create(profile,
+                StoreManagementClient.class);
     }
 
     /**
-     * Creates an instance of the <code>ManagementClient</code> API using the specified configuration.
-     * 
-     * @param config
-     *            A <code>Configuration</code> object that represents the configuration for the service management.
-     * 
+     * Creates an instance of the <code>StoreManagementClient</code> API using
+     * the specified configuration.
+     *
+     * @param profile The profile.
+     * @param config A <code>Configuration</code> object that represents the
+     * configuration for the service management.
+     * @return An instance of the <code>StoreManagementClient</code> API.
      */
-    public static StoreManagementClient create(String profile, Configuration config) {
+    public static StoreManagementClient create(final String profile,
+            final Configuration config)
+    {
         return config.create(profile, StoreManagementClient.class);
     }
 }

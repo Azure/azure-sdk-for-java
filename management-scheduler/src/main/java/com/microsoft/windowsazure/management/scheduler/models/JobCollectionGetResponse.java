@@ -35,84 +35,126 @@ public class JobCollectionGetResponse extends OperationResponse
     /**
     * ETag of the Job Collection.
     */
-    public String getETag() { return this.eTag; }
+    public String getETag()
+    {
+        return this.eTag;
+    }
     
     /**
     * ETag of the Job Collection.
     */
-    public void setETag(String eTag) { this.eTag = eTag; }
+    public void setETag(String eTag)
+    {
+        this.eTag = eTag;
+    }
     
     private JobCollectionIntrinsicSettings intrinsicSettings;
     
     /**
     * Intrinsic settings for the scheduler job collections.
     */
-    public JobCollectionIntrinsicSettings getIntrinsicSettings() { return this.intrinsicSettings; }
+    public JobCollectionIntrinsicSettings getIntrinsicSettings()
+    {
+        return this.intrinsicSettings;
+    }
     
     /**
     * Intrinsic settings for the scheduler job collections.
     */
-    public void setIntrinsicSettings(JobCollectionIntrinsicSettings intrinsicSettings) { this.intrinsicSettings = intrinsicSettings; }
+    public void setIntrinsicSettings(JobCollectionIntrinsicSettings intrinsicSettings)
+    {
+        this.intrinsicSettings = intrinsicSettings;
+    }
     
     private String label;
     
     /**
     * Label for the resource.
     */
-    public String getLabel() { return this.label; }
+    public String getLabel()
+    {
+        return this.label;
+    }
     
     /**
     * Label for the resource.
     */
-    public void setLabel(String label) { this.label = label; }
+    public void setLabel(String label)
+    {
+        this.label = label;
+    }
     
     private JobCollectionGetResponse.OperationStatus lastOperationStatus;
     
     /**
     * The promotion code for buying the resource.
     */
-    public JobCollectionGetResponse.OperationStatus getLastOperationStatus() { return this.lastOperationStatus; }
+    public JobCollectionGetResponse.OperationStatus getLastOperationStatus()
+    {
+        return this.lastOperationStatus;
+    }
     
     /**
     * The promotion code for buying the resource.
     */
-    public void setLastOperationStatus(JobCollectionGetResponse.OperationStatus lastOperationStatus) { this.lastOperationStatus = lastOperationStatus; }
+    public void setLastOperationStatus(JobCollectionGetResponse.OperationStatus lastOperationStatus)
+    {
+        this.lastOperationStatus = lastOperationStatus;
+    }
     
     private String name;
     
     /**
     * Name of the Job Collection.
     */
-    public String getName() { return this.name; }
+    public String getName()
+    {
+        return this.name;
+    }
     
     /**
     * Name of the Job Collection.
     */
-    public void setName(String name) { this.name = name; }
+    public void setName(String name)
+    {
+        this.name = name;
+    }
     
     private String plan;
     
     /**
     * The plan of the resource.
     */
-    public String getPlan() { return this.plan; }
+    public String getPlan()
+    {
+        return this.plan;
+    }
     
     /**
     * The plan of the resource.
     */
-    public void setPlan(String plan) { this.plan = plan; }
+    public void setPlan(String plan)
+    {
+        this.plan = plan;
+    }
     
     private String promotionCode;
     
     /**
     * The promotion code for buying the resource.
     */
-    public String getPromotionCode() { return this.promotionCode; }
+    public String getPromotionCode()
+    {
+        return this.promotionCode;
+    }
     
     /**
     * The promotion code for buying the resource.
     */
-    public void setPromotionCode(String promotionCode) { this.promotionCode = promotionCode; }
+    public void setPromotionCode(String promotionCode)
+    {
+        this.promotionCode = promotionCode;
+    }
     
     private String schemaVersion;
     
@@ -121,33 +163,37 @@ public class JobCollectionGetResponse extends OperationResponse
     * specified, you must conform to the contract resource version you
     * registered as default.
     */
-    public String getSchemaVersion() { return this.schemaVersion; }
+    public String getSchemaVersion()
+    {
+        return this.schemaVersion;
+    }
     
     /**
     * The version of the Intrinsic Properties for your Resource. If not
     * specified, you must conform to the contract resource version you
     * registered as default.
     */
-    public void setSchemaVersion(String schemaVersion) { this.schemaVersion = schemaVersion; }
+    public void setSchemaVersion(String schemaVersion)
+    {
+        this.schemaVersion = schemaVersion;
+    }
     
     private JobCollectionState state;
     
     /**
     * State of the Job Collection.
     */
-    public JobCollectionState getState() { return this.state; }
+    public JobCollectionState getState()
+    {
+        return this.state;
+    }
     
     /**
     * State of the Job Collection.
     */
-    public void setState(JobCollectionState state) { this.state = state; }
-    
-    /**
-    * Initializes a new instance of the JobCollectionGetResponse class.
-    *
-    */
-    public JobCollectionGetResponse()
+    public void setState(JobCollectionState state)
     {
+        this.state = state;
     }
     
     /**
@@ -160,31 +206,35 @@ public class JobCollectionGetResponse extends OperationResponse
         /**
         * Details about the last operation.
         */
-        public JobCollectionGetResponse.OperationStatusResponseDetails getResponseDetails() { return this.responseDetails; }
+        public JobCollectionGetResponse.OperationStatusResponseDetails getResponseDetails()
+        {
+            return this.responseDetails;
+        }
         
         /**
         * Details about the last operation.
         */
-        public void setResponseDetails(JobCollectionGetResponse.OperationStatusResponseDetails responseDetails) { this.responseDetails = responseDetails; }
+        public void setResponseDetails(JobCollectionGetResponse.OperationStatusResponseDetails responseDetails)
+        {
+            this.responseDetails = responseDetails;
+        }
         
         private SchedulerOperationStatus status;
         
         /**
         * Status of the last operation.
         */
-        public SchedulerOperationStatus getStatus() { return this.status; }
+        public SchedulerOperationStatus getStatus()
+        {
+            return this.status;
+        }
         
         /**
         * Status of the last operation.
         */
-        public void setStatus(SchedulerOperationStatus status) { this.status = status; }
-        
-        /**
-        * Initializes a new instance of the OperationStatus class.
-        *
-        */
-        public OperationStatus()
+        public void setStatus(SchedulerOperationStatus status)
         {
+            this.status = status;
         }
     }
     
@@ -198,32 +248,35 @@ public class JobCollectionGetResponse extends OperationResponse
         /**
         * Message returned by the operation.
         */
-        public String getMessage() { return this.message; }
+        public String getMessage()
+        {
+            return this.message;
+        }
         
         /**
         * Message returned by the operation.
         */
-        public void setMessage(String message) { this.message = message; }
+        public void setMessage(String message)
+        {
+            this.message = message;
+        }
         
         private Integer statusCode;
         
         /**
         * The HTTP status code of the operation.
         */
-        public Integer getStatusCode() { return this.statusCode; }
+        public Integer getStatusCode()
+        {
+            return this.statusCode;
+        }
         
         /**
         * The HTTP status code of the operation.
         */
-        public void setStatusCode(Integer statusCode) { this.statusCode = statusCode; }
-        
-        /**
-        * Initializes a new instance of the OperationStatusResponseDetails
-        * class.
-        *
-        */
-        public OperationStatusResponseDetails()
+        public void setStatusCode(Integer statusCode)
         {
+            this.statusCode = statusCode;
         }
     }
 }

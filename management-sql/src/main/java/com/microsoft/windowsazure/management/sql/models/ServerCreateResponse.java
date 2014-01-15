@@ -35,18 +35,16 @@ public class ServerCreateResponse extends OperationResponse
     /**
     * Gets or sets the name of the server that was created.
     */
-    public String getServerName() { return this.serverName; }
+    public String getServerName()
+    {
+        return this.serverName;
+    }
     
     /**
     * Gets or sets the name of the server that was created.
     */
-    public void setServerName(String serverName) { this.serverName = serverName; }
-    
-    /**
-    * Initializes a new instance of the ServerCreateResponse class.
-    *
-    */
-    public ServerCreateResponse()
+    public void setServerName(String serverName)
     {
+        this.serverName = serverName;
     }
 }

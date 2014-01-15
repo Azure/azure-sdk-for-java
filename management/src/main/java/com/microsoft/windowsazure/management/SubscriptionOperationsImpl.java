@@ -47,6 +47,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPut;
 import org.w3c.dom.Document;
@@ -77,7 +78,10 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
     * Gets a reference to the
     * microsoft.windowsazure.management.ManagementClientImpl.
     */
-    public ManagementClientImpl getClient() { return this.client; }
+    public ManagementClientImpl getClient()
+    {
+        return this.client;
+    }
     
     /**
     * The Get Subscription operation returns account and resource allocation
@@ -143,7 +147,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -163,11 +167,11 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
         Document responseDoc = documentBuilder.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagName("Subscription");
-        Element subscriptionElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element subscriptionElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (subscriptionElement != null)
         {
             NodeList elements2 = subscriptionElement.getElementsByTagName("SubscriptionID");
-            Element subscriptionIDElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+            Element subscriptionIDElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
             if (subscriptionIDElement != null)
             {
                 String subscriptionIDInstance;
@@ -176,7 +180,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
             }
             
             NodeList elements3 = subscriptionElement.getElementsByTagName("SubscriptionName");
-            Element subscriptionNameElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
+            Element subscriptionNameElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
             if (subscriptionNameElement != null)
             {
                 String subscriptionNameInstance;
@@ -185,7 +189,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
             }
             
             NodeList elements4 = subscriptionElement.getElementsByTagName("SubscriptionStatus");
-            Element subscriptionStatusElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
+            Element subscriptionStatusElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
             if (subscriptionStatusElement != null)
             {
                 SubscriptionStatus subscriptionStatusInstance;
@@ -194,7 +198,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
             }
             
             NodeList elements5 = subscriptionElement.getElementsByTagName("AccountAdminLiveEmailId");
-            Element accountAdminLiveEmailIdElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
+            Element accountAdminLiveEmailIdElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
             if (accountAdminLiveEmailIdElement != null)
             {
                 String accountAdminLiveEmailIdInstance;
@@ -203,7 +207,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
             }
             
             NodeList elements6 = subscriptionElement.getElementsByTagName("ServiceAdminLiveEmailId");
-            Element serviceAdminLiveEmailIdElement = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
+            Element serviceAdminLiveEmailIdElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
             if (serviceAdminLiveEmailIdElement != null)
             {
                 String serviceAdminLiveEmailIdInstance;
@@ -212,7 +216,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
             }
             
             NodeList elements7 = subscriptionElement.getElementsByTagName("MaxCoreCount");
-            Element maxCoreCountElement = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
+            Element maxCoreCountElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
             if (maxCoreCountElement != null)
             {
                 int maxCoreCountInstance;
@@ -221,7 +225,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
             }
             
             NodeList elements8 = subscriptionElement.getElementsByTagName("MaxStorageAccounts");
-            Element maxStorageAccountsElement = elements8.getLength() > 0 ? ((Element)elements8.item(0)) : null;
+            Element maxStorageAccountsElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
             if (maxStorageAccountsElement != null)
             {
                 int maxStorageAccountsInstance;
@@ -230,7 +234,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
             }
             
             NodeList elements9 = subscriptionElement.getElementsByTagName("MaxHostedServices");
-            Element maxHostedServicesElement = elements9.getLength() > 0 ? ((Element)elements9.item(0)) : null;
+            Element maxHostedServicesElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
             if (maxHostedServicesElement != null)
             {
                 int maxHostedServicesInstance;
@@ -239,7 +243,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
             }
             
             NodeList elements10 = subscriptionElement.getElementsByTagName("CurrentCoreCount");
-            Element currentCoreCountElement = elements10.getLength() > 0 ? ((Element)elements10.item(0)) : null;
+            Element currentCoreCountElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
             if (currentCoreCountElement != null)
             {
                 int currentCoreCountInstance;
@@ -248,7 +252,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
             }
             
             NodeList elements11 = subscriptionElement.getElementsByTagName("CurrentStorageAccounts");
-            Element currentStorageAccountsElement = elements11.getLength() > 0 ? ((Element)elements11.item(0)) : null;
+            Element currentStorageAccountsElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
             if (currentStorageAccountsElement != null)
             {
                 int currentStorageAccountsInstance;
@@ -257,7 +261,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
             }
             
             NodeList elements12 = subscriptionElement.getElementsByTagName("CurrentHostedServices");
-            Element currentHostedServicesElement = elements12.getLength() > 0 ? ((Element)elements12.item(0)) : null;
+            Element currentHostedServicesElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
             if (currentHostedServicesElement != null)
             {
                 int currentHostedServicesInstance;
@@ -266,7 +270,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
             }
             
             NodeList elements13 = subscriptionElement.getElementsByTagName("MaxVirtualNetworkSites");
-            Element maxVirtualNetworkSitesElement = elements13.getLength() > 0 ? ((Element)elements13.item(0)) : null;
+            Element maxVirtualNetworkSitesElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
             if (maxVirtualNetworkSitesElement != null)
             {
                 int maxVirtualNetworkSitesInstance;
@@ -275,7 +279,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
             }
             
             NodeList elements14 = subscriptionElement.getElementsByTagName("CurrentVirtualNetworkSites");
-            Element currentVirtualNetworkSitesElement = elements14.getLength() > 0 ? ((Element)elements14.item(0)) : null;
+            Element currentVirtualNetworkSitesElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
             if (currentVirtualNetworkSitesElement != null)
             {
                 int currentVirtualNetworkSitesInstance;
@@ -284,7 +288,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
             }
             
             NodeList elements15 = subscriptionElement.getElementsByTagName("MaxLocalNetworkSites");
-            Element maxLocalNetworkSitesElement = elements15.getLength() > 0 ? ((Element)elements15.item(0)) : null;
+            Element maxLocalNetworkSitesElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
             if (maxLocalNetworkSitesElement != null)
             {
                 int maxLocalNetworkSitesInstance;
@@ -293,7 +297,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
             }
             
             NodeList elements16 = subscriptionElement.getElementsByTagName("MaxDnsServers");
-            Element maxDnsServersElement = elements16.getLength() > 0 ? ((Element)elements16.item(0)) : null;
+            Element maxDnsServersElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
             if (maxDnsServersElement != null)
             {
                 int maxDnsServersInstance;
@@ -302,7 +306,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
             }
             
             NodeList elements17 = subscriptionElement.getElementsByTagName("CurrentLocalNetworkSites");
-            Element currentLocalNetworkSitesElement = elements17.getLength() > 0 ? ((Element)elements17.item(0)) : null;
+            Element currentLocalNetworkSitesElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
             if (currentLocalNetworkSitesElement != null)
             {
                 int currentLocalNetworkSitesInstance;
@@ -311,7 +315,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
             }
             
             NodeList elements18 = subscriptionElement.getElementsByTagName("CurrentDnsServers");
-            Element currentDnsServersElement = elements18.getLength() > 0 ? ((Element)elements18.item(0)) : null;
+            Element currentDnsServersElement = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
             if (currentDnsServersElement != null)
             {
                 int currentDnsServersInstance;
@@ -393,19 +397,19 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
         SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
         simpleDateFormat2.setTimeZone(TimeZone.getTimeZone("UTC"));
         String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/operations?";
-        url = url + "&StartTime=" + URLEncoder.encode(simpleDateFormat.format(parameters.getStartTime().getTime()));
-        url = url + "&EndTime=" + URLEncoder.encode(simpleDateFormat2.format(parameters.getEndTime().getTime()));
+        url = url + "&StartTime=" + URLEncoder.encode(simpleDateFormat.format(parameters.getStartTime().getTime()), "UTF-8");
+        url = url + "&EndTime=" + URLEncoder.encode(simpleDateFormat2.format(parameters.getEndTime().getTime()), "UTF-8");
         if (parameters.getObjectIdFilter() != null)
         {
-            url = url + "&ObjectIdFilter=" + URLEncoder.encode(parameters.getObjectIdFilter());
+            url = url + "&ObjectIdFilter=" + URLEncoder.encode(parameters.getObjectIdFilter(), "UTF-8");
         }
         if (parameters.getOperationStatus() != null)
         {
-            url = url + "&OperationResultFilter=" + URLEncoder.encode(parameters.getOperationStatus().toString());
+            url = url + "&OperationResultFilter=" + URLEncoder.encode(parameters.getOperationStatus().toString(), "UTF-8");
         }
         if (parameters.getContinuationToken() != null)
         {
-            url = url + "&ContinuationToken=" + URLEncoder.encode(parameters.getContinuationToken());
+            url = url + "&ContinuationToken=" + URLEncoder.encode(parameters.getContinuationToken(), "UTF-8");
         }
         
         // Create HTTP transport objects
@@ -426,7 +430,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -446,11 +450,11 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
         Document responseDoc = documentBuilder.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagName("SubscriptionOperationCollection");
-        Element subscriptionOperationCollectionElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element subscriptionOperationCollectionElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (subscriptionOperationCollectionElement != null)
         {
             NodeList elements2 = subscriptionOperationCollectionElement.getElementsByTagName("ContinuationToken");
-            Element continuationTokenElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+            Element continuationTokenElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
             if (continuationTokenElement != null)
             {
                 String continuationTokenInstance;
@@ -459,17 +463,17 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
             }
             
             NodeList elements3 = subscriptionOperationCollectionElement.getElementsByTagName("SubscriptionOperations");
-            Element subscriptionOperationsSequenceElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
+            Element subscriptionOperationsSequenceElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
             if (subscriptionOperationsSequenceElement != null)
             {
                 for (int i1 = 0; i1 < subscriptionOperationsSequenceElement.getElementsByTagName("SubscriptionOperation").getLength(); i1 = i1 + 1)
                 {
-                    org.w3c.dom.Element subscriptionOperationsElement = ((org.w3c.dom.Element)subscriptionOperationsSequenceElement.getElementsByTagName("SubscriptionOperation").item(i1));
+                    org.w3c.dom.Element subscriptionOperationsElement = ((org.w3c.dom.Element) subscriptionOperationsSequenceElement.getElementsByTagName("SubscriptionOperation").item(i1));
                     SubscriptionListOperationsResponse.SubscriptionOperation subscriptionOperationInstance = new SubscriptionListOperationsResponse.SubscriptionOperation();
                     result.getSubscriptionOperations().add(subscriptionOperationInstance);
                     
                     NodeList elements4 = subscriptionOperationsElement.getElementsByTagName("OperationId");
-                    Element operationIdElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
+                    Element operationIdElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                     if (operationIdElement != null)
                     {
                         String operationIdInstance;
@@ -478,7 +482,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
                     }
                     
                     NodeList elements5 = subscriptionOperationsElement.getElementsByTagName("OperationObjectId");
-                    Element operationObjectIdElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
+                    Element operationObjectIdElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                     if (operationObjectIdElement != null)
                     {
                         String operationObjectIdInstance;
@@ -487,7 +491,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
                     }
                     
                     NodeList elements6 = subscriptionOperationsElement.getElementsByTagName("OperationName");
-                    Element operationNameElement = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
+                    Element operationNameElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                     if (operationNameElement != null)
                     {
                         String operationNameInstance;
@@ -496,29 +500,29 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
                     }
                     
                     NodeList elements7 = subscriptionOperationsElement.getElementsByTagName("OperationParameters");
-                    Element operationParametersSequenceElement = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
+                    Element operationParametersSequenceElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                     if (operationParametersSequenceElement != null)
                     {
                         for (int i2 = 0; i2 < operationParametersSequenceElement.getElementsByTagName("OperationParameter").getLength(); i2 = i2 + 1)
                         {
-                            org.w3c.dom.Element operationParametersElement = ((org.w3c.dom.Element)operationParametersSequenceElement.getElementsByTagName("OperationParameter").item(i2));
+                            org.w3c.dom.Element operationParametersElement = ((org.w3c.dom.Element) operationParametersSequenceElement.getElementsByTagName("OperationParameter").item(i2));
                             NodeList elements8 = operationParametersElement.getElementsByTagNameNS("http://schemas.datacontract.org/2004/07/Microsoft.WindowsAzure.ServiceManagement", "Name");
-                            String operationParametersKey = elements8.getLength() > 0 ? ((org.w3c.dom.Element)elements8.item(0)).getTextContent() : null;
+                            String operationParametersKey = elements8.getLength() > 0 ? ((org.w3c.dom.Element) elements8.item(0)).getTextContent() : null;
                             NodeList elements9 = operationParametersElement.getElementsByTagNameNS("http://schemas.datacontract.org/2004/07/Microsoft.WindowsAzure.ServiceManagement", "Value");
-                            String operationParametersValue = elements9.getLength() > 0 ? ((org.w3c.dom.Element)elements9.item(0)).getTextContent() : null;
+                            String operationParametersValue = elements9.getLength() > 0 ? ((org.w3c.dom.Element) elements9.item(0)).getTextContent() : null;
                             subscriptionOperationInstance.getOperationParameters().put(operationParametersKey, operationParametersValue);
                         }
                     }
                     
                     NodeList elements10 = subscriptionOperationsElement.getElementsByTagName("OperationCaller");
-                    Element operationCallerElement = elements10.getLength() > 0 ? ((Element)elements10.item(0)) : null;
+                    Element operationCallerElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
                     if (operationCallerElement != null)
                     {
                         SubscriptionListOperationsResponse.OperationCallerDetails operationCallerInstance = new SubscriptionListOperationsResponse.OperationCallerDetails();
                         subscriptionOperationInstance.setOperationCaller(operationCallerInstance);
                         
                         NodeList elements11 = operationCallerElement.getElementsByTagName("UsedServiceManagementApi");
-                        Element usedServiceManagementApiElement = elements11.getLength() > 0 ? ((Element)elements11.item(0)) : null;
+                        Element usedServiceManagementApiElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
                         if (usedServiceManagementApiElement != null)
                         {
                             boolean usedServiceManagementApiInstance;
@@ -527,7 +531,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
                         }
                         
                         NodeList elements12 = operationCallerElement.getElementsByTagName("UserEmailAddress");
-                        Element userEmailAddressElement = elements12.getLength() > 0 ? ((Element)elements12.item(0)) : null;
+                        Element userEmailAddressElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
                         if (userEmailAddressElement != null)
                         {
                             String userEmailAddressInstance;
@@ -536,7 +540,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
                         }
                         
                         NodeList elements13 = operationCallerElement.getElementsByTagName("SubscriptionCertificateThumbprint");
-                        Element subscriptionCertificateThumbprintElement = elements13.getLength() > 0 ? ((Element)elements13.item(0)) : null;
+                        Element subscriptionCertificateThumbprintElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
                         if (subscriptionCertificateThumbprintElement != null)
                         {
                             String subscriptionCertificateThumbprintInstance;
@@ -545,7 +549,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
                         }
                         
                         NodeList elements14 = operationCallerElement.getElementsByTagName("ClientIP");
-                        Element clientIPElement = elements14.getLength() > 0 ? ((Element)elements14.item(0)) : null;
+                        Element clientIPElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
                         if (clientIPElement != null)
                         {
                             InetAddress clientIPInstance;
@@ -555,7 +559,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
                     }
                     
                     NodeList elements15 = subscriptionOperationsElement.getElementsByTagName("OperationStatus");
-                    Element operationStatusElement = elements15.getLength() > 0 ? ((Element)elements15.item(0)) : null;
+                    Element operationStatusElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
                     if (operationStatusElement != null)
                     {
                         String operationStatusInstance;
@@ -564,7 +568,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
                     }
                     
                     NodeList elements16 = subscriptionOperationsElement.getElementsByTagName("OperationStartedTime");
-                    Element operationStartedTimeElement = elements16.getLength() > 0 ? ((Element)elements16.item(0)) : null;
+                    Element operationStartedTimeElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
                     if (operationStartedTimeElement != null)
                     {
                         Calendar operationStartedTimeInstance;
@@ -576,7 +580,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
                     }
                     
                     NodeList elements17 = subscriptionOperationsElement.getElementsByTagName("OperationCompletedTime");
-                    Element operationCompletedTimeElement = elements17.getLength() > 0 ? ((Element)elements17.item(0)) : null;
+                    Element operationCompletedTimeElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
                     if (operationCompletedTimeElement != null)
                     {
                         Calendar operationCompletedTimeInstance;
@@ -671,7 +675,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200 && statusCode != 202)
+        if (statusCode != HttpStatus.SC_OK && statusCode != HttpStatus.SC_ACCEPTED)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -765,7 +769,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200 && statusCode != 202)
+        if (statusCode != HttpStatus.SC_OK && statusCode != HttpStatus.SC_ACCEPTED)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)

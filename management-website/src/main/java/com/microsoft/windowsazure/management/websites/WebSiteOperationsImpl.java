@@ -80,6 +80,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
@@ -110,7 +111,10 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * Gets a reference to the
     * microsoft.windowsazure.management.websites.WebSiteManagementClientImpl.
     */
-    public WebSiteManagementClientImpl getClient() { return this.client; }
+    public WebSiteManagementClientImpl getClient()
+    {
+        return this.client;
+    }
     
     /**
     * You can create a web site by using a POST request that includes the name
@@ -294,7 +298,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200 && statusCode != 201)
+        if (statusCode != HttpStatus.SC_OK && statusCode != HttpStatus.SC_CREATED)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -314,14 +318,14 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         Document responseDoc = documentBuilder2.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagName("Site");
-        Element siteElement2 = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element siteElement2 = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (siteElement2 != null)
         {
             WebSite webSiteInstance = new WebSite();
             result.setWebSite(webSiteInstance);
             
             NodeList elements2 = siteElement2.getElementsByTagName("AdminEnabled");
-            Element adminEnabledElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+            Element adminEnabledElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
             if (adminEnabledElement != null)
             {
                 boolean adminEnabledInstance;
@@ -330,7 +334,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements3 = siteElement2.getElementsByTagName("AvailabilityState");
-            Element availabilityStateElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
+            Element availabilityStateElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
             if (availabilityStateElement != null)
             {
                 WebSpaceAvailabilityState availabilityStateInstance;
@@ -339,7 +343,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements4 = siteElement2.getElementsByTagName("ComputeMode");
-            Element computeModeElement2 = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
+            Element computeModeElement2 = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
             if (computeModeElement2 != null)
             {
                 WebSiteComputeMode computeModeInstance;
@@ -348,7 +352,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements5 = siteElement2.getElementsByTagName("Enabled");
-            Element enabledElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
+            Element enabledElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
             if (enabledElement != null)
             {
                 boolean enabledInstance;
@@ -357,28 +361,28 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements6 = siteElement2.getElementsByTagName("EnabledHostNames");
-            Element enabledHostNamesSequenceElement = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
+            Element enabledHostNamesSequenceElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
             if (enabledHostNamesSequenceElement != null)
             {
                 for (int i1 = 0; i1 < enabledHostNamesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i1 = i1 + 1)
                 {
-                    org.w3c.dom.Element enabledHostNamesElement = ((org.w3c.dom.Element)enabledHostNamesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i1));
+                    org.w3c.dom.Element enabledHostNamesElement = ((org.w3c.dom.Element) enabledHostNamesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i1));
                     webSiteInstance.getEnabledHostNames().add(enabledHostNamesElement.getTextContent());
                 }
             }
             
             NodeList elements7 = siteElement2.getElementsByTagName("HostNameSslStates");
-            Element hostNameSslStatesSequenceElement = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
+            Element hostNameSslStatesSequenceElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
             if (hostNameSslStatesSequenceElement != null)
             {
                 for (int i2 = 0; i2 < hostNameSslStatesSequenceElement.getElementsByTagName("WebSiteHostNameSslState").getLength(); i2 = i2 + 1)
                 {
-                    org.w3c.dom.Element hostNameSslStatesElement = ((org.w3c.dom.Element)hostNameSslStatesSequenceElement.getElementsByTagName("WebSiteHostNameSslState").item(i2));
+                    org.w3c.dom.Element hostNameSslStatesElement = ((org.w3c.dom.Element) hostNameSslStatesSequenceElement.getElementsByTagName("WebSiteHostNameSslState").item(i2));
                     WebSite.WebSiteHostNameSslState webSiteHostNameSslStateInstance = new WebSite.WebSiteHostNameSslState();
                     webSiteInstance.getHostNameSslStates().add(webSiteHostNameSslStateInstance);
                     
                     NodeList elements8 = hostNameSslStatesElement.getElementsByTagName("Name");
-                    Element nameElement3 = elements8.getLength() > 0 ? ((Element)elements8.item(0)) : null;
+                    Element nameElement3 = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
                     if (nameElement3 != null)
                     {
                         String nameInstance;
@@ -387,7 +391,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                     
                     NodeList elements9 = hostNameSslStatesElement.getElementsByTagName("SslState");
-                    Element sslStateElement = elements9.getLength() > 0 ? ((Element)elements9.item(0)) : null;
+                    Element sslStateElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
                     if (sslStateElement != null)
                     {
                         WebSiteSslState sslStateInstance;
@@ -396,7 +400,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                     
                     NodeList elements10 = hostNameSslStatesElement.getElementsByTagName("Thumbprint");
-                    Element thumbprintElement = elements10.getLength() > 0 ? ((Element)elements10.item(0)) : null;
+                    Element thumbprintElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
                     if (thumbprintElement != null)
                     {
                         boolean isNil = false;
@@ -414,7 +418,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                     
                     NodeList elements11 = hostNameSslStatesElement.getElementsByTagName("VirtualIP");
-                    Element virtualIPElement = elements11.getLength() > 0 ? ((Element)elements11.item(0)) : null;
+                    Element virtualIPElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
                     if (virtualIPElement != null)
                     {
                         boolean isNil2 = false;
@@ -434,18 +438,18 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements12 = siteElement2.getElementsByTagName("HostNames");
-            Element hostNamesSequenceElement2 = elements12.getLength() > 0 ? ((Element)elements12.item(0)) : null;
+            Element hostNamesSequenceElement2 = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
             if (hostNamesSequenceElement2 != null)
             {
                 for (int i3 = 0; i3 < hostNamesSequenceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i3 = i3 + 1)
                 {
-                    org.w3c.dom.Element hostNamesElement = ((org.w3c.dom.Element)hostNamesSequenceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i3));
+                    org.w3c.dom.Element hostNamesElement = ((org.w3c.dom.Element) hostNamesSequenceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i3));
                     webSiteInstance.getHostNames().add(hostNamesElement.getTextContent());
                 }
             }
             
             NodeList elements13 = siteElement2.getElementsByTagName("LastModifiedTimeUtc");
-            Element lastModifiedTimeUtcElement = elements13.getLength() > 0 ? ((Element)elements13.item(0)) : null;
+            Element lastModifiedTimeUtcElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
             if (lastModifiedTimeUtcElement != null)
             {
                 Calendar lastModifiedTimeUtcInstance;
@@ -457,7 +461,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements14 = siteElement2.getElementsByTagName("Name");
-            Element nameElement4 = elements14.getLength() > 0 ? ((Element)elements14.item(0)) : null;
+            Element nameElement4 = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
             if (nameElement4 != null)
             {
                 String nameInstance2;
@@ -466,7 +470,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements15 = siteElement2.getElementsByTagName("Owner");
-            Element ownerElement = elements15.getLength() > 0 ? ((Element)elements15.item(0)) : null;
+            Element ownerElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
             if (ownerElement != null)
             {
                 boolean isNil3 = false;
@@ -484,7 +488,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements16 = siteElement2.getElementsByTagName("RepositorySiteName");
-            Element repositorySiteNameElement = elements16.getLength() > 0 ? ((Element)elements16.item(0)) : null;
+            Element repositorySiteNameElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
             if (repositorySiteNameElement != null)
             {
                 String repositorySiteNameInstance;
@@ -493,7 +497,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements17 = siteElement2.getElementsByTagName("RuntimeAvailabilityState");
-            Element runtimeAvailabilityStateElement = elements17.getLength() > 0 ? ((Element)elements17.item(0)) : null;
+            Element runtimeAvailabilityStateElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
             if (runtimeAvailabilityStateElement != null)
             {
                 WebSiteRuntimeAvailabilityState runtimeAvailabilityStateInstance;
@@ -502,17 +506,17 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements18 = siteElement2.getElementsByTagName("SSLCertificates");
-            Element sSLCertificatesSequenceElement = elements18.getLength() > 0 ? ((Element)elements18.item(0)) : null;
+            Element sSLCertificatesSequenceElement = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
             if (sSLCertificatesSequenceElement != null)
             {
                 for (int i4 = 0; i4 < sSLCertificatesSequenceElement.getElementsByTagName("Certificate").getLength(); i4 = i4 + 1)
                 {
-                    org.w3c.dom.Element sSLCertificatesElement = ((org.w3c.dom.Element)sSLCertificatesSequenceElement.getElementsByTagName("Certificate").item(i4));
+                    org.w3c.dom.Element sSLCertificatesElement = ((org.w3c.dom.Element) sSLCertificatesSequenceElement.getElementsByTagName("Certificate").item(i4));
                     WebSite.WebSiteSslCertificate certificateInstance = new WebSite.WebSiteSslCertificate();
                     webSiteInstance.getSslCertificates().add(certificateInstance);
                     
                     NodeList elements19 = sSLCertificatesElement.getElementsByTagName("ExpirationDate");
-                    Element expirationDateElement = elements19.getLength() > 0 ? ((Element)elements19.item(0)) : null;
+                    Element expirationDateElement = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
                     if (expirationDateElement != null)
                     {
                         Calendar expirationDateInstance;
@@ -524,7 +528,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                     
                     NodeList elements20 = sSLCertificatesElement.getElementsByTagName("FriendlyName");
-                    Element friendlyNameElement = elements20.getLength() > 0 ? ((Element)elements20.item(0)) : null;
+                    Element friendlyNameElement = elements20.getLength() > 0 ? ((Element) elements20.item(0)) : null;
                     if (friendlyNameElement != null)
                     {
                         String friendlyNameInstance;
@@ -533,18 +537,18 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                     
                     NodeList elements21 = sSLCertificatesElement.getElementsByTagName("HostNames");
-                    Element hostNamesSequenceElement3 = elements21.getLength() > 0 ? ((Element)elements21.item(0)) : null;
+                    Element hostNamesSequenceElement3 = elements21.getLength() > 0 ? ((Element) elements21.item(0)) : null;
                     if (hostNamesSequenceElement3 != null)
                     {
                         for (int i5 = 0; i5 < hostNamesSequenceElement3.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i5 = i5 + 1)
                         {
-                            org.w3c.dom.Element hostNamesElement2 = ((org.w3c.dom.Element)hostNamesSequenceElement3.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i5));
+                            org.w3c.dom.Element hostNamesElement2 = ((org.w3c.dom.Element) hostNamesSequenceElement3.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i5));
                             certificateInstance.getHostNames().add(hostNamesElement2.getTextContent());
                         }
                     }
                     
                     NodeList elements22 = sSLCertificatesElement.getElementsByTagName("IssueDate");
-                    Element issueDateElement = elements22.getLength() > 0 ? ((Element)elements22.item(0)) : null;
+                    Element issueDateElement = elements22.getLength() > 0 ? ((Element) elements22.item(0)) : null;
                     if (issueDateElement != null)
                     {
                         Calendar issueDateInstance;
@@ -556,7 +560,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                     
                     NodeList elements23 = sSLCertificatesElement.getElementsByTagName("Issuer");
-                    Element issuerElement = elements23.getLength() > 0 ? ((Element)elements23.item(0)) : null;
+                    Element issuerElement = elements23.getLength() > 0 ? ((Element) elements23.item(0)) : null;
                     if (issuerElement != null)
                     {
                         String issuerInstance;
@@ -565,7 +569,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                     
                     NodeList elements24 = sSLCertificatesElement.getElementsByTagName("Password");
-                    Element passwordElement = elements24.getLength() > 0 ? ((Element)elements24.item(0)) : null;
+                    Element passwordElement = elements24.getLength() > 0 ? ((Element) elements24.item(0)) : null;
                     if (passwordElement != null)
                     {
                         String passwordInstance;
@@ -574,7 +578,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                     
                     NodeList elements25 = sSLCertificatesElement.getElementsByTagName("PfxBlob");
-                    Element pfxBlobElement = elements25.getLength() > 0 ? ((Element)elements25.item(0)) : null;
+                    Element pfxBlobElement = elements25.getLength() > 0 ? ((Element) elements25.item(0)) : null;
                     if (pfxBlobElement != null)
                     {
                         byte[] pfxBlobInstance;
@@ -583,7 +587,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                     
                     NodeList elements26 = sSLCertificatesElement.getElementsByTagName("SelfLink");
-                    Element selfLinkElement = elements26.getLength() > 0 ? ((Element)elements26.item(0)) : null;
+                    Element selfLinkElement = elements26.getLength() > 0 ? ((Element) elements26.item(0)) : null;
                     if (selfLinkElement != null)
                     {
                         URI selfLinkInstance;
@@ -592,7 +596,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                     
                     NodeList elements27 = sSLCertificatesElement.getElementsByTagName("SiteName");
-                    Element siteNameElement = elements27.getLength() > 0 ? ((Element)elements27.item(0)) : null;
+                    Element siteNameElement = elements27.getLength() > 0 ? ((Element) elements27.item(0)) : null;
                     if (siteNameElement != null)
                     {
                         String siteNameInstance;
@@ -601,7 +605,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                     
                     NodeList elements28 = sSLCertificatesElement.getElementsByTagName("SubjectName");
-                    Element subjectNameElement = elements28.getLength() > 0 ? ((Element)elements28.item(0)) : null;
+                    Element subjectNameElement = elements28.getLength() > 0 ? ((Element) elements28.item(0)) : null;
                     if (subjectNameElement != null)
                     {
                         String subjectNameInstance;
@@ -610,7 +614,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                     
                     NodeList elements29 = sSLCertificatesElement.getElementsByTagName("Thumbprint");
-                    Element thumbprintElement2 = elements29.getLength() > 0 ? ((Element)elements29.item(0)) : null;
+                    Element thumbprintElement2 = elements29.getLength() > 0 ? ((Element) elements29.item(0)) : null;
                     if (thumbprintElement2 != null)
                     {
                         String thumbprintInstance2;
@@ -619,7 +623,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                     
                     NodeList elements30 = sSLCertificatesElement.getElementsByTagName("ToDelete");
-                    Element toDeleteElement = elements30.getLength() > 0 ? ((Element)elements30.item(0)) : null;
+                    Element toDeleteElement = elements30.getLength() > 0 ? ((Element) elements30.item(0)) : null;
                     if (toDeleteElement != null)
                     {
                         boolean toDeleteInstance;
@@ -628,7 +632,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                     
                     NodeList elements31 = sSLCertificatesElement.getElementsByTagName("Valid");
-                    Element validElement = elements31.getLength() > 0 ? ((Element)elements31.item(0)) : null;
+                    Element validElement = elements31.getLength() > 0 ? ((Element) elements31.item(0)) : null;
                     if (validElement != null)
                     {
                         boolean validInstance;
@@ -639,7 +643,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements32 = siteElement2.getElementsByTagName("SelfLink");
-            Element selfLinkElement2 = elements32.getLength() > 0 ? ((Element)elements32.item(0)) : null;
+            Element selfLinkElement2 = elements32.getLength() > 0 ? ((Element) elements32.item(0)) : null;
             if (selfLinkElement2 != null)
             {
                 URI selfLinkInstance2;
@@ -648,7 +652,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements33 = siteElement2.getElementsByTagName("ServerFarm");
-            Element serverFarmElement2 = elements33.getLength() > 0 ? ((Element)elements33.item(0)) : null;
+            Element serverFarmElement2 = elements33.getLength() > 0 ? ((Element) elements33.item(0)) : null;
             if (serverFarmElement2 != null)
             {
                 String serverFarmInstance;
@@ -657,7 +661,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements34 = siteElement2.getElementsByTagName("SiteMode");
-            Element siteModeElement2 = elements34.getLength() > 0 ? ((Element)elements34.item(0)) : null;
+            Element siteModeElement2 = elements34.getLength() > 0 ? ((Element) elements34.item(0)) : null;
             if (siteModeElement2 != null)
             {
                 WebSiteMode siteModeInstance;
@@ -666,60 +670,60 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements35 = siteElement2.getElementsByTagName("SiteProperties");
-            Element sitePropertiesElement = elements35.getLength() > 0 ? ((Element)elements35.item(0)) : null;
+            Element sitePropertiesElement = elements35.getLength() > 0 ? ((Element) elements35.item(0)) : null;
             if (sitePropertiesElement != null)
             {
                 WebSite.WebSiteProperties sitePropertiesInstance = new WebSite.WebSiteProperties();
                 webSiteInstance.setSiteProperties(sitePropertiesInstance);
                 
                 NodeList elements36 = sitePropertiesElement.getElementsByTagName("AppSettings");
-                Element appSettingsSequenceElement = elements36.getLength() > 0 ? ((Element)elements36.item(0)) : null;
+                Element appSettingsSequenceElement = elements36.getLength() > 0 ? ((Element) elements36.item(0)) : null;
                 if (appSettingsSequenceElement != null)
                 {
                     for (int i6 = 0; i6 < appSettingsSequenceElement.getElementsByTagName("NameValuePair").getLength(); i6 = i6 + 1)
                     {
-                        org.w3c.dom.Element appSettingsElement = ((org.w3c.dom.Element)appSettingsSequenceElement.getElementsByTagName("NameValuePair").item(i6));
+                        org.w3c.dom.Element appSettingsElement = ((org.w3c.dom.Element) appSettingsSequenceElement.getElementsByTagName("NameValuePair").item(i6));
                         NodeList elements37 = appSettingsElement.getElementsByTagName("Name");
-                        String appSettingsKey = elements37.getLength() > 0 ? ((org.w3c.dom.Element)elements37.item(0)).getTextContent() : null;
+                        String appSettingsKey = elements37.getLength() > 0 ? ((org.w3c.dom.Element) elements37.item(0)).getTextContent() : null;
                         NodeList elements38 = appSettingsElement.getElementsByTagName("Value");
-                        String appSettingsValue = elements38.getLength() > 0 ? ((org.w3c.dom.Element)elements38.item(0)).getTextContent() : null;
+                        String appSettingsValue = elements38.getLength() > 0 ? ((org.w3c.dom.Element) elements38.item(0)).getTextContent() : null;
                         sitePropertiesInstance.getAppSettings().put(appSettingsKey, appSettingsValue);
                     }
                 }
                 
                 NodeList elements39 = sitePropertiesElement.getElementsByTagName("Metadata");
-                Element metadataSequenceElement = elements39.getLength() > 0 ? ((Element)elements39.item(0)) : null;
+                Element metadataSequenceElement = elements39.getLength() > 0 ? ((Element) elements39.item(0)) : null;
                 if (metadataSequenceElement != null)
                 {
                     for (int i7 = 0; i7 < metadataSequenceElement.getElementsByTagName("NameValuePair").getLength(); i7 = i7 + 1)
                     {
-                        org.w3c.dom.Element metadataElement = ((org.w3c.dom.Element)metadataSequenceElement.getElementsByTagName("NameValuePair").item(i7));
+                        org.w3c.dom.Element metadataElement = ((org.w3c.dom.Element) metadataSequenceElement.getElementsByTagName("NameValuePair").item(i7));
                         NodeList elements40 = metadataElement.getElementsByTagName("Name");
-                        String metadataKey = elements40.getLength() > 0 ? ((org.w3c.dom.Element)elements40.item(0)).getTextContent() : null;
+                        String metadataKey = elements40.getLength() > 0 ? ((org.w3c.dom.Element) elements40.item(0)).getTextContent() : null;
                         NodeList elements41 = metadataElement.getElementsByTagName("Value");
-                        String metadataValue = elements41.getLength() > 0 ? ((org.w3c.dom.Element)elements41.item(0)).getTextContent() : null;
+                        String metadataValue = elements41.getLength() > 0 ? ((org.w3c.dom.Element) elements41.item(0)).getTextContent() : null;
                         sitePropertiesInstance.getMetadata().put(metadataKey, metadataValue);
                     }
                 }
                 
                 NodeList elements42 = sitePropertiesElement.getElementsByTagName("Properties");
-                Element propertiesSequenceElement = elements42.getLength() > 0 ? ((Element)elements42.item(0)) : null;
+                Element propertiesSequenceElement = elements42.getLength() > 0 ? ((Element) elements42.item(0)) : null;
                 if (propertiesSequenceElement != null)
                 {
                     for (int i8 = 0; i8 < propertiesSequenceElement.getElementsByTagName("NameValuePair").getLength(); i8 = i8 + 1)
                     {
-                        org.w3c.dom.Element propertiesElement = ((org.w3c.dom.Element)propertiesSequenceElement.getElementsByTagName("NameValuePair").item(i8));
+                        org.w3c.dom.Element propertiesElement = ((org.w3c.dom.Element) propertiesSequenceElement.getElementsByTagName("NameValuePair").item(i8));
                         NodeList elements43 = propertiesElement.getElementsByTagName("Name");
-                        String propertiesKey = elements43.getLength() > 0 ? ((org.w3c.dom.Element)elements43.item(0)).getTextContent() : null;
+                        String propertiesKey = elements43.getLength() > 0 ? ((org.w3c.dom.Element) elements43.item(0)).getTextContent() : null;
                         NodeList elements44 = propertiesElement.getElementsByTagName("Value");
-                        String propertiesValue = elements44.getLength() > 0 ? ((org.w3c.dom.Element)elements44.item(0)).getTextContent() : null;
+                        String propertiesValue = elements44.getLength() > 0 ? ((org.w3c.dom.Element) elements44.item(0)).getTextContent() : null;
                         sitePropertiesInstance.getProperties().put(propertiesKey, propertiesValue);
                     }
                 }
             }
             
             NodeList elements45 = siteElement2.getElementsByTagName("State");
-            Element stateElement = elements45.getLength() > 0 ? ((Element)elements45.item(0)) : null;
+            Element stateElement = elements45.getLength() > 0 ? ((Element) elements45.item(0)) : null;
             if (stateElement != null)
             {
                 WebSiteState stateInstance;
@@ -728,7 +732,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements46 = siteElement2.getElementsByTagName("UsageState");
-            Element usageStateElement = elements46.getLength() > 0 ? ((Element)elements46.item(0)) : null;
+            Element usageStateElement = elements46.getLength() > 0 ? ((Element) elements46.item(0)) : null;
             if (usageStateElement != null)
             {
                 WebSiteUsageState usageStateInstance;
@@ -737,7 +741,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements47 = siteElement2.getElementsByTagName("WebSpace");
-            Element webSpaceElement2 = elements47.getLength() > 0 ? ((Element)elements47.item(0)) : null;
+            Element webSpaceElement2 = elements47.getLength() > 0 ? ((Element) elements47.item(0)) : null;
             if (webSpaceElement2 != null)
             {
                 String webSpaceInstance;
@@ -846,7 +850,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -945,8 +949,8 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         
         // Construct URL
         String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/WebSpaces/" + webSpaceName + "/sites/" + webSiteName + "?";
-        url = url + "&deleteEmptyServerFarm=" + URLEncoder.encode(Boolean.toString(deleteEmptyServerFarm).toLowerCase());
-        url = url + "&deleteMetrics=" + URLEncoder.encode(Boolean.toString(deleteMetrics).toLowerCase());
+        url = url + "&deleteEmptyServerFarm=" + URLEncoder.encode(Boolean.toString(deleteEmptyServerFarm).toLowerCase(), "UTF-8");
+        url = url + "&deleteMetrics=" + URLEncoder.encode(Boolean.toString(deleteMetrics).toLowerCase(), "UTF-8");
         
         // Create HTTP transport objects
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
@@ -966,7 +970,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -1076,7 +1080,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -1096,7 +1100,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         Document responseDoc = documentBuilder.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/", "anyURI");
-        Element anyURIElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element anyURIElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (anyURIElement != null)
         {
             result.setUri(new URI(anyURIElement.getTextContent()));
@@ -1206,7 +1210,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -1294,7 +1298,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/WebSpaces/" + webSpaceName + "/sites/" + webSiteName + "?";
         if (parameters.getPropertiesToInclude() != null && parameters.getPropertiesToInclude().size() > 0)
         {
-            url = url + "&propertiesToInclude=" + URLEncoder.encode(CommaStringBuilder.join(parameters.getPropertiesToInclude()));
+            url = url + "&propertiesToInclude=" + URLEncoder.encode(CommaStringBuilder.join(parameters.getPropertiesToInclude()), "UTF-8");
         }
         
         // Create HTTP transport objects
@@ -1315,7 +1319,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -1335,14 +1339,14 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         Document responseDoc = documentBuilder.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagName("Site");
-        Element siteElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element siteElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (siteElement != null)
         {
             WebSite webSiteInstance = new WebSite();
             result.setWebSite(webSiteInstance);
             
             NodeList elements2 = siteElement.getElementsByTagName("AdminEnabled");
-            Element adminEnabledElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+            Element adminEnabledElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
             if (adminEnabledElement != null)
             {
                 boolean adminEnabledInstance;
@@ -1351,7 +1355,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements3 = siteElement.getElementsByTagName("AvailabilityState");
-            Element availabilityStateElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
+            Element availabilityStateElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
             if (availabilityStateElement != null)
             {
                 WebSpaceAvailabilityState availabilityStateInstance;
@@ -1360,7 +1364,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements4 = siteElement.getElementsByTagName("ComputeMode");
-            Element computeModeElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
+            Element computeModeElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
             if (computeModeElement != null)
             {
                 WebSiteComputeMode computeModeInstance;
@@ -1369,7 +1373,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements5 = siteElement.getElementsByTagName("Enabled");
-            Element enabledElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
+            Element enabledElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
             if (enabledElement != null)
             {
                 boolean enabledInstance;
@@ -1378,28 +1382,28 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements6 = siteElement.getElementsByTagName("EnabledHostNames");
-            Element enabledHostNamesSequenceElement = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
+            Element enabledHostNamesSequenceElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
             if (enabledHostNamesSequenceElement != null)
             {
                 for (int i1 = 0; i1 < enabledHostNamesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i1 = i1 + 1)
                 {
-                    org.w3c.dom.Element enabledHostNamesElement = ((org.w3c.dom.Element)enabledHostNamesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i1));
+                    org.w3c.dom.Element enabledHostNamesElement = ((org.w3c.dom.Element) enabledHostNamesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i1));
                     webSiteInstance.getEnabledHostNames().add(enabledHostNamesElement.getTextContent());
                 }
             }
             
             NodeList elements7 = siteElement.getElementsByTagName("HostNameSslStates");
-            Element hostNameSslStatesSequenceElement = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
+            Element hostNameSslStatesSequenceElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
             if (hostNameSslStatesSequenceElement != null)
             {
                 for (int i2 = 0; i2 < hostNameSslStatesSequenceElement.getElementsByTagName("WebSiteHostNameSslState").getLength(); i2 = i2 + 1)
                 {
-                    org.w3c.dom.Element hostNameSslStatesElement = ((org.w3c.dom.Element)hostNameSslStatesSequenceElement.getElementsByTagName("WebSiteHostNameSslState").item(i2));
+                    org.w3c.dom.Element hostNameSslStatesElement = ((org.w3c.dom.Element) hostNameSslStatesSequenceElement.getElementsByTagName("WebSiteHostNameSslState").item(i2));
                     WebSite.WebSiteHostNameSslState webSiteHostNameSslStateInstance = new WebSite.WebSiteHostNameSslState();
                     webSiteInstance.getHostNameSslStates().add(webSiteHostNameSslStateInstance);
                     
                     NodeList elements8 = hostNameSslStatesElement.getElementsByTagName("Name");
-                    Element nameElement = elements8.getLength() > 0 ? ((Element)elements8.item(0)) : null;
+                    Element nameElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
                     if (nameElement != null)
                     {
                         String nameInstance;
@@ -1408,7 +1412,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                     
                     NodeList elements9 = hostNameSslStatesElement.getElementsByTagName("SslState");
-                    Element sslStateElement = elements9.getLength() > 0 ? ((Element)elements9.item(0)) : null;
+                    Element sslStateElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
                     if (sslStateElement != null)
                     {
                         WebSiteSslState sslStateInstance;
@@ -1417,7 +1421,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                     
                     NodeList elements10 = hostNameSslStatesElement.getElementsByTagName("Thumbprint");
-                    Element thumbprintElement = elements10.getLength() > 0 ? ((Element)elements10.item(0)) : null;
+                    Element thumbprintElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
                     if (thumbprintElement != null)
                     {
                         boolean isNil = false;
@@ -1435,7 +1439,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                     
                     NodeList elements11 = hostNameSslStatesElement.getElementsByTagName("VirtualIP");
-                    Element virtualIPElement = elements11.getLength() > 0 ? ((Element)elements11.item(0)) : null;
+                    Element virtualIPElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
                     if (virtualIPElement != null)
                     {
                         boolean isNil2 = false;
@@ -1455,18 +1459,18 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements12 = siteElement.getElementsByTagName("HostNames");
-            Element hostNamesSequenceElement = elements12.getLength() > 0 ? ((Element)elements12.item(0)) : null;
+            Element hostNamesSequenceElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
             if (hostNamesSequenceElement != null)
             {
                 for (int i3 = 0; i3 < hostNamesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i3 = i3 + 1)
                 {
-                    org.w3c.dom.Element hostNamesElement = ((org.w3c.dom.Element)hostNamesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i3));
+                    org.w3c.dom.Element hostNamesElement = ((org.w3c.dom.Element) hostNamesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i3));
                     webSiteInstance.getHostNames().add(hostNamesElement.getTextContent());
                 }
             }
             
             NodeList elements13 = siteElement.getElementsByTagName("LastModifiedTimeUtc");
-            Element lastModifiedTimeUtcElement = elements13.getLength() > 0 ? ((Element)elements13.item(0)) : null;
+            Element lastModifiedTimeUtcElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
             if (lastModifiedTimeUtcElement != null)
             {
                 Calendar lastModifiedTimeUtcInstance;
@@ -1478,7 +1482,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements14 = siteElement.getElementsByTagName("Name");
-            Element nameElement2 = elements14.getLength() > 0 ? ((Element)elements14.item(0)) : null;
+            Element nameElement2 = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
             if (nameElement2 != null)
             {
                 String nameInstance2;
@@ -1487,7 +1491,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements15 = siteElement.getElementsByTagName("Owner");
-            Element ownerElement = elements15.getLength() > 0 ? ((Element)elements15.item(0)) : null;
+            Element ownerElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
             if (ownerElement != null)
             {
                 boolean isNil3 = false;
@@ -1505,7 +1509,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements16 = siteElement.getElementsByTagName("RepositorySiteName");
-            Element repositorySiteNameElement = elements16.getLength() > 0 ? ((Element)elements16.item(0)) : null;
+            Element repositorySiteNameElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
             if (repositorySiteNameElement != null)
             {
                 String repositorySiteNameInstance;
@@ -1514,7 +1518,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements17 = siteElement.getElementsByTagName("RuntimeAvailabilityState");
-            Element runtimeAvailabilityStateElement = elements17.getLength() > 0 ? ((Element)elements17.item(0)) : null;
+            Element runtimeAvailabilityStateElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
             if (runtimeAvailabilityStateElement != null)
             {
                 WebSiteRuntimeAvailabilityState runtimeAvailabilityStateInstance;
@@ -1523,17 +1527,17 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements18 = siteElement.getElementsByTagName("SSLCertificates");
-            Element sSLCertificatesSequenceElement = elements18.getLength() > 0 ? ((Element)elements18.item(0)) : null;
+            Element sSLCertificatesSequenceElement = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
             if (sSLCertificatesSequenceElement != null)
             {
                 for (int i4 = 0; i4 < sSLCertificatesSequenceElement.getElementsByTagName("Certificate").getLength(); i4 = i4 + 1)
                 {
-                    org.w3c.dom.Element sSLCertificatesElement = ((org.w3c.dom.Element)sSLCertificatesSequenceElement.getElementsByTagName("Certificate").item(i4));
+                    org.w3c.dom.Element sSLCertificatesElement = ((org.w3c.dom.Element) sSLCertificatesSequenceElement.getElementsByTagName("Certificate").item(i4));
                     WebSite.WebSiteSslCertificate certificateInstance = new WebSite.WebSiteSslCertificate();
                     webSiteInstance.getSslCertificates().add(certificateInstance);
                     
                     NodeList elements19 = sSLCertificatesElement.getElementsByTagName("ExpirationDate");
-                    Element expirationDateElement = elements19.getLength() > 0 ? ((Element)elements19.item(0)) : null;
+                    Element expirationDateElement = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
                     if (expirationDateElement != null)
                     {
                         Calendar expirationDateInstance;
@@ -1545,7 +1549,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                     
                     NodeList elements20 = sSLCertificatesElement.getElementsByTagName("FriendlyName");
-                    Element friendlyNameElement = elements20.getLength() > 0 ? ((Element)elements20.item(0)) : null;
+                    Element friendlyNameElement = elements20.getLength() > 0 ? ((Element) elements20.item(0)) : null;
                     if (friendlyNameElement != null)
                     {
                         String friendlyNameInstance;
@@ -1554,18 +1558,18 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                     
                     NodeList elements21 = sSLCertificatesElement.getElementsByTagName("HostNames");
-                    Element hostNamesSequenceElement2 = elements21.getLength() > 0 ? ((Element)elements21.item(0)) : null;
+                    Element hostNamesSequenceElement2 = elements21.getLength() > 0 ? ((Element) elements21.item(0)) : null;
                     if (hostNamesSequenceElement2 != null)
                     {
                         for (int i5 = 0; i5 < hostNamesSequenceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i5 = i5 + 1)
                         {
-                            org.w3c.dom.Element hostNamesElement2 = ((org.w3c.dom.Element)hostNamesSequenceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i5));
+                            org.w3c.dom.Element hostNamesElement2 = ((org.w3c.dom.Element) hostNamesSequenceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i5));
                             certificateInstance.getHostNames().add(hostNamesElement2.getTextContent());
                         }
                     }
                     
                     NodeList elements22 = sSLCertificatesElement.getElementsByTagName("IssueDate");
-                    Element issueDateElement = elements22.getLength() > 0 ? ((Element)elements22.item(0)) : null;
+                    Element issueDateElement = elements22.getLength() > 0 ? ((Element) elements22.item(0)) : null;
                     if (issueDateElement != null)
                     {
                         Calendar issueDateInstance;
@@ -1577,7 +1581,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                     
                     NodeList elements23 = sSLCertificatesElement.getElementsByTagName("Issuer");
-                    Element issuerElement = elements23.getLength() > 0 ? ((Element)elements23.item(0)) : null;
+                    Element issuerElement = elements23.getLength() > 0 ? ((Element) elements23.item(0)) : null;
                     if (issuerElement != null)
                     {
                         String issuerInstance;
@@ -1586,7 +1590,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                     
                     NodeList elements24 = sSLCertificatesElement.getElementsByTagName("Password");
-                    Element passwordElement = elements24.getLength() > 0 ? ((Element)elements24.item(0)) : null;
+                    Element passwordElement = elements24.getLength() > 0 ? ((Element) elements24.item(0)) : null;
                     if (passwordElement != null)
                     {
                         String passwordInstance;
@@ -1595,7 +1599,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                     
                     NodeList elements25 = sSLCertificatesElement.getElementsByTagName("PfxBlob");
-                    Element pfxBlobElement = elements25.getLength() > 0 ? ((Element)elements25.item(0)) : null;
+                    Element pfxBlobElement = elements25.getLength() > 0 ? ((Element) elements25.item(0)) : null;
                     if (pfxBlobElement != null)
                     {
                         byte[] pfxBlobInstance;
@@ -1604,7 +1608,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                     
                     NodeList elements26 = sSLCertificatesElement.getElementsByTagName("SelfLink");
-                    Element selfLinkElement = elements26.getLength() > 0 ? ((Element)elements26.item(0)) : null;
+                    Element selfLinkElement = elements26.getLength() > 0 ? ((Element) elements26.item(0)) : null;
                     if (selfLinkElement != null)
                     {
                         URI selfLinkInstance;
@@ -1613,7 +1617,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                     
                     NodeList elements27 = sSLCertificatesElement.getElementsByTagName("SiteName");
-                    Element siteNameElement = elements27.getLength() > 0 ? ((Element)elements27.item(0)) : null;
+                    Element siteNameElement = elements27.getLength() > 0 ? ((Element) elements27.item(0)) : null;
                     if (siteNameElement != null)
                     {
                         String siteNameInstance;
@@ -1622,7 +1626,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                     
                     NodeList elements28 = sSLCertificatesElement.getElementsByTagName("SubjectName");
-                    Element subjectNameElement = elements28.getLength() > 0 ? ((Element)elements28.item(0)) : null;
+                    Element subjectNameElement = elements28.getLength() > 0 ? ((Element) elements28.item(0)) : null;
                     if (subjectNameElement != null)
                     {
                         String subjectNameInstance;
@@ -1631,7 +1635,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                     
                     NodeList elements29 = sSLCertificatesElement.getElementsByTagName("Thumbprint");
-                    Element thumbprintElement2 = elements29.getLength() > 0 ? ((Element)elements29.item(0)) : null;
+                    Element thumbprintElement2 = elements29.getLength() > 0 ? ((Element) elements29.item(0)) : null;
                     if (thumbprintElement2 != null)
                     {
                         String thumbprintInstance2;
@@ -1640,7 +1644,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                     
                     NodeList elements30 = sSLCertificatesElement.getElementsByTagName("ToDelete");
-                    Element toDeleteElement = elements30.getLength() > 0 ? ((Element)elements30.item(0)) : null;
+                    Element toDeleteElement = elements30.getLength() > 0 ? ((Element) elements30.item(0)) : null;
                     if (toDeleteElement != null)
                     {
                         boolean toDeleteInstance;
@@ -1649,7 +1653,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                     
                     NodeList elements31 = sSLCertificatesElement.getElementsByTagName("Valid");
-                    Element validElement = elements31.getLength() > 0 ? ((Element)elements31.item(0)) : null;
+                    Element validElement = elements31.getLength() > 0 ? ((Element) elements31.item(0)) : null;
                     if (validElement != null)
                     {
                         boolean validInstance;
@@ -1660,7 +1664,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements32 = siteElement.getElementsByTagName("SelfLink");
-            Element selfLinkElement2 = elements32.getLength() > 0 ? ((Element)elements32.item(0)) : null;
+            Element selfLinkElement2 = elements32.getLength() > 0 ? ((Element) elements32.item(0)) : null;
             if (selfLinkElement2 != null)
             {
                 URI selfLinkInstance2;
@@ -1669,7 +1673,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements33 = siteElement.getElementsByTagName("ServerFarm");
-            Element serverFarmElement = elements33.getLength() > 0 ? ((Element)elements33.item(0)) : null;
+            Element serverFarmElement = elements33.getLength() > 0 ? ((Element) elements33.item(0)) : null;
             if (serverFarmElement != null)
             {
                 String serverFarmInstance;
@@ -1678,7 +1682,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements34 = siteElement.getElementsByTagName("SiteMode");
-            Element siteModeElement = elements34.getLength() > 0 ? ((Element)elements34.item(0)) : null;
+            Element siteModeElement = elements34.getLength() > 0 ? ((Element) elements34.item(0)) : null;
             if (siteModeElement != null)
             {
                 WebSiteMode siteModeInstance;
@@ -1687,60 +1691,60 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements35 = siteElement.getElementsByTagName("SiteProperties");
-            Element sitePropertiesElement = elements35.getLength() > 0 ? ((Element)elements35.item(0)) : null;
+            Element sitePropertiesElement = elements35.getLength() > 0 ? ((Element) elements35.item(0)) : null;
             if (sitePropertiesElement != null)
             {
                 WebSite.WebSiteProperties sitePropertiesInstance = new WebSite.WebSiteProperties();
                 webSiteInstance.setSiteProperties(sitePropertiesInstance);
                 
                 NodeList elements36 = sitePropertiesElement.getElementsByTagName("AppSettings");
-                Element appSettingsSequenceElement = elements36.getLength() > 0 ? ((Element)elements36.item(0)) : null;
+                Element appSettingsSequenceElement = elements36.getLength() > 0 ? ((Element) elements36.item(0)) : null;
                 if (appSettingsSequenceElement != null)
                 {
                     for (int i6 = 0; i6 < appSettingsSequenceElement.getElementsByTagName("NameValuePair").getLength(); i6 = i6 + 1)
                     {
-                        org.w3c.dom.Element appSettingsElement = ((org.w3c.dom.Element)appSettingsSequenceElement.getElementsByTagName("NameValuePair").item(i6));
+                        org.w3c.dom.Element appSettingsElement = ((org.w3c.dom.Element) appSettingsSequenceElement.getElementsByTagName("NameValuePair").item(i6));
                         NodeList elements37 = appSettingsElement.getElementsByTagName("Name");
-                        String appSettingsKey = elements37.getLength() > 0 ? ((org.w3c.dom.Element)elements37.item(0)).getTextContent() : null;
+                        String appSettingsKey = elements37.getLength() > 0 ? ((org.w3c.dom.Element) elements37.item(0)).getTextContent() : null;
                         NodeList elements38 = appSettingsElement.getElementsByTagName("Value");
-                        String appSettingsValue = elements38.getLength() > 0 ? ((org.w3c.dom.Element)elements38.item(0)).getTextContent() : null;
+                        String appSettingsValue = elements38.getLength() > 0 ? ((org.w3c.dom.Element) elements38.item(0)).getTextContent() : null;
                         sitePropertiesInstance.getAppSettings().put(appSettingsKey, appSettingsValue);
                     }
                 }
                 
                 NodeList elements39 = sitePropertiesElement.getElementsByTagName("Metadata");
-                Element metadataSequenceElement = elements39.getLength() > 0 ? ((Element)elements39.item(0)) : null;
+                Element metadataSequenceElement = elements39.getLength() > 0 ? ((Element) elements39.item(0)) : null;
                 if (metadataSequenceElement != null)
                 {
                     for (int i7 = 0; i7 < metadataSequenceElement.getElementsByTagName("NameValuePair").getLength(); i7 = i7 + 1)
                     {
-                        org.w3c.dom.Element metadataElement = ((org.w3c.dom.Element)metadataSequenceElement.getElementsByTagName("NameValuePair").item(i7));
+                        org.w3c.dom.Element metadataElement = ((org.w3c.dom.Element) metadataSequenceElement.getElementsByTagName("NameValuePair").item(i7));
                         NodeList elements40 = metadataElement.getElementsByTagName("Name");
-                        String metadataKey = elements40.getLength() > 0 ? ((org.w3c.dom.Element)elements40.item(0)).getTextContent() : null;
+                        String metadataKey = elements40.getLength() > 0 ? ((org.w3c.dom.Element) elements40.item(0)).getTextContent() : null;
                         NodeList elements41 = metadataElement.getElementsByTagName("Value");
-                        String metadataValue = elements41.getLength() > 0 ? ((org.w3c.dom.Element)elements41.item(0)).getTextContent() : null;
+                        String metadataValue = elements41.getLength() > 0 ? ((org.w3c.dom.Element) elements41.item(0)).getTextContent() : null;
                         sitePropertiesInstance.getMetadata().put(metadataKey, metadataValue);
                     }
                 }
                 
                 NodeList elements42 = sitePropertiesElement.getElementsByTagName("Properties");
-                Element propertiesSequenceElement = elements42.getLength() > 0 ? ((Element)elements42.item(0)) : null;
+                Element propertiesSequenceElement = elements42.getLength() > 0 ? ((Element) elements42.item(0)) : null;
                 if (propertiesSequenceElement != null)
                 {
                     for (int i8 = 0; i8 < propertiesSequenceElement.getElementsByTagName("NameValuePair").getLength(); i8 = i8 + 1)
                     {
-                        org.w3c.dom.Element propertiesElement = ((org.w3c.dom.Element)propertiesSequenceElement.getElementsByTagName("NameValuePair").item(i8));
+                        org.w3c.dom.Element propertiesElement = ((org.w3c.dom.Element) propertiesSequenceElement.getElementsByTagName("NameValuePair").item(i8));
                         NodeList elements43 = propertiesElement.getElementsByTagName("Name");
-                        String propertiesKey = elements43.getLength() > 0 ? ((org.w3c.dom.Element)elements43.item(0)).getTextContent() : null;
+                        String propertiesKey = elements43.getLength() > 0 ? ((org.w3c.dom.Element) elements43.item(0)).getTextContent() : null;
                         NodeList elements44 = propertiesElement.getElementsByTagName("Value");
-                        String propertiesValue = elements44.getLength() > 0 ? ((org.w3c.dom.Element)elements44.item(0)).getTextContent() : null;
+                        String propertiesValue = elements44.getLength() > 0 ? ((org.w3c.dom.Element) elements44.item(0)).getTextContent() : null;
                         sitePropertiesInstance.getProperties().put(propertiesKey, propertiesValue);
                     }
                 }
             }
             
             NodeList elements45 = siteElement.getElementsByTagName("State");
-            Element stateElement = elements45.getLength() > 0 ? ((Element)elements45.item(0)) : null;
+            Element stateElement = elements45.getLength() > 0 ? ((Element) elements45.item(0)) : null;
             if (stateElement != null)
             {
                 WebSiteState stateInstance;
@@ -1749,7 +1753,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements46 = siteElement.getElementsByTagName("UsageState");
-            Element usageStateElement = elements46.getLength() > 0 ? ((Element)elements46.item(0)) : null;
+            Element usageStateElement = elements46.getLength() > 0 ? ((Element) elements46.item(0)) : null;
             if (usageStateElement != null)
             {
                 WebSiteUsageState usageStateInstance;
@@ -1758,7 +1762,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements47 = siteElement.getElementsByTagName("WebSpace");
-            Element webSpaceElement = elements47.getLength() > 0 ? ((Element)elements47.item(0)) : null;
+            Element webSpaceElement = elements47.getLength() > 0 ? ((Element) elements47.item(0)) : null;
             if (webSpaceElement != null)
             {
                 String webSpaceInstance;
@@ -1860,7 +1864,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -1880,36 +1884,36 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         Document responseDoc = documentBuilder.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagName("SiteConfig");
-        Element siteConfigElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element siteConfigElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (siteConfigElement != null)
         {
             NodeList elements2 = siteConfigElement.getElementsByTagName("AppSettings");
-            Element appSettingsSequenceElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+            Element appSettingsSequenceElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
             if (appSettingsSequenceElement != null)
             {
                 for (int i1 = 0; i1 < appSettingsSequenceElement.getElementsByTagName("NameValuePair").getLength(); i1 = i1 + 1)
                 {
-                    org.w3c.dom.Element appSettingsElement = ((org.w3c.dom.Element)appSettingsSequenceElement.getElementsByTagName("NameValuePair").item(i1));
+                    org.w3c.dom.Element appSettingsElement = ((org.w3c.dom.Element) appSettingsSequenceElement.getElementsByTagName("NameValuePair").item(i1));
                     NodeList elements3 = appSettingsElement.getElementsByTagName("Name");
-                    String appSettingsKey = elements3.getLength() > 0 ? ((org.w3c.dom.Element)elements3.item(0)).getTextContent() : null;
+                    String appSettingsKey = elements3.getLength() > 0 ? ((org.w3c.dom.Element) elements3.item(0)).getTextContent() : null;
                     NodeList elements4 = appSettingsElement.getElementsByTagName("Value");
-                    String appSettingsValue = elements4.getLength() > 0 ? ((org.w3c.dom.Element)elements4.item(0)).getTextContent() : null;
+                    String appSettingsValue = elements4.getLength() > 0 ? ((org.w3c.dom.Element) elements4.item(0)).getTextContent() : null;
                     result.getAppSettings().put(appSettingsKey, appSettingsValue);
                 }
             }
             
             NodeList elements5 = siteConfigElement.getElementsByTagName("ConnectionStrings");
-            Element connectionStringsSequenceElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
+            Element connectionStringsSequenceElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
             if (connectionStringsSequenceElement != null)
             {
                 for (int i2 = 0; i2 < connectionStringsSequenceElement.getElementsByTagName("ConnStringInfo").getLength(); i2 = i2 + 1)
                 {
-                    org.w3c.dom.Element connectionStringsElement = ((org.w3c.dom.Element)connectionStringsSequenceElement.getElementsByTagName("ConnStringInfo").item(i2));
+                    org.w3c.dom.Element connectionStringsElement = ((org.w3c.dom.Element) connectionStringsSequenceElement.getElementsByTagName("ConnStringInfo").item(i2));
                     WebSiteGetConfigurationResponse.ConnectionStringInfo connStringInfoInstance = new WebSiteGetConfigurationResponse.ConnectionStringInfo();
                     result.getConnectionStrings().add(connStringInfoInstance);
                     
                     NodeList elements6 = connectionStringsElement.getElementsByTagName("ConnectionString");
-                    Element connectionStringElement = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
+                    Element connectionStringElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                     if (connectionStringElement != null)
                     {
                         String connectionStringInstance;
@@ -1918,7 +1922,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                     
                     NodeList elements7 = connectionStringsElement.getElementsByTagName("Name");
-                    Element nameElement = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
+                    Element nameElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                     if (nameElement != null)
                     {
                         String nameInstance;
@@ -1927,7 +1931,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                     
                     NodeList elements8 = connectionStringsElement.getElementsByTagName("Type");
-                    Element typeElement = elements8.getLength() > 0 ? ((Element)elements8.item(0)) : null;
+                    Element typeElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
                     if (typeElement != null)
                     {
                         String typeInstance;
@@ -1938,18 +1942,18 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements9 = siteConfigElement.getElementsByTagName("DefaultDocuments");
-            Element defaultDocumentsSequenceElement = elements9.getLength() > 0 ? ((Element)elements9.item(0)) : null;
+            Element defaultDocumentsSequenceElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
             if (defaultDocumentsSequenceElement != null)
             {
                 for (int i3 = 0; i3 < defaultDocumentsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i3 = i3 + 1)
                 {
-                    org.w3c.dom.Element defaultDocumentsElement = ((org.w3c.dom.Element)defaultDocumentsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i3));
+                    org.w3c.dom.Element defaultDocumentsElement = ((org.w3c.dom.Element) defaultDocumentsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i3));
                     result.getDefaultDocuments().add(defaultDocumentsElement.getTextContent());
                 }
             }
             
             NodeList elements10 = siteConfigElement.getElementsByTagName("DetailedErrorLoggingEnabled");
-            Element detailedErrorLoggingEnabledElement = elements10.getLength() > 0 ? ((Element)elements10.item(0)) : null;
+            Element detailedErrorLoggingEnabledElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
             if (detailedErrorLoggingEnabledElement != null && (detailedErrorLoggingEnabledElement.getTextContent() != null && detailedErrorLoggingEnabledElement.getTextContent().isEmpty() != true) == false)
             {
                 boolean detailedErrorLoggingEnabledInstance;
@@ -1958,7 +1962,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements11 = siteConfigElement.getElementsByTagName("DocumentRoot");
-            Element documentRootElement = elements11.getLength() > 0 ? ((Element)elements11.item(0)) : null;
+            Element documentRootElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
             if (documentRootElement != null)
             {
                 String documentRootInstance;
@@ -1967,17 +1971,17 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements12 = siteConfigElement.getElementsByTagName("HandlerMappings");
-            Element handlerMappingsSequenceElement = elements12.getLength() > 0 ? ((Element)elements12.item(0)) : null;
+            Element handlerMappingsSequenceElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
             if (handlerMappingsSequenceElement != null)
             {
                 for (int i4 = 0; i4 < handlerMappingsSequenceElement.getElementsByTagName("HandlerMapping").getLength(); i4 = i4 + 1)
                 {
-                    org.w3c.dom.Element handlerMappingsElement = ((org.w3c.dom.Element)handlerMappingsSequenceElement.getElementsByTagName("HandlerMapping").item(i4));
+                    org.w3c.dom.Element handlerMappingsElement = ((org.w3c.dom.Element) handlerMappingsSequenceElement.getElementsByTagName("HandlerMapping").item(i4));
                     WebSiteGetConfigurationResponse.HandlerMapping handlerMappingInstance = new WebSiteGetConfigurationResponse.HandlerMapping();
                     result.getHandlerMappings().add(handlerMappingInstance);
                     
                     NodeList elements13 = handlerMappingsElement.getElementsByTagName("Arguments");
-                    Element argumentsElement = elements13.getLength() > 0 ? ((Element)elements13.item(0)) : null;
+                    Element argumentsElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
                     if (argumentsElement != null)
                     {
                         String argumentsInstance;
@@ -1986,7 +1990,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                     
                     NodeList elements14 = handlerMappingsElement.getElementsByTagName("Extension");
-                    Element extensionElement = elements14.getLength() > 0 ? ((Element)elements14.item(0)) : null;
+                    Element extensionElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
                     if (extensionElement != null)
                     {
                         String extensionInstance;
@@ -1995,7 +1999,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                     
                     NodeList elements15 = handlerMappingsElement.getElementsByTagName("ScriptProcessor");
-                    Element scriptProcessorElement = elements15.getLength() > 0 ? ((Element)elements15.item(0)) : null;
+                    Element scriptProcessorElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
                     if (scriptProcessorElement != null)
                     {
                         String scriptProcessorInstance;
@@ -2006,7 +2010,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements16 = siteConfigElement.getElementsByTagName("HttpLoggingEnabled");
-            Element httpLoggingEnabledElement = elements16.getLength() > 0 ? ((Element)elements16.item(0)) : null;
+            Element httpLoggingEnabledElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
             if (httpLoggingEnabledElement != null && (httpLoggingEnabledElement.getTextContent() != null && httpLoggingEnabledElement.getTextContent().isEmpty() != true) == false)
             {
                 boolean httpLoggingEnabledInstance;
@@ -2015,7 +2019,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements17 = siteConfigElement.getElementsByTagName("LogsDirectorySizeLimit");
-            Element logsDirectorySizeLimitElement = elements17.getLength() > 0 ? ((Element)elements17.item(0)) : null;
+            Element logsDirectorySizeLimitElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
             if (logsDirectorySizeLimitElement != null && (logsDirectorySizeLimitElement.getTextContent() != null && logsDirectorySizeLimitElement.getTextContent().isEmpty() != true) == false)
             {
                 int logsDirectorySizeLimitInstance;
@@ -2024,7 +2028,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements18 = siteConfigElement.getElementsByTagName("ManagedPipelineMode");
-            Element managedPipelineModeElement = elements18.getLength() > 0 ? ((Element)elements18.item(0)) : null;
+            Element managedPipelineModeElement = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
             if (managedPipelineModeElement != null && (managedPipelineModeElement.getTextContent() != null && managedPipelineModeElement.getTextContent().isEmpty() != true) == false)
             {
                 ManagedPipelineMode managedPipelineModeInstance;
@@ -2033,22 +2037,22 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements19 = siteConfigElement.getElementsByTagName("Metadata");
-            Element metadataSequenceElement = elements19.getLength() > 0 ? ((Element)elements19.item(0)) : null;
+            Element metadataSequenceElement = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
             if (metadataSequenceElement != null)
             {
                 for (int i5 = 0; i5 < metadataSequenceElement.getElementsByTagName("NameValuePair").getLength(); i5 = i5 + 1)
                 {
-                    org.w3c.dom.Element metadataElement = ((org.w3c.dom.Element)metadataSequenceElement.getElementsByTagName("NameValuePair").item(i5));
+                    org.w3c.dom.Element metadataElement = ((org.w3c.dom.Element) metadataSequenceElement.getElementsByTagName("NameValuePair").item(i5));
                     NodeList elements20 = metadataElement.getElementsByTagName("Name");
-                    String metadataKey = elements20.getLength() > 0 ? ((org.w3c.dom.Element)elements20.item(0)).getTextContent() : null;
+                    String metadataKey = elements20.getLength() > 0 ? ((org.w3c.dom.Element) elements20.item(0)).getTextContent() : null;
                     NodeList elements21 = metadataElement.getElementsByTagName("Value");
-                    String metadataValue = elements21.getLength() > 0 ? ((org.w3c.dom.Element)elements21.item(0)).getTextContent() : null;
+                    String metadataValue = elements21.getLength() > 0 ? ((org.w3c.dom.Element) elements21.item(0)).getTextContent() : null;
                     result.getMetadata().put(metadataKey, metadataValue);
                 }
             }
             
             NodeList elements22 = siteConfigElement.getElementsByTagName("NetFrameworkVersion");
-            Element netFrameworkVersionElement = elements22.getLength() > 0 ? ((Element)elements22.item(0)) : null;
+            Element netFrameworkVersionElement = elements22.getLength() > 0 ? ((Element) elements22.item(0)) : null;
             if (netFrameworkVersionElement != null)
             {
                 String netFrameworkVersionInstance;
@@ -2057,7 +2061,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements23 = siteConfigElement.getElementsByTagName("NumberOfWorkers");
-            Element numberOfWorkersElement = elements23.getLength() > 0 ? ((Element)elements23.item(0)) : null;
+            Element numberOfWorkersElement = elements23.getLength() > 0 ? ((Element) elements23.item(0)) : null;
             if (numberOfWorkersElement != null && (numberOfWorkersElement.getTextContent() != null && numberOfWorkersElement.getTextContent().isEmpty() != true) == false)
             {
                 int numberOfWorkersInstance;
@@ -2066,7 +2070,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements24 = siteConfigElement.getElementsByTagName("PhpVersion");
-            Element phpVersionElement = elements24.getLength() > 0 ? ((Element)elements24.item(0)) : null;
+            Element phpVersionElement = elements24.getLength() > 0 ? ((Element) elements24.item(0)) : null;
             if (phpVersionElement != null)
             {
                 String phpVersionInstance;
@@ -2075,7 +2079,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements25 = siteConfigElement.getElementsByTagName("PublishingPassword");
-            Element publishingPasswordElement = elements25.getLength() > 0 ? ((Element)elements25.item(0)) : null;
+            Element publishingPasswordElement = elements25.getLength() > 0 ? ((Element) elements25.item(0)) : null;
             if (publishingPasswordElement != null)
             {
                 String publishingPasswordInstance;
@@ -2084,7 +2088,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements26 = siteConfigElement.getElementsByTagName("PublishingUsername");
-            Element publishingUsernameElement = elements26.getLength() > 0 ? ((Element)elements26.item(0)) : null;
+            Element publishingUsernameElement = elements26.getLength() > 0 ? ((Element) elements26.item(0)) : null;
             if (publishingUsernameElement != null)
             {
                 String publishingUsernameInstance;
@@ -2093,7 +2097,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements27 = siteConfigElement.getElementsByTagName("RemoteDebuggingEnabled");
-            Element remoteDebuggingEnabledElement = elements27.getLength() > 0 ? ((Element)elements27.item(0)) : null;
+            Element remoteDebuggingEnabledElement = elements27.getLength() > 0 ? ((Element) elements27.item(0)) : null;
             if (remoteDebuggingEnabledElement != null && (remoteDebuggingEnabledElement.getTextContent() != null && remoteDebuggingEnabledElement.getTextContent().isEmpty() != true) == false)
             {
                 boolean remoteDebuggingEnabledInstance;
@@ -2102,7 +2106,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements28 = siteConfigElement.getElementsByTagName("RemoteDebuggingVersion");
-            Element remoteDebuggingVersionElement = elements28.getLength() > 0 ? ((Element)elements28.item(0)) : null;
+            Element remoteDebuggingVersionElement = elements28.getLength() > 0 ? ((Element) elements28.item(0)) : null;
             if (remoteDebuggingVersionElement != null)
             {
                 boolean isNil = false;
@@ -2120,7 +2124,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements29 = siteConfigElement.getElementsByTagName("RequestTracingEnabled");
-            Element requestTracingEnabledElement = elements29.getLength() > 0 ? ((Element)elements29.item(0)) : null;
+            Element requestTracingEnabledElement = elements29.getLength() > 0 ? ((Element) elements29.item(0)) : null;
             if (requestTracingEnabledElement != null && (requestTracingEnabledElement.getTextContent() != null && requestTracingEnabledElement.getTextContent().isEmpty() != true) == false)
             {
                 boolean requestTracingEnabledInstance;
@@ -2129,7 +2133,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements30 = siteConfigElement.getElementsByTagName("RequestTracingExpirationTime");
-            Element requestTracingExpirationTimeElement = elements30.getLength() > 0 ? ((Element)elements30.item(0)) : null;
+            Element requestTracingExpirationTimeElement = elements30.getLength() > 0 ? ((Element) elements30.item(0)) : null;
             if (requestTracingExpirationTimeElement != null && (requestTracingExpirationTimeElement.getTextContent() != null && requestTracingExpirationTimeElement.getTextContent().isEmpty() != true) == false)
             {
                 boolean isNil2 = false;
@@ -2150,7 +2154,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements31 = siteConfigElement.getElementsByTagName("ScmType");
-            Element scmTypeElement = elements31.getLength() > 0 ? ((Element)elements31.item(0)) : null;
+            Element scmTypeElement = elements31.getLength() > 0 ? ((Element) elements31.item(0)) : null;
             if (scmTypeElement != null)
             {
                 String scmTypeInstance;
@@ -2159,7 +2163,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements32 = siteConfigElement.getElementsByTagName("Use32BitWorkerProcess");
-            Element use32BitWorkerProcessElement = elements32.getLength() > 0 ? ((Element)elements32.item(0)) : null;
+            Element use32BitWorkerProcessElement = elements32.getLength() > 0 ? ((Element) elements32.item(0)) : null;
             if (use32BitWorkerProcessElement != null && (use32BitWorkerProcessElement.getTextContent() != null && use32BitWorkerProcessElement.getTextContent().isEmpty() != true) == false)
             {
                 boolean use32BitWorkerProcessInstance;
@@ -2168,7 +2172,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements33 = siteConfigElement.getElementsByTagName("WebSocketsEnabled");
-            Element webSocketsEnabledElement = elements33.getLength() > 0 ? ((Element)elements33.item(0)) : null;
+            Element webSocketsEnabledElement = elements33.getLength() > 0 ? ((Element) elements33.item(0)) : null;
             if (webSocketsEnabledElement != null && (webSocketsEnabledElement.getTextContent() != null && webSocketsEnabledElement.getTextContent().isEmpty() != true) == false)
             {
                 boolean webSocketsEnabledInstance;
@@ -2262,15 +2266,15 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/WebSpaces/" + webSpaceName + "/sites/" + webSiteName + "/metrics?";
         if (parameters.getMetricNames() != null && parameters.getMetricNames().size() > 0)
         {
-            url = url + "&names=" + URLEncoder.encode(CommaStringBuilder.join(parameters.getMetricNames()));
+            url = url + "&names=" + URLEncoder.encode(CommaStringBuilder.join(parameters.getMetricNames()), "UTF-8");
         }
         if (parameters.getStartTime() != null)
         {
-            url = url + "&StartTime=" + URLEncoder.encode(simpleDateFormat.format(parameters.getStartTime().getTime()));
+            url = url + "&StartTime=" + URLEncoder.encode(simpleDateFormat.format(parameters.getStartTime().getTime()), "UTF-8");
         }
         if (parameters.getEndTime() != null)
         {
-            url = url + "&EndTime=" + URLEncoder.encode(simpleDateFormat2.format(parameters.getEndTime().getTime()));
+            url = url + "&EndTime=" + URLEncoder.encode(simpleDateFormat2.format(parameters.getEndTime().getTime()), "UTF-8");
         }
         
         // Create HTTP transport objects
@@ -2291,7 +2295,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -2311,19 +2315,19 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         Document responseDoc = documentBuilder.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagName("MetricResponses");
-        Element metricResponsesElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element metricResponsesElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (metricResponsesElement != null)
         {
             if (metricResponsesElement != null)
             {
                 for (int i1 = 0; i1 < metricResponsesElement.getElementsByTagName("MetricResponse").getLength(); i1 = i1 + 1)
                 {
-                    org.w3c.dom.Element usageMetricsElement = ((org.w3c.dom.Element)metricResponsesElement.getElementsByTagName("MetricResponse").item(i1));
+                    org.w3c.dom.Element usageMetricsElement = ((org.w3c.dom.Element) metricResponsesElement.getElementsByTagName("MetricResponse").item(i1));
                     WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetric metricResponseInstance = new WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetric();
                     result.getUsageMetrics().add(metricResponseInstance);
                     
                     NodeList elements2 = usageMetricsElement.getElementsByTagName("Code");
-                    Element codeElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+                    Element codeElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                     if (codeElement != null)
                     {
                         String codeInstance;
@@ -2332,14 +2336,14 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                     
                     NodeList elements3 = usageMetricsElement.getElementsByTagName("Data");
-                    Element dataElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
+                    Element dataElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                     if (dataElement != null)
                     {
                         WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetricData dataInstance = new WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetricData();
                         metricResponseInstance.setData(dataInstance);
                         
                         NodeList elements4 = dataElement.getElementsByTagName("DisplayName");
-                        Element displayNameElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
+                        Element displayNameElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                         if (displayNameElement != null)
                         {
                             String displayNameInstance;
@@ -2348,7 +2352,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                         }
                         
                         NodeList elements5 = dataElement.getElementsByTagName("EndTime");
-                        Element endTimeElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
+                        Element endTimeElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                         if (endTimeElement != null)
                         {
                             Calendar endTimeInstance;
@@ -2360,7 +2364,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                         }
                         
                         NodeList elements6 = dataElement.getElementsByTagName("Name");
-                        Element nameElement = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
+                        Element nameElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                         if (nameElement != null)
                         {
                             String nameInstance;
@@ -2369,7 +2373,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                         }
                         
                         NodeList elements7 = dataElement.getElementsByTagName("PrimaryAggregationType");
-                        Element primaryAggregationTypeElement = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
+                        Element primaryAggregationTypeElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                         if (primaryAggregationTypeElement != null)
                         {
                             String primaryAggregationTypeInstance;
@@ -2378,7 +2382,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                         }
                         
                         NodeList elements8 = dataElement.getElementsByTagName("StartTime");
-                        Element startTimeElement = elements8.getLength() > 0 ? ((Element)elements8.item(0)) : null;
+                        Element startTimeElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
                         if (startTimeElement != null)
                         {
                             Calendar startTimeInstance;
@@ -2390,7 +2394,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                         }
                         
                         NodeList elements9 = dataElement.getElementsByTagName("TimeGrain");
-                        Element timeGrainElement = elements9.getLength() > 0 ? ((Element)elements9.item(0)) : null;
+                        Element timeGrainElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
                         if (timeGrainElement != null)
                         {
                             String timeGrainInstance;
@@ -2399,7 +2403,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                         }
                         
                         NodeList elements10 = dataElement.getElementsByTagName("Unit");
-                        Element unitElement = elements10.getLength() > 0 ? ((Element)elements10.item(0)) : null;
+                        Element unitElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
                         if (unitElement != null)
                         {
                             String unitInstance;
@@ -2408,17 +2412,17 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                         }
                         
                         NodeList elements11 = dataElement.getElementsByTagName("Values");
-                        Element valuesSequenceElement = elements11.getLength() > 0 ? ((Element)elements11.item(0)) : null;
+                        Element valuesSequenceElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
                         if (valuesSequenceElement != null)
                         {
                             for (int i2 = 0; i2 < valuesSequenceElement.getElementsByTagName("MetricSample").getLength(); i2 = i2 + 1)
                             {
-                                org.w3c.dom.Element valuesElement = ((org.w3c.dom.Element)valuesSequenceElement.getElementsByTagName("MetricSample").item(i2));
+                                org.w3c.dom.Element valuesElement = ((org.w3c.dom.Element) valuesSequenceElement.getElementsByTagName("MetricSample").item(i2));
                                 WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetricSample metricSampleInstance = new WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetricSample();
                                 dataInstance.getValues().add(metricSampleInstance);
                                 
                                 NodeList elements12 = valuesElement.getElementsByTagName("Count");
-                                Element countElement = elements12.getLength() > 0 ? ((Element)elements12.item(0)) : null;
+                                Element countElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
                                 if (countElement != null)
                                 {
                                     int countInstance;
@@ -2427,7 +2431,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 }
                                 
                                 NodeList elements13 = valuesElement.getElementsByTagName("Maximum");
-                                Element maximumElement = elements13.getLength() > 0 ? ((Element)elements13.item(0)) : null;
+                                Element maximumElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
                                 if (maximumElement != null)
                                 {
                                     boolean isNil = false;
@@ -2445,7 +2449,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 }
                                 
                                 NodeList elements14 = valuesElement.getElementsByTagName("Minimum");
-                                Element minimumElement = elements14.getLength() > 0 ? ((Element)elements14.item(0)) : null;
+                                Element minimumElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
                                 if (minimumElement != null)
                                 {
                                     boolean isNil2 = false;
@@ -2463,7 +2467,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 }
                                 
                                 NodeList elements15 = valuesElement.getElementsByTagName("TimeCreated");
-                                Element timeCreatedElement = elements15.getLength() > 0 ? ((Element)elements15.item(0)) : null;
+                                Element timeCreatedElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
                                 if (timeCreatedElement != null)
                                 {
                                     Calendar timeCreatedInstance;
@@ -2475,7 +2479,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 }
                                 
                                 NodeList elements16 = valuesElement.getElementsByTagName("Total");
-                                Element totalElement = elements16.getLength() > 0 ? ((Element)elements16.item(0)) : null;
+                                Element totalElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
                                 if (totalElement != null)
                                 {
                                     String totalInstance;
@@ -2487,7 +2491,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                     
                     NodeList elements17 = usageMetricsElement.getElementsByTagName("Message");
-                    Element messageElement = elements17.getLength() > 0 ? ((Element)elements17.item(0)) : null;
+                    Element messageElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
                     if (messageElement != null)
                     {
                         String messageInstance;
@@ -2589,7 +2593,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -2609,14 +2613,14 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         Document responseDoc = documentBuilder.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagNameNS("", "publishData");
-        Element publishDataElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element publishDataElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (publishDataElement != null)
         {
             if (publishDataElement != null)
             {
                 for (int i1 = 0; i1 < publishDataElement.getElementsByTagNameNS("", "publishProfile").getLength(); i1 = i1 + 1)
                 {
-                    org.w3c.dom.Element publishProfilesElement = ((org.w3c.dom.Element)publishDataElement.getElementsByTagNameNS("", "publishProfile").item(i1));
+                    org.w3c.dom.Element publishProfilesElement = ((org.w3c.dom.Element) publishDataElement.getElementsByTagNameNS("", "publishProfile").item(i1));
                     WebSiteGetPublishProfileResponse.PublishProfile publishProfileInstance = new WebSiteGetPublishProfileResponse.PublishProfile();
                     result.getPublishProfiles().add(publishProfileInstance);
                     
@@ -2693,12 +2697,12 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                     
                     NodeList elements2 = publishProfilesElement.getElementsByTagNameNS("", "databases");
-                    Element databasesSequenceElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+                    Element databasesSequenceElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                     if (databasesSequenceElement != null)
                     {
                         for (int i2 = 0; i2 < databasesSequenceElement.getElementsByTagNameNS("", "add").getLength(); i2 = i2 + 1)
                         {
-                            org.w3c.dom.Element databasesElement = ((org.w3c.dom.Element)databasesSequenceElement.getElementsByTagNameNS("", "add").item(i2));
+                            org.w3c.dom.Element databasesElement = ((org.w3c.dom.Element) databasesSequenceElement.getElementsByTagNameNS("", "add").item(i2));
                             WebSiteGetPublishProfileResponse.Database addInstance = new WebSiteGetPublishProfileResponse.Database();
                             publishProfileInstance.getDatabases().add(addInstance);
                             
@@ -2828,7 +2832,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -2848,7 +2852,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         Document responseDoc = documentBuilder.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/", "anyURI");
-        Element anyURIElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element anyURIElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (anyURIElement != null)
         {
             result.setUri(new URI(anyURIElement.getTextContent()));
@@ -2951,7 +2955,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -2971,19 +2975,19 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         Document responseDoc = documentBuilder.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagName("Usages");
-        Element usagesElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element usagesElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (usagesElement != null)
         {
             if (usagesElement != null)
             {
                 for (int i1 = 0; i1 < usagesElement.getElementsByTagName("Usage").getLength(); i1 = i1 + 1)
                 {
-                    org.w3c.dom.Element usageMetricsElement = ((org.w3c.dom.Element)usagesElement.getElementsByTagName("Usage").item(i1));
+                    org.w3c.dom.Element usageMetricsElement = ((org.w3c.dom.Element) usagesElement.getElementsByTagName("Usage").item(i1));
                     WebSiteGetUsageMetricsResponse.UsageMetric usageInstance = new WebSiteGetUsageMetricsResponse.UsageMetric();
                     result.getUsageMetrics().add(usageInstance);
                     
                     NodeList elements2 = usageMetricsElement.getElementsByTagName("ComputeMode");
-                    Element computeModeElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+                    Element computeModeElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                     if (computeModeElement != null)
                     {
                         WebSiteComputeMode computeModeInstance;
@@ -2992,7 +2996,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                     
                     NodeList elements3 = usageMetricsElement.getElementsByTagName("CurrentValue");
-                    Element currentValueElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
+                    Element currentValueElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                     if (currentValueElement != null)
                     {
                         String currentValueInstance;
@@ -3001,7 +3005,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                     
                     NodeList elements4 = usageMetricsElement.getElementsByTagName("DisplayName");
-                    Element displayNameElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
+                    Element displayNameElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                     if (displayNameElement != null)
                     {
                         String displayNameInstance;
@@ -3010,7 +3014,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                     
                     NodeList elements5 = usageMetricsElement.getElementsByTagName("Limit");
-                    Element limitElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
+                    Element limitElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                     if (limitElement != null)
                     {
                         String limitInstance;
@@ -3019,7 +3023,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                     
                     NodeList elements6 = usageMetricsElement.getElementsByTagName("Name");
-                    Element nameElement = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
+                    Element nameElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                     if (nameElement != null)
                     {
                         String nameInstance;
@@ -3028,7 +3032,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                     
                     NodeList elements7 = usageMetricsElement.getElementsByTagName("NextResetTime");
-                    Element nextResetTimeElement = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
+                    Element nextResetTimeElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                     if (nextResetTimeElement != null)
                     {
                         Calendar nextResetTimeInstance;
@@ -3040,7 +3044,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                     
                     NodeList elements8 = usageMetricsElement.getElementsByTagName("ResourceName");
-                    Element resourceNameElement = elements8.getLength() > 0 ? ((Element)elements8.item(0)) : null;
+                    Element resourceNameElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
                     if (resourceNameElement != null)
                     {
                         String resourceNameInstance;
@@ -3049,7 +3053,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                     
                     NodeList elements9 = usageMetricsElement.getElementsByTagName("SiteMode");
-                    Element siteModeElement = elements9.getLength() > 0 ? ((Element)elements9.item(0)) : null;
+                    Element siteModeElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
                     if (siteModeElement != null)
                     {
                         WebSiteMode siteModeInstance;
@@ -3058,7 +3062,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                     
                     NodeList elements10 = usageMetricsElement.getElementsByTagName("Unit");
-                    Element unitElement = elements10.getLength() > 0 ? ((Element)elements10.item(0)) : null;
+                    Element unitElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
                     if (unitElement != null)
                     {
                         String unitInstance;
@@ -3161,7 +3165,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -3284,10 +3288,10 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             siteElement.appendChild(computeModeElement);
         }
         
-        if (parameters.getEnabled() != null)
+        if (parameters.isEnabled() != null)
         {
             Element enabledElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Enabled");
-            enabledElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.getEnabled()).toLowerCase()));
+            enabledElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.isEnabled()).toLowerCase()));
             siteElement.appendChild(enabledElement);
         }
         
@@ -3319,10 +3323,10 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     webSiteHostNameSslStateElement.appendChild(emptyElement);
                 }
                 
-                if (hostNameSslStatesItem.getToUpdate() != null)
+                if (hostNameSslStatesItem.isToUpdate() != null)
                 {
                     Element toUpdateElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ToUpdate");
-                    toUpdateElement.appendChild(requestDoc.createTextNode(Boolean.toString(hostNameSslStatesItem.getToUpdate()).toLowerCase()));
+                    toUpdateElement.appendChild(requestDoc.createTextNode(Boolean.toString(hostNameSslStatesItem.isToUpdate()).toLowerCase()));
                     webSiteHostNameSslStateElement.appendChild(toUpdateElement);
                 }
             }
@@ -3377,10 +3381,10 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     certificateElement.appendChild(thumbprintElement2);
                 }
                 
-                if (sSLCertificatesItem.getIsToBeDeleted() != null)
+                if (sSLCertificatesItem.isToBeDeleted() != null)
                 {
                     Element toDeleteElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ToDelete");
-                    toDeleteElement.appendChild(requestDoc.createTextNode(Boolean.toString(sSLCertificatesItem.getIsToBeDeleted()).toLowerCase()));
+                    toDeleteElement.appendChild(requestDoc.createTextNode(Boolean.toString(sSLCertificatesItem.isToBeDeleted()).toLowerCase()));
                     certificateElement.appendChild(toDeleteElement);
                 }
             }
@@ -3431,7 +3435,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -3451,14 +3455,14 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         Document responseDoc = documentBuilder2.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagName("Site");
-        Element siteElement2 = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element siteElement2 = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (siteElement2 != null)
         {
             WebSite webSiteInstance = new WebSite();
             result.setWebSite(webSiteInstance);
             
             NodeList elements2 = siteElement2.getElementsByTagName("AdminEnabled");
-            Element adminEnabledElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+            Element adminEnabledElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
             if (adminEnabledElement != null)
             {
                 boolean adminEnabledInstance;
@@ -3467,7 +3471,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements3 = siteElement2.getElementsByTagName("AvailabilityState");
-            Element availabilityStateElement2 = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
+            Element availabilityStateElement2 = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
             if (availabilityStateElement2 != null)
             {
                 WebSpaceAvailabilityState availabilityStateInstance;
@@ -3476,7 +3480,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements4 = siteElement2.getElementsByTagName("ComputeMode");
-            Element computeModeElement2 = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
+            Element computeModeElement2 = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
             if (computeModeElement2 != null)
             {
                 WebSiteComputeMode computeModeInstance;
@@ -3485,7 +3489,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements5 = siteElement2.getElementsByTagName("Enabled");
-            Element enabledElement2 = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
+            Element enabledElement2 = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
             if (enabledElement2 != null)
             {
                 boolean enabledInstance;
@@ -3494,28 +3498,28 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements6 = siteElement2.getElementsByTagName("EnabledHostNames");
-            Element enabledHostNamesSequenceElement = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
+            Element enabledHostNamesSequenceElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
             if (enabledHostNamesSequenceElement != null)
             {
                 for (int i1 = 0; i1 < enabledHostNamesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i1 = i1 + 1)
                 {
-                    org.w3c.dom.Element enabledHostNamesElement = ((org.w3c.dom.Element)enabledHostNamesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i1));
+                    org.w3c.dom.Element enabledHostNamesElement = ((org.w3c.dom.Element) enabledHostNamesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i1));
                     webSiteInstance.getEnabledHostNames().add(enabledHostNamesElement.getTextContent());
                 }
             }
             
             NodeList elements7 = siteElement2.getElementsByTagName("HostNameSslStates");
-            Element hostNameSslStatesSequenceElement2 = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
+            Element hostNameSslStatesSequenceElement2 = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
             if (hostNameSslStatesSequenceElement2 != null)
             {
                 for (int i2 = 0; i2 < hostNameSslStatesSequenceElement2.getElementsByTagName("WebSiteHostNameSslState").getLength(); i2 = i2 + 1)
                 {
-                    org.w3c.dom.Element hostNameSslStatesElement = ((org.w3c.dom.Element)hostNameSslStatesSequenceElement2.getElementsByTagName("WebSiteHostNameSslState").item(i2));
+                    org.w3c.dom.Element hostNameSslStatesElement = ((org.w3c.dom.Element) hostNameSslStatesSequenceElement2.getElementsByTagName("WebSiteHostNameSslState").item(i2));
                     WebSite.WebSiteHostNameSslState webSiteHostNameSslStateInstance = new WebSite.WebSiteHostNameSslState();
                     webSiteInstance.getHostNameSslStates().add(webSiteHostNameSslStateInstance);
                     
                     NodeList elements8 = hostNameSslStatesElement.getElementsByTagName("Name");
-                    Element nameElement = elements8.getLength() > 0 ? ((Element)elements8.item(0)) : null;
+                    Element nameElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
                     if (nameElement != null)
                     {
                         String nameInstance;
@@ -3524,7 +3528,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                     
                     NodeList elements9 = hostNameSslStatesElement.getElementsByTagName("SslState");
-                    Element sslStateElement2 = elements9.getLength() > 0 ? ((Element)elements9.item(0)) : null;
+                    Element sslStateElement2 = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
                     if (sslStateElement2 != null)
                     {
                         WebSiteSslState sslStateInstance;
@@ -3533,7 +3537,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                     
                     NodeList elements10 = hostNameSslStatesElement.getElementsByTagName("Thumbprint");
-                    Element thumbprintElement3 = elements10.getLength() > 0 ? ((Element)elements10.item(0)) : null;
+                    Element thumbprintElement3 = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
                     if (thumbprintElement3 != null)
                     {
                         boolean isNil = false;
@@ -3551,7 +3555,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                     
                     NodeList elements11 = hostNameSslStatesElement.getElementsByTagName("VirtualIP");
-                    Element virtualIPElement = elements11.getLength() > 0 ? ((Element)elements11.item(0)) : null;
+                    Element virtualIPElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
                     if (virtualIPElement != null)
                     {
                         boolean isNil2 = false;
@@ -3571,18 +3575,18 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements12 = siteElement2.getElementsByTagName("HostNames");
-            Element hostNamesSequenceElement2 = elements12.getLength() > 0 ? ((Element)elements12.item(0)) : null;
+            Element hostNamesSequenceElement2 = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
             if (hostNamesSequenceElement2 != null)
             {
                 for (int i3 = 0; i3 < hostNamesSequenceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i3 = i3 + 1)
                 {
-                    org.w3c.dom.Element hostNamesElement = ((org.w3c.dom.Element)hostNamesSequenceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i3));
+                    org.w3c.dom.Element hostNamesElement = ((org.w3c.dom.Element) hostNamesSequenceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i3));
                     webSiteInstance.getHostNames().add(hostNamesElement.getTextContent());
                 }
             }
             
             NodeList elements13 = siteElement2.getElementsByTagName("LastModifiedTimeUtc");
-            Element lastModifiedTimeUtcElement = elements13.getLength() > 0 ? ((Element)elements13.item(0)) : null;
+            Element lastModifiedTimeUtcElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
             if (lastModifiedTimeUtcElement != null)
             {
                 Calendar lastModifiedTimeUtcInstance;
@@ -3594,7 +3598,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements14 = siteElement2.getElementsByTagName("Name");
-            Element nameElement2 = elements14.getLength() > 0 ? ((Element)elements14.item(0)) : null;
+            Element nameElement2 = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
             if (nameElement2 != null)
             {
                 String nameInstance2;
@@ -3603,7 +3607,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements15 = siteElement2.getElementsByTagName("Owner");
-            Element ownerElement = elements15.getLength() > 0 ? ((Element)elements15.item(0)) : null;
+            Element ownerElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
             if (ownerElement != null)
             {
                 boolean isNil3 = false;
@@ -3621,7 +3625,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements16 = siteElement2.getElementsByTagName("RepositorySiteName");
-            Element repositorySiteNameElement = elements16.getLength() > 0 ? ((Element)elements16.item(0)) : null;
+            Element repositorySiteNameElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
             if (repositorySiteNameElement != null)
             {
                 String repositorySiteNameInstance;
@@ -3630,7 +3634,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements17 = siteElement2.getElementsByTagName("RuntimeAvailabilityState");
-            Element runtimeAvailabilityStateElement2 = elements17.getLength() > 0 ? ((Element)elements17.item(0)) : null;
+            Element runtimeAvailabilityStateElement2 = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
             if (runtimeAvailabilityStateElement2 != null)
             {
                 WebSiteRuntimeAvailabilityState runtimeAvailabilityStateInstance;
@@ -3639,17 +3643,17 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements18 = siteElement2.getElementsByTagName("SSLCertificates");
-            Element sSLCertificatesSequenceElement2 = elements18.getLength() > 0 ? ((Element)elements18.item(0)) : null;
+            Element sSLCertificatesSequenceElement2 = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
             if (sSLCertificatesSequenceElement2 != null)
             {
                 for (int i4 = 0; i4 < sSLCertificatesSequenceElement2.getElementsByTagName("Certificate").getLength(); i4 = i4 + 1)
                 {
-                    org.w3c.dom.Element sSLCertificatesElement = ((org.w3c.dom.Element)sSLCertificatesSequenceElement2.getElementsByTagName("Certificate").item(i4));
+                    org.w3c.dom.Element sSLCertificatesElement = ((org.w3c.dom.Element) sSLCertificatesSequenceElement2.getElementsByTagName("Certificate").item(i4));
                     WebSite.WebSiteSslCertificate certificateInstance = new WebSite.WebSiteSslCertificate();
                     webSiteInstance.getSslCertificates().add(certificateInstance);
                     
                     NodeList elements19 = sSLCertificatesElement.getElementsByTagName("ExpirationDate");
-                    Element expirationDateElement = elements19.getLength() > 0 ? ((Element)elements19.item(0)) : null;
+                    Element expirationDateElement = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
                     if (expirationDateElement != null)
                     {
                         Calendar expirationDateInstance;
@@ -3661,7 +3665,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                     
                     NodeList elements20 = sSLCertificatesElement.getElementsByTagName("FriendlyName");
-                    Element friendlyNameElement = elements20.getLength() > 0 ? ((Element)elements20.item(0)) : null;
+                    Element friendlyNameElement = elements20.getLength() > 0 ? ((Element) elements20.item(0)) : null;
                     if (friendlyNameElement != null)
                     {
                         String friendlyNameInstance;
@@ -3670,18 +3674,18 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                     
                     NodeList elements21 = sSLCertificatesElement.getElementsByTagName("HostNames");
-                    Element hostNamesSequenceElement3 = elements21.getLength() > 0 ? ((Element)elements21.item(0)) : null;
+                    Element hostNamesSequenceElement3 = elements21.getLength() > 0 ? ((Element) elements21.item(0)) : null;
                     if (hostNamesSequenceElement3 != null)
                     {
                         for (int i5 = 0; i5 < hostNamesSequenceElement3.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i5 = i5 + 1)
                         {
-                            org.w3c.dom.Element hostNamesElement2 = ((org.w3c.dom.Element)hostNamesSequenceElement3.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i5));
+                            org.w3c.dom.Element hostNamesElement2 = ((org.w3c.dom.Element) hostNamesSequenceElement3.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i5));
                             certificateInstance.getHostNames().add(hostNamesElement2.getTextContent());
                         }
                     }
                     
                     NodeList elements22 = sSLCertificatesElement.getElementsByTagName("IssueDate");
-                    Element issueDateElement = elements22.getLength() > 0 ? ((Element)elements22.item(0)) : null;
+                    Element issueDateElement = elements22.getLength() > 0 ? ((Element) elements22.item(0)) : null;
                     if (issueDateElement != null)
                     {
                         Calendar issueDateInstance;
@@ -3693,7 +3697,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                     
                     NodeList elements23 = sSLCertificatesElement.getElementsByTagName("Issuer");
-                    Element issuerElement = elements23.getLength() > 0 ? ((Element)elements23.item(0)) : null;
+                    Element issuerElement = elements23.getLength() > 0 ? ((Element) elements23.item(0)) : null;
                     if (issuerElement != null)
                     {
                         String issuerInstance;
@@ -3702,7 +3706,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                     
                     NodeList elements24 = sSLCertificatesElement.getElementsByTagName("Password");
-                    Element passwordElement2 = elements24.getLength() > 0 ? ((Element)elements24.item(0)) : null;
+                    Element passwordElement2 = elements24.getLength() > 0 ? ((Element) elements24.item(0)) : null;
                     if (passwordElement2 != null)
                     {
                         String passwordInstance;
@@ -3711,7 +3715,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                     
                     NodeList elements25 = sSLCertificatesElement.getElementsByTagName("PfxBlob");
-                    Element pfxBlobElement2 = elements25.getLength() > 0 ? ((Element)elements25.item(0)) : null;
+                    Element pfxBlobElement2 = elements25.getLength() > 0 ? ((Element) elements25.item(0)) : null;
                     if (pfxBlobElement2 != null)
                     {
                         byte[] pfxBlobInstance;
@@ -3720,7 +3724,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                     
                     NodeList elements26 = sSLCertificatesElement.getElementsByTagName("SelfLink");
-                    Element selfLinkElement = elements26.getLength() > 0 ? ((Element)elements26.item(0)) : null;
+                    Element selfLinkElement = elements26.getLength() > 0 ? ((Element) elements26.item(0)) : null;
                     if (selfLinkElement != null)
                     {
                         URI selfLinkInstance;
@@ -3729,7 +3733,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                     
                     NodeList elements27 = sSLCertificatesElement.getElementsByTagName("SiteName");
-                    Element siteNameElement = elements27.getLength() > 0 ? ((Element)elements27.item(0)) : null;
+                    Element siteNameElement = elements27.getLength() > 0 ? ((Element) elements27.item(0)) : null;
                     if (siteNameElement != null)
                     {
                         String siteNameInstance;
@@ -3738,7 +3742,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                     
                     NodeList elements28 = sSLCertificatesElement.getElementsByTagName("SubjectName");
-                    Element subjectNameElement = elements28.getLength() > 0 ? ((Element)elements28.item(0)) : null;
+                    Element subjectNameElement = elements28.getLength() > 0 ? ((Element) elements28.item(0)) : null;
                     if (subjectNameElement != null)
                     {
                         String subjectNameInstance;
@@ -3747,7 +3751,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                     
                     NodeList elements29 = sSLCertificatesElement.getElementsByTagName("Thumbprint");
-                    Element thumbprintElement4 = elements29.getLength() > 0 ? ((Element)elements29.item(0)) : null;
+                    Element thumbprintElement4 = elements29.getLength() > 0 ? ((Element) elements29.item(0)) : null;
                     if (thumbprintElement4 != null)
                     {
                         String thumbprintInstance2;
@@ -3756,7 +3760,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                     
                     NodeList elements30 = sSLCertificatesElement.getElementsByTagName("ToDelete");
-                    Element toDeleteElement2 = elements30.getLength() > 0 ? ((Element)elements30.item(0)) : null;
+                    Element toDeleteElement2 = elements30.getLength() > 0 ? ((Element) elements30.item(0)) : null;
                     if (toDeleteElement2 != null)
                     {
                         boolean toDeleteInstance;
@@ -3765,7 +3769,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                     
                     NodeList elements31 = sSLCertificatesElement.getElementsByTagName("Valid");
-                    Element validElement = elements31.getLength() > 0 ? ((Element)elements31.item(0)) : null;
+                    Element validElement = elements31.getLength() > 0 ? ((Element) elements31.item(0)) : null;
                     if (validElement != null)
                     {
                         boolean validInstance;
@@ -3776,7 +3780,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements32 = siteElement2.getElementsByTagName("SelfLink");
-            Element selfLinkElement2 = elements32.getLength() > 0 ? ((Element)elements32.item(0)) : null;
+            Element selfLinkElement2 = elements32.getLength() > 0 ? ((Element) elements32.item(0)) : null;
             if (selfLinkElement2 != null)
             {
                 URI selfLinkInstance2;
@@ -3785,7 +3789,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements33 = siteElement2.getElementsByTagName("ServerFarm");
-            Element serverFarmElement2 = elements33.getLength() > 0 ? ((Element)elements33.item(0)) : null;
+            Element serverFarmElement2 = elements33.getLength() > 0 ? ((Element) elements33.item(0)) : null;
             if (serverFarmElement2 != null)
             {
                 String serverFarmInstance;
@@ -3794,7 +3798,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements34 = siteElement2.getElementsByTagName("SiteMode");
-            Element siteModeElement2 = elements34.getLength() > 0 ? ((Element)elements34.item(0)) : null;
+            Element siteModeElement2 = elements34.getLength() > 0 ? ((Element) elements34.item(0)) : null;
             if (siteModeElement2 != null)
             {
                 WebSiteMode siteModeInstance;
@@ -3803,60 +3807,60 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements35 = siteElement2.getElementsByTagName("SiteProperties");
-            Element sitePropertiesElement = elements35.getLength() > 0 ? ((Element)elements35.item(0)) : null;
+            Element sitePropertiesElement = elements35.getLength() > 0 ? ((Element) elements35.item(0)) : null;
             if (sitePropertiesElement != null)
             {
                 WebSite.WebSiteProperties sitePropertiesInstance = new WebSite.WebSiteProperties();
                 webSiteInstance.setSiteProperties(sitePropertiesInstance);
                 
                 NodeList elements36 = sitePropertiesElement.getElementsByTagName("AppSettings");
-                Element appSettingsSequenceElement = elements36.getLength() > 0 ? ((Element)elements36.item(0)) : null;
+                Element appSettingsSequenceElement = elements36.getLength() > 0 ? ((Element) elements36.item(0)) : null;
                 if (appSettingsSequenceElement != null)
                 {
                     for (int i6 = 0; i6 < appSettingsSequenceElement.getElementsByTagName("NameValuePair").getLength(); i6 = i6 + 1)
                     {
-                        org.w3c.dom.Element appSettingsElement = ((org.w3c.dom.Element)appSettingsSequenceElement.getElementsByTagName("NameValuePair").item(i6));
+                        org.w3c.dom.Element appSettingsElement = ((org.w3c.dom.Element) appSettingsSequenceElement.getElementsByTagName("NameValuePair").item(i6));
                         NodeList elements37 = appSettingsElement.getElementsByTagName("Name");
-                        String appSettingsKey = elements37.getLength() > 0 ? ((org.w3c.dom.Element)elements37.item(0)).getTextContent() : null;
+                        String appSettingsKey = elements37.getLength() > 0 ? ((org.w3c.dom.Element) elements37.item(0)).getTextContent() : null;
                         NodeList elements38 = appSettingsElement.getElementsByTagName("Value");
-                        String appSettingsValue = elements38.getLength() > 0 ? ((org.w3c.dom.Element)elements38.item(0)).getTextContent() : null;
+                        String appSettingsValue = elements38.getLength() > 0 ? ((org.w3c.dom.Element) elements38.item(0)).getTextContent() : null;
                         sitePropertiesInstance.getAppSettings().put(appSettingsKey, appSettingsValue);
                     }
                 }
                 
                 NodeList elements39 = sitePropertiesElement.getElementsByTagName("Metadata");
-                Element metadataSequenceElement = elements39.getLength() > 0 ? ((Element)elements39.item(0)) : null;
+                Element metadataSequenceElement = elements39.getLength() > 0 ? ((Element) elements39.item(0)) : null;
                 if (metadataSequenceElement != null)
                 {
                     for (int i7 = 0; i7 < metadataSequenceElement.getElementsByTagName("NameValuePair").getLength(); i7 = i7 + 1)
                     {
-                        org.w3c.dom.Element metadataElement = ((org.w3c.dom.Element)metadataSequenceElement.getElementsByTagName("NameValuePair").item(i7));
+                        org.w3c.dom.Element metadataElement = ((org.w3c.dom.Element) metadataSequenceElement.getElementsByTagName("NameValuePair").item(i7));
                         NodeList elements40 = metadataElement.getElementsByTagName("Name");
-                        String metadataKey = elements40.getLength() > 0 ? ((org.w3c.dom.Element)elements40.item(0)).getTextContent() : null;
+                        String metadataKey = elements40.getLength() > 0 ? ((org.w3c.dom.Element) elements40.item(0)).getTextContent() : null;
                         NodeList elements41 = metadataElement.getElementsByTagName("Value");
-                        String metadataValue = elements41.getLength() > 0 ? ((org.w3c.dom.Element)elements41.item(0)).getTextContent() : null;
+                        String metadataValue = elements41.getLength() > 0 ? ((org.w3c.dom.Element) elements41.item(0)).getTextContent() : null;
                         sitePropertiesInstance.getMetadata().put(metadataKey, metadataValue);
                     }
                 }
                 
                 NodeList elements42 = sitePropertiesElement.getElementsByTagName("Properties");
-                Element propertiesSequenceElement = elements42.getLength() > 0 ? ((Element)elements42.item(0)) : null;
+                Element propertiesSequenceElement = elements42.getLength() > 0 ? ((Element) elements42.item(0)) : null;
                 if (propertiesSequenceElement != null)
                 {
                     for (int i8 = 0; i8 < propertiesSequenceElement.getElementsByTagName("NameValuePair").getLength(); i8 = i8 + 1)
                     {
-                        org.w3c.dom.Element propertiesElement = ((org.w3c.dom.Element)propertiesSequenceElement.getElementsByTagName("NameValuePair").item(i8));
+                        org.w3c.dom.Element propertiesElement = ((org.w3c.dom.Element) propertiesSequenceElement.getElementsByTagName("NameValuePair").item(i8));
                         NodeList elements43 = propertiesElement.getElementsByTagName("Name");
-                        String propertiesKey = elements43.getLength() > 0 ? ((org.w3c.dom.Element)elements43.item(0)).getTextContent() : null;
+                        String propertiesKey = elements43.getLength() > 0 ? ((org.w3c.dom.Element) elements43.item(0)).getTextContent() : null;
                         NodeList elements44 = propertiesElement.getElementsByTagName("Value");
-                        String propertiesValue = elements44.getLength() > 0 ? ((org.w3c.dom.Element)elements44.item(0)).getTextContent() : null;
+                        String propertiesValue = elements44.getLength() > 0 ? ((org.w3c.dom.Element) elements44.item(0)).getTextContent() : null;
                         sitePropertiesInstance.getProperties().put(propertiesKey, propertiesValue);
                     }
                 }
             }
             
             NodeList elements45 = siteElement2.getElementsByTagName("State");
-            Element stateElement2 = elements45.getLength() > 0 ? ((Element)elements45.item(0)) : null;
+            Element stateElement2 = elements45.getLength() > 0 ? ((Element) elements45.item(0)) : null;
             if (stateElement2 != null)
             {
                 WebSiteState stateInstance;
@@ -3865,7 +3869,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements46 = siteElement2.getElementsByTagName("UsageState");
-            Element usageStateElement = elements46.getLength() > 0 ? ((Element)elements46.item(0)) : null;
+            Element usageStateElement = elements46.getLength() > 0 ? ((Element) elements46.item(0)) : null;
             if (usageStateElement != null)
             {
                 WebSiteUsageState usageStateInstance;
@@ -3874,7 +3878,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             }
             
             NodeList elements47 = siteElement2.getElementsByTagName("WebSpace");
-            Element webSpaceElement = elements47.getLength() > 0 ? ((Element)elements47.item(0)) : null;
+            Element webSpaceElement = elements47.getLength() > 0 ? ((Element) elements47.item(0)) : null;
             if (webSpaceElement != null)
             {
                 String webSpaceInstance;
@@ -4048,10 +4052,10 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             siteConfigElement.appendChild(defaultDocumentsSequenceElement);
         }
         
-        if (parameters.getDetailedErrorLoggingEnabled() != null)
+        if (parameters.isDetailedErrorLoggingEnabled() != null)
         {
             Element detailedErrorLoggingEnabledElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DetailedErrorLoggingEnabled");
-            detailedErrorLoggingEnabledElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.getDetailedErrorLoggingEnabled()).toLowerCase()));
+            detailedErrorLoggingEnabledElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.isDetailedErrorLoggingEnabled()).toLowerCase()));
             siteConfigElement.appendChild(detailedErrorLoggingEnabledElement);
         }
         
@@ -4094,10 +4098,10 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             siteConfigElement.appendChild(handlerMappingsSequenceElement);
         }
         
-        if (parameters.getHttpLoggingEnabled() != null)
+        if (parameters.isHttpLoggingEnabled() != null)
         {
             Element httpLoggingEnabledElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "HttpLoggingEnabled");
-            httpLoggingEnabledElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.getHttpLoggingEnabled()).toLowerCase()));
+            httpLoggingEnabledElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.isHttpLoggingEnabled()).toLowerCase()));
             siteConfigElement.appendChild(httpLoggingEnabledElement);
         }
         
@@ -4171,10 +4175,10 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             siteConfigElement.appendChild(publishingUsernameElement);
         }
         
-        if (parameters.getRemoteDebuggingEnabled() != null)
+        if (parameters.isRemoteDebuggingEnabled() != null)
         {
             Element remoteDebuggingEnabledElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RemoteDebuggingEnabled");
-            remoteDebuggingEnabledElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.getRemoteDebuggingEnabled()).toLowerCase()));
+            remoteDebuggingEnabledElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.isRemoteDebuggingEnabled()).toLowerCase()));
             siteConfigElement.appendChild(remoteDebuggingEnabledElement);
         }
         
@@ -4182,10 +4186,10 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         remoteDebuggingVersionElement.appendChild(requestDoc.createTextNode(parameters.getRemoteDebuggingVersion().toString()));
         siteConfigElement.appendChild(remoteDebuggingVersionElement);
         
-        if (parameters.getRequestTracingEnabled() != null)
+        if (parameters.isRequestTracingEnabled() != null)
         {
             Element requestTracingEnabledElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RequestTracingEnabled");
-            requestTracingEnabledElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.getRequestTracingEnabled()).toLowerCase()));
+            requestTracingEnabledElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.isRequestTracingEnabled()).toLowerCase()));
             siteConfigElement.appendChild(requestTracingEnabledElement);
         }
         
@@ -4205,17 +4209,17 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             siteConfigElement.appendChild(scmTypeElement);
         }
         
-        if (parameters.getUse32BitWorkerProcess() != null)
+        if (parameters.isUse32BitWorkerProcess() != null)
         {
             Element use32BitWorkerProcessElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Use32BitWorkerProcess");
-            use32BitWorkerProcessElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.getUse32BitWorkerProcess()).toLowerCase()));
+            use32BitWorkerProcessElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.isUse32BitWorkerProcess()).toLowerCase()));
             siteConfigElement.appendChild(use32BitWorkerProcessElement);
         }
         
-        if (parameters.getWebSocketsEnabled() != null)
+        if (parameters.isWebSocketsEnabled() != null)
         {
             Element webSocketsEnabledElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "WebSocketsEnabled");
-            webSocketsEnabledElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.getWebSocketsEnabled()).toLowerCase()));
+            webSocketsEnabledElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.isWebSocketsEnabled()).toLowerCase()));
             siteConfigElement.appendChild(webSocketsEnabledElement);
         }
         
@@ -4242,7 +4246,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)

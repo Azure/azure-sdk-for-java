@@ -49,6 +49,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
@@ -75,7 +76,10 @@ public class NetworkOperationsImpl implements ServiceOperations<VirtualNetworkMa
     * Gets a reference to the
     * microsoft.windowsazure.management.virtualnetworks.VirtualNetworkManagementClientImpl.
     */
-    public VirtualNetworkManagementClientImpl getClient() { return this.client; }
+    public VirtualNetworkManagementClientImpl getClient()
+    {
+        return this.client;
+    }
     
     /**
     * The Set Network Configuration operation asynchronously configures the
@@ -162,7 +166,7 @@ public class NetworkOperationsImpl implements ServiceOperations<VirtualNetworkMa
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
+        if (statusCode != HttpStatus.SC_ACCEPTED)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -252,7 +256,7 @@ public class NetworkOperationsImpl implements ServiceOperations<VirtualNetworkMa
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -346,7 +350,7 @@ public class NetworkOperationsImpl implements ServiceOperations<VirtualNetworkMa
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -366,17 +370,17 @@ public class NetworkOperationsImpl implements ServiceOperations<VirtualNetworkMa
         Document responseDoc = documentBuilder.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagName("VirtualNetworkSites");
-        Element virtualNetworkSitesSequenceElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element virtualNetworkSitesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (virtualNetworkSitesSequenceElement != null)
         {
             for (int i1 = 0; i1 < virtualNetworkSitesSequenceElement.getElementsByTagName("VirtualNetworkSite").getLength(); i1 = i1 + 1)
             {
-                org.w3c.dom.Element virtualNetworkSitesElement = ((org.w3c.dom.Element)virtualNetworkSitesSequenceElement.getElementsByTagName("VirtualNetworkSite").item(i1));
+                org.w3c.dom.Element virtualNetworkSitesElement = ((org.w3c.dom.Element) virtualNetworkSitesSequenceElement.getElementsByTagName("VirtualNetworkSite").item(i1));
                 NetworkListResponse.VirtualNetworkSite virtualNetworkSiteInstance = new NetworkListResponse.VirtualNetworkSite();
                 result.getVirtualNetworkSites().add(virtualNetworkSiteInstance);
                 
                 NodeList elements2 = virtualNetworkSitesElement.getElementsByTagName("Name");
-                Element nameElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+                Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                 if (nameElement != null)
                 {
                     String nameInstance;
@@ -385,7 +389,7 @@ public class NetworkOperationsImpl implements ServiceOperations<VirtualNetworkMa
                 }
                 
                 NodeList elements3 = virtualNetworkSitesElement.getElementsByTagName("Label");
-                Element labelElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
+                Element labelElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                 if (labelElement != null)
                 {
                     String labelInstance;
@@ -394,7 +398,7 @@ public class NetworkOperationsImpl implements ServiceOperations<VirtualNetworkMa
                 }
                 
                 NodeList elements4 = virtualNetworkSitesElement.getElementsByTagName("Id");
-                Element idElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
+                Element idElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                 if (idElement != null)
                 {
                     String idInstance;
@@ -403,7 +407,7 @@ public class NetworkOperationsImpl implements ServiceOperations<VirtualNetworkMa
                 }
                 
                 NodeList elements5 = virtualNetworkSitesElement.getElementsByTagName("AffinityGroup");
-                Element affinityGroupElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
+                Element affinityGroupElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                 if (affinityGroupElement != null)
                 {
                     String affinityGroupInstance;
@@ -412,7 +416,7 @@ public class NetworkOperationsImpl implements ServiceOperations<VirtualNetworkMa
                 }
                 
                 NodeList elements6 = virtualNetworkSitesElement.getElementsByTagName("State");
-                Element stateElement = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
+                Element stateElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                 if (stateElement != null)
                 {
                     String stateInstance;
@@ -421,36 +425,36 @@ public class NetworkOperationsImpl implements ServiceOperations<VirtualNetworkMa
                 }
                 
                 NodeList elements7 = virtualNetworkSitesElement.getElementsByTagName("AddressSpace");
-                Element addressSpaceElement = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
+                Element addressSpaceElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                 if (addressSpaceElement != null)
                 {
                     NetworkListResponse.AddressSpace addressSpaceInstance = new NetworkListResponse.AddressSpace();
                     virtualNetworkSiteInstance.setAddressSpace(addressSpaceInstance);
                     
                     NodeList elements8 = addressSpaceElement.getElementsByTagName("AddressPrefixes");
-                    Element addressPrefixesSequenceElement = elements8.getLength() > 0 ? ((Element)elements8.item(0)) : null;
+                    Element addressPrefixesSequenceElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
                     if (addressPrefixesSequenceElement != null)
                     {
                         for (int i2 = 0; i2 < addressPrefixesSequenceElement.getElementsByTagName("AddressPrefix").getLength(); i2 = i2 + 1)
                         {
-                            org.w3c.dom.Element addressPrefixesElement = ((org.w3c.dom.Element)addressPrefixesSequenceElement.getElementsByTagName("AddressPrefix").item(i2));
+                            org.w3c.dom.Element addressPrefixesElement = ((org.w3c.dom.Element) addressPrefixesSequenceElement.getElementsByTagName("AddressPrefix").item(i2));
                             addressSpaceInstance.getAddressPrefixes().add(addressPrefixesElement.getTextContent());
                         }
                     }
                 }
                 
                 NodeList elements9 = virtualNetworkSitesElement.getElementsByTagName("Subnets");
-                Element subnetsSequenceElement = elements9.getLength() > 0 ? ((Element)elements9.item(0)) : null;
+                Element subnetsSequenceElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
                 if (subnetsSequenceElement != null)
                 {
                     for (int i3 = 0; i3 < subnetsSequenceElement.getElementsByTagName("Subnet").getLength(); i3 = i3 + 1)
                     {
-                        org.w3c.dom.Element subnetsElement = ((org.w3c.dom.Element)subnetsSequenceElement.getElementsByTagName("Subnet").item(i3));
+                        org.w3c.dom.Element subnetsElement = ((org.w3c.dom.Element) subnetsSequenceElement.getElementsByTagName("Subnet").item(i3));
                         NetworkListResponse.Subnet subnetInstance = new NetworkListResponse.Subnet();
                         virtualNetworkSiteInstance.getSubnets().add(subnetInstance);
                         
                         NodeList elements10 = subnetsElement.getElementsByTagName("Name");
-                        Element nameElement2 = elements10.getLength() > 0 ? ((Element)elements10.item(0)) : null;
+                        Element nameElement2 = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
                         if (nameElement2 != null)
                         {
                             String nameInstance2;
@@ -459,7 +463,7 @@ public class NetworkOperationsImpl implements ServiceOperations<VirtualNetworkMa
                         }
                         
                         NodeList elements11 = subnetsElement.getElementsByTagName("AddressPrefix");
-                        Element addressPrefixElement = elements11.getLength() > 0 ? ((Element)elements11.item(0)) : null;
+                        Element addressPrefixElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
                         if (addressPrefixElement != null)
                         {
                             String addressPrefixInstance;
@@ -470,21 +474,21 @@ public class NetworkOperationsImpl implements ServiceOperations<VirtualNetworkMa
                 }
                 
                 NodeList elements12 = virtualNetworkSitesElement.getElementsByTagName("Dns");
-                Element dnsElement = elements12.getLength() > 0 ? ((Element)elements12.item(0)) : null;
+                Element dnsElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
                 if (dnsElement != null)
                 {
                     NodeList elements13 = dnsElement.getElementsByTagName("DnsServers");
-                    Element dnsServersSequenceElement = elements13.getLength() > 0 ? ((Element)elements13.item(0)) : null;
+                    Element dnsServersSequenceElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
                     if (dnsServersSequenceElement != null)
                     {
                         for (int i4 = 0; i4 < dnsServersSequenceElement.getElementsByTagName("DnsServer").getLength(); i4 = i4 + 1)
                         {
-                            org.w3c.dom.Element dnsServersElement = ((org.w3c.dom.Element)dnsServersSequenceElement.getElementsByTagName("DnsServer").item(i4));
+                            org.w3c.dom.Element dnsServersElement = ((org.w3c.dom.Element) dnsServersSequenceElement.getElementsByTagName("DnsServer").item(i4));
                             NetworkListResponse.DnsServer dnsServerInstance = new NetworkListResponse.DnsServer();
                             virtualNetworkSiteInstance.getDnsServers().add(dnsServerInstance);
                             
                             NodeList elements14 = dnsServersElement.getElementsByTagName("Name");
-                            Element nameElement3 = elements14.getLength() > 0 ? ((Element)elements14.item(0)) : null;
+                            Element nameElement3 = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
                             if (nameElement3 != null)
                             {
                                 String nameInstance3;
@@ -493,7 +497,7 @@ public class NetworkOperationsImpl implements ServiceOperations<VirtualNetworkMa
                             }
                             
                             NodeList elements15 = dnsServersElement.getElementsByTagName("Address");
-                            Element addressElement = elements15.getLength() > 0 ? ((Element)elements15.item(0)) : null;
+                            Element addressElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
                             if (addressElement != null)
                             {
                                 InetAddress addressInstance;
@@ -505,14 +509,14 @@ public class NetworkOperationsImpl implements ServiceOperations<VirtualNetworkMa
                 }
                 
                 NodeList elements16 = virtualNetworkSitesElement.getElementsByTagName("Gateway");
-                Element gatewayElement = elements16.getLength() > 0 ? ((Element)elements16.item(0)) : null;
+                Element gatewayElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
                 if (gatewayElement != null)
                 {
                     NetworkListResponse.Gateway gatewayInstance = new NetworkListResponse.Gateway();
                     virtualNetworkSiteInstance.setGateway(gatewayInstance);
                     
                     NodeList elements17 = gatewayElement.getElementsByTagName("Profile");
-                    Element profileElement = elements17.getLength() > 0 ? ((Element)elements17.item(0)) : null;
+                    Element profileElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
                     if (profileElement != null)
                     {
                         GatewayProfile profileInstance;
@@ -521,17 +525,17 @@ public class NetworkOperationsImpl implements ServiceOperations<VirtualNetworkMa
                     }
                     
                     NodeList elements18 = gatewayElement.getElementsByTagName("Sites");
-                    Element sitesSequenceElement = elements18.getLength() > 0 ? ((Element)elements18.item(0)) : null;
+                    Element sitesSequenceElement = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
                     if (sitesSequenceElement != null)
                     {
                         for (int i5 = 0; i5 < sitesSequenceElement.getElementsByTagName("LocalNetworkSite").getLength(); i5 = i5 + 1)
                         {
-                            org.w3c.dom.Element sitesElement = ((org.w3c.dom.Element)sitesSequenceElement.getElementsByTagName("LocalNetworkSite").item(i5));
+                            org.w3c.dom.Element sitesElement = ((org.w3c.dom.Element) sitesSequenceElement.getElementsByTagName("LocalNetworkSite").item(i5));
                             NetworkListResponse.LocalNetworkSite localNetworkSiteInstance = new NetworkListResponse.LocalNetworkSite();
                             gatewayInstance.getSites().add(localNetworkSiteInstance);
                             
                             NodeList elements19 = sitesElement.getElementsByTagName("Name");
-                            Element nameElement4 = elements19.getLength() > 0 ? ((Element)elements19.item(0)) : null;
+                            Element nameElement4 = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
                             if (nameElement4 != null)
                             {
                                 String nameInstance4;
@@ -540,7 +544,7 @@ public class NetworkOperationsImpl implements ServiceOperations<VirtualNetworkMa
                             }
                             
                             NodeList elements20 = sitesElement.getElementsByTagName("VpnGatewayAddress");
-                            Element vpnGatewayAddressElement = elements20.getLength() > 0 ? ((Element)elements20.item(0)) : null;
+                            Element vpnGatewayAddressElement = elements20.getLength() > 0 ? ((Element) elements20.item(0)) : null;
                             if (vpnGatewayAddressElement != null)
                             {
                                 InetAddress vpnGatewayAddressInstance;
@@ -549,36 +553,36 @@ public class NetworkOperationsImpl implements ServiceOperations<VirtualNetworkMa
                             }
                             
                             NodeList elements21 = sitesElement.getElementsByTagName("AddressSpace");
-                            Element addressSpaceElement2 = elements21.getLength() > 0 ? ((Element)elements21.item(0)) : null;
+                            Element addressSpaceElement2 = elements21.getLength() > 0 ? ((Element) elements21.item(0)) : null;
                             if (addressSpaceElement2 != null)
                             {
                                 NetworkListResponse.AddressSpace addressSpaceInstance2 = new NetworkListResponse.AddressSpace();
                                 localNetworkSiteInstance.setAddressSpace(addressSpaceInstance2);
                                 
                                 NodeList elements22 = addressSpaceElement2.getElementsByTagName("AddressPrefixes");
-                                Element addressPrefixesSequenceElement2 = elements22.getLength() > 0 ? ((Element)elements22.item(0)) : null;
+                                Element addressPrefixesSequenceElement2 = elements22.getLength() > 0 ? ((Element) elements22.item(0)) : null;
                                 if (addressPrefixesSequenceElement2 != null)
                                 {
                                     for (int i6 = 0; i6 < addressPrefixesSequenceElement2.getElementsByTagName("AddressPrefix").getLength(); i6 = i6 + 1)
                                     {
-                                        org.w3c.dom.Element addressPrefixesElement2 = ((org.w3c.dom.Element)addressPrefixesSequenceElement2.getElementsByTagName("AddressPrefix").item(i6));
+                                        org.w3c.dom.Element addressPrefixesElement2 = ((org.w3c.dom.Element) addressPrefixesSequenceElement2.getElementsByTagName("AddressPrefix").item(i6));
                                         addressSpaceInstance2.getAddressPrefixes().add(addressPrefixesElement2.getTextContent());
                                     }
                                 }
                             }
                             
                             NodeList elements23 = sitesElement.getElementsByTagName("Connections");
-                            Element connectionsSequenceElement = elements23.getLength() > 0 ? ((Element)elements23.item(0)) : null;
+                            Element connectionsSequenceElement = elements23.getLength() > 0 ? ((Element) elements23.item(0)) : null;
                             if (connectionsSequenceElement != null)
                             {
                                 for (int i7 = 0; i7 < connectionsSequenceElement.getElementsByTagName("Connection").getLength(); i7 = i7 + 1)
                                 {
-                                    org.w3c.dom.Element connectionsElement = ((org.w3c.dom.Element)connectionsSequenceElement.getElementsByTagName("Connection").item(i7));
+                                    org.w3c.dom.Element connectionsElement = ((org.w3c.dom.Element) connectionsSequenceElement.getElementsByTagName("Connection").item(i7));
                                     NetworkListResponse.Connection connectionInstance = new NetworkListResponse.Connection();
                                     localNetworkSiteInstance.getConnections().add(connectionInstance);
                                     
                                     NodeList elements24 = connectionsElement.getElementsByTagName("Type");
-                                    Element typeElement = elements24.getLength() > 0 ? ((Element)elements24.item(0)) : null;
+                                    Element typeElement = elements24.getLength() > 0 ? ((Element) elements24.item(0)) : null;
                                     if (typeElement != null)
                                     {
                                         LocalNetworkConnectionType typeInstance;
@@ -591,19 +595,19 @@ public class NetworkOperationsImpl implements ServiceOperations<VirtualNetworkMa
                     }
                     
                     NodeList elements25 = gatewayElement.getElementsByTagName("VPNClientAddressPool");
-                    Element vPNClientAddressPoolElement = elements25.getLength() > 0 ? ((Element)elements25.item(0)) : null;
+                    Element vPNClientAddressPoolElement = elements25.getLength() > 0 ? ((Element) elements25.item(0)) : null;
                     if (vPNClientAddressPoolElement != null)
                     {
                         NetworkListResponse.VPNClientAddressPool vPNClientAddressPoolInstance = new NetworkListResponse.VPNClientAddressPool();
                         gatewayInstance.setVPNClientAddressPool(vPNClientAddressPoolInstance);
                         
                         NodeList elements26 = vPNClientAddressPoolElement.getElementsByTagName("AddressPrefixes");
-                        Element addressPrefixesSequenceElement3 = elements26.getLength() > 0 ? ((Element)elements26.item(0)) : null;
+                        Element addressPrefixesSequenceElement3 = elements26.getLength() > 0 ? ((Element) elements26.item(0)) : null;
                         if (addressPrefixesSequenceElement3 != null)
                         {
                             for (int i8 = 0; i8 < addressPrefixesSequenceElement3.getElementsByTagName("AddressPrefix").getLength(); i8 = i8 + 1)
                             {
-                                org.w3c.dom.Element addressPrefixesElement3 = ((org.w3c.dom.Element)addressPrefixesSequenceElement3.getElementsByTagName("AddressPrefix").item(i8));
+                                org.w3c.dom.Element addressPrefixesElement3 = ((org.w3c.dom.Element) addressPrefixesSequenceElement3.getElementsByTagName("AddressPrefix").item(i8));
                                 vPNClientAddressPoolInstance.getAddressPrefixes().add(addressPrefixesElement3.getTextContent());
                             }
                         }
@@ -708,14 +712,26 @@ public class NetworkOperationsImpl implements ServiceOperations<VirtualNetworkMa
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;

@@ -35,12 +35,18 @@ public class RuleCollection
     /**
     * Rule collection.
     */
-    public ArrayList<Rule> getValue() { return this.value; }
+    public ArrayList<Rule> getValue()
+    {
+        return this.value;
+    }
     
     /**
     * Rule collection.
     */
-    public void setValue(ArrayList<Rule> value) { this.value = value; }
+    public void setValue(ArrayList<Rule> value)
+    {
+        this.value = value;
+    }
     
     /**
     * Initializes a new instance of the RuleCollection class.

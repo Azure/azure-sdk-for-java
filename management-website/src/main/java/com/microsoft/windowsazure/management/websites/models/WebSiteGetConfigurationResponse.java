@@ -38,24 +38,36 @@ public class WebSiteGetConfigurationResponse extends OperationResponse
     /**
     * A set of name/value pairs that contain application settings for a site.
     */
-    public HashMap<String, String> getAppSettings() { return this.appSettings; }
+    public HashMap<String, String> getAppSettings()
+    {
+        return this.appSettings;
+    }
     
     /**
     * A set of name/value pairs that contain application settings for a site.
     */
-    public void setAppSettings(HashMap<String, String> appSettings) { this.appSettings = appSettings; }
+    public void setAppSettings(HashMap<String, String> appSettings)
+    {
+        this.appSettings = appSettings;
+    }
     
     private ArrayList<WebSiteGetConfigurationResponse.ConnectionStringInfo> connectionStrings;
     
     /**
     * Contains connection strings for database and other external resources.
     */
-    public ArrayList<WebSiteGetConfigurationResponse.ConnectionStringInfo> getConnectionStrings() { return this.connectionStrings; }
+    public ArrayList<WebSiteGetConfigurationResponse.ConnectionStringInfo> getConnectionStrings()
+    {
+        return this.connectionStrings;
+    }
     
     /**
     * Contains connection strings for database and other external resources.
     */
-    public void setConnectionStrings(ArrayList<WebSiteGetConfigurationResponse.ConnectionStringInfo> connectionStrings) { this.connectionStrings = connectionStrings; }
+    public void setConnectionStrings(ArrayList<WebSiteGetConfigurationResponse.ConnectionStringInfo> connectionStrings)
+    {
+        this.connectionStrings = connectionStrings;
+    }
     
     private ArrayList<String> defaultDocuments;
     
@@ -67,7 +79,10 @@ public class WebSiteGetConfigurationResponse extends OperationResponse
     * http://www.contoso.com/default.htm is returned when the browser is
     * pointed to http://www.contoso.com.
     */
-    public ArrayList<String> getDefaultDocuments() { return this.defaultDocuments; }
+    public ArrayList<String> getDefaultDocuments()
+    {
+        return this.defaultDocuments;
+    }
     
     /**
     * Contains one or more string elements that list, in order of preference,
@@ -77,31 +92,46 @@ public class WebSiteGetConfigurationResponse extends OperationResponse
     * http://www.contoso.com/default.htm is returned when the browser is
     * pointed to http://www.contoso.com.
     */
-    public void setDefaultDocuments(ArrayList<String> defaultDocuments) { this.defaultDocuments = defaultDocuments; }
+    public void setDefaultDocuments(ArrayList<String> defaultDocuments)
+    {
+        this.defaultDocuments = defaultDocuments;
+    }
     
     private Boolean detailedErrorLoggingEnabled;
     
     /**
     * True if detailed error logging is enabled; otherwise, false.
     */
-    public Boolean getDetailedErrorLoggingEnabled() { return this.detailedErrorLoggingEnabled; }
+    public Boolean isDetailedErrorLoggingEnabled()
+    {
+        return this.detailedErrorLoggingEnabled;
+    }
     
     /**
     * True if detailed error logging is enabled; otherwise, false.
     */
-    public void setDetailedErrorLoggingEnabled(Boolean detailedErrorLoggingEnabled) { this.detailedErrorLoggingEnabled = detailedErrorLoggingEnabled; }
+    public void setDetailedErrorLoggingEnabled(Boolean detailedErrorLoggingEnabled)
+    {
+        this.detailedErrorLoggingEnabled = detailedErrorLoggingEnabled;
+    }
     
     private String documentRoot;
     
     /**
     * The document root.
     */
-    public String getDocumentRoot() { return this.documentRoot; }
+    public String getDocumentRoot()
+    {
+        return this.documentRoot;
+    }
     
     /**
     * The document root.
     */
-    public void setDocumentRoot(String documentRoot) { this.documentRoot = documentRoot; }
+    public void setDocumentRoot(String documentRoot)
+    {
+        this.documentRoot = documentRoot;
+    }
     
     private ArrayList<WebSiteGetConfigurationResponse.HandlerMapping> handlerMappings;
     
@@ -109,73 +139,109 @@ public class WebSiteGetConfigurationResponse extends OperationResponse
     * Specifies custom executable programs for handling requests for specific
     * file name extensions.
     */
-    public ArrayList<WebSiteGetConfigurationResponse.HandlerMapping> getHandlerMappings() { return this.handlerMappings; }
+    public ArrayList<WebSiteGetConfigurationResponse.HandlerMapping> getHandlerMappings()
+    {
+        return this.handlerMappings;
+    }
     
     /**
     * Specifies custom executable programs for handling requests for specific
     * file name extensions.
     */
-    public void setHandlerMappings(ArrayList<WebSiteGetConfigurationResponse.HandlerMapping> handlerMappings) { this.handlerMappings = handlerMappings; }
+    public void setHandlerMappings(ArrayList<WebSiteGetConfigurationResponse.HandlerMapping> handlerMappings)
+    {
+        this.handlerMappings = handlerMappings;
+    }
     
     private Boolean httpLoggingEnabled;
     
     /**
     * True if HTTP error logging is enabled; otherwise, false.
     */
-    public Boolean getHttpLoggingEnabled() { return this.httpLoggingEnabled; }
+    public Boolean isHttpLoggingEnabled()
+    {
+        return this.httpLoggingEnabled;
+    }
     
     /**
     * True if HTTP error logging is enabled; otherwise, false.
     */
-    public void setHttpLoggingEnabled(Boolean httpLoggingEnabled) { this.httpLoggingEnabled = httpLoggingEnabled; }
+    public void setHttpLoggingEnabled(Boolean httpLoggingEnabled)
+    {
+        this.httpLoggingEnabled = httpLoggingEnabled;
+    }
     
     private Integer logsDirectorySizeLimit;
     
     /**
     * The limit of the logs directory.
     */
-    public Integer getLogsDirectorySizeLimit() { return this.logsDirectorySizeLimit; }
+    public Integer getLogsDirectorySizeLimit()
+    {
+        return this.logsDirectorySizeLimit;
+    }
     
     /**
     * The limit of the logs directory.
     */
-    public void setLogsDirectorySizeLimit(Integer logsDirectorySizeLimit) { this.logsDirectorySizeLimit = logsDirectorySizeLimit; }
+    public void setLogsDirectorySizeLimit(Integer logsDirectorySizeLimit)
+    {
+        this.logsDirectorySizeLimit = logsDirectorySizeLimit;
+    }
     
     private ManagedPipelineMode managedPipelineMode;
     
     /**
     * Managed pipeline modes.
     */
-    public ManagedPipelineMode getManagedPipelineMode() { return this.managedPipelineMode; }
+    public ManagedPipelineMode getManagedPipelineMode()
+    {
+        return this.managedPipelineMode;
+    }
     
     /**
     * Managed pipeline modes.
     */
-    public void setManagedPipelineMode(ManagedPipelineMode managedPipelineMode) { this.managedPipelineMode = managedPipelineMode; }
+    public void setManagedPipelineMode(ManagedPipelineMode managedPipelineMode)
+    {
+        this.managedPipelineMode = managedPipelineMode;
+    }
     
     private HashMap<String, String> metadata;
     
     /**
     * Contains name/value pairs for source control or other information.
     */
-    public HashMap<String, String> getMetadata() { return this.metadata; }
+    public HashMap<String, String> getMetadata()
+    {
+        return this.metadata;
+    }
     
     /**
     * Contains name/value pairs for source control or other information.
     */
-    public void setMetadata(HashMap<String, String> metadata) { this.metadata = metadata; }
+    public void setMetadata(HashMap<String, String> metadata)
+    {
+        this.metadata = metadata;
+    }
     
     private String netFrameworkVersion;
     
     /**
     * The .NET Framework version. Supported values are v2.0 and v4.0.
     */
-    public String getNetFrameworkVersion() { return this.netFrameworkVersion; }
+    public String getNetFrameworkVersion()
+    {
+        return this.netFrameworkVersion;
+    }
     
     /**
     * The .NET Framework version. Supported values are v2.0 and v4.0.
     */
-    public void setNetFrameworkVersion(String netFrameworkVersion) { this.netFrameworkVersion = netFrameworkVersion; }
+    public void setNetFrameworkVersion(String netFrameworkVersion)
+    {
+        this.netFrameworkVersion = netFrameworkVersion;
+    }
     
     private Integer numberOfWorkers;
     
@@ -185,7 +251,10 @@ public class WebSiteGetConfigurationResponse extends OperationResponse
     * from 1 through 6. If the site mode is Standard, this value can range
     * from 1 through 10.
     */
-    public Integer getNumberOfWorkers() { return this.numberOfWorkers; }
+    public Integer getNumberOfWorkers()
+    {
+        return this.numberOfWorkers;
+    }
     
     /**
     * The number of web workers allotted to the web site. If the site mode is
@@ -193,7 +262,10 @@ public class WebSiteGetConfigurationResponse extends OperationResponse
     * from 1 through 6. If the site mode is Standard, this value can range
     * from 1 through 10.
     */
-    public void setNumberOfWorkers(Integer numberOfWorkers) { this.numberOfWorkers = numberOfWorkers; }
+    public void setNumberOfWorkers(Integer numberOfWorkers)
+    {
+        this.numberOfWorkers = numberOfWorkers;
+    }
     
     private String phpVersion;
     
@@ -201,25 +273,37 @@ public class WebSiteGetConfigurationResponse extends OperationResponse
     * Supported values are an empty string (an empty string disables PHP), 5.3,
     * and 5.4.
     */
-    public String getPhpVersion() { return this.phpVersion; }
+    public String getPhpVersion()
+    {
+        return this.phpVersion;
+    }
     
     /**
     * Supported values are an empty string (an empty string disables PHP), 5.3,
     * and 5.4.
     */
-    public void setPhpVersion(String phpVersion) { this.phpVersion = phpVersion; }
+    public void setPhpVersion(String phpVersion)
+    {
+        this.phpVersion = phpVersion;
+    }
     
     private String publishingPassword;
     
     /**
     * Hash value of the password used for publishing the web site.
     */
-    public String getPublishingPassword() { return this.publishingPassword; }
+    public String getPublishingPassword()
+    {
+        return this.publishingPassword;
+    }
     
     /**
     * Hash value of the password used for publishing the web site.
     */
-    public void setPublishingPassword(String publishingPassword) { this.publishingPassword = publishingPassword; }
+    public void setPublishingPassword(String publishingPassword)
+    {
+        this.publishingPassword = publishingPassword;
+    }
     
     private String publishingUserName;
     
@@ -227,61 +311,91 @@ public class WebSiteGetConfigurationResponse extends OperationResponse
     * The username used for publishing the web site. This is normally a dollar
     * sign prepended to the web site name (for example, “$contoso”).
     */
-    public String getPublishingUserName() { return this.publishingUserName; }
+    public String getPublishingUserName()
+    {
+        return this.publishingUserName;
+    }
     
     /**
     * The username used for publishing the web site. This is normally a dollar
     * sign prepended to the web site name (for example, “$contoso”).
     */
-    public void setPublishingUserName(String publishingUserName) { this.publishingUserName = publishingUserName; }
+    public void setPublishingUserName(String publishingUserName)
+    {
+        this.publishingUserName = publishingUserName;
+    }
     
     private Boolean remoteDebuggingEnabled;
     
     /**
     * True remote debugging is enabled; otherwise, false.
     */
-    public Boolean getRemoteDebuggingEnabled() { return this.remoteDebuggingEnabled; }
+    public Boolean isRemoteDebuggingEnabled()
+    {
+        return this.remoteDebuggingEnabled;
+    }
     
     /**
     * True remote debugging is enabled; otherwise, false.
     */
-    public void setRemoteDebuggingEnabled(Boolean remoteDebuggingEnabled) { this.remoteDebuggingEnabled = remoteDebuggingEnabled; }
+    public void setRemoteDebuggingEnabled(Boolean remoteDebuggingEnabled)
+    {
+        this.remoteDebuggingEnabled = remoteDebuggingEnabled;
+    }
     
     private RemoteDebuggingVersion remoteDebuggingVersion;
     
     /**
     * True remote debugging version.
     */
-    public RemoteDebuggingVersion getRemoteDebuggingVersion() { return this.remoteDebuggingVersion; }
+    public RemoteDebuggingVersion getRemoteDebuggingVersion()
+    {
+        return this.remoteDebuggingVersion;
+    }
     
     /**
     * True remote debugging version.
     */
-    public void setRemoteDebuggingVersion(RemoteDebuggingVersion remoteDebuggingVersion) { this.remoteDebuggingVersion = remoteDebuggingVersion; }
+    public void setRemoteDebuggingVersion(RemoteDebuggingVersion remoteDebuggingVersion)
+    {
+        this.remoteDebuggingVersion = remoteDebuggingVersion;
+    }
     
     private Boolean requestTracingEnabled;
     
     /**
     * True if request tracing is enabled; otherwise, false.
     */
-    public Boolean getRequestTracingEnabled() { return this.requestTracingEnabled; }
+    public Boolean isRequestTracingEnabled()
+    {
+        return this.requestTracingEnabled;
+    }
     
     /**
     * True if request tracing is enabled; otherwise, false.
     */
-    public void setRequestTracingEnabled(Boolean requestTracingEnabled) { this.requestTracingEnabled = requestTracingEnabled; }
+    public void setRequestTracingEnabled(Boolean requestTracingEnabled)
+    {
+        this.requestTracingEnabled = requestTracingEnabled;
+    }
     
     private Calendar requestTracingExpirationTime;
     
     /**
     * Time remaining until request tracing expires.
     */
-    public Calendar getRequestTracingExpirationTime() { return this.requestTracingExpirationTime; }
+    public Calendar getRequestTracingExpirationTime()
+    {
+        return this.requestTracingExpirationTime;
+    }
     
     /**
     * Time remaining until request tracing expires.
     */
-    public void setRequestTracingExpirationTime(Calendar requestTracingExpirationTime) { this.requestTracingExpirationTime = requestTracingExpirationTime; }
+    public void setRequestTracingExpirationTime(Calendar requestTracingExpirationTime)
+    {
+        this.requestTracingExpirationTime = requestTracingExpirationTime;
+    }
     
     private String scmType;
     
@@ -290,38 +404,56 @@ public class WebSiteGetConfigurationResponse extends OperationResponse
     * Git). If deployment from source control has not been set up for the web
     * site, this value is None.
     */
-    public String getScmType() { return this.scmType; }
+    public String getScmType()
+    {
+        return this.scmType;
+    }
     
     /**
     * The source control method that the web site is using (for example, Local
     * Git). If deployment from source control has not been set up for the web
     * site, this value is None.
     */
-    public void setScmType(String scmType) { this.scmType = scmType; }
+    public void setScmType(String scmType)
+    {
+        this.scmType = scmType;
+    }
     
     private Boolean use32BitWorkerProcess;
     
     /**
     * True if 32-bit mode is enabled; otherwise, false.
     */
-    public Boolean getUse32BitWorkerProcess() { return this.use32BitWorkerProcess; }
+    public Boolean isUse32BitWorkerProcess()
+    {
+        return this.use32BitWorkerProcess;
+    }
     
     /**
     * True if 32-bit mode is enabled; otherwise, false.
     */
-    public void setUse32BitWorkerProcess(Boolean use32BitWorkerProcess) { this.use32BitWorkerProcess = use32BitWorkerProcess; }
+    public void setUse32BitWorkerProcess(Boolean use32BitWorkerProcess)
+    {
+        this.use32BitWorkerProcess = use32BitWorkerProcess;
+    }
     
     private Boolean webSocketsEnabled;
     
     /**
     * True if Web Sockets are enabled; otherwise, false.
     */
-    public Boolean getWebSocketsEnabled() { return this.webSocketsEnabled; }
+    public Boolean isWebSocketsEnabled()
+    {
+        return this.webSocketsEnabled;
+    }
     
     /**
     * True if Web Sockets are enabled; otherwise, false.
     */
-    public void setWebSocketsEnabled(Boolean webSocketsEnabled) { this.webSocketsEnabled = webSocketsEnabled; }
+    public void setWebSocketsEnabled(Boolean webSocketsEnabled)
+    {
+        this.webSocketsEnabled = webSocketsEnabled;
+    }
     
     /**
     * Initializes a new instance of the WebSiteGetConfigurationResponse class.
@@ -329,6 +461,7 @@ public class WebSiteGetConfigurationResponse extends OperationResponse
     */
     public WebSiteGetConfigurationResponse()
     {
+        super();
         this.appSettings = new HashMap<String, String>();
         this.connectionStrings = new ArrayList<WebSiteGetConfigurationResponse.ConnectionStringInfo>();
         this.defaultDocuments = new ArrayList<String>();
@@ -346,43 +479,53 @@ public class WebSiteGetConfigurationResponse extends OperationResponse
         /**
         * A database connection string.
         */
-        public String getConnectionString() { return this.connectionString; }
+        public String getConnectionString()
+        {
+            return this.connectionString;
+        }
         
         /**
         * A database connection string.
         */
-        public void setConnectionString(String connectionString) { this.connectionString = connectionString; }
+        public void setConnectionString(String connectionString)
+        {
+            this.connectionString = connectionString;
+        }
         
         private String name;
         
         /**
         * The name of the connection string.
         */
-        public String getName() { return this.name; }
+        public String getName()
+        {
+            return this.name;
+        }
         
         /**
         * The name of the connection string.
         */
-        public void setName(String name) { this.name = name; }
+        public void setName(String name)
+        {
+            this.name = name;
+        }
         
         private String type;
         
         /**
         * The type of the connection string (for example, "MySQL").
         */
-        public String getType() { return this.type; }
+        public String getType()
+        {
+            return this.type;
+        }
         
         /**
         * The type of the connection string (for example, "MySQL").
         */
-        public void setType(String type) { this.type = type; }
-        
-        /**
-        * Initializes a new instance of the ConnectionStringInfo class.
-        *
-        */
-        public ConnectionStringInfo()
+        public void setType(String type)
         {
+            this.type = type;
         }
     }
     
@@ -399,14 +542,20 @@ public class WebSiteGetConfigurationResponse extends OperationResponse
         * specified by the
         * SiteConfig.HandlerMappings.HandlerMapping.ScriptProcessor element.
         */
-        public String getArguments() { return this.arguments; }
+        public String getArguments()
+        {
+            return this.arguments;
+        }
         
         /**
         * A string that contains optional arguments for the script processor
         * specified by the
         * SiteConfig.HandlerMappings.HandlerMapping.ScriptProcessor element.
         */
-        public void setArguments(String arguments) { this.arguments = arguments; }
+        public void setArguments(String arguments)
+        {
+            this.arguments = arguments;
+        }
         
         private String extension;
         
@@ -414,13 +563,19 @@ public class WebSiteGetConfigurationResponse extends OperationResponse
         * A string that specifies the extension of the file type that the
         * script processor will handle (for example, *.php).
         */
-        public String getExtension() { return this.extension; }
+        public String getExtension()
+        {
+            return this.extension;
+        }
         
         /**
         * A string that specifies the extension of the file type that the
         * script processor will handle (for example, *.php).
         */
-        public void setExtension(String extension) { this.extension = extension; }
+        public void setExtension(String extension)
+        {
+            this.extension = extension;
+        }
         
         private String scriptProcessor;
         
@@ -429,21 +584,19 @@ public class WebSiteGetConfigurationResponse extends OperationResponse
         * handle the files specified in the
         * SiteConfig.HandlerMappings.HandlerMapping.Extension element.
         */
-        public String getScriptProcessor() { return this.scriptProcessor; }
+        public String getScriptProcessor()
+        {
+            return this.scriptProcessor;
+        }
         
         /**
         * The absolute path to the location of the executable file that will
         * handle the files specified in the
         * SiteConfig.HandlerMappings.HandlerMapping.Extension element.
         */
-        public void setScriptProcessor(String scriptProcessor) { this.scriptProcessor = scriptProcessor; }
-        
-        /**
-        * Initializes a new instance of the HandlerMapping class.
-        *
-        */
-        public HandlerMapping()
+        public void setScriptProcessor(String scriptProcessor)
         {
+            this.scriptProcessor = scriptProcessor;
         }
     }
 }

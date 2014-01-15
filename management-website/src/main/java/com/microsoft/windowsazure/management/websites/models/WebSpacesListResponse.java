@@ -37,12 +37,18 @@ public class WebSpacesListResponse extends OperationResponse implements Iterable
     /**
     * The web spaces associated with the specified subscription.
     */
-    public ArrayList<WebSpacesListResponse.WebSpace> getWebSpaces() { return this.webSpaces; }
+    public ArrayList<WebSpacesListResponse.WebSpace> getWebSpaces()
+    {
+        return this.webSpaces;
+    }
     
     /**
     * The web spaces associated with the specified subscription.
     */
-    public void setWebSpaces(ArrayList<WebSpacesListResponse.WebSpace> webSpaces) { this.webSpaces = webSpaces; }
+    public void setWebSpaces(ArrayList<WebSpacesListResponse.WebSpace> webSpaces)
+    {
+        this.webSpaces = webSpaces;
+    }
     
     /**
     * Initializes a new instance of the WebSpacesListResponse class.
@@ -50,6 +56,7 @@ public class WebSpacesListResponse extends OperationResponse implements Iterable
     */
     public WebSpacesListResponse()
     {
+        super();
         this.webSpaces = new ArrayList<WebSpacesListResponse.WebSpace>();
     }
     
@@ -72,84 +79,126 @@ public class WebSpacesListResponse extends OperationResponse implements Iterable
         /**
         * Possible values are Normal or Limited.
         */
-        public WebSpaceAvailabilityState getAvailabilityState() { return this.availabilityState; }
+        public WebSpaceAvailabilityState getAvailabilityState()
+        {
+            return this.availabilityState;
+        }
         
         /**
         * Possible values are Normal or Limited.
         */
-        public void setAvailabilityState(WebSpaceAvailabilityState availabilityState) { this.availabilityState = availabilityState; }
+        public void setAvailabilityState(WebSpaceAvailabilityState availabilityState)
+        {
+            this.availabilityState = availabilityState;
+        }
         
         private Integer currentNumberOfWorkers;
         
         /**
         * The current number of workers.
         */
-        public Integer getCurrentNumberOfWorkers() { return this.currentNumberOfWorkers; }
+        public Integer getCurrentNumberOfWorkers()
+        {
+            return this.currentNumberOfWorkers;
+        }
         
         /**
         * The current number of workers.
         */
-        public void setCurrentNumberOfWorkers(Integer currentNumberOfWorkers) { this.currentNumberOfWorkers = currentNumberOfWorkers; }
+        public void setCurrentNumberOfWorkers(Integer currentNumberOfWorkers)
+        {
+            this.currentNumberOfWorkers = currentNumberOfWorkers;
+        }
         
         private WebSpaceWorkerSize currentWorkerSize;
         
         /**
         * The current worker size. Possible values are Small, Medium, or Large.
         */
-        public WebSpaceWorkerSize getCurrentWorkerSize() { return this.currentWorkerSize; }
+        public WebSpaceWorkerSize getCurrentWorkerSize()
+        {
+            return this.currentWorkerSize;
+        }
         
         /**
         * The current worker size. Possible values are Small, Medium, or Large.
         */
-        public void setCurrentWorkerSize(WebSpaceWorkerSize currentWorkerSize) { this.currentWorkerSize = currentWorkerSize; }
+        public void setCurrentWorkerSize(WebSpaceWorkerSize currentWorkerSize)
+        {
+            this.currentWorkerSize = currentWorkerSize;
+        }
         
         private String geoLocation;
         
         /**
         * The location of the datacenter for the web space.
         */
-        public String getGeoLocation() { return this.geoLocation; }
+        public String getGeoLocation()
+        {
+            return this.geoLocation;
+        }
         
         /**
         * The location of the datacenter for the web space.
         */
-        public void setGeoLocation(String geoLocation) { this.geoLocation = geoLocation; }
+        public void setGeoLocation(String geoLocation)
+        {
+            this.geoLocation = geoLocation;
+        }
         
         private String geoRegion;
         
         /**
         * The geographical region where the webspace is located.
         */
-        public String getGeoRegion() { return this.geoRegion; }
+        public String getGeoRegion()
+        {
+            return this.geoRegion;
+        }
         
         /**
         * The geographical region where the webspace is located.
         */
-        public void setGeoRegion(String geoRegion) { this.geoRegion = geoRegion; }
+        public void setGeoRegion(String geoRegion)
+        {
+            this.geoRegion = geoRegion;
+        }
         
         private String name;
         
         /**
         * The name of the webspace.
         */
-        public String getName() { return this.name; }
+        public String getName()
+        {
+            return this.name;
+        }
         
         /**
         * The name of the webspace.
         */
-        public void setName(String name) { this.name = name; }
+        public void setName(String name)
+        {
+            this.name = name;
+        }
         
         private String plan;
         
         /**
         * The name of the webspace.
         */
-        public String getPlan() { return this.plan; }
+        public String getPlan()
+        {
+            return this.plan;
+        }
         
         /**
         * The name of the webspace.
         */
-        public void setPlan(String plan) { this.plan = plan; }
+        public void setPlan(String plan)
+        {
+            this.plan = plan;
+        }
         
         private WebSpaceStatus status;
         
@@ -158,26 +207,38 @@ public class WebSpacesListResponse extends OperationResponse implements Iterable
         * Note: The Limited status occurs only if the datacenter is
         * encountering an operational issue.
         */
-        public WebSpaceStatus getStatus() { return this.status; }
+        public WebSpaceStatus getStatus()
+        {
+            return this.status;
+        }
         
         /**
         * The status of the Web Space. Possible values are Ready or Limited.
         * Note: The Limited status occurs only if the datacenter is
         * encountering an operational issue.
         */
-        public void setStatus(WebSpaceStatus status) { this.status = status; }
+        public void setStatus(WebSpaceStatus status)
+        {
+            this.status = status;
+        }
         
         private String subscription;
         
         /**
         * The subscription ID.
         */
-        public String getSubscription() { return this.subscription; }
+        public String getSubscription()
+        {
+            return this.subscription;
+        }
         
         /**
         * The subscription ID.
         */
-        public void setSubscription(String subscription) { this.subscription = subscription; }
+        public void setSubscription(String subscription)
+        {
+            this.subscription = subscription;
+        }
         
         private WebSpaceWorkerSize workerSize;
         
@@ -185,20 +246,18 @@ public class WebSpacesListResponse extends OperationResponse implements Iterable
         * The worker size. Possible values are Small, Medium, and Large. For
         * JSON, the equivalents are 0 = Small, 1 = Medium, 2 = Large.
         */
-        public WebSpaceWorkerSize getWorkerSize() { return this.workerSize; }
+        public WebSpaceWorkerSize getWorkerSize()
+        {
+            return this.workerSize;
+        }
         
         /**
         * The worker size. Possible values are Small, Medium, and Large. For
         * JSON, the equivalents are 0 = Small, 1 = Medium, 2 = Large.
         */
-        public void setWorkerSize(WebSpaceWorkerSize workerSize) { this.workerSize = workerSize; }
-        
-        /**
-        * Initializes a new instance of the WebSpace class.
-        *
-        */
-        public WebSpace()
+        public void setWorkerSize(WebSpaceWorkerSize workerSize)
         {
+            this.workerSize = workerSize;
         }
     }
 }

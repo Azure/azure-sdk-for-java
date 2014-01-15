@@ -24,35 +24,27 @@
 package com.microsoft.windowsazure.scheduler.models;
 
 /**
- * Parameters supplied to the List Jobs with filter operation.
- */
+* Parameters supplied to the List Jobs with filter operation.
+*/
 public class JobListWithFilterParameters extends JobListParameters
 {
     private JobState state;
-
+    
     /**
-     * Filter the job history to have it only return job execution attempts
-     * having a particular State, enabled, disabled, faulted, or completed.
-     */
+    * Filter the job history to have it only return job execution attempts
+    * having a particular State, enabled, disabled, faulted, or completed.
+    */
     public JobState getState()
     {
         return this.state;
     }
-
+    
     /**
-     * Filter the job history to have it only return job execution attempts
-     * having a particular State, enabled, disabled, faulted, or completed.
-     */
+    * Filter the job history to have it only return job execution attempts
+    * having a particular State, enabled, disabled, faulted, or completed.
+    */
     public void setState(JobState state)
     {
         this.state = state;
-    }
-
-    /**
-     * Initializes a new instance of the JobListWithFilterParameters class.
-     * 
-     */
-    public JobListWithFilterParameters()
-    {
     }
 }

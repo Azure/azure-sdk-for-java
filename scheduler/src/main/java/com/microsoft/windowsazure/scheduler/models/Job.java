@@ -26,123 +26,115 @@ package com.microsoft.windowsazure.scheduler.models;
 import java.util.Calendar;
 
 /**
- * A scheduler job.
- */
+* A scheduler job.
+*/
 public class Job
 {
     private JobAction action;
-
+    
     /**
-     * Action to invoke for the job.
-     */
+    * Action to invoke for the job.
+    */
     public JobAction getAction()
     {
         return this.action;
     }
-
+    
     /**
-     * Action to invoke for the job.
-     */
+    * Action to invoke for the job.
+    */
     public void setAction(JobAction action)
     {
         this.action = action;
     }
-
+    
     private String id;
-
+    
     /**
-     * Job identifier.
-     */
+    * Job identifier.
+    */
     public String getId()
     {
         return this.id;
     }
-
+    
     /**
-     * Job identifier.
-     */
+    * Job identifier.
+    */
     public void setId(String id)
     {
         this.id = id;
     }
-
+    
     private JobRecurrence recurrence;
-
+    
     /**
-     * Recurrence schedule for the job.
-     */
+    * Recurrence schedule for the job.
+    */
     public JobRecurrence getRecurrence()
     {
         return this.recurrence;
     }
-
+    
     /**
-     * Recurrence schedule for the job.
-     */
+    * Recurrence schedule for the job.
+    */
     public void setRecurrence(JobRecurrence recurrence)
     {
         this.recurrence = recurrence;
     }
-
+    
     private Calendar startTime;
-
+    
     /**
-     * Start time for the job. Defined as ISO-8601.
-     */
+    * Start time for the job.  Defined as ISO-8601.
+    */
     public Calendar getStartTime()
     {
         return this.startTime;
     }
-
+    
     /**
-     * Start time for the job. Defined as ISO-8601.
-     */
+    * Start time for the job.  Defined as ISO-8601.
+    */
     public void setStartTime(Calendar startTime)
     {
         this.startTime = startTime;
     }
-
+    
     private JobState state;
-
+    
     /**
-     * Current state of the job.
-     */
+    * Current state of the job.
+    */
     public JobState getState()
     {
         return this.state;
     }
-
+    
     /**
-     * Current state of the job.
-     */
+    * Current state of the job.
+    */
     public void setState(JobState state)
     {
         this.state = state;
     }
-
+    
     private JobStatus status;
-
+    
     /**
-     * Current status of the job.
-     */
+    * Current status of the job.
+    */
     public JobStatus getStatus()
     {
         return this.status;
     }
-
+    
     /**
-     * Current status of the job.
-     */
+    * Current status of the job.
+    */
     public void setStatus(JobStatus status)
     {
         this.status = status;
-    }
-
-    /**
-     * Initializes a new instance of the Job class.
-     * 
-     */
-    public Job()
-    {
     }
 }

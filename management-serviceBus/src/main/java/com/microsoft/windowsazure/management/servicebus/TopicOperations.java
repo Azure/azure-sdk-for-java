@@ -52,6 +52,8 @@ public interface TopicOperations
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780728.aspx for
     * more information)
     *
+    * @param namespaceName The namespace name.
+    * @param topic The Service Bus topic.
     * @return A response to a request for a particular topic.
     */
     ServiceBusTopicResponse create(String namespaceName, ServiceBusTopic topic) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException, ParseException, URISyntaxException;
@@ -64,6 +66,8 @@ public interface TopicOperations
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780728.aspx for
     * more information)
     *
+    * @param namespaceName The namespace name.
+    * @param topic The Service Bus topic.
     * @return A response to a request for a particular topic.
     */
     Future<ServiceBusTopicResponse> createAsync(String namespaceName, ServiceBusTopic topic);
@@ -76,6 +80,8 @@ public interface TopicOperations
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
     * more information)
     *
+    * @param namespaceName The namespace name.
+    * @param topicName The topic.
     * @return A response to a request for a particular topic.
     */
     ServiceBusTopicResponse get(String namespaceName, String topicName) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException, URISyntaxException;
@@ -88,6 +94,8 @@ public interface TopicOperations
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
     * more information)
     *
+    * @param namespaceName The namespace name.
+    * @param topicName The topic.
     * @return A response to a request for a particular topic.
     */
     Future<ServiceBusTopicResponse> getAsync(String namespaceName, String topicName);
@@ -95,6 +103,8 @@ public interface TopicOperations
     /**
     * Gets the set of connection strings for a topic.
     *
+    * @param namespaceName The namespace name.
+    * @param topicName The topic.
     * @return The set of connection details for a service bus entity.
     */
     ServiceBusConnectionDetailsResponse getConnectionDetails(String namespaceName, String topicName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
@@ -102,6 +112,8 @@ public interface TopicOperations
     /**
     * Gets the set of connection strings for a topic.
     *
+    * @param namespaceName The namespace name.
+    * @param topicName The topic.
     * @return The set of connection details for a service bus entity.
     */
     Future<ServiceBusConnectionDetailsResponse> getConnectionDetailsAsync(String namespaceName, String topicName);
@@ -112,6 +124,7 @@ public interface TopicOperations
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780744.aspx for
     * more information)
     *
+    * @param namespaceName The namespace name.
     * @return A response to a request for a list of topics.
     */
     ServiceBusTopicsResponse list(String namespaceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException, URISyntaxException;
@@ -122,6 +135,7 @@ public interface TopicOperations
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780744.aspx for
     * more information)
     *
+    * @param namespaceName The namespace name.
     * @return A response to a request for a list of topics.
     */
     Future<ServiceBusTopicsResponse> listAsync(String namespaceName);
@@ -131,6 +145,8 @@ public interface TopicOperations
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj839740.aspx for
     * more information)
     *
+    * @param namespaceName The namespace name.
+    * @param topic The Service Bus topic.
     * @return A response to a request for a particular topic.
     */
     ServiceBusTopicResponse update(String namespaceName, ServiceBusTopic topic) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException, ParseException;
@@ -140,6 +156,8 @@ public interface TopicOperations
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj839740.aspx for
     * more information)
     *
+    * @param namespaceName The namespace name.
+    * @param topic The Service Bus topic.
     * @return A response to a request for a particular topic.
     */
     Future<ServiceBusTopicResponse> updateAsync(String namespaceName, ServiceBusTopic topic);

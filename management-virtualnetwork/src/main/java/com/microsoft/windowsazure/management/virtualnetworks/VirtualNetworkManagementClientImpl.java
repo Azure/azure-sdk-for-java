@@ -44,6 +44,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.w3c.dom.Document;
@@ -64,7 +65,10 @@ public class VirtualNetworkManagementClientImpl extends ServiceClient<VirtualNet
     /**
     * The URI used as the base for all SQL requests.
     */
-    public URI getBaseUri() { return this.baseUri; }
+    public URI getBaseUri()
+    {
+        return this.baseUri;
+    }
     
     private SubscriptionCloudCredentials credentials;
     
@@ -76,23 +80,38 @@ public class VirtualNetworkManagementClientImpl extends ServiceClient<VirtualNet
     * certificates over SSL to ensure that a request made to the service is
     * secure.  No anonymous requests are allowed.
     */
-    public SubscriptionCloudCredentials getCredentials() { return this.credentials; }
+    public SubscriptionCloudCredentials getCredentials()
+    {
+        return this.credentials;
+    }
     
     private ClientRootCertificateOperations clientRootCertificates;
     
-    public ClientRootCertificateOperations getClientRootCertificatesOperations() { return this.clientRootCertificates; }
+    public ClientRootCertificateOperations getClientRootCertificatesOperations()
+    {
+        return this.clientRootCertificates;
+    }
     
     private GatewayOperations gateways;
     
-    public GatewayOperations getGatewaysOperations() { return this.gateways; }
+    public GatewayOperations getGatewaysOperations()
+    {
+        return this.gateways;
+    }
     
     private NetworkOperations networks;
     
-    public NetworkOperations getNetworksOperations() { return this.networks; }
+    public NetworkOperations getNetworksOperations()
+    {
+        return this.networks;
+    }
     
     private ReservedIPOperations reservedIPs;
     
-    public ReservedIPOperations getReservedIPsOperations() { return this.reservedIPs; }
+    public ReservedIPOperations getReservedIPsOperations()
+    {
+        return this.reservedIPs;
+    }
     
     /**
     * Initializes a new instance of the VirtualNetworkManagementClientImpl
@@ -271,7 +290,7 @@ public class VirtualNetworkManagementClientImpl extends ServiceClient<VirtualNet
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -291,11 +310,11 @@ public class VirtualNetworkManagementClientImpl extends ServiceClient<VirtualNet
         Document responseDoc = documentBuilder.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagName("Operation");
-        Element operationElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element operationElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (operationElement != null)
         {
             NodeList elements2 = operationElement.getElementsByTagName("ID");
-            Element idElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+            Element idElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
             if (idElement != null)
             {
                 String idInstance;
@@ -304,7 +323,7 @@ public class VirtualNetworkManagementClientImpl extends ServiceClient<VirtualNet
             }
             
             NodeList elements3 = operationElement.getElementsByTagName("Status");
-            Element statusElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
+            Element statusElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
             if (statusElement != null)
             {
                 OperationStatus statusInstance;
@@ -313,7 +332,7 @@ public class VirtualNetworkManagementClientImpl extends ServiceClient<VirtualNet
             }
             
             NodeList elements4 = operationElement.getElementsByTagName("HttpStatusCode");
-            Element httpStatusCodeElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
+            Element httpStatusCodeElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
             if (httpStatusCodeElement != null)
             {
                 Integer httpStatusCodeInstance;
@@ -322,14 +341,14 @@ public class VirtualNetworkManagementClientImpl extends ServiceClient<VirtualNet
             }
             
             NodeList elements5 = operationElement.getElementsByTagName("Error");
-            Element errorElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
+            Element errorElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
             if (errorElement != null)
             {
                 VirtualNetworkOperationStatusResponse.ErrorDetails errorInstance = new VirtualNetworkOperationStatusResponse.ErrorDetails();
                 result.setError(errorInstance);
                 
                 NodeList elements6 = errorElement.getElementsByTagName("Code");
-                Element codeElement = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
+                Element codeElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                 if (codeElement != null)
                 {
                     String codeInstance;
@@ -338,7 +357,7 @@ public class VirtualNetworkManagementClientImpl extends ServiceClient<VirtualNet
                 }
                 
                 NodeList elements7 = errorElement.getElementsByTagName("Message");
-                Element messageElement = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
+                Element messageElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                 if (messageElement != null)
                 {
                     String messageInstance;

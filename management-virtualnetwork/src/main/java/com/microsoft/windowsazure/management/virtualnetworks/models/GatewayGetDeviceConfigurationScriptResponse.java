@@ -36,19 +36,16 @@ public class GatewayGetDeviceConfigurationScriptResponse extends OperationRespon
     /**
     * The requested configuration script for the local network device.
     */
-    public String getConfigurationScript() { return this.configurationScript; }
+    public String getConfigurationScript()
+    {
+        return this.configurationScript;
+    }
     
     /**
     * The requested configuration script for the local network device.
     */
-    public void setConfigurationScript(String configurationScript) { this.configurationScript = configurationScript; }
-    
-    /**
-    * Initializes a new instance of the
-    * GatewayGetDeviceConfigurationScriptResponse class.
-    *
-    */
-    public GatewayGetDeviceConfigurationScriptResponse()
+    public void setConfigurationScript(String configurationScript)
     {
+        this.configurationScript = configurationScript;
     }
 }

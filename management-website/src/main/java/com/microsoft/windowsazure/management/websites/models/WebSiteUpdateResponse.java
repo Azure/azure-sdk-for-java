@@ -35,18 +35,16 @@ public class WebSiteUpdateResponse extends OperationResponse
     /**
     * Details of the updated website.
     */
-    public WebSite getWebSite() { return this.webSite; }
+    public WebSite getWebSite()
+    {
+        return this.webSite;
+    }
     
     /**
     * Details of the updated website.
     */
-    public void setWebSite(WebSite webSite) { this.webSite = webSite; }
-    
-    /**
-    * Initializes a new instance of the WebSiteUpdateResponse class.
-    *
-    */
-    public WebSiteUpdateResponse()
+    public void setWebSite(WebSite webSite)
     {
+        this.webSite = webSite;
     }
 }

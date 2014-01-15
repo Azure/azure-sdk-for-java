@@ -39,7 +39,10 @@ public class VirtualMachineGetResponse extends OperationResponse
     * environment. Virtual machines specified in the same availability set are
     * allocated to different nodes to maximize availability.
     */
-    public String getAvailabilitySetName() { return this.availabilitySetName; }
+    public String getAvailabilitySetName()
+    {
+        return this.availabilitySetName;
+    }
     
     /**
     * The name of the availability set the virtual machine belongs to. This
@@ -47,7 +50,10 @@ public class VirtualMachineGetResponse extends OperationResponse
     * environment. Virtual machines specified in the same availability set are
     * allocated to different nodes to maximize availability.
     */
-    public void setAvailabilitySetName(String availabilitySetName) { this.availabilitySetName = availabilitySetName; }
+    public void setAvailabilitySetName(String availabilitySetName)
+    {
+        this.availabilitySetName = availabilitySetName;
+    }
     
     private ArrayList<ConfigurationSet> configurationSets;
     
@@ -55,13 +61,19 @@ public class VirtualMachineGetResponse extends OperationResponse
     * Contains the collection of configuration sets that contain system and
     * application configuration settings.
     */
-    public ArrayList<ConfigurationSet> getConfigurationSets() { return this.configurationSets; }
+    public ArrayList<ConfigurationSet> getConfigurationSets()
+    {
+        return this.configurationSets;
+    }
     
     /**
     * Contains the collection of configuration sets that contain system and
     * application configuration settings.
     */
-    public void setConfigurationSets(ArrayList<ConfigurationSet> configurationSets) { this.configurationSets = configurationSets; }
+    public void setConfigurationSets(ArrayList<ConfigurationSet> configurationSets)
+    {
+        this.configurationSets = configurationSets;
+    }
     
     private ArrayList<DataVirtualHardDisk> dataVirtualHardDisks;
     
@@ -69,13 +81,19 @@ public class VirtualMachineGetResponse extends OperationResponse
     * Contains the parameters Windows Azure used to create the data disk for
     * the virtual machine.
     */
-    public ArrayList<DataVirtualHardDisk> getDataVirtualHardDisks() { return this.dataVirtualHardDisks; }
+    public ArrayList<DataVirtualHardDisk> getDataVirtualHardDisks()
+    {
+        return this.dataVirtualHardDisks;
+    }
     
     /**
     * Contains the parameters Windows Azure used to create the data disk for
     * the virtual machine.
     */
-    public void setDataVirtualHardDisks(ArrayList<DataVirtualHardDisk> dataVirtualHardDisks) { this.dataVirtualHardDisks = dataVirtualHardDisks; }
+    public void setDataVirtualHardDisks(ArrayList<DataVirtualHardDisk> dataVirtualHardDisks)
+    {
+        this.dataVirtualHardDisks = dataVirtualHardDisks;
+    }
     
     private String defaultWinRmCertificateThumbprint;
     
@@ -83,13 +101,19 @@ public class VirtualMachineGetResponse extends OperationResponse
     * The read-only thumbprint of the certificate that is used with the HTTPS
     * listener for WinRM.
     */
-    public String getDefaultWinRmCertificateThumbprint() { return this.defaultWinRmCertificateThumbprint; }
+    public String getDefaultWinRmCertificateThumbprint()
+    {
+        return this.defaultWinRmCertificateThumbprint;
+    }
     
     /**
     * The read-only thumbprint of the certificate that is used with the HTTPS
     * listener for WinRM.
     */
-    public void setDefaultWinRmCertificateThumbprint(String defaultWinRmCertificateThumbprint) { this.defaultWinRmCertificateThumbprint = defaultWinRmCertificateThumbprint; }
+    public void setDefaultWinRmCertificateThumbprint(String defaultWinRmCertificateThumbprint)
+    {
+        this.defaultWinRmCertificateThumbprint = defaultWinRmCertificateThumbprint;
+    }
     
     private String osVersion;
     
@@ -97,13 +121,19 @@ public class VirtualMachineGetResponse extends OperationResponse
     * The version of the operating system on which the role instances are
     * running.
     */
-    public String getOsVersion() { return this.osVersion; }
+    public String getOsVersion()
+    {
+        return this.osVersion;
+    }
     
     /**
     * The version of the operating system on which the role instances are
     * running.
     */
-    public void setOsVersion(String osVersion) { this.osVersion = osVersion; }
+    public void setOsVersion(String osVersion)
+    {
+        this.osVersion = osVersion;
+    }
     
     private OSVirtualHardDisk oSVirtualHardDisk;
     
@@ -111,37 +141,55 @@ public class VirtualMachineGetResponse extends OperationResponse
     * Contains the parameters Windows Azure used to create the operating system
     * disk for the virtual machine.
     */
-    public OSVirtualHardDisk getOSVirtualHardDisk() { return this.oSVirtualHardDisk; }
+    public OSVirtualHardDisk getOSVirtualHardDisk()
+    {
+        return this.oSVirtualHardDisk;
+    }
     
     /**
     * Contains the parameters Windows Azure used to create the operating system
     * disk for the virtual machine.
     */
-    public void setOSVirtualHardDisk(OSVirtualHardDisk oSVirtualHardDisk) { this.oSVirtualHardDisk = oSVirtualHardDisk; }
+    public void setOSVirtualHardDisk(OSVirtualHardDisk oSVirtualHardDisk)
+    {
+        this.oSVirtualHardDisk = oSVirtualHardDisk;
+    }
     
     private String roleName;
     
     /**
     * The name for the virtual machine. The name is unique within Windows Azure.
     */
-    public String getRoleName() { return this.roleName; }
+    public String getRoleName()
+    {
+        return this.roleName;
+    }
     
     /**
     * The name for the virtual machine. The name is unique within Windows Azure.
     */
-    public void setRoleName(String roleName) { this.roleName = roleName; }
+    public void setRoleName(String roleName)
+    {
+        this.roleName = roleName;
+    }
     
     private VirtualMachineRoleSize roleSize;
     
     /**
     * The size of the virtual machine.
     */
-    public VirtualMachineRoleSize getRoleSize() { return this.roleSize; }
+    public VirtualMachineRoleSize getRoleSize()
+    {
+        return this.roleSize;
+    }
     
     /**
     * The size of the virtual machine.
     */
-    public void setRoleSize(VirtualMachineRoleSize roleSize) { this.roleSize = roleSize; }
+    public void setRoleSize(VirtualMachineRoleSize roleSize)
+    {
+        this.roleSize = roleSize;
+    }
     
     private VirtualMachineRoleType roleType;
     
@@ -149,13 +197,19 @@ public class VirtualMachineGetResponse extends OperationResponse
     * The type of the role for the virtual machine. The only supported value is
     * PersistentVMRole.
     */
-    public VirtualMachineRoleType getRoleType() { return this.roleType; }
+    public VirtualMachineRoleType getRoleType()
+    {
+        return this.roleType;
+    }
     
     /**
     * The type of the role for the virtual machine. The only supported value is
     * PersistentVMRole.
     */
-    public void setRoleType(VirtualMachineRoleType roleType) { this.roleType = roleType; }
+    public void setRoleType(VirtualMachineRoleType roleType)
+    {
+        this.roleType = roleType;
+    }
     
     /**
     * Initializes a new instance of the VirtualMachineGetResponse class.
@@ -163,6 +217,7 @@ public class VirtualMachineGetResponse extends OperationResponse
     */
     public VirtualMachineGetResponse()
     {
+        super();
         this.configurationSets = new ArrayList<ConfigurationSet>();
         this.dataVirtualHardDisks = new ArrayList<DataVirtualHardDisk>();
     }

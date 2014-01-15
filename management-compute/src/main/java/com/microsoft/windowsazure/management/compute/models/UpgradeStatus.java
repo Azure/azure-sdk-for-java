@@ -35,44 +35,54 @@ public class UpgradeStatus
     * domains are identified with a zero-based index: the first upgrade domain
     * has an ID of 0, the second has an ID of 1, and so on.
     */
-    public int getCurrentUpgradeDomain() { return this.currentUpgradeDomain; }
+    public int getCurrentUpgradeDomain()
+    {
+        return this.currentUpgradeDomain;
+    }
     
     /**
     * An integer value that identifies the current upgrade domain. Upgrade
     * domains are identified with a zero-based index: the first upgrade domain
     * has an ID of 0, the second has an ID of 1, and so on.
     */
-    public void setCurrentUpgradeDomain(int currentUpgradeDomain) { this.currentUpgradeDomain = currentUpgradeDomain; }
+    public void setCurrentUpgradeDomain(int currentUpgradeDomain)
+    {
+        this.currentUpgradeDomain = currentUpgradeDomain;
+    }
     
     private UpgradeDomainState currentUpgradeDomainState;
     
     /**
     * The current state of the upgrade. Possible values are Before and During
     */
-    public UpgradeDomainState getCurrentUpgradeDomainState() { return this.currentUpgradeDomainState; }
+    public UpgradeDomainState getCurrentUpgradeDomainState()
+    {
+        return this.currentUpgradeDomainState;
+    }
     
     /**
     * The current state of the upgrade. Possible values are Before and During
     */
-    public void setCurrentUpgradeDomainState(UpgradeDomainState currentUpgradeDomainState) { this.currentUpgradeDomainState = currentUpgradeDomainState; }
+    public void setCurrentUpgradeDomainState(UpgradeDomainState currentUpgradeDomainState)
+    {
+        this.currentUpgradeDomainState = currentUpgradeDomainState;
+    }
     
     private DeploymentUpgradeType upgradeType;
     
     /**
     * The type of the upgrade. Possible values are Auto and Manual.
     */
-    public DeploymentUpgradeType getUpgradeType() { return this.upgradeType; }
+    public DeploymentUpgradeType getUpgradeType()
+    {
+        return this.upgradeType;
+    }
     
     /**
     * The type of the upgrade. Possible values are Auto and Manual.
     */
-    public void setUpgradeType(DeploymentUpgradeType upgradeType) { this.upgradeType = upgradeType; }
-    
-    /**
-    * Initializes a new instance of the UpgradeStatus class.
-    *
-    */
-    public UpgradeStatus()
+    public void setUpgradeType(DeploymentUpgradeType upgradeType)
     {
+        this.upgradeType = upgradeType;
     }
 }

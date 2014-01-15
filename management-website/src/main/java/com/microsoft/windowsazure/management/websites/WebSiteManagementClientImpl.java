@@ -38,6 +38,7 @@ import java.util.concurrent.Future;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.impl.client.HttpClientBuilder;
 
@@ -56,7 +57,10 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     /**
     * The URI used as the base for all Service Management requests.
     */
-    public URI getBaseUri() { return this.baseUri; }
+    public URI getBaseUri()
+    {
+        return this.baseUri;
+    }
     
     private SubscriptionCloudCredentials credentials;
     
@@ -68,7 +72,10 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     * certificates over SSL to ensure that a request made to the service is
     * secure.  No anonymous requests are allowed.
     */
-    public SubscriptionCloudCredentials getCredentials() { return this.credentials; }
+    public SubscriptionCloudCredentials getCredentials()
+    {
+        return this.credentials;
+    }
     
     private ServerFarmOperations serverFarms;
     
@@ -77,21 +84,30 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn194277.aspx for
     * more information)
     */
-    public ServerFarmOperations getServerFarmsOperations() { return this.serverFarms; }
+    public ServerFarmOperations getServerFarmsOperations()
+    {
+        return this.serverFarms;
+    }
     
     private WebSiteOperations webSites;
     
     /**
     * Operations for managing the web sites in a web space.
     */
-    public WebSiteOperations getWebSitesOperations() { return this.webSites; }
+    public WebSiteOperations getWebSitesOperations()
+    {
+        return this.webSites;
+    }
     
     private WebSpaceOperations webSpaces;
     
     /**
     * Operations for managing web spaces beneath your subscription.
     */
-    public WebSpaceOperations getWebSpacesOperations() { return this.webSpaces; }
+    public WebSpaceOperations getWebSpacesOperations()
+    {
+        return this.webSpaces;
+    }
     
     /**
     * Initializes a new instance of the WebSiteManagementClientImpl class.
@@ -232,7 +248,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
+        if (statusCode != HttpStatus.SC_ACCEPTED)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -319,7 +335,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
+        if (statusCode != HttpStatus.SC_ACCEPTED)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)

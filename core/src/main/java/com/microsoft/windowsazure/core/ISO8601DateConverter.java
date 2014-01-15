@@ -53,7 +53,9 @@ public class ISO8601DateConverter
     public Date parse(String date) throws ParseException
     {
         if (date == null)
+        {
             return null;
+        }
 
         int length = date.length();
         if (length == 17)
@@ -91,7 +93,8 @@ public class ISO8601DateConverter
     private static Date parseDateFromString(final String value,
             final String pattern) throws ParseException
     {
-        DateFormat iso8601Format = new SimpleDateFormat(pattern, Locale.US);
+        final DateFormat iso8601Format =
+                new SimpleDateFormat(pattern, Locale.US);
         iso8601Format.setTimeZone(TimeZone.getTimeZone("GMT"));
         return iso8601Format.parse(value);
     }

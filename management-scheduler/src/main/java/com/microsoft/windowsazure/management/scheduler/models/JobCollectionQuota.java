@@ -31,25 +31,37 @@ public class JobCollectionQuota
     * Maximum number of jobs that can be created in this job collection.
     * Maximum value is dependent on the plan.
     */
-    public Integer getMaxJobCount() { return this.maxJobCount; }
+    public Integer getMaxJobCount()
+    {
+        return this.maxJobCount;
+    }
     
     /**
     * Maximum number of jobs that can be created in this job collection.
     * Maximum value is dependent on the plan.
     */
-    public void setMaxJobCount(Integer maxJobCount) { this.maxJobCount = maxJobCount; }
+    public void setMaxJobCount(Integer maxJobCount)
+    {
+        this.maxJobCount = maxJobCount;
+    }
     
     private Integer maxJobOccurrence;
     
     /**
     * Maximum number of occurrences for all jobs in the job collection.
     */
-    public Integer getMaxJobOccurrence() { return this.maxJobOccurrence; }
+    public Integer getMaxJobOccurrence()
+    {
+        return this.maxJobOccurrence;
+    }
     
     /**
     * Maximum number of occurrences for all jobs in the job collection.
     */
-    public void setMaxJobOccurrence(Integer maxJobOccurrence) { this.maxJobOccurrence = maxJobOccurrence; }
+    public void setMaxJobOccurrence(Integer maxJobOccurrence)
+    {
+        this.maxJobOccurrence = maxJobOccurrence;
+    }
     
     private JobCollectionMaxRecurrence maxRecurrence;
     
@@ -57,19 +69,17 @@ public class JobCollectionQuota
     * Defines the maximum recurrences that can be specified in any job in this
     * job collection.
     */
-    public JobCollectionMaxRecurrence getMaxRecurrence() { return this.maxRecurrence; }
+    public JobCollectionMaxRecurrence getMaxRecurrence()
+    {
+        return this.maxRecurrence;
+    }
     
     /**
     * Defines the maximum recurrences that can be specified in any job in this
     * job collection.
     */
-    public void setMaxRecurrence(JobCollectionMaxRecurrence maxRecurrence) { this.maxRecurrence = maxRecurrence; }
-    
-    /**
-    * Initializes a new instance of the JobCollectionQuota class.
-    *
-    */
-    public JobCollectionQuota()
+    public void setMaxRecurrence(JobCollectionMaxRecurrence maxRecurrence)
     {
+        this.maxRecurrence = maxRecurrence;
     }
 }

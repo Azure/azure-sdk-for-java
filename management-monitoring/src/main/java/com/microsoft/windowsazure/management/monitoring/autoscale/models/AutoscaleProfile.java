@@ -35,12 +35,18 @@ public class AutoscaleProfile
     /**
     * The number of instances that can be used in the scaling action.
     */
-    public ScaleCapacity getCapacity() { return this.capacity; }
+    public ScaleCapacity getCapacity()
+    {
+        return this.capacity;
+    }
     
     /**
     * The number of instances that can be used in the scaling action.
     */
-    public void setCapacity(ScaleCapacity capacity) { this.capacity = capacity; }
+    public void setCapacity(ScaleCapacity capacity)
+    {
+        this.capacity = capacity;
+    }
     
     private TimeWindow fixedDate;
     
@@ -48,25 +54,37 @@ public class AutoscaleProfile
     * A specific date for the scaling action. This element is not used if the
     * Recurrence element is used.
     */
-    public TimeWindow getFixedDate() { return this.fixedDate; }
+    public TimeWindow getFixedDate()
+    {
+        return this.fixedDate;
+    }
     
     /**
     * A specific date for the scaling action. This element is not used if the
     * Recurrence element is used.
     */
-    public void setFixedDate(TimeWindow fixedDate) { this.fixedDate = fixedDate; }
+    public void setFixedDate(TimeWindow fixedDate)
+    {
+        this.fixedDate = fixedDate;
+    }
     
     private String name;
     
     /**
     * The name of the profile.
     */
-    public String getName() { return this.name; }
+    public String getName()
+    {
+        return this.name;
+    }
     
     /**
     * The name of the profile.
     */
-    public void setName(String name) { this.name = name; }
+    public void setName(String name)
+    {
+        this.name = name;
+    }
     
     private Recurrence recurrence;
     
@@ -74,13 +92,19 @@ public class AutoscaleProfile
     * The frequency and schedule for the scaling action. This element is not
     * used if the FixedDate element is used.
     */
-    public Recurrence getRecurrence() { return this.recurrence; }
+    public Recurrence getRecurrence()
+    {
+        return this.recurrence;
+    }
     
     /**
     * The frequency and schedule for the scaling action. This element is not
     * used if the FixedDate element is used.
     */
-    public void setRecurrence(Recurrence recurrence) { this.recurrence = recurrence; }
+    public void setRecurrence(Recurrence recurrence)
+    {
+        this.recurrence = recurrence;
+    }
     
     private ArrayList<ScaleRule> rules;
     
@@ -88,13 +112,19 @@ public class AutoscaleProfile
     * A collection of rules that provide the triggers and parameters for the
     * scaling action.
     */
-    public ArrayList<ScaleRule> getRules() { return this.rules; }
+    public ArrayList<ScaleRule> getRules()
+    {
+        return this.rules;
+    }
     
     /**
     * A collection of rules that provide the triggers and parameters for the
     * scaling action.
     */
-    public void setRules(ArrayList<ScaleRule> rules) { this.rules = rules; }
+    public void setRules(ArrayList<ScaleRule> rules)
+    {
+        this.rules = rules;
+    }
     
     /**
     * Initializes a new instance of the AutoscaleProfile class.

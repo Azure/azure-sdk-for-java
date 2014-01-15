@@ -35,18 +35,16 @@ public class ServiceBusTopicResponse extends OperationResponse
     /**
     * The requested topic.
     */
-    public ServiceBusTopic getTopic() { return this.topic; }
+    public ServiceBusTopic getTopic()
+    {
+        return this.topic;
+    }
     
     /**
     * The requested topic.
     */
-    public void setTopic(ServiceBusTopic topic) { this.topic = topic; }
-    
-    /**
-    * Initializes a new instance of the ServiceBusTopicResponse class.
-    *
-    */
-    public ServiceBusTopicResponse()
+    public void setTopic(ServiceBusTopic topic)
     {
+        this.topic = topic;
     }
 }

@@ -37,7 +37,10 @@ public class RetryPolicyFilter implements ServiceFilter
     {
         // Only the last added retry policy should be active
         if (request.getProperty("RetryPolicy") != null)
+        {
             return next.handle(request);
+        }
+
         request.setProperty("RetryPolicy", this);
 
         // Retry the operation as long as retry policy tells us to do so
@@ -66,7 +69,10 @@ public class RetryPolicyFilter implements ServiceFilter
             if (!shouldRetry)
             {
                 if (error != null)
+                {
                     throw error;
+                }
+
                 return response;
             }
 
@@ -89,10 +95,14 @@ public class RetryPolicyFilter implements ServiceFilter
     private InputStream getEntityStream(ServiceRequestContext request)
     {
         if (request.getEntity() == null)
+        {
             return null;
+        }
 
         if (!(request.getEntity() instanceof InputStream))
+        {
             return null;
+        }
 
         InputStream entityStream = (InputStream) request.getEntity();
 

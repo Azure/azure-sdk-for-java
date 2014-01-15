@@ -54,6 +54,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -80,7 +81,10 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
     * Gets a reference to the
     * microsoft.windowsazure.management.virtualnetworks.VirtualNetworkManagementClientImpl.
     */
-    public VirtualNetworkManagementClientImpl getClient() { return this.client; }
+    public VirtualNetworkManagementClientImpl getClient()
+    {
+        return this.client;
+    }
     
     /**
     * Preview Only. The Create Reserved IP operation creates a reserved IP from
@@ -223,7 +227,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
+        if (statusCode != HttpStatus.SC_ACCEPTED)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -319,7 +323,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
+        if (statusCode != HttpStatus.SC_ACCEPTED)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -426,14 +430,26 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;
@@ -526,14 +542,26 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;
@@ -614,7 +642,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -634,11 +662,11 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
         Document responseDoc = documentBuilder.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagName("ReservedIP");
-        Element reservedIPElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element reservedIPElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (reservedIPElement != null)
         {
             NodeList elements2 = reservedIPElement.getElementsByTagName("Name");
-            Element nameElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+            Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
             if (nameElement != null)
             {
                 String nameInstance;
@@ -647,7 +675,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
             }
             
             NodeList elements3 = reservedIPElement.getElementsByTagName("Address");
-            Element addressElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
+            Element addressElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
             if (addressElement != null)
             {
                 InetAddress addressInstance;
@@ -656,7 +684,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
             }
             
             NodeList elements4 = reservedIPElement.getElementsByTagName("Id");
-            Element idElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
+            Element idElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
             if (idElement != null)
             {
                 String idInstance;
@@ -665,7 +693,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
             }
             
             NodeList elements5 = reservedIPElement.getElementsByTagName("Label");
-            Element labelElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
+            Element labelElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
             if (labelElement != null)
             {
                 String labelInstance;
@@ -674,7 +702,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
             }
             
             NodeList elements6 = reservedIPElement.getElementsByTagName("AffinityGroup");
-            Element affinityGroupElement = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
+            Element affinityGroupElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
             if (affinityGroupElement != null)
             {
                 String affinityGroupInstance;
@@ -683,7 +711,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
             }
             
             NodeList elements7 = reservedIPElement.getElementsByTagName("State");
-            Element stateElement = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
+            Element stateElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
             if (stateElement != null)
             {
                 String stateInstance;
@@ -692,7 +720,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
             }
             
             NodeList elements8 = reservedIPElement.getElementsByTagName("InUse");
-            Element inUseElement = elements8.getLength() > 0 ? ((Element)elements8.item(0)) : null;
+            Element inUseElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
             if (inUseElement != null)
             {
                 boolean inUseInstance;
@@ -701,7 +729,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
             }
             
             NodeList elements9 = reservedIPElement.getElementsByTagName("ServiceName");
-            Element serviceNameElement = elements9.getLength() > 0 ? ((Element)elements9.item(0)) : null;
+            Element serviceNameElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
             if (serviceNameElement != null)
             {
                 String serviceNameInstance;
@@ -710,7 +738,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
             }
             
             NodeList elements10 = reservedIPElement.getElementsByTagName("DeploymentName");
-            Element deploymentNameElement = elements10.getLength() > 0 ? ((Element)elements10.item(0)) : null;
+            Element deploymentNameElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
             if (deploymentNameElement != null)
             {
                 String deploymentNameInstance;
@@ -792,7 +820,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -812,17 +840,17 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
         Document responseDoc = documentBuilder.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagName("ReservedIPs");
-        Element reservedIPsSequenceElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element reservedIPsSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (reservedIPsSequenceElement != null)
         {
             for (int i1 = 0; i1 < reservedIPsSequenceElement.getElementsByTagName("ReservedIP").getLength(); i1 = i1 + 1)
             {
-                org.w3c.dom.Element reservedIPsElement = ((org.w3c.dom.Element)reservedIPsSequenceElement.getElementsByTagName("ReservedIP").item(i1));
+                org.w3c.dom.Element reservedIPsElement = ((org.w3c.dom.Element) reservedIPsSequenceElement.getElementsByTagName("ReservedIP").item(i1));
                 NetworkReservedIPListResponse.ReservedIP reservedIPInstance = new NetworkReservedIPListResponse.ReservedIP();
                 result.getReservedIPs().add(reservedIPInstance);
                 
                 NodeList elements2 = reservedIPsElement.getElementsByTagName("Name");
-                Element nameElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+                Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                 if (nameElement != null)
                 {
                     String nameInstance;
@@ -831,7 +859,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
                 }
                 
                 NodeList elements3 = reservedIPsElement.getElementsByTagName("Address");
-                Element addressElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
+                Element addressElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                 if (addressElement != null)
                 {
                     InetAddress addressInstance;
@@ -840,7 +868,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
                 }
                 
                 NodeList elements4 = reservedIPsElement.getElementsByTagName("Id");
-                Element idElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
+                Element idElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                 if (idElement != null)
                 {
                     String idInstance;
@@ -849,7 +877,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
                 }
                 
                 NodeList elements5 = reservedIPsElement.getElementsByTagName("Label");
-                Element labelElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
+                Element labelElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                 if (labelElement != null)
                 {
                     String labelInstance;
@@ -858,7 +886,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
                 }
                 
                 NodeList elements6 = reservedIPsElement.getElementsByTagName("AffinityGroup");
-                Element affinityGroupElement = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
+                Element affinityGroupElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                 if (affinityGroupElement != null)
                 {
                     String affinityGroupInstance;
@@ -867,7 +895,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
                 }
                 
                 NodeList elements7 = reservedIPsElement.getElementsByTagName("State");
-                Element stateElement = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
+                Element stateElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                 if (stateElement != null)
                 {
                     String stateInstance;
@@ -876,7 +904,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
                 }
                 
                 NodeList elements8 = reservedIPsElement.getElementsByTagName("InUse");
-                Element inUseElement = elements8.getLength() > 0 ? ((Element)elements8.item(0)) : null;
+                Element inUseElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
                 if (inUseElement != null)
                 {
                     boolean inUseInstance;
@@ -885,7 +913,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
                 }
                 
                 NodeList elements9 = reservedIPsElement.getElementsByTagName("ServiceName");
-                Element serviceNameElement = elements9.getLength() > 0 ? ((Element)elements9.item(0)) : null;
+                Element serviceNameElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
                 if (serviceNameElement != null)
                 {
                     String serviceNameInstance;
@@ -894,7 +922,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
                 }
                 
                 NodeList elements10 = reservedIPsElement.getElementsByTagName("DeploymentName");
-                Element deploymentNameElement = elements10.getLength() > 0 ? ((Element)elements10.item(0)) : null;
+                Element deploymentNameElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
                 if (deploymentNameElement != null)
                 {
                     String deploymentNameInstance;

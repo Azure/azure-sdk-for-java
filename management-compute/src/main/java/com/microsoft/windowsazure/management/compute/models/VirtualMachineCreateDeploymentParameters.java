@@ -36,25 +36,37 @@ public class VirtualMachineCreateDeploymentParameters
     * Required. Specifies the environment in which to deploy the virtual
     * machine.  Possible values are: Staging, Production.
     */
-    public DeploymentSlot getDeploymentSlot() { return this.deploymentSlot; }
+    public DeploymentSlot getDeploymentSlot()
+    {
+        return this.deploymentSlot;
+    }
     
     /**
     * Required. Specifies the environment in which to deploy the virtual
     * machine.  Possible values are: Staging, Production.
     */
-    public void setDeploymentSlot(DeploymentSlot deploymentSlot) { this.deploymentSlot = deploymentSlot; }
+    public void setDeploymentSlot(DeploymentSlot deploymentSlot)
+    {
+        this.deploymentSlot = deploymentSlot;
+    }
     
     private DnsSettings dnsSettings;
     
     /**
     * Optional. Contains a list of DNS servers to associate with themachine.
     */
-    public DnsSettings getDnsSettings() { return this.dnsSettings; }
+    public DnsSettings getDnsSettings()
+    {
+        return this.dnsSettings;
+    }
     
     /**
     * Optional. Contains a list of DNS servers to associate with themachine.
     */
-    public void setDnsSettings(DnsSettings dnsSettings) { this.dnsSettings = dnsSettings; }
+    public void setDnsSettings(DnsSettings dnsSettings)
+    {
+        this.dnsSettings = dnsSettings;
+    }
     
     private String label;
     
@@ -64,7 +76,10 @@ public class VirtualMachineCreateDeploymentParameters
     * the subscription. The name can be used identify the hosted service for
     * tracking purposes.
     */
-    public String getLabel() { return this.label; }
+    public String getLabel()
+    {
+        return this.label;
+    }
     
     /**
     * Required. A name for the hosted service. The name can be up to 100
@@ -72,7 +87,10 @@ public class VirtualMachineCreateDeploymentParameters
     * the subscription. The name can be used identify the hosted service for
     * tracking purposes.
     */
-    public void setLabel(String label) { this.label = label; }
+    public void setLabel(String label)
+    {
+        this.label = label;
+    }
     
     private String name;
     
@@ -80,13 +98,19 @@ public class VirtualMachineCreateDeploymentParameters
     * Required. A name for the deployment. The deployment name must be unique
     * among other deployments for the hosted service.
     */
-    public String getName() { return this.name; }
+    public String getName()
+    {
+        return this.name;
+    }
     
     /**
     * Required. A name for the deployment. The deployment name must be unique
     * among other deployments for the hosted service.
     */
-    public void setName(String name) { this.name = name; }
+    public void setName(String name)
+    {
+        this.name = name;
+    }
     
     private String reservedIPName;
     
@@ -95,14 +119,20 @@ public class VirtualMachineCreateDeploymentParameters
     * to which the deployment will belong. Reserved IPs are created by calling
     * the Create Reserved IP operation.
     */
-    public String getReservedIPName() { return this.reservedIPName; }
+    public String getReservedIPName()
+    {
+        return this.reservedIPName;
+    }
     
     /**
     * Optional and Preview Only. Specifies the name of an existing reserved IP
     * to which the deployment will belong. Reserved IPs are created by calling
     * the Create Reserved IP operation.
     */
-    public void setReservedIPName(String reservedIPName) { this.reservedIPName = reservedIPName; }
+    public void setReservedIPName(String reservedIPName)
+    {
+        this.reservedIPName = reservedIPName;
+    }
     
     private ArrayList<Role> roles;
     
@@ -110,13 +140,19 @@ public class VirtualMachineCreateDeploymentParameters
     * Required. Contains the provisioning details for the new virtual machine
     * deployment.
     */
-    public ArrayList<Role> getRoles() { return this.roles; }
+    public ArrayList<Role> getRoles()
+    {
+        return this.roles;
+    }
     
     /**
     * Required. Contains the provisioning details for the new virtual machine
     * deployment.
     */
-    public void setRoles(ArrayList<Role> roles) { this.roles = roles; }
+    public void setRoles(ArrayList<Role> roles)
+    {
+        this.roles = roles;
+    }
     
     private String virtualNetworkName;
     
@@ -125,14 +161,20 @@ public class VirtualMachineCreateDeploymentParameters
     * deployment will belong.  Virtual networks are created by calling the Set
     * Network Configuration operation.
     */
-    public String getVirtualNetworkName() { return this.virtualNetworkName; }
+    public String getVirtualNetworkName()
+    {
+        return this.virtualNetworkName;
+    }
     
     /**
     * Optional. Specifies the name of an existing virtual network to which the
     * deployment will belong.  Virtual networks are created by calling the Set
     * Network Configuration operation.
     */
-    public void setVirtualNetworkName(String virtualNetworkName) { this.virtualNetworkName = virtualNetworkName; }
+    public void setVirtualNetworkName(String virtualNetworkName)
+    {
+        this.virtualNetworkName = virtualNetworkName;
+    }
     
     /**
     * Initializes a new instance of the

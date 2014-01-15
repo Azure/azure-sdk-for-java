@@ -35,30 +35,34 @@ public class ServiceBusQueueResponse extends OperationResponse
     /**
     * The name of the queue.
     */
-    public String getName() { return this.name; }
+    public String getName()
+    {
+        return this.name;
+    }
     
     /**
     * The name of the queue.
     */
-    public void setName(String name) { this.name = name; }
+    public void setName(String name)
+    {
+        this.name = name;
+    }
     
     private ServiceBusQueue queue;
     
     /**
     * The requested queue.
     */
-    public ServiceBusQueue getQueue() { return this.queue; }
+    public ServiceBusQueue getQueue()
+    {
+        return this.queue;
+    }
     
     /**
     * The requested queue.
     */
-    public void setQueue(ServiceBusQueue queue) { this.queue = queue; }
-    
-    /**
-    * Initializes a new instance of the ServiceBusQueueResponse class.
-    *
-    */
-    public ServiceBusQueueResponse()
+    public void setQueue(ServiceBusQueue queue)
     {
+        this.queue = queue;
     }
 }

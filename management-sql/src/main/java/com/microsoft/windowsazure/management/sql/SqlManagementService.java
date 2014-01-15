@@ -21,50 +21,60 @@ import com.microsoft.windowsazure.Configuration;
  * Access service management functionality.
  * 
  */
-public class SqlManagementService {
-
-    private SqlManagementService() {
+public final class SqlManagementService
+{
+    private SqlManagementService()
+    {
         // class is not instantiated
     }
 
     /**
-     * Creates an instance of the <code>ManagementClient</code> API.
-     * 
+     * Creates an instance of the <code>SqlManagementClient</code> API.
+     * @return An instance of the <code>SqlManagementClient</code> API.
      */
-    public static SqlManagementClient create() {
+    public static SqlManagementClient create()
+    {
         return Configuration.getInstance().create(SqlManagementClient.class);
     }
 
     /**
-     * Creates an instance of the <code>ManagementClient</code> API using the specified configuration.
-     * 
-     * @param config
-     *            A <code>Configuration</code> object that represents the configuration for the service management.
-     * 
+     * Creates an instance of the <code>SqlManagementClient</code> API using the
+     * specified configuration.
+     *
+     * @param config A <code>Configuration</code> object that represents the
+     * configuration for the service management.
+     * @return An instance of the <code>SqlManagementClient</code> API.
      */
-    public static SqlManagementClient create(Configuration config) {
+    public static SqlManagementClient create(final Configuration config)
+    {
         return config.create(SqlManagementClient.class);
     }
 
     /**
-     * Creates an instance of the <code>ManagementClient</code> API.
-     * 
-     * @param profile
-     *            A <code>String</code> object that representing the profile of the service management service.
-     * 
+     * Creates an instance of the <code>SqlManagementClient</code> API.
+     *
+     * @param profile A <code>String</code> object that representing the profile
+     * of the service management service.
+     * @return An instance of the <code>SqlManagementClient</code> API.
      */
-    public static SqlManagementClient create(String profile) {
-        return Configuration.getInstance().create(profile, SqlManagementClient.class);
+    public static SqlManagementClient create(final String profile)
+    {
+        return Configuration.getInstance().create(profile,
+                SqlManagementClient.class);
     }
 
     /**
-     * Creates an instance of the <code>ManagementClient</code> API using the specified configuration.
-     * 
-     * @param config
-     *            A <code>Configuration</code> object that represents the configuration for the service management.
-     * 
+     * Creates an instance of the <code>ManagementClient</code> API using the
+     * specified configuration.
+     *
+     * @param profile The profile.
+     * @param config A <code>Configuration</code> object that represents the
+     * configuration for the service management.
+     * @return An instance of the <code>SqlManagementClient</code> API.
      */
-    public static SqlManagementClient create(String profile, Configuration config) {
+    public static SqlManagementClient create(final String profile,
+            final Configuration config)
+    {
         return config.create(profile, SqlManagementClient.class);
     }
 }

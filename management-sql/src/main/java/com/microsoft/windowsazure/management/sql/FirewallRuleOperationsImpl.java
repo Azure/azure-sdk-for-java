@@ -52,6 +52,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
@@ -88,7 +89,10 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
     * Gets a reference to the
     * microsoft.windowsazure.management.sql.SqlManagementClientImpl.
     */
-    public SqlManagementClientImpl getClient() { return this.client; }
+    public SqlManagementClientImpl getClient()
+    {
+        return this.client;
+    }
     
     /**
     * Adds a new server-level firewall rule for a SQL Database server that
@@ -217,7 +221,7 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 201)
+        if (statusCode != HttpStatus.SC_CREATED)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -237,11 +241,11 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
         Document responseDoc = documentBuilder2.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagName("ServiceResource");
-        Element serviceResourceElement2 = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element serviceResourceElement2 = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (serviceResourceElement2 != null)
         {
             NodeList elements2 = serviceResourceElement2.getElementsByTagName("Name");
-            Element nameElement2 = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+            Element nameElement2 = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
             if (nameElement2 != null)
             {
                 String nameInstance;
@@ -250,7 +254,7 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
             }
             
             NodeList elements3 = serviceResourceElement2.getElementsByTagName("Type");
-            Element typeElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
+            Element typeElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
             if (typeElement != null)
             {
                 String typeInstance;
@@ -259,7 +263,7 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
             }
             
             NodeList elements4 = serviceResourceElement2.getElementsByTagName("State");
-            Element stateElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
+            Element stateElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
             if (stateElement != null)
             {
                 String stateInstance;
@@ -268,7 +272,7 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
             }
             
             NodeList elements5 = serviceResourceElement2.getElementsByTagName("StartIPAddress");
-            Element startIPAddressElement2 = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
+            Element startIPAddressElement2 = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
             if (startIPAddressElement2 != null)
             {
                 InetAddress startIPAddressInstance;
@@ -277,7 +281,7 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
             }
             
             NodeList elements6 = serviceResourceElement2.getElementsByTagName("EndIPAddress");
-            Element endIPAddressElement2 = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
+            Element endIPAddressElement2 = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
             if (endIPAddressElement2 != null)
             {
                 InetAddress endIPAddressInstance;
@@ -381,7 +385,7 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -480,7 +484,7 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -500,17 +504,17 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
         Document responseDoc = documentBuilder.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagName("ServiceResources");
-        Element serviceResourcesSequenceElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element serviceResourcesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (serviceResourcesSequenceElement != null)
         {
             for (int i1 = 0; i1 < serviceResourcesSequenceElement.getElementsByTagName("ServiceResource").getLength(); i1 = i1 + 1)
             {
-                org.w3c.dom.Element serviceResourcesElement = ((org.w3c.dom.Element)serviceResourcesSequenceElement.getElementsByTagName("ServiceResource").item(i1));
+                org.w3c.dom.Element serviceResourcesElement = ((org.w3c.dom.Element) serviceResourcesSequenceElement.getElementsByTagName("ServiceResource").item(i1));
                 FirewallRuleListResponse.FirewallRule serviceResourceInstance = new FirewallRuleListResponse.FirewallRule();
                 result.getFirewallRules().add(serviceResourceInstance);
                 
                 NodeList elements2 = serviceResourcesElement.getElementsByTagName("Name");
-                Element nameElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+                Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                 if (nameElement != null)
                 {
                     String nameInstance;
@@ -519,7 +523,7 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
                 }
                 
                 NodeList elements3 = serviceResourcesElement.getElementsByTagName("Type");
-                Element typeElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
+                Element typeElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                 if (typeElement != null)
                 {
                     String typeInstance;
@@ -528,7 +532,7 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
                 }
                 
                 NodeList elements4 = serviceResourcesElement.getElementsByTagName("StartIPAddress");
-                Element startIPAddressElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
+                Element startIPAddressElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                 if (startIPAddressElement != null)
                 {
                     InetAddress startIPAddressInstance;
@@ -537,7 +541,7 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
                 }
                 
                 NodeList elements5 = serviceResourcesElement.getElementsByTagName("EndIPAddress");
-                Element endIPAddressElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
+                Element endIPAddressElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                 if (endIPAddressElement != null)
                 {
                     InetAddress endIPAddressInstance;
@@ -694,7 +698,7 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -714,11 +718,11 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
         Document responseDoc = documentBuilder2.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagName("ServiceResource");
-        Element serviceResourceElement2 = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element serviceResourceElement2 = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (serviceResourceElement2 != null)
         {
             NodeList elements2 = serviceResourceElement2.getElementsByTagName("Name");
-            Element nameElement2 = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+            Element nameElement2 = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
             if (nameElement2 != null)
             {
                 String nameInstance;
@@ -727,7 +731,7 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
             }
             
             NodeList elements3 = serviceResourceElement2.getElementsByTagName("Type");
-            Element typeElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
+            Element typeElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
             if (typeElement != null)
             {
                 String typeInstance;
@@ -736,7 +740,7 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
             }
             
             NodeList elements4 = serviceResourceElement2.getElementsByTagName("State");
-            Element stateElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
+            Element stateElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
             if (stateElement != null)
             {
                 String stateInstance;
@@ -745,7 +749,7 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
             }
             
             NodeList elements5 = serviceResourceElement2.getElementsByTagName("StartIPAddress");
-            Element startIPAddressElement2 = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
+            Element startIPAddressElement2 = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
             if (startIPAddressElement2 != null)
             {
                 InetAddress startIPAddressInstance;
@@ -754,7 +758,7 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
             }
             
             NodeList elements6 = serviceResourceElement2.getElementsByTagName("EndIPAddress");
-            Element endIPAddressElement2 = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
+            Element endIPAddressElement2 = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
             if (endIPAddressElement2 != null)
             {
                 InetAddress endIPAddressInstance;

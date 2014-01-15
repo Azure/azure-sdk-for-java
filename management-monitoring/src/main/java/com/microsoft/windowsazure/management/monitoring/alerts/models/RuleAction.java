@@ -28,11 +28,4 @@ package com.microsoft.windowsazure.management.monitoring.alerts.models;
 */
 public abstract class RuleAction
 {
-    /**
-    * Initializes a new instance of the RuleAction class.
-    *
-    */
-    public RuleAction()
-    {
-    }
 }

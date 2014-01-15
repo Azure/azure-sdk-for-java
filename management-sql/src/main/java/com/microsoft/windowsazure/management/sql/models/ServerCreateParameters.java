@@ -33,42 +33,52 @@ public class ServerCreateParameters
     /**
     * Gets or sets the administrator password.
     */
-    public String getAdministratorPassword() { return this.administratorPassword; }
+    public String getAdministratorPassword()
+    {
+        return this.administratorPassword;
+    }
     
     /**
     * Gets or sets the administrator password.
     */
-    public void setAdministratorPassword(String administratorPassword) { this.administratorPassword = administratorPassword; }
+    public void setAdministratorPassword(String administratorPassword)
+    {
+        this.administratorPassword = administratorPassword;
+    }
     
     private String administratorUserName;
     
     /**
     * Gets or sets the administrator username.
     */
-    public String getAdministratorUserName() { return this.administratorUserName; }
+    public String getAdministratorUserName()
+    {
+        return this.administratorUserName;
+    }
     
     /**
     * Gets or sets the administrator username.
     */
-    public void setAdministratorUserName(String administratorUserName) { this.administratorUserName = administratorUserName; }
+    public void setAdministratorUserName(String administratorUserName)
+    {
+        this.administratorUserName = administratorUserName;
+    }
     
     private String location;
     
     /**
     * Gets or sets the region in which this server will be created.
     */
-    public String getLocation() { return this.location; }
+    public String getLocation()
+    {
+        return this.location;
+    }
     
     /**
     * Gets or sets the region in which this server will be created.
     */
-    public void setLocation(String location) { this.location = location; }
-    
-    /**
-    * Initializes a new instance of the ServerCreateParameters class.
-    *
-    */
-    public ServerCreateParameters()
+    public void setLocation(String location)
     {
+        this.location = location;
     }
 }

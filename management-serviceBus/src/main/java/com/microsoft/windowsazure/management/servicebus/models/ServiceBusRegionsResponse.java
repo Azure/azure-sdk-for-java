@@ -37,12 +37,18 @@ public class ServiceBusRegionsResponse extends OperationResponse implements Iter
     /**
     * The available regions.
     */
-    public ArrayList<ServiceBusLocation> getRegions() { return this.regions; }
+    public ArrayList<ServiceBusLocation> getRegions()
+    {
+        return this.regions;
+    }
     
     /**
     * The available regions.
     */
-    public void setRegions(ArrayList<ServiceBusLocation> regions) { this.regions = regions; }
+    public void setRegions(ArrayList<ServiceBusLocation> regions)
+    {
+        this.regions = regions;
+    }
     
     /**
     * Initializes a new instance of the ServiceBusRegionsResponse class.
@@ -50,6 +56,7 @@ public class ServiceBusRegionsResponse extends OperationResponse implements Iter
     */
     public ServiceBusRegionsResponse()
     {
+        super();
         this.regions = new ArrayList<ServiceBusLocation>();
     }
     

@@ -101,6 +101,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -133,7 +134,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * Gets a reference to the
     * microsoft.windowsazure.management.compute.ComputeManagementClientImpl.
     */
-    public ComputeManagementClientImpl getClient() { return this.client; }
+    public ComputeManagementClientImpl getClient()
+    {
+        return this.client;
+    }
     
     /**
     * The Change Deployment Configuration operation initiates a change to the
@@ -206,29 +210,38 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         }
         if (parameters.getExtensionConfiguration() != null)
         {
-            for (ExtensionConfiguration.Extension allRolesParameterItem : parameters.getExtensionConfiguration().getAllRoles())
+            if (parameters.getExtensionConfiguration().getAllRoles() != null)
             {
-                if (allRolesParameterItem.getId() == null)
+                for (ExtensionConfiguration.Extension allRolesParameterItem : parameters.getExtensionConfiguration().getAllRoles())
                 {
-                    throw new NullPointerException("parameters.ExtensionConfiguration.AllRoles.Id");
-                }
-            }
-            for (ExtensionConfiguration.NamedRole namedRolesParameterItem : parameters.getExtensionConfiguration().getNamedRoles())
-            {
-                if (namedRolesParameterItem.getExtensions() == null)
-                {
-                    throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.Extensions");
-                }
-                for (ExtensionConfiguration.Extension extensionsParameterItem : namedRolesParameterItem.getExtensions())
-                {
-                    if (extensionsParameterItem.getId() == null)
+                    if (allRolesParameterItem.getId() == null)
                     {
-                        throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.Extensions.Id");
+                        throw new NullPointerException("parameters.ExtensionConfiguration.AllRoles.Id");
                     }
                 }
-                if (namedRolesParameterItem.getRoleName() == null)
+            }
+            if (parameters.getExtensionConfiguration().getNamedRoles() != null)
+            {
+                for (ExtensionConfiguration.NamedRole namedRolesParameterItem : parameters.getExtensionConfiguration().getNamedRoles())
                 {
-                    throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.RoleName");
+                    if (namedRolesParameterItem.getExtensions() == null)
+                    {
+                        throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.Extensions");
+                    }
+                    if (namedRolesParameterItem.getExtensions() != null)
+                    {
+                        for (ExtensionConfiguration.Extension extensionsParameterItem : namedRolesParameterItem.getExtensions())
+                        {
+                            if (extensionsParameterItem.getId() == null)
+                            {
+                                throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.Extensions.Id");
+                            }
+                        }
+                    }
+                    if (namedRolesParameterItem.getRoleName() == null)
+                    {
+                        throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.RoleName");
+                    }
                 }
             }
         }
@@ -375,7 +388,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
+        if (statusCode != HttpStatus.SC_ACCEPTED)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -468,29 +481,38 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         }
         if (parameters.getExtensionConfiguration() != null)
         {
-            for (ExtensionConfiguration.Extension allRolesParameterItem : parameters.getExtensionConfiguration().getAllRoles())
+            if (parameters.getExtensionConfiguration().getAllRoles() != null)
             {
-                if (allRolesParameterItem.getId() == null)
+                for (ExtensionConfiguration.Extension allRolesParameterItem : parameters.getExtensionConfiguration().getAllRoles())
                 {
-                    throw new NullPointerException("parameters.ExtensionConfiguration.AllRoles.Id");
-                }
-            }
-            for (ExtensionConfiguration.NamedRole namedRolesParameterItem : parameters.getExtensionConfiguration().getNamedRoles())
-            {
-                if (namedRolesParameterItem.getExtensions() == null)
-                {
-                    throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.Extensions");
-                }
-                for (ExtensionConfiguration.Extension extensionsParameterItem : namedRolesParameterItem.getExtensions())
-                {
-                    if (extensionsParameterItem.getId() == null)
+                    if (allRolesParameterItem.getId() == null)
                     {
-                        throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.Extensions.Id");
+                        throw new NullPointerException("parameters.ExtensionConfiguration.AllRoles.Id");
                     }
                 }
-                if (namedRolesParameterItem.getRoleName() == null)
+            }
+            if (parameters.getExtensionConfiguration().getNamedRoles() != null)
+            {
+                for (ExtensionConfiguration.NamedRole namedRolesParameterItem : parameters.getExtensionConfiguration().getNamedRoles())
                 {
-                    throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.RoleName");
+                    if (namedRolesParameterItem.getExtensions() == null)
+                    {
+                        throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.Extensions");
+                    }
+                    if (namedRolesParameterItem.getExtensions() != null)
+                    {
+                        for (ExtensionConfiguration.Extension extensionsParameterItem : namedRolesParameterItem.getExtensions())
+                        {
+                            if (extensionsParameterItem.getId() == null)
+                            {
+                                throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.Extensions.Id");
+                            }
+                        }
+                    }
+                    if (namedRolesParameterItem.getRoleName() == null)
+                    {
+                        throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.RoleName");
+                    }
                 }
             }
         }
@@ -637,7 +659,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
+        if (statusCode != HttpStatus.SC_ACCEPTED)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -726,29 +748,38 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         }
         if (parameters.getExtensionConfiguration() != null)
         {
-            for (ExtensionConfiguration.Extension allRolesParameterItem : parameters.getExtensionConfiguration().getAllRoles())
+            if (parameters.getExtensionConfiguration().getAllRoles() != null)
             {
-                if (allRolesParameterItem.getId() == null)
+                for (ExtensionConfiguration.Extension allRolesParameterItem : parameters.getExtensionConfiguration().getAllRoles())
                 {
-                    throw new NullPointerException("parameters.ExtensionConfiguration.AllRoles.Id");
-                }
-            }
-            for (ExtensionConfiguration.NamedRole namedRolesParameterItem : parameters.getExtensionConfiguration().getNamedRoles())
-            {
-                if (namedRolesParameterItem.getExtensions() == null)
-                {
-                    throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.Extensions");
-                }
-                for (ExtensionConfiguration.Extension extensionsParameterItem : namedRolesParameterItem.getExtensions())
-                {
-                    if (extensionsParameterItem.getId() == null)
+                    if (allRolesParameterItem.getId() == null)
                     {
-                        throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.Extensions.Id");
+                        throw new NullPointerException("parameters.ExtensionConfiguration.AllRoles.Id");
                     }
                 }
-                if (namedRolesParameterItem.getRoleName() == null)
+            }
+            if (parameters.getExtensionConfiguration().getNamedRoles() != null)
+            {
+                for (ExtensionConfiguration.NamedRole namedRolesParameterItem : parameters.getExtensionConfiguration().getNamedRoles())
                 {
-                    throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.RoleName");
+                    if (namedRolesParameterItem.getExtensions() == null)
+                    {
+                        throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.Extensions");
+                    }
+                    if (namedRolesParameterItem.getExtensions() != null)
+                    {
+                        for (ExtensionConfiguration.Extension extensionsParameterItem : namedRolesParameterItem.getExtensions())
+                        {
+                            if (extensionsParameterItem.getId() == null)
+                            {
+                                throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.Extensions.Id");
+                            }
+                        }
+                    }
+                    if (namedRolesParameterItem.getRoleName() == null)
+                    {
+                        throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.RoleName");
+                    }
                 }
             }
         }
@@ -923,7 +954,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
+        if (statusCode != HttpStatus.SC_ACCEPTED)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -1023,7 +1054,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "?";
         if (deleteFromStorage == true)
         {
-            url = url + "&comp=" + URLEncoder.encode("media");
+            url = url + "&comp=" + URLEncoder.encode("media", "UTF-8");
         }
         
         // Create HTTP transport objects
@@ -1044,7 +1075,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
+        if (statusCode != HttpStatus.SC_ACCEPTED)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -1152,7 +1183,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
+        if (statusCode != HttpStatus.SC_ACCEPTED)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -1275,7 +1306,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
+        if (statusCode != HttpStatus.SC_ACCEPTED)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -1394,7 +1425,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
+        if (statusCode != HttpStatus.SC_ACCEPTED)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -1517,7 +1548,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
+        if (statusCode != HttpStatus.SC_ACCEPTED)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -1636,7 +1667,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
+        if (statusCode != HttpStatus.SC_ACCEPTED)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -1789,7 +1820,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
+        if (statusCode != HttpStatus.SC_ACCEPTED)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -1940,7 +1971,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
+        if (statusCode != HttpStatus.SC_ACCEPTED)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -2087,7 +2118,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
+        if (statusCode != HttpStatus.SC_ACCEPTED)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -2222,29 +2253,38 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         }
         if (parameters.getExtensionConfiguration() != null)
         {
-            for (ExtensionConfiguration.Extension allRolesParameterItem : parameters.getExtensionConfiguration().getAllRoles())
+            if (parameters.getExtensionConfiguration().getAllRoles() != null)
             {
-                if (allRolesParameterItem.getId() == null)
+                for (ExtensionConfiguration.Extension allRolesParameterItem : parameters.getExtensionConfiguration().getAllRoles())
                 {
-                    throw new NullPointerException("parameters.ExtensionConfiguration.AllRoles.Id");
-                }
-            }
-            for (ExtensionConfiguration.NamedRole namedRolesParameterItem : parameters.getExtensionConfiguration().getNamedRoles())
-            {
-                if (namedRolesParameterItem.getExtensions() == null)
-                {
-                    throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.Extensions");
-                }
-                for (ExtensionConfiguration.Extension extensionsParameterItem : namedRolesParameterItem.getExtensions())
-                {
-                    if (extensionsParameterItem.getId() == null)
+                    if (allRolesParameterItem.getId() == null)
                     {
-                        throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.Extensions.Id");
+                        throw new NullPointerException("parameters.ExtensionConfiguration.AllRoles.Id");
                     }
                 }
-                if (namedRolesParameterItem.getRoleName() == null)
+            }
+            if (parameters.getExtensionConfiguration().getNamedRoles() != null)
+            {
+                for (ExtensionConfiguration.NamedRole namedRolesParameterItem : parameters.getExtensionConfiguration().getNamedRoles())
                 {
-                    throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.RoleName");
+                    if (namedRolesParameterItem.getExtensions() == null)
+                    {
+                        throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.Extensions");
+                    }
+                    if (namedRolesParameterItem.getExtensions() != null)
+                    {
+                        for (ExtensionConfiguration.Extension extensionsParameterItem : namedRolesParameterItem.getExtensions())
+                        {
+                            if (extensionsParameterItem.getId() == null)
+                            {
+                                throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.Extensions.Id");
+                            }
+                        }
+                    }
+                    if (namedRolesParameterItem.getRoleName() == null)
+                    {
+                        throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.RoleName");
+                    }
                 }
             }
         }
@@ -2412,7 +2452,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
+        if (statusCode != HttpStatus.SC_ACCEPTED)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -2543,29 +2583,38 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         }
         if (parameters.getExtensionConfiguration() != null)
         {
-            for (ExtensionConfiguration.Extension allRolesParameterItem : parameters.getExtensionConfiguration().getAllRoles())
+            if (parameters.getExtensionConfiguration().getAllRoles() != null)
             {
-                if (allRolesParameterItem.getId() == null)
+                for (ExtensionConfiguration.Extension allRolesParameterItem : parameters.getExtensionConfiguration().getAllRoles())
                 {
-                    throw new NullPointerException("parameters.ExtensionConfiguration.AllRoles.Id");
-                }
-            }
-            for (ExtensionConfiguration.NamedRole namedRolesParameterItem : parameters.getExtensionConfiguration().getNamedRoles())
-            {
-                if (namedRolesParameterItem.getExtensions() == null)
-                {
-                    throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.Extensions");
-                }
-                for (ExtensionConfiguration.Extension extensionsParameterItem : namedRolesParameterItem.getExtensions())
-                {
-                    if (extensionsParameterItem.getId() == null)
+                    if (allRolesParameterItem.getId() == null)
                     {
-                        throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.Extensions.Id");
+                        throw new NullPointerException("parameters.ExtensionConfiguration.AllRoles.Id");
                     }
                 }
-                if (namedRolesParameterItem.getRoleName() == null)
+            }
+            if (parameters.getExtensionConfiguration().getNamedRoles() != null)
+            {
+                for (ExtensionConfiguration.NamedRole namedRolesParameterItem : parameters.getExtensionConfiguration().getNamedRoles())
                 {
-                    throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.RoleName");
+                    if (namedRolesParameterItem.getExtensions() == null)
+                    {
+                        throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.Extensions");
+                    }
+                    if (namedRolesParameterItem.getExtensions() != null)
+                    {
+                        for (ExtensionConfiguration.Extension extensionsParameterItem : namedRolesParameterItem.getExtensions())
+                        {
+                            if (extensionsParameterItem.getId() == null)
+                            {
+                                throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.Extensions.Id");
+                            }
+                        }
+                    }
+                    if (namedRolesParameterItem.getRoleName() == null)
+                    {
+                        throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.RoleName");
+                    }
                 }
             }
         }
@@ -2733,7 +2782,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
+        if (statusCode != HttpStatus.SC_ACCEPTED)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -2921,7 +2970,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
+        if (statusCode != HttpStatus.SC_ACCEPTED)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -3105,7 +3154,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
+        if (statusCode != HttpStatus.SC_ACCEPTED)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -3232,14 +3281,26 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;
@@ -3354,14 +3415,26 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;
@@ -3472,14 +3545,26 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;
@@ -3590,14 +3675,26 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;
@@ -3703,14 +3800,26 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;
@@ -3802,7 +3911,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -3822,11 +3931,11 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         Document responseDoc = documentBuilder.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagName("Deployment");
-        Element deploymentElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element deploymentElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (deploymentElement != null)
         {
             NodeList elements2 = deploymentElement.getElementsByTagName("Name");
-            Element nameElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+            Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
             if (nameElement != null)
             {
                 String nameInstance;
@@ -3835,7 +3944,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             }
             
             NodeList elements3 = deploymentElement.getElementsByTagName("DeploymentSlot");
-            Element deploymentSlotElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
+            Element deploymentSlotElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
             if (deploymentSlotElement != null)
             {
                 DeploymentSlot deploymentSlotInstance;
@@ -3844,7 +3953,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             }
             
             NodeList elements4 = deploymentElement.getElementsByTagName("PrivateID");
-            Element privateIDElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
+            Element privateIDElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
             if (privateIDElement != null)
             {
                 String privateIDInstance;
@@ -3853,7 +3962,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             }
             
             NodeList elements5 = deploymentElement.getElementsByTagName("Status");
-            Element statusElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
+            Element statusElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
             if (statusElement != null)
             {
                 DeploymentStatus statusInstance;
@@ -3862,7 +3971,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             }
             
             NodeList elements6 = deploymentElement.getElementsByTagName("Label");
-            Element labelElement = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
+            Element labelElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
             if (labelElement != null)
             {
                 String labelInstance;
@@ -3871,7 +3980,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             }
             
             NodeList elements7 = deploymentElement.getElementsByTagName("Url");
-            Element urlElement = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
+            Element urlElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
             if (urlElement != null)
             {
                 URI urlInstance;
@@ -3880,7 +3989,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             }
             
             NodeList elements8 = deploymentElement.getElementsByTagName("Configuration");
-            Element configurationElement = elements8.getLength() > 0 ? ((Element)elements8.item(0)) : null;
+            Element configurationElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
             if (configurationElement != null)
             {
                 String configurationInstance;
@@ -3889,17 +3998,17 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             }
             
             NodeList elements9 = deploymentElement.getElementsByTagName("RoleInstanceList");
-            Element roleInstanceListSequenceElement = elements9.getLength() > 0 ? ((Element)elements9.item(0)) : null;
+            Element roleInstanceListSequenceElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
             if (roleInstanceListSequenceElement != null)
             {
                 for (int i1 = 0; i1 < roleInstanceListSequenceElement.getElementsByTagName("RoleInstance").getLength(); i1 = i1 + 1)
                 {
-                    org.w3c.dom.Element roleInstanceListElement = ((org.w3c.dom.Element)roleInstanceListSequenceElement.getElementsByTagName("RoleInstance").item(i1));
+                    org.w3c.dom.Element roleInstanceListElement = ((org.w3c.dom.Element) roleInstanceListSequenceElement.getElementsByTagName("RoleInstance").item(i1));
                     RoleInstance roleInstanceInstance = new RoleInstance();
                     result.getRoleInstances().add(roleInstanceInstance);
                     
                     NodeList elements10 = roleInstanceListElement.getElementsByTagName("RoleName");
-                    Element roleNameElement = elements10.getLength() > 0 ? ((Element)elements10.item(0)) : null;
+                    Element roleNameElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
                     if (roleNameElement != null)
                     {
                         String roleNameInstance;
@@ -3908,7 +4017,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     }
                     
                     NodeList elements11 = roleInstanceListElement.getElementsByTagName("InstanceName");
-                    Element instanceNameElement = elements11.getLength() > 0 ? ((Element)elements11.item(0)) : null;
+                    Element instanceNameElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
                     if (instanceNameElement != null)
                     {
                         String instanceNameInstance;
@@ -3917,7 +4026,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     }
                     
                     NodeList elements12 = roleInstanceListElement.getElementsByTagName("InstanceStatus");
-                    Element instanceStatusElement = elements12.getLength() > 0 ? ((Element)elements12.item(0)) : null;
+                    Element instanceStatusElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
                     if (instanceStatusElement != null)
                     {
                         String instanceStatusInstance;
@@ -3926,7 +4035,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     }
                     
                     NodeList elements13 = roleInstanceListElement.getElementsByTagName("InstanceUpgradeDomain");
-                    Element instanceUpgradeDomainElement = elements13.getLength() > 0 ? ((Element)elements13.item(0)) : null;
+                    Element instanceUpgradeDomainElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
                     if (instanceUpgradeDomainElement != null && (instanceUpgradeDomainElement.getTextContent() != null && instanceUpgradeDomainElement.getTextContent().isEmpty() != true) == false)
                     {
                         int instanceUpgradeDomainInstance;
@@ -3935,7 +4044,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     }
                     
                     NodeList elements14 = roleInstanceListElement.getElementsByTagName("InstanceFaultDomain");
-                    Element instanceFaultDomainElement = elements14.getLength() > 0 ? ((Element)elements14.item(0)) : null;
+                    Element instanceFaultDomainElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
                     if (instanceFaultDomainElement != null && (instanceFaultDomainElement.getTextContent() != null && instanceFaultDomainElement.getTextContent().isEmpty() != true) == false)
                     {
                         int instanceFaultDomainInstance;
@@ -3944,7 +4053,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     }
                     
                     NodeList elements15 = roleInstanceListElement.getElementsByTagName("InstanceSize");
-                    Element instanceSizeElement = elements15.getLength() > 0 ? ((Element)elements15.item(0)) : null;
+                    Element instanceSizeElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
                     if (instanceSizeElement != null && (instanceSizeElement.getTextContent() != null && instanceSizeElement.getTextContent().isEmpty() != true) == false)
                     {
                         VirtualMachineRoleSize instanceSizeInstance;
@@ -3953,7 +4062,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     }
                     
                     NodeList elements16 = roleInstanceListElement.getElementsByTagName("InstanceStateDetails");
-                    Element instanceStateDetailsElement = elements16.getLength() > 0 ? ((Element)elements16.item(0)) : null;
+                    Element instanceStateDetailsElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
                     if (instanceStateDetailsElement != null)
                     {
                         String instanceStateDetailsInstance;
@@ -3962,7 +4071,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     }
                     
                     NodeList elements17 = roleInstanceListElement.getElementsByTagName("InstanceErrorCode");
-                    Element instanceErrorCodeElement = elements17.getLength() > 0 ? ((Element)elements17.item(0)) : null;
+                    Element instanceErrorCodeElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
                     if (instanceErrorCodeElement != null)
                     {
                         String instanceErrorCodeInstance;
@@ -3971,7 +4080,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     }
                     
                     NodeList elements18 = roleInstanceListElement.getElementsByTagName("IpAddress");
-                    Element ipAddressElement = elements18.getLength() > 0 ? ((Element)elements18.item(0)) : null;
+                    Element ipAddressElement = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
                     if (ipAddressElement != null)
                     {
                         InetAddress ipAddressInstance;
@@ -3980,17 +4089,17 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     }
                     
                     NodeList elements19 = roleInstanceListElement.getElementsByTagName("InstanceEndpoints");
-                    Element instanceEndpointsSequenceElement = elements19.getLength() > 0 ? ((Element)elements19.item(0)) : null;
+                    Element instanceEndpointsSequenceElement = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
                     if (instanceEndpointsSequenceElement != null)
                     {
                         for (int i2 = 0; i2 < instanceEndpointsSequenceElement.getElementsByTagName("InstanceEndpoint").getLength(); i2 = i2 + 1)
                         {
-                            org.w3c.dom.Element instanceEndpointsElement = ((org.w3c.dom.Element)instanceEndpointsSequenceElement.getElementsByTagName("InstanceEndpoint").item(i2));
+                            org.w3c.dom.Element instanceEndpointsElement = ((org.w3c.dom.Element) instanceEndpointsSequenceElement.getElementsByTagName("InstanceEndpoint").item(i2));
                             InstanceEndpoint instanceEndpointInstance = new InstanceEndpoint();
                             roleInstanceInstance.getInstanceEndpoints().add(instanceEndpointInstance);
                             
                             NodeList elements20 = instanceEndpointsElement.getElementsByTagName("LocalPort");
-                            Element localPortElement = elements20.getLength() > 0 ? ((Element)elements20.item(0)) : null;
+                            Element localPortElement = elements20.getLength() > 0 ? ((Element) elements20.item(0)) : null;
                             if (localPortElement != null && (localPortElement.getTextContent() != null && localPortElement.getTextContent().isEmpty() != true) == false)
                             {
                                 int localPortInstance;
@@ -3999,7 +4108,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                             
                             NodeList elements21 = instanceEndpointsElement.getElementsByTagName("Name");
-                            Element nameElement2 = elements21.getLength() > 0 ? ((Element)elements21.item(0)) : null;
+                            Element nameElement2 = elements21.getLength() > 0 ? ((Element) elements21.item(0)) : null;
                             if (nameElement2 != null)
                             {
                                 String nameInstance2;
@@ -4008,7 +4117,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                             
                             NodeList elements22 = instanceEndpointsElement.getElementsByTagName("PublicPort");
-                            Element publicPortElement = elements22.getLength() > 0 ? ((Element)elements22.item(0)) : null;
+                            Element publicPortElement = elements22.getLength() > 0 ? ((Element) elements22.item(0)) : null;
                             if (publicPortElement != null)
                             {
                                 int publicPortInstance;
@@ -4017,7 +4126,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                             
                             NodeList elements23 = instanceEndpointsElement.getElementsByTagName("Protocol");
-                            Element protocolElement = elements23.getLength() > 0 ? ((Element)elements23.item(0)) : null;
+                            Element protocolElement = elements23.getLength() > 0 ? ((Element) elements23.item(0)) : null;
                             if (protocolElement != null)
                             {
                                 String protocolInstance;
@@ -4026,7 +4135,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                             
                             NodeList elements24 = instanceEndpointsElement.getElementsByTagName("Vip");
-                            Element vipElement = elements24.getLength() > 0 ? ((Element)elements24.item(0)) : null;
+                            Element vipElement = elements24.getLength() > 0 ? ((Element) elements24.item(0)) : null;
                             if (vipElement != null)
                             {
                                 InetAddress vipInstance;
@@ -4037,7 +4146,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     }
                     
                     NodeList elements25 = roleInstanceListElement.getElementsByTagName("PowerState");
-                    Element powerStateElement = elements25.getLength() > 0 ? ((Element)elements25.item(0)) : null;
+                    Element powerStateElement = elements25.getLength() > 0 ? ((Element) elements25.item(0)) : null;
                     if (powerStateElement != null)
                     {
                         RoleInstancePowerState powerStateInstance;
@@ -4046,7 +4155,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     }
                     
                     NodeList elements26 = roleInstanceListElement.getElementsByTagName("HostName");
-                    Element hostNameElement = elements26.getLength() > 0 ? ((Element)elements26.item(0)) : null;
+                    Element hostNameElement = elements26.getLength() > 0 ? ((Element) elements26.item(0)) : null;
                     if (hostNameElement != null)
                     {
                         String hostNameInstance;
@@ -4055,7 +4164,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     }
                     
                     NodeList elements27 = roleInstanceListElement.getElementsByTagName("RemoteAccessCertificateThumbprint");
-                    Element remoteAccessCertificateThumbprintElement = elements27.getLength() > 0 ? ((Element)elements27.item(0)) : null;
+                    Element remoteAccessCertificateThumbprintElement = elements27.getLength() > 0 ? ((Element) elements27.item(0)) : null;
                     if (remoteAccessCertificateThumbprintElement != null)
                     {
                         String remoteAccessCertificateThumbprintInstance;
@@ -4066,14 +4175,14 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             }
             
             NodeList elements28 = deploymentElement.getElementsByTagName("UpgradeStatus");
-            Element upgradeStatusElement = elements28.getLength() > 0 ? ((Element)elements28.item(0)) : null;
+            Element upgradeStatusElement = elements28.getLength() > 0 ? ((Element) elements28.item(0)) : null;
             if (upgradeStatusElement != null)
             {
                 UpgradeStatus upgradeStatusInstance = new UpgradeStatus();
                 result.setUpgradeStatus(upgradeStatusInstance);
                 
                 NodeList elements29 = upgradeStatusElement.getElementsByTagName("UpgradeType");
-                Element upgradeTypeElement = elements29.getLength() > 0 ? ((Element)elements29.item(0)) : null;
+                Element upgradeTypeElement = elements29.getLength() > 0 ? ((Element) elements29.item(0)) : null;
                 if (upgradeTypeElement != null)
                 {
                     DeploymentUpgradeType upgradeTypeInstance;
@@ -4082,7 +4191,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 }
                 
                 NodeList elements30 = upgradeStatusElement.getElementsByTagName("CurrentUpgradeDomainState");
-                Element currentUpgradeDomainStateElement = elements30.getLength() > 0 ? ((Element)elements30.item(0)) : null;
+                Element currentUpgradeDomainStateElement = elements30.getLength() > 0 ? ((Element) elements30.item(0)) : null;
                 if (currentUpgradeDomainStateElement != null)
                 {
                     UpgradeDomainState currentUpgradeDomainStateInstance;
@@ -4091,7 +4200,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 }
                 
                 NodeList elements31 = upgradeStatusElement.getElementsByTagName("CurrentUpgradeDomain");
-                Element currentUpgradeDomainElement = elements31.getLength() > 0 ? ((Element)elements31.item(0)) : null;
+                Element currentUpgradeDomainElement = elements31.getLength() > 0 ? ((Element) elements31.item(0)) : null;
                 if (currentUpgradeDomainElement != null)
                 {
                     int currentUpgradeDomainInstance;
@@ -4101,7 +4210,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             }
             
             NodeList elements32 = deploymentElement.getElementsByTagName("UpgradeDomainCount");
-            Element upgradeDomainCountElement = elements32.getLength() > 0 ? ((Element)elements32.item(0)) : null;
+            Element upgradeDomainCountElement = elements32.getLength() > 0 ? ((Element) elements32.item(0)) : null;
             if (upgradeDomainCountElement != null)
             {
                 int upgradeDomainCountInstance;
@@ -4110,17 +4219,17 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             }
             
             NodeList elements33 = deploymentElement.getElementsByTagName("RoleList");
-            Element roleListSequenceElement = elements33.getLength() > 0 ? ((Element)elements33.item(0)) : null;
+            Element roleListSequenceElement = elements33.getLength() > 0 ? ((Element) elements33.item(0)) : null;
             if (roleListSequenceElement != null)
             {
                 for (int i3 = 0; i3 < roleListSequenceElement.getElementsByTagName("Role").getLength(); i3 = i3 + 1)
                 {
-                    org.w3c.dom.Element roleListElement = ((org.w3c.dom.Element)roleListSequenceElement.getElementsByTagName("Role").item(i3));
+                    org.w3c.dom.Element roleListElement = ((org.w3c.dom.Element) roleListSequenceElement.getElementsByTagName("Role").item(i3));
                     Role roleInstance = new Role();
                     result.getRoles().add(roleInstance);
                     
                     NodeList elements34 = roleListElement.getElementsByTagName("RoleName");
-                    Element roleNameElement2 = elements34.getLength() > 0 ? ((Element)elements34.item(0)) : null;
+                    Element roleNameElement2 = elements34.getLength() > 0 ? ((Element) elements34.item(0)) : null;
                     if (roleNameElement2 != null)
                     {
                         String roleNameInstance2;
@@ -4129,7 +4238,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     }
                     
                     NodeList elements35 = roleListElement.getElementsByTagName("OsVersion");
-                    Element osVersionElement = elements35.getLength() > 0 ? ((Element)elements35.item(0)) : null;
+                    Element osVersionElement = elements35.getLength() > 0 ? ((Element) elements35.item(0)) : null;
                     if (osVersionElement != null)
                     {
                         String osVersionInstance;
@@ -4138,7 +4247,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     }
                     
                     NodeList elements36 = roleListElement.getElementsByTagName("RoleType");
-                    Element roleTypeElement = elements36.getLength() > 0 ? ((Element)elements36.item(0)) : null;
+                    Element roleTypeElement = elements36.getLength() > 0 ? ((Element) elements36.item(0)) : null;
                     if (roleTypeElement != null)
                     {
                         String roleTypeInstance;
@@ -4147,17 +4256,17 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     }
                     
                     NodeList elements37 = roleListElement.getElementsByTagName("ConfigurationSets");
-                    Element configurationSetsSequenceElement = elements37.getLength() > 0 ? ((Element)elements37.item(0)) : null;
+                    Element configurationSetsSequenceElement = elements37.getLength() > 0 ? ((Element) elements37.item(0)) : null;
                     if (configurationSetsSequenceElement != null)
                     {
                         for (int i4 = 0; i4 < configurationSetsSequenceElement.getElementsByTagName("ConfigurationSet").getLength(); i4 = i4 + 1)
                         {
-                            org.w3c.dom.Element configurationSetsElement = ((org.w3c.dom.Element)configurationSetsSequenceElement.getElementsByTagName("ConfigurationSet").item(i4));
+                            org.w3c.dom.Element configurationSetsElement = ((org.w3c.dom.Element) configurationSetsSequenceElement.getElementsByTagName("ConfigurationSet").item(i4));
                             ConfigurationSet configurationSetInstance = new ConfigurationSet();
                             roleInstance.getConfigurationSets().add(configurationSetInstance);
                             
                             NodeList elements38 = configurationSetsElement.getElementsByTagName("ConfigurationSetType");
-                            Element configurationSetTypeElement = elements38.getLength() > 0 ? ((Element)elements38.item(0)) : null;
+                            Element configurationSetTypeElement = elements38.getLength() > 0 ? ((Element) elements38.item(0)) : null;
                             if (configurationSetTypeElement != null)
                             {
                                 String configurationSetTypeInstance;
@@ -4166,17 +4275,17 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                             
                             NodeList elements39 = configurationSetsElement.getElementsByTagName("InputEndpoints");
-                            Element inputEndpointsSequenceElement = elements39.getLength() > 0 ? ((Element)elements39.item(0)) : null;
+                            Element inputEndpointsSequenceElement = elements39.getLength() > 0 ? ((Element) elements39.item(0)) : null;
                             if (inputEndpointsSequenceElement != null)
                             {
                                 for (int i5 = 0; i5 < inputEndpointsSequenceElement.getElementsByTagName("InputEndpoint").getLength(); i5 = i5 + 1)
                                 {
-                                    org.w3c.dom.Element inputEndpointsElement = ((org.w3c.dom.Element)inputEndpointsSequenceElement.getElementsByTagName("InputEndpoint").item(i5));
+                                    org.w3c.dom.Element inputEndpointsElement = ((org.w3c.dom.Element) inputEndpointsSequenceElement.getElementsByTagName("InputEndpoint").item(i5));
                                     InputEndpoint inputEndpointInstance = new InputEndpoint();
                                     configurationSetInstance.getInputEndpoints().add(inputEndpointInstance);
                                     
                                     NodeList elements40 = inputEndpointsElement.getElementsByTagName("LoadBalancedEndpointSetName");
-                                    Element loadBalancedEndpointSetNameElement = elements40.getLength() > 0 ? ((Element)elements40.item(0)) : null;
+                                    Element loadBalancedEndpointSetNameElement = elements40.getLength() > 0 ? ((Element) elements40.item(0)) : null;
                                     if (loadBalancedEndpointSetNameElement != null)
                                     {
                                         String loadBalancedEndpointSetNameInstance;
@@ -4185,7 +4294,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     }
                                     
                                     NodeList elements41 = inputEndpointsElement.getElementsByTagName("LocalPort");
-                                    Element localPortElement2 = elements41.getLength() > 0 ? ((Element)elements41.item(0)) : null;
+                                    Element localPortElement2 = elements41.getLength() > 0 ? ((Element) elements41.item(0)) : null;
                                     if (localPortElement2 != null && (localPortElement2.getTextContent() != null && localPortElement2.getTextContent().isEmpty() != true) == false)
                                     {
                                         int localPortInstance2;
@@ -4194,7 +4303,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     }
                                     
                                     NodeList elements42 = inputEndpointsElement.getElementsByTagName("Name");
-                                    Element nameElement3 = elements42.getLength() > 0 ? ((Element)elements42.item(0)) : null;
+                                    Element nameElement3 = elements42.getLength() > 0 ? ((Element) elements42.item(0)) : null;
                                     if (nameElement3 != null)
                                     {
                                         String nameInstance3;
@@ -4203,7 +4312,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     }
                                     
                                     NodeList elements43 = inputEndpointsElement.getElementsByTagName("Port");
-                                    Element portElement = elements43.getLength() > 0 ? ((Element)elements43.item(0)) : null;
+                                    Element portElement = elements43.getLength() > 0 ? ((Element) elements43.item(0)) : null;
                                     if (portElement != null && (portElement.getTextContent() != null && portElement.getTextContent().isEmpty() != true) == false)
                                     {
                                         int portInstance;
@@ -4212,14 +4321,14 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     }
                                     
                                     NodeList elements44 = inputEndpointsElement.getElementsByTagName("LoadBalancerProbe");
-                                    Element loadBalancerProbeElement = elements44.getLength() > 0 ? ((Element)elements44.item(0)) : null;
+                                    Element loadBalancerProbeElement = elements44.getLength() > 0 ? ((Element) elements44.item(0)) : null;
                                     if (loadBalancerProbeElement != null)
                                     {
                                         LoadBalancerProbe loadBalancerProbeInstance = new LoadBalancerProbe();
                                         inputEndpointInstance.setLoadBalancerProbe(loadBalancerProbeInstance);
                                         
                                         NodeList elements45 = loadBalancerProbeElement.getElementsByTagName("Path");
-                                        Element pathElement = elements45.getLength() > 0 ? ((Element)elements45.item(0)) : null;
+                                        Element pathElement = elements45.getLength() > 0 ? ((Element) elements45.item(0)) : null;
                                         if (pathElement != null)
                                         {
                                             String pathInstance;
@@ -4228,7 +4337,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                         }
                                         
                                         NodeList elements46 = loadBalancerProbeElement.getElementsByTagName("Port");
-                                        Element portElement2 = elements46.getLength() > 0 ? ((Element)elements46.item(0)) : null;
+                                        Element portElement2 = elements46.getLength() > 0 ? ((Element) elements46.item(0)) : null;
                                         if (portElement2 != null)
                                         {
                                             int portInstance2;
@@ -4237,7 +4346,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                         }
                                         
                                         NodeList elements47 = loadBalancerProbeElement.getElementsByTagName("Protocol");
-                                        Element protocolElement2 = elements47.getLength() > 0 ? ((Element)elements47.item(0)) : null;
+                                        Element protocolElement2 = elements47.getLength() > 0 ? ((Element) elements47.item(0)) : null;
                                         if (protocolElement2 != null)
                                         {
                                             LoadBalancerProbeTransportProtocol protocolInstance2;
@@ -4246,7 +4355,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                         }
                                         
                                         NodeList elements48 = loadBalancerProbeElement.getElementsByTagName("IntervalInSeconds");
-                                        Element intervalInSecondsElement = elements48.getLength() > 0 ? ((Element)elements48.item(0)) : null;
+                                        Element intervalInSecondsElement = elements48.getLength() > 0 ? ((Element) elements48.item(0)) : null;
                                         if (intervalInSecondsElement != null && (intervalInSecondsElement.getTextContent() != null && intervalInSecondsElement.getTextContent().isEmpty() != true) == false)
                                         {
                                             int intervalInSecondsInstance;
@@ -4255,7 +4364,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                         }
                                         
                                         NodeList elements49 = loadBalancerProbeElement.getElementsByTagName("TimeoutInSeconds");
-                                        Element timeoutInSecondsElement = elements49.getLength() > 0 ? ((Element)elements49.item(0)) : null;
+                                        Element timeoutInSecondsElement = elements49.getLength() > 0 ? ((Element) elements49.item(0)) : null;
                                         if (timeoutInSecondsElement != null && (timeoutInSecondsElement.getTextContent() != null && timeoutInSecondsElement.getTextContent().isEmpty() != true) == false)
                                         {
                                             int timeoutInSecondsInstance;
@@ -4265,7 +4374,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     }
                                     
                                     NodeList elements50 = inputEndpointsElement.getElementsByTagName("Protocol");
-                                    Element protocolElement3 = elements50.getLength() > 0 ? ((Element)elements50.item(0)) : null;
+                                    Element protocolElement3 = elements50.getLength() > 0 ? ((Element) elements50.item(0)) : null;
                                     if (protocolElement3 != null)
                                     {
                                         String protocolInstance3;
@@ -4274,7 +4383,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     }
                                     
                                     NodeList elements51 = inputEndpointsElement.getElementsByTagName("Vip");
-                                    Element vipElement2 = elements51.getLength() > 0 ? ((Element)elements51.item(0)) : null;
+                                    Element vipElement2 = elements51.getLength() > 0 ? ((Element) elements51.item(0)) : null;
                                     if (vipElement2 != null)
                                     {
                                         InetAddress vipInstance2;
@@ -4283,7 +4392,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     }
                                     
                                     NodeList elements52 = inputEndpointsElement.getElementsByTagName("EnableDirectServerReturn");
-                                    Element enableDirectServerReturnElement = elements52.getLength() > 0 ? ((Element)elements52.item(0)) : null;
+                                    Element enableDirectServerReturnElement = elements52.getLength() > 0 ? ((Element) elements52.item(0)) : null;
                                     if (enableDirectServerReturnElement != null && (enableDirectServerReturnElement.getTextContent() != null && enableDirectServerReturnElement.getTextContent().isEmpty() != true) == false)
                                     {
                                         boolean enableDirectServerReturnInstance;
@@ -4292,24 +4401,24 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     }
                                     
                                     NodeList elements53 = inputEndpointsElement.getElementsByTagName("EndpointAcl");
-                                    Element endpointAclElement = elements53.getLength() > 0 ? ((Element)elements53.item(0)) : null;
+                                    Element endpointAclElement = elements53.getLength() > 0 ? ((Element) elements53.item(0)) : null;
                                     if (endpointAclElement != null)
                                     {
                                         EndpointAcl endpointAclInstance = new EndpointAcl();
                                         inputEndpointInstance.setEndpointAcl(endpointAclInstance);
                                         
                                         NodeList elements54 = endpointAclElement.getElementsByTagName("Rules");
-                                        Element rulesSequenceElement = elements54.getLength() > 0 ? ((Element)elements54.item(0)) : null;
+                                        Element rulesSequenceElement = elements54.getLength() > 0 ? ((Element) elements54.item(0)) : null;
                                         if (rulesSequenceElement != null)
                                         {
                                             for (int i6 = 0; i6 < rulesSequenceElement.getElementsByTagName("Rule").getLength(); i6 = i6 + 1)
                                             {
-                                                org.w3c.dom.Element rulesElement = ((org.w3c.dom.Element)rulesSequenceElement.getElementsByTagName("Rule").item(i6));
+                                                org.w3c.dom.Element rulesElement = ((org.w3c.dom.Element) rulesSequenceElement.getElementsByTagName("Rule").item(i6));
                                                 AccessControlListRule ruleInstance = new AccessControlListRule();
                                                 endpointAclInstance.getRules().add(ruleInstance);
                                                 
                                                 NodeList elements55 = rulesElement.getElementsByTagName("Order");
-                                                Element orderElement = elements55.getLength() > 0 ? ((Element)elements55.item(0)) : null;
+                                                Element orderElement = elements55.getLength() > 0 ? ((Element) elements55.item(0)) : null;
                                                 if (orderElement != null && (orderElement.getTextContent() != null && orderElement.getTextContent().isEmpty() != true) == false)
                                                 {
                                                     int orderInstance;
@@ -4318,7 +4427,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                                 }
                                                 
                                                 NodeList elements56 = rulesElement.getElementsByTagName("Action");
-                                                Element actionElement = elements56.getLength() > 0 ? ((Element)elements56.item(0)) : null;
+                                                Element actionElement = elements56.getLength() > 0 ? ((Element) elements56.item(0)) : null;
                                                 if (actionElement != null)
                                                 {
                                                     String actionInstance;
@@ -4327,7 +4436,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                                 }
                                                 
                                                 NodeList elements57 = rulesElement.getElementsByTagName("RemoteSubnet");
-                                                Element remoteSubnetElement = elements57.getLength() > 0 ? ((Element)elements57.item(0)) : null;
+                                                Element remoteSubnetElement = elements57.getLength() > 0 ? ((Element) elements57.item(0)) : null;
                                                 if (remoteSubnetElement != null)
                                                 {
                                                     String remoteSubnetInstance;
@@ -4336,7 +4445,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                                 }
                                                 
                                                 NodeList elements58 = rulesElement.getElementsByTagName("Description");
-                                                Element descriptionElement = elements58.getLength() > 0 ? ((Element)elements58.item(0)) : null;
+                                                Element descriptionElement = elements58.getLength() > 0 ? ((Element) elements58.item(0)) : null;
                                                 if (descriptionElement != null)
                                                 {
                                                     String descriptionInstance;
@@ -4350,18 +4459,18 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                             
                             NodeList elements59 = configurationSetsElement.getElementsByTagName("SubnetNames");
-                            Element subnetNamesSequenceElement = elements59.getLength() > 0 ? ((Element)elements59.item(0)) : null;
+                            Element subnetNamesSequenceElement = elements59.getLength() > 0 ? ((Element) elements59.item(0)) : null;
                             if (subnetNamesSequenceElement != null)
                             {
                                 for (int i7 = 0; i7 < subnetNamesSequenceElement.getElementsByTagName("SubnetName").getLength(); i7 = i7 + 1)
                                 {
-                                    org.w3c.dom.Element subnetNamesElement = ((org.w3c.dom.Element)subnetNamesSequenceElement.getElementsByTagName("SubnetName").item(i7));
+                                    org.w3c.dom.Element subnetNamesElement = ((org.w3c.dom.Element) subnetNamesSequenceElement.getElementsByTagName("SubnetName").item(i7));
                                     configurationSetInstance.getSubnetNames().add(subnetNamesElement.getTextContent());
                                 }
                             }
                             
                             NodeList elements60 = configurationSetsElement.getElementsByTagName("ComputerName");
-                            Element computerNameElement = elements60.getLength() > 0 ? ((Element)elements60.item(0)) : null;
+                            Element computerNameElement = elements60.getLength() > 0 ? ((Element) elements60.item(0)) : null;
                             if (computerNameElement != null)
                             {
                                 String computerNameInstance;
@@ -4370,7 +4479,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                             
                             NodeList elements61 = configurationSetsElement.getElementsByTagName("AdminPassword");
-                            Element adminPasswordElement = elements61.getLength() > 0 ? ((Element)elements61.item(0)) : null;
+                            Element adminPasswordElement = elements61.getLength() > 0 ? ((Element) elements61.item(0)) : null;
                             if (adminPasswordElement != null)
                             {
                                 String adminPasswordInstance;
@@ -4379,7 +4488,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                             
                             NodeList elements62 = configurationSetsElement.getElementsByTagName("ResetPasswordOnFirstLogon");
-                            Element resetPasswordOnFirstLogonElement = elements62.getLength() > 0 ? ((Element)elements62.item(0)) : null;
+                            Element resetPasswordOnFirstLogonElement = elements62.getLength() > 0 ? ((Element) elements62.item(0)) : null;
                             if (resetPasswordOnFirstLogonElement != null && (resetPasswordOnFirstLogonElement.getTextContent() != null && resetPasswordOnFirstLogonElement.getTextContent().isEmpty() != true) == false)
                             {
                                 boolean resetPasswordOnFirstLogonInstance;
@@ -4388,7 +4497,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                             
                             NodeList elements63 = configurationSetsElement.getElementsByTagName("EnableAutomaticUpdates");
-                            Element enableAutomaticUpdatesElement = elements63.getLength() > 0 ? ((Element)elements63.item(0)) : null;
+                            Element enableAutomaticUpdatesElement = elements63.getLength() > 0 ? ((Element) elements63.item(0)) : null;
                             if (enableAutomaticUpdatesElement != null && (enableAutomaticUpdatesElement.getTextContent() != null && enableAutomaticUpdatesElement.getTextContent().isEmpty() != true) == false)
                             {
                                 boolean enableAutomaticUpdatesInstance;
@@ -4397,7 +4506,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                             
                             NodeList elements64 = configurationSetsElement.getElementsByTagName("TimeZone");
-                            Element timeZoneElement = elements64.getLength() > 0 ? ((Element)elements64.item(0)) : null;
+                            Element timeZoneElement = elements64.getLength() > 0 ? ((Element) elements64.item(0)) : null;
                             if (timeZoneElement != null)
                             {
                                 String timeZoneInstance;
@@ -4406,21 +4515,21 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                             
                             NodeList elements65 = configurationSetsElement.getElementsByTagName("DomainJoin");
-                            Element domainJoinElement = elements65.getLength() > 0 ? ((Element)elements65.item(0)) : null;
+                            Element domainJoinElement = elements65.getLength() > 0 ? ((Element) elements65.item(0)) : null;
                             if (domainJoinElement != null)
                             {
                                 DomainJoinSettings domainJoinInstance = new DomainJoinSettings();
                                 configurationSetInstance.setDomainJoin(domainJoinInstance);
                                 
                                 NodeList elements66 = domainJoinElement.getElementsByTagName("Credentials");
-                                Element credentialsElement = elements66.getLength() > 0 ? ((Element)elements66.item(0)) : null;
+                                Element credentialsElement = elements66.getLength() > 0 ? ((Element) elements66.item(0)) : null;
                                 if (credentialsElement != null)
                                 {
                                     DomainJoinCredentials credentialsInstance = new DomainJoinCredentials();
                                     domainJoinInstance.setCredentials(credentialsInstance);
                                     
                                     NodeList elements67 = credentialsElement.getElementsByTagName("Domain");
-                                    Element domainElement = elements67.getLength() > 0 ? ((Element)elements67.item(0)) : null;
+                                    Element domainElement = elements67.getLength() > 0 ? ((Element) elements67.item(0)) : null;
                                     if (domainElement != null)
                                     {
                                         String domainInstance;
@@ -4429,7 +4538,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     }
                                     
                                     NodeList elements68 = credentialsElement.getElementsByTagName("Username");
-                                    Element usernameElement = elements68.getLength() > 0 ? ((Element)elements68.item(0)) : null;
+                                    Element usernameElement = elements68.getLength() > 0 ? ((Element) elements68.item(0)) : null;
                                     if (usernameElement != null)
                                     {
                                         String usernameInstance;
@@ -4438,7 +4547,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     }
                                     
                                     NodeList elements69 = credentialsElement.getElementsByTagName("Password");
-                                    Element passwordElement = elements69.getLength() > 0 ? ((Element)elements69.item(0)) : null;
+                                    Element passwordElement = elements69.getLength() > 0 ? ((Element) elements69.item(0)) : null;
                                     if (passwordElement != null)
                                     {
                                         String passwordInstance;
@@ -4448,7 +4557,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                 }
                                 
                                 NodeList elements70 = domainJoinElement.getElementsByTagName("JoinDomain");
-                                Element joinDomainElement = elements70.getLength() > 0 ? ((Element)elements70.item(0)) : null;
+                                Element joinDomainElement = elements70.getLength() > 0 ? ((Element) elements70.item(0)) : null;
                                 if (joinDomainElement != null)
                                 {
                                     String joinDomainInstance;
@@ -4457,7 +4566,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                 }
                                 
                                 NodeList elements71 = domainJoinElement.getElementsByTagName("MachineObjectOU");
-                                Element machineObjectOUElement = elements71.getLength() > 0 ? ((Element)elements71.item(0)) : null;
+                                Element machineObjectOUElement = elements71.getLength() > 0 ? ((Element) elements71.item(0)) : null;
                                 if (machineObjectOUElement != null)
                                 {
                                     String machineObjectOUInstance;
@@ -4466,14 +4575,14 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                 }
                                 
                                 NodeList elements72 = domainJoinElement.getElementsByTagName("Provisioning");
-                                Element provisioningElement = elements72.getLength() > 0 ? ((Element)elements72.item(0)) : null;
+                                Element provisioningElement = elements72.getLength() > 0 ? ((Element) elements72.item(0)) : null;
                                 if (provisioningElement != null)
                                 {
                                     DomainJoinProvisioning provisioningInstance = new DomainJoinProvisioning();
                                     domainJoinInstance.setProvisioning(provisioningInstance);
                                     
                                     NodeList elements73 = provisioningElement.getElementsByTagName("AccountData");
-                                    Element accountDataElement = elements73.getLength() > 0 ? ((Element)elements73.item(0)) : null;
+                                    Element accountDataElement = elements73.getLength() > 0 ? ((Element) elements73.item(0)) : null;
                                     if (accountDataElement != null)
                                     {
                                         String accountDataInstance;
@@ -4484,23 +4593,23 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                             
                             NodeList elements74 = configurationSetsElement.getElementsByTagName("StoredCertificateSettings");
-                            Element storedCertificateSettingsSequenceElement = elements74.getLength() > 0 ? ((Element)elements74.item(0)) : null;
+                            Element storedCertificateSettingsSequenceElement = elements74.getLength() > 0 ? ((Element) elements74.item(0)) : null;
                             if (storedCertificateSettingsSequenceElement != null)
                             {
                                 for (int i8 = 0; i8 < storedCertificateSettingsSequenceElement.getElementsByTagName("CertificateSetting").getLength(); i8 = i8 + 1)
                                 {
-                                    org.w3c.dom.Element storedCertificateSettingsElement = ((org.w3c.dom.Element)storedCertificateSettingsSequenceElement.getElementsByTagName("CertificateSetting").item(i8));
+                                    org.w3c.dom.Element storedCertificateSettingsElement = ((org.w3c.dom.Element) storedCertificateSettingsSequenceElement.getElementsByTagName("CertificateSetting").item(i8));
                                     StoredCertificateSettings certificateSettingInstance = new StoredCertificateSettings();
                                     configurationSetInstance.getStoredCertificateSettings().add(certificateSettingInstance);
                                     
                                     NodeList elements75 = storedCertificateSettingsElement.getElementsByTagName("StoreLocation");
-                                    Element storeLocationElement = elements75.getLength() > 0 ? ((Element)elements75.item(0)) : null;
+                                    Element storeLocationElement = elements75.getLength() > 0 ? ((Element) elements75.item(0)) : null;
                                     if (storeLocationElement != null)
                                     {
                                     }
                                     
                                     NodeList elements76 = storedCertificateSettingsElement.getElementsByTagName("StoreName");
-                                    Element storeNameElement = elements76.getLength() > 0 ? ((Element)elements76.item(0)) : null;
+                                    Element storeNameElement = elements76.getLength() > 0 ? ((Element) elements76.item(0)) : null;
                                     if (storeNameElement != null)
                                     {
                                         String storeNameInstance;
@@ -4509,7 +4618,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     }
                                     
                                     NodeList elements77 = storedCertificateSettingsElement.getElementsByTagName("Thumbprint");
-                                    Element thumbprintElement = elements77.getLength() > 0 ? ((Element)elements77.item(0)) : null;
+                                    Element thumbprintElement = elements77.getLength() > 0 ? ((Element) elements77.item(0)) : null;
                                     if (thumbprintElement != null)
                                     {
                                         String thumbprintInstance;
@@ -4520,24 +4629,24 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                             
                             NodeList elements78 = configurationSetsElement.getElementsByTagName("WinRM");
-                            Element winRMElement = elements78.getLength() > 0 ? ((Element)elements78.item(0)) : null;
+                            Element winRMElement = elements78.getLength() > 0 ? ((Element) elements78.item(0)) : null;
                             if (winRMElement != null)
                             {
                                 WindowsRemoteManagementSettings winRMInstance = new WindowsRemoteManagementSettings();
                                 configurationSetInstance.setWindowsRemoteManagement(winRMInstance);
                                 
                                 NodeList elements79 = winRMElement.getElementsByTagName("Listeners");
-                                Element listenersSequenceElement = elements79.getLength() > 0 ? ((Element)elements79.item(0)) : null;
+                                Element listenersSequenceElement = elements79.getLength() > 0 ? ((Element) elements79.item(0)) : null;
                                 if (listenersSequenceElement != null)
                                 {
                                     for (int i9 = 0; i9 < listenersSequenceElement.getElementsByTagName("Listener").getLength(); i9 = i9 + 1)
                                     {
-                                        org.w3c.dom.Element listenersElement = ((org.w3c.dom.Element)listenersSequenceElement.getElementsByTagName("Listener").item(i9));
+                                        org.w3c.dom.Element listenersElement = ((org.w3c.dom.Element) listenersSequenceElement.getElementsByTagName("Listener").item(i9));
                                         WindowsRemoteManagementListener listenerInstance = new WindowsRemoteManagementListener();
                                         winRMInstance.getListeners().add(listenerInstance);
                                         
                                         NodeList elements80 = listenersElement.getElementsByTagName("Protocol");
-                                        Element protocolElement4 = elements80.getLength() > 0 ? ((Element)elements80.item(0)) : null;
+                                        Element protocolElement4 = elements80.getLength() > 0 ? ((Element) elements80.item(0)) : null;
                                         if (protocolElement4 != null)
                                         {
                                             VirtualMachineWindowsRemoteManagementListenerType protocolInstance4;
@@ -4546,7 +4655,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                         }
                                         
                                         NodeList elements81 = listenersElement.getElementsByTagName("CertificateThumbprint");
-                                        Element certificateThumbprintElement = elements81.getLength() > 0 ? ((Element)elements81.item(0)) : null;
+                                        Element certificateThumbprintElement = elements81.getLength() > 0 ? ((Element) elements81.item(0)) : null;
                                         if (certificateThumbprintElement != null)
                                         {
                                             String certificateThumbprintInstance;
@@ -4558,7 +4667,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                             
                             NodeList elements82 = configurationSetsElement.getElementsByTagName("AdminUsername");
-                            Element adminUsernameElement = elements82.getLength() > 0 ? ((Element)elements82.item(0)) : null;
+                            Element adminUsernameElement = elements82.getLength() > 0 ? ((Element) elements82.item(0)) : null;
                             if (adminUsernameElement != null)
                             {
                                 String adminUsernameInstance;
@@ -4567,7 +4676,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                             
                             NodeList elements83 = configurationSetsElement.getElementsByTagName("HostName");
-                            Element hostNameElement2 = elements83.getLength() > 0 ? ((Element)elements83.item(0)) : null;
+                            Element hostNameElement2 = elements83.getLength() > 0 ? ((Element) elements83.item(0)) : null;
                             if (hostNameElement2 != null)
                             {
                                 String hostNameInstance2;
@@ -4576,7 +4685,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                             
                             NodeList elements84 = configurationSetsElement.getElementsByTagName("UserName");
-                            Element userNameElement = elements84.getLength() > 0 ? ((Element)elements84.item(0)) : null;
+                            Element userNameElement = elements84.getLength() > 0 ? ((Element) elements84.item(0)) : null;
                             if (userNameElement != null)
                             {
                                 String userNameInstance;
@@ -4585,7 +4694,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                             
                             NodeList elements85 = configurationSetsElement.getElementsByTagName("UserPassword");
-                            Element userPasswordElement = elements85.getLength() > 0 ? ((Element)elements85.item(0)) : null;
+                            Element userPasswordElement = elements85.getLength() > 0 ? ((Element) elements85.item(0)) : null;
                             if (userPasswordElement != null)
                             {
                                 String userPasswordInstance;
@@ -4594,7 +4703,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                             
                             NodeList elements86 = configurationSetsElement.getElementsByTagName("DisableSshPasswordAuthentication");
-                            Element disableSshPasswordAuthenticationElement = elements86.getLength() > 0 ? ((Element)elements86.item(0)) : null;
+                            Element disableSshPasswordAuthenticationElement = elements86.getLength() > 0 ? ((Element) elements86.item(0)) : null;
                             if (disableSshPasswordAuthenticationElement != null && (disableSshPasswordAuthenticationElement.getTextContent() != null && disableSshPasswordAuthenticationElement.getTextContent().isEmpty() != true) == false)
                             {
                                 boolean disableSshPasswordAuthenticationInstance;
@@ -4603,24 +4712,24 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                             
                             NodeList elements87 = configurationSetsElement.getElementsByTagName("SSH");
-                            Element sSHElement = elements87.getLength() > 0 ? ((Element)elements87.item(0)) : null;
+                            Element sSHElement = elements87.getLength() > 0 ? ((Element) elements87.item(0)) : null;
                             if (sSHElement != null)
                             {
                                 SshSettings sSHInstance = new SshSettings();
                                 configurationSetInstance.setSshSettings(sSHInstance);
                                 
                                 NodeList elements88 = sSHElement.getElementsByTagName("PublicKeys");
-                                Element publicKeysSequenceElement = elements88.getLength() > 0 ? ((Element)elements88.item(0)) : null;
+                                Element publicKeysSequenceElement = elements88.getLength() > 0 ? ((Element) elements88.item(0)) : null;
                                 if (publicKeysSequenceElement != null)
                                 {
                                     for (int i10 = 0; i10 < publicKeysSequenceElement.getElementsByTagName("PublicKey").getLength(); i10 = i10 + 1)
                                     {
-                                        org.w3c.dom.Element publicKeysElement = ((org.w3c.dom.Element)publicKeysSequenceElement.getElementsByTagName("PublicKey").item(i10));
+                                        org.w3c.dom.Element publicKeysElement = ((org.w3c.dom.Element) publicKeysSequenceElement.getElementsByTagName("PublicKey").item(i10));
                                         SshSettingPublicKey publicKeyInstance = new SshSettingPublicKey();
                                         sSHInstance.getPublicKeys().add(publicKeyInstance);
                                         
                                         NodeList elements89 = publicKeysElement.getElementsByTagName("Fingerprint");
-                                        Element fingerprintElement = elements89.getLength() > 0 ? ((Element)elements89.item(0)) : null;
+                                        Element fingerprintElement = elements89.getLength() > 0 ? ((Element) elements89.item(0)) : null;
                                         if (fingerprintElement != null)
                                         {
                                             String fingerprintInstance;
@@ -4629,7 +4738,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                         }
                                         
                                         NodeList elements90 = publicKeysElement.getElementsByTagName("Path");
-                                        Element pathElement2 = elements90.getLength() > 0 ? ((Element)elements90.item(0)) : null;
+                                        Element pathElement2 = elements90.getLength() > 0 ? ((Element) elements90.item(0)) : null;
                                         if (pathElement2 != null)
                                         {
                                             String pathInstance2;
@@ -4640,17 +4749,17 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                 }
                                 
                                 NodeList elements91 = sSHElement.getElementsByTagName("KeyPairs");
-                                Element keyPairsSequenceElement = elements91.getLength() > 0 ? ((Element)elements91.item(0)) : null;
+                                Element keyPairsSequenceElement = elements91.getLength() > 0 ? ((Element) elements91.item(0)) : null;
                                 if (keyPairsSequenceElement != null)
                                 {
                                     for (int i11 = 0; i11 < keyPairsSequenceElement.getElementsByTagName("KeyPair").getLength(); i11 = i11 + 1)
                                     {
-                                        org.w3c.dom.Element keyPairsElement = ((org.w3c.dom.Element)keyPairsSequenceElement.getElementsByTagName("KeyPair").item(i11));
+                                        org.w3c.dom.Element keyPairsElement = ((org.w3c.dom.Element) keyPairsSequenceElement.getElementsByTagName("KeyPair").item(i11));
                                         SshSettingKeyPair keyPairInstance = new SshSettingKeyPair();
                                         sSHInstance.getKeyPairs().add(keyPairInstance);
                                         
                                         NodeList elements92 = keyPairsElement.getElementsByTagName("Fingerprint");
-                                        Element fingerprintElement2 = elements92.getLength() > 0 ? ((Element)elements92.item(0)) : null;
+                                        Element fingerprintElement2 = elements92.getLength() > 0 ? ((Element) elements92.item(0)) : null;
                                         if (fingerprintElement2 != null)
                                         {
                                             String fingerprintInstance2;
@@ -4659,7 +4768,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                         }
                                         
                                         NodeList elements93 = keyPairsElement.getElementsByTagName("Path");
-                                        Element pathElement3 = elements93.getLength() > 0 ? ((Element)elements93.item(0)) : null;
+                                        Element pathElement3 = elements93.getLength() > 0 ? ((Element) elements93.item(0)) : null;
                                         if (pathElement3 != null)
                                         {
                                             String pathInstance3;
@@ -4673,7 +4782,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     }
                     
                     NodeList elements94 = roleListElement.getElementsByTagName("AvailabilitySetName");
-                    Element availabilitySetNameElement = elements94.getLength() > 0 ? ((Element)elements94.item(0)) : null;
+                    Element availabilitySetNameElement = elements94.getLength() > 0 ? ((Element) elements94.item(0)) : null;
                     if (availabilitySetNameElement != null)
                     {
                         String availabilitySetNameInstance;
@@ -4682,17 +4791,17 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     }
                     
                     NodeList elements95 = roleListElement.getElementsByTagName("DataVirtualHardDisks");
-                    Element dataVirtualHardDisksSequenceElement = elements95.getLength() > 0 ? ((Element)elements95.item(0)) : null;
+                    Element dataVirtualHardDisksSequenceElement = elements95.getLength() > 0 ? ((Element) elements95.item(0)) : null;
                     if (dataVirtualHardDisksSequenceElement != null)
                     {
                         for (int i12 = 0; i12 < dataVirtualHardDisksSequenceElement.getElementsByTagName("DataVirtualHardDisk").getLength(); i12 = i12 + 1)
                         {
-                            org.w3c.dom.Element dataVirtualHardDisksElement = ((org.w3c.dom.Element)dataVirtualHardDisksSequenceElement.getElementsByTagName("DataVirtualHardDisk").item(i12));
+                            org.w3c.dom.Element dataVirtualHardDisksElement = ((org.w3c.dom.Element) dataVirtualHardDisksSequenceElement.getElementsByTagName("DataVirtualHardDisk").item(i12));
                             DataVirtualHardDisk dataVirtualHardDiskInstance = new DataVirtualHardDisk();
                             roleInstance.getDataVirtualHardDisks().add(dataVirtualHardDiskInstance);
                             
                             NodeList elements96 = dataVirtualHardDisksElement.getElementsByTagName("HostCaching");
-                            Element hostCachingElement = elements96.getLength() > 0 ? ((Element)elements96.item(0)) : null;
+                            Element hostCachingElement = elements96.getLength() > 0 ? ((Element) elements96.item(0)) : null;
                             if (hostCachingElement != null && (hostCachingElement.getTextContent() != null && hostCachingElement.getTextContent().isEmpty() != true) == false)
                             {
                                 VirtualHardDiskHostCaching hostCachingInstance;
@@ -4701,7 +4810,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                             
                             NodeList elements97 = dataVirtualHardDisksElement.getElementsByTagName("DiskLabel");
-                            Element diskLabelElement = elements97.getLength() > 0 ? ((Element)elements97.item(0)) : null;
+                            Element diskLabelElement = elements97.getLength() > 0 ? ((Element) elements97.item(0)) : null;
                             if (diskLabelElement != null)
                             {
                                 String diskLabelInstance;
@@ -4710,7 +4819,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                             
                             NodeList elements98 = dataVirtualHardDisksElement.getElementsByTagName("DiskName");
-                            Element diskNameElement = elements98.getLength() > 0 ? ((Element)elements98.item(0)) : null;
+                            Element diskNameElement = elements98.getLength() > 0 ? ((Element) elements98.item(0)) : null;
                             if (diskNameElement != null)
                             {
                                 String diskNameInstance;
@@ -4719,7 +4828,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                             
                             NodeList elements99 = dataVirtualHardDisksElement.getElementsByTagName("Lun");
-                            Element lunElement = elements99.getLength() > 0 ? ((Element)elements99.item(0)) : null;
+                            Element lunElement = elements99.getLength() > 0 ? ((Element) elements99.item(0)) : null;
                             if (lunElement != null && (lunElement.getTextContent() != null && lunElement.getTextContent().isEmpty() != true) == false)
                             {
                                 int lunInstance;
@@ -4728,7 +4837,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                             
                             NodeList elements100 = dataVirtualHardDisksElement.getElementsByTagName("LogicalDiskSizeInGB");
-                            Element logicalDiskSizeInGBElement = elements100.getLength() > 0 ? ((Element)elements100.item(0)) : null;
+                            Element logicalDiskSizeInGBElement = elements100.getLength() > 0 ? ((Element) elements100.item(0)) : null;
                             if (logicalDiskSizeInGBElement != null)
                             {
                                 int logicalDiskSizeInGBInstance;
@@ -4737,7 +4846,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                             
                             NodeList elements101 = dataVirtualHardDisksElement.getElementsByTagName("MediaLink");
-                            Element mediaLinkElement = elements101.getLength() > 0 ? ((Element)elements101.item(0)) : null;
+                            Element mediaLinkElement = elements101.getLength() > 0 ? ((Element) elements101.item(0)) : null;
                             if (mediaLinkElement != null)
                             {
                                 URI mediaLinkInstance;
@@ -4748,7 +4857,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     }
                     
                     NodeList elements102 = roleListElement.getElementsByTagName("Label");
-                    Element labelElement2 = elements102.getLength() > 0 ? ((Element)elements102.item(0)) : null;
+                    Element labelElement2 = elements102.getLength() > 0 ? ((Element) elements102.item(0)) : null;
                     if (labelElement2 != null)
                     {
                         String labelInstance2;
@@ -4757,14 +4866,14 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     }
                     
                     NodeList elements103 = roleListElement.getElementsByTagName("OSVirtualHardDisk");
-                    Element oSVirtualHardDiskElement = elements103.getLength() > 0 ? ((Element)elements103.item(0)) : null;
+                    Element oSVirtualHardDiskElement = elements103.getLength() > 0 ? ((Element) elements103.item(0)) : null;
                     if (oSVirtualHardDiskElement != null)
                     {
                         OSVirtualHardDisk oSVirtualHardDiskInstance = new OSVirtualHardDisk();
                         roleInstance.setOSVirtualHardDisk(oSVirtualHardDiskInstance);
                         
                         NodeList elements104 = oSVirtualHardDiskElement.getElementsByTagName("HostCaching");
-                        Element hostCachingElement2 = elements104.getLength() > 0 ? ((Element)elements104.item(0)) : null;
+                        Element hostCachingElement2 = elements104.getLength() > 0 ? ((Element) elements104.item(0)) : null;
                         if (hostCachingElement2 != null && (hostCachingElement2.getTextContent() != null && hostCachingElement2.getTextContent().isEmpty() != true) == false)
                         {
                             VirtualHardDiskHostCaching hostCachingInstance2;
@@ -4773,7 +4882,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         }
                         
                         NodeList elements105 = oSVirtualHardDiskElement.getElementsByTagName("DiskLabel");
-                        Element diskLabelElement2 = elements105.getLength() > 0 ? ((Element)elements105.item(0)) : null;
+                        Element diskLabelElement2 = elements105.getLength() > 0 ? ((Element) elements105.item(0)) : null;
                         if (diskLabelElement2 != null)
                         {
                             String diskLabelInstance2;
@@ -4782,7 +4891,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         }
                         
                         NodeList elements106 = oSVirtualHardDiskElement.getElementsByTagName("DiskName");
-                        Element diskNameElement2 = elements106.getLength() > 0 ? ((Element)elements106.item(0)) : null;
+                        Element diskNameElement2 = elements106.getLength() > 0 ? ((Element) elements106.item(0)) : null;
                         if (diskNameElement2 != null)
                         {
                             String diskNameInstance2;
@@ -4791,7 +4900,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         }
                         
                         NodeList elements107 = oSVirtualHardDiskElement.getElementsByTagName("MediaLink");
-                        Element mediaLinkElement2 = elements107.getLength() > 0 ? ((Element)elements107.item(0)) : null;
+                        Element mediaLinkElement2 = elements107.getLength() > 0 ? ((Element) elements107.item(0)) : null;
                         if (mediaLinkElement2 != null)
                         {
                             URI mediaLinkInstance2;
@@ -4800,7 +4909,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         }
                         
                         NodeList elements108 = oSVirtualHardDiskElement.getElementsByTagName("SourceImageName");
-                        Element sourceImageNameElement = elements108.getLength() > 0 ? ((Element)elements108.item(0)) : null;
+                        Element sourceImageNameElement = elements108.getLength() > 0 ? ((Element) elements108.item(0)) : null;
                         if (sourceImageNameElement != null)
                         {
                             String sourceImageNameInstance;
@@ -4809,7 +4918,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         }
                         
                         NodeList elements109 = oSVirtualHardDiskElement.getElementsByTagName("OS");
-                        Element osElement = elements109.getLength() > 0 ? ((Element)elements109.item(0)) : null;
+                        Element osElement = elements109.getLength() > 0 ? ((Element) elements109.item(0)) : null;
                         if (osElement != null)
                         {
                             String osInstance;
@@ -4819,7 +4928,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     }
                     
                     NodeList elements110 = roleListElement.getElementsByTagName("RoleSize");
-                    Element roleSizeElement = elements110.getLength() > 0 ? ((Element)elements110.item(0)) : null;
+                    Element roleSizeElement = elements110.getLength() > 0 ? ((Element) elements110.item(0)) : null;
                     if (roleSizeElement != null && (roleSizeElement.getTextContent() != null && roleSizeElement.getTextContent().isEmpty() != true) == false)
                     {
                         VirtualMachineRoleSize roleSizeInstance;
@@ -4828,7 +4937,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     }
                     
                     NodeList elements111 = roleListElement.getElementsByTagName("DefaultWinRmCertificateThumbprint");
-                    Element defaultWinRmCertificateThumbprintElement = elements111.getLength() > 0 ? ((Element)elements111.item(0)) : null;
+                    Element defaultWinRmCertificateThumbprintElement = elements111.getLength() > 0 ? ((Element) elements111.item(0)) : null;
                     if (defaultWinRmCertificateThumbprintElement != null)
                     {
                         String defaultWinRmCertificateThumbprintInstance;
@@ -4839,7 +4948,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             }
             
             NodeList elements112 = deploymentElement.getElementsByTagName("SdkVersion");
-            Element sdkVersionElement = elements112.getLength() > 0 ? ((Element)elements112.item(0)) : null;
+            Element sdkVersionElement = elements112.getLength() > 0 ? ((Element) elements112.item(0)) : null;
             if (sdkVersionElement != null)
             {
                 String sdkVersionInstance;
@@ -4848,7 +4957,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             }
             
             NodeList elements113 = deploymentElement.getElementsByTagName("Locked");
-            Element lockedElement = elements113.getLength() > 0 ? ((Element)elements113.item(0)) : null;
+            Element lockedElement = elements113.getLength() > 0 ? ((Element) elements113.item(0)) : null;
             if (lockedElement != null)
             {
                 boolean lockedInstance;
@@ -4857,7 +4966,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             }
             
             NodeList elements114 = deploymentElement.getElementsByTagName("RollbackAllowed");
-            Element rollbackAllowedElement = elements114.getLength() > 0 ? ((Element)elements114.item(0)) : null;
+            Element rollbackAllowedElement = elements114.getLength() > 0 ? ((Element) elements114.item(0)) : null;
             if (rollbackAllowedElement != null)
             {
                 String rollbackAllowedInstance;
@@ -4866,7 +4975,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             }
             
             NodeList elements115 = deploymentElement.getElementsByTagName("CreatedTime");
-            Element createdTimeElement = elements115.getLength() > 0 ? ((Element)elements115.item(0)) : null;
+            Element createdTimeElement = elements115.getLength() > 0 ? ((Element) elements115.item(0)) : null;
             if (createdTimeElement != null)
             {
                 Calendar createdTimeInstance;
@@ -4878,7 +4987,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             }
             
             NodeList elements116 = deploymentElement.getElementsByTagName("LastModifiedTime");
-            Element lastModifiedTimeElement = elements116.getLength() > 0 ? ((Element)elements116.item(0)) : null;
+            Element lastModifiedTimeElement = elements116.getLength() > 0 ? ((Element) elements116.item(0)) : null;
             if (lastModifiedTimeElement != null)
             {
                 Calendar lastModifiedTimeInstance;
@@ -4890,7 +4999,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             }
             
             NodeList elements117 = deploymentElement.getElementsByTagName("VirtualNetworkName");
-            Element virtualNetworkNameElement = elements117.getLength() > 0 ? ((Element)elements117.item(0)) : null;
+            Element virtualNetworkNameElement = elements117.getLength() > 0 ? ((Element) elements117.item(0)) : null;
             if (virtualNetworkNameElement != null)
             {
                 String virtualNetworkNameInstance;
@@ -4899,29 +5008,29 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             }
             
             NodeList elements118 = deploymentElement.getElementsByTagName("ExtendedProperties");
-            Element extendedPropertiesSequenceElement = elements118.getLength() > 0 ? ((Element)elements118.item(0)) : null;
+            Element extendedPropertiesSequenceElement = elements118.getLength() > 0 ? ((Element) elements118.item(0)) : null;
             if (extendedPropertiesSequenceElement != null)
             {
                 for (int i13 = 0; i13 < extendedPropertiesSequenceElement.getElementsByTagName("ExtendedProperty").getLength(); i13 = i13 + 1)
                 {
-                    org.w3c.dom.Element extendedPropertiesElement = ((org.w3c.dom.Element)extendedPropertiesSequenceElement.getElementsByTagName("ExtendedProperty").item(i13));
+                    org.w3c.dom.Element extendedPropertiesElement = ((org.w3c.dom.Element) extendedPropertiesSequenceElement.getElementsByTagName("ExtendedProperty").item(i13));
                     NodeList elements119 = extendedPropertiesElement.getElementsByTagName("Name");
-                    String extendedPropertiesKey = elements119.getLength() > 0 ? ((org.w3c.dom.Element)elements119.item(0)).getTextContent() : null;
+                    String extendedPropertiesKey = elements119.getLength() > 0 ? ((org.w3c.dom.Element) elements119.item(0)).getTextContent() : null;
                     NodeList elements120 = extendedPropertiesElement.getElementsByTagName("Value");
-                    String extendedPropertiesValue = elements120.getLength() > 0 ? ((org.w3c.dom.Element)elements120.item(0)).getTextContent() : null;
+                    String extendedPropertiesValue = elements120.getLength() > 0 ? ((org.w3c.dom.Element) elements120.item(0)).getTextContent() : null;
                     result.getExtendedProperties().put(extendedPropertiesKey, extendedPropertiesValue);
                 }
             }
             
             NodeList elements121 = deploymentElement.getElementsByTagName("PersistentVMDowntime");
-            Element persistentVMDowntimeElement = elements121.getLength() > 0 ? ((Element)elements121.item(0)) : null;
+            Element persistentVMDowntimeElement = elements121.getLength() > 0 ? ((Element) elements121.item(0)) : null;
             if (persistentVMDowntimeElement != null)
             {
                 PersistentVMDowntime persistentVMDowntimeInstance = new PersistentVMDowntime();
                 result.setPersistentVMDowntime(persistentVMDowntimeInstance);
                 
                 NodeList elements122 = persistentVMDowntimeElement.getElementsByTagName("StartTime");
-                Element startTimeElement = elements122.getLength() > 0 ? ((Element)elements122.item(0)) : null;
+                Element startTimeElement = elements122.getLength() > 0 ? ((Element) elements122.item(0)) : null;
                 if (startTimeElement != null)
                 {
                     Calendar startTimeInstance;
@@ -4933,7 +5042,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 }
                 
                 NodeList elements123 = persistentVMDowntimeElement.getElementsByTagName("EndTime");
-                Element endTimeElement = elements123.getLength() > 0 ? ((Element)elements123.item(0)) : null;
+                Element endTimeElement = elements123.getLength() > 0 ? ((Element) elements123.item(0)) : null;
                 if (endTimeElement != null)
                 {
                     Calendar endTimeInstance;
@@ -4945,7 +5054,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 }
                 
                 NodeList elements124 = persistentVMDowntimeElement.getElementsByTagName("Status");
-                Element statusElement2 = elements124.getLength() > 0 ? ((Element)elements124.item(0)) : null;
+                Element statusElement2 = elements124.getLength() > 0 ? ((Element) elements124.item(0)) : null;
                 if (statusElement2 != null)
                 {
                     String statusInstance2;
@@ -4955,17 +5064,17 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             }
             
             NodeList elements125 = deploymentElement.getElementsByTagName("VirtualIPs");
-            Element virtualIPsSequenceElement = elements125.getLength() > 0 ? ((Element)elements125.item(0)) : null;
+            Element virtualIPsSequenceElement = elements125.getLength() > 0 ? ((Element) elements125.item(0)) : null;
             if (virtualIPsSequenceElement != null)
             {
                 for (int i14 = 0; i14 < virtualIPsSequenceElement.getElementsByTagName("VirtualIP").getLength(); i14 = i14 + 1)
                 {
-                    org.w3c.dom.Element virtualIPsElement = ((org.w3c.dom.Element)virtualIPsSequenceElement.getElementsByTagName("VirtualIP").item(i14));
+                    org.w3c.dom.Element virtualIPsElement = ((org.w3c.dom.Element) virtualIPsSequenceElement.getElementsByTagName("VirtualIP").item(i14));
                     VirtualIPAddress virtualIPInstance = new VirtualIPAddress();
                     result.getVirtualIPAddresses().add(virtualIPInstance);
                     
                     NodeList elements126 = virtualIPsElement.getElementsByTagName("Address");
-                    Element addressElement = elements126.getLength() > 0 ? ((Element)elements126.item(0)) : null;
+                    Element addressElement = elements126.getLength() > 0 ? ((Element) elements126.item(0)) : null;
                     if (addressElement != null)
                     {
                         InetAddress addressInstance;
@@ -4974,7 +5083,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     }
                     
                     NodeList elements127 = virtualIPsElement.getElementsByTagName("Name");
-                    Element nameElement4 = elements127.getLength() > 0 ? ((Element)elements127.item(0)) : null;
+                    Element nameElement4 = elements127.getLength() > 0 ? ((Element) elements127.item(0)) : null;
                     if (nameElement4 != null)
                     {
                         String nameInstance4;
@@ -4983,7 +5092,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     }
                     
                     NodeList elements128 = virtualIPsElement.getElementsByTagName("IsDnsProgrammed");
-                    Element isDnsProgrammedElement = elements128.getLength() > 0 ? ((Element)elements128.item(0)) : null;
+                    Element isDnsProgrammedElement = elements128.getLength() > 0 ? ((Element) elements128.item(0)) : null;
                     if (isDnsProgrammedElement != null && (isDnsProgrammedElement.getTextContent() != null && isDnsProgrammedElement.getTextContent().isEmpty() != true) == false)
                     {
                         boolean isDnsProgrammedInstance;
@@ -4994,7 +5103,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             }
             
             NodeList elements129 = deploymentElement.getElementsByTagName("ReservedIPName");
-            Element reservedIPNameElement = elements129.getLength() > 0 ? ((Element)elements129.item(0)) : null;
+            Element reservedIPNameElement = elements129.getLength() > 0 ? ((Element) elements129.item(0)) : null;
             if (reservedIPNameElement != null)
             {
                 String reservedIPNameInstance;
@@ -5003,24 +5112,24 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             }
             
             NodeList elements130 = deploymentElement.getElementsByTagName("Dns");
-            Element dnsElement = elements130.getLength() > 0 ? ((Element)elements130.item(0)) : null;
+            Element dnsElement = elements130.getLength() > 0 ? ((Element) elements130.item(0)) : null;
             if (dnsElement != null)
             {
                 DnsSettings dnsInstance = new DnsSettings();
                 result.setDnsSettings(dnsInstance);
                 
                 NodeList elements131 = dnsElement.getElementsByTagName("DnsServers");
-                Element dnsServersSequenceElement = elements131.getLength() > 0 ? ((Element)elements131.item(0)) : null;
+                Element dnsServersSequenceElement = elements131.getLength() > 0 ? ((Element) elements131.item(0)) : null;
                 if (dnsServersSequenceElement != null)
                 {
                     for (int i15 = 0; i15 < dnsServersSequenceElement.getElementsByTagName("DnsServer").getLength(); i15 = i15 + 1)
                     {
-                        org.w3c.dom.Element dnsServersElement = ((org.w3c.dom.Element)dnsServersSequenceElement.getElementsByTagName("DnsServer").item(i15));
+                        org.w3c.dom.Element dnsServersElement = ((org.w3c.dom.Element) dnsServersSequenceElement.getElementsByTagName("DnsServer").item(i15));
                         DnsServer dnsServerInstance = new DnsServer();
                         dnsInstance.getDnsServers().add(dnsServerInstance);
                         
                         NodeList elements132 = dnsServersElement.getElementsByTagName("Name");
-                        Element nameElement5 = elements132.getLength() > 0 ? ((Element)elements132.item(0)) : null;
+                        Element nameElement5 = elements132.getLength() > 0 ? ((Element) elements132.item(0)) : null;
                         if (nameElement5 != null)
                         {
                             String nameInstance5;
@@ -5029,7 +5138,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         }
                         
                         NodeList elements133 = dnsServersElement.getElementsByTagName("Address");
-                        Element addressElement2 = elements133.getLength() > 0 ? ((Element)elements133.item(0)) : null;
+                        Element addressElement2 = elements133.getLength() > 0 ? ((Element) elements133.item(0)) : null;
                         if (addressElement2 != null)
                         {
                             InetAddress addressInstance2;
@@ -5041,24 +5150,24 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             }
             
             NodeList elements134 = deploymentElement.getElementsByTagName("ExtensionConfiguration");
-            Element extensionConfigurationElement = elements134.getLength() > 0 ? ((Element)elements134.item(0)) : null;
+            Element extensionConfigurationElement = elements134.getLength() > 0 ? ((Element) elements134.item(0)) : null;
             if (extensionConfigurationElement != null)
             {
                 ExtensionConfiguration extensionConfigurationInstance = new ExtensionConfiguration();
                 result.setExtensionConfiguration(extensionConfigurationInstance);
                 
                 NodeList elements135 = extensionConfigurationElement.getElementsByTagName("AllRoles");
-                Element allRolesSequenceElement = elements135.getLength() > 0 ? ((Element)elements135.item(0)) : null;
+                Element allRolesSequenceElement = elements135.getLength() > 0 ? ((Element) elements135.item(0)) : null;
                 if (allRolesSequenceElement != null)
                 {
                     for (int i16 = 0; i16 < allRolesSequenceElement.getElementsByTagName("Extension").getLength(); i16 = i16 + 1)
                     {
-                        org.w3c.dom.Element allRolesElement = ((org.w3c.dom.Element)allRolesSequenceElement.getElementsByTagName("Extension").item(i16));
+                        org.w3c.dom.Element allRolesElement = ((org.w3c.dom.Element) allRolesSequenceElement.getElementsByTagName("Extension").item(i16));
                         ExtensionConfiguration.Extension extensionInstance = new ExtensionConfiguration.Extension();
                         extensionConfigurationInstance.getAllRoles().add(extensionInstance);
                         
                         NodeList elements136 = allRolesElement.getElementsByTagName("Id");
-                        Element idElement = elements136.getLength() > 0 ? ((Element)elements136.item(0)) : null;
+                        Element idElement = elements136.getLength() > 0 ? ((Element) elements136.item(0)) : null;
                         if (idElement != null)
                         {
                             String idInstance;
@@ -5069,17 +5178,17 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 }
                 
                 NodeList elements137 = extensionConfigurationElement.getElementsByTagName("NamedRoles");
-                Element namedRolesSequenceElement = elements137.getLength() > 0 ? ((Element)elements137.item(0)) : null;
+                Element namedRolesSequenceElement = elements137.getLength() > 0 ? ((Element) elements137.item(0)) : null;
                 if (namedRolesSequenceElement != null)
                 {
                     for (int i17 = 0; i17 < namedRolesSequenceElement.getElementsByTagName("Role").getLength(); i17 = i17 + 1)
                     {
-                        org.w3c.dom.Element namedRolesElement = ((org.w3c.dom.Element)namedRolesSequenceElement.getElementsByTagName("Role").item(i17));
+                        org.w3c.dom.Element namedRolesElement = ((org.w3c.dom.Element) namedRolesSequenceElement.getElementsByTagName("Role").item(i17));
                         ExtensionConfiguration.NamedRole roleInstance2 = new ExtensionConfiguration.NamedRole();
                         extensionConfigurationInstance.getNamedRoles().add(roleInstance2);
                         
                         NodeList elements138 = namedRolesElement.getElementsByTagName("RoleName");
-                        Element roleNameElement3 = elements138.getLength() > 0 ? ((Element)elements138.item(0)) : null;
+                        Element roleNameElement3 = elements138.getLength() > 0 ? ((Element) elements138.item(0)) : null;
                         if (roleNameElement3 != null)
                         {
                             String roleNameInstance3;
@@ -5088,17 +5197,17 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         }
                         
                         NodeList elements139 = namedRolesElement.getElementsByTagName("Extensions");
-                        Element extensionsSequenceElement = elements139.getLength() > 0 ? ((Element)elements139.item(0)) : null;
+                        Element extensionsSequenceElement = elements139.getLength() > 0 ? ((Element) elements139.item(0)) : null;
                         if (extensionsSequenceElement != null)
                         {
                             for (int i18 = 0; i18 < extensionsSequenceElement.getElementsByTagName("Extension").getLength(); i18 = i18 + 1)
                             {
-                                org.w3c.dom.Element extensionsElement = ((org.w3c.dom.Element)extensionsSequenceElement.getElementsByTagName("Extension").item(i18));
+                                org.w3c.dom.Element extensionsElement = ((org.w3c.dom.Element) extensionsSequenceElement.getElementsByTagName("Extension").item(i18));
                                 ExtensionConfiguration.Extension extensionInstance2 = new ExtensionConfiguration.Extension();
                                 roleInstance2.getExtensions().add(extensionInstance2);
                                 
                                 NodeList elements140 = extensionsElement.getElementsByTagName("Id");
-                                Element idElement2 = elements140.getLength() > 0 ? ((Element)elements140.item(0)) : null;
+                                Element idElement2 = elements140.getLength() > 0 ? ((Element) elements140.item(0)) : null;
                                 if (idElement2 != null)
                                 {
                                     String idInstance2;
@@ -5199,7 +5308,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -5219,11 +5328,11 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         Document responseDoc = documentBuilder.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagName("Deployment");
-        Element deploymentElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element deploymentElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (deploymentElement != null)
         {
             NodeList elements2 = deploymentElement.getElementsByTagName("Name");
-            Element nameElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+            Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
             if (nameElement != null)
             {
                 String nameInstance;
@@ -5232,7 +5341,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             }
             
             NodeList elements3 = deploymentElement.getElementsByTagName("DeploymentSlot");
-            Element deploymentSlotElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
+            Element deploymentSlotElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
             if (deploymentSlotElement != null)
             {
                 DeploymentSlot deploymentSlotInstance;
@@ -5241,7 +5350,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             }
             
             NodeList elements4 = deploymentElement.getElementsByTagName("PrivateID");
-            Element privateIDElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
+            Element privateIDElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
             if (privateIDElement != null)
             {
                 String privateIDInstance;
@@ -5250,7 +5359,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             }
             
             NodeList elements5 = deploymentElement.getElementsByTagName("Status");
-            Element statusElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
+            Element statusElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
             if (statusElement != null)
             {
                 DeploymentStatus statusInstance;
@@ -5259,7 +5368,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             }
             
             NodeList elements6 = deploymentElement.getElementsByTagName("Label");
-            Element labelElement = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
+            Element labelElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
             if (labelElement != null)
             {
                 String labelInstance;
@@ -5268,7 +5377,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             }
             
             NodeList elements7 = deploymentElement.getElementsByTagName("Url");
-            Element urlElement = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
+            Element urlElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
             if (urlElement != null)
             {
                 URI urlInstance;
@@ -5277,7 +5386,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             }
             
             NodeList elements8 = deploymentElement.getElementsByTagName("Configuration");
-            Element configurationElement = elements8.getLength() > 0 ? ((Element)elements8.item(0)) : null;
+            Element configurationElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
             if (configurationElement != null)
             {
                 String configurationInstance;
@@ -5286,17 +5395,17 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             }
             
             NodeList elements9 = deploymentElement.getElementsByTagName("RoleInstanceList");
-            Element roleInstanceListSequenceElement = elements9.getLength() > 0 ? ((Element)elements9.item(0)) : null;
+            Element roleInstanceListSequenceElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
             if (roleInstanceListSequenceElement != null)
             {
                 for (int i1 = 0; i1 < roleInstanceListSequenceElement.getElementsByTagName("RoleInstance").getLength(); i1 = i1 + 1)
                 {
-                    org.w3c.dom.Element roleInstanceListElement = ((org.w3c.dom.Element)roleInstanceListSequenceElement.getElementsByTagName("RoleInstance").item(i1));
+                    org.w3c.dom.Element roleInstanceListElement = ((org.w3c.dom.Element) roleInstanceListSequenceElement.getElementsByTagName("RoleInstance").item(i1));
                     RoleInstance roleInstanceInstance = new RoleInstance();
                     result.getRoleInstances().add(roleInstanceInstance);
                     
                     NodeList elements10 = roleInstanceListElement.getElementsByTagName("RoleName");
-                    Element roleNameElement = elements10.getLength() > 0 ? ((Element)elements10.item(0)) : null;
+                    Element roleNameElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
                     if (roleNameElement != null)
                     {
                         String roleNameInstance;
@@ -5305,7 +5414,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     }
                     
                     NodeList elements11 = roleInstanceListElement.getElementsByTagName("InstanceName");
-                    Element instanceNameElement = elements11.getLength() > 0 ? ((Element)elements11.item(0)) : null;
+                    Element instanceNameElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
                     if (instanceNameElement != null)
                     {
                         String instanceNameInstance;
@@ -5314,7 +5423,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     }
                     
                     NodeList elements12 = roleInstanceListElement.getElementsByTagName("InstanceStatus");
-                    Element instanceStatusElement = elements12.getLength() > 0 ? ((Element)elements12.item(0)) : null;
+                    Element instanceStatusElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
                     if (instanceStatusElement != null)
                     {
                         String instanceStatusInstance;
@@ -5323,7 +5432,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     }
                     
                     NodeList elements13 = roleInstanceListElement.getElementsByTagName("InstanceUpgradeDomain");
-                    Element instanceUpgradeDomainElement = elements13.getLength() > 0 ? ((Element)elements13.item(0)) : null;
+                    Element instanceUpgradeDomainElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
                     if (instanceUpgradeDomainElement != null && (instanceUpgradeDomainElement.getTextContent() != null && instanceUpgradeDomainElement.getTextContent().isEmpty() != true) == false)
                     {
                         int instanceUpgradeDomainInstance;
@@ -5332,7 +5441,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     }
                     
                     NodeList elements14 = roleInstanceListElement.getElementsByTagName("InstanceFaultDomain");
-                    Element instanceFaultDomainElement = elements14.getLength() > 0 ? ((Element)elements14.item(0)) : null;
+                    Element instanceFaultDomainElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
                     if (instanceFaultDomainElement != null && (instanceFaultDomainElement.getTextContent() != null && instanceFaultDomainElement.getTextContent().isEmpty() != true) == false)
                     {
                         int instanceFaultDomainInstance;
@@ -5341,7 +5450,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     }
                     
                     NodeList elements15 = roleInstanceListElement.getElementsByTagName("InstanceSize");
-                    Element instanceSizeElement = elements15.getLength() > 0 ? ((Element)elements15.item(0)) : null;
+                    Element instanceSizeElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
                     if (instanceSizeElement != null && (instanceSizeElement.getTextContent() != null && instanceSizeElement.getTextContent().isEmpty() != true) == false)
                     {
                         VirtualMachineRoleSize instanceSizeInstance;
@@ -5350,7 +5459,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     }
                     
                     NodeList elements16 = roleInstanceListElement.getElementsByTagName("InstanceStateDetails");
-                    Element instanceStateDetailsElement = elements16.getLength() > 0 ? ((Element)elements16.item(0)) : null;
+                    Element instanceStateDetailsElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
                     if (instanceStateDetailsElement != null)
                     {
                         String instanceStateDetailsInstance;
@@ -5359,7 +5468,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     }
                     
                     NodeList elements17 = roleInstanceListElement.getElementsByTagName("InstanceErrorCode");
-                    Element instanceErrorCodeElement = elements17.getLength() > 0 ? ((Element)elements17.item(0)) : null;
+                    Element instanceErrorCodeElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
                     if (instanceErrorCodeElement != null)
                     {
                         String instanceErrorCodeInstance;
@@ -5368,7 +5477,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     }
                     
                     NodeList elements18 = roleInstanceListElement.getElementsByTagName("IpAddress");
-                    Element ipAddressElement = elements18.getLength() > 0 ? ((Element)elements18.item(0)) : null;
+                    Element ipAddressElement = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
                     if (ipAddressElement != null)
                     {
                         InetAddress ipAddressInstance;
@@ -5377,17 +5486,17 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     }
                     
                     NodeList elements19 = roleInstanceListElement.getElementsByTagName("InstanceEndpoints");
-                    Element instanceEndpointsSequenceElement = elements19.getLength() > 0 ? ((Element)elements19.item(0)) : null;
+                    Element instanceEndpointsSequenceElement = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
                     if (instanceEndpointsSequenceElement != null)
                     {
                         for (int i2 = 0; i2 < instanceEndpointsSequenceElement.getElementsByTagName("InstanceEndpoint").getLength(); i2 = i2 + 1)
                         {
-                            org.w3c.dom.Element instanceEndpointsElement = ((org.w3c.dom.Element)instanceEndpointsSequenceElement.getElementsByTagName("InstanceEndpoint").item(i2));
+                            org.w3c.dom.Element instanceEndpointsElement = ((org.w3c.dom.Element) instanceEndpointsSequenceElement.getElementsByTagName("InstanceEndpoint").item(i2));
                             InstanceEndpoint instanceEndpointInstance = new InstanceEndpoint();
                             roleInstanceInstance.getInstanceEndpoints().add(instanceEndpointInstance);
                             
                             NodeList elements20 = instanceEndpointsElement.getElementsByTagName("LocalPort");
-                            Element localPortElement = elements20.getLength() > 0 ? ((Element)elements20.item(0)) : null;
+                            Element localPortElement = elements20.getLength() > 0 ? ((Element) elements20.item(0)) : null;
                             if (localPortElement != null && (localPortElement.getTextContent() != null && localPortElement.getTextContent().isEmpty() != true) == false)
                             {
                                 int localPortInstance;
@@ -5396,7 +5505,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                             
                             NodeList elements21 = instanceEndpointsElement.getElementsByTagName("Name");
-                            Element nameElement2 = elements21.getLength() > 0 ? ((Element)elements21.item(0)) : null;
+                            Element nameElement2 = elements21.getLength() > 0 ? ((Element) elements21.item(0)) : null;
                             if (nameElement2 != null)
                             {
                                 String nameInstance2;
@@ -5405,7 +5514,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                             
                             NodeList elements22 = instanceEndpointsElement.getElementsByTagName("PublicPort");
-                            Element publicPortElement = elements22.getLength() > 0 ? ((Element)elements22.item(0)) : null;
+                            Element publicPortElement = elements22.getLength() > 0 ? ((Element) elements22.item(0)) : null;
                             if (publicPortElement != null)
                             {
                                 int publicPortInstance;
@@ -5414,7 +5523,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                             
                             NodeList elements23 = instanceEndpointsElement.getElementsByTagName("Protocol");
-                            Element protocolElement = elements23.getLength() > 0 ? ((Element)elements23.item(0)) : null;
+                            Element protocolElement = elements23.getLength() > 0 ? ((Element) elements23.item(0)) : null;
                             if (protocolElement != null)
                             {
                                 String protocolInstance;
@@ -5423,7 +5532,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                             
                             NodeList elements24 = instanceEndpointsElement.getElementsByTagName("Vip");
-                            Element vipElement = elements24.getLength() > 0 ? ((Element)elements24.item(0)) : null;
+                            Element vipElement = elements24.getLength() > 0 ? ((Element) elements24.item(0)) : null;
                             if (vipElement != null)
                             {
                                 InetAddress vipInstance;
@@ -5434,7 +5543,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     }
                     
                     NodeList elements25 = roleInstanceListElement.getElementsByTagName("PowerState");
-                    Element powerStateElement = elements25.getLength() > 0 ? ((Element)elements25.item(0)) : null;
+                    Element powerStateElement = elements25.getLength() > 0 ? ((Element) elements25.item(0)) : null;
                     if (powerStateElement != null)
                     {
                         RoleInstancePowerState powerStateInstance;
@@ -5443,7 +5552,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     }
                     
                     NodeList elements26 = roleInstanceListElement.getElementsByTagName("HostName");
-                    Element hostNameElement = elements26.getLength() > 0 ? ((Element)elements26.item(0)) : null;
+                    Element hostNameElement = elements26.getLength() > 0 ? ((Element) elements26.item(0)) : null;
                     if (hostNameElement != null)
                     {
                         String hostNameInstance;
@@ -5452,7 +5561,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     }
                     
                     NodeList elements27 = roleInstanceListElement.getElementsByTagName("RemoteAccessCertificateThumbprint");
-                    Element remoteAccessCertificateThumbprintElement = elements27.getLength() > 0 ? ((Element)elements27.item(0)) : null;
+                    Element remoteAccessCertificateThumbprintElement = elements27.getLength() > 0 ? ((Element) elements27.item(0)) : null;
                     if (remoteAccessCertificateThumbprintElement != null)
                     {
                         String remoteAccessCertificateThumbprintInstance;
@@ -5463,14 +5572,14 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             }
             
             NodeList elements28 = deploymentElement.getElementsByTagName("UpgradeStatus");
-            Element upgradeStatusElement = elements28.getLength() > 0 ? ((Element)elements28.item(0)) : null;
+            Element upgradeStatusElement = elements28.getLength() > 0 ? ((Element) elements28.item(0)) : null;
             if (upgradeStatusElement != null)
             {
                 UpgradeStatus upgradeStatusInstance = new UpgradeStatus();
                 result.setUpgradeStatus(upgradeStatusInstance);
                 
                 NodeList elements29 = upgradeStatusElement.getElementsByTagName("UpgradeType");
-                Element upgradeTypeElement = elements29.getLength() > 0 ? ((Element)elements29.item(0)) : null;
+                Element upgradeTypeElement = elements29.getLength() > 0 ? ((Element) elements29.item(0)) : null;
                 if (upgradeTypeElement != null)
                 {
                     DeploymentUpgradeType upgradeTypeInstance;
@@ -5479,7 +5588,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 }
                 
                 NodeList elements30 = upgradeStatusElement.getElementsByTagName("CurrentUpgradeDomainState");
-                Element currentUpgradeDomainStateElement = elements30.getLength() > 0 ? ((Element)elements30.item(0)) : null;
+                Element currentUpgradeDomainStateElement = elements30.getLength() > 0 ? ((Element) elements30.item(0)) : null;
                 if (currentUpgradeDomainStateElement != null)
                 {
                     UpgradeDomainState currentUpgradeDomainStateInstance;
@@ -5488,7 +5597,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 }
                 
                 NodeList elements31 = upgradeStatusElement.getElementsByTagName("CurrentUpgradeDomain");
-                Element currentUpgradeDomainElement = elements31.getLength() > 0 ? ((Element)elements31.item(0)) : null;
+                Element currentUpgradeDomainElement = elements31.getLength() > 0 ? ((Element) elements31.item(0)) : null;
                 if (currentUpgradeDomainElement != null)
                 {
                     int currentUpgradeDomainInstance;
@@ -5498,7 +5607,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             }
             
             NodeList elements32 = deploymentElement.getElementsByTagName("UpgradeDomainCount");
-            Element upgradeDomainCountElement = elements32.getLength() > 0 ? ((Element)elements32.item(0)) : null;
+            Element upgradeDomainCountElement = elements32.getLength() > 0 ? ((Element) elements32.item(0)) : null;
             if (upgradeDomainCountElement != null)
             {
                 int upgradeDomainCountInstance;
@@ -5507,17 +5616,17 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             }
             
             NodeList elements33 = deploymentElement.getElementsByTagName("RoleList");
-            Element roleListSequenceElement = elements33.getLength() > 0 ? ((Element)elements33.item(0)) : null;
+            Element roleListSequenceElement = elements33.getLength() > 0 ? ((Element) elements33.item(0)) : null;
             if (roleListSequenceElement != null)
             {
                 for (int i3 = 0; i3 < roleListSequenceElement.getElementsByTagName("Role").getLength(); i3 = i3 + 1)
                 {
-                    org.w3c.dom.Element roleListElement = ((org.w3c.dom.Element)roleListSequenceElement.getElementsByTagName("Role").item(i3));
+                    org.w3c.dom.Element roleListElement = ((org.w3c.dom.Element) roleListSequenceElement.getElementsByTagName("Role").item(i3));
                     Role roleInstance = new Role();
                     result.getRoles().add(roleInstance);
                     
                     NodeList elements34 = roleListElement.getElementsByTagName("RoleName");
-                    Element roleNameElement2 = elements34.getLength() > 0 ? ((Element)elements34.item(0)) : null;
+                    Element roleNameElement2 = elements34.getLength() > 0 ? ((Element) elements34.item(0)) : null;
                     if (roleNameElement2 != null)
                     {
                         String roleNameInstance2;
@@ -5526,7 +5635,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     }
                     
                     NodeList elements35 = roleListElement.getElementsByTagName("OsVersion");
-                    Element osVersionElement = elements35.getLength() > 0 ? ((Element)elements35.item(0)) : null;
+                    Element osVersionElement = elements35.getLength() > 0 ? ((Element) elements35.item(0)) : null;
                     if (osVersionElement != null)
                     {
                         String osVersionInstance;
@@ -5535,7 +5644,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     }
                     
                     NodeList elements36 = roleListElement.getElementsByTagName("RoleType");
-                    Element roleTypeElement = elements36.getLength() > 0 ? ((Element)elements36.item(0)) : null;
+                    Element roleTypeElement = elements36.getLength() > 0 ? ((Element) elements36.item(0)) : null;
                     if (roleTypeElement != null)
                     {
                         String roleTypeInstance;
@@ -5544,17 +5653,17 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     }
                     
                     NodeList elements37 = roleListElement.getElementsByTagName("ConfigurationSets");
-                    Element configurationSetsSequenceElement = elements37.getLength() > 0 ? ((Element)elements37.item(0)) : null;
+                    Element configurationSetsSequenceElement = elements37.getLength() > 0 ? ((Element) elements37.item(0)) : null;
                     if (configurationSetsSequenceElement != null)
                     {
                         for (int i4 = 0; i4 < configurationSetsSequenceElement.getElementsByTagName("ConfigurationSet").getLength(); i4 = i4 + 1)
                         {
-                            org.w3c.dom.Element configurationSetsElement = ((org.w3c.dom.Element)configurationSetsSequenceElement.getElementsByTagName("ConfigurationSet").item(i4));
+                            org.w3c.dom.Element configurationSetsElement = ((org.w3c.dom.Element) configurationSetsSequenceElement.getElementsByTagName("ConfigurationSet").item(i4));
                             ConfigurationSet configurationSetInstance = new ConfigurationSet();
                             roleInstance.getConfigurationSets().add(configurationSetInstance);
                             
                             NodeList elements38 = configurationSetsElement.getElementsByTagName("ConfigurationSetType");
-                            Element configurationSetTypeElement = elements38.getLength() > 0 ? ((Element)elements38.item(0)) : null;
+                            Element configurationSetTypeElement = elements38.getLength() > 0 ? ((Element) elements38.item(0)) : null;
                             if (configurationSetTypeElement != null)
                             {
                                 String configurationSetTypeInstance;
@@ -5563,17 +5672,17 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                             
                             NodeList elements39 = configurationSetsElement.getElementsByTagName("InputEndpoints");
-                            Element inputEndpointsSequenceElement = elements39.getLength() > 0 ? ((Element)elements39.item(0)) : null;
+                            Element inputEndpointsSequenceElement = elements39.getLength() > 0 ? ((Element) elements39.item(0)) : null;
                             if (inputEndpointsSequenceElement != null)
                             {
                                 for (int i5 = 0; i5 < inputEndpointsSequenceElement.getElementsByTagName("InputEndpoint").getLength(); i5 = i5 + 1)
                                 {
-                                    org.w3c.dom.Element inputEndpointsElement = ((org.w3c.dom.Element)inputEndpointsSequenceElement.getElementsByTagName("InputEndpoint").item(i5));
+                                    org.w3c.dom.Element inputEndpointsElement = ((org.w3c.dom.Element) inputEndpointsSequenceElement.getElementsByTagName("InputEndpoint").item(i5));
                                     InputEndpoint inputEndpointInstance = new InputEndpoint();
                                     configurationSetInstance.getInputEndpoints().add(inputEndpointInstance);
                                     
                                     NodeList elements40 = inputEndpointsElement.getElementsByTagName("LoadBalancedEndpointSetName");
-                                    Element loadBalancedEndpointSetNameElement = elements40.getLength() > 0 ? ((Element)elements40.item(0)) : null;
+                                    Element loadBalancedEndpointSetNameElement = elements40.getLength() > 0 ? ((Element) elements40.item(0)) : null;
                                     if (loadBalancedEndpointSetNameElement != null)
                                     {
                                         String loadBalancedEndpointSetNameInstance;
@@ -5582,7 +5691,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     }
                                     
                                     NodeList elements41 = inputEndpointsElement.getElementsByTagName("LocalPort");
-                                    Element localPortElement2 = elements41.getLength() > 0 ? ((Element)elements41.item(0)) : null;
+                                    Element localPortElement2 = elements41.getLength() > 0 ? ((Element) elements41.item(0)) : null;
                                     if (localPortElement2 != null && (localPortElement2.getTextContent() != null && localPortElement2.getTextContent().isEmpty() != true) == false)
                                     {
                                         int localPortInstance2;
@@ -5591,7 +5700,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     }
                                     
                                     NodeList elements42 = inputEndpointsElement.getElementsByTagName("Name");
-                                    Element nameElement3 = elements42.getLength() > 0 ? ((Element)elements42.item(0)) : null;
+                                    Element nameElement3 = elements42.getLength() > 0 ? ((Element) elements42.item(0)) : null;
                                     if (nameElement3 != null)
                                     {
                                         String nameInstance3;
@@ -5600,7 +5709,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     }
                                     
                                     NodeList elements43 = inputEndpointsElement.getElementsByTagName("Port");
-                                    Element portElement = elements43.getLength() > 0 ? ((Element)elements43.item(0)) : null;
+                                    Element portElement = elements43.getLength() > 0 ? ((Element) elements43.item(0)) : null;
                                     if (portElement != null && (portElement.getTextContent() != null && portElement.getTextContent().isEmpty() != true) == false)
                                     {
                                         int portInstance;
@@ -5609,14 +5718,14 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     }
                                     
                                     NodeList elements44 = inputEndpointsElement.getElementsByTagName("LoadBalancerProbe");
-                                    Element loadBalancerProbeElement = elements44.getLength() > 0 ? ((Element)elements44.item(0)) : null;
+                                    Element loadBalancerProbeElement = elements44.getLength() > 0 ? ((Element) elements44.item(0)) : null;
                                     if (loadBalancerProbeElement != null)
                                     {
                                         LoadBalancerProbe loadBalancerProbeInstance = new LoadBalancerProbe();
                                         inputEndpointInstance.setLoadBalancerProbe(loadBalancerProbeInstance);
                                         
                                         NodeList elements45 = loadBalancerProbeElement.getElementsByTagName("Path");
-                                        Element pathElement = elements45.getLength() > 0 ? ((Element)elements45.item(0)) : null;
+                                        Element pathElement = elements45.getLength() > 0 ? ((Element) elements45.item(0)) : null;
                                         if (pathElement != null)
                                         {
                                             String pathInstance;
@@ -5625,7 +5734,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                         }
                                         
                                         NodeList elements46 = loadBalancerProbeElement.getElementsByTagName("Port");
-                                        Element portElement2 = elements46.getLength() > 0 ? ((Element)elements46.item(0)) : null;
+                                        Element portElement2 = elements46.getLength() > 0 ? ((Element) elements46.item(0)) : null;
                                         if (portElement2 != null)
                                         {
                                             int portInstance2;
@@ -5634,7 +5743,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                         }
                                         
                                         NodeList elements47 = loadBalancerProbeElement.getElementsByTagName("Protocol");
-                                        Element protocolElement2 = elements47.getLength() > 0 ? ((Element)elements47.item(0)) : null;
+                                        Element protocolElement2 = elements47.getLength() > 0 ? ((Element) elements47.item(0)) : null;
                                         if (protocolElement2 != null)
                                         {
                                             LoadBalancerProbeTransportProtocol protocolInstance2;
@@ -5643,7 +5752,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                         }
                                         
                                         NodeList elements48 = loadBalancerProbeElement.getElementsByTagName("IntervalInSeconds");
-                                        Element intervalInSecondsElement = elements48.getLength() > 0 ? ((Element)elements48.item(0)) : null;
+                                        Element intervalInSecondsElement = elements48.getLength() > 0 ? ((Element) elements48.item(0)) : null;
                                         if (intervalInSecondsElement != null && (intervalInSecondsElement.getTextContent() != null && intervalInSecondsElement.getTextContent().isEmpty() != true) == false)
                                         {
                                             int intervalInSecondsInstance;
@@ -5652,7 +5761,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                         }
                                         
                                         NodeList elements49 = loadBalancerProbeElement.getElementsByTagName("TimeoutInSeconds");
-                                        Element timeoutInSecondsElement = elements49.getLength() > 0 ? ((Element)elements49.item(0)) : null;
+                                        Element timeoutInSecondsElement = elements49.getLength() > 0 ? ((Element) elements49.item(0)) : null;
                                         if (timeoutInSecondsElement != null && (timeoutInSecondsElement.getTextContent() != null && timeoutInSecondsElement.getTextContent().isEmpty() != true) == false)
                                         {
                                             int timeoutInSecondsInstance;
@@ -5662,7 +5771,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     }
                                     
                                     NodeList elements50 = inputEndpointsElement.getElementsByTagName("Protocol");
-                                    Element protocolElement3 = elements50.getLength() > 0 ? ((Element)elements50.item(0)) : null;
+                                    Element protocolElement3 = elements50.getLength() > 0 ? ((Element) elements50.item(0)) : null;
                                     if (protocolElement3 != null)
                                     {
                                         String protocolInstance3;
@@ -5671,7 +5780,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     }
                                     
                                     NodeList elements51 = inputEndpointsElement.getElementsByTagName("Vip");
-                                    Element vipElement2 = elements51.getLength() > 0 ? ((Element)elements51.item(0)) : null;
+                                    Element vipElement2 = elements51.getLength() > 0 ? ((Element) elements51.item(0)) : null;
                                     if (vipElement2 != null)
                                     {
                                         InetAddress vipInstance2;
@@ -5680,7 +5789,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     }
                                     
                                     NodeList elements52 = inputEndpointsElement.getElementsByTagName("EnableDirectServerReturn");
-                                    Element enableDirectServerReturnElement = elements52.getLength() > 0 ? ((Element)elements52.item(0)) : null;
+                                    Element enableDirectServerReturnElement = elements52.getLength() > 0 ? ((Element) elements52.item(0)) : null;
                                     if (enableDirectServerReturnElement != null && (enableDirectServerReturnElement.getTextContent() != null && enableDirectServerReturnElement.getTextContent().isEmpty() != true) == false)
                                     {
                                         boolean enableDirectServerReturnInstance;
@@ -5689,24 +5798,24 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     }
                                     
                                     NodeList elements53 = inputEndpointsElement.getElementsByTagName("EndpointAcl");
-                                    Element endpointAclElement = elements53.getLength() > 0 ? ((Element)elements53.item(0)) : null;
+                                    Element endpointAclElement = elements53.getLength() > 0 ? ((Element) elements53.item(0)) : null;
                                     if (endpointAclElement != null)
                                     {
                                         EndpointAcl endpointAclInstance = new EndpointAcl();
                                         inputEndpointInstance.setEndpointAcl(endpointAclInstance);
                                         
                                         NodeList elements54 = endpointAclElement.getElementsByTagName("Rules");
-                                        Element rulesSequenceElement = elements54.getLength() > 0 ? ((Element)elements54.item(0)) : null;
+                                        Element rulesSequenceElement = elements54.getLength() > 0 ? ((Element) elements54.item(0)) : null;
                                         if (rulesSequenceElement != null)
                                         {
                                             for (int i6 = 0; i6 < rulesSequenceElement.getElementsByTagName("Rule").getLength(); i6 = i6 + 1)
                                             {
-                                                org.w3c.dom.Element rulesElement = ((org.w3c.dom.Element)rulesSequenceElement.getElementsByTagName("Rule").item(i6));
+                                                org.w3c.dom.Element rulesElement = ((org.w3c.dom.Element) rulesSequenceElement.getElementsByTagName("Rule").item(i6));
                                                 AccessControlListRule ruleInstance = new AccessControlListRule();
                                                 endpointAclInstance.getRules().add(ruleInstance);
                                                 
                                                 NodeList elements55 = rulesElement.getElementsByTagName("Order");
-                                                Element orderElement = elements55.getLength() > 0 ? ((Element)elements55.item(0)) : null;
+                                                Element orderElement = elements55.getLength() > 0 ? ((Element) elements55.item(0)) : null;
                                                 if (orderElement != null && (orderElement.getTextContent() != null && orderElement.getTextContent().isEmpty() != true) == false)
                                                 {
                                                     int orderInstance;
@@ -5715,7 +5824,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                                 }
                                                 
                                                 NodeList elements56 = rulesElement.getElementsByTagName("Action");
-                                                Element actionElement = elements56.getLength() > 0 ? ((Element)elements56.item(0)) : null;
+                                                Element actionElement = elements56.getLength() > 0 ? ((Element) elements56.item(0)) : null;
                                                 if (actionElement != null)
                                                 {
                                                     String actionInstance;
@@ -5724,7 +5833,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                                 }
                                                 
                                                 NodeList elements57 = rulesElement.getElementsByTagName("RemoteSubnet");
-                                                Element remoteSubnetElement = elements57.getLength() > 0 ? ((Element)elements57.item(0)) : null;
+                                                Element remoteSubnetElement = elements57.getLength() > 0 ? ((Element) elements57.item(0)) : null;
                                                 if (remoteSubnetElement != null)
                                                 {
                                                     String remoteSubnetInstance;
@@ -5733,7 +5842,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                                 }
                                                 
                                                 NodeList elements58 = rulesElement.getElementsByTagName("Description");
-                                                Element descriptionElement = elements58.getLength() > 0 ? ((Element)elements58.item(0)) : null;
+                                                Element descriptionElement = elements58.getLength() > 0 ? ((Element) elements58.item(0)) : null;
                                                 if (descriptionElement != null)
                                                 {
                                                     String descriptionInstance;
@@ -5747,18 +5856,18 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                             
                             NodeList elements59 = configurationSetsElement.getElementsByTagName("SubnetNames");
-                            Element subnetNamesSequenceElement = elements59.getLength() > 0 ? ((Element)elements59.item(0)) : null;
+                            Element subnetNamesSequenceElement = elements59.getLength() > 0 ? ((Element) elements59.item(0)) : null;
                             if (subnetNamesSequenceElement != null)
                             {
                                 for (int i7 = 0; i7 < subnetNamesSequenceElement.getElementsByTagName("SubnetName").getLength(); i7 = i7 + 1)
                                 {
-                                    org.w3c.dom.Element subnetNamesElement = ((org.w3c.dom.Element)subnetNamesSequenceElement.getElementsByTagName("SubnetName").item(i7));
+                                    org.w3c.dom.Element subnetNamesElement = ((org.w3c.dom.Element) subnetNamesSequenceElement.getElementsByTagName("SubnetName").item(i7));
                                     configurationSetInstance.getSubnetNames().add(subnetNamesElement.getTextContent());
                                 }
                             }
                             
                             NodeList elements60 = configurationSetsElement.getElementsByTagName("ComputerName");
-                            Element computerNameElement = elements60.getLength() > 0 ? ((Element)elements60.item(0)) : null;
+                            Element computerNameElement = elements60.getLength() > 0 ? ((Element) elements60.item(0)) : null;
                             if (computerNameElement != null)
                             {
                                 String computerNameInstance;
@@ -5767,7 +5876,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                             
                             NodeList elements61 = configurationSetsElement.getElementsByTagName("AdminPassword");
-                            Element adminPasswordElement = elements61.getLength() > 0 ? ((Element)elements61.item(0)) : null;
+                            Element adminPasswordElement = elements61.getLength() > 0 ? ((Element) elements61.item(0)) : null;
                             if (adminPasswordElement != null)
                             {
                                 String adminPasswordInstance;
@@ -5776,7 +5885,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                             
                             NodeList elements62 = configurationSetsElement.getElementsByTagName("ResetPasswordOnFirstLogon");
-                            Element resetPasswordOnFirstLogonElement = elements62.getLength() > 0 ? ((Element)elements62.item(0)) : null;
+                            Element resetPasswordOnFirstLogonElement = elements62.getLength() > 0 ? ((Element) elements62.item(0)) : null;
                             if (resetPasswordOnFirstLogonElement != null && (resetPasswordOnFirstLogonElement.getTextContent() != null && resetPasswordOnFirstLogonElement.getTextContent().isEmpty() != true) == false)
                             {
                                 boolean resetPasswordOnFirstLogonInstance;
@@ -5785,7 +5894,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                             
                             NodeList elements63 = configurationSetsElement.getElementsByTagName("EnableAutomaticUpdates");
-                            Element enableAutomaticUpdatesElement = elements63.getLength() > 0 ? ((Element)elements63.item(0)) : null;
+                            Element enableAutomaticUpdatesElement = elements63.getLength() > 0 ? ((Element) elements63.item(0)) : null;
                             if (enableAutomaticUpdatesElement != null && (enableAutomaticUpdatesElement.getTextContent() != null && enableAutomaticUpdatesElement.getTextContent().isEmpty() != true) == false)
                             {
                                 boolean enableAutomaticUpdatesInstance;
@@ -5794,7 +5903,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                             
                             NodeList elements64 = configurationSetsElement.getElementsByTagName("TimeZone");
-                            Element timeZoneElement = elements64.getLength() > 0 ? ((Element)elements64.item(0)) : null;
+                            Element timeZoneElement = elements64.getLength() > 0 ? ((Element) elements64.item(0)) : null;
                             if (timeZoneElement != null)
                             {
                                 String timeZoneInstance;
@@ -5803,21 +5912,21 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                             
                             NodeList elements65 = configurationSetsElement.getElementsByTagName("DomainJoin");
-                            Element domainJoinElement = elements65.getLength() > 0 ? ((Element)elements65.item(0)) : null;
+                            Element domainJoinElement = elements65.getLength() > 0 ? ((Element) elements65.item(0)) : null;
                             if (domainJoinElement != null)
                             {
                                 DomainJoinSettings domainJoinInstance = new DomainJoinSettings();
                                 configurationSetInstance.setDomainJoin(domainJoinInstance);
                                 
                                 NodeList elements66 = domainJoinElement.getElementsByTagName("Credentials");
-                                Element credentialsElement = elements66.getLength() > 0 ? ((Element)elements66.item(0)) : null;
+                                Element credentialsElement = elements66.getLength() > 0 ? ((Element) elements66.item(0)) : null;
                                 if (credentialsElement != null)
                                 {
                                     DomainJoinCredentials credentialsInstance = new DomainJoinCredentials();
                                     domainJoinInstance.setCredentials(credentialsInstance);
                                     
                                     NodeList elements67 = credentialsElement.getElementsByTagName("Domain");
-                                    Element domainElement = elements67.getLength() > 0 ? ((Element)elements67.item(0)) : null;
+                                    Element domainElement = elements67.getLength() > 0 ? ((Element) elements67.item(0)) : null;
                                     if (domainElement != null)
                                     {
                                         String domainInstance;
@@ -5826,7 +5935,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     }
                                     
                                     NodeList elements68 = credentialsElement.getElementsByTagName("Username");
-                                    Element usernameElement = elements68.getLength() > 0 ? ((Element)elements68.item(0)) : null;
+                                    Element usernameElement = elements68.getLength() > 0 ? ((Element) elements68.item(0)) : null;
                                     if (usernameElement != null)
                                     {
                                         String usernameInstance;
@@ -5835,7 +5944,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     }
                                     
                                     NodeList elements69 = credentialsElement.getElementsByTagName("Password");
-                                    Element passwordElement = elements69.getLength() > 0 ? ((Element)elements69.item(0)) : null;
+                                    Element passwordElement = elements69.getLength() > 0 ? ((Element) elements69.item(0)) : null;
                                     if (passwordElement != null)
                                     {
                                         String passwordInstance;
@@ -5845,7 +5954,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                 }
                                 
                                 NodeList elements70 = domainJoinElement.getElementsByTagName("JoinDomain");
-                                Element joinDomainElement = elements70.getLength() > 0 ? ((Element)elements70.item(0)) : null;
+                                Element joinDomainElement = elements70.getLength() > 0 ? ((Element) elements70.item(0)) : null;
                                 if (joinDomainElement != null)
                                 {
                                     String joinDomainInstance;
@@ -5854,7 +5963,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                 }
                                 
                                 NodeList elements71 = domainJoinElement.getElementsByTagName("MachineObjectOU");
-                                Element machineObjectOUElement = elements71.getLength() > 0 ? ((Element)elements71.item(0)) : null;
+                                Element machineObjectOUElement = elements71.getLength() > 0 ? ((Element) elements71.item(0)) : null;
                                 if (machineObjectOUElement != null)
                                 {
                                     String machineObjectOUInstance;
@@ -5863,14 +5972,14 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                 }
                                 
                                 NodeList elements72 = domainJoinElement.getElementsByTagName("Provisioning");
-                                Element provisioningElement = elements72.getLength() > 0 ? ((Element)elements72.item(0)) : null;
+                                Element provisioningElement = elements72.getLength() > 0 ? ((Element) elements72.item(0)) : null;
                                 if (provisioningElement != null)
                                 {
                                     DomainJoinProvisioning provisioningInstance = new DomainJoinProvisioning();
                                     domainJoinInstance.setProvisioning(provisioningInstance);
                                     
                                     NodeList elements73 = provisioningElement.getElementsByTagName("AccountData");
-                                    Element accountDataElement = elements73.getLength() > 0 ? ((Element)elements73.item(0)) : null;
+                                    Element accountDataElement = elements73.getLength() > 0 ? ((Element) elements73.item(0)) : null;
                                     if (accountDataElement != null)
                                     {
                                         String accountDataInstance;
@@ -5881,23 +5990,23 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                             
                             NodeList elements74 = configurationSetsElement.getElementsByTagName("StoredCertificateSettings");
-                            Element storedCertificateSettingsSequenceElement = elements74.getLength() > 0 ? ((Element)elements74.item(0)) : null;
+                            Element storedCertificateSettingsSequenceElement = elements74.getLength() > 0 ? ((Element) elements74.item(0)) : null;
                             if (storedCertificateSettingsSequenceElement != null)
                             {
                                 for (int i8 = 0; i8 < storedCertificateSettingsSequenceElement.getElementsByTagName("CertificateSetting").getLength(); i8 = i8 + 1)
                                 {
-                                    org.w3c.dom.Element storedCertificateSettingsElement = ((org.w3c.dom.Element)storedCertificateSettingsSequenceElement.getElementsByTagName("CertificateSetting").item(i8));
+                                    org.w3c.dom.Element storedCertificateSettingsElement = ((org.w3c.dom.Element) storedCertificateSettingsSequenceElement.getElementsByTagName("CertificateSetting").item(i8));
                                     StoredCertificateSettings certificateSettingInstance = new StoredCertificateSettings();
                                     configurationSetInstance.getStoredCertificateSettings().add(certificateSettingInstance);
                                     
                                     NodeList elements75 = storedCertificateSettingsElement.getElementsByTagName("StoreLocation");
-                                    Element storeLocationElement = elements75.getLength() > 0 ? ((Element)elements75.item(0)) : null;
+                                    Element storeLocationElement = elements75.getLength() > 0 ? ((Element) elements75.item(0)) : null;
                                     if (storeLocationElement != null)
                                     {
                                     }
                                     
                                     NodeList elements76 = storedCertificateSettingsElement.getElementsByTagName("StoreName");
-                                    Element storeNameElement = elements76.getLength() > 0 ? ((Element)elements76.item(0)) : null;
+                                    Element storeNameElement = elements76.getLength() > 0 ? ((Element) elements76.item(0)) : null;
                                     if (storeNameElement != null)
                                     {
                                         String storeNameInstance;
@@ -5906,7 +6015,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     }
                                     
                                     NodeList elements77 = storedCertificateSettingsElement.getElementsByTagName("Thumbprint");
-                                    Element thumbprintElement = elements77.getLength() > 0 ? ((Element)elements77.item(0)) : null;
+                                    Element thumbprintElement = elements77.getLength() > 0 ? ((Element) elements77.item(0)) : null;
                                     if (thumbprintElement != null)
                                     {
                                         String thumbprintInstance;
@@ -5917,24 +6026,24 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                             
                             NodeList elements78 = configurationSetsElement.getElementsByTagName("WinRM");
-                            Element winRMElement = elements78.getLength() > 0 ? ((Element)elements78.item(0)) : null;
+                            Element winRMElement = elements78.getLength() > 0 ? ((Element) elements78.item(0)) : null;
                             if (winRMElement != null)
                             {
                                 WindowsRemoteManagementSettings winRMInstance = new WindowsRemoteManagementSettings();
                                 configurationSetInstance.setWindowsRemoteManagement(winRMInstance);
                                 
                                 NodeList elements79 = winRMElement.getElementsByTagName("Listeners");
-                                Element listenersSequenceElement = elements79.getLength() > 0 ? ((Element)elements79.item(0)) : null;
+                                Element listenersSequenceElement = elements79.getLength() > 0 ? ((Element) elements79.item(0)) : null;
                                 if (listenersSequenceElement != null)
                                 {
                                     for (int i9 = 0; i9 < listenersSequenceElement.getElementsByTagName("Listener").getLength(); i9 = i9 + 1)
                                     {
-                                        org.w3c.dom.Element listenersElement = ((org.w3c.dom.Element)listenersSequenceElement.getElementsByTagName("Listener").item(i9));
+                                        org.w3c.dom.Element listenersElement = ((org.w3c.dom.Element) listenersSequenceElement.getElementsByTagName("Listener").item(i9));
                                         WindowsRemoteManagementListener listenerInstance = new WindowsRemoteManagementListener();
                                         winRMInstance.getListeners().add(listenerInstance);
                                         
                                         NodeList elements80 = listenersElement.getElementsByTagName("Protocol");
-                                        Element protocolElement4 = elements80.getLength() > 0 ? ((Element)elements80.item(0)) : null;
+                                        Element protocolElement4 = elements80.getLength() > 0 ? ((Element) elements80.item(0)) : null;
                                         if (protocolElement4 != null)
                                         {
                                             VirtualMachineWindowsRemoteManagementListenerType protocolInstance4;
@@ -5943,7 +6052,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                         }
                                         
                                         NodeList elements81 = listenersElement.getElementsByTagName("CertificateThumbprint");
-                                        Element certificateThumbprintElement = elements81.getLength() > 0 ? ((Element)elements81.item(0)) : null;
+                                        Element certificateThumbprintElement = elements81.getLength() > 0 ? ((Element) elements81.item(0)) : null;
                                         if (certificateThumbprintElement != null)
                                         {
                                             String certificateThumbprintInstance;
@@ -5955,7 +6064,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                             
                             NodeList elements82 = configurationSetsElement.getElementsByTagName("AdminUsername");
-                            Element adminUsernameElement = elements82.getLength() > 0 ? ((Element)elements82.item(0)) : null;
+                            Element adminUsernameElement = elements82.getLength() > 0 ? ((Element) elements82.item(0)) : null;
                             if (adminUsernameElement != null)
                             {
                                 String adminUsernameInstance;
@@ -5964,7 +6073,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                             
                             NodeList elements83 = configurationSetsElement.getElementsByTagName("HostName");
-                            Element hostNameElement2 = elements83.getLength() > 0 ? ((Element)elements83.item(0)) : null;
+                            Element hostNameElement2 = elements83.getLength() > 0 ? ((Element) elements83.item(0)) : null;
                             if (hostNameElement2 != null)
                             {
                                 String hostNameInstance2;
@@ -5973,7 +6082,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                             
                             NodeList elements84 = configurationSetsElement.getElementsByTagName("UserName");
-                            Element userNameElement = elements84.getLength() > 0 ? ((Element)elements84.item(0)) : null;
+                            Element userNameElement = elements84.getLength() > 0 ? ((Element) elements84.item(0)) : null;
                             if (userNameElement != null)
                             {
                                 String userNameInstance;
@@ -5982,7 +6091,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                             
                             NodeList elements85 = configurationSetsElement.getElementsByTagName("UserPassword");
-                            Element userPasswordElement = elements85.getLength() > 0 ? ((Element)elements85.item(0)) : null;
+                            Element userPasswordElement = elements85.getLength() > 0 ? ((Element) elements85.item(0)) : null;
                             if (userPasswordElement != null)
                             {
                                 String userPasswordInstance;
@@ -5991,7 +6100,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                             
                             NodeList elements86 = configurationSetsElement.getElementsByTagName("DisableSshPasswordAuthentication");
-                            Element disableSshPasswordAuthenticationElement = elements86.getLength() > 0 ? ((Element)elements86.item(0)) : null;
+                            Element disableSshPasswordAuthenticationElement = elements86.getLength() > 0 ? ((Element) elements86.item(0)) : null;
                             if (disableSshPasswordAuthenticationElement != null && (disableSshPasswordAuthenticationElement.getTextContent() != null && disableSshPasswordAuthenticationElement.getTextContent().isEmpty() != true) == false)
                             {
                                 boolean disableSshPasswordAuthenticationInstance;
@@ -6000,24 +6109,24 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                             
                             NodeList elements87 = configurationSetsElement.getElementsByTagName("SSH");
-                            Element sSHElement = elements87.getLength() > 0 ? ((Element)elements87.item(0)) : null;
+                            Element sSHElement = elements87.getLength() > 0 ? ((Element) elements87.item(0)) : null;
                             if (sSHElement != null)
                             {
                                 SshSettings sSHInstance = new SshSettings();
                                 configurationSetInstance.setSshSettings(sSHInstance);
                                 
                                 NodeList elements88 = sSHElement.getElementsByTagName("PublicKeys");
-                                Element publicKeysSequenceElement = elements88.getLength() > 0 ? ((Element)elements88.item(0)) : null;
+                                Element publicKeysSequenceElement = elements88.getLength() > 0 ? ((Element) elements88.item(0)) : null;
                                 if (publicKeysSequenceElement != null)
                                 {
                                     for (int i10 = 0; i10 < publicKeysSequenceElement.getElementsByTagName("PublicKey").getLength(); i10 = i10 + 1)
                                     {
-                                        org.w3c.dom.Element publicKeysElement = ((org.w3c.dom.Element)publicKeysSequenceElement.getElementsByTagName("PublicKey").item(i10));
+                                        org.w3c.dom.Element publicKeysElement = ((org.w3c.dom.Element) publicKeysSequenceElement.getElementsByTagName("PublicKey").item(i10));
                                         SshSettingPublicKey publicKeyInstance = new SshSettingPublicKey();
                                         sSHInstance.getPublicKeys().add(publicKeyInstance);
                                         
                                         NodeList elements89 = publicKeysElement.getElementsByTagName("Fingerprint");
-                                        Element fingerprintElement = elements89.getLength() > 0 ? ((Element)elements89.item(0)) : null;
+                                        Element fingerprintElement = elements89.getLength() > 0 ? ((Element) elements89.item(0)) : null;
                                         if (fingerprintElement != null)
                                         {
                                             String fingerprintInstance;
@@ -6026,7 +6135,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                         }
                                         
                                         NodeList elements90 = publicKeysElement.getElementsByTagName("Path");
-                                        Element pathElement2 = elements90.getLength() > 0 ? ((Element)elements90.item(0)) : null;
+                                        Element pathElement2 = elements90.getLength() > 0 ? ((Element) elements90.item(0)) : null;
                                         if (pathElement2 != null)
                                         {
                                             String pathInstance2;
@@ -6037,17 +6146,17 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                 }
                                 
                                 NodeList elements91 = sSHElement.getElementsByTagName("KeyPairs");
-                                Element keyPairsSequenceElement = elements91.getLength() > 0 ? ((Element)elements91.item(0)) : null;
+                                Element keyPairsSequenceElement = elements91.getLength() > 0 ? ((Element) elements91.item(0)) : null;
                                 if (keyPairsSequenceElement != null)
                                 {
                                     for (int i11 = 0; i11 < keyPairsSequenceElement.getElementsByTagName("KeyPair").getLength(); i11 = i11 + 1)
                                     {
-                                        org.w3c.dom.Element keyPairsElement = ((org.w3c.dom.Element)keyPairsSequenceElement.getElementsByTagName("KeyPair").item(i11));
+                                        org.w3c.dom.Element keyPairsElement = ((org.w3c.dom.Element) keyPairsSequenceElement.getElementsByTagName("KeyPair").item(i11));
                                         SshSettingKeyPair keyPairInstance = new SshSettingKeyPair();
                                         sSHInstance.getKeyPairs().add(keyPairInstance);
                                         
                                         NodeList elements92 = keyPairsElement.getElementsByTagName("Fingerprint");
-                                        Element fingerprintElement2 = elements92.getLength() > 0 ? ((Element)elements92.item(0)) : null;
+                                        Element fingerprintElement2 = elements92.getLength() > 0 ? ((Element) elements92.item(0)) : null;
                                         if (fingerprintElement2 != null)
                                         {
                                             String fingerprintInstance2;
@@ -6056,7 +6165,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                         }
                                         
                                         NodeList elements93 = keyPairsElement.getElementsByTagName("Path");
-                                        Element pathElement3 = elements93.getLength() > 0 ? ((Element)elements93.item(0)) : null;
+                                        Element pathElement3 = elements93.getLength() > 0 ? ((Element) elements93.item(0)) : null;
                                         if (pathElement3 != null)
                                         {
                                             String pathInstance3;
@@ -6070,7 +6179,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     }
                     
                     NodeList elements94 = roleListElement.getElementsByTagName("AvailabilitySetName");
-                    Element availabilitySetNameElement = elements94.getLength() > 0 ? ((Element)elements94.item(0)) : null;
+                    Element availabilitySetNameElement = elements94.getLength() > 0 ? ((Element) elements94.item(0)) : null;
                     if (availabilitySetNameElement != null)
                     {
                         String availabilitySetNameInstance;
@@ -6079,17 +6188,17 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     }
                     
                     NodeList elements95 = roleListElement.getElementsByTagName("DataVirtualHardDisks");
-                    Element dataVirtualHardDisksSequenceElement = elements95.getLength() > 0 ? ((Element)elements95.item(0)) : null;
+                    Element dataVirtualHardDisksSequenceElement = elements95.getLength() > 0 ? ((Element) elements95.item(0)) : null;
                     if (dataVirtualHardDisksSequenceElement != null)
                     {
                         for (int i12 = 0; i12 < dataVirtualHardDisksSequenceElement.getElementsByTagName("DataVirtualHardDisk").getLength(); i12 = i12 + 1)
                         {
-                            org.w3c.dom.Element dataVirtualHardDisksElement = ((org.w3c.dom.Element)dataVirtualHardDisksSequenceElement.getElementsByTagName("DataVirtualHardDisk").item(i12));
+                            org.w3c.dom.Element dataVirtualHardDisksElement = ((org.w3c.dom.Element) dataVirtualHardDisksSequenceElement.getElementsByTagName("DataVirtualHardDisk").item(i12));
                             DataVirtualHardDisk dataVirtualHardDiskInstance = new DataVirtualHardDisk();
                             roleInstance.getDataVirtualHardDisks().add(dataVirtualHardDiskInstance);
                             
                             NodeList elements96 = dataVirtualHardDisksElement.getElementsByTagName("HostCaching");
-                            Element hostCachingElement = elements96.getLength() > 0 ? ((Element)elements96.item(0)) : null;
+                            Element hostCachingElement = elements96.getLength() > 0 ? ((Element) elements96.item(0)) : null;
                             if (hostCachingElement != null && (hostCachingElement.getTextContent() != null && hostCachingElement.getTextContent().isEmpty() != true) == false)
                             {
                                 VirtualHardDiskHostCaching hostCachingInstance;
@@ -6098,7 +6207,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                             
                             NodeList elements97 = dataVirtualHardDisksElement.getElementsByTagName("DiskLabel");
-                            Element diskLabelElement = elements97.getLength() > 0 ? ((Element)elements97.item(0)) : null;
+                            Element diskLabelElement = elements97.getLength() > 0 ? ((Element) elements97.item(0)) : null;
                             if (diskLabelElement != null)
                             {
                                 String diskLabelInstance;
@@ -6107,7 +6216,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                             
                             NodeList elements98 = dataVirtualHardDisksElement.getElementsByTagName("DiskName");
-                            Element diskNameElement = elements98.getLength() > 0 ? ((Element)elements98.item(0)) : null;
+                            Element diskNameElement = elements98.getLength() > 0 ? ((Element) elements98.item(0)) : null;
                             if (diskNameElement != null)
                             {
                                 String diskNameInstance;
@@ -6116,7 +6225,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                             
                             NodeList elements99 = dataVirtualHardDisksElement.getElementsByTagName("Lun");
-                            Element lunElement = elements99.getLength() > 0 ? ((Element)elements99.item(0)) : null;
+                            Element lunElement = elements99.getLength() > 0 ? ((Element) elements99.item(0)) : null;
                             if (lunElement != null && (lunElement.getTextContent() != null && lunElement.getTextContent().isEmpty() != true) == false)
                             {
                                 int lunInstance;
@@ -6125,7 +6234,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                             
                             NodeList elements100 = dataVirtualHardDisksElement.getElementsByTagName("LogicalDiskSizeInGB");
-                            Element logicalDiskSizeInGBElement = elements100.getLength() > 0 ? ((Element)elements100.item(0)) : null;
+                            Element logicalDiskSizeInGBElement = elements100.getLength() > 0 ? ((Element) elements100.item(0)) : null;
                             if (logicalDiskSizeInGBElement != null)
                             {
                                 int logicalDiskSizeInGBInstance;
@@ -6134,7 +6243,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                             
                             NodeList elements101 = dataVirtualHardDisksElement.getElementsByTagName("MediaLink");
-                            Element mediaLinkElement = elements101.getLength() > 0 ? ((Element)elements101.item(0)) : null;
+                            Element mediaLinkElement = elements101.getLength() > 0 ? ((Element) elements101.item(0)) : null;
                             if (mediaLinkElement != null)
                             {
                                 URI mediaLinkInstance;
@@ -6145,7 +6254,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     }
                     
                     NodeList elements102 = roleListElement.getElementsByTagName("Label");
-                    Element labelElement2 = elements102.getLength() > 0 ? ((Element)elements102.item(0)) : null;
+                    Element labelElement2 = elements102.getLength() > 0 ? ((Element) elements102.item(0)) : null;
                     if (labelElement2 != null)
                     {
                         String labelInstance2;
@@ -6154,14 +6263,14 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     }
                     
                     NodeList elements103 = roleListElement.getElementsByTagName("OSVirtualHardDisk");
-                    Element oSVirtualHardDiskElement = elements103.getLength() > 0 ? ((Element)elements103.item(0)) : null;
+                    Element oSVirtualHardDiskElement = elements103.getLength() > 0 ? ((Element) elements103.item(0)) : null;
                     if (oSVirtualHardDiskElement != null)
                     {
                         OSVirtualHardDisk oSVirtualHardDiskInstance = new OSVirtualHardDisk();
                         roleInstance.setOSVirtualHardDisk(oSVirtualHardDiskInstance);
                         
                         NodeList elements104 = oSVirtualHardDiskElement.getElementsByTagName("HostCaching");
-                        Element hostCachingElement2 = elements104.getLength() > 0 ? ((Element)elements104.item(0)) : null;
+                        Element hostCachingElement2 = elements104.getLength() > 0 ? ((Element) elements104.item(0)) : null;
                         if (hostCachingElement2 != null && (hostCachingElement2.getTextContent() != null && hostCachingElement2.getTextContent().isEmpty() != true) == false)
                         {
                             VirtualHardDiskHostCaching hostCachingInstance2;
@@ -6170,7 +6279,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         }
                         
                         NodeList elements105 = oSVirtualHardDiskElement.getElementsByTagName("DiskLabel");
-                        Element diskLabelElement2 = elements105.getLength() > 0 ? ((Element)elements105.item(0)) : null;
+                        Element diskLabelElement2 = elements105.getLength() > 0 ? ((Element) elements105.item(0)) : null;
                         if (diskLabelElement2 != null)
                         {
                             String diskLabelInstance2;
@@ -6179,7 +6288,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         }
                         
                         NodeList elements106 = oSVirtualHardDiskElement.getElementsByTagName("DiskName");
-                        Element diskNameElement2 = elements106.getLength() > 0 ? ((Element)elements106.item(0)) : null;
+                        Element diskNameElement2 = elements106.getLength() > 0 ? ((Element) elements106.item(0)) : null;
                         if (diskNameElement2 != null)
                         {
                             String diskNameInstance2;
@@ -6188,7 +6297,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         }
                         
                         NodeList elements107 = oSVirtualHardDiskElement.getElementsByTagName("MediaLink");
-                        Element mediaLinkElement2 = elements107.getLength() > 0 ? ((Element)elements107.item(0)) : null;
+                        Element mediaLinkElement2 = elements107.getLength() > 0 ? ((Element) elements107.item(0)) : null;
                         if (mediaLinkElement2 != null)
                         {
                             URI mediaLinkInstance2;
@@ -6197,7 +6306,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         }
                         
                         NodeList elements108 = oSVirtualHardDiskElement.getElementsByTagName("SourceImageName");
-                        Element sourceImageNameElement = elements108.getLength() > 0 ? ((Element)elements108.item(0)) : null;
+                        Element sourceImageNameElement = elements108.getLength() > 0 ? ((Element) elements108.item(0)) : null;
                         if (sourceImageNameElement != null)
                         {
                             String sourceImageNameInstance;
@@ -6206,7 +6315,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         }
                         
                         NodeList elements109 = oSVirtualHardDiskElement.getElementsByTagName("OS");
-                        Element osElement = elements109.getLength() > 0 ? ((Element)elements109.item(0)) : null;
+                        Element osElement = elements109.getLength() > 0 ? ((Element) elements109.item(0)) : null;
                         if (osElement != null)
                         {
                             String osInstance;
@@ -6216,7 +6325,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     }
                     
                     NodeList elements110 = roleListElement.getElementsByTagName("RoleSize");
-                    Element roleSizeElement = elements110.getLength() > 0 ? ((Element)elements110.item(0)) : null;
+                    Element roleSizeElement = elements110.getLength() > 0 ? ((Element) elements110.item(0)) : null;
                     if (roleSizeElement != null && (roleSizeElement.getTextContent() != null && roleSizeElement.getTextContent().isEmpty() != true) == false)
                     {
                         VirtualMachineRoleSize roleSizeInstance;
@@ -6225,7 +6334,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     }
                     
                     NodeList elements111 = roleListElement.getElementsByTagName("DefaultWinRmCertificateThumbprint");
-                    Element defaultWinRmCertificateThumbprintElement = elements111.getLength() > 0 ? ((Element)elements111.item(0)) : null;
+                    Element defaultWinRmCertificateThumbprintElement = elements111.getLength() > 0 ? ((Element) elements111.item(0)) : null;
                     if (defaultWinRmCertificateThumbprintElement != null)
                     {
                         String defaultWinRmCertificateThumbprintInstance;
@@ -6236,7 +6345,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             }
             
             NodeList elements112 = deploymentElement.getElementsByTagName("SdkVersion");
-            Element sdkVersionElement = elements112.getLength() > 0 ? ((Element)elements112.item(0)) : null;
+            Element sdkVersionElement = elements112.getLength() > 0 ? ((Element) elements112.item(0)) : null;
             if (sdkVersionElement != null)
             {
                 String sdkVersionInstance;
@@ -6245,7 +6354,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             }
             
             NodeList elements113 = deploymentElement.getElementsByTagName("Locked");
-            Element lockedElement = elements113.getLength() > 0 ? ((Element)elements113.item(0)) : null;
+            Element lockedElement = elements113.getLength() > 0 ? ((Element) elements113.item(0)) : null;
             if (lockedElement != null)
             {
                 boolean lockedInstance;
@@ -6254,7 +6363,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             }
             
             NodeList elements114 = deploymentElement.getElementsByTagName("RollbackAllowed");
-            Element rollbackAllowedElement = elements114.getLength() > 0 ? ((Element)elements114.item(0)) : null;
+            Element rollbackAllowedElement = elements114.getLength() > 0 ? ((Element) elements114.item(0)) : null;
             if (rollbackAllowedElement != null)
             {
                 String rollbackAllowedInstance;
@@ -6263,7 +6372,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             }
             
             NodeList elements115 = deploymentElement.getElementsByTagName("CreatedTime");
-            Element createdTimeElement = elements115.getLength() > 0 ? ((Element)elements115.item(0)) : null;
+            Element createdTimeElement = elements115.getLength() > 0 ? ((Element) elements115.item(0)) : null;
             if (createdTimeElement != null)
             {
                 Calendar createdTimeInstance;
@@ -6275,7 +6384,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             }
             
             NodeList elements116 = deploymentElement.getElementsByTagName("LastModifiedTime");
-            Element lastModifiedTimeElement = elements116.getLength() > 0 ? ((Element)elements116.item(0)) : null;
+            Element lastModifiedTimeElement = elements116.getLength() > 0 ? ((Element) elements116.item(0)) : null;
             if (lastModifiedTimeElement != null)
             {
                 Calendar lastModifiedTimeInstance;
@@ -6287,7 +6396,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             }
             
             NodeList elements117 = deploymentElement.getElementsByTagName("VirtualNetworkName");
-            Element virtualNetworkNameElement = elements117.getLength() > 0 ? ((Element)elements117.item(0)) : null;
+            Element virtualNetworkNameElement = elements117.getLength() > 0 ? ((Element) elements117.item(0)) : null;
             if (virtualNetworkNameElement != null)
             {
                 String virtualNetworkNameInstance;
@@ -6296,29 +6405,29 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             }
             
             NodeList elements118 = deploymentElement.getElementsByTagName("ExtendedProperties");
-            Element extendedPropertiesSequenceElement = elements118.getLength() > 0 ? ((Element)elements118.item(0)) : null;
+            Element extendedPropertiesSequenceElement = elements118.getLength() > 0 ? ((Element) elements118.item(0)) : null;
             if (extendedPropertiesSequenceElement != null)
             {
                 for (int i13 = 0; i13 < extendedPropertiesSequenceElement.getElementsByTagName("ExtendedProperty").getLength(); i13 = i13 + 1)
                 {
-                    org.w3c.dom.Element extendedPropertiesElement = ((org.w3c.dom.Element)extendedPropertiesSequenceElement.getElementsByTagName("ExtendedProperty").item(i13));
+                    org.w3c.dom.Element extendedPropertiesElement = ((org.w3c.dom.Element) extendedPropertiesSequenceElement.getElementsByTagName("ExtendedProperty").item(i13));
                     NodeList elements119 = extendedPropertiesElement.getElementsByTagName("Name");
-                    String extendedPropertiesKey = elements119.getLength() > 0 ? ((org.w3c.dom.Element)elements119.item(0)).getTextContent() : null;
+                    String extendedPropertiesKey = elements119.getLength() > 0 ? ((org.w3c.dom.Element) elements119.item(0)).getTextContent() : null;
                     NodeList elements120 = extendedPropertiesElement.getElementsByTagName("Value");
-                    String extendedPropertiesValue = elements120.getLength() > 0 ? ((org.w3c.dom.Element)elements120.item(0)).getTextContent() : null;
+                    String extendedPropertiesValue = elements120.getLength() > 0 ? ((org.w3c.dom.Element) elements120.item(0)).getTextContent() : null;
                     result.getExtendedProperties().put(extendedPropertiesKey, extendedPropertiesValue);
                 }
             }
             
             NodeList elements121 = deploymentElement.getElementsByTagName("PersistentVMDowntime");
-            Element persistentVMDowntimeElement = elements121.getLength() > 0 ? ((Element)elements121.item(0)) : null;
+            Element persistentVMDowntimeElement = elements121.getLength() > 0 ? ((Element) elements121.item(0)) : null;
             if (persistentVMDowntimeElement != null)
             {
                 PersistentVMDowntime persistentVMDowntimeInstance = new PersistentVMDowntime();
                 result.setPersistentVMDowntime(persistentVMDowntimeInstance);
                 
                 NodeList elements122 = persistentVMDowntimeElement.getElementsByTagName("StartTime");
-                Element startTimeElement = elements122.getLength() > 0 ? ((Element)elements122.item(0)) : null;
+                Element startTimeElement = elements122.getLength() > 0 ? ((Element) elements122.item(0)) : null;
                 if (startTimeElement != null)
                 {
                     Calendar startTimeInstance;
@@ -6330,7 +6439,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 }
                 
                 NodeList elements123 = persistentVMDowntimeElement.getElementsByTagName("EndTime");
-                Element endTimeElement = elements123.getLength() > 0 ? ((Element)elements123.item(0)) : null;
+                Element endTimeElement = elements123.getLength() > 0 ? ((Element) elements123.item(0)) : null;
                 if (endTimeElement != null)
                 {
                     Calendar endTimeInstance;
@@ -6342,7 +6451,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 }
                 
                 NodeList elements124 = persistentVMDowntimeElement.getElementsByTagName("Status");
-                Element statusElement2 = elements124.getLength() > 0 ? ((Element)elements124.item(0)) : null;
+                Element statusElement2 = elements124.getLength() > 0 ? ((Element) elements124.item(0)) : null;
                 if (statusElement2 != null)
                 {
                     String statusInstance2;
@@ -6352,17 +6461,17 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             }
             
             NodeList elements125 = deploymentElement.getElementsByTagName("VirtualIPs");
-            Element virtualIPsSequenceElement = elements125.getLength() > 0 ? ((Element)elements125.item(0)) : null;
+            Element virtualIPsSequenceElement = elements125.getLength() > 0 ? ((Element) elements125.item(0)) : null;
             if (virtualIPsSequenceElement != null)
             {
                 for (int i14 = 0; i14 < virtualIPsSequenceElement.getElementsByTagName("VirtualIP").getLength(); i14 = i14 + 1)
                 {
-                    org.w3c.dom.Element virtualIPsElement = ((org.w3c.dom.Element)virtualIPsSequenceElement.getElementsByTagName("VirtualIP").item(i14));
+                    org.w3c.dom.Element virtualIPsElement = ((org.w3c.dom.Element) virtualIPsSequenceElement.getElementsByTagName("VirtualIP").item(i14));
                     VirtualIPAddress virtualIPInstance = new VirtualIPAddress();
                     result.getVirtualIPAddresses().add(virtualIPInstance);
                     
                     NodeList elements126 = virtualIPsElement.getElementsByTagName("Address");
-                    Element addressElement = elements126.getLength() > 0 ? ((Element)elements126.item(0)) : null;
+                    Element addressElement = elements126.getLength() > 0 ? ((Element) elements126.item(0)) : null;
                     if (addressElement != null)
                     {
                         InetAddress addressInstance;
@@ -6371,7 +6480,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     }
                     
                     NodeList elements127 = virtualIPsElement.getElementsByTagName("Name");
-                    Element nameElement4 = elements127.getLength() > 0 ? ((Element)elements127.item(0)) : null;
+                    Element nameElement4 = elements127.getLength() > 0 ? ((Element) elements127.item(0)) : null;
                     if (nameElement4 != null)
                     {
                         String nameInstance4;
@@ -6380,7 +6489,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     }
                     
                     NodeList elements128 = virtualIPsElement.getElementsByTagName("IsDnsProgrammed");
-                    Element isDnsProgrammedElement = elements128.getLength() > 0 ? ((Element)elements128.item(0)) : null;
+                    Element isDnsProgrammedElement = elements128.getLength() > 0 ? ((Element) elements128.item(0)) : null;
                     if (isDnsProgrammedElement != null && (isDnsProgrammedElement.getTextContent() != null && isDnsProgrammedElement.getTextContent().isEmpty() != true) == false)
                     {
                         boolean isDnsProgrammedInstance;
@@ -6391,7 +6500,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             }
             
             NodeList elements129 = deploymentElement.getElementsByTagName("ReservedIPName");
-            Element reservedIPNameElement = elements129.getLength() > 0 ? ((Element)elements129.item(0)) : null;
+            Element reservedIPNameElement = elements129.getLength() > 0 ? ((Element) elements129.item(0)) : null;
             if (reservedIPNameElement != null)
             {
                 String reservedIPNameInstance;
@@ -6400,24 +6509,24 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             }
             
             NodeList elements130 = deploymentElement.getElementsByTagName("Dns");
-            Element dnsElement = elements130.getLength() > 0 ? ((Element)elements130.item(0)) : null;
+            Element dnsElement = elements130.getLength() > 0 ? ((Element) elements130.item(0)) : null;
             if (dnsElement != null)
             {
                 DnsSettings dnsInstance = new DnsSettings();
                 result.setDnsSettings(dnsInstance);
                 
                 NodeList elements131 = dnsElement.getElementsByTagName("DnsServers");
-                Element dnsServersSequenceElement = elements131.getLength() > 0 ? ((Element)elements131.item(0)) : null;
+                Element dnsServersSequenceElement = elements131.getLength() > 0 ? ((Element) elements131.item(0)) : null;
                 if (dnsServersSequenceElement != null)
                 {
                     for (int i15 = 0; i15 < dnsServersSequenceElement.getElementsByTagName("DnsServer").getLength(); i15 = i15 + 1)
                     {
-                        org.w3c.dom.Element dnsServersElement = ((org.w3c.dom.Element)dnsServersSequenceElement.getElementsByTagName("DnsServer").item(i15));
+                        org.w3c.dom.Element dnsServersElement = ((org.w3c.dom.Element) dnsServersSequenceElement.getElementsByTagName("DnsServer").item(i15));
                         DnsServer dnsServerInstance = new DnsServer();
                         dnsInstance.getDnsServers().add(dnsServerInstance);
                         
                         NodeList elements132 = dnsServersElement.getElementsByTagName("Name");
-                        Element nameElement5 = elements132.getLength() > 0 ? ((Element)elements132.item(0)) : null;
+                        Element nameElement5 = elements132.getLength() > 0 ? ((Element) elements132.item(0)) : null;
                         if (nameElement5 != null)
                         {
                             String nameInstance5;
@@ -6426,7 +6535,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         }
                         
                         NodeList elements133 = dnsServersElement.getElementsByTagName("Address");
-                        Element addressElement2 = elements133.getLength() > 0 ? ((Element)elements133.item(0)) : null;
+                        Element addressElement2 = elements133.getLength() > 0 ? ((Element) elements133.item(0)) : null;
                         if (addressElement2 != null)
                         {
                             InetAddress addressInstance2;
@@ -6438,24 +6547,24 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             }
             
             NodeList elements134 = deploymentElement.getElementsByTagName("ExtensionConfiguration");
-            Element extensionConfigurationElement = elements134.getLength() > 0 ? ((Element)elements134.item(0)) : null;
+            Element extensionConfigurationElement = elements134.getLength() > 0 ? ((Element) elements134.item(0)) : null;
             if (extensionConfigurationElement != null)
             {
                 ExtensionConfiguration extensionConfigurationInstance = new ExtensionConfiguration();
                 result.setExtensionConfiguration(extensionConfigurationInstance);
                 
                 NodeList elements135 = extensionConfigurationElement.getElementsByTagName("AllRoles");
-                Element allRolesSequenceElement = elements135.getLength() > 0 ? ((Element)elements135.item(0)) : null;
+                Element allRolesSequenceElement = elements135.getLength() > 0 ? ((Element) elements135.item(0)) : null;
                 if (allRolesSequenceElement != null)
                 {
                     for (int i16 = 0; i16 < allRolesSequenceElement.getElementsByTagName("Extension").getLength(); i16 = i16 + 1)
                     {
-                        org.w3c.dom.Element allRolesElement = ((org.w3c.dom.Element)allRolesSequenceElement.getElementsByTagName("Extension").item(i16));
+                        org.w3c.dom.Element allRolesElement = ((org.w3c.dom.Element) allRolesSequenceElement.getElementsByTagName("Extension").item(i16));
                         ExtensionConfiguration.Extension extensionInstance = new ExtensionConfiguration.Extension();
                         extensionConfigurationInstance.getAllRoles().add(extensionInstance);
                         
                         NodeList elements136 = allRolesElement.getElementsByTagName("Id");
-                        Element idElement = elements136.getLength() > 0 ? ((Element)elements136.item(0)) : null;
+                        Element idElement = elements136.getLength() > 0 ? ((Element) elements136.item(0)) : null;
                         if (idElement != null)
                         {
                             String idInstance;
@@ -6466,17 +6575,17 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 }
                 
                 NodeList elements137 = extensionConfigurationElement.getElementsByTagName("NamedRoles");
-                Element namedRolesSequenceElement = elements137.getLength() > 0 ? ((Element)elements137.item(0)) : null;
+                Element namedRolesSequenceElement = elements137.getLength() > 0 ? ((Element) elements137.item(0)) : null;
                 if (namedRolesSequenceElement != null)
                 {
                     for (int i17 = 0; i17 < namedRolesSequenceElement.getElementsByTagName("Role").getLength(); i17 = i17 + 1)
                     {
-                        org.w3c.dom.Element namedRolesElement = ((org.w3c.dom.Element)namedRolesSequenceElement.getElementsByTagName("Role").item(i17));
+                        org.w3c.dom.Element namedRolesElement = ((org.w3c.dom.Element) namedRolesSequenceElement.getElementsByTagName("Role").item(i17));
                         ExtensionConfiguration.NamedRole roleInstance2 = new ExtensionConfiguration.NamedRole();
                         extensionConfigurationInstance.getNamedRoles().add(roleInstance2);
                         
                         NodeList elements138 = namedRolesElement.getElementsByTagName("RoleName");
-                        Element roleNameElement3 = elements138.getLength() > 0 ? ((Element)elements138.item(0)) : null;
+                        Element roleNameElement3 = elements138.getLength() > 0 ? ((Element) elements138.item(0)) : null;
                         if (roleNameElement3 != null)
                         {
                             String roleNameInstance3;
@@ -6485,17 +6594,17 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         }
                         
                         NodeList elements139 = namedRolesElement.getElementsByTagName("Extensions");
-                        Element extensionsSequenceElement = elements139.getLength() > 0 ? ((Element)elements139.item(0)) : null;
+                        Element extensionsSequenceElement = elements139.getLength() > 0 ? ((Element) elements139.item(0)) : null;
                         if (extensionsSequenceElement != null)
                         {
                             for (int i18 = 0; i18 < extensionsSequenceElement.getElementsByTagName("Extension").getLength(); i18 = i18 + 1)
                             {
-                                org.w3c.dom.Element extensionsElement = ((org.w3c.dom.Element)extensionsSequenceElement.getElementsByTagName("Extension").item(i18));
+                                org.w3c.dom.Element extensionsElement = ((org.w3c.dom.Element) extensionsSequenceElement.getElementsByTagName("Extension").item(i18));
                                 ExtensionConfiguration.Extension extensionInstance2 = new ExtensionConfiguration.Extension();
                                 roleInstance2.getExtensions().add(extensionInstance2);
                                 
                                 NodeList elements140 = extensionsElement.getElementsByTagName("Id");
-                                Element idElement2 = elements140.getLength() > 0 ? ((Element)elements140.item(0)) : null;
+                                Element idElement2 = elements140.getLength() > 0 ? ((Element) elements140.item(0)) : null;
                                 if (idElement2 != null)
                                 {
                                     String idInstance2;
@@ -6608,7 +6717,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "/package?containerUri=" + parameters.getContainerUri() + " +";
         if (parameters.getOverwriteExisting() != null)
         {
-            url = url + "&overwriteExisting=" + URLEncoder.encode(Boolean.toString(parameters.getOverwriteExisting()).toLowerCase());
+            url = url + "&overwriteExisting=" + URLEncoder.encode(Boolean.toString(parameters.getOverwriteExisting()).toLowerCase(), "UTF-8");
         }
         
         // Create HTTP transport objects
@@ -6629,7 +6738,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
+        if (statusCode != HttpStatus.SC_ACCEPTED)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -6737,7 +6846,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deploymentslots/" + deploymentSlot + "/package?containerUri=" + parameters.getContainerUri() + " +";
         if (parameters.getOverwriteExisting() != null)
         {
-            url = url + "&overwriteExisting=" + URLEncoder.encode(Boolean.toString(parameters.getOverwriteExisting()).toLowerCase());
+            url = url + "&overwriteExisting=" + URLEncoder.encode(Boolean.toString(parameters.getOverwriteExisting()).toLowerCase(), "UTF-8");
         }
         
         // Create HTTP transport objects
@@ -6758,7 +6867,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
+        if (statusCode != HttpStatus.SC_ACCEPTED)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -6881,14 +6990,26 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;
@@ -6999,14 +7120,26 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;
@@ -7117,14 +7250,26 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;
@@ -7235,14 +7380,26 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;
@@ -7387,7 +7544,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -7540,7 +7697,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -7662,14 +7819,26 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;
@@ -7784,14 +7953,26 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;
@@ -7906,14 +8087,26 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;
@@ -8066,14 +8259,26 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;
@@ -8226,14 +8431,26 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;
@@ -8386,14 +8603,26 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;
@@ -8546,14 +8775,26 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;

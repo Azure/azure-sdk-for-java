@@ -37,24 +37,36 @@ public class SshSettings
     /**
     * Optional. Specifies the collection of SSH public keys.
     */
-    public ArrayList<SshSettingKeyPair> getKeyPairs() { return this.keyPairs; }
+    public ArrayList<SshSettingKeyPair> getKeyPairs()
+    {
+        return this.keyPairs;
+    }
     
     /**
     * Optional. Specifies the collection of SSH public keys.
     */
-    public void setKeyPairs(ArrayList<SshSettingKeyPair> keyPairs) { this.keyPairs = keyPairs; }
+    public void setKeyPairs(ArrayList<SshSettingKeyPair> keyPairs)
+    {
+        this.keyPairs = keyPairs;
+    }
     
     private ArrayList<SshSettingPublicKey> publicKeys;
     
     /**
     * Optional. Specifies the collection of SSH public keys.
     */
-    public ArrayList<SshSettingPublicKey> getPublicKeys() { return this.publicKeys; }
+    public ArrayList<SshSettingPublicKey> getPublicKeys()
+    {
+        return this.publicKeys;
+    }
     
     /**
     * Optional. Specifies the collection of SSH public keys.
     */
-    public void setPublicKeys(ArrayList<SshSettingPublicKey> publicKeys) { this.publicKeys = publicKeys; }
+    public void setPublicKeys(ArrayList<SshSettingPublicKey> publicKeys)
+    {
+        this.publicKeys = publicKeys;
+    }
     
     /**
     * Initializes a new instance of the SshSettings class.

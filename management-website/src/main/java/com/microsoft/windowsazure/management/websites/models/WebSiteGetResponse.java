@@ -35,18 +35,16 @@ public class WebSiteGetResponse extends OperationResponse
     /**
     * Details for the requested website.
     */
-    public WebSite getWebSite() { return this.webSite; }
+    public WebSite getWebSite()
+    {
+        return this.webSite;
+    }
     
     /**
     * Details for the requested website.
     */
-    public void setWebSite(WebSite webSite) { this.webSite = webSite; }
-    
-    /**
-    * Initializes a new instance of the WebSiteGetResponse class.
-    *
-    */
-    public WebSiteGetResponse()
+    public void setWebSite(WebSite webSite)
     {
+        this.webSite = webSite;
     }
 }

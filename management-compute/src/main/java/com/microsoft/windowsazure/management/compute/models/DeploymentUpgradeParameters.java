@@ -36,12 +36,18 @@ public class DeploymentUpgradeParameters
     /**
     * Required. The service configuration file for the deployment.
     */
-    public String getConfiguration() { return this.configuration; }
+    public String getConfiguration()
+    {
+        return this.configuration;
+    }
     
     /**
     * Required. The service configuration file for the deployment.
     */
-    public void setConfiguration(String configuration) { this.configuration = configuration; }
+    public void setConfiguration(String configuration)
+    {
+        this.configuration = configuration;
+    }
     
     private HashMap<String, String> extendedProperties;
     
@@ -56,7 +62,10 @@ public class DeploymentUpgradeParameters
     * another extended property owned by the same hosted service, will result
     * in a status code 400 (Bad Request) error.
     */
-    public HashMap<String, String> getExtendedProperties() { return this.extendedProperties; }
+    public HashMap<String, String> getExtendedProperties()
+    {
+        return this.extendedProperties;
+    }
     
     /**
     * Optional. Represents the name of an extended deployment property. Each
@@ -69,7 +78,10 @@ public class DeploymentUpgradeParameters
     * another extended property owned by the same hosted service, will result
     * in a status code 400 (Bad Request) error.
     */
-    public void setExtendedProperties(HashMap<String, String> extendedProperties) { this.extendedProperties = extendedProperties; }
+    public void setExtendedProperties(HashMap<String, String> extendedProperties)
+    {
+        this.extendedProperties = extendedProperties;
+    }
     
     private ExtensionConfiguration extensionConfiguration;
     
@@ -81,7 +93,10 @@ public class DeploymentUpgradeParameters
     * the cloud service by using Add Extension before it can be added to the
     * deployment.
     */
-    public ExtensionConfiguration getExtensionConfiguration() { return this.extensionConfiguration; }
+    public ExtensionConfiguration getExtensionConfiguration()
+    {
+        return this.extensionConfiguration;
+    }
     
     /**
     * Optional. Represents an extension that is added to the cloud service. In
@@ -91,7 +106,10 @@ public class DeploymentUpgradeParameters
     * the cloud service by using Add Extension before it can be added to the
     * deployment.
     */
-    public void setExtensionConfiguration(ExtensionConfiguration extensionConfiguration) { this.extensionConfiguration = extensionConfiguration; }
+    public void setExtensionConfiguration(ExtensionConfiguration extensionConfiguration)
+    {
+        this.extensionConfiguration = extensionConfiguration;
+    }
     
     private boolean force;
     
@@ -100,14 +118,20 @@ public class DeploymentUpgradeParameters
     * cause local data to be lost from some role instances. True if the
     * rollback should proceed; otherwise false.
     */
-    public boolean getForce() { return this.force; }
+    public boolean getForce()
+    {
+        return this.force;
+    }
     
     /**
     * Required. Specifies whether the rollback should proceed even when it will
     * cause local data to be lost from some role instances. True if the
     * rollback should proceed; otherwise false.
     */
-    public void setForce(boolean force) { this.force = force; }
+    public void setForce(boolean force)
+    {
+        this.force = force;
+    }
     
     private String label;
     
@@ -117,7 +141,10 @@ public class DeploymentUpgradeParameters
     * the subscription. The name can be used identify the hosted service for
     * your tracking purposes.
     */
-    public String getLabel() { return this.label; }
+    public String getLabel()
+    {
+        return this.label;
+    }
     
     /**
     * Required. A name for the hosted service. The name can be up to 100
@@ -125,7 +152,10 @@ public class DeploymentUpgradeParameters
     * the subscription. The name can be used identify the hosted service for
     * your tracking purposes.
     */
-    public void setLabel(String label) { this.label = label; }
+    public void setLabel(String label)
+    {
+        this.label = label;
+    }
     
     private DeploymentUpgradeMode mode;
     
@@ -138,7 +168,10 @@ public class DeploymentUpgradeParameters
     * called to apply the update. If set to Auto, the update is automatically
     * applied to each update domain in sequence.
     */
-    public DeploymentUpgradeMode getMode() { return this.mode; }
+    public DeploymentUpgradeMode getMode()
+    {
+        return this.mode;
+    }
     
     /**
     * Required. The type of update to initiate. Role instances are allocated to
@@ -149,7 +182,10 @@ public class DeploymentUpgradeParameters
     * called to apply the update. If set to Auto, the update is automatically
     * applied to each update domain in sequence.
     */
-    public void setMode(DeploymentUpgradeMode mode) { this.mode = mode; }
+    public void setMode(DeploymentUpgradeMode mode)
+    {
+        this.mode = mode;
+    }
     
     private URI packageUri;
     
@@ -162,7 +198,10 @@ public class DeploymentUpgradeParameters
     * API) at
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee395415.aspx.
     */
-    public URI getPackageUri() { return this.packageUri; }
+    public URI getPackageUri()
+    {
+        return this.packageUri;
+    }
     
     /**
     * Required. A URL that refers to the location of the service package in the
@@ -173,19 +212,28 @@ public class DeploymentUpgradeParameters
     * API) at
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee395415.aspx.
     */
-    public void setPackageUri(URI packageUri) { this.packageUri = packageUri; }
+    public void setPackageUri(URI packageUri)
+    {
+        this.packageUri = packageUri;
+    }
     
     private String roleToUpgrade;
     
     /**
     * Optional. The name of the specific role instance to update.
     */
-    public String getRoleToUpgrade() { return this.roleToUpgrade; }
+    public String getRoleToUpgrade()
+    {
+        return this.roleToUpgrade;
+    }
     
     /**
     * Optional. The name of the specific role instance to update.
     */
-    public void setRoleToUpgrade(String roleToUpgrade) { this.roleToUpgrade = roleToUpgrade; }
+    public void setRoleToUpgrade(String roleToUpgrade)
+    {
+        this.roleToUpgrade = roleToUpgrade;
+    }
     
     /**
     * Initializes a new instance of the DeploymentUpgradeParameters class.

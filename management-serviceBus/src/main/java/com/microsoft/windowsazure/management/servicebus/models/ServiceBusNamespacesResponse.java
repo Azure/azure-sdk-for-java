@@ -37,12 +37,18 @@ public class ServiceBusNamespacesResponse extends OperationResponse implements I
     /**
     * The list of namespaces.
     */
-    public ArrayList<ServiceBusNamespace> getNamespaces() { return this.namespaces; }
+    public ArrayList<ServiceBusNamespace> getNamespaces()
+    {
+        return this.namespaces;
+    }
     
     /**
     * The list of namespaces.
     */
-    public void setNamespaces(ArrayList<ServiceBusNamespace> namespaces) { this.namespaces = namespaces; }
+    public void setNamespaces(ArrayList<ServiceBusNamespace> namespaces)
+    {
+        this.namespaces = namespaces;
+    }
     
     /**
     * Initializes a new instance of the ServiceBusNamespacesResponse class.
@@ -50,6 +56,7 @@ public class ServiceBusNamespacesResponse extends OperationResponse implements I
     */
     public ServiceBusNamespacesResponse()
     {
+        super();
         this.namespaces = new ArrayList<ServiceBusNamespace>();
     }
     

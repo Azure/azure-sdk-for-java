@@ -35,18 +35,16 @@ public class JobCollectionCreateResponse extends OperationResponse
     /**
     * ETag of the Job Collection.
     */
-    public String getETag() { return this.eTag; }
+    public String getETag()
+    {
+        return this.eTag;
+    }
     
     /**
     * ETag of the Job Collection.
     */
-    public void setETag(String eTag) { this.eTag = eTag; }
-    
-    /**
-    * Initializes a new instance of the JobCollectionCreateResponse class.
-    *
-    */
-    public JobCollectionCreateResponse()
+    public void setETag(String eTag)
     {
+        this.eTag = eTag;
     }
 }

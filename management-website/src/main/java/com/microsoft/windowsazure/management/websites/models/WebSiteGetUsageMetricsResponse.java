@@ -38,12 +38,18 @@ public class WebSiteGetUsageMetricsResponse extends OperationResponse implements
     /**
     * The usage metrics for the web site.
     */
-    public ArrayList<WebSiteGetUsageMetricsResponse.UsageMetric> getUsageMetrics() { return this.usageMetrics; }
+    public ArrayList<WebSiteGetUsageMetricsResponse.UsageMetric> getUsageMetrics()
+    {
+        return this.usageMetrics;
+    }
     
     /**
     * The usage metrics for the web site.
     */
-    public void setUsageMetrics(ArrayList<WebSiteGetUsageMetricsResponse.UsageMetric> usageMetrics) { this.usageMetrics = usageMetrics; }
+    public void setUsageMetrics(ArrayList<WebSiteGetUsageMetricsResponse.UsageMetric> usageMetrics)
+    {
+        this.usageMetrics = usageMetrics;
+    }
     
     /**
     * Initializes a new instance of the WebSiteGetUsageMetricsResponse class.
@@ -51,6 +57,7 @@ public class WebSiteGetUsageMetricsResponse extends OperationResponse implements
     */
     public WebSiteGetUsageMetricsResponse()
     {
+        super();
         this.usageMetrics = new ArrayList<WebSiteGetUsageMetricsResponse.UsageMetric>();
     }
     
@@ -75,14 +82,20 @@ public class WebSiteGetUsageMetricsResponse extends OperationResponse implements
         * return value is Dedicated. For web sites in Free or Shared mode, the
         * return value is Shared.
         */
-        public WebSiteComputeMode getComputeMode() { return this.computeMode; }
+        public WebSiteComputeMode getComputeMode()
+        {
+            return this.computeMode;
+        }
         
         /**
         * The compute mode of the web site. For web sites in Standard Mode, the
         * return value is Dedicated. For web sites in Free or Shared mode, the
         * return value is Shared.
         */
-        public void setComputeMode(WebSiteComputeMode computeMode) { this.computeMode = computeMode; }
+        public void setComputeMode(WebSiteComputeMode computeMode)
+        {
+            this.computeMode = computeMode;
+        }
         
         private String currentValue;
         
@@ -90,25 +103,37 @@ public class WebSiteGetUsageMetricsResponse extends OperationResponse implements
         * The current value of the metric specified, expressed in terms of the
         * measurement specified by the Unit element.
         */
-        public String getCurrentValue() { return this.currentValue; }
+        public String getCurrentValue()
+        {
+            return this.currentValue;
+        }
         
         /**
         * The current value of the metric specified, expressed in terms of the
         * measurement specified by the Unit element.
         */
-        public void setCurrentValue(String currentValue) { this.currentValue = currentValue; }
+        public void setCurrentValue(String currentValue)
+        {
+            this.currentValue = currentValue;
+        }
         
         private String displayName;
         
         /**
         * The display name of the metric (includes spaces).
         */
-        public String getDisplayName() { return this.displayName; }
+        public String getDisplayName()
+        {
+            return this.displayName;
+        }
         
         /**
         * The display name of the metric (includes spaces).
         */
-        public void setDisplayName(String displayName) { this.displayName = displayName; }
+        public void setDisplayName(String displayName)
+        {
+            this.displayName = displayName;
+        }
         
         private String limit;
         
@@ -121,7 +146,10 @@ public class WebSiteGetUsageMetricsResponse extends OperationResponse implements
         * Limits information is only meaningful for Shared and Standard web
         * sites. For free web sites, limits are enforced at the webspace level.
         */
-        public String getLimit() { return this.limit; }
+        public String getLimit()
+        {
+            return this.limit;
+        }
         
         /**
         * The maximum point that the given metric can reach. The limit resets
@@ -132,7 +160,10 @@ public class WebSiteGetUsageMetricsResponse extends OperationResponse implements
         * Limits information is only meaningful for Shared and Standard web
         * sites. For free web sites, limits are enforced at the webspace level.
         */
-        public void setLimit(String limit) { this.limit = limit; }
+        public void setLimit(String limit)
+        {
+            this.limit = limit;
+        }
         
         private String name;
         
@@ -140,37 +171,55 @@ public class WebSiteGetUsageMetricsResponse extends OperationResponse implements
         * The name of the metric, without spaces. The value is usually the same
         * as that of the ResourceName element.
         */
-        public String getName() { return this.name; }
+        public String getName()
+        {
+            return this.name;
+        }
         
         /**
         * The name of the metric, without spaces. The value is usually the same
         * as that of the ResourceName element.
         */
-        public void setName(String name) { this.name = name; }
+        public void setName(String name)
+        {
+            this.name = name;
+        }
         
         private Calendar nextResetTime;
         
         /**
         * The time at which the metric will be reset.
         */
-        public Calendar getNextResetTime() { return this.nextResetTime; }
+        public Calendar getNextResetTime()
+        {
+            return this.nextResetTime;
+        }
         
         /**
         * The time at which the metric will be reset.
         */
-        public void setNextResetTime(Calendar nextResetTime) { this.nextResetTime = nextResetTime; }
+        public void setNextResetTime(Calendar nextResetTime)
+        {
+            this.nextResetTime = nextResetTime;
+        }
         
         private String resourceName;
         
         /**
         * The name of the resource being measured.
         */
-        public String getResourceName() { return this.resourceName; }
+        public String getResourceName()
+        {
+            return this.resourceName;
+        }
         
         /**
         * The name of the resource being measured.
         */
-        public void setResourceName(String resourceName) { this.resourceName = resourceName; }
+        public void setResourceName(String resourceName)
+        {
+            this.resourceName = resourceName;
+        }
         
         private WebSiteMode siteMode;
         
@@ -179,33 +228,37 @@ public class WebSiteGetUsageMetricsResponse extends OperationResponse implements
         * of Limited. Web sites in Shared Mode return a value of Basic. Sites
         * in Standard Mode return null.
         */
-        public WebSiteMode getSiteMode() { return this.siteMode; }
+        public WebSiteMode getSiteMode()
+        {
+            return this.siteMode;
+        }
         
         /**
         * The scaling for the web site. Web sites in Free Mode return a value
         * of Limited. Web sites in Shared Mode return a value of Basic. Sites
         * in Standard Mode return null.
         */
-        public void setSiteMode(WebSiteMode siteMode) { this.siteMode = siteMode; }
+        public void setSiteMode(WebSiteMode siteMode)
+        {
+            this.siteMode = siteMode;
+        }
         
         private String unit;
         
         /**
         * The unit of measure for the given metric.
         */
-        public String getUnit() { return this.unit; }
+        public String getUnit()
+        {
+            return this.unit;
+        }
         
         /**
         * The unit of measure for the given metric.
         */
-        public void setUnit(String unit) { this.unit = unit; }
-        
-        /**
-        * Initializes a new instance of the UsageMetric class.
-        *
-        */
-        public UsageMetric()
+        public void setUnit(String unit)
         {
+            this.unit = unit;
         }
     }
 }

@@ -38,12 +38,18 @@ public class ServiceCertificateListResponse extends OperationResponse implements
     /**
     * The service certificates that are valid for your subscription.
     */
-    public ArrayList<ServiceCertificateListResponse.Certificate> getCertificates() { return this.certificates; }
+    public ArrayList<ServiceCertificateListResponse.Certificate> getCertificates()
+    {
+        return this.certificates;
+    }
     
     /**
     * The service certificates that are valid for your subscription.
     */
-    public void setCertificates(ArrayList<ServiceCertificateListResponse.Certificate> certificates) { this.certificates = certificates; }
+    public void setCertificates(ArrayList<ServiceCertificateListResponse.Certificate> certificates)
+    {
+        this.certificates = certificates;
+    }
     
     /**
     * Initializes a new instance of the ServiceCertificateListResponse class.
@@ -51,6 +57,7 @@ public class ServiceCertificateListResponse extends OperationResponse implements
     */
     public ServiceCertificateListResponse()
     {
+        super();
         this.certificates = new ArrayList<ServiceCertificateListResponse.Certificate>();
     }
     
@@ -74,37 +81,55 @@ public class ServiceCertificateListResponse extends OperationResponse implements
         * The Service Management API request URI used to perform Get Service
         * Certificate requests against the certificate store.
         */
-        public URI getCertificateUri() { return this.certificateUri; }
+        public URI getCertificateUri()
+        {
+            return this.certificateUri;
+        }
         
         /**
         * The Service Management API request URI used to perform Get Service
         * Certificate requests against the certificate store.
         */
-        public void setCertificateUri(URI certificateUri) { this.certificateUri = certificateUri; }
+        public void setCertificateUri(URI certificateUri)
+        {
+            this.certificateUri = certificateUri;
+        }
         
         private byte[] data;
         
         /**
         * The public part of the service certificate as a .cer file.
         */
-        public byte[] getData() { return this.data; }
+        public byte[] getData()
+        {
+            return this.data;
+        }
         
         /**
         * The public part of the service certificate as a .cer file.
         */
-        public void setData(byte[] data) { this.data = data; }
+        public void setData(byte[] data)
+        {
+            this.data = data;
+        }
         
         private String thumbprint;
         
         /**
         * The X509 certificate thumb print property of the service certificate.
         */
-        public String getThumbprint() { return this.thumbprint; }
+        public String getThumbprint()
+        {
+            return this.thumbprint;
+        }
         
         /**
         * The X509 certificate thumb print property of the service certificate.
         */
-        public void setThumbprint(String thumbprint) { this.thumbprint = thumbprint; }
+        public void setThumbprint(String thumbprint)
+        {
+            this.thumbprint = thumbprint;
+        }
         
         private String thumbprintAlgorithm;
         
@@ -112,20 +137,18 @@ public class ServiceCertificateListResponse extends OperationResponse implements
         * The algorithm that was used to hash the service certificate.
         * Currently SHA-1 is the only supported algorithm.
         */
-        public String getThumbprintAlgorithm() { return this.thumbprintAlgorithm; }
+        public String getThumbprintAlgorithm()
+        {
+            return this.thumbprintAlgorithm;
+        }
         
         /**
         * The algorithm that was used to hash the service certificate.
         * Currently SHA-1 is the only supported algorithm.
         */
-        public void setThumbprintAlgorithm(String thumbprintAlgorithm) { this.thumbprintAlgorithm = thumbprintAlgorithm; }
-        
-        /**
-        * Initializes a new instance of the Certificate class.
-        *
-        */
-        public Certificate()
+        public void setThumbprintAlgorithm(String thumbprintAlgorithm)
         {
+            this.thumbprintAlgorithm = thumbprintAlgorithm;
         }
     }
 }

@@ -35,43 +35,53 @@ public class DacImportParameters
     /**
     * Gets or sets credentials for getting the DAC.
     */
-    public DacImportParameters.BlobCredentialsParameter getBlobCredentials() { return this.blobCredentials; }
+    public DacImportParameters.BlobCredentialsParameter getBlobCredentials()
+    {
+        return this.blobCredentials;
+    }
     
     /**
     * Gets or sets credentials for getting the DAC.
     */
-    public void setBlobCredentials(DacImportParameters.BlobCredentialsParameter blobCredentials) { this.blobCredentials = blobCredentials; }
+    public void setBlobCredentials(DacImportParameters.BlobCredentialsParameter blobCredentials)
+    {
+        this.blobCredentials = blobCredentials;
+    }
     
     private DacImportParameters.ConnectionInfoParameter connectionInfo;
     
     /**
     * Gets or sets connection information for the SQL Server Database.
     */
-    public DacImportParameters.ConnectionInfoParameter getConnectionInfo() { return this.connectionInfo; }
+    public DacImportParameters.ConnectionInfoParameter getConnectionInfo()
+    {
+        return this.connectionInfo;
+    }
     
     /**
     * Gets or sets connection information for the SQL Server Database.
     */
-    public void setConnectionInfo(DacImportParameters.ConnectionInfoParameter connectionInfo) { this.connectionInfo = connectionInfo; }
+    public void setConnectionInfo(DacImportParameters.ConnectionInfoParameter connectionInfo)
+    {
+        this.connectionInfo = connectionInfo;
+    }
     
     private int databaseSizeInGB;
     
     /**
     * Gets or sets the size of this database.
     */
-    public int getDatabaseSizeInGB() { return this.databaseSizeInGB; }
+    public int getDatabaseSizeInGB()
+    {
+        return this.databaseSizeInGB;
+    }
     
     /**
     * Gets or sets the size of this database.
     */
-    public void setDatabaseSizeInGB(int databaseSizeInGB) { this.databaseSizeInGB = databaseSizeInGB; }
-    
-    /**
-    * Initializes a new instance of the DacImportParameters class.
-    *
-    */
-    public DacImportParameters()
+    public void setDatabaseSizeInGB(int databaseSizeInGB)
     {
+        this.databaseSizeInGB = databaseSizeInGB;
     }
     
     /**
@@ -84,12 +94,18 @@ public class DacImportParameters
         /**
         * Gets or sets the key for the Windows Azure Storage account.
         */
-        public String getStorageAccessKey() { return this.storageAccessKey; }
+        public String getStorageAccessKey()
+        {
+            return this.storageAccessKey;
+        }
         
         /**
         * Gets or sets the key for the Windows Azure Storage account.
         */
-        public void setStorageAccessKey(String storageAccessKey) { this.storageAccessKey = storageAccessKey; }
+        public void setStorageAccessKey(String storageAccessKey)
+        {
+            this.storageAccessKey = storageAccessKey;
+        }
         
         private URI uri;
         
@@ -97,20 +113,18 @@ public class DacImportParameters
         * Gets or sets the URI of the DAC file stored in Windows Azure Blob
         * Storage.
         */
-        public URI getUri() { return this.uri; }
+        public URI getUri()
+        {
+            return this.uri;
+        }
         
         /**
         * Gets or sets the URI of the DAC file stored in Windows Azure Blob
         * Storage.
         */
-        public void setUri(URI uri) { this.uri = uri; }
-        
-        /**
-        * Initializes a new instance of the BlobCredentialsParameter class.
-        *
-        */
-        public BlobCredentialsParameter()
+        public void setUri(URI uri)
         {
+            this.uri = uri;
         }
     }
     
@@ -124,55 +138,71 @@ public class DacImportParameters
         /**
         * Gets or sets the name of the database.
         */
-        public String getDatabaseName() { return this.databaseName; }
+        public String getDatabaseName()
+        {
+            return this.databaseName;
+        }
         
         /**
         * Gets or sets the name of the database.
         */
-        public void setDatabaseName(String databaseName) { this.databaseName = databaseName; }
+        public void setDatabaseName(String databaseName)
+        {
+            this.databaseName = databaseName;
+        }
         
         private String password;
         
         /**
         * Gets or sets the password for the database user.
         */
-        public String getPassword() { return this.password; }
+        public String getPassword()
+        {
+            return this.password;
+        }
         
         /**
         * Gets or sets the password for the database user.
         */
-        public void setPassword(String password) { this.password = password; }
+        public void setPassword(String password)
+        {
+            this.password = password;
+        }
         
         private String serverName;
         
         /**
         * Gets or sets the SQL server name.
         */
-        public String getServerName() { return this.serverName; }
+        public String getServerName()
+        {
+            return this.serverName;
+        }
         
         /**
         * Gets or sets the SQL server name.
         */
-        public void setServerName(String serverName) { this.serverName = serverName; }
+        public void setServerName(String serverName)
+        {
+            this.serverName = serverName;
+        }
         
         private String userName;
         
         /**
         * Gets or sets the username of the database user.
         */
-        public String getUserName() { return this.userName; }
+        public String getUserName()
+        {
+            return this.userName;
+        }
         
         /**
         * Gets or sets the username of the database user.
         */
-        public void setUserName(String userName) { this.userName = userName; }
-        
-        /**
-        * Initializes a new instance of the ConnectionInfoParameter class.
-        *
-        */
-        public ConnectionInfoParameter()
+        public void setUserName(String userName)
         {
+            this.userName = userName;
         }
     }
 }

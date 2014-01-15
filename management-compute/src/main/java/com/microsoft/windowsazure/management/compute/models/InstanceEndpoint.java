@@ -37,14 +37,20 @@ public class InstanceEndpoint
     * serve the endpoint. This element is only listed for Virtual Machine
     * deployments.
     */
-    public Integer getLocalPort() { return this.localPort; }
+    public Integer getLocalPort()
+    {
+        return this.localPort;
+    }
     
     /**
     * Specifies the internal port on which the virtual machine is listening to
     * serve the endpoint. This element is only listed for Virtual Machine
     * deployments.
     */
-    public void setLocalPort(Integer localPort) { this.localPort = localPort; }
+    public void setLocalPort(Integer localPort)
+    {
+        this.localPort = localPort;
+    }
     
     private String name;
     
@@ -52,55 +58,71 @@ public class InstanceEndpoint
     * Specifies the name for the external endpoint. This element is only listed
     * for Virtual Machine deployments.
     */
-    public String getName() { return this.name; }
+    public String getName()
+    {
+        return this.name;
+    }
     
     /**
     * Specifies the name for the external endpoint. This element is only listed
     * for Virtual Machine deployments.
     */
-    public void setName(String name) { this.name = name; }
+    public void setName(String name)
+    {
+        this.name = name;
+    }
     
     private int port;
     
     /**
     * The external port of the role instance endpoint.
     */
-    public int getPort() { return this.port; }
+    public int getPort()
+    {
+        return this.port;
+    }
     
     /**
     * The external port of the role instance endpoint.
     */
-    public void setPort(int port) { this.port = port; }
+    public void setPort(int port)
+    {
+        this.port = port;
+    }
     
     private String protocol;
     
     /**
     * Specifies the transport protocol for the endpoint.
     */
-    public String getProtocol() { return this.protocol; }
+    public String getProtocol()
+    {
+        return this.protocol;
+    }
     
     /**
     * Specifies the transport protocol for the endpoint.
     */
-    public void setProtocol(String protocol) { this.protocol = protocol; }
+    public void setProtocol(String protocol)
+    {
+        this.protocol = protocol;
+    }
     
     private InetAddress virtualIPAddress;
     
     /**
     * The Virtual IP of the role endpoint.
     */
-    public InetAddress getVirtualIPAddress() { return this.virtualIPAddress; }
+    public InetAddress getVirtualIPAddress()
+    {
+        return this.virtualIPAddress;
+    }
     
     /**
     * The Virtual IP of the role endpoint.
     */
-    public void setVirtualIPAddress(InetAddress virtualIPAddress) { this.virtualIPAddress = virtualIPAddress; }
-    
-    /**
-    * Initializes a new instance of the InstanceEndpoint class.
-    *
-    */
-    public InstanceEndpoint()
+    public void setVirtualIPAddress(InetAddress virtualIPAddress)
     {
+        this.virtualIPAddress = virtualIPAddress;
     }
 }

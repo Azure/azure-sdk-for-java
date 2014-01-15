@@ -29,21 +29,39 @@ public class ServiceBusNotificationHub
 {
     private ArrayList<ServiceBusSharedAccessAuthorizationRule> authorizationRules;
     
-    public ArrayList<ServiceBusSharedAccessAuthorizationRule> getAuthorizationRules() { return this.authorizationRules; }
+    public ArrayList<ServiceBusSharedAccessAuthorizationRule> getAuthorizationRules()
+    {
+        return this.authorizationRules;
+    }
     
-    public void setAuthorizationRules(ArrayList<ServiceBusSharedAccessAuthorizationRule> authorizationRules) { this.authorizationRules = authorizationRules; }
+    public void setAuthorizationRules(ArrayList<ServiceBusSharedAccessAuthorizationRule> authorizationRules)
+    {
+        this.authorizationRules = authorizationRules;
+    }
     
     private String name;
     
-    public String getName() { return this.name; }
+    public String getName()
+    {
+        return this.name;
+    }
     
-    public void setName(String name) { this.name = name; }
+    public void setName(String name)
+    {
+        this.name = name;
+    }
     
     private String registrationTtl;
     
-    public String getRegistrationTtl() { return this.registrationTtl; }
+    public String getRegistrationTtl()
+    {
+        return this.registrationTtl;
+    }
     
-    public void setRegistrationTtl(String registrationTtl) { this.registrationTtl = registrationTtl; }
+    public void setRegistrationTtl(String registrationTtl)
+    {
+        this.registrationTtl = registrationTtl;
+    }
     
     /**
     * Initializes a new instance of the ServiceBusNotificationHub class.
