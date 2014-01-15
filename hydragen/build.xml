@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<project name="GenerateSpecs" default="restore-packages" basedir="." xmlns:if="ant:if">
+  <description>
+    This build file downloads the required pieces to generate code
+    for the Windows Azure management libraries.
+  </description>
+
+  <property environment="env" />
+  <property name="packageDir" location="packages" />
+  <property name="packageConfigFile" location="packages.config" />
+  <property name="nugetConfigFile" location="restore.config" />
+
+  <target name="readEnvironment">
+    <property name="nugetExePath" location="nuget.exe" />
+
+    <condition property="useMono">
+      <not>
+        <os family="winnt" />
+      </not>
+    </condition>
+
+    <condition property="nugetCmd" value="${nugetExePath}" else="mono">
+      <os family="winnt" />
+    </condition>
+  </target>
+
+  <target name="download-nuget">
+    <get src="http://nuget.org/nuget.exe" dest="nuget.exe" verbose="on" />
+  </target>
+
+  <target name="create-nuget-config" depends="readEnvironment">
+    <delete file="${nugetConfigFile}" />
+
+    <exec executable="${nugetCmd}">
+      <arg value="--runtime=v4.0.30319" if:true="${useMono}" />
+      <arg file="${nugetExePath}" if:true="${useMono}" />
+      <arg line="sources add -name private -source" />
+      <arg value="${env.PRIVATE_FEED_URL}" />
+      <arg value="-ConfigFile" />
+      <arg value="${nugetConfigFile}" />
+    </exec>
+
+    <exec executable="${nugetCmd}">
+      <arg value="--runtime=v4.0.30319" if:true="${useMono}" />
+      <arg file="${nugetExePath}" if:true="${useMono}" />
+      <arg line="sources update -name private -username" />
+      <arg value="${env.PRIVATE_FEED_USER_NAME}" />
+      <arg value="-password" />
+      <arg value="${env.PRIVATE_FEED_PASSWORD}" />
+      <arg value="-ConfigFile" />
+      <arg value="${nugetConfigFile}" />
+    </exec>
+  </target>
+
+  <target name="restore-packages" depends="download-nuget,create-nuget-config">
+    <exec executable="${nugetCmd}">
+      <arg value="--runtime=v4.0.30319" if:true="${useMono}" />
+      <arg value="${nugetExePath}" if:true="${useMono}" />
+      <arg value="restore" />
+      <arg file="${packageConfigFile}" />
+      <arg value="-PackagesDirectory" />
+      <arg file="${packageDir}" />
+    </exec>
+  </target>
+</project>
