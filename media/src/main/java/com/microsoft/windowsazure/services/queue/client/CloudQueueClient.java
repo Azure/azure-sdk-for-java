@@ -44,7 +44,8 @@ import com.microsoft.windowsazure.services.core.storage.utils.implementation.Sto
 /**
  * Provides a service client for accessing the Windows Azure Queue service.
  */
-public final class CloudQueueClient extends ServiceClient {
+public final class CloudQueueClient extends ServiceClient
+{
 
     /**
      * Initializes a new instance of the <code>CloudQueueClient</code> class
@@ -55,12 +56,16 @@ public final class CloudQueueClient extends ServiceClient {
      * @param credentials
      *            The account credentials.
      */
-    public CloudQueueClient(final URI baseUri, final StorageCredentials credentials) {
+    public CloudQueueClient(final URI baseUri,
+            final StorageCredentials credentials)
+    {
         super(baseUri, credentials);
         this.setTimeoutInMs(QueueConstants.DEFAULT_QUEUE_CLIENT_TIMEOUT_IN_MS);
 
-        if (credentials == null) {
-            throw new IllegalArgumentException("StorageCredentials can't be null for the queue service.");
+        if (credentials == null)
+        {
+            throw new IllegalArgumentException(
+                    "StorageCredentials can't be null for the queue service.");
         }
     }
 
@@ -80,7 +85,9 @@ public final class CloudQueueClient extends ServiceClient {
      * @throws StorageException
      *             If a storage service error occurred during the operation.
      */
-    public CloudQueue getQueueReference(final String queueAddress) throws URISyntaxException, StorageException {
+    public CloudQueue getQueueReference(final String queueAddress)
+            throws URISyntaxException, StorageException
+    {
         Utility.assertNotNullOrEmpty("queueAddress", queueAddress);
         return new CloudQueue(queueAddress, this);
     }
@@ -92,7 +99,8 @@ public final class CloudQueueClient extends ServiceClient {
      *         represent the queues in this client.
      */
     @DoesServiceRequest
-    public Iterable<CloudQueue> listQueues() {
+    public Iterable<CloudQueue> listQueues()
+    {
         return this.listQueues(null, QueueListingDetails.NONE, null, null);
     }
 
@@ -108,7 +116,8 @@ public final class CloudQueueClient extends ServiceClient {
      *         specified prefix.
      */
     @DoesServiceRequest
-    public Iterable<CloudQueue> listQueues(final String prefix) {
+    public Iterable<CloudQueue> listQueues(final String prefix)
+    {
         return this.listQueues(prefix, QueueListingDetails.NONE, null, null);
     }
 
@@ -124,8 +133,8 @@ public final class CloudQueueClient extends ServiceClient {
      *            queue metadata will be returned.
      * @param options
      *            A {@link QueueRequestOptions} object that specifies any
-     *            additional options for the request. Specifying <code>null</code> will use the default request options
-     *            from
+     *            additional options for the request. Specifying
+     *            <code>null</code> will use the default request options from
      *            the associated service client ( {@link CloudQueue}).
      * @param opContext
      *            An {@link OperationContext} object that represents the context
@@ -137,13 +146,17 @@ public final class CloudQueueClient extends ServiceClient {
      *         represents the specified queues for this client.
      */
     @DoesServiceRequest
-    public Iterable<CloudQueue> listQueues(final String prefix, final QueueListingDetails detailsIncluded,
-            QueueRequestOptions options, OperationContext opContext) {
-        if (opContext == null) {
+    public Iterable<CloudQueue> listQueues(final String prefix,
+            final QueueListingDetails detailsIncluded,
+            QueueRequestOptions options, OperationContext opContext)
+    {
+        if (opContext == null)
+        {
             opContext = new OperationContext();
         }
 
-        if (options == null) {
+        if (options == null)
+        {
             options = new QueueRequestOptions();
         }
 
@@ -151,21 +164,26 @@ public final class CloudQueueClient extends ServiceClient {
         options.applyDefaults(this);
 
         final SegmentedStorageOperation<CloudQueueClient, Void, ResultSegment<CloudQueue>> impl = new SegmentedStorageOperation<CloudQueueClient, Void, ResultSegment<CloudQueue>>(
-                options, null) {
+                options, null)
+        {
             @Override
-            public ResultSegment<CloudQueue> execute(final CloudQueueClient client, final Void dontCare,
-                    final OperationContext opContext) throws Exception {
+            public ResultSegment<CloudQueue> execute(
+                    final CloudQueueClient client, final Void dontCare,
+                    final OperationContext opContext) throws Exception
+            {
 
-                final ResultSegment<CloudQueue> result = CloudQueueClient.this.listQueuesCore(prefix, detailsIncluded,
-                        -1, this.getToken(), this.getRequestOptions(), this, opContext);
+                final ResultSegment<CloudQueue> result = CloudQueueClient.this
+                        .listQueuesCore(prefix, detailsIncluded, -1,
+                                this.getToken(), this.getRequestOptions(),
+                                this, opContext);
 
                 this.setToken(result.getContinuationToken());
                 return result;
             }
         };
 
-        return new LazySegmentedIterable<CloudQueueClient, Void, CloudQueue>(impl, this, null,
-                options.getRetryPolicyFactory(), opContext);
+        return new LazySegmentedIterable<CloudQueueClient, Void, CloudQueue>(
+                impl, this, null, options.getRetryPolicyFactory(), opContext);
     }
 
     /**
@@ -185,8 +203,8 @@ public final class CloudQueueClient extends ServiceClient {
      *            continuation token returned by a previous listing operation.
      * @param options
      *            A {@link QueueRequestOptions} object that specifies any
-     *            additional options for the request. Specifying <code>null</code> will use the default request options
-     *            from
+     *            additional options for the request. Specifying
+     *            <code>null</code> will use the default request options from
      *            the associated service client ( {@link CloudQueue}).
      * @param taskReference
      *            A {@link StorageOperation} reference to the encapsulating
@@ -198,8 +216,8 @@ public final class CloudQueueClient extends ServiceClient {
      *            runtime information about the operation.
      * 
      * @return A {@link ResultSegment} of {@link CloudQueue} objects that
-     *         contains a segment of the iterable collection of {@link CloudQueue} objects that represent the requested
-     *         queues in
+     *         contains a segment of the iterable collection of
+     *         {@link CloudQueue} objects that represent the requested queues in
      *         the storage service.
      * 
      * @throws IOException
@@ -211,43 +229,57 @@ public final class CloudQueueClient extends ServiceClient {
      *             If a storage service error occurred during the operation.
      */
     @DoesServiceRequest
-    ResultSegment<CloudQueue> listQueuesCore(final String prefix, final QueueListingDetails detailsIncluded,
-            final int maxResults, final ResultContinuation continuationToken, final RequestOptions options,
+    ResultSegment<CloudQueue> listQueuesCore(
+            final String prefix,
+            final QueueListingDetails detailsIncluded,
+            final int maxResults,
+            final ResultContinuation continuationToken,
+            final RequestOptions options,
             final StorageOperation<CloudQueueClient, Void, ResultSegment<CloudQueue>> taskReference,
-            final OperationContext opContext) throws IOException, URISyntaxException, XMLStreamException,
-            InvalidKeyException, StorageException {
+            final OperationContext opContext) throws IOException,
+            URISyntaxException, XMLStreamException, InvalidKeyException,
+            StorageException
+    {
 
-        Utility.assertContinuationType(continuationToken, ResultContinuationType.QUEUE);
+        Utility.assertContinuationType(continuationToken,
+                ResultContinuationType.QUEUE);
 
-        final ListingContext listingContext = new ListingContext(prefix, maxResults);
-        listingContext.setMarker(continuationToken != null ? continuationToken.getNextMarker() : null);
+        final ListingContext listingContext = new ListingContext(prefix,
+                maxResults);
+        listingContext.setMarker(continuationToken != null ? continuationToken
+                .getNextMarker() : null);
 
-        final HttpURLConnection listQueueRequest = QueueRequest.list(this.getEndpoint(),
-                options.getTimeoutIntervalInMs(), listingContext, detailsIncluded, opContext);
+        final HttpURLConnection listQueueRequest = QueueRequest.list(
+                this.getEndpoint(), options.getTimeoutIntervalInMs(),
+                listingContext, detailsIncluded, opContext);
         taskReference.setConnection(listQueueRequest);
 
         taskReference.signRequest(this, listQueueRequest, -1L, null);
 
-        ExecutionEngine.processRequest(listQueueRequest, opContext, taskReference.getResult());
+        ExecutionEngine.processRequest(listQueueRequest, opContext,
+                taskReference.getResult());
 
-        if (taskReference.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
+        if (taskReference.getResult().getStatusCode() != HttpURLConnection.HTTP_OK)
+        {
             taskReference.setNonExceptionedRetryableFailure(true);
             return null;
         }
 
-        final ListQueuesResponse response = new ListQueuesResponse(listQueueRequest.getInputStream());
+        final ListQueuesResponse response = new ListQueuesResponse(
+                listQueueRequest.getInputStream());
         response.parseResponse(this);
 
         ResultContinuation newToken = null;
 
-        if (response.getNextMarker() != null) {
+        if (response.getNextMarker() != null)
+        {
             newToken = new ResultContinuation();
             newToken.setNextMarker(response.getNextMarker());
             newToken.setContinuationType(ResultContinuationType.QUEUE);
         }
 
-        final ResultSegment<CloudQueue> resSegment = new ResultSegment<CloudQueue>(response.getQueues(this),
-                maxResults, newToken);
+        final ResultSegment<CloudQueue> resSegment = new ResultSegment<CloudQueue>(
+                response.getQueues(this), maxResults, newToken);
 
         return resSegment;
     }
@@ -257,16 +289,19 @@ public final class CloudQueueClient extends ServiceClient {
      * service client.
      * 
      * @return A {@link ResultSegment} of {@link CloudQueue} objects that
-     *         contains a segment of the iterable collection of {@link CloudQueue} objects that represent the requested
-     *         queues in
+     *         contains a segment of the iterable collection of
+     *         {@link CloudQueue} objects that represent the requested queues in
      *         the storage service.
      * 
      * @throws StorageException
      *             If a storage service error occurred during the operation.
      */
     @DoesServiceRequest
-    public ResultSegment<CloudQueue> listQueuesSegmented() throws StorageException {
-        return this.listQueuesSegmented(null, QueueListingDetails.NONE, 0, null, null, null);
+    public ResultSegment<CloudQueue> listQueuesSegmented()
+            throws StorageException
+    {
+        return this.listQueuesSegmented(null, QueueListingDetails.NONE, 0,
+                null, null, null);
     }
 
     /**
@@ -274,16 +309,19 @@ public final class CloudQueueClient extends ServiceClient {
      * begin with the specified prefix for this Queue service client.
      * 
      * @return A {@link ResultSegment} of {@link CloudQueue} objects that
-     *         contains a segment of the iterable collection of {@link CloudQueue} objects that represent the requested
-     *         queues in
+     *         contains a segment of the iterable collection of
+     *         {@link CloudQueue} objects that represent the requested queues in
      *         the storage service.
      * 
      * @throws StorageException
      *             If a storage service error occurred during the operation.
      */
     @DoesServiceRequest
-    public ResultSegment<CloudQueue> listQueuesSegmented(final String prefix) throws StorageException {
-        return this.listQueuesSegmented(prefix, QueueListingDetails.NONE, 0, null, null, null);
+    public ResultSegment<CloudQueue> listQueuesSegmented(final String prefix)
+            throws StorageException
+    {
+        return this.listQueuesSegmented(prefix, QueueListingDetails.NONE, 0,
+                null, null, null);
     }
 
     /**
@@ -304,8 +342,8 @@ public final class CloudQueueClient extends ServiceClient {
      *            continuation token returned by a previous listing operation.
      * @param options
      *            A {@link QueueRequestOptions} object that specifies any
-     *            additional options for the request. Specifying <code>null</code> will use the default request options
-     *            from
+     *            additional options for the request. Specifying
+     *            <code>null</code> will use the default request options from
      *            the associated service client ( {@link CloudQueue}).
      * @param opContext
      *            An {@link OperationContext} object that represents the context
@@ -314,8 +352,8 @@ public final class CloudQueueClient extends ServiceClient {
      *            runtime information about the operation.
      * 
      * @return A {@link ResultSegment} of {@link CloudQueue} objects that
-     *         contains a segment of the iterable collection of {@link CloudQueue} objects that represent the requested
-     *         queues in
+     *         contains a segment of the iterable collection of
+     *         {@link CloudQueue} objects that represent the requested queues in
      *         the storage service.
      * 
      * @throws StorageException
@@ -324,33 +362,43 @@ public final class CloudQueueClient extends ServiceClient {
     @DoesServiceRequest
     public ResultSegment<CloudQueue> listQueuesSegmented(final String prefix,
             final QueueListingDetails detailsIncluded, final int maxResults,
-            final ResultContinuation continuationToken, QueueRequestOptions options, OperationContext opContext)
-            throws StorageException {
+            final ResultContinuation continuationToken,
+            QueueRequestOptions options, OperationContext opContext)
+            throws StorageException
+    {
 
-        if (opContext == null) {
+        if (opContext == null)
+        {
             opContext = new OperationContext();
         }
 
-        if (options == null) {
+        if (options == null)
+        {
             options = new QueueRequestOptions();
         }
 
         opContext.initialize();
         options.applyDefaults(this);
 
-        Utility.assertContinuationType(continuationToken, ResultContinuationType.QUEUE);
+        Utility.assertContinuationType(continuationToken,
+                ResultContinuationType.QUEUE);
 
         final StorageOperation<CloudQueueClient, Void, ResultSegment<CloudQueue>> impl = new StorageOperation<CloudQueueClient, Void, ResultSegment<CloudQueue>>(
-                options) {
+                options)
+        {
             @Override
-            public ResultSegment<CloudQueue> execute(final CloudQueueClient client, final Void dontCare,
-                    final OperationContext opContext) throws Exception {
-                return CloudQueueClient.this.listQueuesCore(prefix, detailsIncluded, maxResults, continuationToken,
+            public ResultSegment<CloudQueue> execute(
+                    final CloudQueueClient client, final Void dontCare,
+                    final OperationContext opContext) throws Exception
+            {
+                return CloudQueueClient.this.listQueuesCore(prefix,
+                        detailsIncluded, maxResults, continuationToken,
                         this.getRequestOptions(), this, opContext);
             }
         };
 
-        return ExecutionEngine.executeWithRetry(this, null, impl, options.getRetryPolicyFactory(), opContext);
+        return ExecutionEngine.executeWithRetry(this, null, impl,
+                options.getRetryPolicyFactory(), opContext);
     }
 
     /**
@@ -366,7 +414,9 @@ public final class CloudQueueClient extends ServiceClient {
      */
     @DoesServiceRequest
     @Override
-    public void uploadServiceProperties(final ServiceProperties properties) throws StorageException {
+    public void uploadServiceProperties(final ServiceProperties properties)
+            throws StorageException
+    {
         this.uploadServiceProperties(properties, null, null);
     }
 
@@ -393,9 +443,12 @@ public final class CloudQueueClient extends ServiceClient {
      */
     @DoesServiceRequest
     @Override
-    public void uploadServiceProperties(final ServiceProperties properties, final RequestOptions options,
-            final OperationContext opContext) throws StorageException {
-        if (!Utility.isNullOrEmpty(properties.getDefaultServiceVersion())) {
+    public void uploadServiceProperties(final ServiceProperties properties,
+            final RequestOptions options, final OperationContext opContext)
+            throws StorageException
+    {
+        if (!Utility.isNullOrEmpty(properties.getDefaultServiceVersion()))
+        {
             throw new IllegalArgumentException(
                     "DefaultServiceVersion can only be set for the Blob service and the request must be made using the 2011-08-18 version");
         }

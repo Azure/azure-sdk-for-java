@@ -14,37 +14,44 @@
  */
 package com.microsoft.windowsazure.services.servicebus.models;
 
-public abstract class AbstractListOptions<T> {
+public abstract class AbstractListOptions<T>
+{
     Integer skip;
     Integer top;
     String filter;
 
-    public Integer getSkip() {
+    public Integer getSkip()
+    {
         return skip;
     }
 
     @SuppressWarnings("unchecked")
-    public T setSkip(Integer skip) {
+    public T setSkip(Integer skip)
+    {
         this.skip = skip;
         return (T) this;
     }
 
-    public Integer getTop() {
+    public Integer getTop()
+    {
         return top;
     }
 
     @SuppressWarnings("unchecked")
-    public T setTop(Integer top) {
+    public T setTop(Integer top)
+    {
         this.top = top;
         return (T) this;
     }
 
-    public String getFilter() {
+    public String getFilter()
+    {
         return filter;
     }
 
     @SuppressWarnings("unchecked")
-    public T setFilter(String filter) {
+    public T setFilter(String filter)
+    {
         this.filter = filter;
         return (T) this;
     }

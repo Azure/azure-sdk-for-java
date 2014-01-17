@@ -17,14 +17,17 @@ package com.microsoft.windowsazure.serviceruntime;
 /**
  * 
  */
-class CurrentState {
+class CurrentState
+{
     private final String clientId;
 
-    public CurrentState(String clientId) {
+    public CurrentState(String clientId)
+    {
         this.clientId = clientId;
     }
 
-    public String getClientId() {
+    public String getClientId()
+    {
         return clientId;
     }
 }

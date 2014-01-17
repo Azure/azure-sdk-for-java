@@ -28,7 +28,8 @@ import com.microsoft.windowsazure.services.media.implementation.content.TaskType
 /**
  * The Class TaskInfo.
  */
-public class TaskInfo extends ODataEntity<TaskType> {
+public class TaskInfo extends ODataEntity<TaskType>
+{
 
     /**
      * Instantiates a new task info.
@@ -38,7 +39,8 @@ public class TaskInfo extends ODataEntity<TaskType> {
      * @param content
      *            the content
      */
-    public TaskInfo(EntryType entry, TaskType content) {
+    public TaskInfo(EntryType entry, TaskType content)
+    {
         super(entry, content);
     }
 
@@ -47,7 +49,8 @@ public class TaskInfo extends ODataEntity<TaskType> {
      * 
      * @return the id
      */
-    public String getId() {
+    public String getId()
+    {
         return getContent().getId();
     }
 
@@ -56,7 +59,8 @@ public class TaskInfo extends ODataEntity<TaskType> {
      * 
      * @return the configuration
      */
-    public String getConfiguration() {
+    public String getConfiguration()
+    {
         return getContent().getConfiguration();
     }
 
@@ -65,7 +69,8 @@ public class TaskInfo extends ODataEntity<TaskType> {
      * 
      * @return the end time
      */
-    public Date getEndTime() {
+    public Date getEndTime()
+    {
         return getContent().getEndTime();
     }
 
@@ -74,12 +79,16 @@ public class TaskInfo extends ODataEntity<TaskType> {
      * 
      * @return the error details
      */
-    public List<ErrorDetail> getErrorDetails() {
+    public List<ErrorDetail> getErrorDetails()
+    {
         List<ErrorDetail> result = new ArrayList<ErrorDetail>();
         List<ErrorDetailType> errorDetailTypes = getContent().getErrorDetails();
-        if (errorDetailTypes != null) {
-            for (ErrorDetailType errorDetailType : errorDetailTypes) {
-                ErrorDetail errorDetail = new ErrorDetail(errorDetailType.getCode(), errorDetailType.getMessage());
+        if (errorDetailTypes != null)
+        {
+            for (ErrorDetailType errorDetailType : errorDetailTypes)
+            {
+                ErrorDetail errorDetail = new ErrorDetail(
+                        errorDetailType.getCode(), errorDetailType.getMessage());
                 result.add(errorDetail);
             }
             return result;
@@ -92,18 +101,24 @@ public class TaskInfo extends ODataEntity<TaskType> {
      * 
      * @return the task historical events
      */
-    public List<TaskHistoricalEvent> getHistoricalEvents() {
+    public List<TaskHistoricalEvent> getHistoricalEvents()
+    {
         List<TaskHistoricalEvent> result = new ArrayList<TaskHistoricalEvent>();
-        List<TaskHistoricalEventType> historicalEventTypes = getContent().getHistoricalEventTypes();
+        List<TaskHistoricalEventType> historicalEventTypes = getContent()
+                .getHistoricalEventTypes();
 
-        if (historicalEventTypes != null) {
-            for (TaskHistoricalEventType taskHistoricalEventType : historicalEventTypes) {
+        if (historicalEventTypes != null)
+        {
+            for (TaskHistoricalEventType taskHistoricalEventType : historicalEventTypes)
+            {
                 String message = taskHistoricalEventType.getMessage();
-                if ((message != null) && (message.isEmpty())) {
+                if ((message != null) && (message.isEmpty()))
+                {
                     message = null;
                 }
-                TaskHistoricalEvent taskHistoricalEvent = new TaskHistoricalEvent(taskHistoricalEventType.getCode(),
-                        message, taskHistoricalEventType.getTimeStamp());
+                TaskHistoricalEvent taskHistoricalEvent = new TaskHistoricalEvent(
+                        taskHistoricalEventType.getCode(), message,
+                        taskHistoricalEventType.getTimeStamp());
                 result.add(taskHistoricalEvent);
             }
         }
@@ -116,7 +131,8 @@ public class TaskInfo extends ODataEntity<TaskType> {
      * 
      * @return the media processor id
      */
-    public String getMediaProcessorId() {
+    public String getMediaProcessorId()
+    {
         return getContent().getMediaProcessorId();
     }
 
@@ -125,7 +141,8 @@ public class TaskInfo extends ODataEntity<TaskType> {
      * 
      * @return the name
      */
-    public String getName() {
+    public String getName()
+    {
         return getContent().getName();
     }
 
@@ -134,7 +151,8 @@ public class TaskInfo extends ODataEntity<TaskType> {
      * 
      * @return the perf message
      */
-    public String getPerfMessage() {
+    public String getPerfMessage()
+    {
         return getContent().getPerfMessage();
     }
 
@@ -143,7 +161,8 @@ public class TaskInfo extends ODataEntity<TaskType> {
      * 
      * @return the priority
      */
-    public int getPriority() {
+    public int getPriority()
+    {
         return getContent().getPriority();
     }
 
@@ -152,7 +171,8 @@ public class TaskInfo extends ODataEntity<TaskType> {
      * 
      * @return the progress
      */
-    public double getProgress() {
+    public double getProgress()
+    {
         return getContent().getProgress();
     }
 
@@ -161,7 +181,8 @@ public class TaskInfo extends ODataEntity<TaskType> {
      * 
      * @return the running duration
      */
-    public double getRunningDuration() {
+    public double getRunningDuration()
+    {
         return getContent().getRunningDuration();
     }
 
@@ -170,7 +191,8 @@ public class TaskInfo extends ODataEntity<TaskType> {
      * 
      * @return the start time
      */
-    public Date getStartTime() {
+    public Date getStartTime()
+    {
         return getContent().getStartTime();
     }
 
@@ -179,7 +201,8 @@ public class TaskInfo extends ODataEntity<TaskType> {
      * 
      * @return the state
      */
-    public TaskState getState() {
+    public TaskState getState()
+    {
         return TaskState.fromCode(getContent().getState());
     }
 
@@ -188,7 +211,8 @@ public class TaskInfo extends ODataEntity<TaskType> {
      * 
      * @return the task body
      */
-    public String getTaskBody() {
+    public String getTaskBody()
+    {
         return getContent().getTaskBody();
     }
 
@@ -197,7 +221,8 @@ public class TaskInfo extends ODataEntity<TaskType> {
      * 
      * @return the options
      */
-    public TaskOption getOptions() {
+    public TaskOption getOptions()
+    {
         return TaskOption.fromCode(getContent().getOptions());
     }
 
@@ -206,7 +231,8 @@ public class TaskInfo extends ODataEntity<TaskType> {
      * 
      * @return the encryption key id
      */
-    public String getEncryptionKeyId() {
+    public String getEncryptionKeyId()
+    {
         return getContent().getEncryptionKeyId();
     }
 
@@ -215,7 +241,8 @@ public class TaskInfo extends ODataEntity<TaskType> {
      * 
      * @return the encryption scheme
      */
-    public String getEncryptionScheme() {
+    public String getEncryptionScheme()
+    {
         return getContent().getEncryptionScheme();
     }
 
@@ -224,7 +251,8 @@ public class TaskInfo extends ODataEntity<TaskType> {
      * 
      * @return the encryption version
      */
-    public String getEncryptionVersion() {
+    public String getEncryptionVersion()
+    {
         return getContent().getEncryptionVersion();
     }
 
@@ -233,7 +261,8 @@ public class TaskInfo extends ODataEntity<TaskType> {
      * 
      * @return the initialization vector
      */
-    public String getInitializationVector() {
+    public String getInitializationVector()
+    {
         return getContent().getInitializationVector();
     }
 
@@ -242,7 +271,8 @@ public class TaskInfo extends ODataEntity<TaskType> {
      * 
      * @return the link
      */
-    public LinkInfo<AssetInfo> getInputAssetsLink() {
+    public LinkInfo<AssetInfo> getInputAssetsLink()
+    {
         return this.<AssetInfo> getRelationLink("InputMediaAssets");
     }
 
@@ -251,7 +281,8 @@ public class TaskInfo extends ODataEntity<TaskType> {
      * 
      * @return the link
      */
-    public LinkInfo<AssetInfo> getOutputAssetsLink() {
+    public LinkInfo<AssetInfo> getOutputAssetsLink()
+    {
         return this.<AssetInfo> getRelationLink("OutputMediaAssets");
     }
 }

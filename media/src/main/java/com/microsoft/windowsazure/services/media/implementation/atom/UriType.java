@@ -20,7 +20,6 @@
 // Generated on: 2012.09.17 at 02:31:28 PM PDT 
 //
 
-
 package com.microsoft.windowsazure.services.media.implementation.atom;
 
 import java.util.HashMap;
@@ -36,11 +35,13 @@ import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import javax.xml.namespace.QName;
 
-
 /**
- * <p>Java class for uriType complex type.
+ * <p>
+ * Java class for uriType complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="uriType">
@@ -56,10 +57,9 @@ import javax.xml.namespace.QName;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "uriType", propOrder = {
-    "value"
-})
-public class UriType {
+@XmlType(name = "uriType", propOrder = { "value" })
+public class UriType
+{
 
     @XmlValue
     @XmlSchemaType(name = "anyURI")
@@ -77,12 +77,11 @@ public class UriType {
     /**
      * Gets the value of the value property.
      * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     * @return possible object is {@link String }
+     * 
      */
-    public String getValue() {
+    public String getValue()
+    {
         return value;
     }
 
@@ -90,23 +89,22 @@ public class UriType {
      * Sets the value of the value property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *            allowed object is {@link String }
+     * 
      */
-    public void setValue(String value) {
+    public void setValue(String value)
+    {
         this.value = value;
     }
 
     /**
      * Gets the value of the base property.
      * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     * @return possible object is {@link String }
+     * 
      */
-    public String getBase() {
+    public String getBase()
+    {
         return base;
     }
 
@@ -114,23 +112,22 @@ public class UriType {
      * Sets the value of the base property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *            allowed object is {@link String }
+     * 
      */
-    public void setBase(String value) {
+    public void setBase(String value)
+    {
         this.base = value;
     }
 
     /**
      * Gets the value of the lang property.
      * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     * @return possible object is {@link String }
+     * 
      */
-    public String getLang() {
+    public String getLang()
+    {
         return lang;
     }
 
@@ -138,29 +135,30 @@ public class UriType {
      * Sets the value of the lang property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *            allowed object is {@link String }
+     * 
      */
-    public void setLang(String value) {
+    public void setLang(String value)
+    {
         this.lang = value;
     }
 
     /**
-     * Gets a map that contains attributes that aren't bound to any typed property on this class.
+     * Gets a map that contains attributes that aren't bound to any typed
+     * property on this class.
      * 
      * <p>
-     * the map is keyed by the name of the attribute and 
-     * the value is the string value of the attribute.
+     * the map is keyed by the name of the attribute and the value is the string
+     * value of the attribute.
      * 
-     * the map returned by this method is live, and you can add new attribute
-     * by updating the map directly. Because of this design, there's no setter.
+     * the map returned by this method is live, and you can add new attribute by
+     * updating the map directly. Because of this design, there's no setter.
      * 
      * 
-     * @return
-     *     always non-null
+     * @return always non-null
      */
-    public Map<QName, String> getOtherAttributes() {
+    public Map<QName, String> getOtherAttributes()
+    {
         return otherAttributes;
     }
 

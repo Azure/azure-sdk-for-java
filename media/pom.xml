@@ -145,65 +145,6 @@
           <target>1.6</target>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>org.jvnet.jaxb2.maven2</groupId>
-        <artifactId>maven-jaxb2-plugin</artifactId>
-        <version>0.8.3</version>
-        <executions>
-          <execution>
-            <id>serviceBus</id>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>generate</goal>
-            </goals>
-            <configuration>
-                <generateDirectory>target/generated-sources/xjc</generateDirectory>
-                <schemaDirectory>src/main/resources/serviceBus</schemaDirectory>
-                <schemaIncludes> 
-                    <include>servicebus-atom.xsd</include> 
-                </schemaIncludes>
-                <generatePackage>com.microsoft.windowsazure.services.servicebus.implementation</generatePackage>
-                <removeOldOutput>false</removeOldOutput>
-                <forceRegenerate>true</forceRegenerate>
-            </configuration>
-          </execution>
-          <execution>
-            <id>management</id>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>generate</goal>
-            </goals>
-            <configuration>
-                <generateDirectory>target/generated-sources/xjc</generateDirectory>
-                <schemaDirectory>src/main/resources/management/</schemaDirectory>
-                <schemaIncludes>
-                    <include>schemas.microsoft.com.windowsazure.xsd</include>
-                </schemaIncludes>
-                <generatePackage>com.microsoft.windowsazure.services.management.implementation</generatePackage>
-                <removeOldOutput>false</removeOldOutput>
-                <forceRegenerate>true</forceRegenerate>
-            </configuration> 
-          </execution>
-        </executions>
-        <configuration>
-          <extension>true</extension>
-          <debug>true</debug>
-          <verbose>true</verbose>
-          <plugins>
-            <plugin>
-              <groupId>org.jvnet.jaxb2_commons</groupId>
-              <artifactId>jaxb2-basics</artifactId>
-              <version>0.6.4</version>
-            </plugin>
-            <plugin>
-              <groupId>org.jvnet.jaxb2_commons</groupId>
-              <artifactId>jaxb2-basics-annotate</artifactId>
-              <version>0.6.4</version>
-            </plugin>
-          </plugins>
-
-        </configuration>
-      </plugin>
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -225,26 +166,6 @@
 <br/>* See the License for the specific language governing permissions and
 <br/>* limitations under the License.
 <br/>*/</code>]]></bottom>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>findbugs-maven-plugin</artifactId>
-        <version>2.3.2</version>
-        <configuration>
-          <xmlOutput>true</xmlOutput>
-          <findbugsXmlOutput>true</findbugsXmlOutput>
-          <findbugsXmlWithMessages>true</findbugsXmlWithMessages>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>2.8</version>
-        <configuration>
-          <configLocation>src/config/checkstyle.xml</configLocation>
         </configuration>
       </plugin>
 

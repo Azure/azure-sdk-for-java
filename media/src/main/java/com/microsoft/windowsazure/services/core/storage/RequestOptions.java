@@ -20,10 +20,12 @@ package com.microsoft.windowsazure.services.core.storage;
 /**
  * Represents the options to use while processing a given request.
  */
-public class RequestOptions {
+public class RequestOptions
+{
 
     /**
-     * The instance of the {@link RetryPolicyFactory} interface to use for the request.
+     * The instance of the {@link RetryPolicyFactory} interface to use for the
+     * request.
      */
     private RetryPolicyFactory retryPolicyFactory;
 
@@ -35,34 +37,41 @@ public class RequestOptions {
     /**
      * Creates an instance of the <code>RequestOptions</code> class.
      */
-    public RequestOptions() {
+    public RequestOptions()
+    {
         // Empty Default Ctor
     }
 
     /**
-     * Creates an instance of the <code>RequestOptions</code> class by copying values from another
-     * <code>RequestOptions</code> instance.
+     * Creates an instance of the <code>RequestOptions</code> class by copying
+     * values from another <code>RequestOptions</code> instance.
      * 
      * @param other
-     *            A <code>RequestOptions</code> object that represents the request options to copy.
+     *            A <code>RequestOptions</code> object that represents the
+     *            request options to copy.
      */
-    public RequestOptions(final RequestOptions other) {
+    public RequestOptions(final RequestOptions other)
+    {
         this.setTimeoutIntervalInMs(other.getTimeoutIntervalInMs());
         this.setRetryPolicyFactory(other.getRetryPolicyFactory());
     }
 
     /**
-     * Populates the default timeout and retry policy from client if they are null.
+     * Populates the default timeout and retry policy from client if they are
+     * null.
      * 
      * @param client
      *            the service client to populate from
      */
-    protected final void applyBaseDefaults(final ServiceClient client) {
-        if (this.getRetryPolicyFactory() == null) {
+    protected final void applyBaseDefaults(final ServiceClient client)
+    {
+        if (this.getRetryPolicyFactory() == null)
+        {
             this.setRetryPolicyFactory(client.getRetryPolicyFactory());
         }
 
-        if (this.getTimeoutIntervalInMs() == null) {
+        if (this.getTimeoutIntervalInMs() == null)
+        {
             this.setTimeoutIntervalInMs(client.getTimeoutInMs());
         }
     }
@@ -70,14 +79,16 @@ public class RequestOptions {
     /**
      * @return the retryPolicyFactory
      */
-    public final RetryPolicyFactory getRetryPolicyFactory() {
+    public final RetryPolicyFactory getRetryPolicyFactory()
+    {
         return this.retryPolicyFactory;
     }
 
     /**
      * @return the timeoutIntervalInMs
      */
-    public final Integer getTimeoutIntervalInMs() {
+    public final Integer getTimeoutIntervalInMs()
+    {
         return this.timeoutIntervalInMs;
     }
 
@@ -85,7 +96,9 @@ public class RequestOptions {
      * @param retryPolicyFactory
      *            the retryPolicyFactory to set
      */
-    public final void setRetryPolicyFactory(final RetryPolicyFactory retryPolicyFactory) {
+    public final void setRetryPolicyFactory(
+            final RetryPolicyFactory retryPolicyFactory)
+    {
         this.retryPolicyFactory = retryPolicyFactory;
     }
 
@@ -93,7 +106,8 @@ public class RequestOptions {
      * @param timeoutIntervalInMs
      *            the timeoutIntervalInMs to set
      */
-    public final void setTimeoutIntervalInMs(final Integer timeoutIntervalInMs) {
+    public final void setTimeoutIntervalInMs(final Integer timeoutIntervalInMs)
+    {
         this.timeoutIntervalInMs = timeoutIntervalInMs;
     }
 }

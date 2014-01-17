@@ -24,7 +24,8 @@ import com.sun.jersey.api.client.GenericType;
  * Operation class to retrieve a list of entities
  * 
  */
-public interface EntityListOperation<T> extends EntityOperation {
+public interface EntityListOperation<T> extends EntityOperation
+{
 
     /**
      * Get query parameters to add to the uri

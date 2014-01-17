@@ -24,15 +24,19 @@ import com.microsoft.windowsazure.services.core.storage.LeaseStatus;
 /**
  * Represents the system properties for a container.
  */
-public final class BlobContainerProperties {
+public final class BlobContainerProperties
+{
 
     /**
      * Represents the ETag value for the container.
      * <p>
-     * The ETag value is a unique identifier that is updated when a write operation is performed against the container.
-     * It may be used to perform operations conditionally, providing concurrency control and improved efficiency.
+     * The ETag value is a unique identifier that is updated when a write
+     * operation is performed against the container. It may be used to perform
+     * operations conditionally, providing concurrency control and improved
+     * efficiency.
      * <p>
-     * The {@link AccessCondition#ifMatch} and {@link AccessCondition#ifNoneMatch} methods take an ETag value and return
+     * The {@link AccessCondition#ifMatch} and
+     * {@link AccessCondition#ifNoneMatch} methods take an ETag value and return
      * an {@link AccessCondition} object that may be specified on the request.
      */
     private String etag;
@@ -60,14 +64,16 @@ public final class BlobContainerProperties {
     /**
      * @return the etag
      */
-    public String getEtag() {
+    public String getEtag()
+    {
         return this.etag;
     }
 
     /**
      * @return the lastModified
      */
-    public Date getLastModified() {
+    public Date getLastModified()
+    {
         return this.lastModified;
     }
 
@@ -76,7 +82,8 @@ public final class BlobContainerProperties {
      * 
      * @return The lease status as a <code>LeaseStatus</code> object.
      */
-    public LeaseStatus getLeaseStatus() {
+    public LeaseStatus getLeaseStatus()
+    {
         return this.leaseStatus;
     }
 
@@ -85,7 +92,8 @@ public final class BlobContainerProperties {
      * 
      * @return The lease state as a <code>LeaseState</code> object.
      */
-    public LeaseState getLeaseState() {
+    public LeaseState getLeaseState()
+    {
         return this.leaseState;
     }
 
@@ -94,7 +102,8 @@ public final class BlobContainerProperties {
      * 
      * @return The lease duration as a <code>LeaseDuration</code> object.
      */
-    public LeaseDuration getLeaseDuration() {
+    public LeaseDuration getLeaseDuration()
+    {
         return this.leaseDuration;
     }
 
@@ -104,7 +113,8 @@ public final class BlobContainerProperties {
      * @param etag
      *            The ETag value to set, as a string.
      */
-    public void setEtag(final String etag) {
+    public void setEtag(final String etag)
+    {
         this.etag = etag;
     }
 
@@ -114,7 +124,8 @@ public final class BlobContainerProperties {
      * @param lastModified
      *            The last modified time to set, as a <code>Date</code> object.
      */
-    public void setLastModified(final Date lastModified) {
+    public void setLastModified(final Date lastModified)
+    {
         this.lastModified = lastModified;
     }
 
@@ -124,7 +135,8 @@ public final class BlobContainerProperties {
      * @param leaseStatus
      *            The lease status to set, as a <code>LeaseStatus</code> object.
      */
-    public void setLeaseStatus(final LeaseStatus leaseStatus) {
+    public void setLeaseStatus(final LeaseStatus leaseStatus)
+    {
         this.leaseStatus = leaseStatus;
     }
 
@@ -134,7 +146,8 @@ public final class BlobContainerProperties {
      * @param leaseState
      *            The lease state to set, as a <code>LeaseState</code> object.
      */
-    public void setLeaseState(final LeaseState leaseState) {
+    public void setLeaseState(final LeaseState leaseState)
+    {
         this.leaseState = leaseState;
     }
 
@@ -142,9 +155,11 @@ public final class BlobContainerProperties {
      * Sets the lease duration on the container. Reserved for internal use.
      * 
      * @param leaseDuration
-     *            The lease duration to set, as a <code>LeaseDuration</code> object.
+     *            The lease duration to set, as a <code>LeaseDuration</code>
+     *            object.
      */
-    public void setLeaseDuration(final LeaseDuration leaseDuration) {
+    public void setLeaseDuration(final LeaseDuration leaseDuration)
+    {
         this.leaseDuration = leaseDuration;
     }
 }

@@ -34,228 +34,292 @@ import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-public class ServiceException extends Exception {
+public class ServiceException extends Exception
+{
 
     private static final long serialVersionUID = -4942076377009150131L;
 
-    int httpStatusCode;
-    String httpReasonPhrase;
-    String serviceName;
+    private int httpStatusCode;
+    private String httpReasonPhrase;
+    private String serviceName;
 
-    String errorCode;
-    String errorMessage;
-    Map<String, String> errorValues;
-    String rawResponseBody;
+    private String errorCode;
+    private String errorMessage;
+    private Map<String, String> errorValues;
+    private String rawResponseBody;
 
-    public ServiceException() {
+    public ServiceException()
+    {
+        super();
+
         init();
     }
 
-    public ServiceException(String message) {
+    public ServiceException(final String message)
+    {
         super(message);
         init();
     }
 
-    public ServiceException(String message, Throwable cause) {
+    public ServiceException(final String message, final Throwable cause)
+    {
         super(message, cause);
         init();
     }
 
-    public ServiceException(Throwable cause) {
+    public ServiceException(final Throwable cause)
+    {
         super(cause);
         init();
     }
 
-    private void init() {
+    private void init()
+    {
         errorValues = new HashMap<String, String>();
     }
 
     @Override
-    public String getMessage() {
-        if (this.rawResponseBody == null)
-            return super.getMessage();
-        else
-            return super.getMessage() + "\nResponse Body: " + this.rawResponseBody;
+    public String getMessage()
+    {
+        final StringBuffer buffer = new StringBuffer(50);
+        buffer.append(super.getMessage());
+
+        if (this.rawResponseBody != null)
+        {
+            buffer.append("\nResponse Body: ");
+            buffer.append(this.rawResponseBody);
+        }
+
+        return buffer.toString();
     }
 
-    public int getHttpStatusCode() {
+    public int getHttpStatusCode()
+    {
         return httpStatusCode;
     }
 
-    public void setHttpStatusCode(int httpStatusCode) {
+    public void setHttpStatusCode(final int httpStatusCode)
+    {
         this.httpStatusCode = httpStatusCode;
     }
 
-    public String getHttpReasonPhrase() {
+    public String getHttpReasonPhrase()
+    {
         return httpReasonPhrase;
     }
 
-    public void setHttpReasonPhrase(String httpReasonPhrase) {
+    public void setHttpReasonPhrase(final String httpReasonPhrase)
+    {
         this.httpReasonPhrase = httpReasonPhrase;
     }
 
-    public String getErrorCode() {
+    public String getErrorCode()
+    {
         return errorCode;
     }
 
-    public void setErrorCode(String errorCode) {
+    public void setErrorCode(final String errorCode)
+    {
         this.errorCode = errorCode;
     }
 
-    public String getErrorMessage() {
+    public String getErrorMessage()
+    {
         return errorMessage;
     }
 
-    public void setErrorMessage(String errorMessage) {
+    public void setErrorMessage(final String errorMessage)
+    {
         this.errorMessage = errorMessage;
     }
 
-    public Map<String, String> getErrorValues() {
+    public Map<String, String> getErrorValues()
+    {
         return errorValues;
     }
 
-    public void setErrorValues(Map<String, String> errorValues) {
+    public void setErrorValues(final Map<String, String> errorValues)
+    {
         this.errorValues = errorValues;
     }
 
-    public String getErrorValue(String name) {
+    public String getErrorValue(final String name)
+    {
         return errorValues.get(name);
     }
 
-    public void setErrorValue(String name, String value) {
+    public void setErrorValue(final String name, final String value)
+    {
         this.errorValues.put(name, value);
     }
 
-    public String getServiceName() {
+    public String getServiceName()
+    {
         return serviceName;
     }
 
-    public void setServiceName(String serviceName) {
+    public void setServiceName(final String serviceName)
+    {
         this.serviceName = serviceName;
     }
 
-    public void setRawResponseBody(String body) {
+    public void setRawResponseBody(final String body)
+    {
         this.rawResponseBody = body;
     }
 
-    public String getRawResponseBody() {
+    public String getRawResponseBody()
+    {
         return rawResponseBody;
     }
-    
-    public static ServiceException create(HttpRequest httpRequest, String requestContent, HttpResponse httpResponse, HttpEntity entity, String defaultTo)
-    {
-        if (httpResponse.getEntity().getContentType().getValue().equals("application/json") ||
-            httpResponse.getEntity().getContentType().getValue().equals("text/json"))
-        {
-            return createFromJson(httpRequest, requestContent, httpResponse, entity);
-        } else if (httpResponse.getEntity().getContentType().getValue().equals("application/xml") ||
-                   httpResponse.getEntity().getContentType().getValue().equals("text/xml"))
-        {
-            return createFromXml(httpRequest, requestContent, httpResponse, entity);
-        } else if (defaultTo.equals("Json"))
-        {
-            return createFromJson(httpRequest, requestContent, httpResponse, entity);
-        }
 
-        return createFromXml(httpRequest, requestContent, httpResponse, entity);
-    }
-    
-    public static ServiceException createFromXml(HttpRequest httpRequest, String requestContent, HttpResponse httpResponse, HttpEntity entity)
+    public static ServiceException create(final HttpRequest httpRequest,
+            final String requestContent, final HttpResponse httpResponse,
+            final HttpEntity entity, final String defaultTo)
     {
-        String content;
-        try
-        {
-            content = EntityUtils.toString(entity);
-        }
-        catch (IOException e)
-        {
-            return new ServiceException(e);
-        }
-        
         ServiceException serviceException;
 
-        try {
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document responseDoc = documentBuilder.parse(new InputSource(new ByteArrayInputStream(content.getBytes("utf-8"))));
-            XPathFactory xPathfactory = XPathFactory.newInstance();
-            XPath xpath = xPathfactory.newXPath();
-            
-            String code = xpath.compile("/Error/Code/text()").evaluate(responseDoc);
-            String message = xpath.compile("/Error/Message/text()").evaluate(responseDoc);
+        if (httpResponse.getEntity().getContentType().getValue()
+                .equals("application/json")
+                || httpResponse.getEntity().getContentType().getValue()
+                        .equals("text/json"))
+        {
+            serviceException = createFromJson(httpRequest, requestContent,
+                    httpResponse, entity);
+        } else if (httpResponse.getEntity().getContentType().getValue()
+                .equals("application/xml")
+                || httpResponse.getEntity().getContentType().getValue()
+                        .equals("text/xml"))
+        {
+            serviceException = createFromXml(httpRequest, requestContent,
+                    httpResponse, entity);
+        } else if ("Json".equals(defaultTo))
+        {
+            serviceException = createFromJson(httpRequest, requestContent,
+                    httpResponse, entity);
+        } else
+        {
+            serviceException = createFromXml(httpRequest, requestContent,
+                    httpResponse, entity);
+        }
 
-            serviceException = new ServiceException(buildExceptionMessage(code, message, content, httpResponse));
-            serviceException.setErrorCode(code);
-            serviceException.setErrorMessage(message);
-        }
-        catch (XPathExpressionException e)
-        {
-            return new ServiceException(content);
-        }
-        catch (ParserConfigurationException e)
-        {
-            return new ServiceException(content);
-        }
-        catch (SAXException e)
-        {
-            return new ServiceException(content);
-        }
-        catch (IOException e)
-        {
-            return new ServiceException(content);
-        }
-        
-        serviceException.setHttpStatusCode(httpResponse.getStatusLine().getStatusCode());
-        serviceException.setHttpReasonPhrase(httpResponse.getStatusLine().getReasonPhrase());
-        
         return serviceException;
     }
-    
-    private static String buildExceptionMessage(String code, String message, String responseContent, HttpResponse httpResponse)
-    {
-        return (code != null && message != null) ? code + ": " + message :
-               (message != null) ? message :
-               (code != null) ? code :
-               (responseContent != null) ? responseContent :
-               (httpResponse != null && httpResponse.getStatusLine() != null && httpResponse.getStatusLine().getReasonPhrase() != null) ?
-                httpResponse.getStatusLine().getReasonPhrase() :
-                (httpResponse != null && httpResponse.getStatusLine() != null) ?
-                Integer.toString(httpResponse.getStatusLine().getStatusCode()) :
-               "Invalid operation";
-    }
-    
-    public static ServiceException createFromJson(HttpRequest httpRequest, String requestContent, HttpResponse httpResponse, HttpEntity entity)
+
+    public static ServiceException createFromXml(final HttpRequest httpRequest,
+            final String requestContent, final HttpResponse httpResponse,
+            final HttpEntity entity)
     {
         String content;
         try
         {
             content = EntityUtils.toString(entity);
-        }
-        catch (IOException e)
+        } catch (IOException e)
         {
             return new ServiceException(e);
         }
-        
+
         ServiceException serviceException;
 
-        try {
+        try
+        {
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
+                    .newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory
+                    .newDocumentBuilder();
+            Document responseDoc = documentBuilder.parse(new InputSource(
+                    new ByteArrayInputStream(content.getBytes("utf-8"))));
+            XPathFactory xPathfactory = XPathFactory.newInstance();
+            XPath xpath = xPathfactory.newXPath();
+
+            String code = xpath.compile("/Error/Code/text()").evaluate(
+                    responseDoc);
+            String message = xpath.compile("/Error/Message/text()").evaluate(
+                    responseDoc);
+
+            serviceException = new ServiceException(buildExceptionMessage(code,
+                    message, content, httpResponse));
+            serviceException.setErrorCode(code);
+            serviceException.setErrorMessage(message);
+        } catch (XPathExpressionException e)
+        {
+            return new ServiceException(content);
+        } catch (ParserConfigurationException e)
+        {
+            return new ServiceException(content);
+        } catch (SAXException e)
+        {
+            return new ServiceException(content);
+        } catch (IOException e)
+        {
+            return new ServiceException(content);
+        }
+
+        serviceException.setHttpStatusCode(httpResponse.getStatusLine()
+                .getStatusCode());
+        serviceException.setHttpReasonPhrase(httpResponse.getStatusLine()
+                .getReasonPhrase());
+
+        return serviceException;
+    }
+
+    private static String buildExceptionMessage(String code, String message,
+            String responseContent, HttpResponse httpResponse)
+    {
+        return (code != null && message != null) ? code + ": " + message
+                : (message != null) ? message
+                        : (code != null) ? code
+                                : (responseContent != null) ? responseContent
+                                        : (httpResponse != null
+                                                && httpResponse.getStatusLine() != null && httpResponse
+                                                .getStatusLine()
+                                                .getReasonPhrase() != null) ? httpResponse
+                                                .getStatusLine()
+                                                .getReasonPhrase()
+                                                : (httpResponse != null && httpResponse
+                                                        .getStatusLine() != null) ? Integer
+                                                        .toString(httpResponse
+                                                                .getStatusLine()
+                                                                .getStatusCode())
+                                                        : "Invalid operation";
+    }
+
+    public static ServiceException createFromJson(HttpRequest httpRequest,
+            String requestContent, HttpResponse httpResponse, HttpEntity entity)
+    {
+        String content;
+        try
+        {
+            content = EntityUtils.toString(entity);
+        } catch (IOException e)
+        {
+            return new ServiceException(e);
+        }
+
+        ServiceException serviceException;
+
+        try
+        {
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode responseDoc = objectMapper.readTree(content);
-            
+
             String code = responseDoc.get("Code").getTextValue();
             String message = responseDoc.get("Message").getTextValue();
 
-            serviceException = new ServiceException(buildExceptionMessage(code, message, content, httpResponse));
+            serviceException = new ServiceException(buildExceptionMessage(code,
+                    message, content, httpResponse));
             serviceException.setErrorCode(code);
             serviceException.setErrorMessage(message);
-        }
-        catch (IOException e) {
+        } catch (IOException e)
+        {
             return new ServiceException();
         }
-        
-        serviceException.setHttpStatusCode(httpResponse.getStatusLine().getStatusCode());
-        serviceException.setHttpReasonPhrase(httpResponse.getStatusLine().getReasonPhrase());
-        
+
+        serviceException.setHttpStatusCode(httpResponse.getStatusLine()
+                .getStatusCode());
+        serviceException.setHttpReasonPhrase(httpResponse.getStatusLine()
+                .getReasonPhrase());
+
         return serviceException;
     }
 }

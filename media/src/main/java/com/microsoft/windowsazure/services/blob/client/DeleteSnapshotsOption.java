@@ -20,7 +20,8 @@ package com.microsoft.windowsazure.services.blob.client;
 /**
  * Specifies options when calling delete operations.
  */
-public enum DeleteSnapshotsOption {
+public enum DeleteSnapshotsOption
+{
     /**
      * Specifies deleting only the blob's snapshots.
      */

@@ -21,7 +21,8 @@ import com.microsoft.windowsazure.services.core.storage.utils.Utility;
 /**
  * The lease state of a resource.
  */
-public enum LeaseState {
+public enum LeaseState
+{
     /**
      * The lease state is not specified.
      */
@@ -58,28 +59,31 @@ public enum LeaseState {
      * @param typeString
      *            The string to parse.
      * 
-     * @return A <code>LeaseStatus</code> value that represents the lease status.
+     * @return A <code>LeaseStatus</code> value that represents the lease
+     *         status.
      */
-    public static LeaseState parse(final String typeString) {
-        if (Utility.isNullOrEmpty(typeString)) {
+    public static LeaseState parse(final String typeString)
+    {
+        if (Utility.isNullOrEmpty(typeString))
+        {
             return UNSPECIFIED;
-        }
-        else if ("available".equals(typeString.toLowerCase(Locale.US))) {
+        } else if ("available".equals(typeString.toLowerCase(Locale.US)))
+        {
             return AVAILABLE;
-        }
-        else if ("locked".equals(typeString.toLowerCase(Locale.US))) {
+        } else if ("locked".equals(typeString.toLowerCase(Locale.US)))
+        {
             return LEASED;
-        }
-        else if ("expired".equals(typeString.toLowerCase(Locale.US))) {
+        } else if ("expired".equals(typeString.toLowerCase(Locale.US)))
+        {
             return EXPIRED;
-        }
-        else if ("breaking".equals(typeString.toLowerCase(Locale.US))) {
+        } else if ("breaking".equals(typeString.toLowerCase(Locale.US)))
+        {
             return BREAKING;
-        }
-        else if ("broken".equals(typeString.toLowerCase(Locale.US))) {
+        } else if ("broken".equals(typeString.toLowerCase(Locale.US)))
+        {
             return BROKEN;
-        }
-        else {
+        } else
+        {
             return UNSPECIFIED;
         }
     }

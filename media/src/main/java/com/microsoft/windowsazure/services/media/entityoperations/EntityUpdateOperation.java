@@ -19,10 +19,10 @@ package com.microsoft.windowsazure.services.media.entityoperations;
  * 
  * 
  */
-public interface EntityUpdateOperation extends EntityOperation {
+public interface EntityUpdateOperation extends EntityOperation
+{
     /**
-     * Get the contents of the merge request that will
-     * be sent to the server.
+     * Get the contents of the merge request that will be sent to the server.
      * 
      * @return The payload object
      */

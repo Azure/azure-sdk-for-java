@@ -23,11 +23,13 @@ import com.microsoft.windowsazure.exception.ServiceException;
  * @param <T>
  *            the generic type
  */
-public interface EntityCreateOperation<T> extends EntityOperationSingleResult<T> {
+public interface EntityCreateOperation<T> extends
+        EntityOperationSingleResult<T>
+{
 
     /**
-     * Get the object to be sent to the server containing
-     * the request data for entity creation.
+     * Get the object to be sent to the server containing the request data for
+     * entity creation.
      * 
      * @return The payload to be marshalled and sent to the server.
      * @throws ServiceException

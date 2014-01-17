@@ -24,63 +24,79 @@ import java.util.concurrent.ExecutorService;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 
-public abstract class ServiceClient<TClient> implements FilterableService<TClient>, Closeable {
+public abstract class ServiceClient<TClient> implements
+        FilterableService<TClient>, Closeable
+{
     private final ExecutorService executorService;
-    
-    public ExecutorService getExecutorService() { return this.executorService; }
+
+    public ExecutorService getExecutorService()
+    {
+        return this.executorService;
+    }
 
     protected CloseableHttpClient httpClient;
-    
+
     public CloseableHttpClient getHttpClient()
-    { 
+    {
         if (this.httpClient == null)
         {
             this.httpClient = httpClientBuilder.build();
         }
-        
+
         return this.httpClient;
     }
-    
+
     private final HttpClientBuilder httpClientBuilder;
 
-    protected ServiceClient(HttpClientBuilder httpClientBuilder, ExecutorService executorService)
+    protected ServiceClient(HttpClientBuilder httpClientBuilder,
+            ExecutorService executorService)
     {
         this.httpClientBuilder = httpClientBuilder;
         this.executorService = executorService;
     }
-    
-    protected abstract TClient newInstance(
-            HttpClientBuilder httpClientBuilder,
+
+    protected abstract TClient newInstance(HttpClientBuilder httpClientBuilder,
             ExecutorService executorService);
-    
+
     @Override
-    public TClient withRequestFilterFirst(ServiceRequestFilter serviceRequestFilter)
+    public TClient withRequestFilterFirst(
+            ServiceRequestFilter serviceRequestFilter)
     {
-        httpClientBuilder.addInterceptorFirst(new HttpRequestInterceptorAdapter(serviceRequestFilter));
+        httpClientBuilder
+                .addInterceptorFirst(new HttpRequestInterceptorAdapter(
+                        serviceRequestFilter));
         return this.newInstance(httpClientBuilder, executorService);
     }
-    
+
     @Override
-    public TClient withRequestFilterLast(ServiceRequestFilter serviceRequestFilter)
+    public TClient withRequestFilterLast(
+            ServiceRequestFilter serviceRequestFilter)
     {
-        httpClientBuilder.addInterceptorLast(new HttpRequestInterceptorAdapter(serviceRequestFilter));
+        httpClientBuilder.addInterceptorLast(new HttpRequestInterceptorAdapter(
+                serviceRequestFilter));
         return this.newInstance(httpClientBuilder, executorService);
     }
-    
+
     @Override
-    public TClient withResponseFilterFirst(ServiceResponseFilter serviceResponseFilter)
+    public TClient withResponseFilterFirst(
+            ServiceResponseFilter serviceResponseFilter)
     {
-        httpClientBuilder.addInterceptorFirst(new HttpResponseInterceptorAdapter(serviceResponseFilter));
+        httpClientBuilder
+                .addInterceptorFirst(new HttpResponseInterceptorAdapter(
+                        serviceResponseFilter));
         return this.newInstance(httpClientBuilder, executorService);
     }
-    
+
     @Override
-    public TClient withResponseFilterLast(ServiceResponseFilter serviceResponseFilter)
+    public TClient withResponseFilterLast(
+            ServiceResponseFilter serviceResponseFilter)
     {
-        httpClientBuilder.addInterceptorLast(new HttpResponseInterceptorAdapter(serviceResponseFilter));
+        httpClientBuilder
+                .addInterceptorLast(new HttpResponseInterceptorAdapter(
+                        serviceResponseFilter));
         return this.newInstance(httpClientBuilder, executorService);
     }
-    
+
     @Override
     public void close() throws IOException
     {

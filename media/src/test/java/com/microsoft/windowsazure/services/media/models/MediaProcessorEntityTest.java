@@ -25,17 +25,21 @@ import com.microsoft.windowsazure.services.media.entityoperations.EntityListOper
  * Tests for the MediaProcessor entity
  * 
  */
-public class MediaProcessorEntityTest {
+public class MediaProcessorEntityTest
+{
 
     @Test
-    public void listMediaProcessorsReturnsExpectedUri() {
+    public void listMediaProcessorsReturnsExpectedUri()
+    {
         assertEquals("MediaProcessors", MediaProcessor.list().getUri());
     }
 
     @Test
-    public void listMediaProcessorsCanTakeQueryParmeters() {
+    public void listMediaProcessorsCanTakeQueryParmeters()
+    {
 
-        EntityListOperation<MediaProcessorInfo> lister = MediaProcessor.list().setTop(10).setSkip(2);
+        EntityListOperation<MediaProcessorInfo> lister = MediaProcessor.list()
+                .setTop(10).setSkip(2);
 
         assertEquals("10", lister.getQueryParameters().getFirst("$top"));
         assertEquals("2", lister.getQueryParameters().getFirst("$skip"));

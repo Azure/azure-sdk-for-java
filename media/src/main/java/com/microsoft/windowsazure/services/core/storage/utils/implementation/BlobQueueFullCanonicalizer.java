@@ -23,10 +23,12 @@ import com.microsoft.windowsazure.services.core.storage.StorageException;
 import com.microsoft.windowsazure.services.core.storage.utils.Utility;
 
 /**
- * RESERVED FOR INTERNAL USE. Provides an implementation of the Canonicalizer class for requests against Blob and Queue
- * Service under the Shared Key authentication scheme.
+ * RESERVED FOR INTERNAL USE. Provides an implementation of the Canonicalizer
+ * class for requests against Blob and Queue Service under the Shared Key
+ * authentication scheme.
  */
-final class BlobQueueFullCanonicalizer extends Canonicalizer {
+final class BlobQueueFullCanonicalizer extends Canonicalizer
+{
 
     /**
      * Constructs a canonicalized string for signing a request.
@@ -36,22 +38,28 @@ final class BlobQueueFullCanonicalizer extends Canonicalizer {
      * @param accountName
      *            the account name associated with the request
      * @param contentLength
-     *            the length of the content written to the outputstream in bytes, -1 if unknown
+     *            the length of the content written to the outputstream in
+     *            bytes, -1 if unknown
      * @param opContext
      *            the OperationContext for the given request
      * @return a canonicalized string.
      * @throws StorageException
      */
     @Override
-    protected String canonicalize(final HttpURLConnection conn, final String accountName, final Long contentLength,
-            final OperationContext opContext) throws StorageException {
+    protected String canonicalize(final HttpURLConnection conn,
+            final String accountName, final Long contentLength,
+            final OperationContext opContext) throws StorageException
+    {
 
-        if (contentLength < -1) {
-            throw new InvalidParameterException("ContentLength must be set to -1 or positive Long value");
+        if (contentLength < -1)
+        {
+            throw new InvalidParameterException(
+                    "ContentLength must be set to -1 or positive Long value");
         }
 
-        return canonicalizeHttpRequest(conn.getURL(), accountName, conn.getRequestMethod(),
-                Utility.getStandardHeaderValue(conn, Constants.HeaderConstants.CONTENT_TYPE), contentLength, null,
-                conn, opContext);
+        return canonicalizeHttpRequest(conn.getURL(), accountName,
+                conn.getRequestMethod(), Utility.getStandardHeaderValue(conn,
+                        Constants.HeaderConstants.CONTENT_TYPE), contentLength,
+                null, conn, opContext);
     }
 }

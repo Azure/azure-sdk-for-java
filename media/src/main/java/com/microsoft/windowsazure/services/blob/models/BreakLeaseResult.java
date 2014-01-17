@@ -16,20 +16,27 @@
 package com.microsoft.windowsazure.services.blob.models;
 
 /**
- * A wrapper class for the response returned from a Blob Service REST API Break Lease Blob operation. This is returned by
- * calls to implementations of {@link com.microsoft.windowsazure.services.blob.BlobContract#breakLease(String, String, BlobServiceOptions)},
+ * A wrapper class for the response returned from a Blob Service REST API Break
+ * Lease Blob operation. This is returned by calls to implementations of
+ * {@link com.microsoft.windowsazure.services.blob.BlobContract#breakLease(String, String, BlobServiceOptions)}
+ * ,
  * <p>
- * See the <a href="http://msdn.microsoft.com/en-us/library/windowsazure/ee691972.aspx">Lease Blob</a> documentation on
- * MSDN for details of the underlying Blob Service REST API operation.
+ * See the <a
+ * href="http://msdn.microsoft.com/en-us/library/windowsazure/ee691972.aspx"
+ * >Lease Blob</a> documentation on MSDN for details of the underlying Blob
+ * Service REST API operation.
  */
-public class BreakLeaseResult {
+public class BreakLeaseResult
+{
     private int remainingLeaseTimeInSeconds;
 
-    public int getRemainingLeaseTimeInSeconds() {
+    public int getRemainingLeaseTimeInSeconds()
+    {
         return remainingLeaseTimeInSeconds;
     }
 
-    public void setRemainingLeaseTimeInSeconds(int remainingLeaseTimeInSeconds) {
+    public void setRemainingLeaseTimeInSeconds(int remainingLeaseTimeInSeconds)
+    {
         this.remainingLeaseTimeInSeconds = remainingLeaseTimeInSeconds;
     }
 }

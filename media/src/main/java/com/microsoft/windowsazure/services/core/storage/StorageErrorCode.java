@@ -16,9 +16,11 @@ package com.microsoft.windowsazure.services.core.storage;
 
 /**
  * 
- * Represents error codes that may be returned by the Windows Azure storage services or the storage client library.
+ * Represents error codes that may be returned by the Windows Azure storage
+ * services or the storage client library.
  */
-public enum StorageErrorCode {
+public enum StorageErrorCode
+{
     /**
      * Access was denied (client-side error).
      */
@@ -35,7 +37,8 @@ public enum StorageErrorCode {
     AUTHENTICATION_FAILURE(11),
 
     /**
-     * There was an error with the gateway used for the request (client-side error).
+     * There was an error with the gateway used for the request (client-side
+     * error).
      */
     BAD_GATEWAY(18),
 
@@ -80,7 +83,8 @@ public enum StorageErrorCode {
     NONE(0),
 
     /**
-     * The requested operation is not implemented on the specified resource (client-side error).
+     * The requested operation is not implemented on the specified resource
+     * (client-side error).
      */
     NOT_IMPLEMENTED(19),
 
@@ -145,7 +149,8 @@ public enum StorageErrorCode {
      * @param val
      *            The value being assigned.
      */
-    StorageErrorCode(final int val) {
+    StorageErrorCode(final int val)
+    {
         this.value = val;
     }
 }

@@ -18,7 +18,8 @@ package com.microsoft.windowsazure.core.utils;
 /**
  * The Enum representing the type of the KeyStore.
  */
-public enum KeyStoreType {
+public enum KeyStoreType
+{
 
     /** The jceks. */
     jceks,

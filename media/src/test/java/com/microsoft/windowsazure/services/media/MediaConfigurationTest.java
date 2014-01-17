@@ -21,60 +21,86 @@ import org.junit.Test;
 
 import com.microsoft.windowsazure.Configuration;
 
-public class MediaConfigurationTest {
+public class MediaConfigurationTest
+{
 
     @Test
-    public void createMediaConfigurationTestSuccess() {
-        // Arrange 
+    public void createMediaConfigurationTestSuccess()
+    {
+        // Arrange
 
         // Act
-        Configuration configuration = MediaConfiguration.configureWithOAuthAuthentication(
-                "https://testMediaServiceBaseUri", "testOAuthUri", "testClientId", "testClientSecret", "testScope");
+        Configuration configuration = MediaConfiguration
+                .configureWithOAuthAuthentication(
+                        "https://testMediaServiceBaseUri", "testOAuthUri",
+                        "testClientId", "testClientSecret", "testScope");
 
         // Assert
-        assertEquals("https://testMediaServiceBaseUri", configuration.getProperty("media.uri"));
-        assertEquals("testOAuthUri", configuration.getProperty("media.oauth.uri"));
-        assertEquals("testClientId", configuration.getProperty("media.oauth.client.id"));
-        assertEquals("testClientSecret", configuration.getProperty("media.oauth.client.secret"));
-        assertEquals("testScope", configuration.getProperty("media.oauth.scope"));
+        assertEquals("https://testMediaServiceBaseUri",
+                configuration.getProperty("media.uri"));
+        assertEquals("testOAuthUri",
+                configuration.getProperty("media.oauth.uri"));
+        assertEquals("testClientId",
+                configuration.getProperty("media.oauth.client.id"));
+        assertEquals("testClientSecret",
+                configuration.getProperty("media.oauth.client.secret"));
+        assertEquals("testScope",
+                configuration.getProperty("media.oauth.scope"));
     }
 
     @Test
-    public void createMediaConfigurationPassingExistingConfigurationSuccess() {
+    public void createMediaConfigurationPassingExistingConfigurationSuccess()
+    {
         // Arrange
         Configuration preConfiguration = new Configuration();
         preConfiguration.setProperty("preexistingName", "preexistingValue");
 
         // Act
-        Configuration configuration = MediaConfiguration.configureWithOAuthAuthentication(preConfiguration,
-                "https://testMediaServiceBaseUri", "testOAuthUri", "testClientId", "testClientSecret", "testScope");
+        Configuration configuration = MediaConfiguration
+                .configureWithOAuthAuthentication(preConfiguration,
+                        "https://testMediaServiceBaseUri", "testOAuthUri",
+                        "testClientId", "testClientSecret", "testScope");
 
         // Assert
-        assertEquals("preexistingValue", configuration.getProperty("preexistingName"));
-        assertEquals("https://testMediaServiceBaseUri", configuration.getProperty("media.uri"));
-        assertEquals("testOAuthUri", configuration.getProperty("media.oauth.uri"));
-        assertEquals("testClientId", configuration.getProperty("media.oauth.client.id"));
-        assertEquals("testClientSecret", configuration.getProperty("media.oauth.client.secret"));
+        assertEquals("preexistingValue",
+                configuration.getProperty("preexistingName"));
+        assertEquals("https://testMediaServiceBaseUri",
+                configuration.getProperty("media.uri"));
+        assertEquals("testOAuthUri",
+                configuration.getProperty("media.oauth.uri"));
+        assertEquals("testClientId",
+                configuration.getProperty("media.oauth.client.id"));
+        assertEquals("testClientSecret",
+                configuration.getProperty("media.oauth.client.secret"));
 
     }
 
     @Test
-    public void createMediaConfigurationWithProfileConfigurationSuccess() {
+    public void createMediaConfigurationWithProfileConfigurationSuccess()
+    {
         // Arrange
         Configuration preConfiguration = new Configuration();
         preConfiguration.setProperty("preexistingName", "preexistingValue");
 
-        // Act 
-        Configuration configuration = MediaConfiguration.configureWithOAuthAuthentication("testProfile",
-                preConfiguration, "https://testMediaServiceBaseUri", "testOAuthUri", "testClientId",
-                "testClientSecret", "testScope");
+        // Act
+        Configuration configuration = MediaConfiguration
+                .configureWithOAuthAuthentication("testProfile",
+                        preConfiguration, "https://testMediaServiceBaseUri",
+                        "testOAuthUri", "testClientId", "testClientSecret",
+                        "testScope");
 
         // Assert
-        assertEquals("preexistingValue", configuration.getProperty("preexistingName"));
-        assertEquals("https://testMediaServiceBaseUri", configuration.getProperty("testProfile.media.uri"));
-        assertEquals("testOAuthUri", configuration.getProperty("testProfile.media.oauth.uri"));
-        assertEquals("testClientId", configuration.getProperty("testProfile.media.oauth.client.id"));
-        assertEquals("testClientSecret", configuration.getProperty("testProfile.media.oauth.client.secret"));
+        assertEquals("preexistingValue",
+                configuration.getProperty("preexistingName"));
+        assertEquals("https://testMediaServiceBaseUri",
+                configuration.getProperty("testProfile.media.uri"));
+        assertEquals("testOAuthUri",
+                configuration.getProperty("testProfile.media.oauth.uri"));
+        assertEquals("testClientId",
+                configuration.getProperty("testProfile.media.oauth.client.id"));
+        assertEquals("testClientSecret",
+                configuration
+                        .getProperty("testProfile.media.oauth.client.secret"));
     }
 
 }

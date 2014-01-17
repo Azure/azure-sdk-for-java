@@ -51,38 +51,55 @@ import com.microsoft.windowsazure.services.media.models.ProtectionKey;
 import com.microsoft.windowsazure.services.media.models.Task;
 import com.microsoft.windowsazure.services.media.models.Task.CreateBatchOperation;
 
-public class AssetIntegrationTest extends IntegrationTestBase {
+public class AssetIntegrationTest extends IntegrationTestBase
+{
 
-    private void verifyInfosEqual(String message, AssetInfo expected, AssetInfo actual) {
-        verifyAssetProperties(message, expected.getName(), expected.getAlternateId(), expected.getOptions(),
+    private void verifyInfosEqual(String message, AssetInfo expected,
+            AssetInfo actual)
+    {
+        verifyAssetProperties(message, expected.getName(),
+                expected.getAlternateId(), expected.getOptions(),
                 expected.getState(), actual);
     }
 
-    private void verifyAssetProperties(String message, String testName, String altId, AssetOption encryptionOption,
-            AssetState assetState, AssetInfo actualAsset) {
-        verifyAssetProperties(message, testName, altId, encryptionOption, assetState, null, null, null, actualAsset);
+    private void verifyAssetProperties(String message, String testName,
+            String altId, AssetOption encryptionOption, AssetState assetState,
+            AssetInfo actualAsset)
+    {
+        verifyAssetProperties(message, testName, altId, encryptionOption,
+                assetState, null, null, null, actualAsset);
     }
 
-    private void verifyAssetProperties(String message, String testName, String altId, AssetOption encryptionOption,
-            AssetState assetState, String id, Date created, Date lastModified, AssetInfo actualAsset) {
+    private void verifyAssetProperties(String message, String testName,
+            String altId, AssetOption encryptionOption, AssetState assetState,
+            String id, Date created, Date lastModified, AssetInfo actualAsset)
+    {
         assertNotNull(message, actualAsset);
         assertEquals(message + " Name", testName, actualAsset.getName());
-        assertEquals(message + " AlternateId", altId, actualAsset.getAlternateId());
-        assertEquals(message + " Options", encryptionOption, actualAsset.getOptions());
+        assertEquals(message + " AlternateId", altId,
+                actualAsset.getAlternateId());
+        assertEquals(message + " Options", encryptionOption,
+                actualAsset.getOptions());
         assertEquals(message + " State", assetState, actualAsset.getState());
-        if (id != null) {
+        if (id != null)
+        {
             assertEquals(message + " Id", id, actualAsset.getId());
         }
-        if (created != null) {
-            assertEquals(message + " Created", created, actualAsset.getCreated());
+        if (created != null)
+        {
+            assertEquals(message + " Created", created,
+                    actualAsset.getCreated());
         }
-        if (lastModified != null) {
-            assertEquals(message + " LastModified", lastModified, actualAsset.getLastModified());
+        if (lastModified != null)
+        {
+            assertEquals(message + " LastModified", lastModified,
+                    actualAsset.getLastModified());
         }
     }
 
     @Test
-    public void createAssetOptionsSuccess() throws Exception {
+    public void createAssetOptionsSuccess() throws Exception
+    {
         // Arrange
         String testName = testAssetPrefix + "createAssetOptionsSuccess";
         String altId = "altId";
@@ -90,64 +107,77 @@ public class AssetIntegrationTest extends IntegrationTestBase {
         AssetState assetState = AssetState.Published;
 
         // Act
-        AssetInfo actualAsset = service.create(Asset.create().setAlternateId(altId).setOptions(encryptionOption)
+        AssetInfo actualAsset = service.create(Asset.create()
+                .setAlternateId(altId).setOptions(encryptionOption)
                 .setState(assetState).setName(testName));
 
         // Assert
-        verifyAssetProperties("actualAsset", testName, altId, encryptionOption, assetState, actualAsset);
+        verifyAssetProperties("actualAsset", testName, altId, encryptionOption,
+                assetState, actualAsset);
     }
 
     @Test
-    public void createAssetMeanString() throws Exception {
+    public void createAssetMeanString() throws Exception
+    {
         // Arrange
         String meanString = "'\"(?++\\+&==/&?''$@://   +ne <some><XML></stuff>"
                 + "{\"jsonLike\":\"Created\":\"\\/Date(1336368841597)\\/\",\"Name\":null,cksum value\"}}"
                 + "Some unicode: \uB2E4\uB974\uB2E4\uB294\u0625 \u064A\u062F\u064A\u0648\u0009\r\n";
 
-        String testName = testAssetPrefix + "createAssetMeanString" + meanString;
+        String testName = testAssetPrefix + "createAssetMeanString"
+                + meanString;
 
         // Act
-        AssetInfo actualAsset = service.create(Asset.create().setName(testName));
+        AssetInfo actualAsset = service
+                .create(Asset.create().setName(testName));
 
         // Assert
         assertEquals("actualAsset Name", testName, actualAsset.getName());
     }
 
     @Test
-    public void createAssetNullNameSuccess() throws Exception {
+    public void createAssetNullNameSuccess() throws Exception
+    {
         // Arrange
 
         // Act
         AssetInfo actualAsset = null;
-        try {
+        try
+        {
             actualAsset = service.create(Asset.create());
             // Assert
-            verifyAssetProperties("actualAsset", "", "", AssetOption.None, AssetState.Initialized, actualAsset);
-        }
-        finally {
+            verifyAssetProperties("actualAsset", "", "", AssetOption.None,
+                    AssetState.Initialized, actualAsset);
+        } finally
+        {
             // Clean up the anonymous asset now while we have the id, because we
-            // do not want to delete all anonymous assets in the bulk-cleanup code.
-            try {
-                if (actualAsset != null) {
+            // do not want to delete all anonymous assets in the bulk-cleanup
+            // code.
+            try
+            {
+                if (actualAsset != null)
+                {
                     service.delete(Asset.delete(actualAsset.getId()));
                 }
-            }
-            catch (ServiceException ex) {
+            } catch (ServiceException ex)
+            {
                 ex.printStackTrace();
             }
         }
     }
 
     @Test
-    public void getAssetSuccess() throws Exception {
+    public void getAssetSuccess() throws Exception
+    {
         // Arrange
         String testName = testAssetPrefix + "GetAssetSuccess";
         String altId = "altId";
         AssetOption encryptionOption = AssetOption.StorageEncrypted;
         AssetState assetState = AssetState.Published;
 
-        AssetInfo assetInfo = service.create(Asset.create().setName(testName).setAlternateId(altId)
-                .setOptions(encryptionOption).setState(assetState));
+        AssetInfo assetInfo = service.create(Asset.create().setName(testName)
+                .setAlternateId(altId).setOptions(encryptionOption)
+                .setState(assetState));
 
         // Act
         AssetInfo actualAsset = service.get(Asset.get(assetInfo.getId()));
@@ -157,32 +187,38 @@ public class AssetIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void getAssetInvalidId() throws ServiceException {
+    public void getAssetInvalidId() throws ServiceException
+    {
         expectedException.expect(ServiceException.class);
         expectedException.expect(new ServiceExceptionMatcher(400));
         service.get(Asset.get(invalidId));
     }
 
     @Test
-    public void getAssetNonexistId() throws ServiceException {
+    public void getAssetNonexistId() throws ServiceException
+    {
         expectedException.expect(ServiceException.class);
         expectedException.expect(new ServiceExceptionMatcher(404));
         service.get(Asset.get(validButNonexistAssetId));
     }
 
     @Test
-    public void listAssetSuccess() throws ServiceException {
+    public void listAssetSuccess() throws ServiceException
+    {
         // Arrange
         String altId = "altId";
         AssetOption encryptionOption = AssetOption.StorageEncrypted;
         AssetState assetState = AssetState.Published;
 
-        String[] assetNames = new String[] { testAssetPrefix + "assetA", testAssetPrefix + "assetB" };
+        String[] assetNames = new String[] { testAssetPrefix + "assetA",
+                testAssetPrefix + "assetB" };
         List<AssetInfo> expectedAssets = new ArrayList<AssetInfo>();
-        for (int i = 0; i < assetNames.length; i++) {
+        for (int i = 0; i < assetNames.length; i++)
+        {
             String name = assetNames[i];
-            expectedAssets.add(service.create(Asset.create().setName(name).setAlternateId(altId)
-                    .setOptions(encryptionOption).setState(assetState)));
+            expectedAssets.add(service.create(Asset.create().setName(name)
+                    .setAlternateId(altId).setOptions(encryptionOption)
+                    .setState(assetState)));
         }
 
         // Act
@@ -190,26 +226,36 @@ public class AssetIntegrationTest extends IntegrationTestBase {
 
         // Assert
 
-        verifyListResultContains("listAssets", expectedAssets, listAssetResult, new ComponentDelegate() {
-            @Override
-            public void verifyEquals(String message, Object expected, Object actual) {
-                verifyInfosEqual(message, (AssetInfo) expected, (AssetInfo) actual);
-            }
-        });
+        verifyListResultContains("listAssets", expectedAssets, listAssetResult,
+                new ComponentDelegate()
+                {
+                    @Override
+                    public void verifyEquals(String message, Object expected,
+                            Object actual)
+                    {
+                        verifyInfosEqual(message, (AssetInfo) expected,
+                                (AssetInfo) actual);
+                    }
+                });
     }
 
     @Test
-    public void canListAssetsWithOptions() throws ServiceException {
-        String[] assetNames = new String[] { testAssetPrefix + "assetListOptionsA",
-                testAssetPrefix + "assetListOptionsB", testAssetPrefix + "assetListOptionsC",
+    public void canListAssetsWithOptions() throws ServiceException
+    {
+        String[] assetNames = new String[] {
+                testAssetPrefix + "assetListOptionsA",
+                testAssetPrefix + "assetListOptionsB",
+                testAssetPrefix + "assetListOptionsC",
                 testAssetPrefix + "assetListOptionsD" };
         List<AssetInfo> expectedAssets = new ArrayList<AssetInfo>();
-        for (int i = 0; i < assetNames.length; i++) {
+        for (int i = 0; i < assetNames.length; i++)
+        {
             String name = assetNames[i];
             expectedAssets.add(service.create(Asset.create().setName(name)));
         }
 
-        Collection<AssetInfo> listAssetResult = service.list(Asset.list().setTop(2));
+        Collection<AssetInfo> listAssetResult = service.list(Asset.list()
+                .setTop(2));
 
         // Assert
 
@@ -217,32 +263,39 @@ public class AssetIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void updateAssetSuccess() throws Exception {
+    public void updateAssetSuccess() throws Exception
+    {
         // Arrange
-        String originalTestName = testAssetPrefix + "updateAssetSuccessOriginal";
+        String originalTestName = testAssetPrefix
+                + "updateAssetSuccessOriginal";
         AssetOption originalEncryptionOption = AssetOption.StorageEncrypted;
         AssetState originalAssetState = AssetState.Initialized;
-        AssetInfo originalAsset = service.create(Asset.create().setName(originalTestName).setAlternateId("altId")
+        AssetInfo originalAsset = service.create(Asset.create()
+                .setName(originalTestName).setAlternateId("altId")
                 .setOptions(originalEncryptionOption));
 
         String updatedTestName = testAssetPrefix + "updateAssetSuccessUpdated";
         String altId = "otherAltId";
 
         // Act
-        service.update(Asset.update(originalAsset.getId()).setName(updatedTestName).setAlternateId(altId));
+        service.update(Asset.update(originalAsset.getId())
+                .setName(updatedTestName).setAlternateId(altId));
         AssetInfo updatedAsset = service.get(Asset.get(originalAsset.getId()));
 
         // Assert
-        verifyAssetProperties("updatedAsset", updatedTestName, altId, originalEncryptionOption, originalAssetState,
-                updatedAsset);
+        verifyAssetProperties("updatedAsset", updatedTestName, altId,
+                originalEncryptionOption, originalAssetState, updatedAsset);
     }
 
     @Test
-    public void updateAssetNoChangesSuccess() throws Exception {
+    public void updateAssetNoChangesSuccess() throws Exception
+    {
         // Arrange
-        String originalTestName = testAssetPrefix + "updateAssetNoChangesSuccess";
+        String originalTestName = testAssetPrefix
+                + "updateAssetNoChangesSuccess";
         String altId = "altId";
-        AssetInfo originalAsset = service.create(Asset.create().setName(originalTestName).setAlternateId(altId));
+        AssetInfo originalAsset = service.create(Asset.create()
+                .setName(originalTestName).setAlternateId(altId));
 
         // Act
         service.update(Asset.update(originalAsset.getId()));
@@ -253,14 +306,16 @@ public class AssetIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void updateAssetFailedWithInvalidId() throws ServiceException {
+    public void updateAssetFailedWithInvalidId() throws ServiceException
+    {
         expectedException.expect(ServiceException.class);
         expectedException.expect(new ServiceExceptionMatcher(404));
         service.update(Asset.update(validButNonexistAssetId));
     }
 
     @Test
-    public void deleteAssetSuccess() throws Exception {
+    public void deleteAssetSuccess() throws Exception
+    {
         // Arrange
         String assetName = testAssetPrefix + "deleteAssetSuccess";
         AssetInfo assetInfo = service.create(Asset.create().setName(assetName));
@@ -272,7 +327,8 @@ public class AssetIntegrationTest extends IntegrationTestBase {
 
         // Assert
         listAssetsResult = service.list(Asset.list());
-        assertEquals("listAssetsResult.size", assetCountBaseline - 1, listAssetsResult.size());
+        assertEquals("listAssetsResult.size", assetCountBaseline - 1,
+                listAssetsResult.size());
 
         expectedException.expect(ServiceException.class);
         expectedException.expect(new ServiceExceptionMatcher(404));
@@ -280,23 +336,31 @@ public class AssetIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void deleteAssetFailedWithInvalidId() throws ServiceException {
+    public void deleteAssetFailedWithInvalidId() throws ServiceException
+    {
         expectedException.expect(ServiceException.class);
         expectedException.expect(new ServiceExceptionMatcher(404));
         service.delete(Asset.delete(validButNonexistAssetId));
     }
 
     @Test
-    public void linkAssetContentKeySuccess() throws ServiceException, URISyntaxException {
+    public void linkAssetContentKeySuccess() throws ServiceException,
+            URISyntaxException
+    {
         // Arrange
-        String originalTestName = testAssetPrefix + "linkAssetContentKeySuccess";
-        AssetInfo assetInfo = service.create(Asset.create().setName(originalTestName)
+        String originalTestName = testAssetPrefix
+                + "linkAssetContentKeySuccess";
+        AssetInfo assetInfo = service.create(Asset.create()
+                .setName(originalTestName)
                 .setOptions(AssetOption.StorageEncrypted));
 
-        String protectionKeyId = service.action(ProtectionKey.getProtectionKeyId(ContentKeyType.StorageEncryption));
-        String contentKeyId = String.format("nb:kid:UUID:%s", UUID.randomUUID());
+        String protectionKeyId = service.action(ProtectionKey
+                .getProtectionKeyId(ContentKeyType.StorageEncryption));
+        String contentKeyId = String
+                .format("nb:kid:UUID:%s", UUID.randomUUID());
         String encryptedContentKey = "dummyEncryptedContentKey";
-        service.create(ContentKey.create(contentKeyId, ContentKeyType.StorageEncryption, encryptedContentKey)
+        service.create(ContentKey.create(contentKeyId,
+                ContentKeyType.StorageEncryption, encryptedContentKey)
                 .setProtectionKeyId(protectionKeyId));
 
         // Act
@@ -304,52 +368,69 @@ public class AssetIntegrationTest extends IntegrationTestBase {
 
         // Assert
 
-        List<ContentKeyInfo> contentKeys = service.list(ContentKey.list(assetInfo.getContentKeysLink()));
+        List<ContentKeyInfo> contentKeys = service.list(ContentKey
+                .list(assetInfo.getContentKeysLink()));
         assertEquals(1, contentKeys.size());
         assertEquals(contentKeyId, contentKeys.get(0).getId());
     }
 
     @Test
-    public void linkAssetContentKeyInvalidIdFailed() throws ServiceException, URISyntaxException {
+    public void linkAssetContentKeyInvalidIdFailed() throws ServiceException,
+            URISyntaxException
+    {
         // Arrange
 
         // Act
         expectedException.expect(ServiceException.class);
         expectedException.expect(new ServiceExceptionMatcher(400));
-        service.action(Asset.linkContentKey(validButNonexistAssetId, "nb:kid:UUID:invalidContentKeyId"));
+        service.action(Asset.linkContentKey(validButNonexistAssetId,
+                "nb:kid:UUID:invalidContentKeyId"));
 
         // Assert
     }
 
     @Test
-    public void canGetParentBackFromAsset() throws ServiceException, InterruptedException {
+    public void canGetParentBackFromAsset() throws ServiceException,
+            InterruptedException
+    {
         // Arrange
-        String originalAssetName = testAssetPrefix + "canGetParentBackFromAsset";
-        AssetInfo originalAsset = service.create(Asset.create().setName(originalAssetName));
+        String originalAssetName = testAssetPrefix
+                + "canGetParentBackFromAsset";
+        AssetInfo originalAsset = service.create(Asset.create().setName(
+                originalAssetName));
 
         int durationInMinutes = 10;
-        AccessPolicyInfo accessPolicyInfo = service.create(AccessPolicy.create(testPolicyPrefix
-                + "uploadAesPortectedAssetSuccess", durationInMinutes, EnumSet.of(AccessPolicyPermission.WRITE)));
+        AccessPolicyInfo accessPolicyInfo = service.create(AccessPolicy.create(
+                testPolicyPrefix + "uploadAesPortectedAssetSuccess",
+                durationInMinutes, EnumSet.of(AccessPolicyPermission.WRITE)));
 
-        LocatorInfo locatorInfo = service.create(Locator.create(accessPolicyInfo.getId(), originalAsset.getId(),
+        LocatorInfo locatorInfo = service.create(Locator.create(
+                accessPolicyInfo.getId(), originalAsset.getId(),
                 LocatorType.SAS));
-        WritableBlobContainerContract blobWriter = service.createBlobWriter(locatorInfo);
+        WritableBlobContainerContract blobWriter = service
+                .createBlobWriter(locatorInfo);
 
-        InputStream mpeg4H264InputStream = getClass().getResourceAsStream("/media/MPEG4-H264.mp4");
+        InputStream mpeg4H264InputStream = getClass().getResourceAsStream(
+                "/media/MPEG4-H264.mp4");
         blobWriter.createBlockBlob("MPEG4-H264.mp4", mpeg4H264InputStream);
         service.action(AssetFile.createFileInfos(originalAsset.getId()));
 
         String jobName = testJobPrefix + "createJobSuccess";
         CreateBatchOperation taskCreator = Task
                 .create(MEDIA_ENCODER_MEDIA_PROCESSOR_2_2_0_0_ID,
-                        "<taskBody>" + "<inputAsset>JobInputAsset(0)</inputAsset>"
-                                + "<outputAsset>JobOutputAsset(0)</outputAsset>" + "</taskBody>")
-                .setConfiguration("H.264 256k DSL CBR").setName("My encoding Task");
-        JobInfo jobInfo = service.create(Job.create().setName(jobName).addInputMediaAsset(originalAsset.getId())
+                        "<taskBody>"
+                                + "<inputAsset>JobInputAsset(0)</inputAsset>"
+                                + "<outputAsset>JobOutputAsset(0)</outputAsset>"
+                                + "</taskBody>")
+                .setConfiguration("H.264 256k DSL CBR")
+                .setName("My encoding Task");
+        JobInfo jobInfo = service.create(Job.create().setName(jobName)
+                .addInputMediaAsset(originalAsset.getId())
                 .addTaskCreator(taskCreator));
 
         // Act
-        ListResult<AssetInfo> outputAssets = service.list(Asset.list(jobInfo.getOutputAssetsLink()));
+        ListResult<AssetInfo> outputAssets = service.list(Asset.list(jobInfo
+                .getOutputAssetsLink()));
         assertEquals(1, outputAssets.size());
         AssetInfo childAsset = outputAssets.get(0);
 

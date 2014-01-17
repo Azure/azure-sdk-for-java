@@ -15,12 +15,13 @@
 package com.microsoft.windowsazure.services.queue;
 
 /**
- * A class that contains static strings used to identify parts of a service configuration instance associated with the
- * Windows Azure Queue service.
+ * A class that contains static strings used to identify parts of a service
+ * configuration instance associated with the Windows Azure Queue service.
  * <p>
  * These values must not be altered.
  */
-public class QueueConfiguration {
+public class QueueConfiguration
+{
     public final static String ACCOUNT_NAME = "queue.accountName";
     public final static String ACCOUNT_KEY = "queue.accountKey";
     public final static String URI = "queue.uri";

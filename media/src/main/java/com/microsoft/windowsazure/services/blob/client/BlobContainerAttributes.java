@@ -18,10 +18,12 @@ import java.net.URI;
 import java.util.HashMap;
 
 /**
- * RESERVED FOR INTERNAL USE. Represents a container's attributes, including its properties and metadata.
+ * RESERVED FOR INTERNAL USE. Represents a container's attributes, including its
+ * properties and metadata.
  * 
  */
-final class BlobContainerAttributes {
+final class BlobContainerAttributes
+{
     /**
      * Holds the Container Metadata
      */
@@ -45,40 +47,49 @@ final class BlobContainerAttributes {
     /**
      * Initializes a new instance of the BlobContainerAttributes class
      */
-    public BlobContainerAttributes() {
+    public BlobContainerAttributes()
+    {
         this.setMetadata(new HashMap<String, String>());
         this.setProperties(new BlobContainerProperties());
     }
 
-    public HashMap<String, String> getMetadata() {
+    public HashMap<String, String> getMetadata()
+    {
         return this.metadata;
     }
 
-    public String getName() {
+    public String getName()
+    {
         return this.name;
     }
 
-    public BlobContainerProperties getProperties() {
+    public BlobContainerProperties getProperties()
+    {
         return this.properties;
     }
 
-    public URI getUri() {
+    public URI getUri()
+    {
         return this.uri;
     }
 
-    public void setMetadata(final HashMap<String, String> metadata) {
+    public void setMetadata(final HashMap<String, String> metadata)
+    {
         this.metadata = metadata;
     }
 
-    public void setName(final String name) {
+    public void setName(final String name)
+    {
         this.name = name;
     }
 
-    public void setProperties(final BlobContainerProperties properties) {
+    public void setProperties(final BlobContainerProperties properties)
+    {
         this.properties = properties;
     }
 
-    public void setUri(final URI uri) {
+    public void setUri(final URI uri)
+    {
         this.uri = uri;
     }
 }

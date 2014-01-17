@@ -28,43 +28,50 @@ import com.microsoft.windowsazure.services.servicebus.implementation.EntityAvail
 import com.microsoft.windowsazure.services.servicebus.implementation.EntityStatus;
 import com.microsoft.windowsazure.services.servicebus.implementation.PartitioningPolicy;
 
-public class TopicInfoTest {
+public class TopicInfoTest
+{
 
-    private Duration createDuration(int milliSeconds) {
+    private Duration createDuration(int milliSeconds)
+    {
         DatatypeFactory datatypeFactory;
-        try {
+        try
+        {
             datatypeFactory = DatatypeFactory.newInstance();
-        }
-        catch (DatatypeConfigurationException e) {
+        } catch (DatatypeConfigurationException e)
+        {
             throw new RuntimeException(e);
         }
         return datatypeFactory.newDuration(milliSeconds);
     }
 
     @Test
-    public void testGetSetDefaultMessageTimeToLive() {
+    public void testGetSetDefaultMessageTimeToLive()
+    {
         // Arrange
         Duration expectedDefaultMessageTimeToLive = createDuration(1024);
         TopicInfo topicInfo = new TopicInfo();
 
-        // Act 
-        Duration actualDefaultMessageTimeToLive = topicInfo.setDefaultMessageTimeToLive(
-                expectedDefaultMessageTimeToLive).getDefaultMessageTimeToLive();
+        // Act
+        Duration actualDefaultMessageTimeToLive = topicInfo
+                .setDefaultMessageTimeToLive(expectedDefaultMessageTimeToLive)
+                .getDefaultMessageTimeToLive();
 
         // Assert
-        assertEquals(expectedDefaultMessageTimeToLive, actualDefaultMessageTimeToLive);
+        assertEquals(expectedDefaultMessageTimeToLive,
+                actualDefaultMessageTimeToLive);
 
     }
 
     @Test
-    public void testGetSetMaxSizeInMegabytes() {
+    public void testGetSetMaxSizeInMegabytes()
+    {
         // Arrange
         Long expectedMaxSizeInMegabytes = 1024L;
         TopicInfo topicInfo = new TopicInfo();
 
-        // Act 
-        Long actualMaxSizeInMegabytes = topicInfo.setMaxSizeInMegabytes(expectedMaxSizeInMegabytes)
-                .getMaxSizeInMegabytes();
+        // Act
+        Long actualMaxSizeInMegabytes = topicInfo.setMaxSizeInMegabytes(
+                expectedMaxSizeInMegabytes).getMaxSizeInMegabytes();
 
         // Assert
         assertEquals(expectedMaxSizeInMegabytes, actualMaxSizeInMegabytes);
@@ -72,203 +79,236 @@ public class TopicInfoTest {
     }
 
     @Test
-    public void testGetSetRequiresDuplicateDetection() {
+    public void testGetSetRequiresDuplicateDetection()
+    {
         // Arrange
         Boolean expectedRequiresDuplicateDetection = true;
         TopicInfo topicInfo = new TopicInfo();
 
-        // Act 
-        Boolean actualRequiresDuplicateDetection = topicInfo.setRequiresDuplicateDetection(
-                expectedRequiresDuplicateDetection).isRequiresDuplicateDetection();
+        // Act
+        Boolean actualRequiresDuplicateDetection = topicInfo
+                .setRequiresDuplicateDetection(
+                        expectedRequiresDuplicateDetection)
+                .isRequiresDuplicateDetection();
 
         // Assert
-        assertEquals(expectedRequiresDuplicateDetection, actualRequiresDuplicateDetection);
+        assertEquals(expectedRequiresDuplicateDetection,
+                actualRequiresDuplicateDetection);
 
     }
 
     @Test
-    public void testGetSetDuplicateDetectionHistoryTimeWindow() {
+    public void testGetSetDuplicateDetectionHistoryTimeWindow()
+    {
         // Arrange
         Duration expectedDefaultMessageTimeToLive = createDuration(100);
         TopicInfo topicInfo = new TopicInfo();
 
-        // Act 
-        Duration actualDefaultMessageTimeToLive = topicInfo.setDefaultMessageTimeToLive(
-                expectedDefaultMessageTimeToLive).getDefaultMessageTimeToLive();
+        // Act
+        Duration actualDefaultMessageTimeToLive = topicInfo
+                .setDefaultMessageTimeToLive(expectedDefaultMessageTimeToLive)
+                .getDefaultMessageTimeToLive();
 
         // Assert
-        assertEquals(expectedDefaultMessageTimeToLive, actualDefaultMessageTimeToLive);
+        assertEquals(expectedDefaultMessageTimeToLive,
+                actualDefaultMessageTimeToLive);
     }
 
     @Test
-    public void testGetSetEnableBatchedOperations() {
+    public void testGetSetEnableBatchedOperations()
+    {
         // Arrange
         Boolean expectedEnableBatchedOperations = true;
         TopicInfo topicInfo = new TopicInfo();
 
-        // Act 
-        Boolean actualEnableBatchedOperations = topicInfo.setEnableBatchedOperations(expectedEnableBatchedOperations)
+        // Act
+        Boolean actualEnableBatchedOperations = topicInfo
+                .setEnableBatchedOperations(expectedEnableBatchedOperations)
                 .isEnableBatchedOperations();
 
         // Assert
-        assertEquals(expectedEnableBatchedOperations, actualEnableBatchedOperations);
+        assertEquals(expectedEnableBatchedOperations,
+                actualEnableBatchedOperations);
     }
 
     @Test
-    public void testGetSetSizeInBytes() {
+    public void testGetSetSizeInBytes()
+    {
         // Arrange
         Long expectedSizeInBytes = 1024L;
         TopicInfo topicInfo = new TopicInfo();
 
-        // Act 
-        Long actualSizeInBytes = topicInfo.setSizeInBytes(expectedSizeInBytes).getSizeInBytes();
+        // Act
+        Long actualSizeInBytes = topicInfo.setSizeInBytes(expectedSizeInBytes)
+                .getSizeInBytes();
 
         // Assert
         assertEquals(expectedSizeInBytes, actualSizeInBytes);
     }
 
     @Test
-    public void testGetSetFilteringMessageBeforePublishing() {
+    public void testGetSetFilteringMessageBeforePublishing()
+    {
         // Arrange
         Boolean expectedFilteringMessageBeforePublishing = true;
         TopicInfo topicInfo = new TopicInfo();
 
-        // Act 
-        Boolean actualFilteringMessageBeforePublishing = topicInfo.setFilteringMessageBeforePublishing(
-                expectedFilteringMessageBeforePublishing).isFilteringMessageBeforePublishing();
+        // Act
+        Boolean actualFilteringMessageBeforePublishing = topicInfo
+                .setFilteringMessageBeforePublishing(
+                        expectedFilteringMessageBeforePublishing)
+                .isFilteringMessageBeforePublishing();
 
         // Assert
-        assertEquals(expectedFilteringMessageBeforePublishing, actualFilteringMessageBeforePublishing);
+        assertEquals(expectedFilteringMessageBeforePublishing,
+                actualFilteringMessageBeforePublishing);
     }
 
     @Test
-    public void testGetSetAnonymousAccessible() {
+    public void testGetSetAnonymousAccessible()
+    {
         // Arrange
         Boolean expectedAnonymousAccessible = true;
         TopicInfo topicInfo = new TopicInfo();
 
-        // Act 
-        Boolean actualAnonymousAccessible = topicInfo.setAnonymousAccessible(expectedAnonymousAccessible)
-                .isAnonymousAccessible();
+        // Act
+        Boolean actualAnonymousAccessible = topicInfo.setAnonymousAccessible(
+                expectedAnonymousAccessible).isAnonymousAccessible();
 
         // Assert
         assertEquals(expectedAnonymousAccessible, actualAnonymousAccessible);
     }
 
     @Test
-    public void testGetSetStatus() {
+    public void testGetSetStatus()
+    {
         // Arrange
         EntityStatus expectedEntityStatus = EntityStatus.ACTIVE;
         TopicInfo topicInfo = new TopicInfo();
 
-        // Act 
-        EntityStatus actualEntityStatus = topicInfo.setStatus(expectedEntityStatus).getStatus();
+        // Act
+        EntityStatus actualEntityStatus = topicInfo.setStatus(
+                expectedEntityStatus).getStatus();
 
         // Assert
         assertEquals(expectedEntityStatus, actualEntityStatus);
     }
 
     @Test
-    public void testGetSetCreatedAt() {
+    public void testGetSetCreatedAt()
+    {
         // Arrange
         Calendar expectedCreatedAt = Calendar.getInstance();
         TopicInfo topicInfo = new TopicInfo();
 
-        // Act 
-        Calendar actualCreatedAt = topicInfo.setCreatedAt(expectedCreatedAt).getCreatedAt();
+        // Act
+        Calendar actualCreatedAt = topicInfo.setCreatedAt(expectedCreatedAt)
+                .getCreatedAt();
 
         // Assert
         assertEquals(expectedCreatedAt, actualCreatedAt);
     }
 
     @Test
-    public void testGetSetUpdatedAt() {
+    public void testGetSetUpdatedAt()
+    {
         // Arrange
         Calendar expectedUpdatedAt = Calendar.getInstance();
         TopicInfo topicInfo = new TopicInfo();
 
-        // Act 
-        Calendar actualUpdatedAt = topicInfo.setUpdatedAt(expectedUpdatedAt).getUpdatedAt();
+        // Act
+        Calendar actualUpdatedAt = topicInfo.setUpdatedAt(expectedUpdatedAt)
+                .getUpdatedAt();
 
         // Assert
         assertEquals(expectedUpdatedAt, actualUpdatedAt);
     }
 
     @Test
-    public void testGetSetAccessedAt() {
+    public void testGetSetAccessedAt()
+    {
         // Arrange
         Calendar expectedAccessedAt = Calendar.getInstance();
         TopicInfo topicInfo = new TopicInfo();
 
-        // Act 
-        Calendar actualAccessedAt = topicInfo.setAccessedAt(expectedAccessedAt).getAccessedAt();
+        // Act
+        Calendar actualAccessedAt = topicInfo.setAccessedAt(expectedAccessedAt)
+                .getAccessedAt();
 
         // Assert
         assertEquals(expectedAccessedAt, actualAccessedAt);
     }
 
     @Test
-    public void testGetSetUserMetadata() {
+    public void testGetSetUserMetadata()
+    {
         // Arrange
         String expectedUserMetadata = "expectedUserMetaData";
         TopicInfo topicInfo = new TopicInfo();
 
-        // Act 
-        String actualUserMetadata = topicInfo.setUserMetadata(expectedUserMetadata).getUserMetadata();
+        // Act
+        String actualUserMetadata = topicInfo.setUserMetadata(
+                expectedUserMetadata).getUserMetadata();
 
         // Assert
         assertEquals(expectedUserMetadata, actualUserMetadata);
     }
 
     @Test
-    public void testGetSetSupportOrdering() {
+    public void testGetSetSupportOrdering()
+    {
         // Arrange
         Boolean expectedIsSupportOrdering = true;
         TopicInfo topicInfo = new TopicInfo();
 
-        // Act 
-        Boolean actualIsSupportOrdering = topicInfo.setSupportOrdering(expectedIsSupportOrdering).isSupportOrdering();
+        // Act
+        Boolean actualIsSupportOrdering = topicInfo.setSupportOrdering(
+                expectedIsSupportOrdering).isSupportOrdering();
 
         // Assert
         assertEquals(expectedIsSupportOrdering, actualIsSupportOrdering);
     }
 
     @Test
-    public void testGetSetSubscriptionCount() {
+    public void testGetSetSubscriptionCount()
+    {
         // Arrange
         Integer expectedSubscriptionCount = 1024;
         TopicInfo topicInfo = new TopicInfo();
 
-        // Act 
-        Integer actualSubscriptionCount = topicInfo.setSubscriptionCount(expectedSubscriptionCount)
-                .getSubscriptionCount();
+        // Act
+        Integer actualSubscriptionCount = topicInfo.setSubscriptionCount(
+                expectedSubscriptionCount).getSubscriptionCount();
 
         // Assert
         assertEquals(expectedSubscriptionCount, actualSubscriptionCount);
     }
 
     @Test
-    public void testGetSetAutoDeleteOnIdle() {
+    public void testGetSetAutoDeleteOnIdle()
+    {
         // Arrange
         Duration expectedIsAutoDeleteOnIdle = createDuration(100);
         TopicInfo topicInfo = new TopicInfo();
 
-        // Act 
-        Duration actualIsAutoDeleteOnIdle = topicInfo.setAutoDeleteOnIdle(expectedIsAutoDeleteOnIdle)
-                .getAutoDeleteOnIdle();
+        // Act
+        Duration actualIsAutoDeleteOnIdle = topicInfo.setAutoDeleteOnIdle(
+                expectedIsAutoDeleteOnIdle).getAutoDeleteOnIdle();
 
         // Assert
         assertEquals(expectedIsAutoDeleteOnIdle, actualIsAutoDeleteOnIdle);
     }
 
     @Test
-    public void testGetSetPartioningPolicy() {
+    public void testGetSetPartioningPolicy()
+    {
         // Arrange
         PartitioningPolicy expectedPartitioningPolicy = PartitioningPolicy.NO_PARTITIONING;
         TopicInfo topicInfo = new TopicInfo();
 
-        // Act 
-        PartitioningPolicy actualPartitioningPolicy = topicInfo.setPartitioningPolicy(expectedPartitioningPolicy)
+        // Act
+        PartitioningPolicy actualPartitioningPolicy = topicInfo
+                .setPartitioningPolicy(expectedPartitioningPolicy)
                 .getPartitioningPolicy();
 
         // Assert
@@ -276,17 +316,20 @@ public class TopicInfoTest {
     }
 
     @Test
-    public void testGetSetEntityAvailabilityStatus() {
+    public void testGetSetEntityAvailabilityStatus()
+    {
         // Arrange
         EntityAvailabilityStatus expectedEntityAvailabilityStatus = EntityAvailabilityStatus.AVAILABLE;
         TopicInfo topicInfo = new TopicInfo();
 
-        // Act 
-        EntityAvailabilityStatus actualEntityAvailabilityStatus = topicInfo.setEntityAvailabilityStatus(
-                expectedEntityAvailabilityStatus).getEntityAvailabilityStatus();
+        // Act
+        EntityAvailabilityStatus actualEntityAvailabilityStatus = topicInfo
+                .setEntityAvailabilityStatus(expectedEntityAvailabilityStatus)
+                .getEntityAvailabilityStatus();
 
         // Assert
-        assertEquals(expectedEntityAvailabilityStatus, actualEntityAvailabilityStatus);
+        assertEquals(expectedEntityAvailabilityStatus,
+                actualEntityAvailabilityStatus);
     }
 
 }

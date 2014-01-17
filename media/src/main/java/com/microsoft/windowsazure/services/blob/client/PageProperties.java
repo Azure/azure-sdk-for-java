@@ -17,7 +17,8 @@ package com.microsoft.windowsazure.services.blob.client;
 /**
  * RESERVED FOR INTERNAL USE. Represents properties for writing to a page blob.
  */
-final class PageProperties {
+final class PageProperties
+{
 
     /**
      * Gets or sets the type of write operation.
@@ -32,21 +33,24 @@ final class PageProperties {
     /**
      * Initializes a new instance of the PageProperties class.
      */
-    public PageProperties() {
+    public PageProperties()
+    {
         // Empty Default Ctor
     }
 
     /**
      * @return the pageOperation
      */
-    public PageOperationType getPageOperation() {
+    public PageOperationType getPageOperation()
+    {
         return this.pageOperation;
     }
 
     /**
      * @return the range
      */
-    public PageRange getRange() {
+    public PageRange getRange()
+    {
         return this.range;
     }
 
@@ -54,7 +58,8 @@ final class PageProperties {
      * @param pageOperation
      *            the pageOperation to set
      */
-    public void setPageOperation(final PageOperationType pageOperation) {
+    public void setPageOperation(final PageOperationType pageOperation)
+    {
         this.pageOperation = pageOperation;
     }
 
@@ -62,7 +67,8 @@ final class PageProperties {
      * @param range
      *            the range to set
      */
-    public void setRange(final PageRange range) {
+    public void setRange(final PageRange range)
+    {
         this.range = range;
     }
 }

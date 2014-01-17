@@ -25,18 +25,22 @@ import com.microsoft.windowsazure.services.core.storage.utils.Utility;
 import com.microsoft.windowsazure.services.core.storage.utils.implementation.BaseResponse;
 
 /**
- * RESERVED FOR INTERNAL USE. A class used to parse the response from container operations
+ * RESERVED FOR INTERNAL USE. A class used to parse the response from container
+ * operations
  */
-final class ContainerResponse extends BaseResponse {
+final class ContainerResponse extends BaseResponse
+{
 
     /**
      * Gets the ACL for the container from the response.
      * 
      * @param request
      *            the request object for this operation
-     * @return the ACL value indicating the public access level for the container
+     * @return the ACL value indicating the public access level for the
+     *         container
      */
-    public static String getAcl(final HttpURLConnection request) {
+    public static String getAcl(final HttpURLConnection request)
+    {
         return request.getHeaderField(BlobConstants.BLOB_PUBLIC_ACCESS_HEADER);
     }
 
@@ -50,29 +54,39 @@ final class ContainerResponse extends BaseResponse {
      * @return the BlobContainerAttributes from the given request.
      * @throws StorageException
      */
-    public static BlobContainerAttributes getAttributes(final HttpURLConnection request, final boolean usePathStyleUris)
-            throws StorageException {
+    public static BlobContainerAttributes getAttributes(
+            final HttpURLConnection request, final boolean usePathStyleUris)
+            throws StorageException
+    {
         final BlobContainerAttributes containerAttributes = new BlobContainerAttributes();
         URI tempURI;
-        try {
-            tempURI = PathUtility.stripURIQueryAndFragment(request.getURL().toURI());
-        }
-        catch (final URISyntaxException e) {
-            final StorageException wrappedUnexpectedException = Utility.generateNewUnexpectedStorageException(e);
+        try
+        {
+            tempURI = PathUtility.stripURIQueryAndFragment(request.getURL()
+                    .toURI());
+        } catch (final URISyntaxException e)
+        {
+            final StorageException wrappedUnexpectedException = Utility
+                    .generateNewUnexpectedStorageException(e);
             throw wrappedUnexpectedException;
         }
 
         containerAttributes.setUri(tempURI);
-        containerAttributes.setName(PathUtility.getContainerNameFromUri(tempURI, usePathStyleUris));
+        containerAttributes.setName(PathUtility.getContainerNameFromUri(
+                tempURI, usePathStyleUris));
 
-        final BlobContainerProperties containerProperties = containerAttributes.getProperties();
+        final BlobContainerProperties containerProperties = containerAttributes
+                .getProperties();
         containerProperties.setEtag(BaseResponse.getEtag(request));
-        containerProperties.setLastModified(new Date(request.getLastModified()));
+        containerProperties
+                .setLastModified(new Date(request.getLastModified()));
         containerAttributes.setMetadata(getMetadata(request));
 
-        containerProperties.setLeaseStatus(BaseResponse.getLeaseStatus(request));
+        containerProperties
+                .setLeaseStatus(BaseResponse.getLeaseStatus(request));
         containerProperties.setLeaseState(BaseResponse.getLeaseState(request));
-        containerProperties.setLeaseDuration(BaseResponse.getLeaseDuration(request));
+        containerProperties.setLeaseDuration(BaseResponse
+                .getLeaseDuration(request));
 
         return containerAttributes;
     }

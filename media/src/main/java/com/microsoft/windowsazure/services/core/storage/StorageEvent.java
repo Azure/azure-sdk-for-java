@@ -23,7 +23,8 @@ import java.util.EventListener;
  * @param <T>
  *            The type of the event to be received.
  */
-public abstract class StorageEvent<T> implements EventListener {
+public abstract class StorageEvent<T> implements EventListener
+{
     /**
      * Represents an event that occurred.
      * 

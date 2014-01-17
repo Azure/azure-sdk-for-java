@@ -26,7 +26,8 @@ import com.microsoft.windowsazure.services.core.storage.StorageException;
 /**
  * RESERVED FOR INTERNAL USE. A class to help modify paths
  */
-public final class PathUtility {
+public final class PathUtility
+{
     /**
      * Adds a queryString to an URI.
      * 
@@ -39,13 +40,17 @@ public final class PathUtility {
      *             if the resulting URI is invalid.
      * @throws StorageException
      */
-    public static URI addToQuery(final URI resourceURI, final HashMap<String, String[]> fieldCollection)
-            throws URISyntaxException, StorageException {
+    public static URI addToQuery(final URI resourceURI,
+            final HashMap<String, String[]> fieldCollection)
+            throws URISyntaxException, StorageException
+    {
         final UriQueryBuilder outUri = new UriQueryBuilder();
 
         // Generate new queryString
-        for (final Entry<String, String[]> entry : fieldCollection.entrySet()) {
-            for (final String val : entry.getValue()) {
+        for (final Entry<String, String[]> entry : fieldCollection.entrySet())
+        {
+            for (final String val : entry.getValue())
+            {
                 outUri.add(entry.getKey(), val);
             }
         }
@@ -65,8 +70,9 @@ public final class PathUtility {
      *             if the resulting URI is invalid.
      * @throws StorageException
      */
-    public static URI addToQuery(final URI resourceURI, final String queryString) throws URISyntaxException,
-            StorageException {
+    public static URI addToQuery(final URI resourceURI, final String queryString)
+            throws URISyntaxException, StorageException
+    {
         return addToQuery(resourceURI, parseQueryString(queryString));
     }
 
@@ -80,7 +86,9 @@ public final class PathUtility {
      * @return The appended Uri.
      * @throws URISyntaxException
      */
-    public static URI appendPathToUri(final URI uri, final String relativeOrAbslouteUri) throws URISyntaxException {
+    public static URI appendPathToUri(final URI uri,
+            final String relativeOrAbslouteUri) throws URISyntaxException
+    {
         return appendPathToUri(uri, relativeOrAbslouteUri, "/");
     }
 
@@ -96,56 +104,69 @@ public final class PathUtility {
      * @return The appended Uri.
      * @throws URISyntaxException
      */
-    public static URI appendPathToUri(final URI uri, final String relativeOrAbsoluteUri, final String separator)
-            throws URISyntaxException {
+    public static URI appendPathToUri(final URI uri,
+            final String relativeOrAbsoluteUri, final String separator)
+            throws URISyntaxException
+    {
 
         int hostNameBeginIndex = -1;
-        if (relativeOrAbsoluteUri.length() > 8) {
-            final String header = relativeOrAbsoluteUri.substring(0, 8).toLowerCase();
-            if ("https://".equals(header)) {
+        if (relativeOrAbsoluteUri.length() > 8)
+        {
+            final String header = relativeOrAbsoluteUri.substring(0, 8)
+                    .toLowerCase();
+            if ("https://".equals(header))
+            {
                 hostNameBeginIndex = 8;
-            }
-            else if ("http://".equals(header.substring(0, 7))) {
+            } else if ("http://".equals(header.substring(0, 7)))
+            {
                 hostNameBeginIndex = 7;
             }
         }
 
         // absolute URI
-        if (hostNameBeginIndex > 0) {
-            final int authorityLength = relativeOrAbsoluteUri.substring(hostNameBeginIndex).indexOf(separator);
-            final String authorityName = relativeOrAbsoluteUri.substring(hostNameBeginIndex, hostNameBeginIndex
-                    + authorityLength);
+        if (hostNameBeginIndex > 0)
+        {
+            final int authorityLength = relativeOrAbsoluteUri.substring(
+                    hostNameBeginIndex).indexOf(separator);
+            final String authorityName = relativeOrAbsoluteUri.substring(
+                    hostNameBeginIndex, hostNameBeginIndex + authorityLength);
             final URI absoluteUri = new URI(relativeOrAbsoluteUri);
 
-            if (uri.getAuthority().equals(authorityName)) {
+            if (uri.getAuthority().equals(authorityName))
+            {
                 return absoluteUri;
-            }
-            else {
+            } else
+            {
                 // Happens when using fiddler, DNS aliases, or potentially NATs
-                return new URI(uri.getScheme(), uri.getAuthority(), absoluteUri.getPath(), absoluteUri.getRawQuery(),
+                return new URI(uri.getScheme(), uri.getAuthority(),
+                        absoluteUri.getPath(), absoluteUri.getRawQuery(),
                         absoluteUri.getRawFragment());
             }
-        }
-        else {
+        } else
+        {
             // relative URI
             // used by directory
-            if (uri.getPath().length() == 0 && relativeOrAbsoluteUri.startsWith(separator)) {
-                return new URI(uri.getScheme(), uri.getAuthority(), relativeOrAbsoluteUri, uri.getRawQuery(),
+            if (uri.getPath().length() == 0
+                    && relativeOrAbsoluteUri.startsWith(separator))
+            {
+                return new URI(uri.getScheme(), uri.getAuthority(),
+                        relativeOrAbsoluteUri, uri.getRawQuery(),
                         uri.getRawFragment());
             }
 
             final StringBuilder pathString = new StringBuilder(uri.getPath());
 
-            if (uri.getPath().endsWith(separator)) {
+            if (uri.getPath().endsWith(separator))
+            {
                 pathString.append(relativeOrAbsoluteUri);
-            }
-            else {
+            } else
+            {
                 pathString.append(separator);
                 pathString.append(relativeOrAbsoluteUri);
             }
 
-            return new URI(uri.getScheme(), uri.getAuthority(), pathString.toString(), uri.getQuery(),
-                    uri.getFragment());
+            return new URI(uri.getScheme(), uri.getAuthority(),
+                    pathString.toString(), uri.getQuery(), uri.getFragment());
         }
     }
 
@@ -159,8 +180,12 @@ public final class PathUtility {
      * @return the blobs name
      * @throws URISyntaxException
      */
-    public static String getBlobNameFromURI(final URI inURI, final boolean usePathStyleUris) throws URISyntaxException {
-        return Utility.safeRelativize(new URI(getContainerURI(inURI, usePathStyleUris).toString().concat("/")), inURI);
+    public static String getBlobNameFromURI(final URI inURI,
+            final boolean usePathStyleUris) throws URISyntaxException
+    {
+        return Utility.safeRelativize(
+                new URI(getContainerURI(inURI, usePathStyleUris).toString()
+                        .concat("/")), inURI);
     }
 
     /**
@@ -172,10 +197,13 @@ public final class PathUtility {
      *            the Absolute path of the object.
      * @return the canonical path for an object from the credentials
      */
-    public static String getCanonicalPathFromCredentials(final StorageCredentials credentials, final String absolutePath) {
+    public static String getCanonicalPathFromCredentials(
+            final StorageCredentials credentials, final String absolutePath)
+    {
         final String account = credentials.getAccountName();
 
-        if (account == null) {
+        if (account == null)
+        {
             final String errorMessage = "Cannot create Shared Access Signature as the credentials does not have account name information. Please check that the credentials used support creating Shared Access Signature.";
             throw new IllegalArgumentException(errorMessage);
         }
@@ -195,9 +223,15 @@ public final class PathUtility {
      * @return container name from address from the URI.
      * @throws IllegalArgumentException
      */
-    public static String getContainerNameFromUri(final URI resourceAddress, final boolean usePathStyleUris) {
-        return getResourceNameFromUri(resourceAddress, usePathStyleUris,
-                String.format("Invalid blob address '%s', missing container information", resourceAddress));
+    public static String getContainerNameFromUri(final URI resourceAddress,
+            final boolean usePathStyleUris)
+    {
+        return getResourceNameFromUri(
+                resourceAddress,
+                usePathStyleUris,
+                String.format(
+                        "Invalid blob address '%s', missing container information",
+                        resourceAddress));
     }
 
     /**
@@ -210,9 +244,15 @@ public final class PathUtility {
      * @return table name from address from the URI.
      * @throws IllegalArgumentException
      */
-    public static String getTableNameFromUri(final URI resourceAddress, final boolean usePathStyleUris) {
-        return getResourceNameFromUri(resourceAddress, usePathStyleUris,
-                String.format("Invalid table address '%s', missing table information", resourceAddress));
+    public static String getTableNameFromUri(final URI resourceAddress,
+            final boolean usePathStyleUris)
+    {
+        return getResourceNameFromUri(
+                resourceAddress,
+                usePathStyleUris,
+                String.format(
+                        "Invalid table address '%s', missing table information",
+                        resourceAddress));
     }
 
     /**
@@ -225,19 +265,22 @@ public final class PathUtility {
      * @return container name from address from the URI.
      * @throws IllegalArgumentException
      */
-    private static String getResourceNameFromUri(final URI resourceAddress, final boolean usePathStyleUris,
-            final String error) {
+    private static String getResourceNameFromUri(final URI resourceAddress,
+            final boolean usePathStyleUris, final String error)
+    {
         Utility.assertNotNull("resourceAddress", resourceAddress);
 
         final String[] pathSegments = resourceAddress.getRawPath().split("/");
 
         final int expectedPartsLength = usePathStyleUris ? 3 : 2;
 
-        if (pathSegments.length < expectedPartsLength) {
+        if (pathSegments.length < expectedPartsLength)
+        {
             throw new IllegalArgumentException(error);
         }
 
-        final String resourceName = usePathStyleUris ? pathSegments[2] : pathSegments[1];
+        final String resourceName = usePathStyleUris ? pathSegments[2]
+                : pathSegments[1];
 
         return Utility.trimEnd(resourceName, '/');
     }
@@ -252,10 +295,14 @@ public final class PathUtility {
      * @return the container URI from a blob address
      * @throws URISyntaxException
      */
-    public static URI getContainerURI(final URI blobAddress, final boolean usePathStyleUris) throws URISyntaxException {
-        final String containerName = getContainerNameFromUri(blobAddress, usePathStyleUris);
+    public static URI getContainerURI(final URI blobAddress,
+            final boolean usePathStyleUris) throws URISyntaxException
+    {
+        final String containerName = getContainerNameFromUri(blobAddress,
+                usePathStyleUris);
 
-        final URI containerUri = appendPathToUri(new URI(getServiceClientBaseAddress(blobAddress, usePathStyleUris)),
+        final URI containerUri = appendPathToUri(new URI(
+                getServiceClientBaseAddress(blobAddress, usePathStyleUris)),
                 containerName);
         return containerUri;
     }
@@ -273,11 +320,15 @@ public final class PathUtility {
      * @throws URISyntaxException
      * @throws StorageException
      */
-    public static URI getParentAddress(final URI blobAddress, final String delimiter, final boolean usePathStyleUris)
-            throws URISyntaxException, StorageException {
-        final String parentName = getParentNameFromURI(blobAddress, delimiter, usePathStyleUris);
+    public static URI getParentAddress(final URI blobAddress,
+            final String delimiter, final boolean usePathStyleUris)
+            throws URISyntaxException, StorageException
+    {
+        final String parentName = getParentNameFromURI(blobAddress, delimiter,
+                usePathStyleUris);
 
-        final URI parentUri = appendPathToUri(new URI(getServiceClientBaseAddress(blobAddress, usePathStyleUris)),
+        final URI parentUri = appendPathToUri(new URI(
+                getServiceClientBaseAddress(blobAddress, usePathStyleUris)),
                 parentName);
         return parentUri;
     }
@@ -295,50 +346,63 @@ public final class PathUtility {
      * @throws URISyntaxException
      * @throws StorageException
      */
-    public static String getParentNameFromURI(final URI resourceAddress, final String delimiter,
-            final boolean usePathStyleUris) throws URISyntaxException, StorageException {
+    public static String getParentNameFromURI(final URI resourceAddress,
+            final String delimiter, final boolean usePathStyleUris)
+            throws URISyntaxException, StorageException
+    {
         Utility.assertNotNull("resourceAddress", resourceAddress);
         Utility.assertNotNullOrEmpty("delimiter", delimiter);
 
-        final String containerName = getContainerNameFromUri(resourceAddress, usePathStyleUris);
+        final String containerName = getContainerNameFromUri(resourceAddress,
+                usePathStyleUris);
 
         /*
-         * URI baseURI = appendPathToUri( new URI(getServiceClientBaseAddress(resourceAddress, usePathStyleUris)),
+         * URI baseURI = appendPathToUri( new
+         * URI(getServiceClientBaseAddress(resourceAddress, usePathStyleUris)),
          * containerName);
          */
-        URI baseURI = new URI(getServiceClientBaseAddress(resourceAddress, usePathStyleUris));
-        if (usePathStyleUris && !baseURI.getRawPath().endsWith("/")) {
-            baseURI = new URI(baseURI.getScheme(), baseURI.getRawAuthority(), baseURI.getRawPath().concat("/"), null,
-                    null);
+        URI baseURI = new URI(getServiceClientBaseAddress(resourceAddress,
+                usePathStyleUris));
+        if (usePathStyleUris && !baseURI.getRawPath().endsWith("/"))
+        {
+            baseURI = new URI(baseURI.getScheme(), baseURI.getRawAuthority(),
+                    baseURI.getRawPath().concat("/"), null, null);
         }
 
-        final URI relativeURI = new URI(Utility.safeRelativize(baseURI, resourceAddress));
+        final URI relativeURI = new URI(Utility.safeRelativize(baseURI,
+                resourceAddress));
 
         String relativeURIString = relativeURI.toString();
 
-        if (relativeURIString.endsWith(delimiter)) {
-            relativeURIString = relativeURIString.substring(0, relativeURIString.length() - delimiter.length());
+        if (relativeURIString.endsWith(delimiter))
+        {
+            relativeURIString = relativeURIString.substring(0,
+                    relativeURIString.length() - delimiter.length());
         }
 
         String parentName = Constants.EMPTY_STRING;
 
-        if (Utility.isNullOrEmpty(relativeURIString)) {
+        if (Utility.isNullOrEmpty(relativeURIString))
+        {
             // Case 1 /<ContainerName>[Delimiter]*? => /<ContainerName>
             // Parent of container is container itself
             parentName = containerName.concat(delimiter);
-        }
-        else {
-            final int lastDelimiterDex = relativeURIString.lastIndexOf(delimiter);
+        } else
+        {
+            final int lastDelimiterDex = relativeURIString
+                    .lastIndexOf(delimiter);
 
-            if (lastDelimiterDex <= 0) {
+            if (lastDelimiterDex <= 0)
+            {
                 // Case 2 /<Container>/<folder>
                 // Parent of a folder is container
                 parentName = containerName.concat(delimiter);
-            }
-            else {
+            } else
+            {
                 // Case 3 /<Container>/<folder>/[<subfolder>/]*<BlobName>
                 // Parent of blob is folder
-                parentName = relativeURIString.substring(0, lastDelimiterDex + delimiter.length());
+                parentName = relativeURIString.substring(0, lastDelimiterDex
+                        + delimiter.length());
             }
         }
 
@@ -355,7 +419,9 @@ public final class PathUtility {
      * @return container name from address from the URI.
      * @throws IllegalArgumentException
      */
-    public static String getQueueNameFromUri(final URI resourceAddress, final boolean usePathStyleUris) {
+    public static String getQueueNameFromUri(final URI resourceAddress,
+            final boolean usePathStyleUris)
+    {
         return getResourceNameFromUri(resourceAddress, usePathStyleUris,
                 String.format("Invalid queue URI '%s'.", resourceAddress));
     }
@@ -370,26 +436,31 @@ public final class PathUtility {
      * @return the service client address from a complete Uri.
      * @throws URISyntaxException
      */
-    public static String getServiceClientBaseAddress(final URI address, final boolean usePathStyleUris)
-            throws URISyntaxException {
-        if (usePathStyleUris) {
+    public static String getServiceClientBaseAddress(final URI address,
+            final boolean usePathStyleUris) throws URISyntaxException
+    {
+        if (usePathStyleUris)
+        {
             final String[] pathSegments = address.getRawPath().split("/");
 
-            if (pathSegments.length < 2) {
+            if (pathSegments.length < 2)
+            {
                 final String error = String
                         .format("Missing account name information inside path style uri. Path style uris should be of the form http://<IPAddressPlusPort>/<accountName>");
                 throw new IllegalArgumentException(error);
             }
 
-            final StringBuilder completeAddress = new StringBuilder(new URI(address.getScheme(),
-                    address.getAuthority(), null, null, null).toString());
+            final StringBuilder completeAddress = new StringBuilder(new URI(
+                    address.getScheme(), address.getAuthority(), null, null,
+                    null).toString());
             completeAddress.append("/");
             completeAddress.append(Utility.trimEnd(pathSegments[1], '/'));
 
             return completeAddress.toString();
-        }
-        else {
-            return new URI(address.getScheme(), address.getAuthority(), null, null, null).toString();
+        } else
+        {
+            return new URI(address.getScheme(), address.getAuthority(), null,
+                    null, null).toString();
         }
     }
 
@@ -401,26 +472,33 @@ public final class PathUtility {
      * @return a HashMap<String, String[]> of the key values.
      * @throws StorageException
      */
-    public static HashMap<String, String[]> parseQueryString(String parseString) throws StorageException {
+    public static HashMap<String, String[]> parseQueryString(String parseString)
+            throws StorageException
+    {
         final HashMap<String, String[]> retVals = new HashMap<String, String[]>();
-        if (Utility.isNullOrEmpty(parseString)) {
+        if (Utility.isNullOrEmpty(parseString))
+        {
             return retVals;
         }
 
         // 1. Remove ? if present
         final int queryDex = parseString.indexOf("?");
-        if (queryDex >= 0 && parseString.length() > 0) {
+        if (queryDex >= 0 && parseString.length() > 0)
+        {
             parseString = parseString.substring(queryDex + 1);
         }
 
         // 2. split name value pairs by splitting on the 'c&' character
-        final String[] valuePairs = parseString.contains("&") ? parseString.split("&") : parseString.split(";");
+        final String[] valuePairs = parseString.contains("&") ? parseString
+                .split("&") : parseString.split(";");
 
         // 3. for each field value pair parse into appropriate map entries
-        for (int m = 0; m < valuePairs.length; m++) {
+        for (int m = 0; m < valuePairs.length; m++)
+        {
             final int equalDex = valuePairs[m].indexOf("=");
 
-            if (equalDex < 0 || equalDex == valuePairs[m].length() - 1) {
+            if (equalDex < 0 || equalDex == valuePairs[m].length() - 1)
+            {
                 continue;
             }
 
@@ -433,15 +511,18 @@ public final class PathUtility {
             // 3.1 add to map
             String[] values = retVals.get(key);
 
-            if (values == null) {
+            if (values == null)
+            {
                 values = new String[] { value };
-                if (!value.equals(Constants.EMPTY_STRING)) {
+                if (!value.equals(Constants.EMPTY_STRING))
+                {
                     retVals.put(key, values);
                 }
-            }
-            else if (!value.equals(Constants.EMPTY_STRING)) {
+            } else if (!value.equals(Constants.EMPTY_STRING))
+            {
                 final String[] newValues = new String[values.length + 1];
-                for (int j = 0; j < values.length; j++) {
+                for (int j = 0; j < values.length; j++)
+                {
                     newValues[j] = values[j];
                 }
 
@@ -460,11 +541,15 @@ public final class PathUtility {
      * @return the stripped uri.
      * @throws StorageException
      */
-    public static URI stripURIQueryAndFragment(final URI inUri) throws StorageException {
-        try {
-            return new URI(inUri.getScheme(), inUri.getAuthority(), inUri.getPath(), null, null);
-        }
-        catch (final URISyntaxException e) {
+    public static URI stripURIQueryAndFragment(final URI inUri)
+            throws StorageException
+    {
+        try
+        {
+            return new URI(inUri.getScheme(), inUri.getAuthority(),
+                    inUri.getPath(), null, null);
+        } catch (final URISyntaxException e)
+        {
             throw Utility.generateNewUnexpectedStorageException(e);
         }
     }
@@ -472,7 +557,8 @@ public final class PathUtility {
     /**
      * Private Default Ctor.
      */
-    private PathUtility() {
+    private PathUtility()
+    {
         // No op
     }
 }
