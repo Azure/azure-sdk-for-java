@@ -53,7 +53,8 @@ public class AffinityGroupOperationsTests extends ManagementIntegrationTestBase 
         
         try {
             managementClient.getAffinityGroupsOperations().delete(affinityGroupName2);
-        }        catch (ServiceException e) {
+        }
+        catch (ServiceException e) {
             e.printStackTrace();
         }
     }
