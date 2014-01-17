@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 andrerod.
+ * Copyright Microsoft.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ public class AffinityGroupOperationsTests extends ManagementIntegrationTestBase 
     @BeforeClass
     public static void setup() throws Exception {
         createService();
-
+        cleanup();
         AffinityGroupCreateParameters createParameters = new AffinityGroupCreateParameters();
         createParameters.setName(affinityGroupName1);
         createParameters.setLocation("West US");
@@ -46,9 +46,14 @@ public class AffinityGroupOperationsTests extends ManagementIntegrationTestBase 
         try
         {
             managementClient.getAffinityGroupsOperations().delete(affinityGroupName1);
-            managementClient.getAffinityGroupsOperations().delete(affinityGroupName2);
         }
         catch (ServiceException e) {
+            e.printStackTrace();
+        }
+        
+        try {
+            managementClient.getAffinityGroupsOperations().delete(affinityGroupName2);
+        }        catch (ServiceException e) {
             e.printStackTrace();
         }
     }
@@ -72,11 +77,11 @@ public class AffinityGroupOperationsTests extends ManagementIntegrationTestBase 
     @Test
     public void getAffinityGroups() throws Exception {
         // Act
-        AffinityGroupGetResponse affinityGroupResponse = managementClient.getAffinityGroupsOperations().get(affinityGroupName2);
+        AffinityGroupGetResponse affinityGroupResponse = managementClient.getAffinityGroupsOperations().get(affinityGroupName1);
 
         // Assert
         Assert.assertEquals(200, affinityGroupResponse.getStatusCode());
         Assert.assertNotNull(affinityGroupResponse.getRequestId());
-        Assert.assertEquals(affinityGroupName2, affinityGroupResponse.getName());
+        Assert.assertEquals(affinityGroupName1, affinityGroupResponse.getName());
     }
 }
