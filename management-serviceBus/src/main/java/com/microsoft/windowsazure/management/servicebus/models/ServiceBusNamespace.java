@@ -38,50 +38,74 @@ public class ServiceBusNamespace
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
     * more information)
     */
-    public URI getAcsManagementEndpoint() { return this.acsManagementEndpoint; }
+    public URI getAcsManagementEndpoint()
+    {
+        return this.acsManagementEndpoint;
+    }
     
     /**
     * ACS endpoint you can use to obtain access tokens.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
     * more information)
     */
-    public void setAcsManagementEndpoint(URI acsManagementEndpoint) { this.acsManagementEndpoint = acsManagementEndpoint; }
+    public void setAcsManagementEndpoint(URI acsManagementEndpoint)
+    {
+        this.acsManagementEndpoint = acsManagementEndpoint;
+    }
     
     private Calendar createdAt;
     
     /**
     * The time the namespace was created.
     */
-    public Calendar getCreatedAt() { return this.createdAt; }
+    public Calendar getCreatedAt()
+    {
+        return this.createdAt;
+    }
     
     /**
     * The time the namespace was created.
     */
-    public void setCreatedAt(Calendar createdAt) { this.createdAt = createdAt; }
+    public void setCreatedAt(Calendar createdAt)
+    {
+        this.createdAt = createdAt;
+    }
     
     private boolean enabled;
     
     /**
     * Whether or not the namespace is currently enabled.
     */
-    public boolean getEnabled() { return this.enabled; }
+    public boolean isEnabled()
+    {
+        return this.enabled;
+    }
     
     /**
     * Whether or not the namespace is currently enabled.
     */
-    public void setEnabled(boolean enabled) { this.enabled = enabled; }
+    public void setEnabled(boolean enabled)
+    {
+        this.enabled = enabled;
+    }
     
     private String name;
     
     /**
     * The name of the namespace.
     */
-    public String getName() { return this.name; }
+    public String getName()
+    {
+        return this.name;
+    }
     
     /**
     * The name of the namespace.
     */
-    public void setName(String name) { this.name = name; }
+    public void setName(String name)
+    {
+        this.name = name;
+    }
     
     private String region;
     
@@ -92,7 +116,10 @@ public class ServiceBusNamespace
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
     * more information)
     */
-    public String getRegion() { return this.region; }
+    public String getRegion()
+    {
+        return this.region;
+    }
     
     /**
     * Specifies the targeted region in which the namespace should be created.
@@ -101,7 +128,10 @@ public class ServiceBusNamespace
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
     * more information)
     */
-    public void setRegion(String region) { this.region = region; }
+    public void setRegion(String region)
+    {
+        this.region = region;
+    }
     
     private URI serviceBusEndpoint;
     
@@ -110,14 +140,20 @@ public class ServiceBusNamespace
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
     * more information)
     */
-    public URI getServiceBusEndpoint() { return this.serviceBusEndpoint; }
+    public URI getServiceBusEndpoint()
+    {
+        return this.serviceBusEndpoint;
+    }
     
     /**
     * Endpoint you can use to perform messaging or relay operations.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
     * more information)
     */
-    public void setServiceBusEndpoint(URI serviceBusEndpoint) { this.serviceBusEndpoint = serviceBusEndpoint; }
+    public void setServiceBusEndpoint(URI serviceBusEndpoint)
+    {
+        this.serviceBusEndpoint = serviceBusEndpoint;
+    }
     
     private String status;
     
@@ -127,7 +163,10 @@ public class ServiceBusNamespace
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
     * more information)
     */
-    public String getStatus() { return this.status; }
+    public String getStatus()
+    {
+        return this.status;
+    }
     
     /**
     * Status of the namespace. It can be any of these values:1 =
@@ -135,25 +174,26 @@ public class ServiceBusNamespace
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
     * more information)
     */
-    public void setStatus(String status) { this.status = status; }
+    public void setStatus(String status)
+    {
+        this.status = status;
+    }
     
     private String subscriptionId;
     
     /**
     * The Id of the Azure subscription associated with the namespace.
     */
-    public String getSubscriptionId() { return this.subscriptionId; }
+    public String getSubscriptionId()
+    {
+        return this.subscriptionId;
+    }
     
     /**
     * The Id of the Azure subscription associated with the namespace.
     */
-    public void setSubscriptionId(String subscriptionId) { this.subscriptionId = subscriptionId; }
-    
-    /**
-    * Initializes a new instance of the ServiceBusNamespace class.
-    *
-    */
-    public ServiceBusNamespace()
+    public void setSubscriptionId(String subscriptionId)
     {
+        this.subscriptionId = subscriptionId;
     }
 }

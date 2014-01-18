@@ -36,18 +36,16 @@ public class WebSiteGetRepositoryResponse extends OperationResponse
     /**
     * Contains the URI of the web site repository.
     */
-    public URI getUri() { return this.uri; }
+    public URI getUri()
+    {
+        return this.uri;
+    }
     
     /**
     * Contains the URI of the web site repository.
     */
-    public void setUri(URI uri) { this.uri = uri; }
-    
-    /**
-    * Initializes a new instance of the WebSiteGetRepositoryResponse class.
-    *
-    */
-    public WebSiteGetRepositoryResponse()
+    public void setUri(URI uri)
     {
+        this.uri = uri;
     }
 }

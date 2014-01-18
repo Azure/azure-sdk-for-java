@@ -52,6 +52,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 import javax.xml.datatype.Duration;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
@@ -81,7 +82,10 @@ public class RuleOperationsImpl implements ServiceOperations<AlertsClientImpl>, 
     * Gets a reference to the
     * microsoft.windowsazure.management.monitoring.alerts.AlertsClientImpl.
     */
-    public AlertsClientImpl getClient() { return this.client; }
+    public AlertsClientImpl getClient()
+    {
+        return this.client;
+    }
     
     /**
     *
@@ -163,7 +167,7 @@ public class RuleOperationsImpl implements ServiceOperations<AlertsClientImpl>, 
                 ruleValue.put("Description", parameters.getRule().getDescription());
             }
             
-            ruleValue.put("IsEnabled", parameters.getRule().getIsEnabled());
+            ruleValue.put("IsEnabled", parameters.getRule().isEnabled());
             
             if (parameters.getRule().getCondition() != null)
             {
@@ -172,7 +176,7 @@ public class RuleOperationsImpl implements ServiceOperations<AlertsClientImpl>, 
                 conditionValue.put("odata.type", parameters.getRule().getCondition().getClass().getName());
                 if (parameters.getRule().getCondition().getClass().isInstance(ThresholdRuleCondition.class))
                 {
-                    ThresholdRuleCondition derived = ((ThresholdRuleCondition)parameters.getRule().getCondition());
+                    ThresholdRuleCondition derived = ((ThresholdRuleCondition) parameters.getRule().getCondition());
                     
                     if (derived.getDataSource() != null)
                     {
@@ -181,7 +185,7 @@ public class RuleOperationsImpl implements ServiceOperations<AlertsClientImpl>, 
                         dataSourceValue.put("odata.type", derived.getDataSource().getClass().getName());
                         if (derived.getDataSource().getClass().isInstance(RuleMetricDataSource.class))
                         {
-                            RuleMetricDataSource derived2 = ((RuleMetricDataSource)derived.getDataSource());
+                            RuleMetricDataSource derived2 = ((RuleMetricDataSource) derived.getDataSource());
                             
                             if (derived2.getResourceId() != null)
                             {
@@ -218,9 +222,9 @@ public class RuleOperationsImpl implements ServiceOperations<AlertsClientImpl>, 
                     ruleActionValue.put("odata.type", actionsItem.getClass().getName());
                     if (actionsItem.getClass().isInstance(RuleEmailAction.class))
                     {
-                        RuleEmailAction derived3 = ((RuleEmailAction)actionsItem);
+                        RuleEmailAction derived3 = ((RuleEmailAction) actionsItem);
                         
-                        ruleActionValue.put("SendToServiceOwners", derived3.getSendToServiceOwners());
+                        ruleActionValue.put("SendToServiceOwners", derived3.isSendToServiceOwners());
                         
                         if (derived3.getCustomEmails() != null)
                         {
@@ -261,7 +265,7 @@ public class RuleOperationsImpl implements ServiceOperations<AlertsClientImpl>, 
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200 && statusCode != 201)
+        if (statusCode != HttpStatus.SC_OK && statusCode != HttpStatus.SC_CREATED)
         {
             ServiceException ex = ServiceException.createFromJson(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -354,7 +358,7 @@ public class RuleOperationsImpl implements ServiceOperations<AlertsClientImpl>, 
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromJson(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -445,7 +449,7 @@ public class RuleOperationsImpl implements ServiceOperations<AlertsClientImpl>, 
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromJson(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -465,151 +469,155 @@ public class RuleOperationsImpl implements ServiceOperations<AlertsClientImpl>, 
         
         if (responseDoc != null)
         {
-            Rule ruleInstance = new Rule();
-            result.setRule(ruleInstance);
-            
-            JsonNode idValue = responseDoc.get("Id");
-            if (idValue != null)
+            JsonNode ruleValue = responseDoc.get("Rule");
+            if (ruleValue != null)
             {
-                String idInstance;
-                idInstance = idValue.getTextValue();
-                ruleInstance.setId(idInstance);
-            }
-            
-            JsonNode nameValue = responseDoc.get("Name");
-            if (nameValue != null)
-            {
-                String nameInstance;
-                nameInstance = nameValue.getTextValue();
-                ruleInstance.setName(nameInstance);
-            }
-            
-            JsonNode descriptionValue = responseDoc.get("Description");
-            if (descriptionValue != null)
-            {
-                String descriptionInstance;
-                descriptionInstance = descriptionValue.getTextValue();
-                ruleInstance.setDescription(descriptionInstance);
-            }
-            
-            JsonNode isEnabledValue = responseDoc.get("IsEnabled");
-            if (isEnabledValue != null)
-            {
-                boolean isEnabledInstance;
-                isEnabledInstance = isEnabledValue.getBooleanValue();
-                ruleInstance.setIsEnabled(isEnabledInstance);
-            }
-            
-            JsonNode conditionValue = responseDoc.get("Condition");
-            if (conditionValue != null)
-            {
-                String typeName = conditionValue.get("odata.type").getTextValue();
-                if (typeName == "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.ThresholdRuleCondition")
+                Rule ruleInstance = new Rule();
+                result.setRule(ruleInstance);
+                
+                JsonNode idValue = ruleValue.get("Id");
+                if (idValue != null)
                 {
-                    ThresholdRuleCondition thresholdRuleConditionInstance = new ThresholdRuleCondition();
-                    
-                    JsonNode dataSourceValue = conditionValue.get("DataSource");
-                    if (dataSourceValue != null)
-                    {
-                        String typeName2 = dataSourceValue.get("odata.type").getTextValue();
-                        if (typeName2 == "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.RuleMetricDataSource")
-                        {
-                            RuleMetricDataSource ruleMetricDataSourceInstance = new RuleMetricDataSource();
-                            
-                            JsonNode resourceIdValue = dataSourceValue.get("ResourceId");
-                            if (resourceIdValue != null)
-                            {
-                                String resourceIdInstance;
-                                resourceIdInstance = resourceIdValue.getTextValue();
-                                ruleMetricDataSourceInstance.setResourceId(resourceIdInstance);
-                            }
-                            
-                            JsonNode metricNamespaceValue = dataSourceValue.get("MetricNamespace");
-                            if (metricNamespaceValue != null)
-                            {
-                                String metricNamespaceInstance;
-                                metricNamespaceInstance = metricNamespaceValue.getTextValue();
-                                ruleMetricDataSourceInstance.setMetricNamespace(metricNamespaceInstance);
-                            }
-                            
-                            JsonNode metricNameValue = dataSourceValue.get("MetricName");
-                            if (metricNameValue != null)
-                            {
-                                String metricNameInstance;
-                                metricNameInstance = metricNameValue.getTextValue();
-                                ruleMetricDataSourceInstance.setMetricName(metricNameInstance);
-                            }
-                            thresholdRuleConditionInstance.setDataSource(ruleMetricDataSourceInstance);
-                        }
-                    }
-                    
-                    JsonNode operatorValue = conditionValue.get("Operator");
-                    if (operatorValue != null)
-                    {
-                        ConditionOperator operatorInstance;
-                        operatorInstance = ConditionOperator.valueOf(operatorValue.getTextValue());
-                        thresholdRuleConditionInstance.setOperator(operatorInstance);
-                    }
-                    
-                    JsonNode thresholdValue = conditionValue.get("Threshold");
-                    if (thresholdValue != null)
-                    {
-                        double thresholdInstance;
-                        thresholdInstance = thresholdValue.getDoubleValue();
-                        thresholdRuleConditionInstance.setThreshold(thresholdInstance);
-                    }
-                    
-                    JsonNode windowSizeValue = conditionValue.get("WindowSize");
-                    if (windowSizeValue != null)
-                    {
-                        Duration windowSizeInstance;
-                        windowSizeInstance = TimeSpan8601Converter.parse(windowSizeValue.getTextValue());
-                        thresholdRuleConditionInstance.setWindowSize(windowSizeInstance);
-                    }
-                    ruleInstance.setCondition(thresholdRuleConditionInstance);
+                    String idInstance;
+                    idInstance = idValue.getTextValue();
+                    ruleInstance.setId(idInstance);
                 }
-            }
-            
-            ArrayNode actionsArray = ((ArrayNode)responseDoc.get("Actions"));
-            if (actionsArray != null)
-            {
-                for (JsonNode actionsValue : actionsArray)
+                
+                JsonNode nameValue = ruleValue.get("Name");
+                if (nameValue != null)
                 {
-                    String typeName3 = actionsValue.get("odata.type").getTextValue();
-                    if (typeName3 == "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.RuleEmailAction")
+                    String nameInstance;
+                    nameInstance = nameValue.getTextValue();
+                    ruleInstance.setName(nameInstance);
+                }
+                
+                JsonNode descriptionValue = ruleValue.get("Description");
+                if (descriptionValue != null)
+                {
+                    String descriptionInstance;
+                    descriptionInstance = descriptionValue.getTextValue();
+                    ruleInstance.setDescription(descriptionInstance);
+                }
+                
+                JsonNode isEnabledValue = ruleValue.get("IsEnabled");
+                if (isEnabledValue != null)
+                {
+                    boolean isEnabledInstance;
+                    isEnabledInstance = isEnabledValue.getBooleanValue();
+                    ruleInstance.setIsEnabled(isEnabledInstance);
+                }
+                
+                JsonNode conditionValue = ruleValue.get("Condition");
+                if (conditionValue != null)
+                {
+                    String typeName = conditionValue.get("odata.type").getTextValue();
+                    if (typeName.equals("Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.ThresholdRuleCondition"))
                     {
-                        RuleEmailAction ruleEmailActionInstance = new RuleEmailAction();
+                        ThresholdRuleCondition thresholdRuleConditionInstance = new ThresholdRuleCondition();
                         
-                        JsonNode sendToServiceOwnersValue = actionsValue.get("SendToServiceOwners");
-                        if (sendToServiceOwnersValue != null)
+                        JsonNode dataSourceValue = conditionValue.get("DataSource");
+                        if (dataSourceValue != null)
                         {
-                            boolean sendToServiceOwnersInstance;
-                            sendToServiceOwnersInstance = sendToServiceOwnersValue.getBooleanValue();
-                            ruleEmailActionInstance.setSendToServiceOwners(sendToServiceOwnersInstance);
+                            String typeName2 = dataSourceValue.get("odata.type").getTextValue();
+                            if (typeName2.equals("Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.RuleMetricDataSource"))
+                            {
+                                RuleMetricDataSource ruleMetricDataSourceInstance = new RuleMetricDataSource();
+                                
+                                JsonNode resourceIdValue = dataSourceValue.get("ResourceId");
+                                if (resourceIdValue != null)
+                                {
+                                    String resourceIdInstance;
+                                    resourceIdInstance = resourceIdValue.getTextValue();
+                                    ruleMetricDataSourceInstance.setResourceId(resourceIdInstance);
+                                }
+                                
+                                JsonNode metricNamespaceValue = dataSourceValue.get("MetricNamespace");
+                                if (metricNamespaceValue != null)
+                                {
+                                    String metricNamespaceInstance;
+                                    metricNamespaceInstance = metricNamespaceValue.getTextValue();
+                                    ruleMetricDataSourceInstance.setMetricNamespace(metricNamespaceInstance);
+                                }
+                                
+                                JsonNode metricNameValue = dataSourceValue.get("MetricName");
+                                if (metricNameValue != null)
+                                {
+                                    String metricNameInstance;
+                                    metricNameInstance = metricNameValue.getTextValue();
+                                    ruleMetricDataSourceInstance.setMetricName(metricNameInstance);
+                                }
+                                thresholdRuleConditionInstance.setDataSource(ruleMetricDataSourceInstance);
+                            }
                         }
                         
-                        ArrayNode customEmailsArray = ((ArrayNode)actionsValue.get("CustomEmails"));
-                        if (customEmailsArray != null)
+                        JsonNode operatorValue = conditionValue.get("Operator");
+                        if (operatorValue != null)
                         {
-                            for (JsonNode customEmailsValue : customEmailsArray)
-                            {
-                                ruleEmailActionInstance.getCustomEmails().add(customEmailsValue.getTextValue());
-                            }
+                            ConditionOperator operatorInstance;
+                            operatorInstance = ConditionOperator.valueOf(operatorValue.getTextValue());
+                            thresholdRuleConditionInstance.setOperator(operatorInstance);
                         }
-                        ruleInstance.getActions().add(ruleEmailActionInstance);
+                        
+                        JsonNode thresholdValue = conditionValue.get("Threshold");
+                        if (thresholdValue != null)
+                        {
+                            double thresholdInstance;
+                            thresholdInstance = thresholdValue.getDoubleValue();
+                            thresholdRuleConditionInstance.setThreshold(thresholdInstance);
+                        }
+                        
+                        JsonNode windowSizeValue = conditionValue.get("WindowSize");
+                        if (windowSizeValue != null)
+                        {
+                            Duration windowSizeInstance;
+                            windowSizeInstance = TimeSpan8601Converter.parse(windowSizeValue.getTextValue());
+                            thresholdRuleConditionInstance.setWindowSize(windowSizeInstance);
+                        }
+                        ruleInstance.setCondition(thresholdRuleConditionInstance);
                     }
                 }
-            }
-            
-            JsonNode lastUpdatedTimeValue = responseDoc.get("LastUpdatedTime");
-            if (lastUpdatedTimeValue != null)
-            {
-                Calendar lastUpdatedTimeInstance;
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(simpleDateFormat.parse(lastUpdatedTimeValue.getTextValue()));
-                lastUpdatedTimeInstance = calendar;
-                ruleInstance.setLastUpdatedTime(lastUpdatedTimeInstance);
+                
+                ArrayNode actionsArray = ((ArrayNode) ruleValue.get("Actions"));
+                if (actionsArray != null)
+                {
+                    for (JsonNode actionsValue : actionsArray)
+                    {
+                        String typeName3 = actionsValue.get("odata.type").getTextValue();
+                        if (typeName3.equals("Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.RuleEmailAction"))
+                        {
+                            RuleEmailAction ruleEmailActionInstance = new RuleEmailAction();
+                            
+                            JsonNode sendToServiceOwnersValue = actionsValue.get("SendToServiceOwners");
+                            if (sendToServiceOwnersValue != null)
+                            {
+                                boolean sendToServiceOwnersInstance;
+                                sendToServiceOwnersInstance = sendToServiceOwnersValue.getBooleanValue();
+                                ruleEmailActionInstance.setSendToServiceOwners(sendToServiceOwnersInstance);
+                            }
+                            
+                            ArrayNode customEmailsArray = ((ArrayNode) actionsValue.get("CustomEmails"));
+                            if (customEmailsArray != null)
+                            {
+                                for (JsonNode customEmailsValue : customEmailsArray)
+                                {
+                                    ruleEmailActionInstance.getCustomEmails().add(customEmailsValue.getTextValue());
+                                }
+                            }
+                            ruleInstance.getActions().add(ruleEmailActionInstance);
+                        }
+                    }
+                }
+                
+                JsonNode lastUpdatedTimeValue = ruleValue.get("LastUpdatedTime");
+                if (lastUpdatedTimeValue != null)
+                {
+                    Calendar lastUpdatedTimeInstance;
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(simpleDateFormat.parse(lastUpdatedTimeValue.getTextValue()));
+                    lastUpdatedTimeInstance = calendar;
+                    ruleInstance.setLastUpdatedTime(lastUpdatedTimeInstance);
+                }
             }
         }
         
@@ -686,7 +694,7 @@ public class RuleOperationsImpl implements ServiceOperations<AlertsClientImpl>, 
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromJson(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -706,159 +714,163 @@ public class RuleOperationsImpl implements ServiceOperations<AlertsClientImpl>, 
         
         if (responseDoc != null)
         {
-            RuleCollection ruleCollectionInstance = new RuleCollection();
-            result.setRuleCollection(ruleCollectionInstance);
-            
-            ArrayNode valueArray = ((ArrayNode)responseDoc.get("Value"));
-            if (valueArray != null)
+            JsonNode ruleCollectionValue = responseDoc.get("RuleCollection");
+            if (ruleCollectionValue != null)
             {
-                for (JsonNode valueValue : valueArray)
+                RuleCollection ruleCollectionInstance = new RuleCollection();
+                result.setRuleCollection(ruleCollectionInstance);
+                
+                ArrayNode valueArray = ((ArrayNode) ruleCollectionValue.get("Value"));
+                if (valueArray != null)
                 {
-                    Rule ruleInstance = new Rule();
-                    ruleCollectionInstance.getValue().add(ruleInstance);
-                    
-                    JsonNode idValue = valueValue.get("Id");
-                    if (idValue != null)
+                    for (JsonNode valueValue : valueArray)
                     {
-                        String idInstance;
-                        idInstance = idValue.getTextValue();
-                        ruleInstance.setId(idInstance);
-                    }
-                    
-                    JsonNode nameValue = valueValue.get("Name");
-                    if (nameValue != null)
-                    {
-                        String nameInstance;
-                        nameInstance = nameValue.getTextValue();
-                        ruleInstance.setName(nameInstance);
-                    }
-                    
-                    JsonNode descriptionValue = valueValue.get("Description");
-                    if (descriptionValue != null)
-                    {
-                        String descriptionInstance;
-                        descriptionInstance = descriptionValue.getTextValue();
-                        ruleInstance.setDescription(descriptionInstance);
-                    }
-                    
-                    JsonNode isEnabledValue = valueValue.get("IsEnabled");
-                    if (isEnabledValue != null)
-                    {
-                        boolean isEnabledInstance;
-                        isEnabledInstance = isEnabledValue.getBooleanValue();
-                        ruleInstance.setIsEnabled(isEnabledInstance);
-                    }
-                    
-                    JsonNode conditionValue = valueValue.get("Condition");
-                    if (conditionValue != null)
-                    {
-                        String typeName = conditionValue.get("odata.type").getTextValue();
-                        if (typeName == "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.ThresholdRuleCondition")
+                        Rule ruleInstance = new Rule();
+                        ruleCollectionInstance.getValue().add(ruleInstance);
+                        
+                        JsonNode idValue = valueValue.get("Id");
+                        if (idValue != null)
                         {
-                            ThresholdRuleCondition thresholdRuleConditionInstance = new ThresholdRuleCondition();
-                            
-                            JsonNode dataSourceValue = conditionValue.get("DataSource");
-                            if (dataSourceValue != null)
-                            {
-                                String typeName2 = dataSourceValue.get("odata.type").getTextValue();
-                                if (typeName2 == "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.RuleMetricDataSource")
-                                {
-                                    RuleMetricDataSource ruleMetricDataSourceInstance = new RuleMetricDataSource();
-                                    
-                                    JsonNode resourceIdValue = dataSourceValue.get("ResourceId");
-                                    if (resourceIdValue != null)
-                                    {
-                                        String resourceIdInstance;
-                                        resourceIdInstance = resourceIdValue.getTextValue();
-                                        ruleMetricDataSourceInstance.setResourceId(resourceIdInstance);
-                                    }
-                                    
-                                    JsonNode metricNamespaceValue = dataSourceValue.get("MetricNamespace");
-                                    if (metricNamespaceValue != null)
-                                    {
-                                        String metricNamespaceInstance;
-                                        metricNamespaceInstance = metricNamespaceValue.getTextValue();
-                                        ruleMetricDataSourceInstance.setMetricNamespace(metricNamespaceInstance);
-                                    }
-                                    
-                                    JsonNode metricNameValue = dataSourceValue.get("MetricName");
-                                    if (metricNameValue != null)
-                                    {
-                                        String metricNameInstance;
-                                        metricNameInstance = metricNameValue.getTextValue();
-                                        ruleMetricDataSourceInstance.setMetricName(metricNameInstance);
-                                    }
-                                    thresholdRuleConditionInstance.setDataSource(ruleMetricDataSourceInstance);
-                                }
-                            }
-                            
-                            JsonNode operatorValue = conditionValue.get("Operator");
-                            if (operatorValue != null)
-                            {
-                                ConditionOperator operatorInstance;
-                                operatorInstance = ConditionOperator.valueOf(operatorValue.getTextValue());
-                                thresholdRuleConditionInstance.setOperator(operatorInstance);
-                            }
-                            
-                            JsonNode thresholdValue = conditionValue.get("Threshold");
-                            if (thresholdValue != null)
-                            {
-                                double thresholdInstance;
-                                thresholdInstance = thresholdValue.getDoubleValue();
-                                thresholdRuleConditionInstance.setThreshold(thresholdInstance);
-                            }
-                            
-                            JsonNode windowSizeValue = conditionValue.get("WindowSize");
-                            if (windowSizeValue != null)
-                            {
-                                Duration windowSizeInstance;
-                                windowSizeInstance = TimeSpan8601Converter.parse(windowSizeValue.getTextValue());
-                                thresholdRuleConditionInstance.setWindowSize(windowSizeInstance);
-                            }
-                            ruleInstance.setCondition(thresholdRuleConditionInstance);
+                            String idInstance;
+                            idInstance = idValue.getTextValue();
+                            ruleInstance.setId(idInstance);
                         }
-                    }
-                    
-                    ArrayNode actionsArray = ((ArrayNode)valueValue.get("Actions"));
-                    if (actionsArray != null)
-                    {
-                        for (JsonNode actionsValue : actionsArray)
+                        
+                        JsonNode nameValue = valueValue.get("Name");
+                        if (nameValue != null)
                         {
-                            String typeName3 = actionsValue.get("odata.type").getTextValue();
-                            if (typeName3 == "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.RuleEmailAction")
+                            String nameInstance;
+                            nameInstance = nameValue.getTextValue();
+                            ruleInstance.setName(nameInstance);
+                        }
+                        
+                        JsonNode descriptionValue = valueValue.get("Description");
+                        if (descriptionValue != null)
+                        {
+                            String descriptionInstance;
+                            descriptionInstance = descriptionValue.getTextValue();
+                            ruleInstance.setDescription(descriptionInstance);
+                        }
+                        
+                        JsonNode isEnabledValue = valueValue.get("IsEnabled");
+                        if (isEnabledValue != null)
+                        {
+                            boolean isEnabledInstance;
+                            isEnabledInstance = isEnabledValue.getBooleanValue();
+                            ruleInstance.setIsEnabled(isEnabledInstance);
+                        }
+                        
+                        JsonNode conditionValue = valueValue.get("Condition");
+                        if (conditionValue != null)
+                        {
+                            String typeName = conditionValue.get("odata.type").getTextValue();
+                            if (typeName.equals("Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.ThresholdRuleCondition"))
                             {
-                                RuleEmailAction ruleEmailActionInstance = new RuleEmailAction();
+                                ThresholdRuleCondition thresholdRuleConditionInstance = new ThresholdRuleCondition();
                                 
-                                JsonNode sendToServiceOwnersValue = actionsValue.get("SendToServiceOwners");
-                                if (sendToServiceOwnersValue != null)
+                                JsonNode dataSourceValue = conditionValue.get("DataSource");
+                                if (dataSourceValue != null)
                                 {
-                                    boolean sendToServiceOwnersInstance;
-                                    sendToServiceOwnersInstance = sendToServiceOwnersValue.getBooleanValue();
-                                    ruleEmailActionInstance.setSendToServiceOwners(sendToServiceOwnersInstance);
+                                    String typeName2 = dataSourceValue.get("odata.type").getTextValue();
+                                    if (typeName2.equals("Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.RuleMetricDataSource"))
+                                    {
+                                        RuleMetricDataSource ruleMetricDataSourceInstance = new RuleMetricDataSource();
+                                        
+                                        JsonNode resourceIdValue = dataSourceValue.get("ResourceId");
+                                        if (resourceIdValue != null)
+                                        {
+                                            String resourceIdInstance;
+                                            resourceIdInstance = resourceIdValue.getTextValue();
+                                            ruleMetricDataSourceInstance.setResourceId(resourceIdInstance);
+                                        }
+                                        
+                                        JsonNode metricNamespaceValue = dataSourceValue.get("MetricNamespace");
+                                        if (metricNamespaceValue != null)
+                                        {
+                                            String metricNamespaceInstance;
+                                            metricNamespaceInstance = metricNamespaceValue.getTextValue();
+                                            ruleMetricDataSourceInstance.setMetricNamespace(metricNamespaceInstance);
+                                        }
+                                        
+                                        JsonNode metricNameValue = dataSourceValue.get("MetricName");
+                                        if (metricNameValue != null)
+                                        {
+                                            String metricNameInstance;
+                                            metricNameInstance = metricNameValue.getTextValue();
+                                            ruleMetricDataSourceInstance.setMetricName(metricNameInstance);
+                                        }
+                                        thresholdRuleConditionInstance.setDataSource(ruleMetricDataSourceInstance);
+                                    }
                                 }
                                 
-                                ArrayNode customEmailsArray = ((ArrayNode)actionsValue.get("CustomEmails"));
-                                if (customEmailsArray != null)
+                                JsonNode operatorValue = conditionValue.get("Operator");
+                                if (operatorValue != null)
                                 {
-                                    for (JsonNode customEmailsValue : customEmailsArray)
-                                    {
-                                        ruleEmailActionInstance.getCustomEmails().add(customEmailsValue.getTextValue());
-                                    }
+                                    ConditionOperator operatorInstance;
+                                    operatorInstance = ConditionOperator.valueOf(operatorValue.getTextValue());
+                                    thresholdRuleConditionInstance.setOperator(operatorInstance);
                                 }
-                                ruleInstance.getActions().add(ruleEmailActionInstance);
+                                
+                                JsonNode thresholdValue = conditionValue.get("Threshold");
+                                if (thresholdValue != null)
+                                {
+                                    double thresholdInstance;
+                                    thresholdInstance = thresholdValue.getDoubleValue();
+                                    thresholdRuleConditionInstance.setThreshold(thresholdInstance);
+                                }
+                                
+                                JsonNode windowSizeValue = conditionValue.get("WindowSize");
+                                if (windowSizeValue != null)
+                                {
+                                    Duration windowSizeInstance;
+                                    windowSizeInstance = TimeSpan8601Converter.parse(windowSizeValue.getTextValue());
+                                    thresholdRuleConditionInstance.setWindowSize(windowSizeInstance);
+                                }
+                                ruleInstance.setCondition(thresholdRuleConditionInstance);
                             }
                         }
-                    }
-                    
-                    JsonNode lastUpdatedTimeValue = valueValue.get("LastUpdatedTime");
-                    if (lastUpdatedTimeValue != null)
-                    {
-                        Calendar lastUpdatedTimeInstance;
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.setTime(simpleDateFormat.parse(lastUpdatedTimeValue.getTextValue()));
-                        lastUpdatedTimeInstance = calendar;
-                        ruleInstance.setLastUpdatedTime(lastUpdatedTimeInstance);
+                        
+                        ArrayNode actionsArray = ((ArrayNode) valueValue.get("Actions"));
+                        if (actionsArray != null)
+                        {
+                            for (JsonNode actionsValue : actionsArray)
+                            {
+                                String typeName3 = actionsValue.get("odata.type").getTextValue();
+                                if (typeName3.equals("Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.RuleEmailAction"))
+                                {
+                                    RuleEmailAction ruleEmailActionInstance = new RuleEmailAction();
+                                    
+                                    JsonNode sendToServiceOwnersValue = actionsValue.get("SendToServiceOwners");
+                                    if (sendToServiceOwnersValue != null)
+                                    {
+                                        boolean sendToServiceOwnersInstance;
+                                        sendToServiceOwnersInstance = sendToServiceOwnersValue.getBooleanValue();
+                                        ruleEmailActionInstance.setSendToServiceOwners(sendToServiceOwnersInstance);
+                                    }
+                                    
+                                    ArrayNode customEmailsArray = ((ArrayNode) actionsValue.get("CustomEmails"));
+                                    if (customEmailsArray != null)
+                                    {
+                                        for (JsonNode customEmailsValue : customEmailsArray)
+                                        {
+                                            ruleEmailActionInstance.getCustomEmails().add(customEmailsValue.getTextValue());
+                                        }
+                                    }
+                                    ruleInstance.getActions().add(ruleEmailActionInstance);
+                                }
+                            }
+                        }
+                        
+                        JsonNode lastUpdatedTimeValue = valueValue.get("LastUpdatedTime");
+                        if (lastUpdatedTimeValue != null)
+                        {
+                            Calendar lastUpdatedTimeInstance;
+                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                            Calendar calendar = Calendar.getInstance();
+                            calendar.setTime(simpleDateFormat.parse(lastUpdatedTimeValue.getTextValue()));
+                            lastUpdatedTimeInstance = calendar;
+                            ruleInstance.setLastUpdatedTime(lastUpdatedTimeInstance);
+                        }
                     }
                 }
             }

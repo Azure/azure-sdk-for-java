@@ -23,11 +23,11 @@ public interface ServiceResponseContext
 
     void setStatus(int status);
 
-    public String getHeader(String name);
+    String getHeader(String name);
 
-    public void setHeader(String name, String value);
+    void setHeader(String name, String value);
 
-    public void removeHeader(String name);
+    void removeHeader(String name);
 
     boolean hasEntity();
 
@@ -35,7 +35,7 @@ public interface ServiceResponseContext
 
     void setEntityInputStream(InputStream entity);
 
-    public Object getProperty(String name);
+    Object getProperty(String name);
 
-    public void setProperty(String name, Object value);
+    void setProperty(String name, Object value);
 }

@@ -36,84 +36,126 @@ public class Rule
     /**
     * Rule actions.
     */
-    public ArrayList<RuleAction> getActions() { return this.actions; }
+    public ArrayList<RuleAction> getActions()
+    {
+        return this.actions;
+    }
     
     /**
     * Rule actions.
     */
-    public void setActions(ArrayList<RuleAction> actions) { this.actions = actions; }
+    public void setActions(ArrayList<RuleAction> actions)
+    {
+        this.actions = actions;
+    }
     
     private RuleCondition condition;
     
     /**
     * Rule condition.
     */
-    public RuleCondition getCondition() { return this.condition; }
+    public RuleCondition getCondition()
+    {
+        return this.condition;
+    }
     
     /**
     * Rule condition.
     */
-    public void setCondition(RuleCondition condition) { this.condition = condition; }
+    public void setCondition(RuleCondition condition)
+    {
+        this.condition = condition;
+    }
     
     private String description;
     
     /**
     * Rule description.
     */
-    public String getDescription() { return this.description; }
+    public String getDescription()
+    {
+        return this.description;
+    }
     
     /**
     * Rule description.
     */
-    public void setDescription(String description) { this.description = description; }
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
     
     private String id;
     
     /**
     * Rule identifier.
     */
-    public String getId() { return this.id; }
+    public String getId()
+    {
+        return this.id;
+    }
     
     /**
     * Rule identifier.
     */
-    public void setId(String id) { this.id = id; }
+    public void setId(String id)
+    {
+        this.id = id;
+    }
     
     private boolean isEnabled;
     
     /**
     * A flag that determines whether the rule is enabled or disabled.
     */
-    public boolean getIsEnabled() { return this.isEnabled; }
+    public boolean isEnabled()
+    {
+        return this.isEnabled;
+    }
     
     /**
     * A flag that determines whether the rule is enabled or disabled.
     */
-    public void setIsEnabled(boolean isEnabled) { this.isEnabled = isEnabled; }
+    public void setIsEnabled(boolean isEnabled)
+    {
+        this.isEnabled = isEnabled;
+    }
     
     private Calendar lastUpdatedTime;
     
     /**
     * Rule last updated time.
     */
-    public Calendar getLastUpdatedTime() { return this.lastUpdatedTime; }
+    public Calendar getLastUpdatedTime()
+    {
+        return this.lastUpdatedTime;
+    }
     
     /**
     * Rule last updated time.
     */
-    public void setLastUpdatedTime(Calendar lastUpdatedTime) { this.lastUpdatedTime = lastUpdatedTime; }
+    public void setLastUpdatedTime(Calendar lastUpdatedTime)
+    {
+        this.lastUpdatedTime = lastUpdatedTime;
+    }
     
     private String name;
     
     /**
     * Rule name.
     */
-    public String getName() { return this.name; }
+    public String getName()
+    {
+        return this.name;
+    }
     
     /**
     * Rule name.
     */
-    public void setName(String name) { this.name = name; }
+    public void setName(String name)
+    {
+        this.name = name;
+    }
     
     /**
     * Initializes a new instance of the Rule class.

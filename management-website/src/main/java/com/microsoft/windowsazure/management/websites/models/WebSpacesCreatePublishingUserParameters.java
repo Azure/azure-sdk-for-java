@@ -33,43 +33,52 @@ public class WebSpacesCreatePublishingUserParameters
     /**
     * Optional. The publishing user name
     */
-    public String getName() { return this.name; }
+    public String getName()
+    {
+        return this.name;
+    }
     
     /**
     * Optional. The publishing user name
     */
-    public void setName(String name) { this.name = name; }
+    public void setName(String name)
+    {
+        this.name = name;
+    }
     
     private String publishingPassword;
     
     /**
     * Required. The publishing user password
     */
-    public String getPublishingPassword() { return this.publishingPassword; }
+    public String getPublishingPassword()
+    {
+        return this.publishingPassword;
+    }
     
     /**
     * Required. The publishing user password
     */
-    public void setPublishingPassword(String publishingPassword) { this.publishingPassword = publishingPassword; }
+    public void setPublishingPassword(String publishingPassword)
+    {
+        this.publishingPassword = publishingPassword;
+    }
     
     private String publishingUserName;
     
     /**
     * Required. The publishing user username
     */
-    public String getPublishingUserName() { return this.publishingUserName; }
+    public String getPublishingUserName()
+    {
+        return this.publishingUserName;
+    }
     
     /**
     * Required. The publishing user username
     */
-    public void setPublishingUserName(String publishingUserName) { this.publishingUserName = publishingUserName; }
-    
-    /**
-    * Initializes a new instance of the WebSpacesCreatePublishingUserParameters
-    * class.
-    *
-    */
-    public WebSpacesCreatePublishingUserParameters()
+    public void setPublishingUserName(String publishingUserName)
     {
+        this.publishingUserName = publishingUserName;
     }
 }

@@ -33,18 +33,16 @@ public class GatewayResetSharedKeyParameters
     /**
     * The number of bytes in the shared key.  Minimum is 1 and maximum is 128
     */
-    public int getKeyLength() { return this.keyLength; }
+    public int getKeyLength()
+    {
+        return this.keyLength;
+    }
     
     /**
     * The number of bytes in the shared key.  Minimum is 1 and maximum is 128
     */
-    public void setKeyLength(int keyLength) { this.keyLength = keyLength; }
-    
-    /**
-    * Initializes a new instance of the GatewayResetSharedKeyParameters class.
-    *
-    */
-    public GatewayResetSharedKeyParameters()
+    public void setKeyLength(int keyLength)
     {
+        this.keyLength = keyLength;
     }
 }

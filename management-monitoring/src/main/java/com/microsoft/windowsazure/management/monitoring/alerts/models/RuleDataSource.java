@@ -28,11 +28,4 @@ package com.microsoft.windowsazure.management.monitoring.alerts.models;
 */
 public abstract class RuleDataSource
 {
-    /**
-    * Initializes a new instance of the RuleDataSource class.
-    *
-    */
-    public RuleDataSource()
-    {
-    }
 }

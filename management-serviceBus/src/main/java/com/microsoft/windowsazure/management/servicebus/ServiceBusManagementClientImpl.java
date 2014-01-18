@@ -45,6 +45,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.w3c.dom.Document;
@@ -65,7 +66,10 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
     /**
     * The URI used as the base for all Service Bus requests.
     */
-    public URI getBaseUri() { return this.baseUri; }
+    public URI getBaseUri()
+    {
+        return this.baseUri;
+    }
     
     private SubscriptionCloudCredentials credentials;
     
@@ -77,7 +81,10 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
     * certificates over SSL to ensure that a request made to the service is
     * secure.  No anonymous requests are allowed.
     */
-    public SubscriptionCloudCredentials getCredentials() { return this.credentials; }
+    public SubscriptionCloudCredentials getCredentials()
+    {
+        return this.credentials;
+    }
     
     private NamespaceOperations namespaces;
     
@@ -85,15 +92,21 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
     * The Service Bus Management API includes operations for managing Service
     * Bus namespaces.
     */
-    public NamespaceOperations getNamespacesOperations() { return this.namespaces; }
+    public NamespaceOperations getNamespacesOperations()
+    {
+        return this.namespaces;
+    }
     
     private NotificationHubOperations notificationHubs;
     
     /**
     * The Service Bus Management API includes operations for managing Service
-    * Bus queues.
+    * Bus notification hubs.
     */
-    public NotificationHubOperations getNotificationHubsOperations() { return this.notificationHubs; }
+    public NotificationHubOperations getNotificationHubsOperations()
+    {
+        return this.notificationHubs;
+    }
     
     private QueueOperations queues;
     
@@ -101,7 +114,10 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
     * The Service Bus Management API includes operations for managing Service
     * Bus queues.
     */
-    public QueueOperations getQueuesOperations() { return this.queues; }
+    public QueueOperations getQueuesOperations()
+    {
+        return this.queues;
+    }
     
     private RelayOperations relays;
     
@@ -109,7 +125,10 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
     * The Service Bus Management API includes operations for managing Service
     * Bus relays.
     */
-    public RelayOperations getRelaysOperations() { return this.relays; }
+    public RelayOperations getRelaysOperations()
+    {
+        return this.relays;
+    }
     
     private TopicOperations topics;
     
@@ -117,7 +136,10 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
     * The Service Bus Management API includes operations for managing Service
     * Bus topics for a namespace.
     */
-    public TopicOperations getTopicsOperations() { return this.topics; }
+    public TopicOperations getTopicsOperations()
+    {
+        return this.topics;
+    }
     
     /**
     * Initializes a new instance of the ServiceBusManagementClientImpl class.
@@ -293,7 +315,7 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -313,11 +335,11 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
         Document responseDoc = documentBuilder.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagName("Operation");
-        Element operationElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element operationElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (operationElement != null)
         {
             NodeList elements2 = operationElement.getElementsByTagName("ID");
-            Element idElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+            Element idElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
             if (idElement != null)
             {
                 String idInstance;
@@ -326,7 +348,7 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
             }
             
             NodeList elements3 = operationElement.getElementsByTagName("Status");
-            Element statusElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
+            Element statusElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
             if (statusElement != null)
             {
                 OperationStatus statusInstance;
@@ -335,7 +357,7 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
             }
             
             NodeList elements4 = operationElement.getElementsByTagName("HttpStatusCode");
-            Element httpStatusCodeElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
+            Element httpStatusCodeElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
             if (httpStatusCodeElement != null)
             {
                 Integer httpStatusCodeInstance;
@@ -344,14 +366,14 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
             }
             
             NodeList elements5 = operationElement.getElementsByTagName("Error");
-            Element errorElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
+            Element errorElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
             if (errorElement != null)
             {
                 ServiceBusOperationStatusResponse.ErrorDetails errorInstance = new ServiceBusOperationStatusResponse.ErrorDetails();
                 result.setError(errorInstance);
                 
                 NodeList elements6 = errorElement.getElementsByTagName("Code");
-                Element codeElement = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
+                Element codeElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                 if (codeElement != null)
                 {
                     String codeInstance;
@@ -360,7 +382,7 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
                 }
                 
                 NodeList elements7 = errorElement.getElementsByTagName("Message");
-                Element messageElement = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
+                Element messageElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                 if (messageElement != null)
                 {
                     String messageInstance;
@@ -449,7 +471,7 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -469,27 +491,27 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
         Document responseDoc = documentBuilder.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "feed");
-        Element feedElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element feedElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (feedElement != null)
         {
             if (feedElement != null)
             {
                 for (int i1 = 0; i1 < feedElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "entry").getLength(); i1 = i1 + 1)
                 {
-                    org.w3c.dom.Element entriesElement = ((org.w3c.dom.Element)feedElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "entry").item(i1));
+                    org.w3c.dom.Element entriesElement = ((org.w3c.dom.Element) feedElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "entry").item(i1));
                     ServiceBusLocation entryInstance = new ServiceBusLocation();
                     result.getRegions().add(entryInstance);
                     
                     NodeList elements2 = entriesElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "content");
-                    Element contentElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+                    Element contentElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                     if (contentElement != null)
                     {
                         NodeList elements3 = contentElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "RegionCodeDescription");
-                        Element regionCodeDescriptionElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
+                        Element regionCodeDescriptionElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                         if (regionCodeDescriptionElement != null)
                         {
                             NodeList elements4 = regionCodeDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Code");
-                            Element codeElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
+                            Element codeElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                             if (codeElement != null)
                             {
                                 String codeInstance;
@@ -498,7 +520,7 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
                             }
                             
                             NodeList elements5 = regionCodeDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "FullName");
-                            Element fullNameElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
+                            Element fullNameElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                             if (fullNameElement != null)
                             {
                                 String fullNameInstance;

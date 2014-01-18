@@ -33,42 +33,52 @@ public class ScaleCapacity
     /**
     * The default number of instances that are available for the scaling action.
     */
-    public String getDefault() { return this.defaultValue; }
+    public String getDefault()
+    {
+        return this.defaultValue;
+    }
     
     /**
     * The default number of instances that are available for the scaling action.
     */
-    public void setDefault(String defaultValue) { this.defaultValue = defaultValue; }
+    public void setDefault(String defaultValue)
+    {
+        this.defaultValue = defaultValue;
+    }
     
     private String maximum;
     
     /**
     * The maximum number of instances that are available for the scaling action.
     */
-    public String getMaximum() { return this.maximum; }
+    public String getMaximum()
+    {
+        return this.maximum;
+    }
     
     /**
     * The maximum number of instances that are available for the scaling action.
     */
-    public void setMaximum(String maximum) { this.maximum = maximum; }
+    public void setMaximum(String maximum)
+    {
+        this.maximum = maximum;
+    }
     
     private String minimum;
     
     /**
     * The minimum number of instances that are available for the scaling action.
     */
-    public String getMinimum() { return this.minimum; }
+    public String getMinimum()
+    {
+        return this.minimum;
+    }
     
     /**
     * The minimum number of instances that are available for the scaling action.
     */
-    public void setMinimum(String minimum) { this.minimum = minimum; }
-    
-    /**
-    * Initializes a new instance of the ScaleCapacity class.
-    *
-    */
-    public ScaleCapacity()
+    public void setMinimum(String minimum)
     {
+        this.minimum = minimum;
     }
 }

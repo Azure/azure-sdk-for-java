@@ -53,6 +53,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -87,7 +88,10 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
     * Gets a reference to the
     * microsoft.windowsazure.management.ManagementClientImpl.
     */
-    public ManagementClientImpl getClient() { return this.client; }
+    public ManagementClientImpl getClient()
+    {
+        return this.client;
+    }
     
     /**
     * The Add Management Certificate operation adds a certificate to the list
@@ -210,7 +214,7 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -313,7 +317,7 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200 && statusCode != 404)
+        if (statusCode != HttpStatus.SC_OK && statusCode != HttpStatus.SC_NOT_FOUND)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -418,7 +422,7 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -438,11 +442,11 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
         Document responseDoc = documentBuilder.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagName("SubscriptionCertificate");
-        Element subscriptionCertificateElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element subscriptionCertificateElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (subscriptionCertificateElement != null)
         {
             NodeList elements2 = subscriptionCertificateElement.getElementsByTagName("SubscriptionCertificatePublicKey");
-            Element subscriptionCertificatePublicKeyElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+            Element subscriptionCertificatePublicKeyElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
             if (subscriptionCertificatePublicKeyElement != null)
             {
                 byte[] subscriptionCertificatePublicKeyInstance;
@@ -451,7 +455,7 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
             }
             
             NodeList elements3 = subscriptionCertificateElement.getElementsByTagName("SubscriptionCertificateThumbprint");
-            Element subscriptionCertificateThumbprintElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
+            Element subscriptionCertificateThumbprintElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
             if (subscriptionCertificateThumbprintElement != null)
             {
                 String subscriptionCertificateThumbprintInstance;
@@ -460,7 +464,7 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
             }
             
             NodeList elements4 = subscriptionCertificateElement.getElementsByTagName("SubscriptionCertificateData");
-            Element subscriptionCertificateDataElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
+            Element subscriptionCertificateDataElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
             if (subscriptionCertificateDataElement != null)
             {
                 byte[] subscriptionCertificateDataInstance;
@@ -469,7 +473,7 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
             }
             
             NodeList elements5 = subscriptionCertificateElement.getElementsByTagName("Created");
-            Element createdElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
+            Element createdElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
             if (createdElement != null)
             {
                 Calendar createdInstance;
@@ -564,7 +568,7 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -584,17 +588,17 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
         Document responseDoc = documentBuilder.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagName("SubscriptionCertificates");
-        Element subscriptionCertificatesSequenceElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element subscriptionCertificatesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (subscriptionCertificatesSequenceElement != null)
         {
             for (int i1 = 0; i1 < subscriptionCertificatesSequenceElement.getElementsByTagName("SubscriptionCertificate").getLength(); i1 = i1 + 1)
             {
-                org.w3c.dom.Element subscriptionCertificatesElement = ((org.w3c.dom.Element)subscriptionCertificatesSequenceElement.getElementsByTagName("SubscriptionCertificate").item(i1));
+                org.w3c.dom.Element subscriptionCertificatesElement = ((org.w3c.dom.Element) subscriptionCertificatesSequenceElement.getElementsByTagName("SubscriptionCertificate").item(i1));
                 ManagementCertificateListResponse.SubscriptionCertificate subscriptionCertificateInstance = new ManagementCertificateListResponse.SubscriptionCertificate();
                 result.getSubscriptionCertificates().add(subscriptionCertificateInstance);
                 
                 NodeList elements2 = subscriptionCertificatesElement.getElementsByTagName("SubscriptionCertificatePublicKey");
-                Element subscriptionCertificatePublicKeyElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+                Element subscriptionCertificatePublicKeyElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                 if (subscriptionCertificatePublicKeyElement != null)
                 {
                     byte[] subscriptionCertificatePublicKeyInstance;
@@ -603,7 +607,7 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
                 }
                 
                 NodeList elements3 = subscriptionCertificatesElement.getElementsByTagName("SubscriptionCertificateThumbprint");
-                Element subscriptionCertificateThumbprintElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
+                Element subscriptionCertificateThumbprintElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                 if (subscriptionCertificateThumbprintElement != null)
                 {
                     String subscriptionCertificateThumbprintInstance;
@@ -612,7 +616,7 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
                 }
                 
                 NodeList elements4 = subscriptionCertificatesElement.getElementsByTagName("SubscriptionCertificateData");
-                Element subscriptionCertificateDataElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
+                Element subscriptionCertificateDataElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                 if (subscriptionCertificateDataElement != null)
                 {
                     byte[] subscriptionCertificateDataInstance;
@@ -621,7 +625,7 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
                 }
                 
                 NodeList elements5 = subscriptionCertificatesElement.getElementsByTagName("Created");
-                Element createdElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
+                Element createdElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                 if (createdElement != null)
                 {
                     Calendar createdInstance;

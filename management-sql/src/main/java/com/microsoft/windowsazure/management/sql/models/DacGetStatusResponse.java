@@ -39,12 +39,18 @@ public class DacGetStatusResponse extends OperationResponse implements Iterable<
     /**
     * Gets or sets the list of statuses relevant to this import/export request.
     */
-    public ArrayList<DacGetStatusResponse.StatusInfo> getStatusInfoList() { return this.statusInfoList; }
+    public ArrayList<DacGetStatusResponse.StatusInfo> getStatusInfoList()
+    {
+        return this.statusInfoList;
+    }
     
     /**
     * Gets or sets the list of statuses relevant to this import/export request.
     */
-    public void setStatusInfoList(ArrayList<DacGetStatusResponse.StatusInfo> statusInfoList) { this.statusInfoList = statusInfoList; }
+    public void setStatusInfoList(ArrayList<DacGetStatusResponse.StatusInfo> statusInfoList)
+    {
+        this.statusInfoList = statusInfoList;
+    }
     
     /**
     * Initializes a new instance of the DacGetStatusResponse class.
@@ -52,6 +58,7 @@ public class DacGetStatusResponse extends OperationResponse implements Iterable<
     */
     public DacGetStatusResponse()
     {
+        super();
         this.statusInfoList = new ArrayList<DacGetStatusResponse.StatusInfo>();
     }
     
@@ -75,13 +82,19 @@ public class DacGetStatusResponse extends OperationResponse implements Iterable<
         * Gets or sets the URI of the DAC file stored in Windows Azure Blob
         * Storage to be imported.
         */
-        public URI getBlobUri() { return this.blobUri; }
+        public URI getBlobUri()
+        {
+            return this.blobUri;
+        }
         
         /**
         * Gets or sets the URI of the DAC file stored in Windows Azure Blob
         * Storage to be imported.
         */
-        public void setBlobUri(URI blobUri) { this.blobUri = blobUri; }
+        public void setBlobUri(URI blobUri)
+        {
+            this.blobUri = blobUri;
+        }
         
         private String databaseName;
         
@@ -89,13 +102,19 @@ public class DacGetStatusResponse extends OperationResponse implements Iterable<
         * Gets or sets the name of the database into which this DAC will be
         * imported.
         */
-        public String getDatabaseName() { return this.databaseName; }
+        public String getDatabaseName()
+        {
+            return this.databaseName;
+        }
         
         /**
         * Gets or sets the name of the database into which this DAC will be
         * imported.
         */
-        public void setDatabaseName(String databaseName) { this.databaseName = databaseName; }
+        public void setDatabaseName(String databaseName)
+        {
+            this.databaseName = databaseName;
+        }
         
         private String errorMessage;
         
@@ -103,25 +122,37 @@ public class DacGetStatusResponse extends OperationResponse implements Iterable<
         * Gets or sets the error message of the request if the request failed
         * in some way.
         */
-        public String getErrorMessage() { return this.errorMessage; }
+        public String getErrorMessage()
+        {
+            return this.errorMessage;
+        }
         
         /**
         * Gets or sets the error message of the request if the request failed
         * in some way.
         */
-        public void setErrorMessage(String errorMessage) { this.errorMessage = errorMessage; }
+        public void setErrorMessage(String errorMessage)
+        {
+            this.errorMessage = errorMessage;
+        }
         
         private Calendar lastModifiedTime;
         
         /**
         * Gets or sets the last time the status changed.
         */
-        public Calendar getLastModifiedTime() { return this.lastModifiedTime; }
+        public Calendar getLastModifiedTime()
+        {
+            return this.lastModifiedTime;
+        }
         
         /**
         * Gets or sets the last time the status changed.
         */
-        public void setLastModifiedTime(Calendar lastModifiedTime) { this.lastModifiedTime = lastModifiedTime; }
+        public void setLastModifiedTime(Calendar lastModifiedTime)
+        {
+            this.lastModifiedTime = lastModifiedTime;
+        }
         
         private Calendar queuedTime;
         
@@ -129,13 +160,19 @@ public class DacGetStatusResponse extends OperationResponse implements Iterable<
         * Gets or sets the time at which the import/export request was queued
         * and the process initiated.
         */
-        public Calendar getQueuedTime() { return this.queuedTime; }
+        public Calendar getQueuedTime()
+        {
+            return this.queuedTime;
+        }
         
         /**
         * Gets or sets the time at which the import/export request was queued
         * and the process initiated.
         */
-        public void setQueuedTime(Calendar queuedTime) { this.queuedTime = queuedTime; }
+        public void setQueuedTime(Calendar queuedTime)
+        {
+            this.queuedTime = queuedTime;
+        }
         
         private String requestId;
         
@@ -143,25 +180,37 @@ public class DacGetStatusResponse extends OperationResponse implements Iterable<
         * Gets or sets the request ID of this import/export request, so that it
         * can be tracked with future calls to GetStatus.
         */
-        public String getRequestId() { return this.requestId; }
+        public String getRequestId()
+        {
+            return this.requestId;
+        }
         
         /**
         * Gets or sets the request ID of this import/export request, so that it
         * can be tracked with future calls to GetStatus.
         */
-        public void setRequestId(String requestId) { this.requestId = requestId; }
+        public void setRequestId(String requestId)
+        {
+            this.requestId = requestId;
+        }
         
         private String requestType;
         
         /**
         * Gets or sets the type (Import/Export) of this request.
         */
-        public String getRequestType() { return this.requestType; }
+        public String getRequestType()
+        {
+            return this.requestType;
+        }
         
         /**
         * Gets or sets the type (Import/Export) of this request.
         */
-        public void setRequestType(String requestType) { this.requestType = requestType; }
+        public void setRequestType(String requestType)
+        {
+            this.requestType = requestType;
+        }
         
         private String serverName;
         
@@ -169,32 +218,36 @@ public class DacGetStatusResponse extends OperationResponse implements Iterable<
         * Gets or sets the name of the SQL database server into which this DAC
         * will be imported or from which it will be exported.
         */
-        public String getServerName() { return this.serverName; }
+        public String getServerName()
+        {
+            return this.serverName;
+        }
         
         /**
         * Gets or sets the name of the SQL database server into which this DAC
         * will be imported or from which it will be exported.
         */
-        public void setServerName(String serverName) { this.serverName = serverName; }
+        public void setServerName(String serverName)
+        {
+            this.serverName = serverName;
+        }
         
         private String status;
         
         /**
         * Gets or sets the status of the import/export request.
         */
-        public String getStatus() { return this.status; }
+        public String getStatus()
+        {
+            return this.status;
+        }
         
         /**
         * Gets or sets the status of the import/export request.
         */
-        public void setStatus(String status) { this.status = status; }
-        
-        /**
-        * Initializes a new instance of the StatusInfo class.
-        *
-        */
-        public StatusInfo()
+        public void setStatus(String status)
         {
+            this.status = status;
         }
     }
 }

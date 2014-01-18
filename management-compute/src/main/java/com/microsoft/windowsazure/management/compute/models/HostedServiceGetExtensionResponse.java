@@ -35,12 +35,18 @@ public class HostedServiceGetExtensionResponse extends OperationResponse
     /**
     * The identifier of the extension.
     */
-    public String getId() { return this.id; }
+    public String getId()
+    {
+        return this.id;
+    }
     
     /**
     * The identifier of the extension.
     */
-    public void setId(String id) { this.id = id; }
+    public void setId(String id)
+    {
+        this.id = id;
+    }
     
     private String providerNamespace;
     
@@ -48,13 +54,19 @@ public class HostedServiceGetExtensionResponse extends OperationResponse
     * The provider namespace of the extension. The provider namespace for
     * Windows Azure extensions is Microsoft.Windows.Azure.Extensions.
     */
-    public String getProviderNamespace() { return this.providerNamespace; }
+    public String getProviderNamespace()
+    {
+        return this.providerNamespace;
+    }
     
     /**
     * The provider namespace of the extension. The provider namespace for
     * Windows Azure extensions is Microsoft.Windows.Azure.Extensions.
     */
-    public void setProviderNamespace(String providerNamespace) { this.providerNamespace = providerNamespace; }
+    public void setProviderNamespace(String providerNamespace)
+    {
+        this.providerNamespace = providerNamespace;
+    }
     
     private String publicConfiguration;
     
@@ -62,13 +74,19 @@ public class HostedServiceGetExtensionResponse extends OperationResponse
     * The public configuration that is defined using the schema returned by the
     * List Available Extensions operation.
     */
-    public String getPublicConfiguration() { return this.publicConfiguration; }
+    public String getPublicConfiguration()
+    {
+        return this.publicConfiguration;
+    }
     
     /**
     * The public configuration that is defined using the schema returned by the
     * List Available Extensions operation.
     */
-    public void setPublicConfiguration(String publicConfiguration) { this.publicConfiguration = publicConfiguration; }
+    public void setPublicConfiguration(String publicConfiguration)
+    {
+        this.publicConfiguration = publicConfiguration;
+    }
     
     private String thumbprint;
     
@@ -78,7 +96,10 @@ public class HostedServiceGetExtensionResponse extends OperationResponse
     * specified, a certificate may be automatically generated and added to the
     * cloud service.
     */
-    public String getThumbprint() { return this.thumbprint; }
+    public String getThumbprint()
+    {
+        return this.thumbprint;
+    }
     
     /**
     * The thumbprint of the certificate that is used to encrypt the
@@ -86,7 +107,10 @@ public class HostedServiceGetExtensionResponse extends OperationResponse
     * specified, a certificate may be automatically generated and added to the
     * cloud service.
     */
-    public void setThumbprint(String thumbprint) { this.thumbprint = thumbprint; }
+    public void setThumbprint(String thumbprint)
+    {
+        this.thumbprint = thumbprint;
+    }
     
     private String thumbprintAlgorithm;
     
@@ -94,43 +118,53 @@ public class HostedServiceGetExtensionResponse extends OperationResponse
     * The thumbprint algorithm of the certificate that is used toencrypt the
     * configuration specified in PrivateConfiguration.
     */
-    public String getThumbprintAlgorithm() { return this.thumbprintAlgorithm; }
+    public String getThumbprintAlgorithm()
+    {
+        return this.thumbprintAlgorithm;
+    }
     
     /**
     * The thumbprint algorithm of the certificate that is used toencrypt the
     * configuration specified in PrivateConfiguration.
     */
-    public void setThumbprintAlgorithm(String thumbprintAlgorithm) { this.thumbprintAlgorithm = thumbprintAlgorithm; }
+    public void setThumbprintAlgorithm(String thumbprintAlgorithm)
+    {
+        this.thumbprintAlgorithm = thumbprintAlgorithm;
+    }
     
     private String type;
     
     /**
     * Required. The type of the extension.
     */
-    public String getType() { return this.type; }
+    public String getType()
+    {
+        return this.type;
+    }
     
     /**
     * Required. The type of the extension.
     */
-    public void setType(String type) { this.type = type; }
+    public void setType(String type)
+    {
+        this.type = type;
+    }
     
     private String version;
     
     /**
     * The version of the extension.
     */
-    public String getVersion() { return this.version; }
+    public String getVersion()
+    {
+        return this.version;
+    }
     
     /**
     * The version of the extension.
     */
-    public void setVersion(String version) { this.version = version; }
-    
-    /**
-    * Initializes a new instance of the HostedServiceGetExtensionResponse class.
-    *
-    */
-    public HostedServiceGetExtensionResponse()
+    public void setVersion(String version)
     {
+        this.version = version;
     }
 }

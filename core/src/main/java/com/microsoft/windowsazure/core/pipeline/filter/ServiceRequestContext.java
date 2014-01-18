@@ -19,25 +19,25 @@ import java.net.URI;
 
 public interface ServiceRequestContext
 {
-    public String getMethod();
+    String getMethod();
 
-    public void setMethod(String method);
+    void setMethod(String method);
 
-    public URI getURI();
+    URI getURI();
 
-    public void setURI(URI uri);
+    void setURI(URI uri);
 
-    public String getHeader(String name);
+    String getHeader(String name);
 
-    public void setHeader(String name, String value);
+    void setHeader(String name, String value);
 
-    public void removeHeader(String name);
+    void removeHeader(String name);
 
-    public Object getEntity();
+    Object getEntity();
 
-    public void setEntity(Object entity);
+    void setEntity(Object entity);
 
-    public Object getProperty(String name);
+    Object getProperty(String name);
 
-    public void setProperty(String name, Object value);
+    void setProperty(String name, Object value);
 }

@@ -48,15 +48,21 @@ public class ExponentialRetryPolicy extends RetryPolicy
             Exception error)
     {
         if (response == null)
+        {
             return false;
+        }
 
         if (retryCount >= this.maximumAttempts)
+        {
             return false;
+        }
 
         // Don't retry if not retryable status code
         if (Arrays
                 .binarySearch(this.retryableStatusCodes, response.getStatus()) < 0)
+        {
             return false;
+        }
 
         return true;
     }

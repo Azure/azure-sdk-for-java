@@ -52,6 +52,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -82,7 +83,10 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
     * Gets a reference to the
     * microsoft.windowsazure.management.sql.SqlManagementClientImpl.
     */
-    public SqlManagementClientImpl getClient() { return this.client; }
+    public SqlManagementClientImpl getClient()
+    {
+        return this.client;
+    }
     
     /**
     * Export DAC into Windows Azure blob storage.
@@ -247,7 +251,7 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -267,7 +271,7 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
         Document responseDoc = documentBuilder2.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/", "guid");
-        Element guidElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element guidElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (guidElement != null)
         {
             result.setGuid(guidElement.getTextContent());
@@ -379,7 +383,7 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -399,19 +403,19 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
         Document responseDoc = documentBuilder.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "ArrayOfStatusInfo");
-        Element arrayOfStatusInfoElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element arrayOfStatusInfoElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (arrayOfStatusInfoElement != null)
         {
             if (arrayOfStatusInfoElement != null)
             {
                 for (int i1 = 0; i1 < arrayOfStatusInfoElement.getElementsByTagNameNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "StatusInfo").getLength(); i1 = i1 + 1)
                 {
-                    org.w3c.dom.Element statusInfoElement = ((org.w3c.dom.Element)arrayOfStatusInfoElement.getElementsByTagNameNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "StatusInfo").item(i1));
+                    org.w3c.dom.Element statusInfoElement = ((org.w3c.dom.Element) arrayOfStatusInfoElement.getElementsByTagNameNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "StatusInfo").item(i1));
                     DacGetStatusResponse.StatusInfo statusInfoInstance = new DacGetStatusResponse.StatusInfo();
                     result.getStatusInfoList().add(statusInfoInstance);
                     
                     NodeList elements2 = statusInfoElement.getElementsByTagNameNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "BlobUri");
-                    Element blobUriElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+                    Element blobUriElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                     if (blobUriElement != null)
                     {
                         URI blobUriInstance;
@@ -420,7 +424,7 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
                     }
                     
                     NodeList elements3 = statusInfoElement.getElementsByTagNameNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "DatabaseName");
-                    Element databaseNameElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
+                    Element databaseNameElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                     if (databaseNameElement != null)
                     {
                         String databaseNameInstance;
@@ -429,7 +433,7 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
                     }
                     
                     NodeList elements4 = statusInfoElement.getElementsByTagNameNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "ErrorMessage");
-                    Element errorMessageElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
+                    Element errorMessageElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                     if (errorMessageElement != null)
                     {
                         boolean isNil = false;
@@ -447,7 +451,7 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
                     }
                     
                     NodeList elements5 = statusInfoElement.getElementsByTagNameNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "LastModifiedTime");
-                    Element lastModifiedTimeElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
+                    Element lastModifiedTimeElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                     if (lastModifiedTimeElement != null)
                     {
                         Calendar lastModifiedTimeInstance;
@@ -459,7 +463,7 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
                     }
                     
                     NodeList elements6 = statusInfoElement.getElementsByTagNameNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "QueuedTime");
-                    Element queuedTimeElement = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
+                    Element queuedTimeElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                     if (queuedTimeElement != null)
                     {
                         Calendar queuedTimeInstance;
@@ -471,7 +475,7 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
                     }
                     
                     NodeList elements7 = statusInfoElement.getElementsByTagNameNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "RequestId");
-                    Element requestIdElement = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
+                    Element requestIdElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                     if (requestIdElement != null)
                     {
                         String requestIdInstance;
@@ -480,7 +484,7 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
                     }
                     
                     NodeList elements8 = statusInfoElement.getElementsByTagNameNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "RequestType");
-                    Element requestTypeElement = elements8.getLength() > 0 ? ((Element)elements8.item(0)) : null;
+                    Element requestTypeElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
                     if (requestTypeElement != null)
                     {
                         String requestTypeInstance;
@@ -489,7 +493,7 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
                     }
                     
                     NodeList elements9 = statusInfoElement.getElementsByTagNameNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "ServerName");
-                    Element serverNameElement = elements9.getLength() > 0 ? ((Element)elements9.item(0)) : null;
+                    Element serverNameElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
                     if (serverNameElement != null)
                     {
                         String serverNameInstance;
@@ -498,7 +502,7 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
                     }
                     
                     NodeList elements10 = statusInfoElement.getElementsByTagNameNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "Status");
-                    Element statusElement = elements10.getLength() > 0 ? ((Element)elements10.item(0)) : null;
+                    Element statusElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
                     if (statusElement != null)
                     {
                         String statusInstance;
@@ -689,7 +693,7 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -709,7 +713,7 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
         Document responseDoc = documentBuilder2.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/", "guid");
-        Element guidElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element guidElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (guidElement != null)
         {
             result.setGuid(guidElement.getTextContent());

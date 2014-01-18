@@ -39,6 +39,7 @@ import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -65,7 +66,10 @@ public class IncidentOperationsImpl implements ServiceOperations<AlertsClientImp
     * Gets a reference to the
     * microsoft.windowsazure.management.monitoring.alerts.AlertsClientImpl.
     */
-    public AlertsClientImpl getClient() { return this.client; }
+    public AlertsClientImpl getClient()
+    {
+        return this.client;
+    }
     
     /**
     *
@@ -132,7 +136,7 @@ public class IncidentOperationsImpl implements ServiceOperations<AlertsClientImp
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromJson(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -152,53 +156,57 @@ public class IncidentOperationsImpl implements ServiceOperations<AlertsClientImp
         
         if (responseDoc != null)
         {
-            Incident incidentInstance = new Incident();
-            result.setIncident(incidentInstance);
-            
-            JsonNode idValue = responseDoc.get("Id");
-            if (idValue != null)
+            JsonNode incidentValue = responseDoc.get("Incident");
+            if (incidentValue != null)
             {
-                String idInstance;
-                idInstance = idValue.getTextValue();
-                incidentInstance.setId(idInstance);
-            }
-            
-            JsonNode ruleIdValue = responseDoc.get("RuleId");
-            if (ruleIdValue != null)
-            {
-                String ruleIdInstance;
-                ruleIdInstance = ruleIdValue.getTextValue();
-                incidentInstance.setRuleId(ruleIdInstance);
-            }
-            
-            JsonNode isActiveValue = responseDoc.get("IsActive");
-            if (isActiveValue != null)
-            {
-                boolean isActiveInstance;
-                isActiveInstance = isActiveValue.getBooleanValue();
-                incidentInstance.setIsActive(isActiveInstance);
-            }
-            
-            JsonNode activatedTimeValue = responseDoc.get("ActivatedTime");
-            if (activatedTimeValue != null)
-            {
-                Calendar activatedTimeInstance;
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(simpleDateFormat.parse(activatedTimeValue.getTextValue()));
-                activatedTimeInstance = calendar;
-                incidentInstance.setActivatedTime(activatedTimeInstance);
-            }
-            
-            JsonNode resolvedTimeValue = responseDoc.get("ResolvedTime");
-            if (resolvedTimeValue != null)
-            {
-                Calendar resolvedTimeInstance;
-                SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                Calendar calendar2 = Calendar.getInstance();
-                calendar2.setTime(simpleDateFormat2.parse(resolvedTimeValue.getTextValue()));
-                resolvedTimeInstance = calendar2;
-                incidentInstance.setResolvedTime(resolvedTimeInstance);
+                Incident incidentInstance = new Incident();
+                result.setIncident(incidentInstance);
+                
+                JsonNode idValue = incidentValue.get("Id");
+                if (idValue != null)
+                {
+                    String idInstance;
+                    idInstance = idValue.getTextValue();
+                    incidentInstance.setId(idInstance);
+                }
+                
+                JsonNode ruleIdValue = incidentValue.get("RuleId");
+                if (ruleIdValue != null)
+                {
+                    String ruleIdInstance;
+                    ruleIdInstance = ruleIdValue.getTextValue();
+                    incidentInstance.setRuleId(ruleIdInstance);
+                }
+                
+                JsonNode isActiveValue = incidentValue.get("IsActive");
+                if (isActiveValue != null)
+                {
+                    boolean isActiveInstance;
+                    isActiveInstance = isActiveValue.getBooleanValue();
+                    incidentInstance.setIsActive(isActiveInstance);
+                }
+                
+                JsonNode activatedTimeValue = incidentValue.get("ActivatedTime");
+                if (activatedTimeValue != null)
+                {
+                    Calendar activatedTimeInstance;
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(simpleDateFormat.parse(activatedTimeValue.getTextValue()));
+                    activatedTimeInstance = calendar;
+                    incidentInstance.setActivatedTime(activatedTimeInstance);
+                }
+                
+                JsonNode resolvedTimeValue = incidentValue.get("ResolvedTime");
+                if (resolvedTimeValue != null)
+                {
+                    Calendar resolvedTimeInstance;
+                    SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                    Calendar calendar2 = Calendar.getInstance();
+                    calendar2.setTime(simpleDateFormat2.parse(resolvedTimeValue.getTextValue()));
+                    resolvedTimeInstance = calendar2;
+                    incidentInstance.setResolvedTime(resolvedTimeInstance);
+                }
             }
         }
         
@@ -273,7 +281,7 @@ public class IncidentOperationsImpl implements ServiceOperations<AlertsClientImp
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromJson(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -293,61 +301,65 @@ public class IncidentOperationsImpl implements ServiceOperations<AlertsClientImp
         
         if (responseDoc != null)
         {
-            IncidentCollection incidentCollectionInstance = new IncidentCollection();
-            result.setIncidentCollection(incidentCollectionInstance);
-            
-            ArrayNode valueArray = ((ArrayNode)responseDoc.get("Value"));
-            if (valueArray != null)
+            JsonNode incidentCollectionValue = responseDoc.get("IncidentCollection");
+            if (incidentCollectionValue != null)
             {
-                for (JsonNode valueValue : valueArray)
+                IncidentCollection incidentCollectionInstance = new IncidentCollection();
+                result.setIncidentCollection(incidentCollectionInstance);
+                
+                ArrayNode valueArray = ((ArrayNode) incidentCollectionValue.get("Value"));
+                if (valueArray != null)
                 {
-                    Incident incidentInstance = new Incident();
-                    incidentCollectionInstance.getValue().add(incidentInstance);
-                    
-                    JsonNode idValue = valueValue.get("Id");
-                    if (idValue != null)
+                    for (JsonNode valueValue : valueArray)
                     {
-                        String idInstance;
-                        idInstance = idValue.getTextValue();
-                        incidentInstance.setId(idInstance);
-                    }
-                    
-                    JsonNode ruleIdValue = valueValue.get("RuleId");
-                    if (ruleIdValue != null)
-                    {
-                        String ruleIdInstance;
-                        ruleIdInstance = ruleIdValue.getTextValue();
-                        incidentInstance.setRuleId(ruleIdInstance);
-                    }
-                    
-                    JsonNode isActiveValue = valueValue.get("IsActive");
-                    if (isActiveValue != null)
-                    {
-                        boolean isActiveInstance;
-                        isActiveInstance = isActiveValue.getBooleanValue();
-                        incidentInstance.setIsActive(isActiveInstance);
-                    }
-                    
-                    JsonNode activatedTimeValue = valueValue.get("ActivatedTime");
-                    if (activatedTimeValue != null)
-                    {
-                        Calendar activatedTimeInstance;
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.setTime(simpleDateFormat.parse(activatedTimeValue.getTextValue()));
-                        activatedTimeInstance = calendar;
-                        incidentInstance.setActivatedTime(activatedTimeInstance);
-                    }
-                    
-                    JsonNode resolvedTimeValue = valueValue.get("ResolvedTime");
-                    if (resolvedTimeValue != null)
-                    {
-                        Calendar resolvedTimeInstance;
-                        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                        Calendar calendar2 = Calendar.getInstance();
-                        calendar2.setTime(simpleDateFormat2.parse(resolvedTimeValue.getTextValue()));
-                        resolvedTimeInstance = calendar2;
-                        incidentInstance.setResolvedTime(resolvedTimeInstance);
+                        Incident incidentInstance = new Incident();
+                        incidentCollectionInstance.getValue().add(incidentInstance);
+                        
+                        JsonNode idValue = valueValue.get("Id");
+                        if (idValue != null)
+                        {
+                            String idInstance;
+                            idInstance = idValue.getTextValue();
+                            incidentInstance.setId(idInstance);
+                        }
+                        
+                        JsonNode ruleIdValue = valueValue.get("RuleId");
+                        if (ruleIdValue != null)
+                        {
+                            String ruleIdInstance;
+                            ruleIdInstance = ruleIdValue.getTextValue();
+                            incidentInstance.setRuleId(ruleIdInstance);
+                        }
+                        
+                        JsonNode isActiveValue = valueValue.get("IsActive");
+                        if (isActiveValue != null)
+                        {
+                            boolean isActiveInstance;
+                            isActiveInstance = isActiveValue.getBooleanValue();
+                            incidentInstance.setIsActive(isActiveInstance);
+                        }
+                        
+                        JsonNode activatedTimeValue = valueValue.get("ActivatedTime");
+                        if (activatedTimeValue != null)
+                        {
+                            Calendar activatedTimeInstance;
+                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                            Calendar calendar = Calendar.getInstance();
+                            calendar.setTime(simpleDateFormat.parse(activatedTimeValue.getTextValue()));
+                            activatedTimeInstance = calendar;
+                            incidentInstance.setActivatedTime(activatedTimeInstance);
+                        }
+                        
+                        JsonNode resolvedTimeValue = valueValue.get("ResolvedTime");
+                        if (resolvedTimeValue != null)
+                        {
+                            Calendar resolvedTimeInstance;
+                            SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                            Calendar calendar2 = Calendar.getInstance();
+                            calendar2.setTime(simpleDateFormat2.parse(resolvedTimeValue.getTextValue()));
+                            resolvedTimeInstance = calendar2;
+                            incidentInstance.setResolvedTime(resolvedTimeInstance);
+                        }
                     }
                 }
             }
@@ -434,7 +446,7 @@ public class IncidentOperationsImpl implements ServiceOperations<AlertsClientImp
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromJson(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -454,61 +466,65 @@ public class IncidentOperationsImpl implements ServiceOperations<AlertsClientImp
         
         if (responseDoc != null)
         {
-            IncidentCollection incidentCollectionInstance = new IncidentCollection();
-            result.setIncidentCollection(incidentCollectionInstance);
-            
-            ArrayNode valueArray = ((ArrayNode)responseDoc.get("Value"));
-            if (valueArray != null)
+            JsonNode incidentCollectionValue = responseDoc.get("IncidentCollection");
+            if (incidentCollectionValue != null)
             {
-                for (JsonNode valueValue : valueArray)
+                IncidentCollection incidentCollectionInstance = new IncidentCollection();
+                result.setIncidentCollection(incidentCollectionInstance);
+                
+                ArrayNode valueArray = ((ArrayNode) incidentCollectionValue.get("Value"));
+                if (valueArray != null)
                 {
-                    Incident incidentInstance = new Incident();
-                    incidentCollectionInstance.getValue().add(incidentInstance);
-                    
-                    JsonNode idValue = valueValue.get("Id");
-                    if (idValue != null)
+                    for (JsonNode valueValue : valueArray)
                     {
-                        String idInstance;
-                        idInstance = idValue.getTextValue();
-                        incidentInstance.setId(idInstance);
-                    }
-                    
-                    JsonNode ruleIdValue = valueValue.get("RuleId");
-                    if (ruleIdValue != null)
-                    {
-                        String ruleIdInstance;
-                        ruleIdInstance = ruleIdValue.getTextValue();
-                        incidentInstance.setRuleId(ruleIdInstance);
-                    }
-                    
-                    JsonNode isActiveValue = valueValue.get("IsActive");
-                    if (isActiveValue != null)
-                    {
-                        boolean isActiveInstance;
-                        isActiveInstance = isActiveValue.getBooleanValue();
-                        incidentInstance.setIsActive(isActiveInstance);
-                    }
-                    
-                    JsonNode activatedTimeValue = valueValue.get("ActivatedTime");
-                    if (activatedTimeValue != null)
-                    {
-                        Calendar activatedTimeInstance;
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.setTime(simpleDateFormat.parse(activatedTimeValue.getTextValue()));
-                        activatedTimeInstance = calendar;
-                        incidentInstance.setActivatedTime(activatedTimeInstance);
-                    }
-                    
-                    JsonNode resolvedTimeValue = valueValue.get("ResolvedTime");
-                    if (resolvedTimeValue != null)
-                    {
-                        Calendar resolvedTimeInstance;
-                        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                        Calendar calendar2 = Calendar.getInstance();
-                        calendar2.setTime(simpleDateFormat2.parse(resolvedTimeValue.getTextValue()));
-                        resolvedTimeInstance = calendar2;
-                        incidentInstance.setResolvedTime(resolvedTimeInstance);
+                        Incident incidentInstance = new Incident();
+                        incidentCollectionInstance.getValue().add(incidentInstance);
+                        
+                        JsonNode idValue = valueValue.get("Id");
+                        if (idValue != null)
+                        {
+                            String idInstance;
+                            idInstance = idValue.getTextValue();
+                            incidentInstance.setId(idInstance);
+                        }
+                        
+                        JsonNode ruleIdValue = valueValue.get("RuleId");
+                        if (ruleIdValue != null)
+                        {
+                            String ruleIdInstance;
+                            ruleIdInstance = ruleIdValue.getTextValue();
+                            incidentInstance.setRuleId(ruleIdInstance);
+                        }
+                        
+                        JsonNode isActiveValue = valueValue.get("IsActive");
+                        if (isActiveValue != null)
+                        {
+                            boolean isActiveInstance;
+                            isActiveInstance = isActiveValue.getBooleanValue();
+                            incidentInstance.setIsActive(isActiveInstance);
+                        }
+                        
+                        JsonNode activatedTimeValue = valueValue.get("ActivatedTime");
+                        if (activatedTimeValue != null)
+                        {
+                            Calendar activatedTimeInstance;
+                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                            Calendar calendar = Calendar.getInstance();
+                            calendar.setTime(simpleDateFormat.parse(activatedTimeValue.getTextValue()));
+                            activatedTimeInstance = calendar;
+                            incidentInstance.setActivatedTime(activatedTimeInstance);
+                        }
+                        
+                        JsonNode resolvedTimeValue = valueValue.get("ResolvedTime");
+                        if (resolvedTimeValue != null)
+                        {
+                            Calendar resolvedTimeInstance;
+                            SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                            Calendar calendar2 = Calendar.getInstance();
+                            calendar2.setTime(simpleDateFormat2.parse(resolvedTimeValue.getTextValue()));
+                            resolvedTimeInstance = calendar2;
+                            incidentInstance.setResolvedTime(resolvedTimeInstance);
+                        }
                     }
                 }
             }

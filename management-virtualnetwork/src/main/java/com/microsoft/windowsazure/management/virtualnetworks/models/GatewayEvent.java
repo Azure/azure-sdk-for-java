@@ -35,54 +35,70 @@ public class GatewayEvent
     /**
     * Additional data associated with this event.
     */
-    public String getData() { return this.data; }
+    public String getData()
+    {
+        return this.data;
+    }
     
     /**
     * Additional data associated with this event.
     */
-    public void setData(String data) { this.data = data; }
+    public void setData(String data)
+    {
+        this.data = data;
+    }
     
     private String id;
     
     /**
     * The event ID.
     */
-    public String getId() { return this.id; }
+    public String getId()
+    {
+        return this.id;
+    }
     
     /**
     * The event ID.
     */
-    public void setId(String id) { this.id = id; }
+    public void setId(String id)
+    {
+        this.id = id;
+    }
     
     private String message;
     
     /**
     * The event message.
     */
-    public String getMessage() { return this.message; }
+    public String getMessage()
+    {
+        return this.message;
+    }
     
     /**
     * The event message.
     */
-    public void setMessage(String message) { this.message = message; }
+    public void setMessage(String message)
+    {
+        this.message = message;
+    }
     
     private Calendar timestamp;
     
     /**
     * The date and time when the event occurred.
     */
-    public Calendar getTimestamp() { return this.timestamp; }
+    public Calendar getTimestamp()
+    {
+        return this.timestamp;
+    }
     
     /**
     * The date and time when the event occurred.
     */
-    public void setTimestamp(Calendar timestamp) { this.timestamp = timestamp; }
-    
-    /**
-    * Initializes a new instance of the GatewayEvent class.
-    *
-    */
-    public GatewayEvent()
+    public void setTimestamp(Calendar timestamp)
     {
+        this.timestamp = timestamp;
     }
 }

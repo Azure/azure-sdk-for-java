@@ -17,54 +17,72 @@ package com.microsoft.windowsazure.management.virtualnetworks;
 import com.microsoft.windowsazure.Configuration;
 
 /**
- * 
+ *
  * Access service management functionality.
- * 
+ *
  */
-public class VirtualNetworkManagementService {
-
-    private VirtualNetworkManagementService() {
+public final class VirtualNetworkManagementService
+{
+    private VirtualNetworkManagementService()
+    {
         // class is not instantiated
     }
 
     /**
-     * Creates an instance of the <code>VirtualNetworkManagementClient</code> API.
-     * 
+     * Creates an instance of the <code>VirtualNetworkManagementClient</code>
+     * API.
+     * @return An instance of the <code>VirtualNetworkManagementClient</code>
+     * API.
      */
-    public static VirtualNetworkManagementClient create() {
-        return Configuration.getInstance().create(VirtualNetworkManagementClient.class);
+    public static VirtualNetworkManagementClient create()
+    {
+        return Configuration.getInstance().create(
+                VirtualNetworkManagementClient.class);
     }
 
     /**
-     * Creates an instance of the <code>VirtualNetworkManagementClient</code> API using the specified configuration.
-     * 
-     * @param config
-     *            A <code>Configuration</code> object that represents the configuration for the service management.
-     * 
+     * Creates an instance of the <code>VirtualNetworkManagementClient</code>
+     * API using the specified configuration.
+     *
+     * @param config A <code>Configuration</code> object that represents the
+     * configuration for the service management.
+     * @return An instance of the <code>VirtualNetworkManagementClient</code>
+     * API.
      */
-    public static VirtualNetworkManagementClient create(Configuration config) {
+    public static VirtualNetworkManagementClient create(
+            final Configuration config)
+    {
         return config.create(VirtualNetworkManagementClient.class);
     }
 
     /**
-     * Creates an instance of the <code>VirtualNetworkManagementClient</code> API.
+     * Creates an instance of the <code>VirtualNetworkManagementClient</code>
+     * API.
      * 
-     * @param profile
-     *            A <code>String</code> object that representing the profile of the service management service.
-     * 
+     * @param profile A <code>String</code> object that representing the profile
+     * of the service management service.
+     * @return An instance of the <code>VirtualNetworkManagementClient</code>
+     * API.
      */
-    public static VirtualNetworkManagementClient create(String profile) {
-        return Configuration.getInstance().create(profile, VirtualNetworkManagementClient.class);
+    public static VirtualNetworkManagementClient create(final String profile)
+    {
+        return Configuration.getInstance().create(profile,
+                VirtualNetworkManagementClient.class);
     }
 
     /**
-     * Creates an instance of the <code>VirtualNetworkManagementClient</code> API using the specified configuration.
+     * Creates an instance of the <code>VirtualNetworkManagementClient</code>
+     * API using the specified configuration.
      * 
-     * @param config
-     *            A <code>Configuration</code> object that represents the configuration for the service management.
-     * 
+     * @param profile The profile.
+     * @param config A <code>Configuration</code> object that represents the
+     * configuration for the service management.
+     * @return An instance of the <code>VirtualNetworkManagementClient</code>
+     * API.
      */
-    public static VirtualNetworkManagementClient create(String profile, Configuration config) {
+    public static VirtualNetworkManagementClient create(final String profile,
+            final Configuration config)
+    {
         return config.create(profile, VirtualNetworkManagementClient.class);
     }
 }

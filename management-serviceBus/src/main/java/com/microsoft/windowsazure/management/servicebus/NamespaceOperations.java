@@ -55,6 +55,7 @@ public interface NamespaceOperations
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj870968.aspx for
     * more information)
     *
+    * @param namespaceName The namespace name.
     * @return The response to a query for the availability status of a
     * namespace name.
     */
@@ -67,6 +68,7 @@ public interface NamespaceOperations
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj870968.aspx for
     * more information)
     *
+    * @param namespaceName The namespace name.
     * @return The response to a query for the availability status of a
     * namespace name.
     */
@@ -78,6 +80,8 @@ public interface NamespaceOperations
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj856303.aspx for
     * more information)
     *
+    * @param namespaceName The namespace name.
+    * @param region The namespace region.
     * @return The response to a request for a particular namespace.
     */
     ServiceBusNamespaceResponse create(String namespaceName, String region) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException, ParseException, URISyntaxException;
@@ -88,6 +92,8 @@ public interface NamespaceOperations
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj856303.aspx for
     * more information)
     *
+    * @param namespaceName The namespace name.
+    * @param region The namespace region.
     * @return The response to a request for a particular namespace.
     */
     Future<ServiceBusNamespaceResponse> createAsync(String namespaceName, String region);
@@ -96,6 +102,8 @@ public interface NamespaceOperations
     * The create namespace authorization rule operation creates an
     * authorization rule for a namespace
     *
+    * @param namespaceName The namespace name.
+    * @param rule The shared access authorization rule.
     * @return A response to a request for a particular authorization rule.
     */
     ServiceBusAuthorizationRuleResponse createAuthorizationRule(String namespaceName, ServiceBusSharedAccessAuthorizationRule rule) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException, ParseException;
@@ -104,6 +112,8 @@ public interface NamespaceOperations
     * The create namespace authorization rule operation creates an
     * authorization rule for a namespace
     *
+    * @param namespaceName The namespace name.
+    * @param rule The shared access authorization rule.
     * @return A response to a request for a particular authorization rule.
     */
     Future<ServiceBusAuthorizationRuleResponse> createAuthorizationRuleAsync(String namespaceName, ServiceBusSharedAccessAuthorizationRule rule);
@@ -115,6 +125,7 @@ public interface NamespaceOperations
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj856296.aspx for
     * more information)
     *
+    * @param namespaceName The namespace name.
     * @return A standard storage response including an HTTP status code and
     * request ID.
     */
@@ -127,6 +138,7 @@ public interface NamespaceOperations
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj856296.aspx for
     * more information)
     *
+    * @param namespaceName The namespace name.
     * @return A standard storage response including an HTTP status code and
     * request ID.
     */
@@ -136,6 +148,8 @@ public interface NamespaceOperations
     * The delete namespace authorization rule operation deletes an
     * authorization rule for a namespace
     *
+    * @param namespaceName The namespace name.
+    * @param ruleName The rule name.
     * @return A standard storage response including an HTTP status code and
     * request ID.
     */
@@ -145,6 +159,8 @@ public interface NamespaceOperations
     * The delete namespace authorization rule operation deletes an
     * authorization rule for a namespace
     *
+    * @param namespaceName The namespace name.
+    * @param ruleName The rule name.
     * @return A standard storage response including an HTTP status code and
     * request ID.
     */
@@ -155,6 +171,7 @@ public interface NamespaceOperations
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn140232.aspx for
     * more information)
     *
+    * @param namespaceName The namespace name.
     * @return The response to a request for a particular namespace.
     */
     ServiceBusNamespaceResponse get(String namespaceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException, URISyntaxException;
@@ -164,6 +181,7 @@ public interface NamespaceOperations
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn140232.aspx for
     * more information)
     *
+    * @param namespaceName The namespace name.
     * @return The response to a request for a particular namespace.
     */
     Future<ServiceBusNamespaceResponse> getAsync(String namespaceName);
@@ -195,6 +213,7 @@ public interface NamespaceOperations
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
     * more information)
     *
+    * @param namespaceName The namespace name.
     * @return A response to a request for a list of namespaces.
     */
     ServiceBusNamespaceDescriptionResponse getNamespaceDescription(String namespaceName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
@@ -206,6 +225,7 @@ public interface NamespaceOperations
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
     * more information)
     *
+    * @param namespaceName The namespace name.
     * @return A response to a request for a list of namespaces.
     */
     Future<ServiceBusNamespaceDescriptionResponse> getNamespaceDescriptionAsync(String namespaceName);
@@ -250,6 +270,8 @@ public interface NamespaceOperations
     * The update authorization rule operation updates an authorization rule for
     * a namespace.
     *
+    * @param namespaceName The namespace name.
+    * @param rule Updated access authorization rule.
     * @return A response to a request for a particular authorization rule.
     */
     ServiceBusAuthorizationRuleResponse updateAuthorizationRule(String namespaceName, ServiceBusSharedAccessAuthorizationRule rule) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException, ParseException;
@@ -258,6 +280,8 @@ public interface NamespaceOperations
     * The update authorization rule operation updates an authorization rule for
     * a namespace.
     *
+    * @param namespaceName The namespace name.
+    * @param rule Updated access authorization rule.
     * @return A response to a request for a particular authorization rule.
     */
     Future<ServiceBusAuthorizationRuleResponse> updateAuthorizationRuleAsync(String namespaceName, ServiceBusSharedAccessAuthorizationRule rule);

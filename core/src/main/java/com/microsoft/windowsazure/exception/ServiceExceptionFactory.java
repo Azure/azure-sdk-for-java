@@ -23,10 +23,6 @@ import com.sun.jersey.api.client.UniformInterfaceException;
 
 public final class ServiceExceptionFactory
 {
-    private ServiceExceptionFactory()
-    {
-    }
-
     public static ServiceException process(String serviceName,
             ServiceException exception)
     {
@@ -98,8 +94,8 @@ public final class ServiceExceptionFactory
         return exception;
     }
 
-    static ServiceException populate(ServiceException exception,
-            String serviceName, ServiceException cause)
+    static ServiceException populate(final ServiceException exception,
+            final String serviceName, final ServiceException cause)
     {
         exception.setServiceName(cause.getServiceName());
         exception.setHttpStatusCode(cause.getHttpStatusCode());

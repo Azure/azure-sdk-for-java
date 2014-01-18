@@ -28,43 +28,43 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
- * The Update Jobs State operation response.
- */
-public class JobCollectionJobsUpdateStateResponse extends OperationResponse
-        implements Iterable<Job>
+* The Update Jobs State operation response.
+*/
+public class JobCollectionJobsUpdateStateResponse extends OperationResponse implements Iterable<Job>
 {
     private ArrayList<Job> jobs;
-
+    
     /**
-     * The jobs.
-     */
+    * The jobs.
+    */
     public ArrayList<Job> getJobs()
     {
         return this.jobs;
     }
-
+    
     /**
-     * The jobs.
-     */
+    * The jobs.
+    */
     public void setJobs(ArrayList<Job> jobs)
     {
         this.jobs = jobs;
     }
-
+    
     /**
-     * Initializes a new instance of the JobCollectionJobsUpdateStateResponse
-     * class.
-     * 
-     */
+    * Initializes a new instance of the JobCollectionJobsUpdateStateResponse
+    * class.
+    *
+    */
     public JobCollectionJobsUpdateStateResponse()
     {
+        super();
         this.jobs = new ArrayList<Job>();
     }
-
+    
     /**
-     * Gets the sequence of Jobs.
-     * 
-     */
+    * Gets the sequence of Jobs.
+    *
+    */
     public Iterator<Job> iterator()
     {
         return this.getJobs().iterator();

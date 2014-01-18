@@ -39,7 +39,10 @@ public class AlertsClientImpl extends ServiceClient<AlertsClient> implements Ale
     /**
     * Optional base uri parameter for Azure REST.
     */
-    public URI getBaseUri() { return this.baseUri; }
+    public URI getBaseUri()
+    {
+        return this.baseUri;
+    }
     
     private SubscriptionCloudCredentials credentials;
     
@@ -51,21 +54,30 @@ public class AlertsClientImpl extends ServiceClient<AlertsClient> implements Ale
     * certificates over SSL to ensure that a request made to the service is
     * secure.  No anonymous requests are allowed.
     */
-    public SubscriptionCloudCredentials getCredentials() { return this.credentials; }
+    public SubscriptionCloudCredentials getCredentials()
+    {
+        return this.credentials;
+    }
     
     private IncidentOperations incidents;
     
     /**
     * Operations for managing the alert incidents.
     */
-    public IncidentOperations getIncidentsOperations() { return this.incidents; }
+    public IncidentOperations getIncidentsOperations()
+    {
+        return this.incidents;
+    }
     
     private RuleOperations rules;
     
     /**
     * Operations for managing the alert rules.
     */
-    public RuleOperations getRulesOperations() { return this.rules; }
+    public RuleOperations getRulesOperations()
+    {
+        return this.rules;
+    }
     
     /**
     * Initializes a new instance of the AlertsClientImpl class.

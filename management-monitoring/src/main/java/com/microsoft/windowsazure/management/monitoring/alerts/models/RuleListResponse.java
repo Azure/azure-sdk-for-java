@@ -35,18 +35,16 @@ public class RuleListResponse extends OperationResponse
     /**
     * The retrieved rules.
     */
-    public RuleCollection getRuleCollection() { return this.ruleCollection; }
+    public RuleCollection getRuleCollection()
+    {
+        return this.ruleCollection;
+    }
     
     /**
     * The retrieved rules.
     */
-    public void setRuleCollection(RuleCollection ruleCollection) { this.ruleCollection = ruleCollection; }
-    
-    /**
-    * Initializes a new instance of the RuleListResponse class.
-    *
-    */
-    public RuleListResponse()
+    public void setRuleCollection(RuleCollection ruleCollection)
     {
+        this.ruleCollection = ruleCollection;
     }
 }

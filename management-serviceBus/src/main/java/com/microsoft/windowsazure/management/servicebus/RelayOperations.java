@@ -39,6 +39,8 @@ public interface RelayOperations
     /**
     * Gets the set of connection strings for a relay.
     *
+    * @param namespaceName The namespace name.
+    * @param relayName The relay name.
     * @return The set of connection details for a service bus entity.
     */
     ServiceBusConnectionDetailsResponse getConnectionDetails(String namespaceName, String relayName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
@@ -46,6 +48,8 @@ public interface RelayOperations
     /**
     * Gets the set of connection strings for a relay.
     *
+    * @param namespaceName The namespace name.
+    * @param relayName The relay name.
     * @return The set of connection details for a service bus entity.
     */
     Future<ServiceBusConnectionDetailsResponse> getConnectionDetailsAsync(String namespaceName, String relayName);

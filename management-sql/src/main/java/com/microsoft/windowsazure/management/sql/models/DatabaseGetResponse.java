@@ -36,210 +36,304 @@ public class DatabaseGetResponse extends OperationResponse
     /**
     * Gets or sets the database resource's collation name.
     */
-    public String getCollationName() { return this.collationName; }
+    public String getCollationName()
+    {
+        return this.collationName;
+    }
     
     /**
     * Gets or sets the database resource's collation name.
     */
-    public void setCollationName(String collationName) { this.collationName = collationName; }
+    public void setCollationName(String collationName)
+    {
+        this.collationName = collationName;
+    }
     
     private Calendar creationDate;
     
     /**
     * Gets or sets the date this database was created.
     */
-    public Calendar getCreationDate() { return this.creationDate; }
+    public Calendar getCreationDate()
+    {
+        return this.creationDate;
+    }
     
     /**
     * Gets or sets the date this database was created.
     */
-    public void setCreationDate(Calendar creationDate) { this.creationDate = creationDate; }
+    public void setCreationDate(Calendar creationDate)
+    {
+        this.creationDate = creationDate;
+    }
     
     private String edition;
     
     /**
     * Gets or sets the database resource's edition.
     */
-    public String getEdition() { return this.edition; }
+    public String getEdition()
+    {
+        return this.edition;
+    }
     
     /**
     * Gets or sets the database resource's edition.
     */
-    public void setEdition(String edition) { this.edition = edition; }
+    public void setEdition(String edition)
+    {
+        this.edition = edition;
+    }
     
     private int id;
     
     /**
     * Gets or sets the id of the database.
     */
-    public int getId() { return this.id; }
+    public int getId()
+    {
+        return this.id;
+    }
     
     /**
     * Gets or sets the id of the database.
     */
-    public void setId(int id) { this.id = id; }
+    public void setId(int id)
+    {
+        this.id = id;
+    }
     
     private boolean isFederationRoot;
     
     /**
     * Gets or sets a value indicating whether the database is a federation root.
     */
-    public boolean getIsFederationRoot() { return this.isFederationRoot; }
+    public boolean isFederationRoot()
+    {
+        return this.isFederationRoot;
+    }
     
     /**
     * Gets or sets a value indicating whether the database is a federation root.
     */
-    public void setIsFederationRoot(boolean isFederationRoot) { this.isFederationRoot = isFederationRoot; }
+    public void setIsFederationRoot(boolean isFederationRoot)
+    {
+        this.isFederationRoot = isFederationRoot;
+    }
     
     private boolean isSystemObject;
     
     /**
     * Gets or sets a value indicating whether the database is a system object.
     */
-    public boolean getIsSystemObject() { return this.isSystemObject; }
+    public boolean isSystemObject()
+    {
+        return this.isSystemObject;
+    }
     
     /**
     * Gets or sets a value indicating whether the database is a system object.
     */
-    public void setIsSystemObject(boolean isSystemObject) { this.isSystemObject = isSystemObject; }
+    public void setIsSystemObject(boolean isSystemObject)
+    {
+        this.isSystemObject = isSystemObject;
+    }
     
     private long maximumDatabaseSizeInGB;
     
     /**
     * Gets or sets the maximum size of this database, in Gigabytes.
     */
-    public long getMaximumDatabaseSizeInGB() { return this.maximumDatabaseSizeInGB; }
+    public long getMaximumDatabaseSizeInGB()
+    {
+        return this.maximumDatabaseSizeInGB;
+    }
     
     /**
     * Gets or sets the maximum size of this database, in Gigabytes.
     */
-    public void setMaximumDatabaseSizeInGB(long maximumDatabaseSizeInGB) { this.maximumDatabaseSizeInGB = maximumDatabaseSizeInGB; }
+    public void setMaximumDatabaseSizeInGB(long maximumDatabaseSizeInGB)
+    {
+        this.maximumDatabaseSizeInGB = maximumDatabaseSizeInGB;
+    }
     
     private String name;
     
     /**
     * Gets or sets the name of the database.
     */
-    public String getName() { return this.name; }
+    public String getName()
+    {
+        return this.name;
+    }
     
     /**
     * Gets or sets the name of the database.
     */
-    public void setName(String name) { this.name = name; }
+    public void setName(String name)
+    {
+        this.name = name;
+    }
     
     private String serviceObjectiveAssignmentErrorCode;
     
     /**
     * Gets or sets the error code for this service objective.
     */
-    public String getServiceObjectiveAssignmentErrorCode() { return this.serviceObjectiveAssignmentErrorCode; }
+    public String getServiceObjectiveAssignmentErrorCode()
+    {
+        return this.serviceObjectiveAssignmentErrorCode;
+    }
     
     /**
     * Gets or sets the error code for this service objective.
     */
-    public void setServiceObjectiveAssignmentErrorCode(String serviceObjectiveAssignmentErrorCode) { this.serviceObjectiveAssignmentErrorCode = serviceObjectiveAssignmentErrorCode; }
+    public void setServiceObjectiveAssignmentErrorCode(String serviceObjectiveAssignmentErrorCode)
+    {
+        this.serviceObjectiveAssignmentErrorCode = serviceObjectiveAssignmentErrorCode;
+    }
     
     private String serviceObjectiveAssignmentErrorDescription;
     
     /**
     * Gets or sets the error description, if any.
     */
-    public String getServiceObjectiveAssignmentErrorDescription() { return this.serviceObjectiveAssignmentErrorDescription; }
+    public String getServiceObjectiveAssignmentErrorDescription()
+    {
+        return this.serviceObjectiveAssignmentErrorDescription;
+    }
     
     /**
     * Gets or sets the error description, if any.
     */
-    public void setServiceObjectiveAssignmentErrorDescription(String serviceObjectiveAssignmentErrorDescription) { this.serviceObjectiveAssignmentErrorDescription = serviceObjectiveAssignmentErrorDescription; }
+    public void setServiceObjectiveAssignmentErrorDescription(String serviceObjectiveAssignmentErrorDescription)
+    {
+        this.serviceObjectiveAssignmentErrorDescription = serviceObjectiveAssignmentErrorDescription;
+    }
     
     private String serviceObjectiveAssignmentState;
     
     /**
     * Gets or sets the state of the current assignment.
     */
-    public String getServiceObjectiveAssignmentState() { return this.serviceObjectiveAssignmentState; }
+    public String getServiceObjectiveAssignmentState()
+    {
+        return this.serviceObjectiveAssignmentState;
+    }
     
     /**
     * Gets or sets the state of the current assignment.
     */
-    public void setServiceObjectiveAssignmentState(String serviceObjectiveAssignmentState) { this.serviceObjectiveAssignmentState = serviceObjectiveAssignmentState; }
+    public void setServiceObjectiveAssignmentState(String serviceObjectiveAssignmentState)
+    {
+        this.serviceObjectiveAssignmentState = serviceObjectiveAssignmentState;
+    }
     
     private String serviceObjectiveAssignmentStateDescription;
     
     /**
     * Gets or sets the state description.
     */
-    public String getServiceObjectiveAssignmentStateDescription() { return this.serviceObjectiveAssignmentStateDescription; }
+    public String getServiceObjectiveAssignmentStateDescription()
+    {
+        return this.serviceObjectiveAssignmentStateDescription;
+    }
     
     /**
     * Gets or sets the state description.
     */
-    public void setServiceObjectiveAssignmentStateDescription(String serviceObjectiveAssignmentStateDescription) { this.serviceObjectiveAssignmentStateDescription = serviceObjectiveAssignmentStateDescription; }
+    public void setServiceObjectiveAssignmentStateDescription(String serviceObjectiveAssignmentStateDescription)
+    {
+        this.serviceObjectiveAssignmentStateDescription = serviceObjectiveAssignmentStateDescription;
+    }
     
     private String serviceObjectiveAssignmentSuccessDate;
     
     /**
     * Gets or sets the date the service's assignment succeeded.
     */
-    public String getServiceObjectiveAssignmentSuccessDate() { return this.serviceObjectiveAssignmentSuccessDate; }
+    public String getServiceObjectiveAssignmentSuccessDate()
+    {
+        return this.serviceObjectiveAssignmentSuccessDate;
+    }
     
     /**
     * Gets or sets the date the service's assignment succeeded.
     */
-    public void setServiceObjectiveAssignmentSuccessDate(String serviceObjectiveAssignmentSuccessDate) { this.serviceObjectiveAssignmentSuccessDate = serviceObjectiveAssignmentSuccessDate; }
+    public void setServiceObjectiveAssignmentSuccessDate(String serviceObjectiveAssignmentSuccessDate)
+    {
+        this.serviceObjectiveAssignmentSuccessDate = serviceObjectiveAssignmentSuccessDate;
+    }
     
     private String serviceObjectiveId;
     
     /**
     * Gets or sets the id of this service objective.
     */
-    public String getServiceObjectiveId() { return this.serviceObjectiveId; }
+    public String getServiceObjectiveId()
+    {
+        return this.serviceObjectiveId;
+    }
     
     /**
     * Gets or sets the id of this service objective.
     */
-    public void setServiceObjectiveId(String serviceObjectiveId) { this.serviceObjectiveId = serviceObjectiveId; }
+    public void setServiceObjectiveId(String serviceObjectiveId)
+    {
+        this.serviceObjectiveId = serviceObjectiveId;
+    }
     
     private String sizeMB;
     
     /**
     * Gets or sets the size of this database in megabytes (MB).
     */
-    public String getSizeMB() { return this.sizeMB; }
+    public String getSizeMB()
+    {
+        return this.sizeMB;
+    }
     
     /**
     * Gets or sets the size of this database in megabytes (MB).
     */
-    public void setSizeMB(String sizeMB) { this.sizeMB = sizeMB; }
+    public void setSizeMB(String sizeMB)
+    {
+        this.sizeMB = sizeMB;
+    }
     
     private String state;
     
     /**
     * Gets or sets the state of the database.
     */
-    public String getState() { return this.state; }
+    public String getState()
+    {
+        return this.state;
+    }
     
     /**
     * Gets or sets the state of the database.
     */
-    public void setState(String state) { this.state = state; }
+    public void setState(String state)
+    {
+        this.state = state;
+    }
     
     private String type;
     
     /**
     * Gets or sets the type of resource.
     */
-    public String getType() { return this.type; }
+    public String getType()
+    {
+        return this.type;
+    }
     
     /**
     * Gets or sets the type of resource.
     */
-    public void setType(String type) { this.type = type; }
-    
-    /**
-    * Initializes a new instance of the DatabaseGetResponse class.
-    *
-    */
-    public DatabaseGetResponse()
+    public void setType(String type)
     {
+        this.type = type;
     }
 }

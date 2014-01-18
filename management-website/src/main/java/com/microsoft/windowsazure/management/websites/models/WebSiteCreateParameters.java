@@ -38,7 +38,10 @@ public class WebSiteCreateParameters
     * set ComputeMode to Dedicated, you must specify a value for the
     * ServerFarm element.
     */
-    public WebSiteComputeMode getComputeMode() { return this.computeMode; }
+    public WebSiteComputeMode getComputeMode()
+    {
+        return this.computeMode;
+    }
     
     /**
     * This value should be Shared for the Free or Paid Shared offerings, or
@@ -46,7 +49,10 @@ public class WebSiteCreateParameters
     * set ComputeMode to Dedicated, you must specify a value for the
     * ServerFarm element.
     */
-    public void setComputeMode(WebSiteComputeMode computeMode) { this.computeMode = computeMode; }
+    public void setComputeMode(WebSiteComputeMode computeMode)
+    {
+        this.computeMode = computeMode;
+    }
     
     private ArrayList<String> hostNames;
     
@@ -56,7 +62,10 @@ public class WebSiteCreateParameters
     * match the name of the website. Custom domains can only be specified for
     * Shared or Standard websites.
     */
-    public ArrayList<String> getHostNames() { return this.hostNames; }
+    public ArrayList<String> getHostNames()
+    {
+        return this.hostNames;
+    }
     
     /**
     * Required. The fully qualified domain name for website. Only one hostname
@@ -64,7 +73,10 @@ public class WebSiteCreateParameters
     * match the name of the website. Custom domains can only be specified for
     * Shared or Standard websites.
     */
-    public void setHostNames(ArrayList<String> hostNames) { this.hostNames = hostNames; }
+    public void setHostNames(ArrayList<String> hostNames)
+    {
+        this.hostNames = hostNames;
+    }
     
     private String name;
     
@@ -72,13 +84,19 @@ public class WebSiteCreateParameters
     * Required. The name of the website. This should match the hostname in the
     * default domain.
     */
-    public String getName() { return this.name; }
+    public String getName()
+    {
+        return this.name;
+    }
     
     /**
     * Required. The name of the website. This should match the hostname in the
     * default domain.
     */
-    public void setName(String name) { this.name = name; }
+    public void setName(String name)
+    {
+        this.name = name;
+    }
     
     private String serverFarm;
     
@@ -86,13 +104,19 @@ public class WebSiteCreateParameters
     * The name of the Server Farm associated with this website. This is a
     * required value for Standard mode.
     */
-    public String getServerFarm() { return this.serverFarm; }
+    public String getServerFarm()
+    {
+        return this.serverFarm;
+    }
     
     /**
     * The name of the Server Farm associated with this website. This is a
     * required value for Standard mode.
     */
-    public void setServerFarm(String serverFarm) { this.serverFarm = serverFarm; }
+    public void setServerFarm(String serverFarm)
+    {
+        this.serverFarm = serverFarm;
+    }
     
     private WebSiteMode siteMode;
     
@@ -102,7 +126,10 @@ public class WebSiteCreateParameters
     * the SiteMode setting; it uses the ComputeMode setting. For more
     * information, see Upgrade or Downgrade a Web Site.
     */
-    public WebSiteMode getSiteMode() { return this.siteMode; }
+    public WebSiteMode getSiteMode()
+    {
+        return this.siteMode;
+    }
     
     /**
     * This value is limited for the Free offering Basic for the Paid Shared
@@ -110,31 +137,46 @@ public class WebSiteCreateParameters
     * the SiteMode setting; it uses the ComputeMode setting. For more
     * information, see Upgrade or Downgrade a Web Site.
     */
-    public void setSiteMode(WebSiteMode siteMode) { this.siteMode = siteMode; }
+    public void setSiteMode(WebSiteMode siteMode)
+    {
+        this.siteMode = siteMode;
+    }
     
     private WebSiteCreateParameters.WebSpaceDetails webSpace;
     
     /**
     * Information about the web space to create.
     */
-    public WebSiteCreateParameters.WebSpaceDetails getWebSpace() { return this.webSpace; }
+    public WebSiteCreateParameters.WebSpaceDetails getWebSpace()
+    {
+        return this.webSpace;
+    }
     
     /**
     * Information about the web space to create.
     */
-    public void setWebSpace(WebSiteCreateParameters.WebSpaceDetails webSpace) { this.webSpace = webSpace; }
+    public void setWebSpace(WebSiteCreateParameters.WebSpaceDetails webSpace)
+    {
+        this.webSpace = webSpace;
+    }
     
     private String webSpaceName;
     
     /**
     * The name of the webspace.
     */
-    public String getWebSpaceName() { return this.webSpaceName; }
+    public String getWebSpaceName()
+    {
+        return this.webSpaceName;
+    }
     
     /**
     * The name of the webspace.
     */
-    public void setWebSpaceName(String webSpaceName) { this.webSpaceName = webSpaceName; }
+    public void setWebSpaceName(String webSpaceName)
+    {
+        this.webSpaceName = webSpaceName;
+    }
     
     /**
     * Initializes a new instance of the WebSiteCreateParameters class.
@@ -156,44 +198,54 @@ public class WebSiteCreateParameters
         * Required. The geographical region of the webspace that will be
         * created.
         */
-        public String getGeoRegion() { return this.geoRegion; }
+        public String getGeoRegion()
+        {
+            return this.geoRegion;
+        }
         
         /**
         * Required. The geographical region of the webspace that will be
         * created.
         */
-        public void setGeoRegion(String geoRegion) { this.geoRegion = geoRegion; }
+        public void setGeoRegion(String geoRegion)
+        {
+            this.geoRegion = geoRegion;
+        }
         
         private String name;
         
         /**
         * Required. The name of the webspace.
         */
-        public String getName() { return this.name; }
+        public String getName()
+        {
+            return this.name;
+        }
         
         /**
         * Required. The name of the webspace.
         */
-        public void setName(String name) { this.name = name; }
+        public void setName(String name)
+        {
+            this.name = name;
+        }
         
         private String plan;
         
         /**
         * Required. This value must be VirtualDedicatedPlan.
         */
-        public String getPlan() { return this.plan; }
+        public String getPlan()
+        {
+            return this.plan;
+        }
         
         /**
         * Required. This value must be VirtualDedicatedPlan.
         */
-        public void setPlan(String plan) { this.plan = plan; }
-        
-        /**
-        * Initializes a new instance of the WebSpaceDetails class.
-        *
-        */
-        public WebSpaceDetails()
+        public void setPlan(String plan)
         {
+            this.plan = plan;
         }
     }
 }

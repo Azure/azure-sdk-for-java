@@ -34,43 +34,53 @@ public class MetricSetting
     * The metric settings namespace. For endpoint monitoring metrics the
     * namespace value is WindowsAzure.Availability
     */
-    public String getNamespace() { return this.namespace; }
+    public String getNamespace()
+    {
+        return this.namespace;
+    }
     
     /**
     * The metric settings namespace. For endpoint monitoring metrics the
     * namespace value is WindowsAzure.Availability
     */
-    public void setNamespace(String namespace) { this.namespace = namespace; }
+    public void setNamespace(String namespace)
+    {
+        this.namespace = namespace;
+    }
     
     private String resourceId;
     
     /**
     * The resource id of the service.
     */
-    public String getResourceId() { return this.resourceId; }
+    public String getResourceId()
+    {
+        return this.resourceId;
+    }
     
     /**
     * The resource id of the service.
     */
-    public void setResourceId(String resourceId) { this.resourceId = resourceId; }
+    public void setResourceId(String resourceId)
+    {
+        this.resourceId = resourceId;
+    }
     
     private MetricSettingValue value;
     
     /**
     * The metric settings value.
     */
-    public MetricSettingValue getValue() { return this.value; }
+    public MetricSettingValue getValue()
+    {
+        return this.value;
+    }
     
     /**
     * The metric settings value.
     */
-    public void setValue(MetricSettingValue value) { this.value = value; }
-    
-    /**
-    * Initializes a new instance of the MetricSetting class.
-    *
-    */
-    public MetricSetting()
+    public void setValue(MetricSettingValue value)
     {
+        this.value = value;
     }
 }

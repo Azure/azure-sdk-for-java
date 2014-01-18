@@ -35,24 +35,36 @@ public class MetricValue
     /**
     * Specifies annotation for the metric.
     */
-    public String getAnnotation() { return this.annotation; }
+    public String getAnnotation()
+    {
+        return this.annotation;
+    }
     
     /**
     * Specifies annotation for the metric.
     */
-    public void setAnnotation(String annotation) { this.annotation = annotation; }
+    public void setAnnotation(String annotation)
+    {
+        this.annotation = annotation;
+    }
     
     private Double average;
     
     /**
     * Specifies the average value in the time interval.
     */
-    public Double getAverage() { return this.average; }
+    public Double getAverage()
+    {
+        return this.average;
+    }
     
     /**
     * Specifies the average value in the time interval.
     */
-    public void setAverage(Double average) { this.average = average; }
+    public void setAverage(Double average)
+    {
+        this.average = average;
+    }
     
     private Integer count;
     
@@ -60,67 +72,89 @@ public class MetricValue
     * Specifies the sample count in the time interval. Can be used to determine
     * the number of values that contributed to the average value.
     */
-    public Integer getCount() { return this.count; }
+    public Integer getCount()
+    {
+        return this.count;
+    }
     
     /**
     * Specifies the sample count in the time interval. Can be used to determine
     * the number of values that contributed to the average value.
     */
-    public void setCount(Integer count) { this.count = count; }
+    public void setCount(Integer count)
+    {
+        this.count = count;
+    }
     
     private Double maximum;
     
     /**
     * Specifies the maximum value in the time interval.
     */
-    public Double getMaximum() { return this.maximum; }
+    public Double getMaximum()
+    {
+        return this.maximum;
+    }
     
     /**
     * Specifies the maximum value in the time interval.
     */
-    public void setMaximum(Double maximum) { this.maximum = maximum; }
+    public void setMaximum(Double maximum)
+    {
+        this.maximum = maximum;
+    }
     
     private Double minimum;
     
     /**
     * Specifies the minimum value in the time interval.
     */
-    public Double getMinimum() { return this.minimum; }
+    public Double getMinimum()
+    {
+        return this.minimum;
+    }
     
     /**
     * Specifies the minimum value in the time interval.
     */
-    public void setMinimum(Double minimum) { this.minimum = minimum; }
+    public void setMinimum(Double minimum)
+    {
+        this.minimum = minimum;
+    }
     
     private Calendar timestamp;
     
     /**
     * The timestamp for the metric value.
     */
-    public Calendar getTimestamp() { return this.timestamp; }
+    public Calendar getTimestamp()
+    {
+        return this.timestamp;
+    }
     
     /**
     * The timestamp for the metric value.
     */
-    public void setTimestamp(Calendar timestamp) { this.timestamp = timestamp; }
+    public void setTimestamp(Calendar timestamp)
+    {
+        this.timestamp = timestamp;
+    }
     
     private Double total;
     
     /**
     * Specifies the total value in the time interval.
     */
-    public Double getTotal() { return this.total; }
+    public Double getTotal()
+    {
+        return this.total;
+    }
     
     /**
     * Specifies the total value in the time interval.
     */
-    public void setTotal(Double total) { this.total = total; }
-    
-    /**
-    * Initializes a new instance of the MetricValue class.
-    *
-    */
-    public MetricValue()
+    public void setTotal(Double total)
     {
+        this.total = total;
     }
 }

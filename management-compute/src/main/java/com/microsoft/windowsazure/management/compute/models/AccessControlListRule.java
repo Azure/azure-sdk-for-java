@@ -33,36 +33,54 @@ public class AccessControlListRule
     /**
     * the action allowed by this Access Control List Rule.
     */
-    public String getAction() { return this.action; }
+    public String getAction()
+    {
+        return this.action;
+    }
     
     /**
     * the action allowed by this Access Control List Rule.
     */
-    public void setAction(String action) { this.action = action; }
+    public void setAction(String action)
+    {
+        this.action = action;
+    }
     
     private String description;
     
     /**
     * the description for this Access Control List Rule.
     */
-    public String getDescription() { return this.description; }
+    public String getDescription()
+    {
+        return this.description;
+    }
     
     /**
     * the description for this Access Control List Rule.
     */
-    public void setDescription(String description) { this.description = description; }
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
     
     private Integer order;
     
     /**
     * the order of application for this Access Control List Rule.
     */
-    public Integer getOrder() { return this.order; }
+    public Integer getOrder()
+    {
+        return this.order;
+    }
     
     /**
     * the order of application for this Access Control List Rule.
     */
-    public void setOrder(Integer order) { this.order = order; }
+    public void setOrder(Integer order)
+    {
+        this.order = order;
+    }
     
     private String remoteSubnet;
     
@@ -70,19 +88,17 @@ public class AccessControlListRule
     * the remote subnet that is granted access for this Access Control List
     * Rule.
     */
-    public String getRemoteSubnet() { return this.remoteSubnet; }
+    public String getRemoteSubnet()
+    {
+        return this.remoteSubnet;
+    }
     
     /**
     * the remote subnet that is granted access for this Access Control List
     * Rule.
     */
-    public void setRemoteSubnet(String remoteSubnet) { this.remoteSubnet = remoteSubnet; }
-    
-    /**
-    * Initializes a new instance of the AccessControlListRule class.
-    *
-    */
-    public AccessControlListRule()
+    public void setRemoteSubnet(String remoteSubnet)
     {
+        this.remoteSubnet = remoteSubnet;
     }
 }

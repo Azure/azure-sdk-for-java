@@ -46,6 +46,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -73,7 +74,10 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Vi
     * Gets a reference to the
     * microsoft.windowsazure.management.virtualnetworks.VirtualNetworkManagementClientImpl.
     */
-    public VirtualNetworkManagementClientImpl getClient() { return this.client; }
+    public VirtualNetworkManagementClientImpl getClient()
+    {
+        return this.client;
+    }
     
     /**
     * The Upload Client Root Certificate operation is used to upload a new
@@ -171,7 +175,7 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Vi
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
+        if (statusCode != HttpStatus.SC_ACCEPTED)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -191,11 +195,11 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Vi
         Document responseDoc = documentBuilder.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagName("GatewayOperationAsyncResponse");
-        Element gatewayOperationAsyncResponseElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element gatewayOperationAsyncResponseElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (gatewayOperationAsyncResponseElement != null)
         {
             NodeList elements2 = gatewayOperationAsyncResponseElement.getElementsByTagName("ID");
-            Element idElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+            Element idElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
             if (idElement != null)
             {
                 String idInstance;
@@ -300,7 +304,7 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Vi
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -320,11 +324,11 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Vi
         Document responseDoc = documentBuilder.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagName("GatewayOperationAsyncResponse");
-        Element gatewayOperationAsyncResponseElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element gatewayOperationAsyncResponseElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (gatewayOperationAsyncResponseElement != null)
         {
             NodeList elements2 = gatewayOperationAsyncResponseElement.getElementsByTagName("ID");
-            Element idElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+            Element idElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
             if (idElement != null)
             {
                 String idInstance;
@@ -430,7 +434,7 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Vi
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -536,7 +540,7 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Vi
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -556,17 +560,17 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Vi
         Document responseDoc = documentBuilder.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagName("ClientRootCertificates");
-        Element clientRootCertificatesSequenceElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element clientRootCertificatesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (clientRootCertificatesSequenceElement != null)
         {
             for (int i1 = 0; i1 < clientRootCertificatesSequenceElement.getElementsByTagName("ClientRootCertificate").getLength(); i1 = i1 + 1)
             {
-                org.w3c.dom.Element clientRootCertificatesElement = ((org.w3c.dom.Element)clientRootCertificatesSequenceElement.getElementsByTagName("ClientRootCertificate").item(i1));
+                org.w3c.dom.Element clientRootCertificatesElement = ((org.w3c.dom.Element) clientRootCertificatesSequenceElement.getElementsByTagName("ClientRootCertificate").item(i1));
                 ClientRootCertificateListResponse.ClientRootCertificate clientRootCertificateInstance = new ClientRootCertificateListResponse.ClientRootCertificate();
                 result.getClientRootCertificates().add(clientRootCertificateInstance);
                 
                 NodeList elements2 = clientRootCertificatesElement.getElementsByTagName("ExpirationTime");
-                Element expirationTimeElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+                Element expirationTimeElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                 if (expirationTimeElement != null)
                 {
                     Calendar expirationTimeInstance;
@@ -578,7 +582,7 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Vi
                 }
                 
                 NodeList elements3 = clientRootCertificatesElement.getElementsByTagName("Subject");
-                Element subjectElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
+                Element subjectElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                 if (subjectElement != null)
                 {
                     String subjectInstance;
@@ -587,7 +591,7 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Vi
                 }
                 
                 NodeList elements4 = clientRootCertificatesElement.getElementsByTagName("Thumbprint");
-                Element thumbprintElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
+                Element thumbprintElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                 if (thumbprintElement != null)
                 {
                     String thumbprintInstance;

@@ -35,54 +35,70 @@ public class ScaleAction
     /**
     * The cooldown interval for scaling action.
     */
-    public Duration getCooldown() { return this.cooldown; }
+    public Duration getCooldown()
+    {
+        return this.cooldown;
+    }
     
     /**
     * The cooldown interval for scaling action.
     */
-    public void setCooldown(Duration cooldown) { this.cooldown = cooldown; }
+    public void setCooldown(Duration cooldown)
+    {
+        this.cooldown = cooldown;
+    }
     
     private ScaleDirection direction;
     
     /**
     * The direction of scaling.
     */
-    public ScaleDirection getDirection() { return this.direction; }
+    public ScaleDirection getDirection()
+    {
+        return this.direction;
+    }
     
     /**
     * The direction of scaling.
     */
-    public void setDirection(ScaleDirection direction) { this.direction = direction; }
+    public void setDirection(ScaleDirection direction)
+    {
+        this.direction = direction;
+    }
     
     private ScaleType type;
     
     /**
     * The type of scaling.
     */
-    public ScaleType getType() { return this.type; }
+    public ScaleType getType()
+    {
+        return this.type;
+    }
     
     /**
     * The type of scaling.
     */
-    public void setType(ScaleType type) { this.type = type; }
+    public void setType(ScaleType type)
+    {
+        this.type = type;
+    }
     
     private String value;
     
     /**
     * The rate of scaling.
     */
-    public String getValue() { return this.value; }
+    public String getValue()
+    {
+        return this.value;
+    }
     
     /**
     * The rate of scaling.
     */
-    public void setValue(String value) { this.value = value; }
-    
-    /**
-    * Initializes a new instance of the ScaleAction class.
-    *
-    */
-    public ScaleAction()
+    public void setValue(String value)
     {
+        this.value = value;
     }
 }

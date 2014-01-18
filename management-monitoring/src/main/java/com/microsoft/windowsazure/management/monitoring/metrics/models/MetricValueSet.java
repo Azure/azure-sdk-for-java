@@ -37,108 +37,162 @@ public class MetricValueSet
     /**
     * Metric display name.
     */
-    public String getDisplayName() { return this.displayName; }
+    public String getDisplayName()
+    {
+        return this.displayName;
+    }
     
     /**
     * Metric display name.
     */
-    public void setDisplayName(String displayName) { this.displayName = displayName; }
+    public void setDisplayName(String displayName)
+    {
+        this.displayName = displayName;
+    }
     
     private Calendar endTime;
     
     /**
     * The end time in UTC for the metric queried.
     */
-    public Calendar getEndTime() { return this.endTime; }
+    public Calendar getEndTime()
+    {
+        return this.endTime;
+    }
     
     /**
     * The end time in UTC for the metric queried.
     */
-    public void setEndTime(Calendar endTime) { this.endTime = endTime; }
+    public void setEndTime(Calendar endTime)
+    {
+        this.endTime = endTime;
+    }
     
     private ArrayList<MetricValue> metricValues;
     
     /**
     * Metric values.
     */
-    public ArrayList<MetricValue> getMetricValues() { return this.metricValues; }
+    public ArrayList<MetricValue> getMetricValues()
+    {
+        return this.metricValues;
+    }
     
     /**
     * Metric values.
     */
-    public void setMetricValues(ArrayList<MetricValue> metricValues) { this.metricValues = metricValues; }
+    public void setMetricValues(ArrayList<MetricValue> metricValues)
+    {
+        this.metricValues = metricValues;
+    }
     
     private String name;
     
     /**
     * Metric name.
     */
-    public String getName() { return this.name; }
+    public String getName()
+    {
+        return this.name;
+    }
     
     /**
     * Metric name.
     */
-    public void setName(String name) { this.name = name; }
+    public void setName(String name)
+    {
+        this.name = name;
+    }
     
     private String namespace;
     
     /**
     * Metric namespace.
     */
-    public String getNamespace() { return this.namespace; }
+    public String getNamespace()
+    {
+        return this.namespace;
+    }
     
     /**
     * Metric namespace.
     */
-    public void setNamespace(String namespace) { this.namespace = namespace; }
+    public void setNamespace(String namespace)
+    {
+        this.namespace = namespace;
+    }
     
     private String primaryAggregation;
     
     /**
     * Metric primary aggregation.
     */
-    public String getPrimaryAggregation() { return this.primaryAggregation; }
+    public String getPrimaryAggregation()
+    {
+        return this.primaryAggregation;
+    }
     
     /**
     * Metric primary aggregation.
     */
-    public void setPrimaryAggregation(String primaryAggregation) { this.primaryAggregation = primaryAggregation; }
+    public void setPrimaryAggregation(String primaryAggregation)
+    {
+        this.primaryAggregation = primaryAggregation;
+    }
     
     private Calendar startTime;
     
     /**
     * The start time in UTC for the metric queried.
     */
-    public Calendar getStartTime() { return this.startTime; }
+    public Calendar getStartTime()
+    {
+        return this.startTime;
+    }
     
     /**
     * The start time in UTC for the metric queried.
     */
-    public void setStartTime(Calendar startTime) { this.startTime = startTime; }
+    public void setStartTime(Calendar startTime)
+    {
+        this.startTime = startTime;
+    }
     
     private Duration timeGrain;
     
     /**
     * The time grain specifies the aggregation period of the metric value.
     */
-    public Duration getTimeGrain() { return this.timeGrain; }
+    public Duration getTimeGrain()
+    {
+        return this.timeGrain;
+    }
     
     /**
     * The time grain specifies the aggregation period of the metric value.
     */
-    public void setTimeGrain(Duration timeGrain) { this.timeGrain = timeGrain; }
+    public void setTimeGrain(Duration timeGrain)
+    {
+        this.timeGrain = timeGrain;
+    }
     
     private String unit;
     
     /**
     * Metric unit.
     */
-    public String getUnit() { return this.unit; }
+    public String getUnit()
+    {
+        return this.unit;
+    }
     
     /**
     * Metric unit.
     */
-    public void setUnit(String unit) { this.unit = unit; }
+    public void setUnit(String unit)
+    {
+        this.unit = unit;
+    }
     
     /**
     * Initializes a new instance of the MetricValueSet class.

@@ -39,7 +39,10 @@ public class WebSiteUpdateParameters
     * available. Limited means that only partial management information for
     * the site is available and that detailed site information is unavailable.
     */
-    public WebSpaceAvailabilityState getAvailabilityState() { return this.availabilityState; }
+    public WebSpaceAvailabilityState getAvailabilityState()
+    {
+        return this.availabilityState;
+    }
     
     /**
     * The state of the availability of management information for the site.
@@ -48,7 +51,10 @@ public class WebSiteUpdateParameters
     * available. Limited means that only partial management information for
     * the site is available and that detailed site information is unavailable.
     */
-    public void setAvailabilityState(WebSpaceAvailabilityState availabilityState) { this.availabilityState = availabilityState; }
+    public void setAvailabilityState(WebSpaceAvailabilityState availabilityState)
+    {
+        this.availabilityState = availabilityState;
+    }
     
     private WebSiteComputeMode computeMode;
     
@@ -56,13 +62,19 @@ public class WebSiteUpdateParameters
     * The Compute Mode for the web site. Possible values are Shared or
     * Dedicated.
     */
-    public WebSiteComputeMode getComputeMode() { return this.computeMode; }
+    public WebSiteComputeMode getComputeMode()
+    {
+        return this.computeMode;
+    }
     
     /**
     * The Compute Mode for the web site. Possible values are Shared or
     * Dedicated.
     */
-    public void setComputeMode(WebSiteComputeMode computeMode) { this.computeMode = computeMode; }
+    public void setComputeMode(WebSiteComputeMode computeMode)
+    {
+        this.computeMode = computeMode;
+    }
     
     private Boolean enabled;
     
@@ -70,13 +82,19 @@ public class WebSiteUpdateParameters
     * true if the site is enabled; otherwise, false. Setting this value to
     * false disables the site (takes the site off line).
     */
-    public Boolean getEnabled() { return this.enabled; }
+    public Boolean isEnabled()
+    {
+        return this.enabled;
+    }
     
     /**
     * true if the site is enabled; otherwise, false. Setting this value to
     * false disables the site (takes the site off line).
     */
-    public void setEnabled(Boolean enabled) { this.enabled = enabled; }
+    public void setEnabled(Boolean enabled)
+    {
+        this.enabled = enabled;
+    }
     
     private ArrayList<String> hostNames;
     
@@ -88,7 +106,10 @@ public class WebSiteUpdateParameters
     * of the hostnames for the site that you want to keep, but leave out the
     * one that you wangt to delete.
     */
-    public ArrayList<String> getHostNames() { return this.hostNames; }
+    public ArrayList<String> getHostNames()
+    {
+        return this.hostNames;
+    }
     
     /**
     * An array of strings that contains the public hostnames for the site,
@@ -98,19 +119,28 @@ public class WebSiteUpdateParameters
     * of the hostnames for the site that you want to keep, but leave out the
     * one that you wangt to delete.
     */
-    public void setHostNames(ArrayList<String> hostNames) { this.hostNames = hostNames; }
+    public void setHostNames(ArrayList<String> hostNames)
+    {
+        this.hostNames = hostNames;
+    }
     
     private ArrayList<WebSiteUpdateParameters.WebSiteHostNameSslState> hostNameSslStates;
     
     /**
     * SSL states bound to the website.
     */
-    public ArrayList<WebSiteUpdateParameters.WebSiteHostNameSslState> getHostNameSslStates() { return this.hostNameSslStates; }
+    public ArrayList<WebSiteUpdateParameters.WebSiteHostNameSslState> getHostNameSslStates()
+    {
+        return this.hostNameSslStates;
+    }
     
     /**
     * SSL states bound to the website.
     */
-    public void setHostNameSslStates(ArrayList<WebSiteUpdateParameters.WebSiteHostNameSslState> hostNameSslStates) { this.hostNameSslStates = hostNameSslStates; }
+    public void setHostNameSslStates(ArrayList<WebSiteUpdateParameters.WebSiteHostNameSslState> hostNameSslStates)
+    {
+        this.hostNameSslStates = hostNameSslStates;
+    }
     
     private WebSiteRuntimeAvailabilityState runtimeAvailabilityState;
     
@@ -121,7 +151,10 @@ public class WebSiteUpdateParameters
     * Not Available: due to an unexpected issue, the site has been excluded
     * from provisioning. This typically occurs only for free sites.
     */
-    public WebSiteRuntimeAvailabilityState getRuntimeAvailabilityState() { return this.runtimeAvailabilityState; }
+    public WebSiteRuntimeAvailabilityState getRuntimeAvailabilityState()
+    {
+        return this.runtimeAvailabilityState;
+    }
     
     /**
     * Possible values are Normal, Degraded, or NotAvailable. Normal: the web
@@ -130,19 +163,28 @@ public class WebSiteUpdateParameters
     * Not Available: due to an unexpected issue, the site has been excluded
     * from provisioning. This typically occurs only for free sites.
     */
-    public void setRuntimeAvailabilityState(WebSiteRuntimeAvailabilityState runtimeAvailabilityState) { this.runtimeAvailabilityState = runtimeAvailabilityState; }
+    public void setRuntimeAvailabilityState(WebSiteRuntimeAvailabilityState runtimeAvailabilityState)
+    {
+        this.runtimeAvailabilityState = runtimeAvailabilityState;
+    }
     
     private String serverFarm;
     
     /**
     * String. If a server farm exists, this value is DefaultServerFarm.
     */
-    public String getServerFarm() { return this.serverFarm; }
+    public String getServerFarm()
+    {
+        return this.serverFarm;
+    }
     
     /**
     * String. If a server farm exists, this value is DefaultServerFarm.
     */
-    public void setServerFarm(String serverFarm) { this.serverFarm = serverFarm; }
+    public void setServerFarm(String serverFarm)
+    {
+        this.serverFarm = serverFarm;
+    }
     
     private WebSiteMode siteMode;
     
@@ -152,7 +194,10 @@ public class WebSiteUpdateParameters
     * Basic.  Note: The SiteMode value is not used for Reserved mode. Reserved
     * mode uses the ComputeMode setting.
     */
-    public WebSiteMode getSiteMode() { return this.siteMode; }
+    public WebSiteMode getSiteMode()
+    {
+        return this.siteMode;
+    }
     
     /**
     * String that represents the web site mode. If the web site mode is Free,
@@ -160,19 +205,28 @@ public class WebSiteUpdateParameters
     * Basic.  Note: The SiteMode value is not used for Reserved mode. Reserved
     * mode uses the ComputeMode setting.
     */
-    public void setSiteMode(WebSiteMode siteMode) { this.siteMode = siteMode; }
+    public void setSiteMode(WebSiteMode siteMode)
+    {
+        this.siteMode = siteMode;
+    }
     
     private ArrayList<WebSiteUpdateParameters.WebSiteSslCertificate> sslCertificates;
     
     /**
     * SSL certificates bound to the web site.
     */
-    public ArrayList<WebSiteUpdateParameters.WebSiteSslCertificate> getSslCertificates() { return this.sslCertificates; }
+    public ArrayList<WebSiteUpdateParameters.WebSiteSslCertificate> getSslCertificates()
+    {
+        return this.sslCertificates;
+    }
     
     /**
     * SSL certificates bound to the web site.
     */
-    public void setSslCertificates(ArrayList<WebSiteUpdateParameters.WebSiteSslCertificate> sslCertificates) { this.sslCertificates = sslCertificates; }
+    public void setSslCertificates(ArrayList<WebSiteUpdateParameters.WebSiteSslCertificate> sslCertificates)
+    {
+        this.sslCertificates = sslCertificates;
+    }
     
     private WebSiteState state;
     
@@ -180,13 +234,19 @@ public class WebSiteUpdateParameters
     * A string that describes the state of the web site. Possible values are
     * Stopped or Running.
     */
-    public WebSiteState getState() { return this.state; }
+    public WebSiteState getState()
+    {
+        return this.state;
+    }
     
     /**
     * A string that describes the state of the web site. Possible values are
     * Stopped or Running.
     */
-    public void setState(WebSiteState state) { this.state = state; }
+    public void setState(WebSiteState state)
+    {
+        this.state = state;
+    }
     
     /**
     * Initializes a new instance of the WebSiteUpdateParameters class.
@@ -210,38 +270,48 @@ public class WebSiteUpdateParameters
         * The SSL state. Possible values are Disabled, SniEnabled, or
         * IpBasedEnabled.
         */
-        public WebSiteSslState getSslState() { return this.sslState; }
+        public WebSiteSslState getSslState()
+        {
+            return this.sslState;
+        }
         
         /**
         * The SSL state. Possible values are Disabled, SniEnabled, or
         * IpBasedEnabled.
         */
-        public void setSslState(WebSiteSslState sslState) { this.sslState = sslState; }
+        public void setSslState(WebSiteSslState sslState)
+        {
+            this.sslState = sslState;
+        }
         
         private String thumbprint;
         
         /**
         * A string that contains the thumbprint of the SSL certificate.
         */
-        public String getThumbprint() { return this.thumbprint; }
+        public String getThumbprint()
+        {
+            return this.thumbprint;
+        }
         
         /**
         * A string that contains the thumbprint of the SSL certificate.
         */
-        public void setThumbprint(String thumbprint) { this.thumbprint = thumbprint; }
+        public void setThumbprint(String thumbprint)
+        {
+            this.thumbprint = thumbprint;
+        }
         
         private Boolean toUpdate;
         
-        public Boolean getToUpdate() { return this.toUpdate; }
-        
-        public void setToUpdate(Boolean toUpdate) { this.toUpdate = toUpdate; }
-        
-        /**
-        * Initializes a new instance of the WebSiteHostNameSslState class.
-        *
-        */
-        public WebSiteHostNameSslState()
+        public Boolean isToUpdate()
         {
+            return this.toUpdate;
+        }
+        
+        public void setToUpdate(Boolean toUpdate)
+        {
+            this.toUpdate = toUpdate;
         }
     }
     
@@ -255,55 +325,71 @@ public class WebSiteUpdateParameters
         /**
         * Boolean. true if the certificate is to be deleted.
         */
-        public Boolean getIsToBeDeleted() { return this.isToBeDeleted; }
+        public Boolean isToBeDeleted()
+        {
+            return this.isToBeDeleted;
+        }
         
         /**
         * Boolean. true if the certificate is to be deleted.
         */
-        public void setIsToBeDeleted(Boolean isToBeDeleted) { this.isToBeDeleted = isToBeDeleted; }
+        public void setIsToBeDeleted(Boolean isToBeDeleted)
+        {
+            this.isToBeDeleted = isToBeDeleted;
+        }
         
         private String password;
         
         /**
         * A string that contains the password for the certificate.
         */
-        public String getPassword() { return this.password; }
+        public String getPassword()
+        {
+            return this.password;
+        }
         
         /**
         * A string that contains the password for the certificate.
         */
-        public void setPassword(String password) { this.password = password; }
+        public void setPassword(String password)
+        {
+            this.password = password;
+        }
         
         private byte[] pfxBlob;
         
         /**
         * A base64Binary value that contains the PfxBlob of the certificate.
         */
-        public byte[] getPfxBlob() { return this.pfxBlob; }
+        public byte[] getPfxBlob()
+        {
+            return this.pfxBlob;
+        }
         
         /**
         * A base64Binary value that contains the PfxBlob of the certificate.
         */
-        public void setPfxBlob(byte[] pfxBlob) { this.pfxBlob = pfxBlob; }
+        public void setPfxBlob(byte[] pfxBlob)
+        {
+            this.pfxBlob = pfxBlob;
+        }
         
         private String thumbprint;
         
         /**
         * A string that contains the certificate thumbprint.
         */
-        public String getThumbprint() { return this.thumbprint; }
+        public String getThumbprint()
+        {
+            return this.thumbprint;
+        }
         
         /**
         * A string that contains the certificate thumbprint.
         */
-        public void setThumbprint(String thumbprint) { this.thumbprint = thumbprint; }
-        
-        /**
-        * Initializes a new instance of the WebSiteSslCertificate class.
-        *
-        */
-        public WebSiteSslCertificate()
+        public void setThumbprint(String thumbprint)
         {
+            this.thumbprint = thumbprint;
         }
     }
 }

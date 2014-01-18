@@ -37,13 +37,19 @@ public class WebSiteGetHistoricalUsageMetricsParameters
     * The ending time of the metrics to return. If this parameter is not
     * specified, the current time is used.
     */
-    public Calendar getEndTime() { return this.endTime; }
+    public Calendar getEndTime()
+    {
+        return this.endTime;
+    }
     
     /**
     * The ending time of the metrics to return. If this parameter is not
     * specified, the current time is used.
     */
-    public void setEndTime(Calendar endTime) { this.endTime = endTime; }
+    public void setEndTime(Calendar endTime)
+    {
+        this.endTime = endTime;
+    }
     
     private ArrayList<String> metricNames;
     
@@ -52,14 +58,20 @@ public class WebSiteGetHistoricalUsageMetricsParameters
     * If the names parameter is not specified, then all available metrics are
     * returned.
     */
-    public ArrayList<String> getMetricNames() { return this.metricNames; }
+    public ArrayList<String> getMetricNames()
+    {
+        return this.metricNames;
+    }
     
     /**
     * Specifies a comma-separated list of the names of the metrics to return.
     * If the names parameter is not specified, then all available metrics are
     * returned.
     */
-    public void setMetricNames(ArrayList<String> metricNames) { this.metricNames = metricNames; }
+    public void setMetricNames(ArrayList<String> metricNames)
+    {
+        this.metricNames = metricNames;
+    }
     
     private Calendar startTime;
     
@@ -67,13 +79,19 @@ public class WebSiteGetHistoricalUsageMetricsParameters
     * The starting time of the metrics to return. If this parameter is not
     * specified, the beginning of the current hour is used.
     */
-    public Calendar getStartTime() { return this.startTime; }
+    public Calendar getStartTime()
+    {
+        return this.startTime;
+    }
     
     /**
     * The starting time of the metrics to return. If this parameter is not
     * specified, the beginning of the current hour is used.
     */
-    public void setStartTime(Calendar startTime) { this.startTime = startTime; }
+    public void setStartTime(Calendar startTime)
+    {
+        this.startTime = startTime;
+    }
     
     /**
     * Initializes a new instance of the

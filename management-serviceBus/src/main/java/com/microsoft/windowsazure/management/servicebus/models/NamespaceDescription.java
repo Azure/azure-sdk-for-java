@@ -35,12 +35,18 @@ public class NamespaceDescription
     /**
     * The authorization type.
     */
-    public String getAuthorizationType() { return this.authorizationType; }
+    public String getAuthorizationType()
+    {
+        return this.authorizationType;
+    }
     
     /**
     * The authorization type.
     */
-    public void setAuthorizationType(String authorizationType) { this.authorizationType = authorizationType; }
+    public void setAuthorizationType(String authorizationType)
+    {
+        this.authorizationType = authorizationType;
+    }
     
     private String connectionString;
     
@@ -49,14 +55,20 @@ public class NamespaceDescription
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
     * more information)
     */
-    public String getConnectionString() { return this.connectionString; }
+    public String getConnectionString()
+    {
+        return this.connectionString;
+    }
     
     /**
     * Namespace connection string.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
     * more information)
     */
-    public void setConnectionString(String connectionString) { this.connectionString = connectionString; }
+    public void setConnectionString(String connectionString)
+    {
+        this.connectionString = connectionString;
+    }
     
     private String keyName;
     
@@ -65,38 +77,56 @@ public class NamespaceDescription
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
     * more information)
     */
-    public String getKeyName() { return this.keyName; }
+    public String getKeyName()
+    {
+        return this.keyName;
+    }
     
     /**
     * Default ACS access key to generate the access token.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
     * more information)
     */
-    public void setKeyName(String keyName) { this.keyName = keyName; }
+    public void setKeyName(String keyName)
+    {
+        this.keyName = keyName;
+    }
     
     private ArrayList<AccessRight> rights;
     
     /**
     * The rights associated with a namespace.
     */
-    public ArrayList<AccessRight> getRights() { return this.rights; }
+    public ArrayList<AccessRight> getRights()
+    {
+        return this.rights;
+    }
     
     /**
     * The rights associated with a namespace.
     */
-    public void setRights(ArrayList<AccessRight> rights) { this.rights = rights; }
+    public void setRights(ArrayList<AccessRight> rights)
+    {
+        this.rights = rights;
+    }
     
     private String secondaryConnectionString;
     
     /**
     * Secondary namespace connection string.
     */
-    public String getSecondaryConnectionString() { return this.secondaryConnectionString; }
+    public String getSecondaryConnectionString()
+    {
+        return this.secondaryConnectionString;
+    }
     
     /**
     * Secondary namespace connection string.
     */
-    public void setSecondaryConnectionString(String secondaryConnectionString) { this.secondaryConnectionString = secondaryConnectionString; }
+    public void setSecondaryConnectionString(String secondaryConnectionString)
+    {
+        this.secondaryConnectionString = secondaryConnectionString;
+    }
     
     /**
     * Initializes a new instance of the NamespaceDescription class.

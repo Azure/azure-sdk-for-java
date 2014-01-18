@@ -35,54 +35,70 @@ public class EndpointConfig
     /**
     * The config id for endpoint monitoring config.
     */
-    public String getConfigId() { return this.configId; }
+    public String getConfigId()
+    {
+        return this.configId;
+    }
     
     /**
     * The config id for endpoint monitoring config.
     */
-    public void setConfigId(String configId) { this.configId = configId; }
+    public void setConfigId(String configId)
+    {
+        this.configId = configId;
+    }
     
     private String location;
     
     /**
     * The location from which the endpoint is monitored.
     */
-    public String getLocation() { return this.location; }
+    public String getLocation()
+    {
+        return this.location;
+    }
     
     /**
     * The location from which the endpoint is monitored.
     */
-    public void setLocation(String location) { this.location = location; }
+    public void setLocation(String location)
+    {
+        this.location = location;
+    }
     
     private String name;
     
     /**
     * The friendly name for the url for which endpoint monitoring is configured.
     */
-    public String getName() { return this.name; }
+    public String getName()
+    {
+        return this.name;
+    }
     
     /**
     * The friendly name for the url for which endpoint monitoring is configured.
     */
-    public void setName(String name) { this.name = name; }
+    public void setName(String name)
+    {
+        this.name = name;
+    }
     
     private URI url;
     
     /**
     * The Url to be monitored.
     */
-    public URI getUrl() { return this.url; }
+    public URI getUrl()
+    {
+        return this.url;
+    }
     
     /**
     * The Url to be monitored.
     */
-    public void setUrl(URI url) { this.url = url; }
-    
-    /**
-    * Initializes a new instance of the EndpointConfig class.
-    *
-    */
-    public EndpointConfig()
+    public void setUrl(URI url)
     {
+        this.url = url;
     }
 }

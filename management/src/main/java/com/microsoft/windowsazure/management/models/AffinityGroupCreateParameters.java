@@ -34,13 +34,19 @@ public class AffinityGroupCreateParameters
     * Optional. A description for the affinity group. The description can be up
     * to 1024 characters in length.
     */
-    public String getDescription() { return this.description; }
+    public String getDescription()
+    {
+        return this.description;
+    }
     
     /**
     * Optional. A description for the affinity group. The description can be up
     * to 1024 characters in length.
     */
-    public void setDescription(String description) { this.description = description; }
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
     
     private String label;
     
@@ -66,7 +72,10 @@ public class AffinityGroupCreateParameters
     * up to 100 characters in length.  Its value defaults to the Name of the
     * affinity group if not provided.
     */
-    public void setLabel(String label) { this.label = label; }
+    public void setLabel(String label)
+    {
+        this.label = label;
+    }
     
     private String location;
     
@@ -74,13 +83,19 @@ public class AffinityGroupCreateParameters
     * Required. The data center location where the affinity group will be
     * created. To list available locations, see the List Locations operation.
     */
-    public String getLocation() { return this.location; }
+    public String getLocation()
+    {
+        return this.location;
+    }
     
     /**
     * Required. The data center location where the affinity group will be
     * created. To list available locations, see the List Locations operation.
     */
-    public void setLocation(String location) { this.location = location; }
+    public void setLocation(String location)
+    {
+        this.location = location;
+    }
     
     private String name;
     
@@ -88,19 +103,17 @@ public class AffinityGroupCreateParameters
     * Required. A name for the affinity group that is unique to the
     * subscription.
     */
-    public String getName() { return this.name; }
+    public String getName()
+    {
+        return this.name;
+    }
     
     /**
     * Required. A name for the affinity group that is unique to the
     * subscription.
     */
-    public void setName(String name) { this.name = name; }
-    
-    /**
-    * Initializes a new instance of the AffinityGroupCreateParameters class.
-    *
-    */
-    public AffinityGroupCreateParameters()
+    public void setName(String name)
     {
+        this.name = name;
     }
 }

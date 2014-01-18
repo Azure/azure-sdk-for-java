@@ -29,27 +29,51 @@ public class RecurrentSchedule
 {
     private ArrayList<String> days;
     
-    public ArrayList<String> getDays() { return this.days; }
+    public ArrayList<String> getDays()
+    {
+        return this.days;
+    }
     
-    public void setDays(ArrayList<String> days) { this.days = days; }
+    public void setDays(ArrayList<String> days)
+    {
+        this.days = days;
+    }
     
     private ArrayList<Integer> hours;
     
-    public ArrayList<Integer> getHours() { return this.hours; }
+    public ArrayList<Integer> getHours()
+    {
+        return this.hours;
+    }
     
-    public void setHours(ArrayList<Integer> hours) { this.hours = hours; }
+    public void setHours(ArrayList<Integer> hours)
+    {
+        this.hours = hours;
+    }
     
     private ArrayList<Integer> minutes;
     
-    public ArrayList<Integer> getMinutes() { return this.minutes; }
+    public ArrayList<Integer> getMinutes()
+    {
+        return this.minutes;
+    }
     
-    public void setMinutes(ArrayList<Integer> minutes) { this.minutes = minutes; }
+    public void setMinutes(ArrayList<Integer> minutes)
+    {
+        this.minutes = minutes;
+    }
     
     private String timeZone;
     
-    public String getTimeZone() { return this.timeZone; }
+    public String getTimeZone()
+    {
+        return this.timeZone;
+    }
     
-    public void setTimeZone(String timeZone) { this.timeZone = timeZone; }
+    public void setTimeZone(String timeZone)
+    {
+        this.timeZone = timeZone;
+    }
     
     /**
     * Initializes a new instance of the RecurrentSchedule class.

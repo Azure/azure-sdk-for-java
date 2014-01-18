@@ -35,33 +35,36 @@ public class DeploymentRollbackUpdateOrUpgradeParameters
     * local data to be lost from some role instances. True if the rollback
     * should proceed; otherwise false.
     */
-    public boolean getForce() { return this.force; }
+    public boolean getForce()
+    {
+        return this.force;
+    }
     
     /**
     * Specifies whether the rollback should proceed even when it will cause
     * local data to be lost from some role instances. True if the rollback
     * should proceed; otherwise false.
     */
-    public void setForce(boolean force) { this.force = force; }
+    public void setForce(boolean force)
+    {
+        this.force = force;
+    }
     
     private RollbackUpdateOrUpgradeMode mode;
     
     /**
     * Required. Specifies whether the rollback should proceed automatically.
     */
-    public RollbackUpdateOrUpgradeMode getMode() { return this.mode; }
+    public RollbackUpdateOrUpgradeMode getMode()
+    {
+        return this.mode;
+    }
     
     /**
     * Required. Specifies whether the rollback should proceed automatically.
     */
-    public void setMode(RollbackUpdateOrUpgradeMode mode) { this.mode = mode; }
-    
-    /**
-    * Initializes a new instance of the
-    * DeploymentRollbackUpdateOrUpgradeParameters class.
-    *
-    */
-    public DeploymentRollbackUpdateOrUpgradeParameters()
+    public void setMode(RollbackUpdateOrUpgradeMode mode)
     {
+        this.mode = mode;
     }
 }

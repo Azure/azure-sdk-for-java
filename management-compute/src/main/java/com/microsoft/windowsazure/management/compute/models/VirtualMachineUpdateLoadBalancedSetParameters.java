@@ -36,12 +36,18 @@ public class VirtualMachineUpdateLoadBalancedSetParameters
     /**
     * A list of load balanced InputEndpoints to update.
     */
-    public ArrayList<VirtualMachineUpdateLoadBalancedSetParameters.InputEndpoint> getLoadBalancedEndpoints() { return this.loadBalancedEndpoints; }
+    public ArrayList<VirtualMachineUpdateLoadBalancedSetParameters.InputEndpoint> getLoadBalancedEndpoints()
+    {
+        return this.loadBalancedEndpoints;
+    }
     
     /**
     * A list of load balanced InputEndpoints to update.
     */
-    public void setLoadBalancedEndpoints(ArrayList<VirtualMachineUpdateLoadBalancedSetParameters.InputEndpoint> loadBalancedEndpoints) { this.loadBalancedEndpoints = loadBalancedEndpoints; }
+    public void setLoadBalancedEndpoints(ArrayList<VirtualMachineUpdateLoadBalancedSetParameters.InputEndpoint> loadBalancedEndpoints)
+    {
+        this.loadBalancedEndpoints = loadBalancedEndpoints;
+    }
     
     /**
     * Initializes a new instance of the
@@ -64,13 +70,19 @@ public class VirtualMachineUpdateLoadBalancedSetParameters
         * Optional. A Boolean specifying whether this endpoint uses Direct
         * Server Return
         */
-        public Boolean getEnableDirectServerReturn() { return this.enableDirectServerReturn; }
+        public Boolean getEnableDirectServerReturn()
+        {
+            return this.enableDirectServerReturn;
+        }
         
         /**
         * Optional. A Boolean specifying whether this endpoint uses Direct
         * Server Return
         */
-        public void setEnableDirectServerReturn(Boolean enableDirectServerReturn) { this.enableDirectServerReturn = enableDirectServerReturn; }
+        public void setEnableDirectServerReturn(Boolean enableDirectServerReturn)
+        {
+            this.enableDirectServerReturn = enableDirectServerReturn;
+        }
         
         private String loadBalancedEndpointSetName;
         
@@ -82,7 +94,10 @@ public class VirtualMachineUpdateLoadBalancedSetParameters
         * endpoint whose LoadBalancedEndpointSetName   matches this) otherwise
         * a BadRequest error will be returned.
         */
-        public String getLoadBalancedEndpointSetName() { return this.loadBalancedEndpointSetName; }
+        public String getLoadBalancedEndpointSetName()
+        {
+            return this.loadBalancedEndpointSetName;
+        }
         
         /**
         * Specifies whether this endpoint is part of shared LoadBalanced
@@ -92,7 +107,10 @@ public class VirtualMachineUpdateLoadBalancedSetParameters
         * endpoint whose LoadBalancedEndpointSetName   matches this) otherwise
         * a BadRequest error will be returned.
         */
-        public void setLoadBalancedEndpointSetName(String loadBalancedEndpointSetName) { this.loadBalancedEndpointSetName = loadBalancedEndpointSetName; }
+        public void setLoadBalancedEndpointSetName(String loadBalancedEndpointSetName)
+        {
+            this.loadBalancedEndpointSetName = loadBalancedEndpointSetName;
+        }
         
         private LoadBalancerProbe loadBalancerProbe;
         
@@ -103,7 +121,10 @@ public class VirtualMachineUpdateLoadBalancedSetParameters
         * settings (if any) from the existing load balanced endpoint
         * definition  will be retained.
         */
-        public LoadBalancerProbe getLoadBalancerProbe() { return this.loadBalancerProbe; }
+        public LoadBalancerProbe getLoadBalancerProbe()
+        {
+            return this.loadBalancerProbe;
+        }
         
         /**
         * Optional. This represents an endpoint setting which platform load
@@ -112,7 +133,10 @@ public class VirtualMachineUpdateLoadBalancedSetParameters
         * settings (if any) from the existing load balanced endpoint
         * definition  will be retained.
         */
-        public void setLoadBalancerProbe(LoadBalancerProbe loadBalancerProbe) { this.loadBalancerProbe = loadBalancerProbe; }
+        public void setLoadBalancerProbe(LoadBalancerProbe loadBalancerProbe)
+        {
+            this.loadBalancerProbe = loadBalancerProbe;
+        }
         
         private Integer localPort;
         
@@ -125,7 +149,10 @@ public class VirtualMachineUpdateLoadBalancedSetParameters
         * change those use UpdateRole. In case of port conflict with a local
         * port (or probe port) on a role a BadRequestwill be returned.
         */
-        public Integer getLocalPort() { return this.localPort; }
+        public Integer getLocalPort()
+        {
+            return this.localPort;
+        }
         
         /**
         * Specifies the internal port on which a service running inside the VM
@@ -136,7 +163,10 @@ public class VirtualMachineUpdateLoadBalancedSetParameters
         * change those use UpdateRole. In case of port conflict with a local
         * port (or probe port) on a role a BadRequestwill be returned.
         */
-        public void setLocalPort(Integer localPort) { this.localPort = localPort; }
+        public void setLocalPort(Integer localPort)
+        {
+            this.localPort = localPort;
+        }
         
         private String name;
         
@@ -144,13 +174,19 @@ public class VirtualMachineUpdateLoadBalancedSetParameters
         * Optional.  The name of the InputEndpoint.  The name is ignored if
         * specified
         */
-        public String getName() { return this.name; }
+        public String getName()
+        {
+            return this.name;
+        }
         
         /**
         * Optional.  The name of the InputEndpoint.  The name is ignored if
         * specified
         */
-        public void setName(String name) { this.name = name; }
+        public void setName(String name)
+        {
+            this.name = name;
+        }
         
         private Integer port;
         
@@ -159,26 +195,38 @@ public class VirtualMachineUpdateLoadBalancedSetParameters
         * values are between 1 and 65535 inclusive. A unqiue Port and Protocol
         * combination must be specified for each InputEndpoint in the list.
         */
-        public Integer getPort() { return this.port; }
+        public Integer getPort()
+        {
+            return this.port;
+        }
         
         /**
         * An integer specifying the public port for this endpoint. Allowed
         * values are between 1 and 65535 inclusive. A unqiue Port and Protocol
         * combination must be specified for each InputEndpoint in the list.
         */
-        public void setPort(Integer port) { this.port = port; }
+        public void setPort(Integer port)
+        {
+            this.port = port;
+        }
         
         private String protocol;
         
         /**
         * Specifies the transport protocol for the endpoint.
         */
-        public String getProtocol() { return this.protocol; }
+        public String getProtocol()
+        {
+            return this.protocol;
+        }
         
         /**
         * Specifies the transport protocol for the endpoint.
         */
-        public void setProtocol(String protocol) { this.protocol = protocol; }
+        public void setProtocol(String protocol)
+        {
+            this.protocol = protocol;
+        }
         
         private ArrayList<AccessControlListRule> rules;
         
@@ -188,7 +236,10 @@ public class VirtualMachineUpdateLoadBalancedSetParameters
         * ACLs from a load-balanced endpoint just omit this element. (2) ACLs
         * are set as specified. There is no merge done with existing ACLs.
         */
-        public ArrayList<AccessControlListRule> getRules() { return this.rules; }
+        public ArrayList<AccessControlListRule> getRules()
+        {
+            return this.rules;
+        }
         
         /**
         * A collection of access control rules which control the external
@@ -196,19 +247,28 @@ public class VirtualMachineUpdateLoadBalancedSetParameters
         * ACLs from a load-balanced endpoint just omit this element. (2) ACLs
         * are set as specified. There is no merge done with existing ACLs.
         */
-        public void setRules(ArrayList<AccessControlListRule> rules) { this.rules = rules; }
+        public void setRules(ArrayList<AccessControlListRule> rules)
+        {
+            this.rules = rules;
+        }
         
         private InetAddress virtualIPAddress;
         
         /**
         * The virtual IP address of the endpoint.
         */
-        public InetAddress getVirtualIPAddress() { return this.virtualIPAddress; }
+        public InetAddress getVirtualIPAddress()
+        {
+            return this.virtualIPAddress;
+        }
         
         /**
         * The virtual IP address of the endpoint.
         */
-        public void setVirtualIPAddress(InetAddress virtualIPAddress) { this.virtualIPAddress = virtualIPAddress; }
+        public void setVirtualIPAddress(InetAddress virtualIPAddress)
+        {
+            this.virtualIPAddress = virtualIPAddress;
+        }
         
         /**
         * Initializes a new instance of the InputEndpoint class.

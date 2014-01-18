@@ -55,6 +55,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
@@ -87,7 +88,10 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
     * Gets a reference to the
     * microsoft.windowsazure.management.websites.WebSiteManagementClientImpl.
     */
-    public WebSiteManagementClientImpl getClient() { return this.client; }
+    public WebSiteManagementClientImpl getClient()
+    {
+        return this.client;
+    }
     
     /**
     * You can create a server farm by issuing an HTTP POST request. Only one
@@ -235,7 +239,7 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -255,11 +259,11 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
         Document responseDoc = documentBuilder2.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagName("ServerFarm");
-        Element serverFarmElement2 = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element serverFarmElement2 = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (serverFarmElement2 != null)
         {
             NodeList elements2 = serverFarmElement2.getElementsByTagName("CurrentNumberOfWorkers");
-            Element currentNumberOfWorkersElement2 = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+            Element currentNumberOfWorkersElement2 = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
             if (currentNumberOfWorkersElement2 != null)
             {
                 int currentNumberOfWorkersInstance;
@@ -268,7 +272,7 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
             }
             
             NodeList elements3 = serverFarmElement2.getElementsByTagName("CurrentWorkerSize");
-            Element currentWorkerSizeElement2 = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
+            Element currentWorkerSizeElement2 = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
             if (currentWorkerSizeElement2 != null)
             {
                 ServerFarmWorkerSize currentWorkerSizeInstance;
@@ -277,7 +281,7 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
             }
             
             NodeList elements4 = serverFarmElement2.getElementsByTagName("Name");
-            Element nameElement2 = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
+            Element nameElement2 = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
             if (nameElement2 != null)
             {
                 String nameInstance;
@@ -286,7 +290,7 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
             }
             
             NodeList elements5 = serverFarmElement2.getElementsByTagName("NumberOfWorkers");
-            Element numberOfWorkersElement2 = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
+            Element numberOfWorkersElement2 = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
             if (numberOfWorkersElement2 != null)
             {
                 int numberOfWorkersInstance;
@@ -295,7 +299,7 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
             }
             
             NodeList elements6 = serverFarmElement2.getElementsByTagName("WorkerSize");
-            Element workerSizeElement2 = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
+            Element workerSizeElement2 = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
             if (workerSizeElement2 != null)
             {
                 ServerFarmWorkerSize workerSizeInstance;
@@ -304,7 +308,7 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
             }
             
             NodeList elements7 = serverFarmElement2.getElementsByTagName("Status");
-            Element statusElement2 = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
+            Element statusElement2 = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
             if (statusElement2 != null)
             {
                 ServerFarmStatus statusInstance;
@@ -413,7 +417,7 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -531,7 +535,7 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -551,11 +555,11 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
         Document responseDoc = documentBuilder.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagName("ServerFarm");
-        Element serverFarmElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element serverFarmElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (serverFarmElement != null)
         {
             NodeList elements2 = serverFarmElement.getElementsByTagName("CurrentNumberOfWorkers");
-            Element currentNumberOfWorkersElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+            Element currentNumberOfWorkersElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
             if (currentNumberOfWorkersElement != null)
             {
                 int currentNumberOfWorkersInstance;
@@ -564,7 +568,7 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
             }
             
             NodeList elements3 = serverFarmElement.getElementsByTagName("CurrentWorkerSize");
-            Element currentWorkerSizeElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
+            Element currentWorkerSizeElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
             if (currentWorkerSizeElement != null)
             {
                 ServerFarmWorkerSize currentWorkerSizeInstance;
@@ -573,7 +577,7 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
             }
             
             NodeList elements4 = serverFarmElement.getElementsByTagName("Name");
-            Element nameElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
+            Element nameElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
             if (nameElement != null)
             {
                 String nameInstance;
@@ -582,7 +586,7 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
             }
             
             NodeList elements5 = serverFarmElement.getElementsByTagName("NumberOfWorkers");
-            Element numberOfWorkersElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
+            Element numberOfWorkersElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
             if (numberOfWorkersElement != null)
             {
                 int numberOfWorkersInstance;
@@ -591,7 +595,7 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
             }
             
             NodeList elements6 = serverFarmElement.getElementsByTagName("WorkerSize");
-            Element workerSizeElement = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
+            Element workerSizeElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
             if (workerSizeElement != null)
             {
                 ServerFarmWorkerSize workerSizeInstance;
@@ -600,7 +604,7 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
             }
             
             NodeList elements7 = serverFarmElement.getElementsByTagName("Status");
-            Element statusElement = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
+            Element statusElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
             if (statusElement != null)
             {
                 ServerFarmStatus statusInstance;
@@ -707,7 +711,7 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -727,17 +731,17 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
         Document responseDoc = documentBuilder.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagName("ServerFarms");
-        Element serverFarmsSequenceElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element serverFarmsSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (serverFarmsSequenceElement != null)
         {
             for (int i1 = 0; i1 < serverFarmsSequenceElement.getElementsByTagName("ServerFarm").getLength(); i1 = i1 + 1)
             {
-                org.w3c.dom.Element serverFarmsElement = ((org.w3c.dom.Element)serverFarmsSequenceElement.getElementsByTagName("ServerFarm").item(i1));
+                org.w3c.dom.Element serverFarmsElement = ((org.w3c.dom.Element) serverFarmsSequenceElement.getElementsByTagName("ServerFarm").item(i1));
                 ServerFarmListResponse.ServerFarm serverFarmInstance = new ServerFarmListResponse.ServerFarm();
                 result.getServerFarms().add(serverFarmInstance);
                 
                 NodeList elements2 = serverFarmsElement.getElementsByTagName("CurrentNumberOfWorkers");
-                Element currentNumberOfWorkersElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+                Element currentNumberOfWorkersElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                 if (currentNumberOfWorkersElement != null)
                 {
                     int currentNumberOfWorkersInstance;
@@ -746,7 +750,7 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
                 }
                 
                 NodeList elements3 = serverFarmsElement.getElementsByTagName("CurrentWorkerSize");
-                Element currentWorkerSizeElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
+                Element currentWorkerSizeElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                 if (currentWorkerSizeElement != null)
                 {
                     ServerFarmWorkerSize currentWorkerSizeInstance;
@@ -755,7 +759,7 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
                 }
                 
                 NodeList elements4 = serverFarmsElement.getElementsByTagName("Name");
-                Element nameElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
+                Element nameElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                 if (nameElement != null)
                 {
                     String nameInstance;
@@ -764,7 +768,7 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
                 }
                 
                 NodeList elements5 = serverFarmsElement.getElementsByTagName("NumberOfWorkers");
-                Element numberOfWorkersElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
+                Element numberOfWorkersElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                 if (numberOfWorkersElement != null)
                 {
                     int numberOfWorkersInstance;
@@ -773,7 +777,7 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
                 }
                 
                 NodeList elements6 = serverFarmsElement.getElementsByTagName("WorkerSize");
-                Element workerSizeElement = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
+                Element workerSizeElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                 if (workerSizeElement != null)
                 {
                     ServerFarmWorkerSize workerSizeInstance;
@@ -782,7 +786,7 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
                 }
                 
                 NodeList elements7 = serverFarmsElement.getElementsByTagName("Status");
-                Element statusElement = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
+                Element statusElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                 if (statusElement != null)
                 {
                     ServerFarmStatus statusInstance;
@@ -951,7 +955,7 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -971,11 +975,11 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
         Document responseDoc = documentBuilder2.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagName("ServerFarm");
-        Element serverFarmElement2 = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element serverFarmElement2 = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (serverFarmElement2 != null)
         {
             NodeList elements2 = serverFarmElement2.getElementsByTagName("CurrentNumberOfWorkers");
-            Element currentNumberOfWorkersElement2 = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+            Element currentNumberOfWorkersElement2 = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
             if (currentNumberOfWorkersElement2 != null)
             {
                 int currentNumberOfWorkersInstance;
@@ -984,7 +988,7 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
             }
             
             NodeList elements3 = serverFarmElement2.getElementsByTagName("CurrentWorkerSize");
-            Element currentWorkerSizeElement2 = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
+            Element currentWorkerSizeElement2 = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
             if (currentWorkerSizeElement2 != null)
             {
                 ServerFarmWorkerSize currentWorkerSizeInstance;
@@ -993,7 +997,7 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
             }
             
             NodeList elements4 = serverFarmElement2.getElementsByTagName("Name");
-            Element nameElement2 = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
+            Element nameElement2 = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
             if (nameElement2 != null)
             {
                 String nameInstance;
@@ -1002,7 +1006,7 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
             }
             
             NodeList elements5 = serverFarmElement2.getElementsByTagName("NumberOfWorkers");
-            Element numberOfWorkersElement2 = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
+            Element numberOfWorkersElement2 = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
             if (numberOfWorkersElement2 != null)
             {
                 int numberOfWorkersInstance;
@@ -1011,7 +1015,7 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
             }
             
             NodeList elements6 = serverFarmElement2.getElementsByTagName("WorkerSize");
-            Element workerSizeElement2 = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
+            Element workerSizeElement2 = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
             if (workerSizeElement2 != null)
             {
                 ServerFarmWorkerSize workerSizeInstance;
@@ -1020,7 +1024,7 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
             }
             
             NodeList elements7 = serverFarmElement2.getElementsByTagName("Status");
-            Element statusElement2 = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
+            Element statusElement2 = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
             if (statusElement2 != null)
             {
                 ServerFarmStatus statusInstance;

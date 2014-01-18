@@ -37,25 +37,37 @@ public class OSVirtualHardDisk
     * Specifies the friendly name an operating system image in the image
     * repository.
     */
-    public String getDiskLabel() { return this.diskLabel; }
+    public String getDiskLabel()
+    {
+        return this.diskLabel;
+    }
     
     /**
     * Specifies the friendly name an operating system image in the image
     * repository.
     */
-    public void setDiskLabel(String diskLabel) { this.diskLabel = diskLabel; }
+    public void setDiskLabel(String diskLabel)
+    {
+        this.diskLabel = diskLabel;
+    }
     
     private String diskName;
     
     /**
     * Specifies the name an operating system image in the image repository.
     */
-    public String getDiskName() { return this.diskName; }
+    public String getDiskName()
+    {
+        return this.diskName;
+    }
     
     /**
     * Specifies the name an operating system image in the image repository.
     */
-    public void setDiskName(String diskName) { this.diskName = diskName; }
+    public void setDiskName(String diskName)
+    {
+        this.diskName = diskName;
+    }
     
     private VirtualHardDiskHostCaching hostCaching;
     
@@ -63,13 +75,19 @@ public class OSVirtualHardDisk
     * Specifies the platform caching behavior of the operating system disk blob
     * for read/write efficiency.
     */
-    public VirtualHardDiskHostCaching getHostCaching() { return this.hostCaching; }
+    public VirtualHardDiskHostCaching getHostCaching()
+    {
+        return this.hostCaching;
+    }
     
     /**
     * Specifies the platform caching behavior of the operating system disk blob
     * for read/write efficiency.
     */
-    public void setHostCaching(VirtualHardDiskHostCaching hostCaching) { this.hostCaching = hostCaching; }
+    public void setHostCaching(VirtualHardDiskHostCaching hostCaching)
+    {
+        this.hostCaching = hostCaching;
+    }
     
     private URI mediaLink;
     
@@ -77,25 +95,37 @@ public class OSVirtualHardDisk
     * Specifies the location of the operating system disk in Windows Azure
     * storage.
     */
-    public URI getMediaLink() { return this.mediaLink; }
+    public URI getMediaLink()
+    {
+        return this.mediaLink;
+    }
     
     /**
     * Specifies the location of the operating system disk in Windows Azure
     * storage.
     */
-    public void setMediaLink(URI mediaLink) { this.mediaLink = mediaLink; }
+    public void setMediaLink(URI mediaLink)
+    {
+        this.mediaLink = mediaLink;
+    }
     
     private String operatingSystem;
     
     /**
     * The operating system running in the virtual machine.
     */
-    public String getOperatingSystem() { return this.operatingSystem; }
+    public String getOperatingSystem()
+    {
+        return this.operatingSystem;
+    }
     
     /**
     * The operating system running in the virtual machine.
     */
-    public void setOperatingSystem(String operatingSystem) { this.operatingSystem = operatingSystem; }
+    public void setOperatingSystem(String operatingSystem)
+    {
+        this.operatingSystem = operatingSystem;
+    }
     
     private String sourceImageName;
     
@@ -103,19 +133,17 @@ public class OSVirtualHardDisk
     * Specifies the name of the source image that was used to provision the
     * virtual machine.
     */
-    public String getSourceImageName() { return this.sourceImageName; }
+    public String getSourceImageName()
+    {
+        return this.sourceImageName;
+    }
     
     /**
     * Specifies the name of the source image that was used to provision the
     * virtual machine.
     */
-    public void setSourceImageName(String sourceImageName) { this.sourceImageName = sourceImageName; }
-    
-    /**
-    * Initializes a new instance of the OSVirtualHardDisk class.
-    *
-    */
-    public OSVirtualHardDisk()
+    public void setSourceImageName(String sourceImageName)
     {
+        this.sourceImageName = sourceImageName;
     }
 }

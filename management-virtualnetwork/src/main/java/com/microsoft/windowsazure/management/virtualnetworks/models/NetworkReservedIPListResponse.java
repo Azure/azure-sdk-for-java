@@ -35,9 +35,15 @@ public class NetworkReservedIPListResponse extends OperationResponse implements 
 {
     private ArrayList<NetworkReservedIPListResponse.ReservedIP> reservedIPs;
     
-    public ArrayList<NetworkReservedIPListResponse.ReservedIP> getReservedIPs() { return this.reservedIPs; }
+    public ArrayList<NetworkReservedIPListResponse.ReservedIP> getReservedIPs()
+    {
+        return this.reservedIPs;
+    }
     
-    public void setReservedIPs(ArrayList<NetworkReservedIPListResponse.ReservedIP> reservedIPs) { this.reservedIPs = reservedIPs; }
+    public void setReservedIPs(ArrayList<NetworkReservedIPListResponse.ReservedIP> reservedIPs)
+    {
+        this.reservedIPs = reservedIPs;
+    }
     
     /**
     * Initializes a new instance of the NetworkReservedIPListResponse class.
@@ -45,6 +51,7 @@ public class NetworkReservedIPListResponse extends OperationResponse implements 
     */
     public NetworkReservedIPListResponse()
     {
+        super();
         this.reservedIPs = new ArrayList<NetworkReservedIPListResponse.ReservedIP>();
     }
     
@@ -67,12 +74,18 @@ public class NetworkReservedIPListResponse extends OperationResponse implements 
         /**
         * The IP address of the reserved IP.
         */
-        public InetAddress getAddress() { return this.address; }
+        public InetAddress getAddress()
+        {
+            return this.address;
+        }
         
         /**
         * The IP address of the reserved IP.
         */
-        public void setAddress(InetAddress address) { this.address = address; }
+        public void setAddress(InetAddress address)
+        {
+            this.address = address;
+        }
         
         private String affinityGroup;
         
@@ -80,85 +93,127 @@ public class NetworkReservedIPListResponse extends OperationResponse implements 
         * An affinity group, which indirectly refers to the location where the
         * virtual network exists.
         */
-        public String getAffinityGroup() { return this.affinityGroup; }
+        public String getAffinityGroup()
+        {
+            return this.affinityGroup;
+        }
         
         /**
         * An affinity group, which indirectly refers to the location where the
         * virtual network exists.
         */
-        public void setAffinityGroup(String affinityGroup) { this.affinityGroup = affinityGroup; }
+        public void setAffinityGroup(String affinityGroup)
+        {
+            this.affinityGroup = affinityGroup;
+        }
         
         private String deploymentName;
         
         /**
         * The name of the deployment the IP belongs to, if being used.
         */
-        public String getDeploymentName() { return this.deploymentName; }
+        public String getDeploymentName()
+        {
+            return this.deploymentName;
+        }
         
         /**
         * The name of the deployment the IP belongs to, if being used.
         */
-        public void setDeploymentName(String deploymentName) { this.deploymentName = deploymentName; }
+        public void setDeploymentName(String deploymentName)
+        {
+            this.deploymentName = deploymentName;
+        }
         
         private String id;
         
         /**
         * A unique string identifier that represents the reserved IP.
         */
-        public String getId() { return this.id; }
+        public String getId()
+        {
+            return this.id;
+        }
         
         /**
         * A unique string identifier that represents the reserved IP.
         */
-        public void setId(String id) { this.id = id; }
+        public void setId(String id)
+        {
+            this.id = id;
+        }
         
         private boolean inUse;
         
         /**
         * The indicator of whether the reserved IP is being used.
         */
-        public boolean getInUse() { return this.inUse; }
+        public boolean getInUse()
+        {
+            return this.inUse;
+        }
         
         /**
         * The indicator of whether the reserved IP is being used.
         */
-        public void setInUse(boolean inUse) { this.inUse = inUse; }
+        public void setInUse(boolean inUse)
+        {
+            this.inUse = inUse;
+        }
         
         private String label;
         
         /**
         * The friendly identifier of the site.
         */
-        public String getLabel() { return this.label; }
+        public String getLabel()
+        {
+            return this.label;
+        }
         
         /**
         * The friendly identifier of the site.
         */
-        public void setLabel(String label) { this.label = label; }
+        public void setLabel(String label)
+        {
+            this.label = label;
+        }
         
         private String name;
         
         /**
         * Name of the reserved IP.
         */
-        public String getName() { return this.name; }
+        public String getName()
+        {
+            return this.name;
+        }
         
         /**
         * Name of the reserved IP.
         */
-        public void setName(String name) { this.name = name; }
+        public void setName(String name)
+        {
+            this.name = name;
+        }
         
         private String serviceName;
         
         /**
         * The name of the service the IP belongs to, if being used.
         */
-        public String getServiceName() { return this.serviceName; }
+        public String getServiceName()
+        {
+            return this.serviceName;
+        }
         
         /**
         * The name of the service the IP belongs to, if being used.
         */
-        public void setServiceName(String serviceName) { this.serviceName = serviceName; }
+        public void setServiceName(String serviceName)
+        {
+            this.serviceName = serviceName;
+        }
         
         private String state;
         
@@ -166,20 +221,18 @@ public class NetworkReservedIPListResponse extends OperationResponse implements 
         * Current status of the reserved IP. (Created, Creating, Updating,
         * Deleting, Unavailable)
         */
-        public String getState() { return this.state; }
+        public String getState()
+        {
+            return this.state;
+        }
         
         /**
         * Current status of the reserved IP. (Created, Creating, Updating,
         * Deleting, Unavailable)
         */
-        public void setState(String state) { this.state = state; }
-        
-        /**
-        * Initializes a new instance of the ReservedIP class.
-        *
-        */
-        public ReservedIP()
+        public void setState(String state)
         {
+            this.state = state;
         }
     }
 }

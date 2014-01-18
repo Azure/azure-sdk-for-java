@@ -37,14 +37,20 @@ public class GatewayConnectDisconnectOrTestParameters
     * IP address of the target local network site with which the gateway will
     * test connectivity.
     */
-    public InetAddress getIPAddress() { return this.iPAddress; }
+    public InetAddress getIPAddress()
+    {
+        return this.iPAddress;
+    }
     
     /**
     * Required if operation is set to Test; otherwise not used. Specifies the
     * IP address of the target local network site with which the gateway will
     * test connectivity.
     */
-    public void setIPAddress(InetAddress iPAddress) { this.iPAddress = iPAddress; }
+    public void setIPAddress(InetAddress iPAddress)
+    {
+        this.iPAddress = iPAddress;
+    }
     
     private GatewayConnectionUpdateOperation operation;
     
@@ -54,7 +60,10 @@ public class GatewayConnectDisconnectOrTestParameters
     * disconnect from a local network, or test the gateway’s connection to a
     * local network site.
     */
-    public GatewayConnectionUpdateOperation getOperation() { return this.operation; }
+    public GatewayConnectionUpdateOperation getOperation()
+    {
+        return this.operation;
+    }
     
     /**
     * Required. Specifies the operation to perform on the connection. Can be
@@ -62,14 +71,8 @@ public class GatewayConnectDisconnectOrTestParameters
     * disconnect from a local network, or test the gateway’s connection to a
     * local network site.
     */
-    public void setOperation(GatewayConnectionUpdateOperation operation) { this.operation = operation; }
-    
-    /**
-    * Initializes a new instance of the
-    * GatewayConnectDisconnectOrTestParameters class.
-    *
-    */
-    public GatewayConnectDisconnectOrTestParameters()
+    public void setOperation(GatewayConnectionUpdateOperation operation)
     {
+        this.operation = operation;
     }
 }

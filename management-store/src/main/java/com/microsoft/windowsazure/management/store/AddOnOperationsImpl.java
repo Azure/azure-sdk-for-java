@@ -49,6 +49,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.w3c.dom.Document;
@@ -77,7 +78,10 @@ public class AddOnOperationsImpl implements ServiceOperations<StoreManagementCli
     * Gets a reference to the
     * microsoft.windowsazure.management.store.StoreManagementClientImpl.
     */
-    public StoreManagementClientImpl getClient() { return this.client; }
+    public StoreManagementClientImpl getClient()
+    {
+        return this.client;
+    }
     
     /**
     * The Create Store Item operation creates Windows Azure Store entries in a
@@ -231,7 +235,7 @@ public class AddOnOperationsImpl implements ServiceOperations<StoreManagementCli
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
+        if (statusCode != HttpStatus.SC_ACCEPTED)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -365,7 +369,7 @@ public class AddOnOperationsImpl implements ServiceOperations<StoreManagementCli
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
+        if (statusCode != HttpStatus.SC_ACCEPTED)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -483,14 +487,26 @@ public class AddOnOperationsImpl implements ServiceOperations<StoreManagementCli
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;
@@ -596,14 +612,26 @@ public class AddOnOperationsImpl implements ServiceOperations<StoreManagementCli
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;
@@ -770,7 +798,7 @@ public class AddOnOperationsImpl implements ServiceOperations<StoreManagementCli
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
+        if (statusCode != HttpStatus.SC_ACCEPTED)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)

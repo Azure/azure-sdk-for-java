@@ -89,6 +89,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
@@ -122,7 +123,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * Gets a reference to the
     * microsoft.windowsazure.management.compute.ComputeManagementClientImpl.
     */
-    public ComputeManagementClientImpl getClient() { return this.client; }
+    public ComputeManagementClientImpl getClient()
+    {
+        return this.client;
+    }
     
     /**
     * The Add Role operation adds a virtual machine to an existing deployment.
@@ -196,81 +200,93 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         {
             throw new NullPointerException("parameters");
         }
-        for (ConfigurationSet configurationSetsParameterItem : parameters.getConfigurationSets())
+        if (parameters.getConfigurationSets() != null)
         {
-            if (configurationSetsParameterItem.getDomainJoin() != null)
+            for (ConfigurationSet configurationSetsParameterItem : parameters.getConfigurationSets())
             {
-                if (configurationSetsParameterItem.getDomainJoin().getCredentials() != null)
+                if (configurationSetsParameterItem.getDomainJoin() != null)
                 {
-                    if (configurationSetsParameterItem.getDomainJoin().getCredentials().getPassword() == null)
+                    if (configurationSetsParameterItem.getDomainJoin().getCredentials() != null)
                     {
-                        throw new NullPointerException("parameters.ConfigurationSets.DomainJoin.Credentials.Password");
-                    }
-                    if (configurationSetsParameterItem.getDomainJoin().getCredentials().getUserName() == null)
-                    {
-                        throw new NullPointerException("parameters.ConfigurationSets.DomainJoin.Credentials.UserName");
+                        if (configurationSetsParameterItem.getDomainJoin().getCredentials().getPassword() == null)
+                        {
+                            throw new NullPointerException("parameters.ConfigurationSets.DomainJoin.Credentials.Password");
+                        }
+                        if (configurationSetsParameterItem.getDomainJoin().getCredentials().getUserName() == null)
+                        {
+                            throw new NullPointerException("parameters.ConfigurationSets.DomainJoin.Credentials.UserName");
+                        }
                     }
                 }
-            }
-            if (configurationSetsParameterItem.getHostName() != null && configurationSetsParameterItem.getHostName().length() < 1)
-            {
-                throw new IllegalArgumentException("parameters.ConfigurationSets.HostName");
-            }
-            if (configurationSetsParameterItem.getHostName() != null && configurationSetsParameterItem.getHostName().length() > 64)
-            {
-                throw new IllegalArgumentException("parameters.ConfigurationSets.HostName");
-            }
-            if (configurationSetsParameterItem.getSshSettings() != null)
-            {
-                for (SshSettingKeyPair keyPairsParameterItem : configurationSetsParameterItem.getSshSettings().getKeyPairs())
+                if (configurationSetsParameterItem.getHostName() != null && configurationSetsParameterItem.getHostName().length() < 1)
                 {
-                    if (keyPairsParameterItem.getFingerprint() == null)
+                    throw new IllegalArgumentException("parameters.ConfigurationSets.HostName");
+                }
+                if (configurationSetsParameterItem.getHostName() != null && configurationSetsParameterItem.getHostName().length() > 64)
+                {
+                    throw new IllegalArgumentException("parameters.ConfigurationSets.HostName");
+                }
+                if (configurationSetsParameterItem.getSshSettings() != null)
+                {
+                    if (configurationSetsParameterItem.getSshSettings().getKeyPairs() != null)
                     {
-                        throw new NullPointerException("parameters.ConfigurationSets.SshSettings.KeyPairs.Fingerprint");
+                        for (SshSettingKeyPair keyPairsParameterItem : configurationSetsParameterItem.getSshSettings().getKeyPairs())
+                        {
+                            if (keyPairsParameterItem.getFingerprint() == null)
+                            {
+                                throw new NullPointerException("parameters.ConfigurationSets.SshSettings.KeyPairs.Fingerprint");
+                            }
+                            if (keyPairsParameterItem.getPath() == null)
+                            {
+                                throw new NullPointerException("parameters.ConfigurationSets.SshSettings.KeyPairs.Path");
+                            }
+                        }
                     }
-                    if (keyPairsParameterItem.getPath() == null)
+                    if (configurationSetsParameterItem.getSshSettings().getPublicKeys() != null)
                     {
-                        throw new NullPointerException("parameters.ConfigurationSets.SshSettings.KeyPairs.Path");
+                        for (SshSettingPublicKey publicKeysParameterItem : configurationSetsParameterItem.getSshSettings().getPublicKeys())
+                        {
+                            if (publicKeysParameterItem.getFingerprint() == null)
+                            {
+                                throw new NullPointerException("parameters.ConfigurationSets.SshSettings.PublicKeys.Fingerprint");
+                            }
+                            if (publicKeysParameterItem.getPath() == null)
+                            {
+                                throw new NullPointerException("parameters.ConfigurationSets.SshSettings.PublicKeys.Path");
+                            }
+                        }
                     }
                 }
-                for (SshSettingPublicKey publicKeysParameterItem : configurationSetsParameterItem.getSshSettings().getPublicKeys())
+                if (configurationSetsParameterItem.getStoredCertificateSettings() != null)
                 {
-                    if (publicKeysParameterItem.getFingerprint() == null)
+                    for (StoredCertificateSettings storedCertificateSettingsParameterItem : configurationSetsParameterItem.getStoredCertificateSettings())
                     {
-                        throw new NullPointerException("parameters.ConfigurationSets.SshSettings.PublicKeys.Fingerprint");
+                        if (storedCertificateSettingsParameterItem.getStoreName() == null)
+                        {
+                            throw new NullPointerException("parameters.ConfigurationSets.StoredCertificateSettings.StoreName");
+                        }
+                        if (storedCertificateSettingsParameterItem.getThumbprint() == null)
+                        {
+                            throw new NullPointerException("parameters.ConfigurationSets.StoredCertificateSettings.Thumbprint");
+                        }
                     }
-                    if (publicKeysParameterItem.getPath() == null)
-                    {
-                        throw new NullPointerException("parameters.ConfigurationSets.SshSettings.PublicKeys.Path");
-                    }
                 }
-            }
-            for (StoredCertificateSettings storedCertificateSettingsParameterItem : configurationSetsParameterItem.getStoredCertificateSettings())
-            {
-                if (storedCertificateSettingsParameterItem.getStoreName() == null)
+                if (configurationSetsParameterItem.getUserName() != null && configurationSetsParameterItem.getUserName().length() < 1)
                 {
-                    throw new NullPointerException("parameters.ConfigurationSets.StoredCertificateSettings.StoreName");
+                    throw new IllegalArgumentException("parameters.ConfigurationSets.UserName");
                 }
-                if (storedCertificateSettingsParameterItem.getThumbprint() == null)
+                if (configurationSetsParameterItem.getUserName() != null && configurationSetsParameterItem.getUserName().length() > 32)
                 {
-                    throw new NullPointerException("parameters.ConfigurationSets.StoredCertificateSettings.Thumbprint");
+                    throw new IllegalArgumentException("parameters.ConfigurationSets.UserName");
                 }
-            }
-            if (configurationSetsParameterItem.getUserName() != null && configurationSetsParameterItem.getUserName().length() < 1)
-            {
-                throw new IllegalArgumentException("parameters.ConfigurationSets.UserName");
-            }
-            if (configurationSetsParameterItem.getUserName() != null && configurationSetsParameterItem.getUserName().length() > 32)
-            {
-                throw new IllegalArgumentException("parameters.ConfigurationSets.UserName");
-            }
-            if (configurationSetsParameterItem.getUserPassword() != null && configurationSetsParameterItem.getUserPassword().length() < 6 && (configurationSetsParameterItem.getDisableSshPasswordAuthentication() == false || configurationSetsParameterItem.getUserPassword().length() != 0))
-            {
-                throw new IllegalArgumentException("parameters.ConfigurationSets.UserPassword");
-            }
-            if (configurationSetsParameterItem.getUserPassword() != null && configurationSetsParameterItem.getUserPassword().length() > 72)
-            {
-                throw new IllegalArgumentException("parameters.ConfigurationSets.UserPassword");
+                if (configurationSetsParameterItem.getUserPassword() != null && configurationSetsParameterItem.getUserPassword().length() < 6 && (configurationSetsParameterItem.getDisableSshPasswordAuthentication() == false || configurationSetsParameterItem.getUserPassword().length() != 0))
+                {
+                    throw new IllegalArgumentException("parameters.ConfigurationSets.UserPassword");
+                }
+                if (configurationSetsParameterItem.getUserPassword() != null && configurationSetsParameterItem.getUserPassword().length() > 72)
+                {
+                    throw new IllegalArgumentException("parameters.ConfigurationSets.UserPassword");
+                }
             }
         }
         if (parameters.getRoleName() == null)
@@ -842,7 +858,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
+        if (statusCode != HttpStatus.SC_ACCEPTED)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -942,83 +958,98 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         {
             throw new NullPointerException("parameters.Roles");
         }
-        for (Role rolesParameterItem : parameters.getRoles())
+        if (parameters.getRoles() != null)
         {
-            for (ConfigurationSet configurationSetsParameterItem : rolesParameterItem.getConfigurationSets())
+            for (Role rolesParameterItem : parameters.getRoles())
             {
-                if (configurationSetsParameterItem.getDomainJoin() != null)
+                if (rolesParameterItem.getConfigurationSets() != null)
                 {
-                    if (configurationSetsParameterItem.getDomainJoin().getCredentials() != null)
+                    for (ConfigurationSet configurationSetsParameterItem : rolesParameterItem.getConfigurationSets())
                     {
-                        if (configurationSetsParameterItem.getDomainJoin().getCredentials().getPassword() == null)
+                        if (configurationSetsParameterItem.getDomainJoin() != null)
                         {
-                            throw new NullPointerException("parameters.Roles.ConfigurationSets.DomainJoin.Credentials.Password");
+                            if (configurationSetsParameterItem.getDomainJoin().getCredentials() != null)
+                            {
+                                if (configurationSetsParameterItem.getDomainJoin().getCredentials().getPassword() == null)
+                                {
+                                    throw new NullPointerException("parameters.Roles.ConfigurationSets.DomainJoin.Credentials.Password");
+                                }
+                                if (configurationSetsParameterItem.getDomainJoin().getCredentials().getUserName() == null)
+                                {
+                                    throw new NullPointerException("parameters.Roles.ConfigurationSets.DomainJoin.Credentials.UserName");
+                                }
+                            }
                         }
-                        if (configurationSetsParameterItem.getDomainJoin().getCredentials().getUserName() == null)
+                        if (configurationSetsParameterItem.getHostName() != null && configurationSetsParameterItem.getHostName().length() < 1)
                         {
-                            throw new NullPointerException("parameters.Roles.ConfigurationSets.DomainJoin.Credentials.UserName");
+                            throw new IllegalArgumentException("parameters.Roles.ConfigurationSets.HostName");
+                        }
+                        if (configurationSetsParameterItem.getHostName() != null && configurationSetsParameterItem.getHostName().length() > 64)
+                        {
+                            throw new IllegalArgumentException("parameters.Roles.ConfigurationSets.HostName");
+                        }
+                        if (configurationSetsParameterItem.getSshSettings() != null)
+                        {
+                            if (configurationSetsParameterItem.getSshSettings().getKeyPairs() != null)
+                            {
+                                for (SshSettingKeyPair keyPairsParameterItem : configurationSetsParameterItem.getSshSettings().getKeyPairs())
+                                {
+                                    if (keyPairsParameterItem.getFingerprint() == null)
+                                    {
+                                        throw new NullPointerException("parameters.Roles.ConfigurationSets.SshSettings.KeyPairs.Fingerprint");
+                                    }
+                                    if (keyPairsParameterItem.getPath() == null)
+                                    {
+                                        throw new NullPointerException("parameters.Roles.ConfigurationSets.SshSettings.KeyPairs.Path");
+                                    }
+                                }
+                            }
+                            if (configurationSetsParameterItem.getSshSettings().getPublicKeys() != null)
+                            {
+                                for (SshSettingPublicKey publicKeysParameterItem : configurationSetsParameterItem.getSshSettings().getPublicKeys())
+                                {
+                                    if (publicKeysParameterItem.getFingerprint() == null)
+                                    {
+                                        throw new NullPointerException("parameters.Roles.ConfigurationSets.SshSettings.PublicKeys.Fingerprint");
+                                    }
+                                    if (publicKeysParameterItem.getPath() == null)
+                                    {
+                                        throw new NullPointerException("parameters.Roles.ConfigurationSets.SshSettings.PublicKeys.Path");
+                                    }
+                                }
+                            }
+                        }
+                        if (configurationSetsParameterItem.getStoredCertificateSettings() != null)
+                        {
+                            for (StoredCertificateSettings storedCertificateSettingsParameterItem : configurationSetsParameterItem.getStoredCertificateSettings())
+                            {
+                                if (storedCertificateSettingsParameterItem.getStoreName() == null)
+                                {
+                                    throw new NullPointerException("parameters.Roles.ConfigurationSets.StoredCertificateSettings.StoreName");
+                                }
+                                if (storedCertificateSettingsParameterItem.getThumbprint() == null)
+                                {
+                                    throw new NullPointerException("parameters.Roles.ConfigurationSets.StoredCertificateSettings.Thumbprint");
+                                }
+                            }
+                        }
+                        if (configurationSetsParameterItem.getUserName() != null && configurationSetsParameterItem.getUserName().length() < 1)
+                        {
+                            throw new IllegalArgumentException("parameters.Roles.ConfigurationSets.UserName");
+                        }
+                        if (configurationSetsParameterItem.getUserName() != null && configurationSetsParameterItem.getUserName().length() > 32)
+                        {
+                            throw new IllegalArgumentException("parameters.Roles.ConfigurationSets.UserName");
+                        }
+                        if (configurationSetsParameterItem.getUserPassword() != null && configurationSetsParameterItem.getUserPassword().length() < 6 && (configurationSetsParameterItem.getDisableSshPasswordAuthentication() == false || configurationSetsParameterItem.getUserPassword().length() != 0))
+                        {
+                            throw new IllegalArgumentException("parameters.Roles.ConfigurationSets.UserPassword");
+                        }
+                        if (configurationSetsParameterItem.getUserPassword() != null && configurationSetsParameterItem.getUserPassword().length() > 72)
+                        {
+                            throw new IllegalArgumentException("parameters.Roles.ConfigurationSets.UserPassword");
                         }
                     }
-                }
-                if (configurationSetsParameterItem.getHostName() != null && configurationSetsParameterItem.getHostName().length() < 1)
-                {
-                    throw new IllegalArgumentException("parameters.Roles.ConfigurationSets.HostName");
-                }
-                if (configurationSetsParameterItem.getHostName() != null && configurationSetsParameterItem.getHostName().length() > 64)
-                {
-                    throw new IllegalArgumentException("parameters.Roles.ConfigurationSets.HostName");
-                }
-                if (configurationSetsParameterItem.getSshSettings() != null)
-                {
-                    for (SshSettingKeyPair keyPairsParameterItem : configurationSetsParameterItem.getSshSettings().getKeyPairs())
-                    {
-                        if (keyPairsParameterItem.getFingerprint() == null)
-                        {
-                            throw new NullPointerException("parameters.Roles.ConfigurationSets.SshSettings.KeyPairs.Fingerprint");
-                        }
-                        if (keyPairsParameterItem.getPath() == null)
-                        {
-                            throw new NullPointerException("parameters.Roles.ConfigurationSets.SshSettings.KeyPairs.Path");
-                        }
-                    }
-                    for (SshSettingPublicKey publicKeysParameterItem : configurationSetsParameterItem.getSshSettings().getPublicKeys())
-                    {
-                        if (publicKeysParameterItem.getFingerprint() == null)
-                        {
-                            throw new NullPointerException("parameters.Roles.ConfigurationSets.SshSettings.PublicKeys.Fingerprint");
-                        }
-                        if (publicKeysParameterItem.getPath() == null)
-                        {
-                            throw new NullPointerException("parameters.Roles.ConfigurationSets.SshSettings.PublicKeys.Path");
-                        }
-                    }
-                }
-                for (StoredCertificateSettings storedCertificateSettingsParameterItem : configurationSetsParameterItem.getStoredCertificateSettings())
-                {
-                    if (storedCertificateSettingsParameterItem.getStoreName() == null)
-                    {
-                        throw new NullPointerException("parameters.Roles.ConfigurationSets.StoredCertificateSettings.StoreName");
-                    }
-                    if (storedCertificateSettingsParameterItem.getThumbprint() == null)
-                    {
-                        throw new NullPointerException("parameters.Roles.ConfigurationSets.StoredCertificateSettings.Thumbprint");
-                    }
-                }
-                if (configurationSetsParameterItem.getUserName() != null && configurationSetsParameterItem.getUserName().length() < 1)
-                {
-                    throw new IllegalArgumentException("parameters.Roles.ConfigurationSets.UserName");
-                }
-                if (configurationSetsParameterItem.getUserName() != null && configurationSetsParameterItem.getUserName().length() > 32)
-                {
-                    throw new IllegalArgumentException("parameters.Roles.ConfigurationSets.UserName");
-                }
-                if (configurationSetsParameterItem.getUserPassword() != null && configurationSetsParameterItem.getUserPassword().length() < 6 && (configurationSetsParameterItem.getDisableSshPasswordAuthentication() == false || configurationSetsParameterItem.getUserPassword().length() != 0))
-                {
-                    throw new IllegalArgumentException("parameters.Roles.ConfigurationSets.UserPassword");
-                }
-                if (configurationSetsParameterItem.getUserPassword() != null && configurationSetsParameterItem.getUserPassword().length() > 72)
-                {
-                    throw new IllegalArgumentException("parameters.Roles.ConfigurationSets.UserPassword");
                 }
             }
         }
@@ -1678,7 +1709,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
+        if (statusCode != HttpStatus.SC_ACCEPTED)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -1777,7 +1808,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "/roles/" + virtualMachineName + "?";
         if (deleteFromStorage == true)
         {
-            url = url + "&comp=" + URLEncoder.encode("media");
+            url = url + "&comp=" + URLEncoder.encode("media", "UTF-8");
         }
         
         // Create HTTP transport objects
@@ -1798,7 +1829,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
+        if (statusCode != HttpStatus.SC_ACCEPTED)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -1917,7 +1948,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
+        if (statusCode != HttpStatus.SC_ACCEPTED)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -2064,7 +2095,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
+        if (statusCode != HttpStatus.SC_ACCEPTED)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -2217,7 +2248,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
+        if (statusCode != HttpStatus.SC_ACCEPTED)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -2336,7 +2367,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
+        if (statusCode != HttpStatus.SC_ACCEPTED)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -2480,7 +2511,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
+        if (statusCode != HttpStatus.SC_ACCEPTED)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -2566,81 +2597,93 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         {
             throw new NullPointerException("parameters");
         }
-        for (ConfigurationSet configurationSetsParameterItem : parameters.getConfigurationSets())
+        if (parameters.getConfigurationSets() != null)
         {
-            if (configurationSetsParameterItem.getDomainJoin() != null)
+            for (ConfigurationSet configurationSetsParameterItem : parameters.getConfigurationSets())
             {
-                if (configurationSetsParameterItem.getDomainJoin().getCredentials() != null)
+                if (configurationSetsParameterItem.getDomainJoin() != null)
                 {
-                    if (configurationSetsParameterItem.getDomainJoin().getCredentials().getPassword() == null)
+                    if (configurationSetsParameterItem.getDomainJoin().getCredentials() != null)
                     {
-                        throw new NullPointerException("parameters.ConfigurationSets.DomainJoin.Credentials.Password");
-                    }
-                    if (configurationSetsParameterItem.getDomainJoin().getCredentials().getUserName() == null)
-                    {
-                        throw new NullPointerException("parameters.ConfigurationSets.DomainJoin.Credentials.UserName");
+                        if (configurationSetsParameterItem.getDomainJoin().getCredentials().getPassword() == null)
+                        {
+                            throw new NullPointerException("parameters.ConfigurationSets.DomainJoin.Credentials.Password");
+                        }
+                        if (configurationSetsParameterItem.getDomainJoin().getCredentials().getUserName() == null)
+                        {
+                            throw new NullPointerException("parameters.ConfigurationSets.DomainJoin.Credentials.UserName");
+                        }
                     }
                 }
-            }
-            if (configurationSetsParameterItem.getHostName() != null && configurationSetsParameterItem.getHostName().length() < 1)
-            {
-                throw new IllegalArgumentException("parameters.ConfigurationSets.HostName");
-            }
-            if (configurationSetsParameterItem.getHostName() != null && configurationSetsParameterItem.getHostName().length() > 64)
-            {
-                throw new IllegalArgumentException("parameters.ConfigurationSets.HostName");
-            }
-            if (configurationSetsParameterItem.getSshSettings() != null)
-            {
-                for (SshSettingKeyPair keyPairsParameterItem : configurationSetsParameterItem.getSshSettings().getKeyPairs())
+                if (configurationSetsParameterItem.getHostName() != null && configurationSetsParameterItem.getHostName().length() < 1)
                 {
-                    if (keyPairsParameterItem.getFingerprint() == null)
+                    throw new IllegalArgumentException("parameters.ConfigurationSets.HostName");
+                }
+                if (configurationSetsParameterItem.getHostName() != null && configurationSetsParameterItem.getHostName().length() > 64)
+                {
+                    throw new IllegalArgumentException("parameters.ConfigurationSets.HostName");
+                }
+                if (configurationSetsParameterItem.getSshSettings() != null)
+                {
+                    if (configurationSetsParameterItem.getSshSettings().getKeyPairs() != null)
                     {
-                        throw new NullPointerException("parameters.ConfigurationSets.SshSettings.KeyPairs.Fingerprint");
+                        for (SshSettingKeyPair keyPairsParameterItem : configurationSetsParameterItem.getSshSettings().getKeyPairs())
+                        {
+                            if (keyPairsParameterItem.getFingerprint() == null)
+                            {
+                                throw new NullPointerException("parameters.ConfigurationSets.SshSettings.KeyPairs.Fingerprint");
+                            }
+                            if (keyPairsParameterItem.getPath() == null)
+                            {
+                                throw new NullPointerException("parameters.ConfigurationSets.SshSettings.KeyPairs.Path");
+                            }
+                        }
                     }
-                    if (keyPairsParameterItem.getPath() == null)
+                    if (configurationSetsParameterItem.getSshSettings().getPublicKeys() != null)
                     {
-                        throw new NullPointerException("parameters.ConfigurationSets.SshSettings.KeyPairs.Path");
+                        for (SshSettingPublicKey publicKeysParameterItem : configurationSetsParameterItem.getSshSettings().getPublicKeys())
+                        {
+                            if (publicKeysParameterItem.getFingerprint() == null)
+                            {
+                                throw new NullPointerException("parameters.ConfigurationSets.SshSettings.PublicKeys.Fingerprint");
+                            }
+                            if (publicKeysParameterItem.getPath() == null)
+                            {
+                                throw new NullPointerException("parameters.ConfigurationSets.SshSettings.PublicKeys.Path");
+                            }
+                        }
                     }
                 }
-                for (SshSettingPublicKey publicKeysParameterItem : configurationSetsParameterItem.getSshSettings().getPublicKeys())
+                if (configurationSetsParameterItem.getStoredCertificateSettings() != null)
                 {
-                    if (publicKeysParameterItem.getFingerprint() == null)
+                    for (StoredCertificateSettings storedCertificateSettingsParameterItem : configurationSetsParameterItem.getStoredCertificateSettings())
                     {
-                        throw new NullPointerException("parameters.ConfigurationSets.SshSettings.PublicKeys.Fingerprint");
+                        if (storedCertificateSettingsParameterItem.getStoreName() == null)
+                        {
+                            throw new NullPointerException("parameters.ConfigurationSets.StoredCertificateSettings.StoreName");
+                        }
+                        if (storedCertificateSettingsParameterItem.getThumbprint() == null)
+                        {
+                            throw new NullPointerException("parameters.ConfigurationSets.StoredCertificateSettings.Thumbprint");
+                        }
                     }
-                    if (publicKeysParameterItem.getPath() == null)
-                    {
-                        throw new NullPointerException("parameters.ConfigurationSets.SshSettings.PublicKeys.Path");
-                    }
                 }
-            }
-            for (StoredCertificateSettings storedCertificateSettingsParameterItem : configurationSetsParameterItem.getStoredCertificateSettings())
-            {
-                if (storedCertificateSettingsParameterItem.getStoreName() == null)
+                if (configurationSetsParameterItem.getUserName() != null && configurationSetsParameterItem.getUserName().length() < 1)
                 {
-                    throw new NullPointerException("parameters.ConfigurationSets.StoredCertificateSettings.StoreName");
+                    throw new IllegalArgumentException("parameters.ConfigurationSets.UserName");
                 }
-                if (storedCertificateSettingsParameterItem.getThumbprint() == null)
+                if (configurationSetsParameterItem.getUserName() != null && configurationSetsParameterItem.getUserName().length() > 32)
                 {
-                    throw new NullPointerException("parameters.ConfigurationSets.StoredCertificateSettings.Thumbprint");
+                    throw new IllegalArgumentException("parameters.ConfigurationSets.UserName");
                 }
-            }
-            if (configurationSetsParameterItem.getUserName() != null && configurationSetsParameterItem.getUserName().length() < 1)
-            {
-                throw new IllegalArgumentException("parameters.ConfigurationSets.UserName");
-            }
-            if (configurationSetsParameterItem.getUserName() != null && configurationSetsParameterItem.getUserName().length() > 32)
-            {
-                throw new IllegalArgumentException("parameters.ConfigurationSets.UserName");
-            }
-            if (configurationSetsParameterItem.getUserPassword() != null && configurationSetsParameterItem.getUserPassword().length() < 6 && (configurationSetsParameterItem.getDisableSshPasswordAuthentication() == false || configurationSetsParameterItem.getUserPassword().length() != 0))
-            {
-                throw new IllegalArgumentException("parameters.ConfigurationSets.UserPassword");
-            }
-            if (configurationSetsParameterItem.getUserPassword() != null && configurationSetsParameterItem.getUserPassword().length() > 72)
-            {
-                throw new IllegalArgumentException("parameters.ConfigurationSets.UserPassword");
+                if (configurationSetsParameterItem.getUserPassword() != null && configurationSetsParameterItem.getUserPassword().length() < 6 && (configurationSetsParameterItem.getDisableSshPasswordAuthentication() == false || configurationSetsParameterItem.getUserPassword().length() != 0))
+                {
+                    throw new IllegalArgumentException("parameters.ConfigurationSets.UserPassword");
+                }
+                if (configurationSetsParameterItem.getUserPassword() != null && configurationSetsParameterItem.getUserPassword().length() > 72)
+                {
+                    throw new IllegalArgumentException("parameters.ConfigurationSets.UserPassword");
+                }
             }
         }
         if (parameters.getOSVirtualHardDisk() == null)
@@ -3214,7 +3257,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
+        if (statusCode != HttpStatus.SC_ACCEPTED)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -3294,11 +3337,14 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         {
             throw new NullPointerException("parameters");
         }
-        for (VirtualMachineUpdateLoadBalancedSetParameters.InputEndpoint loadBalancedEndpointsParameterItem : parameters.getLoadBalancedEndpoints())
+        if (parameters.getLoadBalancedEndpoints() != null)
         {
-            if (loadBalancedEndpointsParameterItem.getLoadBalancedEndpointSetName() == null)
+            for (VirtualMachineUpdateLoadBalancedSetParameters.InputEndpoint loadBalancedEndpointsParameterItem : parameters.getLoadBalancedEndpoints())
             {
-                throw new NullPointerException("parameters.LoadBalancedEndpoints.LoadBalancedEndpointSetName");
+                if (loadBalancedEndpointsParameterItem.getLoadBalancedEndpointSetName() == null)
+                {
+                    throw new NullPointerException("parameters.LoadBalancedEndpoints.LoadBalancedEndpointSetName");
+                }
             }
         }
         
@@ -3489,7 +3535,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
+        if (statusCode != HttpStatus.SC_ACCEPTED)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -3615,38 +3661,47 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             }
             if (parameters.getProvisioningConfiguration().getSshSettings() != null)
             {
-                for (SshSettingKeyPair keyPairsParameterItem : parameters.getProvisioningConfiguration().getSshSettings().getKeyPairs())
+                if (parameters.getProvisioningConfiguration().getSshSettings().getKeyPairs() != null)
                 {
-                    if (keyPairsParameterItem.getFingerprint() == null)
+                    for (SshSettingKeyPair keyPairsParameterItem : parameters.getProvisioningConfiguration().getSshSettings().getKeyPairs())
                     {
-                        throw new NullPointerException("parameters.ProvisioningConfiguration.SshSettings.KeyPairs.Fingerprint");
-                    }
-                    if (keyPairsParameterItem.getPath() == null)
-                    {
-                        throw new NullPointerException("parameters.ProvisioningConfiguration.SshSettings.KeyPairs.Path");
+                        if (keyPairsParameterItem.getFingerprint() == null)
+                        {
+                            throw new NullPointerException("parameters.ProvisioningConfiguration.SshSettings.KeyPairs.Fingerprint");
+                        }
+                        if (keyPairsParameterItem.getPath() == null)
+                        {
+                            throw new NullPointerException("parameters.ProvisioningConfiguration.SshSettings.KeyPairs.Path");
+                        }
                     }
                 }
-                for (SshSettingPublicKey publicKeysParameterItem : parameters.getProvisioningConfiguration().getSshSettings().getPublicKeys())
+                if (parameters.getProvisioningConfiguration().getSshSettings().getPublicKeys() != null)
                 {
-                    if (publicKeysParameterItem.getFingerprint() == null)
+                    for (SshSettingPublicKey publicKeysParameterItem : parameters.getProvisioningConfiguration().getSshSettings().getPublicKeys())
                     {
-                        throw new NullPointerException("parameters.ProvisioningConfiguration.SshSettings.PublicKeys.Fingerprint");
-                    }
-                    if (publicKeysParameterItem.getPath() == null)
-                    {
-                        throw new NullPointerException("parameters.ProvisioningConfiguration.SshSettings.PublicKeys.Path");
+                        if (publicKeysParameterItem.getFingerprint() == null)
+                        {
+                            throw new NullPointerException("parameters.ProvisioningConfiguration.SshSettings.PublicKeys.Fingerprint");
+                        }
+                        if (publicKeysParameterItem.getPath() == null)
+                        {
+                            throw new NullPointerException("parameters.ProvisioningConfiguration.SshSettings.PublicKeys.Path");
+                        }
                     }
                 }
             }
-            for (StoredCertificateSettings storedCertificateSettingsParameterItem : parameters.getProvisioningConfiguration().getStoredCertificateSettings())
+            if (parameters.getProvisioningConfiguration().getStoredCertificateSettings() != null)
             {
-                if (storedCertificateSettingsParameterItem.getStoreName() == null)
+                for (StoredCertificateSettings storedCertificateSettingsParameterItem : parameters.getProvisioningConfiguration().getStoredCertificateSettings())
                 {
-                    throw new NullPointerException("parameters.ProvisioningConfiguration.StoredCertificateSettings.StoreName");
-                }
-                if (storedCertificateSettingsParameterItem.getThumbprint() == null)
-                {
-                    throw new NullPointerException("parameters.ProvisioningConfiguration.StoredCertificateSettings.Thumbprint");
+                    if (storedCertificateSettingsParameterItem.getStoreName() == null)
+                    {
+                        throw new NullPointerException("parameters.ProvisioningConfiguration.StoredCertificateSettings.StoreName");
+                    }
+                    if (storedCertificateSettingsParameterItem.getThumbprint() == null)
+                    {
+                        throw new NullPointerException("parameters.ProvisioningConfiguration.StoredCertificateSettings.Thumbprint");
+                    }
                 }
             }
             if (parameters.getProvisioningConfiguration().getUserName() != null && parameters.getProvisioningConfiguration().getUserName().length() < 1)
@@ -4131,7 +4186,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 201)
+        if (statusCode != HttpStatus.SC_CREATED)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -4266,14 +4321,26 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;
@@ -4385,14 +4452,26 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;
@@ -4498,14 +4577,26 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;
@@ -4604,7 +4695,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -4624,11 +4715,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         Document responseDoc = documentBuilder.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagName("PersistentVMRole");
-        Element persistentVMRoleElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element persistentVMRoleElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (persistentVMRoleElement != null)
         {
             NodeList elements2 = persistentVMRoleElement.getElementsByTagName("RoleName");
-            Element roleNameElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+            Element roleNameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
             if (roleNameElement != null)
             {
                 String roleNameInstance;
@@ -4637,7 +4728,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             }
             
             NodeList elements3 = persistentVMRoleElement.getElementsByTagName("OsVersion");
-            Element osVersionElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
+            Element osVersionElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
             if (osVersionElement != null)
             {
                 String osVersionInstance;
@@ -4646,7 +4737,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             }
             
             NodeList elements4 = persistentVMRoleElement.getElementsByTagName("RoleType");
-            Element roleTypeElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
+            Element roleTypeElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
             if (roleTypeElement != null)
             {
                 VirtualMachineRoleType roleTypeInstance;
@@ -4655,7 +4746,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             }
             
             NodeList elements5 = persistentVMRoleElement.getElementsByTagName("AvailabilitySetName");
-            Element availabilitySetNameElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
+            Element availabilitySetNameElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
             if (availabilitySetNameElement != null)
             {
                 String availabilitySetNameInstance;
@@ -4664,7 +4755,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             }
             
             NodeList elements6 = persistentVMRoleElement.getElementsByTagName("RoleSize");
-            Element roleSizeElement = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
+            Element roleSizeElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
             if (roleSizeElement != null)
             {
                 VirtualMachineRoleSize roleSizeInstance;
@@ -4673,7 +4764,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             }
             
             NodeList elements7 = persistentVMRoleElement.getElementsByTagName("DefaultWinRmCertificateThumbprint");
-            Element defaultWinRmCertificateThumbprintElement = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
+            Element defaultWinRmCertificateThumbprintElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
             if (defaultWinRmCertificateThumbprintElement != null)
             {
                 String defaultWinRmCertificateThumbprintInstance;
@@ -4682,17 +4773,17 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             }
             
             NodeList elements8 = persistentVMRoleElement.getElementsByTagName("ConfigurationSets");
-            Element configurationSetsSequenceElement = elements8.getLength() > 0 ? ((Element)elements8.item(0)) : null;
+            Element configurationSetsSequenceElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
             if (configurationSetsSequenceElement != null)
             {
                 for (int i1 = 0; i1 < configurationSetsSequenceElement.getElementsByTagName("ConfigurationSet").getLength(); i1 = i1 + 1)
                 {
-                    org.w3c.dom.Element configurationSetsElement = ((org.w3c.dom.Element)configurationSetsSequenceElement.getElementsByTagName("ConfigurationSet").item(i1));
+                    org.w3c.dom.Element configurationSetsElement = ((org.w3c.dom.Element) configurationSetsSequenceElement.getElementsByTagName("ConfigurationSet").item(i1));
                     ConfigurationSet configurationSetInstance = new ConfigurationSet();
                     result.getConfigurationSets().add(configurationSetInstance);
                     
                     NodeList elements9 = configurationSetsElement.getElementsByTagName("ConfigurationSetType");
-                    Element configurationSetTypeElement = elements9.getLength() > 0 ? ((Element)elements9.item(0)) : null;
+                    Element configurationSetTypeElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
                     if (configurationSetTypeElement != null)
                     {
                         String configurationSetTypeInstance;
@@ -4701,17 +4792,17 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     }
                     
                     NodeList elements10 = configurationSetsElement.getElementsByTagName("InputEndpoints");
-                    Element inputEndpointsSequenceElement = elements10.getLength() > 0 ? ((Element)elements10.item(0)) : null;
+                    Element inputEndpointsSequenceElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
                     if (inputEndpointsSequenceElement != null)
                     {
                         for (int i2 = 0; i2 < inputEndpointsSequenceElement.getElementsByTagName("InputEndpoint").getLength(); i2 = i2 + 1)
                         {
-                            org.w3c.dom.Element inputEndpointsElement = ((org.w3c.dom.Element)inputEndpointsSequenceElement.getElementsByTagName("InputEndpoint").item(i2));
+                            org.w3c.dom.Element inputEndpointsElement = ((org.w3c.dom.Element) inputEndpointsSequenceElement.getElementsByTagName("InputEndpoint").item(i2));
                             InputEndpoint inputEndpointInstance = new InputEndpoint();
                             configurationSetInstance.getInputEndpoints().add(inputEndpointInstance);
                             
                             NodeList elements11 = inputEndpointsElement.getElementsByTagName("LoadBalancedEndpointSetName");
-                            Element loadBalancedEndpointSetNameElement = elements11.getLength() > 0 ? ((Element)elements11.item(0)) : null;
+                            Element loadBalancedEndpointSetNameElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
                             if (loadBalancedEndpointSetNameElement != null)
                             {
                                 String loadBalancedEndpointSetNameInstance;
@@ -4720,7 +4811,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             }
                             
                             NodeList elements12 = inputEndpointsElement.getElementsByTagName("LocalPort");
-                            Element localPortElement = elements12.getLength() > 0 ? ((Element)elements12.item(0)) : null;
+                            Element localPortElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
                             if (localPortElement != null && (localPortElement.getTextContent() != null && localPortElement.getTextContent().isEmpty() != true) == false)
                             {
                                 int localPortInstance;
@@ -4729,7 +4820,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             }
                             
                             NodeList elements13 = inputEndpointsElement.getElementsByTagName("Name");
-                            Element nameElement = elements13.getLength() > 0 ? ((Element)elements13.item(0)) : null;
+                            Element nameElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
                             if (nameElement != null)
                             {
                                 String nameInstance;
@@ -4738,7 +4829,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             }
                             
                             NodeList elements14 = inputEndpointsElement.getElementsByTagName("Port");
-                            Element portElement = elements14.getLength() > 0 ? ((Element)elements14.item(0)) : null;
+                            Element portElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
                             if (portElement != null && (portElement.getTextContent() != null && portElement.getTextContent().isEmpty() != true) == false)
                             {
                                 int portInstance;
@@ -4747,14 +4838,14 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             }
                             
                             NodeList elements15 = inputEndpointsElement.getElementsByTagName("LoadBalancerProbe");
-                            Element loadBalancerProbeElement = elements15.getLength() > 0 ? ((Element)elements15.item(0)) : null;
+                            Element loadBalancerProbeElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
                             if (loadBalancerProbeElement != null)
                             {
                                 LoadBalancerProbe loadBalancerProbeInstance = new LoadBalancerProbe();
                                 inputEndpointInstance.setLoadBalancerProbe(loadBalancerProbeInstance);
                                 
                                 NodeList elements16 = loadBalancerProbeElement.getElementsByTagName("Path");
-                                Element pathElement = elements16.getLength() > 0 ? ((Element)elements16.item(0)) : null;
+                                Element pathElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
                                 if (pathElement != null)
                                 {
                                     String pathInstance;
@@ -4763,7 +4854,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                 }
                                 
                                 NodeList elements17 = loadBalancerProbeElement.getElementsByTagName("Port");
-                                Element portElement2 = elements17.getLength() > 0 ? ((Element)elements17.item(0)) : null;
+                                Element portElement2 = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
                                 if (portElement2 != null)
                                 {
                                     int portInstance2;
@@ -4772,7 +4863,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                 }
                                 
                                 NodeList elements18 = loadBalancerProbeElement.getElementsByTagName("Protocol");
-                                Element protocolElement = elements18.getLength() > 0 ? ((Element)elements18.item(0)) : null;
+                                Element protocolElement = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
                                 if (protocolElement != null)
                                 {
                                     LoadBalancerProbeTransportProtocol protocolInstance;
@@ -4781,7 +4872,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                 }
                                 
                                 NodeList elements19 = loadBalancerProbeElement.getElementsByTagName("IntervalInSeconds");
-                                Element intervalInSecondsElement = elements19.getLength() > 0 ? ((Element)elements19.item(0)) : null;
+                                Element intervalInSecondsElement = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
                                 if (intervalInSecondsElement != null && (intervalInSecondsElement.getTextContent() != null && intervalInSecondsElement.getTextContent().isEmpty() != true) == false)
                                 {
                                     int intervalInSecondsInstance;
@@ -4790,7 +4881,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                 }
                                 
                                 NodeList elements20 = loadBalancerProbeElement.getElementsByTagName("TimeoutInSeconds");
-                                Element timeoutInSecondsElement = elements20.getLength() > 0 ? ((Element)elements20.item(0)) : null;
+                                Element timeoutInSecondsElement = elements20.getLength() > 0 ? ((Element) elements20.item(0)) : null;
                                 if (timeoutInSecondsElement != null && (timeoutInSecondsElement.getTextContent() != null && timeoutInSecondsElement.getTextContent().isEmpty() != true) == false)
                                 {
                                     int timeoutInSecondsInstance;
@@ -4800,7 +4891,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             }
                             
                             NodeList elements21 = inputEndpointsElement.getElementsByTagName("Protocol");
-                            Element protocolElement2 = elements21.getLength() > 0 ? ((Element)elements21.item(0)) : null;
+                            Element protocolElement2 = elements21.getLength() > 0 ? ((Element) elements21.item(0)) : null;
                             if (protocolElement2 != null)
                             {
                                 String protocolInstance2;
@@ -4809,7 +4900,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             }
                             
                             NodeList elements22 = inputEndpointsElement.getElementsByTagName("Vip");
-                            Element vipElement = elements22.getLength() > 0 ? ((Element)elements22.item(0)) : null;
+                            Element vipElement = elements22.getLength() > 0 ? ((Element) elements22.item(0)) : null;
                             if (vipElement != null)
                             {
                                 InetAddress vipInstance;
@@ -4818,7 +4909,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             }
                             
                             NodeList elements23 = inputEndpointsElement.getElementsByTagName("EnableDirectServerReturn");
-                            Element enableDirectServerReturnElement = elements23.getLength() > 0 ? ((Element)elements23.item(0)) : null;
+                            Element enableDirectServerReturnElement = elements23.getLength() > 0 ? ((Element) elements23.item(0)) : null;
                             if (enableDirectServerReturnElement != null && (enableDirectServerReturnElement.getTextContent() != null && enableDirectServerReturnElement.getTextContent().isEmpty() != true) == false)
                             {
                                 boolean enableDirectServerReturnInstance;
@@ -4827,24 +4918,24 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             }
                             
                             NodeList elements24 = inputEndpointsElement.getElementsByTagName("EndpointAcl");
-                            Element endpointAclElement = elements24.getLength() > 0 ? ((Element)elements24.item(0)) : null;
+                            Element endpointAclElement = elements24.getLength() > 0 ? ((Element) elements24.item(0)) : null;
                             if (endpointAclElement != null)
                             {
                                 EndpointAcl endpointAclInstance = new EndpointAcl();
                                 inputEndpointInstance.setEndpointAcl(endpointAclInstance);
                                 
                                 NodeList elements25 = endpointAclElement.getElementsByTagName("Rules");
-                                Element rulesSequenceElement = elements25.getLength() > 0 ? ((Element)elements25.item(0)) : null;
+                                Element rulesSequenceElement = elements25.getLength() > 0 ? ((Element) elements25.item(0)) : null;
                                 if (rulesSequenceElement != null)
                                 {
                                     for (int i3 = 0; i3 < rulesSequenceElement.getElementsByTagName("Rule").getLength(); i3 = i3 + 1)
                                     {
-                                        org.w3c.dom.Element rulesElement = ((org.w3c.dom.Element)rulesSequenceElement.getElementsByTagName("Rule").item(i3));
+                                        org.w3c.dom.Element rulesElement = ((org.w3c.dom.Element) rulesSequenceElement.getElementsByTagName("Rule").item(i3));
                                         AccessControlListRule ruleInstance = new AccessControlListRule();
                                         endpointAclInstance.getRules().add(ruleInstance);
                                         
                                         NodeList elements26 = rulesElement.getElementsByTagName("Order");
-                                        Element orderElement = elements26.getLength() > 0 ? ((Element)elements26.item(0)) : null;
+                                        Element orderElement = elements26.getLength() > 0 ? ((Element) elements26.item(0)) : null;
                                         if (orderElement != null && (orderElement.getTextContent() != null && orderElement.getTextContent().isEmpty() != true) == false)
                                         {
                                             int orderInstance;
@@ -4853,7 +4944,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                         }
                                         
                                         NodeList elements27 = rulesElement.getElementsByTagName("Action");
-                                        Element actionElement = elements27.getLength() > 0 ? ((Element)elements27.item(0)) : null;
+                                        Element actionElement = elements27.getLength() > 0 ? ((Element) elements27.item(0)) : null;
                                         if (actionElement != null)
                                         {
                                             String actionInstance;
@@ -4862,7 +4953,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                         }
                                         
                                         NodeList elements28 = rulesElement.getElementsByTagName("RemoteSubnet");
-                                        Element remoteSubnetElement = elements28.getLength() > 0 ? ((Element)elements28.item(0)) : null;
+                                        Element remoteSubnetElement = elements28.getLength() > 0 ? ((Element) elements28.item(0)) : null;
                                         if (remoteSubnetElement != null)
                                         {
                                             String remoteSubnetInstance;
@@ -4871,7 +4962,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                         }
                                         
                                         NodeList elements29 = rulesElement.getElementsByTagName("Description");
-                                        Element descriptionElement = elements29.getLength() > 0 ? ((Element)elements29.item(0)) : null;
+                                        Element descriptionElement = elements29.getLength() > 0 ? ((Element) elements29.item(0)) : null;
                                         if (descriptionElement != null)
                                         {
                                             String descriptionInstance;
@@ -4885,18 +4976,18 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     }
                     
                     NodeList elements30 = configurationSetsElement.getElementsByTagName("SubnetNames");
-                    Element subnetNamesSequenceElement = elements30.getLength() > 0 ? ((Element)elements30.item(0)) : null;
+                    Element subnetNamesSequenceElement = elements30.getLength() > 0 ? ((Element) elements30.item(0)) : null;
                     if (subnetNamesSequenceElement != null)
                     {
                         for (int i4 = 0; i4 < subnetNamesSequenceElement.getElementsByTagName("SubnetName").getLength(); i4 = i4 + 1)
                         {
-                            org.w3c.dom.Element subnetNamesElement = ((org.w3c.dom.Element)subnetNamesSequenceElement.getElementsByTagName("SubnetName").item(i4));
+                            org.w3c.dom.Element subnetNamesElement = ((org.w3c.dom.Element) subnetNamesSequenceElement.getElementsByTagName("SubnetName").item(i4));
                             configurationSetInstance.getSubnetNames().add(subnetNamesElement.getTextContent());
                         }
                     }
                     
                     NodeList elements31 = configurationSetsElement.getElementsByTagName("ComputerName");
-                    Element computerNameElement = elements31.getLength() > 0 ? ((Element)elements31.item(0)) : null;
+                    Element computerNameElement = elements31.getLength() > 0 ? ((Element) elements31.item(0)) : null;
                     if (computerNameElement != null)
                     {
                         String computerNameInstance;
@@ -4905,7 +4996,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     }
                     
                     NodeList elements32 = configurationSetsElement.getElementsByTagName("AdminPassword");
-                    Element adminPasswordElement = elements32.getLength() > 0 ? ((Element)elements32.item(0)) : null;
+                    Element adminPasswordElement = elements32.getLength() > 0 ? ((Element) elements32.item(0)) : null;
                     if (adminPasswordElement != null)
                     {
                         String adminPasswordInstance;
@@ -4914,7 +5005,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     }
                     
                     NodeList elements33 = configurationSetsElement.getElementsByTagName("ResetPasswordOnFirstLogon");
-                    Element resetPasswordOnFirstLogonElement = elements33.getLength() > 0 ? ((Element)elements33.item(0)) : null;
+                    Element resetPasswordOnFirstLogonElement = elements33.getLength() > 0 ? ((Element) elements33.item(0)) : null;
                     if (resetPasswordOnFirstLogonElement != null && (resetPasswordOnFirstLogonElement.getTextContent() != null && resetPasswordOnFirstLogonElement.getTextContent().isEmpty() != true) == false)
                     {
                         boolean resetPasswordOnFirstLogonInstance;
@@ -4923,7 +5014,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     }
                     
                     NodeList elements34 = configurationSetsElement.getElementsByTagName("EnableAutomaticUpdates");
-                    Element enableAutomaticUpdatesElement = elements34.getLength() > 0 ? ((Element)elements34.item(0)) : null;
+                    Element enableAutomaticUpdatesElement = elements34.getLength() > 0 ? ((Element) elements34.item(0)) : null;
                     if (enableAutomaticUpdatesElement != null && (enableAutomaticUpdatesElement.getTextContent() != null && enableAutomaticUpdatesElement.getTextContent().isEmpty() != true) == false)
                     {
                         boolean enableAutomaticUpdatesInstance;
@@ -4932,7 +5023,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     }
                     
                     NodeList elements35 = configurationSetsElement.getElementsByTagName("TimeZone");
-                    Element timeZoneElement = elements35.getLength() > 0 ? ((Element)elements35.item(0)) : null;
+                    Element timeZoneElement = elements35.getLength() > 0 ? ((Element) elements35.item(0)) : null;
                     if (timeZoneElement != null)
                     {
                         String timeZoneInstance;
@@ -4941,21 +5032,21 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     }
                     
                     NodeList elements36 = configurationSetsElement.getElementsByTagName("DomainJoin");
-                    Element domainJoinElement = elements36.getLength() > 0 ? ((Element)elements36.item(0)) : null;
+                    Element domainJoinElement = elements36.getLength() > 0 ? ((Element) elements36.item(0)) : null;
                     if (domainJoinElement != null)
                     {
                         DomainJoinSettings domainJoinInstance = new DomainJoinSettings();
                         configurationSetInstance.setDomainJoin(domainJoinInstance);
                         
                         NodeList elements37 = domainJoinElement.getElementsByTagName("Credentials");
-                        Element credentialsElement = elements37.getLength() > 0 ? ((Element)elements37.item(0)) : null;
+                        Element credentialsElement = elements37.getLength() > 0 ? ((Element) elements37.item(0)) : null;
                         if (credentialsElement != null)
                         {
                             DomainJoinCredentials credentialsInstance = new DomainJoinCredentials();
                             domainJoinInstance.setCredentials(credentialsInstance);
                             
                             NodeList elements38 = credentialsElement.getElementsByTagName("Domain");
-                            Element domainElement = elements38.getLength() > 0 ? ((Element)elements38.item(0)) : null;
+                            Element domainElement = elements38.getLength() > 0 ? ((Element) elements38.item(0)) : null;
                             if (domainElement != null)
                             {
                                 String domainInstance;
@@ -4964,7 +5055,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             }
                             
                             NodeList elements39 = credentialsElement.getElementsByTagName("Username");
-                            Element usernameElement = elements39.getLength() > 0 ? ((Element)elements39.item(0)) : null;
+                            Element usernameElement = elements39.getLength() > 0 ? ((Element) elements39.item(0)) : null;
                             if (usernameElement != null)
                             {
                                 String usernameInstance;
@@ -4973,7 +5064,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             }
                             
                             NodeList elements40 = credentialsElement.getElementsByTagName("Password");
-                            Element passwordElement = elements40.getLength() > 0 ? ((Element)elements40.item(0)) : null;
+                            Element passwordElement = elements40.getLength() > 0 ? ((Element) elements40.item(0)) : null;
                             if (passwordElement != null)
                             {
                                 String passwordInstance;
@@ -4983,7 +5074,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         }
                         
                         NodeList elements41 = domainJoinElement.getElementsByTagName("JoinDomain");
-                        Element joinDomainElement = elements41.getLength() > 0 ? ((Element)elements41.item(0)) : null;
+                        Element joinDomainElement = elements41.getLength() > 0 ? ((Element) elements41.item(0)) : null;
                         if (joinDomainElement != null)
                         {
                             String joinDomainInstance;
@@ -4992,7 +5083,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         }
                         
                         NodeList elements42 = domainJoinElement.getElementsByTagName("MachineObjectOU");
-                        Element machineObjectOUElement = elements42.getLength() > 0 ? ((Element)elements42.item(0)) : null;
+                        Element machineObjectOUElement = elements42.getLength() > 0 ? ((Element) elements42.item(0)) : null;
                         if (machineObjectOUElement != null)
                         {
                             String machineObjectOUInstance;
@@ -5001,14 +5092,14 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         }
                         
                         NodeList elements43 = domainJoinElement.getElementsByTagName("Provisioning");
-                        Element provisioningElement = elements43.getLength() > 0 ? ((Element)elements43.item(0)) : null;
+                        Element provisioningElement = elements43.getLength() > 0 ? ((Element) elements43.item(0)) : null;
                         if (provisioningElement != null)
                         {
                             DomainJoinProvisioning provisioningInstance = new DomainJoinProvisioning();
                             domainJoinInstance.setProvisioning(provisioningInstance);
                             
                             NodeList elements44 = provisioningElement.getElementsByTagName("AccountData");
-                            Element accountDataElement = elements44.getLength() > 0 ? ((Element)elements44.item(0)) : null;
+                            Element accountDataElement = elements44.getLength() > 0 ? ((Element) elements44.item(0)) : null;
                             if (accountDataElement != null)
                             {
                                 String accountDataInstance;
@@ -5019,23 +5110,23 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     }
                     
                     NodeList elements45 = configurationSetsElement.getElementsByTagName("StoredCertificateSettings");
-                    Element storedCertificateSettingsSequenceElement = elements45.getLength() > 0 ? ((Element)elements45.item(0)) : null;
+                    Element storedCertificateSettingsSequenceElement = elements45.getLength() > 0 ? ((Element) elements45.item(0)) : null;
                     if (storedCertificateSettingsSequenceElement != null)
                     {
                         for (int i5 = 0; i5 < storedCertificateSettingsSequenceElement.getElementsByTagName("CertificateSetting").getLength(); i5 = i5 + 1)
                         {
-                            org.w3c.dom.Element storedCertificateSettingsElement = ((org.w3c.dom.Element)storedCertificateSettingsSequenceElement.getElementsByTagName("CertificateSetting").item(i5));
+                            org.w3c.dom.Element storedCertificateSettingsElement = ((org.w3c.dom.Element) storedCertificateSettingsSequenceElement.getElementsByTagName("CertificateSetting").item(i5));
                             StoredCertificateSettings certificateSettingInstance = new StoredCertificateSettings();
                             configurationSetInstance.getStoredCertificateSettings().add(certificateSettingInstance);
                             
                             NodeList elements46 = storedCertificateSettingsElement.getElementsByTagName("StoreLocation");
-                            Element storeLocationElement = elements46.getLength() > 0 ? ((Element)elements46.item(0)) : null;
+                            Element storeLocationElement = elements46.getLength() > 0 ? ((Element) elements46.item(0)) : null;
                             if (storeLocationElement != null)
                             {
                             }
                             
                             NodeList elements47 = storedCertificateSettingsElement.getElementsByTagName("StoreName");
-                            Element storeNameElement = elements47.getLength() > 0 ? ((Element)elements47.item(0)) : null;
+                            Element storeNameElement = elements47.getLength() > 0 ? ((Element) elements47.item(0)) : null;
                             if (storeNameElement != null)
                             {
                                 String storeNameInstance;
@@ -5044,7 +5135,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             }
                             
                             NodeList elements48 = storedCertificateSettingsElement.getElementsByTagName("Thumbprint");
-                            Element thumbprintElement = elements48.getLength() > 0 ? ((Element)elements48.item(0)) : null;
+                            Element thumbprintElement = elements48.getLength() > 0 ? ((Element) elements48.item(0)) : null;
                             if (thumbprintElement != null)
                             {
                                 String thumbprintInstance;
@@ -5055,24 +5146,24 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     }
                     
                     NodeList elements49 = configurationSetsElement.getElementsByTagName("WinRM");
-                    Element winRMElement = elements49.getLength() > 0 ? ((Element)elements49.item(0)) : null;
+                    Element winRMElement = elements49.getLength() > 0 ? ((Element) elements49.item(0)) : null;
                     if (winRMElement != null)
                     {
                         WindowsRemoteManagementSettings winRMInstance = new WindowsRemoteManagementSettings();
                         configurationSetInstance.setWindowsRemoteManagement(winRMInstance);
                         
                         NodeList elements50 = winRMElement.getElementsByTagName("Listeners");
-                        Element listenersSequenceElement = elements50.getLength() > 0 ? ((Element)elements50.item(0)) : null;
+                        Element listenersSequenceElement = elements50.getLength() > 0 ? ((Element) elements50.item(0)) : null;
                         if (listenersSequenceElement != null)
                         {
                             for (int i6 = 0; i6 < listenersSequenceElement.getElementsByTagName("Listener").getLength(); i6 = i6 + 1)
                             {
-                                org.w3c.dom.Element listenersElement = ((org.w3c.dom.Element)listenersSequenceElement.getElementsByTagName("Listener").item(i6));
+                                org.w3c.dom.Element listenersElement = ((org.w3c.dom.Element) listenersSequenceElement.getElementsByTagName("Listener").item(i6));
                                 WindowsRemoteManagementListener listenerInstance = new WindowsRemoteManagementListener();
                                 winRMInstance.getListeners().add(listenerInstance);
                                 
                                 NodeList elements51 = listenersElement.getElementsByTagName("Protocol");
-                                Element protocolElement3 = elements51.getLength() > 0 ? ((Element)elements51.item(0)) : null;
+                                Element protocolElement3 = elements51.getLength() > 0 ? ((Element) elements51.item(0)) : null;
                                 if (protocolElement3 != null)
                                 {
                                     VirtualMachineWindowsRemoteManagementListenerType protocolInstance3;
@@ -5081,7 +5172,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                 }
                                 
                                 NodeList elements52 = listenersElement.getElementsByTagName("CertificateThumbprint");
-                                Element certificateThumbprintElement = elements52.getLength() > 0 ? ((Element)elements52.item(0)) : null;
+                                Element certificateThumbprintElement = elements52.getLength() > 0 ? ((Element) elements52.item(0)) : null;
                                 if (certificateThumbprintElement != null)
                                 {
                                     String certificateThumbprintInstance;
@@ -5093,7 +5184,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     }
                     
                     NodeList elements53 = configurationSetsElement.getElementsByTagName("AdminUsername");
-                    Element adminUsernameElement = elements53.getLength() > 0 ? ((Element)elements53.item(0)) : null;
+                    Element adminUsernameElement = elements53.getLength() > 0 ? ((Element) elements53.item(0)) : null;
                     if (adminUsernameElement != null)
                     {
                         String adminUsernameInstance;
@@ -5102,7 +5193,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     }
                     
                     NodeList elements54 = configurationSetsElement.getElementsByTagName("HostName");
-                    Element hostNameElement = elements54.getLength() > 0 ? ((Element)elements54.item(0)) : null;
+                    Element hostNameElement = elements54.getLength() > 0 ? ((Element) elements54.item(0)) : null;
                     if (hostNameElement != null)
                     {
                         String hostNameInstance;
@@ -5111,7 +5202,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     }
                     
                     NodeList elements55 = configurationSetsElement.getElementsByTagName("UserName");
-                    Element userNameElement = elements55.getLength() > 0 ? ((Element)elements55.item(0)) : null;
+                    Element userNameElement = elements55.getLength() > 0 ? ((Element) elements55.item(0)) : null;
                     if (userNameElement != null)
                     {
                         String userNameInstance;
@@ -5120,7 +5211,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     }
                     
                     NodeList elements56 = configurationSetsElement.getElementsByTagName("UserPassword");
-                    Element userPasswordElement = elements56.getLength() > 0 ? ((Element)elements56.item(0)) : null;
+                    Element userPasswordElement = elements56.getLength() > 0 ? ((Element) elements56.item(0)) : null;
                     if (userPasswordElement != null)
                     {
                         String userPasswordInstance;
@@ -5129,7 +5220,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     }
                     
                     NodeList elements57 = configurationSetsElement.getElementsByTagName("DisableSshPasswordAuthentication");
-                    Element disableSshPasswordAuthenticationElement = elements57.getLength() > 0 ? ((Element)elements57.item(0)) : null;
+                    Element disableSshPasswordAuthenticationElement = elements57.getLength() > 0 ? ((Element) elements57.item(0)) : null;
                     if (disableSshPasswordAuthenticationElement != null && (disableSshPasswordAuthenticationElement.getTextContent() != null && disableSshPasswordAuthenticationElement.getTextContent().isEmpty() != true) == false)
                     {
                         boolean disableSshPasswordAuthenticationInstance;
@@ -5138,24 +5229,24 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     }
                     
                     NodeList elements58 = configurationSetsElement.getElementsByTagName("SSH");
-                    Element sSHElement = elements58.getLength() > 0 ? ((Element)elements58.item(0)) : null;
+                    Element sSHElement = elements58.getLength() > 0 ? ((Element) elements58.item(0)) : null;
                     if (sSHElement != null)
                     {
                         SshSettings sSHInstance = new SshSettings();
                         configurationSetInstance.setSshSettings(sSHInstance);
                         
                         NodeList elements59 = sSHElement.getElementsByTagName("PublicKeys");
-                        Element publicKeysSequenceElement = elements59.getLength() > 0 ? ((Element)elements59.item(0)) : null;
+                        Element publicKeysSequenceElement = elements59.getLength() > 0 ? ((Element) elements59.item(0)) : null;
                         if (publicKeysSequenceElement != null)
                         {
                             for (int i7 = 0; i7 < publicKeysSequenceElement.getElementsByTagName("PublicKey").getLength(); i7 = i7 + 1)
                             {
-                                org.w3c.dom.Element publicKeysElement = ((org.w3c.dom.Element)publicKeysSequenceElement.getElementsByTagName("PublicKey").item(i7));
+                                org.w3c.dom.Element publicKeysElement = ((org.w3c.dom.Element) publicKeysSequenceElement.getElementsByTagName("PublicKey").item(i7));
                                 SshSettingPublicKey publicKeyInstance = new SshSettingPublicKey();
                                 sSHInstance.getPublicKeys().add(publicKeyInstance);
                                 
                                 NodeList elements60 = publicKeysElement.getElementsByTagName("Fingerprint");
-                                Element fingerprintElement = elements60.getLength() > 0 ? ((Element)elements60.item(0)) : null;
+                                Element fingerprintElement = elements60.getLength() > 0 ? ((Element) elements60.item(0)) : null;
                                 if (fingerprintElement != null)
                                 {
                                     String fingerprintInstance;
@@ -5164,7 +5255,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                 }
                                 
                                 NodeList elements61 = publicKeysElement.getElementsByTagName("Path");
-                                Element pathElement2 = elements61.getLength() > 0 ? ((Element)elements61.item(0)) : null;
+                                Element pathElement2 = elements61.getLength() > 0 ? ((Element) elements61.item(0)) : null;
                                 if (pathElement2 != null)
                                 {
                                     String pathInstance2;
@@ -5175,17 +5266,17 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         }
                         
                         NodeList elements62 = sSHElement.getElementsByTagName("KeyPairs");
-                        Element keyPairsSequenceElement = elements62.getLength() > 0 ? ((Element)elements62.item(0)) : null;
+                        Element keyPairsSequenceElement = elements62.getLength() > 0 ? ((Element) elements62.item(0)) : null;
                         if (keyPairsSequenceElement != null)
                         {
                             for (int i8 = 0; i8 < keyPairsSequenceElement.getElementsByTagName("KeyPair").getLength(); i8 = i8 + 1)
                             {
-                                org.w3c.dom.Element keyPairsElement = ((org.w3c.dom.Element)keyPairsSequenceElement.getElementsByTagName("KeyPair").item(i8));
+                                org.w3c.dom.Element keyPairsElement = ((org.w3c.dom.Element) keyPairsSequenceElement.getElementsByTagName("KeyPair").item(i8));
                                 SshSettingKeyPair keyPairInstance = new SshSettingKeyPair();
                                 sSHInstance.getKeyPairs().add(keyPairInstance);
                                 
                                 NodeList elements63 = keyPairsElement.getElementsByTagName("Fingerprint");
-                                Element fingerprintElement2 = elements63.getLength() > 0 ? ((Element)elements63.item(0)) : null;
+                                Element fingerprintElement2 = elements63.getLength() > 0 ? ((Element) elements63.item(0)) : null;
                                 if (fingerprintElement2 != null)
                                 {
                                     String fingerprintInstance2;
@@ -5194,7 +5285,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                 }
                                 
                                 NodeList elements64 = keyPairsElement.getElementsByTagName("Path");
-                                Element pathElement3 = elements64.getLength() > 0 ? ((Element)elements64.item(0)) : null;
+                                Element pathElement3 = elements64.getLength() > 0 ? ((Element) elements64.item(0)) : null;
                                 if (pathElement3 != null)
                                 {
                                     String pathInstance3;
@@ -5208,17 +5299,17 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             }
             
             NodeList elements65 = persistentVMRoleElement.getElementsByTagName("DataVirtualHardDisks");
-            Element dataVirtualHardDisksSequenceElement = elements65.getLength() > 0 ? ((Element)elements65.item(0)) : null;
+            Element dataVirtualHardDisksSequenceElement = elements65.getLength() > 0 ? ((Element) elements65.item(0)) : null;
             if (dataVirtualHardDisksSequenceElement != null)
             {
                 for (int i9 = 0; i9 < dataVirtualHardDisksSequenceElement.getElementsByTagName("DataVirtualHardDisk").getLength(); i9 = i9 + 1)
                 {
-                    org.w3c.dom.Element dataVirtualHardDisksElement = ((org.w3c.dom.Element)dataVirtualHardDisksSequenceElement.getElementsByTagName("DataVirtualHardDisk").item(i9));
+                    org.w3c.dom.Element dataVirtualHardDisksElement = ((org.w3c.dom.Element) dataVirtualHardDisksSequenceElement.getElementsByTagName("DataVirtualHardDisk").item(i9));
                     DataVirtualHardDisk dataVirtualHardDiskInstance = new DataVirtualHardDisk();
                     result.getDataVirtualHardDisks().add(dataVirtualHardDiskInstance);
                     
                     NodeList elements66 = dataVirtualHardDisksElement.getElementsByTagName("HostCaching");
-                    Element hostCachingElement = elements66.getLength() > 0 ? ((Element)elements66.item(0)) : null;
+                    Element hostCachingElement = elements66.getLength() > 0 ? ((Element) elements66.item(0)) : null;
                     if (hostCachingElement != null && (hostCachingElement.getTextContent() != null && hostCachingElement.getTextContent().isEmpty() != true) == false)
                     {
                         VirtualHardDiskHostCaching hostCachingInstance;
@@ -5227,7 +5318,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     }
                     
                     NodeList elements67 = dataVirtualHardDisksElement.getElementsByTagName("DiskLabel");
-                    Element diskLabelElement = elements67.getLength() > 0 ? ((Element)elements67.item(0)) : null;
+                    Element diskLabelElement = elements67.getLength() > 0 ? ((Element) elements67.item(0)) : null;
                     if (diskLabelElement != null)
                     {
                         String diskLabelInstance;
@@ -5236,7 +5327,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     }
                     
                     NodeList elements68 = dataVirtualHardDisksElement.getElementsByTagName("DiskName");
-                    Element diskNameElement = elements68.getLength() > 0 ? ((Element)elements68.item(0)) : null;
+                    Element diskNameElement = elements68.getLength() > 0 ? ((Element) elements68.item(0)) : null;
                     if (diskNameElement != null)
                     {
                         String diskNameInstance;
@@ -5245,7 +5336,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     }
                     
                     NodeList elements69 = dataVirtualHardDisksElement.getElementsByTagName("Lun");
-                    Element lunElement = elements69.getLength() > 0 ? ((Element)elements69.item(0)) : null;
+                    Element lunElement = elements69.getLength() > 0 ? ((Element) elements69.item(0)) : null;
                     if (lunElement != null && (lunElement.getTextContent() != null && lunElement.getTextContent().isEmpty() != true) == false)
                     {
                         int lunInstance;
@@ -5254,7 +5345,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     }
                     
                     NodeList elements70 = dataVirtualHardDisksElement.getElementsByTagName("LogicalDiskSizeInGB");
-                    Element logicalDiskSizeInGBElement = elements70.getLength() > 0 ? ((Element)elements70.item(0)) : null;
+                    Element logicalDiskSizeInGBElement = elements70.getLength() > 0 ? ((Element) elements70.item(0)) : null;
                     if (logicalDiskSizeInGBElement != null)
                     {
                         int logicalDiskSizeInGBInstance;
@@ -5263,7 +5354,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     }
                     
                     NodeList elements71 = dataVirtualHardDisksElement.getElementsByTagName("MediaLink");
-                    Element mediaLinkElement = elements71.getLength() > 0 ? ((Element)elements71.item(0)) : null;
+                    Element mediaLinkElement = elements71.getLength() > 0 ? ((Element) elements71.item(0)) : null;
                     if (mediaLinkElement != null)
                     {
                         URI mediaLinkInstance;
@@ -5274,14 +5365,14 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             }
             
             NodeList elements72 = persistentVMRoleElement.getElementsByTagName("OSVirtualHardDisk");
-            Element oSVirtualHardDiskElement = elements72.getLength() > 0 ? ((Element)elements72.item(0)) : null;
+            Element oSVirtualHardDiskElement = elements72.getLength() > 0 ? ((Element) elements72.item(0)) : null;
             if (oSVirtualHardDiskElement != null)
             {
                 OSVirtualHardDisk oSVirtualHardDiskInstance = new OSVirtualHardDisk();
                 result.setOSVirtualHardDisk(oSVirtualHardDiskInstance);
                 
                 NodeList elements73 = oSVirtualHardDiskElement.getElementsByTagName("HostCaching");
-                Element hostCachingElement2 = elements73.getLength() > 0 ? ((Element)elements73.item(0)) : null;
+                Element hostCachingElement2 = elements73.getLength() > 0 ? ((Element) elements73.item(0)) : null;
                 if (hostCachingElement2 != null && (hostCachingElement2.getTextContent() != null && hostCachingElement2.getTextContent().isEmpty() != true) == false)
                 {
                     VirtualHardDiskHostCaching hostCachingInstance2;
@@ -5290,7 +5381,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 }
                 
                 NodeList elements74 = oSVirtualHardDiskElement.getElementsByTagName("DiskLabel");
-                Element diskLabelElement2 = elements74.getLength() > 0 ? ((Element)elements74.item(0)) : null;
+                Element diskLabelElement2 = elements74.getLength() > 0 ? ((Element) elements74.item(0)) : null;
                 if (diskLabelElement2 != null)
                 {
                     String diskLabelInstance2;
@@ -5299,7 +5390,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 }
                 
                 NodeList elements75 = oSVirtualHardDiskElement.getElementsByTagName("DiskName");
-                Element diskNameElement2 = elements75.getLength() > 0 ? ((Element)elements75.item(0)) : null;
+                Element diskNameElement2 = elements75.getLength() > 0 ? ((Element) elements75.item(0)) : null;
                 if (diskNameElement2 != null)
                 {
                     String diskNameInstance2;
@@ -5308,7 +5399,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 }
                 
                 NodeList elements76 = oSVirtualHardDiskElement.getElementsByTagName("MediaLink");
-                Element mediaLinkElement2 = elements76.getLength() > 0 ? ((Element)elements76.item(0)) : null;
+                Element mediaLinkElement2 = elements76.getLength() > 0 ? ((Element) elements76.item(0)) : null;
                 if (mediaLinkElement2 != null)
                 {
                     URI mediaLinkInstance2;
@@ -5317,7 +5408,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 }
                 
                 NodeList elements77 = oSVirtualHardDiskElement.getElementsByTagName("SourceImageName");
-                Element sourceImageNameElement = elements77.getLength() > 0 ? ((Element)elements77.item(0)) : null;
+                Element sourceImageNameElement = elements77.getLength() > 0 ? ((Element) elements77.item(0)) : null;
                 if (sourceImageNameElement != null)
                 {
                     String sourceImageNameInstance;
@@ -5326,7 +5417,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 }
                 
                 NodeList elements78 = oSVirtualHardDiskElement.getElementsByTagName("OS");
-                Element osElement = elements78.getLength() > 0 ? ((Element)elements78.item(0)) : null;
+                Element osElement = elements78.getLength() > 0 ? ((Element) elements78.item(0)) : null;
                 if (osElement != null)
                 {
                     String osInstance;
@@ -5434,7 +5525,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -5551,14 +5642,26 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;
@@ -5662,14 +5765,26 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;
@@ -5768,14 +5883,26 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;
@@ -5876,14 +6003,26 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;
@@ -5980,14 +6119,26 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;
@@ -6095,14 +6246,26 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;
@@ -6207,14 +6370,26 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;

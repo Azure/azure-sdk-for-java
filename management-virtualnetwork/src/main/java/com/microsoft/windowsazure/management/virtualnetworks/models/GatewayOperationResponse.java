@@ -32,15 +32,13 @@ public class GatewayOperationResponse extends OperationResponse
 {
     private String operationId;
     
-    public String getOperationId() { return this.operationId; }
-    
-    public void setOperationId(String operationId) { this.operationId = operationId; }
-    
-    /**
-    * Initializes a new instance of the GatewayOperationResponse class.
-    *
-    */
-    public GatewayOperationResponse()
+    public String getOperationId()
     {
+        return this.operationId;
+    }
+    
+    public void setOperationId(String operationId)
+    {
+        this.operationId = operationId;
     }
 }

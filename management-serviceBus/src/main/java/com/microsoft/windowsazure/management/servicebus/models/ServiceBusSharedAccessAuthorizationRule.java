@@ -36,108 +36,162 @@ public class ServiceBusSharedAccessAuthorizationRule
     /**
     * The type of the claim.
     */
-    public String getClaimType() { return this.claimType; }
+    public String getClaimType()
+    {
+        return this.claimType;
+    }
     
     /**
     * The type of the claim.
     */
-    public void setClaimType(String claimType) { this.claimType = claimType; }
+    public void setClaimType(String claimType)
+    {
+        this.claimType = claimType;
+    }
     
     private String claimValue;
     
     /**
     * The value of the claim.
     */
-    public String getClaimValue() { return this.claimValue; }
+    public String getClaimValue()
+    {
+        return this.claimValue;
+    }
     
     /**
     * The value of the claim.
     */
-    public void setClaimValue(String claimValue) { this.claimValue = claimValue; }
+    public void setClaimValue(String claimValue)
+    {
+        this.claimValue = claimValue;
+    }
     
     private Calendar createdTime;
     
     /**
     * The time at which the authorization rule was created.
     */
-    public Calendar getCreatedTime() { return this.createdTime; }
+    public Calendar getCreatedTime()
+    {
+        return this.createdTime;
+    }
     
     /**
     * The time at which the authorization rule was created.
     */
-    public void setCreatedTime(Calendar createdTime) { this.createdTime = createdTime; }
+    public void setCreatedTime(Calendar createdTime)
+    {
+        this.createdTime = createdTime;
+    }
     
     private String keyName;
     
     /**
     * The name of the key that was used.
     */
-    public String getKeyName() { return this.keyName; }
+    public String getKeyName()
+    {
+        return this.keyName;
+    }
     
     /**
     * The name of the key that was used.
     */
-    public void setKeyName(String keyName) { this.keyName = keyName; }
+    public void setKeyName(String keyName)
+    {
+        this.keyName = keyName;
+    }
     
     private Calendar modifiedTime;
     
     /**
     * The most recent time the rule was updated.
     */
-    public Calendar getModifiedTime() { return this.modifiedTime; }
+    public Calendar getModifiedTime()
+    {
+        return this.modifiedTime;
+    }
     
     /**
     * The most recent time the rule was updated.
     */
-    public void setModifiedTime(Calendar modifiedTime) { this.modifiedTime = modifiedTime; }
+    public void setModifiedTime(Calendar modifiedTime)
+    {
+        this.modifiedTime = modifiedTime;
+    }
     
     private String primaryKey;
     
     /**
     * The primary key that was used.
     */
-    public String getPrimaryKey() { return this.primaryKey; }
+    public String getPrimaryKey()
+    {
+        return this.primaryKey;
+    }
     
     /**
     * The primary key that was used.
     */
-    public void setPrimaryKey(String primaryKey) { this.primaryKey = primaryKey; }
+    public void setPrimaryKey(String primaryKey)
+    {
+        this.primaryKey = primaryKey;
+    }
     
     private int revision;
     
     /**
     * The revision number for the rule.
     */
-    public int getRevision() { return this.revision; }
+    public int getRevision()
+    {
+        return this.revision;
+    }
     
     /**
     * The revision number for the rule.
     */
-    public void setRevision(int revision) { this.revision = revision; }
+    public void setRevision(int revision)
+    {
+        this.revision = revision;
+    }
     
     private ArrayList<AccessRight> rights;
     
     /**
     * The rights associated with the rule.
     */
-    public ArrayList<AccessRight> getRights() { return this.rights; }
+    public ArrayList<AccessRight> getRights()
+    {
+        return this.rights;
+    }
     
     /**
     * The rights associated with the rule.
     */
-    public void setRights(ArrayList<AccessRight> rights) { this.rights = rights; }
+    public void setRights(ArrayList<AccessRight> rights)
+    {
+        this.rights = rights;
+    }
     
     private String secondaryKey;
     
     /**
     * The secondary key that was used.
     */
-    public String getSecondaryKey() { return this.secondaryKey; }
+    public String getSecondaryKey()
+    {
+        return this.secondaryKey;
+    }
     
     /**
     * The secondary key that was used.
     */
-    public void setSecondaryKey(String secondaryKey) { this.secondaryKey = secondaryKey; }
+    public void setSecondaryKey(String secondaryKey)
+    {
+        this.secondaryKey = secondaryKey;
+    }
     
     /**
     * Initializes a new instance of the ServiceBusSharedAccessAuthorizationRule

@@ -33,12 +33,18 @@ public class ServiceBusTopic
     /**
     * The time the queue was last accessed.
     */
-    public Calendar getAccessedAt() { return this.accessedAt; }
+    public Calendar getAccessedAt()
+    {
+        return this.accessedAt;
+    }
     
     /**
     * The time the queue was last accessed.
     */
-    public void setAccessedAt(Calendar accessedAt) { this.accessedAt = accessedAt; }
+    public void setAccessedAt(Calendar accessedAt)
+    {
+        this.accessedAt = accessedAt;
+    }
     
     private ArrayList<ServiceBusSharedAccessAuthorizationRule> authorizationRules;
     
@@ -47,50 +53,74 @@ public class ServiceBusTopic
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
     * more information)
     */
-    public ArrayList<ServiceBusSharedAccessAuthorizationRule> getAuthorizationRules() { return this.authorizationRules; }
+    public ArrayList<ServiceBusSharedAccessAuthorizationRule> getAuthorizationRules()
+    {
+        return this.authorizationRules;
+    }
     
     /**
     * Gets the authorization rules for the description.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
     * more information)
     */
-    public void setAuthorizationRules(ArrayList<ServiceBusSharedAccessAuthorizationRule> authorizationRules) { this.authorizationRules = authorizationRules; }
+    public void setAuthorizationRules(ArrayList<ServiceBusSharedAccessAuthorizationRule> authorizationRules)
+    {
+        this.authorizationRules = authorizationRules;
+    }
     
     private String autoDeleteOnIdle;
     
     /**
     * Implemented.
     */
-    public String getAutoDeleteOnIdle() { return this.autoDeleteOnIdle; }
+    public String getAutoDeleteOnIdle()
+    {
+        return this.autoDeleteOnIdle;
+    }
     
     /**
     * Implemented.
     */
-    public void setAutoDeleteOnIdle(String autoDeleteOnIdle) { this.autoDeleteOnIdle = autoDeleteOnIdle; }
+    public void setAutoDeleteOnIdle(String autoDeleteOnIdle)
+    {
+        this.autoDeleteOnIdle = autoDeleteOnIdle;
+    }
     
     private CountDetails countDetails;
     
     /**
     * Current queue statistics.
     */
-    public CountDetails getCountDetails() { return this.countDetails; }
+    public CountDetails getCountDetails()
+    {
+        return this.countDetails;
+    }
     
     /**
     * Current queue statistics.
     */
-    public void setCountDetails(CountDetails countDetails) { this.countDetails = countDetails; }
+    public void setCountDetails(CountDetails countDetails)
+    {
+        this.countDetails = countDetails;
+    }
     
     private Calendar createdAt;
     
     /**
     * The time the queue was created at.
     */
-    public Calendar getCreatedAt() { return this.createdAt; }
+    public Calendar getCreatedAt()
+    {
+        return this.createdAt;
+    }
     
     /**
     * The time the queue was created at.
     */
-    public void setCreatedAt(Calendar createdAt) { this.createdAt = createdAt; }
+    public void setCreatedAt(Calendar createdAt)
+    {
+        this.createdAt = createdAt;
+    }
     
     private String defaultMessageTimeToLive;
     
@@ -105,7 +135,10 @@ public class ServiceBusTopic
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj839740.aspx for
     * more information)
     */
-    public String getDefaultMessageTimeToLive() { return this.defaultMessageTimeToLive; }
+    public String getDefaultMessageTimeToLive()
+    {
+        return this.defaultMessageTimeToLive;
+    }
     
     /**
     * Determines how long a message lives in the associated subscriptions.
@@ -118,7 +151,10 @@ public class ServiceBusTopic
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj839740.aspx for
     * more information)
     */
-    public void setDefaultMessageTimeToLive(String defaultMessageTimeToLive) { this.defaultMessageTimeToLive = defaultMessageTimeToLive; }
+    public void setDefaultMessageTimeToLive(String defaultMessageTimeToLive)
+    {
+        this.defaultMessageTimeToLive = defaultMessageTimeToLive;
+    }
     
     private String duplicateDetectionHistoryTimeWindow;
     
@@ -128,7 +164,10 @@ public class ServiceBusTopic
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
     * more information)
     */
-    public String getDuplicateDetectionHistoryTimeWindow() { return this.duplicateDetectionHistoryTimeWindow; }
+    public String getDuplicateDetectionHistoryTimeWindow()
+    {
+        return this.duplicateDetectionHistoryTimeWindow;
+    }
     
     /**
     * Specifies the time span during which the Service Bus will detect message
@@ -136,7 +175,10 @@ public class ServiceBusTopic
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
     * more information)
     */
-    public void setDuplicateDetectionHistoryTimeWindow(String duplicateDetectionHistoryTimeWindow) { this.duplicateDetectionHistoryTimeWindow = duplicateDetectionHistoryTimeWindow; }
+    public void setDuplicateDetectionHistoryTimeWindow(String duplicateDetectionHistoryTimeWindow)
+    {
+        this.duplicateDetectionHistoryTimeWindow = duplicateDetectionHistoryTimeWindow;
+    }
     
     private boolean enableBatchedOperations;
     
@@ -149,7 +191,10 @@ public class ServiceBusTopic
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
     * more information)
     */
-    public boolean getEnableBatchedOperations() { return this.enableBatchedOperations; }
+    public boolean isEnableBatchedOperations()
+    {
+        return this.enableBatchedOperations;
+    }
     
     /**
     * Enables or disables service side batching behavior when performing
@@ -160,19 +205,28 @@ public class ServiceBusTopic
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
     * more information)
     */
-    public void setEnableBatchedOperations(boolean enableBatchedOperations) { this.enableBatchedOperations = enableBatchedOperations; }
+    public void setEnableBatchedOperations(boolean enableBatchedOperations)
+    {
+        this.enableBatchedOperations = enableBatchedOperations;
+    }
     
     private String entityAvailabilityStatus;
     
     /**
     * The current availability status of the topic.
     */
-    public String getEntityAvailabilityStatus() { return this.entityAvailabilityStatus; }
+    public String getEntityAvailabilityStatus()
+    {
+        return this.entityAvailabilityStatus;
+    }
     
     /**
     * The current availability status of the topic.
     */
-    public void setEntityAvailabilityStatus(String entityAvailabilityStatus) { this.entityAvailabilityStatus = entityAvailabilityStatus; }
+    public void setEntityAvailabilityStatus(String entityAvailabilityStatus)
+    {
+        this.entityAvailabilityStatus = entityAvailabilityStatus;
+    }
     
     private boolean filteringMessagesBeforePublishing;
     
@@ -181,14 +235,20 @@ public class ServiceBusTopic
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
     * more information)
     */
-    public boolean getFilteringMessagesBeforePublishing() { return this.filteringMessagesBeforePublishing; }
+    public boolean isFilteringMessagesBeforePublishing()
+    {
+        return this.filteringMessagesBeforePublishing;
+    }
     
     /**
     * Gets or sets whether messages should be filtered before publishing.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
     * more information)
     */
-    public void setFilteringMessagesBeforePublishing(boolean filteringMessagesBeforePublishing) { this.filteringMessagesBeforePublishing = filteringMessagesBeforePublishing; }
+    public void setFilteringMessagesBeforePublishing(boolean filteringMessagesBeforePublishing)
+    {
+        this.filteringMessagesBeforePublishing = filteringMessagesBeforePublishing;
+    }
     
     private boolean isAnonymousAccessible;
     
@@ -197,14 +257,20 @@ public class ServiceBusTopic
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
     * more information)
     */
-    public boolean getIsAnonymousAccessible() { return this.isAnonymousAccessible; }
+    public boolean isAnonymousAccessible()
+    {
+        return this.isAnonymousAccessible;
+    }
     
     /**
     * Gets whether anonymous access is allowed.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
     * more information)
     */
-    public void setIsAnonymousAccessible(boolean isAnonymousAccessible) { this.isAnonymousAccessible = isAnonymousAccessible; }
+    public void setIsAnonymousAccessible(boolean isAnonymousAccessible)
+    {
+        this.isAnonymousAccessible = isAnonymousAccessible;
+    }
     
     private int maxSizeInMegabytes;
     
@@ -221,7 +287,10 @@ public class ServiceBusTopic
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
     * more information)
     */
-    public int getMaxSizeInMegabytes() { return this.maxSizeInMegabytes; }
+    public int getMaxSizeInMegabytes()
+    {
+        return this.maxSizeInMegabytes;
+    }
     
     /**
     * Specifies the maximum topic size in megabytes. Any attempt to enqueue a
@@ -236,19 +305,28 @@ public class ServiceBusTopic
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
     * more information)
     */
-    public void setMaxSizeInMegabytes(int maxSizeInMegabytes) { this.maxSizeInMegabytes = maxSizeInMegabytes; }
+    public void setMaxSizeInMegabytes(int maxSizeInMegabytes)
+    {
+        this.maxSizeInMegabytes = maxSizeInMegabytes;
+    }
     
     private String name;
     
     /**
     * The name of the topic.
     */
-    public String getName() { return this.name; }
+    public String getName()
+    {
+        return this.name;
+    }
     
     /**
     * The name of the topic.
     */
-    public void setName(String name) { this.name = name; }
+    public void setName(String name)
+    {
+        this.name = name;
+    }
     
     private boolean requiresDuplicateDetection;
     
@@ -259,7 +337,10 @@ public class ServiceBusTopic
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
     * more information)
     */
-    public boolean getRequiresDuplicateDetection() { return this.requiresDuplicateDetection; }
+    public boolean isRequiresDuplicateDetection()
+    {
+        return this.requiresDuplicateDetection;
+    }
     
     /**
     * If enabled, the topic will detect duplicate messages within the time span
@@ -268,7 +349,10 @@ public class ServiceBusTopic
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
     * more information)
     */
-    public void setRequiresDuplicateDetection(boolean requiresDuplicateDetection) { this.requiresDuplicateDetection = requiresDuplicateDetection; }
+    public void setRequiresDuplicateDetection(boolean requiresDuplicateDetection)
+    {
+        this.requiresDuplicateDetection = requiresDuplicateDetection;
+    }
     
     private int sizeInBytes;
     
@@ -278,7 +362,10 @@ public class ServiceBusTopic
     * (see http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx
     * for more information)
     */
-    public int getSizeInBytes() { return this.sizeInBytes; }
+    public int getSizeInBytes()
+    {
+        return this.sizeInBytes;
+    }
     
     /**
     * Reflects the actual bytes toward the topic quota that messages in the
@@ -286,7 +373,10 @@ public class ServiceBusTopic
     * (see http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx
     * for more information)
     */
-    public void setSizeInBytes(int sizeInBytes) { this.sizeInBytes = sizeInBytes; }
+    public void setSizeInBytes(int sizeInBytes)
+    {
+        this.sizeInBytes = sizeInBytes;
+    }
     
     private String status;
     
@@ -296,7 +386,10 @@ public class ServiceBusTopic
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
     * more information)
     */
-    public String getStatus() { return this.status; }
+    public String getStatus()
+    {
+        return this.status;
+    }
     
     /**
     * Gets or sets the current status of the topic (enabled or disabled). When
@@ -304,19 +397,28 @@ public class ServiceBusTopic
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
     * more information)
     */
-    public void setStatus(String status) { this.status = status; }
+    public void setStatus(String status)
+    {
+        this.status = status;
+    }
     
     private int subscriptionCount;
     
     /**
     * The current number of subscriptions to the topic.
     */
-    public int getSubscriptionCount() { return this.subscriptionCount; }
+    public int getSubscriptionCount()
+    {
+        return this.subscriptionCount;
+    }
     
     /**
     * The current number of subscriptions to the topic.
     */
-    public void setSubscriptionCount(int subscriptionCount) { this.subscriptionCount = subscriptionCount; }
+    public void setSubscriptionCount(int subscriptionCount)
+    {
+        this.subscriptionCount = subscriptionCount;
+    }
     
     private boolean supportOrdering;
     
@@ -325,26 +427,38 @@ public class ServiceBusTopic
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
     * more information)
     */
-    public boolean getSupportOrdering() { return this.supportOrdering; }
+    public boolean isSupportOrdering()
+    {
+        return this.supportOrdering;
+    }
     
     /**
     * Gets or sets whether the topics can be ordered.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
     * more information)
     */
-    public void setSupportOrdering(boolean supportOrdering) { this.supportOrdering = supportOrdering; }
+    public void setSupportOrdering(boolean supportOrdering)
+    {
+        this.supportOrdering = supportOrdering;
+    }
     
     private Calendar updatedAt;
     
     /**
     * The time the queue was last updated.
     */
-    public Calendar getUpdatedAt() { return this.updatedAt; }
+    public Calendar getUpdatedAt()
+    {
+        return this.updatedAt;
+    }
     
     /**
     * The time the queue was last updated.
     */
-    public void setUpdatedAt(Calendar updatedAt) { this.updatedAt = updatedAt; }
+    public void setUpdatedAt(Calendar updatedAt)
+    {
+        this.updatedAt = updatedAt;
+    }
     
     /**
     * Initializes a new instance of the ServiceBusTopic class.

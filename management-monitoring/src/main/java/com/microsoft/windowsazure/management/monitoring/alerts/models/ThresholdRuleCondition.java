@@ -35,36 +35,54 @@ public class ThresholdRuleCondition extends RuleCondition
     /**
     * Condition data source.
     */
-    public RuleDataSource getDataSource() { return this.dataSource; }
+    public RuleDataSource getDataSource()
+    {
+        return this.dataSource;
+    }
     
     /**
     * Condition data source.
     */
-    public void setDataSource(RuleDataSource dataSource) { this.dataSource = dataSource; }
+    public void setDataSource(RuleDataSource dataSource)
+    {
+        this.dataSource = dataSource;
+    }
     
     private ConditionOperator operator;
     
     /**
     * Condition operator.
     */
-    public ConditionOperator getOperator() { return this.operator; }
+    public ConditionOperator getOperator()
+    {
+        return this.operator;
+    }
     
     /**
     * Condition operator.
     */
-    public void setOperator(ConditionOperator operator) { this.operator = operator; }
+    public void setOperator(ConditionOperator operator)
+    {
+        this.operator = operator;
+    }
     
     private double threshold;
     
     /**
     * Condition threshold.
     */
-    public double getThreshold() { return this.threshold; }
+    public double getThreshold()
+    {
+        return this.threshold;
+    }
     
     /**
     * Condition threshold.
     */
-    public void setThreshold(double threshold) { this.threshold = threshold; }
+    public void setThreshold(double threshold)
+    {
+        this.threshold = threshold;
+    }
     
     private Duration windowSize;
     
@@ -72,19 +90,17 @@ public class ThresholdRuleCondition extends RuleCondition
     * The time period over which the alert rule is evaluated. Condition window
     * size depends on the metric.
     */
-    public Duration getWindowSize() { return this.windowSize; }
+    public Duration getWindowSize()
+    {
+        return this.windowSize;
+    }
     
     /**
     * The time period over which the alert rule is evaluated. Condition window
     * size depends on the metric.
     */
-    public void setWindowSize(Duration windowSize) { this.windowSize = windowSize; }
-    
-    /**
-    * Initializes a new instance of the ThresholdRuleCondition class.
-    *
-    */
-    public ThresholdRuleCondition()
+    public void setWindowSize(Duration windowSize)
     {
+        this.windowSize = windowSize;
     }
 }

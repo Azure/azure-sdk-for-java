@@ -33,43 +33,52 @@ public class ServiceCertificateDeleteParameters
     /**
     * The DNS prefix name of your service.
     */
-    public String getServiceName() { return this.serviceName; }
+    public String getServiceName()
+    {
+        return this.serviceName;
+    }
     
     /**
     * The DNS prefix name of your service.
     */
-    public void setServiceName(String serviceName) { this.serviceName = serviceName; }
+    public void setServiceName(String serviceName)
+    {
+        this.serviceName = serviceName;
+    }
     
     private String thumbprint;
     
     /**
     * The hexadecimal representation of the thumbprint.
     */
-    public String getThumbprint() { return this.thumbprint; }
+    public String getThumbprint()
+    {
+        return this.thumbprint;
+    }
     
     /**
     * The hexadecimal representation of the thumbprint.
     */
-    public void setThumbprint(String thumbprint) { this.thumbprint = thumbprint; }
+    public void setThumbprint(String thumbprint)
+    {
+        this.thumbprint = thumbprint;
+    }
     
     private String thumbprintAlgorithm;
     
     /**
     * The algorithm for the certificate's thumbprint.
     */
-    public String getThumbprintAlgorithm() { return this.thumbprintAlgorithm; }
+    public String getThumbprintAlgorithm()
+    {
+        return this.thumbprintAlgorithm;
+    }
     
     /**
     * The algorithm for the certificate's thumbprint.
     */
-    public void setThumbprintAlgorithm(String thumbprintAlgorithm) { this.thumbprintAlgorithm = thumbprintAlgorithm; }
-    
-    /**
-    * Initializes a new instance of the ServiceCertificateDeleteParameters
-    * class.
-    *
-    */
-    public ServiceCertificateDeleteParameters()
+    public void setThumbprintAlgorithm(String thumbprintAlgorithm)
     {
+        this.thumbprintAlgorithm = thumbprintAlgorithm;
     }
 }

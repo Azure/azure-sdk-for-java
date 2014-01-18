@@ -43,6 +43,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 import javax.xml.datatype.Duration;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -66,7 +67,10 @@ public class MetricDefinitionOperationsImpl implements ServiceOperations<Metrics
     * Gets a reference to the
     * microsoft.windowsazure.management.monitoring.metrics.MetricsClientImpl.
     */
-    public MetricsClientImpl getClient() { return this.client; }
+    public MetricsClientImpl getClient()
+    {
+        return this.client;
+    }
     
     /**
     * The List Metric Definitions operation lists the metric definitions for
@@ -128,14 +132,14 @@ public class MetricDefinitionOperationsImpl implements ServiceOperations<Metrics
         
         // Construct URL
         String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/monitoring/metricdefinitions/query?";
-        url = url + "&resourceId=" + URLEncoder.encode(resourceId);
+        url = url + "&resourceId=" + URLEncoder.encode(resourceId, "UTF-8");
         if (metricNamespace != null)
         {
-            url = url + "&namespace=" + URLEncoder.encode(metricNamespace);
+            url = url + "&namespace=" + URLEncoder.encode(metricNamespace, "UTF-8");
         }
         if (metricNames != null && metricNames.size() > 0)
         {
-            url = url + "&names=" + URLEncoder.encode(CommaStringBuilder.join(metricNames));
+            url = url + "&names=" + URLEncoder.encode(CommaStringBuilder.join(metricNames), "UTF-8");
         }
         
         // Create HTTP transport objects
@@ -157,7 +161,7 @@ public class MetricDefinitionOperationsImpl implements ServiceOperations<Metrics
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromJson(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -177,105 +181,109 @@ public class MetricDefinitionOperationsImpl implements ServiceOperations<Metrics
         
         if (responseDoc != null)
         {
-            MetricDefinitionCollection metricDefinitionCollectionInstance = new MetricDefinitionCollection();
-            result.setMetricDefinitionCollection(metricDefinitionCollectionInstance);
-            
-            ArrayNode valueArray = ((ArrayNode)responseDoc.get("Value"));
-            if (valueArray != null)
+            JsonNode metricDefinitionCollectionValue = responseDoc.get("MetricDefinitionCollection");
+            if (metricDefinitionCollectionValue != null)
             {
-                for (JsonNode valueValue : valueArray)
+                MetricDefinitionCollection metricDefinitionCollectionInstance = new MetricDefinitionCollection();
+                result.setMetricDefinitionCollection(metricDefinitionCollectionInstance);
+                
+                ArrayNode valueArray = ((ArrayNode) metricDefinitionCollectionValue.get("Value"));
+                if (valueArray != null)
                 {
-                    MetricDefinition metricDefinitionInstance = new MetricDefinition();
-                    metricDefinitionCollectionInstance.getValue().add(metricDefinitionInstance);
-                    
-                    JsonNode nameValue = valueValue.get("Name");
-                    if (nameValue != null)
+                    for (JsonNode valueValue : valueArray)
                     {
-                        String nameInstance;
-                        nameInstance = nameValue.getTextValue();
-                        metricDefinitionInstance.setName(nameInstance);
-                    }
-                    
-                    JsonNode namespaceValue = valueValue.get("Namespace");
-                    if (namespaceValue != null)
-                    {
-                        String namespaceInstance;
-                        namespaceInstance = namespaceValue.getTextValue();
-                        metricDefinitionInstance.setNamespace(namespaceInstance);
-                    }
-                    
-                    JsonNode resourceIdSuffixValue = valueValue.get("ResourceIdSuffix");
-                    if (resourceIdSuffixValue != null)
-                    {
-                        String resourceIdSuffixInstance;
-                        resourceIdSuffixInstance = resourceIdSuffixValue.getTextValue();
-                        metricDefinitionInstance.setResourceIdSuffix(resourceIdSuffixInstance);
-                    }
-                    
-                    JsonNode displayNameValue = valueValue.get("DisplayName");
-                    if (displayNameValue != null)
-                    {
-                        String displayNameInstance;
-                        displayNameInstance = displayNameValue.getTextValue();
-                        metricDefinitionInstance.setDisplayName(displayNameInstance);
-                    }
-                    
-                    JsonNode unitValue = valueValue.get("Unit");
-                    if (unitValue != null)
-                    {
-                        String unitInstance;
-                        unitInstance = unitValue.getTextValue();
-                        metricDefinitionInstance.setUnit(unitInstance);
-                    }
-                    
-                    JsonNode primaryAggregationValue = valueValue.get("PrimaryAggregation");
-                    if (primaryAggregationValue != null)
-                    {
-                        String primaryAggregationInstance;
-                        primaryAggregationInstance = primaryAggregationValue.getTextValue();
-                        metricDefinitionInstance.setPrimaryAggregation(primaryAggregationInstance);
-                    }
-                    
-                    ArrayNode metricAvailabilitiesArray = ((ArrayNode)valueValue.get("MetricAvailabilities"));
-                    if (metricAvailabilitiesArray != null)
-                    {
-                        for (JsonNode metricAvailabilitiesValue : metricAvailabilitiesArray)
+                        MetricDefinition metricDefinitionInstance = new MetricDefinition();
+                        metricDefinitionCollectionInstance.getValue().add(metricDefinitionInstance);
+                        
+                        JsonNode nameValue = valueValue.get("Name");
+                        if (nameValue != null)
                         {
-                            MetricAvailability metricAvailabilityInstance = new MetricAvailability();
-                            metricDefinitionInstance.getMetricAvailabilities().add(metricAvailabilityInstance);
-                            
-                            JsonNode timeGrainValue = metricAvailabilitiesValue.get("TimeGrain");
-                            if (timeGrainValue != null)
+                            String nameInstance;
+                            nameInstance = nameValue.getTextValue();
+                            metricDefinitionInstance.setName(nameInstance);
+                        }
+                        
+                        JsonNode namespaceValue = valueValue.get("Namespace");
+                        if (namespaceValue != null)
+                        {
+                            String namespaceInstance;
+                            namespaceInstance = namespaceValue.getTextValue();
+                            metricDefinitionInstance.setNamespace(namespaceInstance);
+                        }
+                        
+                        JsonNode resourceIdSuffixValue = valueValue.get("ResourceIdSuffix");
+                        if (resourceIdSuffixValue != null)
+                        {
+                            String resourceIdSuffixInstance;
+                            resourceIdSuffixInstance = resourceIdSuffixValue.getTextValue();
+                            metricDefinitionInstance.setResourceIdSuffix(resourceIdSuffixInstance);
+                        }
+                        
+                        JsonNode displayNameValue = valueValue.get("DisplayName");
+                        if (displayNameValue != null)
+                        {
+                            String displayNameInstance;
+                            displayNameInstance = displayNameValue.getTextValue();
+                            metricDefinitionInstance.setDisplayName(displayNameInstance);
+                        }
+                        
+                        JsonNode unitValue = valueValue.get("Unit");
+                        if (unitValue != null)
+                        {
+                            String unitInstance;
+                            unitInstance = unitValue.getTextValue();
+                            metricDefinitionInstance.setUnit(unitInstance);
+                        }
+                        
+                        JsonNode primaryAggregationValue = valueValue.get("PrimaryAggregation");
+                        if (primaryAggregationValue != null)
+                        {
+                            String primaryAggregationInstance;
+                            primaryAggregationInstance = primaryAggregationValue.getTextValue();
+                            metricDefinitionInstance.setPrimaryAggregation(primaryAggregationInstance);
+                        }
+                        
+                        ArrayNode metricAvailabilitiesArray = ((ArrayNode) valueValue.get("MetricAvailabilities"));
+                        if (metricAvailabilitiesArray != null)
+                        {
+                            for (JsonNode metricAvailabilitiesValue : metricAvailabilitiesArray)
                             {
-                                Duration timeGrainInstance;
-                                timeGrainInstance = TimeSpan8601Converter.parse(timeGrainValue.getTextValue());
-                                metricAvailabilityInstance.setTimeGrain(timeGrainInstance);
-                            }
-                            
-                            JsonNode retentionValue = metricAvailabilitiesValue.get("Retention");
-                            if (retentionValue != null)
-                            {
-                                Duration retentionInstance;
-                                retentionInstance = TimeSpan8601Converter.parse(retentionValue.getTextValue());
-                                metricAvailabilityInstance.setRetention(retentionInstance);
+                                MetricAvailability metricAvailabilityInstance = new MetricAvailability();
+                                metricDefinitionInstance.getMetricAvailabilities().add(metricAvailabilityInstance);
+                                
+                                JsonNode timeGrainValue = metricAvailabilitiesValue.get("TimeGrain");
+                                if (timeGrainValue != null)
+                                {
+                                    Duration timeGrainInstance;
+                                    timeGrainInstance = TimeSpan8601Converter.parse(timeGrainValue.getTextValue());
+                                    metricAvailabilityInstance.setTimeGrain(timeGrainInstance);
+                                }
+                                
+                                JsonNode retentionValue = metricAvailabilitiesValue.get("Retention");
+                                if (retentionValue != null)
+                                {
+                                    Duration retentionInstance;
+                                    retentionInstance = TimeSpan8601Converter.parse(retentionValue.getTextValue());
+                                    metricAvailabilityInstance.setRetention(retentionInstance);
+                                }
                             }
                         }
-                    }
-                    
-                    JsonNode minimumAlertableTimeWindowValue = valueValue.get("MinimumAlertableTimeWindow");
-                    if (minimumAlertableTimeWindowValue != null)
-                    {
-                        Duration minimumAlertableTimeWindowInstance;
-                        minimumAlertableTimeWindowInstance = TimeSpan8601Converter.parse(minimumAlertableTimeWindowValue.getTextValue());
-                        metricDefinitionInstance.setMinimumAlertableTimeWindow(minimumAlertableTimeWindowInstance);
-                    }
-                    
-                    JsonNode isAlertableValue = valueValue.get("IsAlertable");
-                    if (isAlertableValue != null)
-                    {
-                        boolean isAlertableInstance;
-                        isAlertableInstance = isAlertableValue.getBooleanValue();
-                        metricDefinitionInstance.setIsAlertable(isAlertableInstance);
+                        
+                        JsonNode minimumAlertableTimeWindowValue = valueValue.get("MinimumAlertableTimeWindow");
+                        if (minimumAlertableTimeWindowValue != null)
+                        {
+                            Duration minimumAlertableTimeWindowInstance;
+                            minimumAlertableTimeWindowInstance = TimeSpan8601Converter.parse(minimumAlertableTimeWindowValue.getTextValue());
+                            metricDefinitionInstance.setMinimumAlertableTimeWindow(minimumAlertableTimeWindowInstance);
+                        }
+                        
+                        JsonNode isAlertableValue = valueValue.get("IsAlertable");
+                        if (isAlertableValue != null)
+                        {
+                            boolean isAlertableInstance;
+                            isAlertableInstance = isAlertableValue.getBooleanValue();
+                            metricDefinitionInstance.setIsAlertable(isAlertableInstance);
+                        }
                     }
                 }
             }

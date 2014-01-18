@@ -39,26 +39,41 @@ public class MetricsClientImpl extends ServiceClient<MetricsClient> implements M
     /**
     * Optional base uri parameter.
     */
-    public URI getBaseUri() { return this.baseUri; }
+    public URI getBaseUri()
+    {
+        return this.baseUri;
+    }
     
     private SubscriptionCloudCredentials credentials;
     
     /**
     * Windows Azure subscription id.
     */
-    public SubscriptionCloudCredentials getCredentials() { return this.credentials; }
+    public SubscriptionCloudCredentials getCredentials()
+    {
+        return this.credentials;
+    }
     
     private MetricDefinitionOperations metricDefinitions;
     
-    public MetricDefinitionOperations getMetricDefinitionsOperations() { return this.metricDefinitions; }
+    public MetricDefinitionOperations getMetricDefinitionsOperations()
+    {
+        return this.metricDefinitions;
+    }
     
     private MetricSettingOperations metricSettings;
     
-    public MetricSettingOperations getMetricSettingsOperations() { return this.metricSettings; }
+    public MetricSettingOperations getMetricSettingsOperations()
+    {
+        return this.metricSettings;
+    }
     
     private MetricValueOperations metricValues;
     
-    public MetricValueOperations getMetricValuesOperations() { return this.metricValues; }
+    public MetricValueOperations getMetricValuesOperations()
+    {
+        return this.metricValues;
+    }
     
     /**
     * Initializes a new instance of the MetricsClientImpl class.

@@ -52,6 +52,8 @@ public interface QueueOperations
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj856295.aspx for
     * more information)
     *
+    * @param namespaceName The namespace name.
+    * @param queue The service bus queue.
     * @return A response to a request for a particular queue.
     */
     ServiceBusQueueResponse create(String namespaceName, ServiceBusQueue queue) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException, ParseException, URISyntaxException;
@@ -64,6 +66,8 @@ public interface QueueOperations
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj856295.aspx for
     * more information)
     *
+    * @param namespaceName The namespace name.
+    * @param queue The service bus queue.
     * @return A response to a request for a particular queue.
     */
     Future<ServiceBusQueueResponse> createAsync(String namespaceName, ServiceBusQueue queue);
@@ -76,6 +80,8 @@ public interface QueueOperations
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
     * more information)
     *
+    * @param namespaceName The namespace name.
+    * @param queueName The queue name.
     * @return A response to a request for a particular queue.
     */
     ServiceBusQueueResponse get(String namespaceName, String queueName) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException, URISyntaxException;
@@ -88,6 +94,8 @@ public interface QueueOperations
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
     * more information)
     *
+    * @param namespaceName The namespace name.
+    * @param queueName The queue name.
     * @return A response to a request for a particular queue.
     */
     Future<ServiceBusQueueResponse> getAsync(String namespaceName, String queueName);
@@ -95,6 +103,8 @@ public interface QueueOperations
     /**
     * Gets the set of connection strings for a queue.
     *
+    * @param namespaceName The namespace name.
+    * @param queueName The queue name.
     * @return The set of connection details for a service bus entity.
     */
     ServiceBusConnectionDetailsResponse getConnectionDetails(String namespaceName, String queueName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
@@ -102,6 +112,8 @@ public interface QueueOperations
     /**
     * Gets the set of connection strings for a queue.
     *
+    * @param namespaceName The namespace name.
+    * @param queueName The queue name.
     * @return The set of connection details for a service bus entity.
     */
     Future<ServiceBusConnectionDetailsResponse> getConnectionDetailsAsync(String namespaceName, String queueName);
@@ -114,6 +126,7 @@ public interface QueueOperations
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780759.asp for
     * more information)
     *
+    * @param namespaceName The namespace name.
     * @return A response to a request for a list of queues.
     */
     ServiceBusQueuesResponse list(String namespaceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException, URISyntaxException;
@@ -126,6 +139,7 @@ public interface QueueOperations
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780759.asp for
     * more information)
     *
+    * @param namespaceName The namespace name.
     * @return A response to a request for a list of queues.
     */
     Future<ServiceBusQueuesResponse> listAsync(String namespaceName);
@@ -136,6 +150,8 @@ public interface QueueOperations
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj856305.aspx for
     * more information)
     *
+    * @param namespaceName The namespace name.
+    * @param queue The service bus queue.
     * @return A response to a request for a particular queue.
     */
     ServiceBusQueueResponse update(String namespaceName, ServiceBusQueue queue) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException, ParseException;
@@ -146,6 +162,8 @@ public interface QueueOperations
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj856305.aspx for
     * more information)
     *
+    * @param namespaceName The namespace name.
+    * @param queue The service bus queue.
     * @return A response to a request for a particular queue.
     */
     Future<ServiceBusQueueResponse> updateAsync(String namespaceName, ServiceBusQueue queue);

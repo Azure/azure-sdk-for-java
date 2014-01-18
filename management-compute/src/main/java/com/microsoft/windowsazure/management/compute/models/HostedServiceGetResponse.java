@@ -36,12 +36,18 @@ public class HostedServiceGetResponse extends OperationResponse
     /**
     * The properties that are assigned to the cloud service.
     */
-    public HostedServiceProperties getProperties() { return this.properties; }
+    public HostedServiceProperties getProperties()
+    {
+        return this.properties;
+    }
     
     /**
     * The properties that are assigned to the cloud service.
     */
-    public void setProperties(HostedServiceProperties properties) { this.properties = properties; }
+    public void setProperties(HostedServiceProperties properties)
+    {
+        this.properties = properties;
+    }
     
     private String serviceName;
     
@@ -51,7 +57,10 @@ public class HostedServiceGetResponse extends OperationResponse
     * name is MyService you could access the access the cloud service by
     * calling: http://MyService.cloudapp.net
     */
-    public String getServiceName() { return this.serviceName; }
+    public String getServiceName()
+    {
+        return this.serviceName;
+    }
     
     /**
     * The name of the cloud service. This name is the DNS prefix name and can
@@ -59,7 +68,10 @@ public class HostedServiceGetResponse extends OperationResponse
     * name is MyService you could access the access the cloud service by
     * calling: http://MyService.cloudapp.net
     */
-    public void setServiceName(String serviceName) { this.serviceName = serviceName; }
+    public void setServiceName(String serviceName)
+    {
+        this.serviceName = serviceName;
+    }
     
     private URI uri;
     
@@ -67,19 +79,17 @@ public class HostedServiceGetResponse extends OperationResponse
     * The Service Management API request URI used to performGet Hosted Service
     * Properties requests against the cloud service.
     */
-    public URI getUri() { return this.uri; }
+    public URI getUri()
+    {
+        return this.uri;
+    }
     
     /**
     * The Service Management API request URI used to performGet Hosted Service
     * Properties requests against the cloud service.
     */
-    public void setUri(URI uri) { this.uri = uri; }
-    
-    /**
-    * Initializes a new instance of the HostedServiceGetResponse class.
-    *
-    */
-    public HostedServiceGetResponse()
+    public void setUri(URI uri)
     {
+        this.uri = uri;
     }
 }

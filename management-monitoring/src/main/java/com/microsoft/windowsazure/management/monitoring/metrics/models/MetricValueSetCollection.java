@@ -35,12 +35,18 @@ public class MetricValueSetCollection
     /**
     * The collection.
     */
-    public ArrayList<MetricValueSet> getValue() { return this.value; }
+    public ArrayList<MetricValueSet> getValue()
+    {
+        return this.value;
+    }
     
     /**
     * The collection.
     */
-    public void setValue(ArrayList<MetricValueSet> value) { this.value = value; }
+    public void setValue(ArrayList<MetricValueSet> value)
+    {
+        this.value = value;
+    }
     
     /**
     * Initializes a new instance of the MetricValueSetCollection class.

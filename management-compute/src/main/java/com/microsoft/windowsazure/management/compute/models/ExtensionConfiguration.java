@@ -36,13 +36,19 @@ public class ExtensionConfiguration
     * Optional. Specifies a list of extensions that are applied to all roles in
     * a deployment.
     */
-    public ArrayList<ExtensionConfiguration.Extension> getAllRoles() { return this.allRoles; }
+    public ArrayList<ExtensionConfiguration.Extension> getAllRoles()
+    {
+        return this.allRoles;
+    }
     
     /**
     * Optional. Specifies a list of extensions that are applied to all roles in
     * a deployment.
     */
-    public void setAllRoles(ArrayList<ExtensionConfiguration.Extension> allRoles) { this.allRoles = allRoles; }
+    public void setAllRoles(ArrayList<ExtensionConfiguration.Extension> allRoles)
+    {
+        this.allRoles = allRoles;
+    }
     
     private ArrayList<ExtensionConfiguration.NamedRole> namedRoles;
     
@@ -50,13 +56,19 @@ public class ExtensionConfiguration
     * Optional. Specifies a list of extensions that are applied to specific
     * roles in a deployment.
     */
-    public ArrayList<ExtensionConfiguration.NamedRole> getNamedRoles() { return this.namedRoles; }
+    public ArrayList<ExtensionConfiguration.NamedRole> getNamedRoles()
+    {
+        return this.namedRoles;
+    }
     
     /**
     * Optional. Specifies a list of extensions that are applied to specific
     * roles in a deployment.
     */
-    public void setNamedRoles(ArrayList<ExtensionConfiguration.NamedRole> namedRoles) { this.namedRoles = namedRoles; }
+    public void setNamedRoles(ArrayList<ExtensionConfiguration.NamedRole> namedRoles)
+    {
+        this.namedRoles = namedRoles;
+    }
     
     /**
     * Initializes a new instance of the ExtensionConfiguration class.
@@ -82,7 +94,10 @@ public class ExtensionConfiguration
         * Id of an extension that was added to a cloud service by using List
         * Extensions.
         */
-        public String getId() { return this.id; }
+        public String getId()
+        {
+            return this.id;
+        }
         
         /**
         * Required. The identifier of the extension. The identifier is created
@@ -90,14 +105,9 @@ public class ExtensionConfiguration
         * Id of an extension that was added to a cloud service by using List
         * Extensions.
         */
-        public void setId(String id) { this.id = id; }
-        
-        /**
-        * Initializes a new instance of the Extension class.
-        *
-        */
-        public Extension()
+        public void setId(String id)
         {
+            this.id = id;
         }
     }
     
@@ -113,25 +123,37 @@ public class ExtensionConfiguration
         * Required. Represents an extension that is to be deployed to a role in
         * a cloud service.
         */
-        public ArrayList<ExtensionConfiguration.Extension> getExtensions() { return this.extensions; }
+        public ArrayList<ExtensionConfiguration.Extension> getExtensions()
+        {
+            return this.extensions;
+        }
         
         /**
         * Required. Represents an extension that is to be deployed to a role in
         * a cloud service.
         */
-        public void setExtensions(ArrayList<ExtensionConfiguration.Extension> extensions) { this.extensions = extensions; }
+        public void setExtensions(ArrayList<ExtensionConfiguration.Extension> extensions)
+        {
+            this.extensions = extensions;
+        }
         
         private String roleName;
         
         /**
         * Required. Specifies the name of the role.
         */
-        public String getRoleName() { return this.roleName; }
+        public String getRoleName()
+        {
+            return this.roleName;
+        }
         
         /**
         * Required. Specifies the name of the role.
         */
-        public void setRoleName(String roleName) { this.roleName = roleName; }
+        public void setRoleName(String roleName)
+        {
+            this.roleName = roleName;
+        }
         
         /**
         * Initializes a new instance of the NamedRole class.

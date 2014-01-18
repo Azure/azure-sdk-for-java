@@ -33,24 +33,36 @@ public class ServerFarmCreateParameters
     /**
     * The current number of Virtual Machines (VMs) in the server farm.
     */
-    public Integer getCurrentNumberOfWorkers() { return this.currentNumberOfWorkers; }
+    public Integer getCurrentNumberOfWorkers()
+    {
+        return this.currentNumberOfWorkers;
+    }
     
     /**
     * The current number of Virtual Machines (VMs) in the server farm.
     */
-    public void setCurrentNumberOfWorkers(Integer currentNumberOfWorkers) { this.currentNumberOfWorkers = currentNumberOfWorkers; }
+    public void setCurrentNumberOfWorkers(Integer currentNumberOfWorkers)
+    {
+        this.currentNumberOfWorkers = currentNumberOfWorkers;
+    }
     
     private ServerFarmWorkerSize currentWorkerSize;
     
     /**
     * The current worker size Possible values are Small, Medium, or Large.
     */
-    public ServerFarmWorkerSize getCurrentWorkerSize() { return this.currentWorkerSize; }
+    public ServerFarmWorkerSize getCurrentWorkerSize()
+    {
+        return this.currentWorkerSize;
+    }
     
     /**
     * The current worker size Possible values are Small, Medium, or Large.
     */
-    public void setCurrentWorkerSize(ServerFarmWorkerSize currentWorkerSize) { this.currentWorkerSize = currentWorkerSize; }
+    public void setCurrentWorkerSize(ServerFarmWorkerSize currentWorkerSize)
+    {
+        this.currentWorkerSize = currentWorkerSize;
+    }
     
     private int numberOfWorkers;
     
@@ -58,43 +70,53 @@ public class ServerFarmCreateParameters
     * The instance count, which is the number of virtual machines dedicated to
     * the farm. Supported values are 1-10.
     */
-    public int getNumberOfWorkers() { return this.numberOfWorkers; }
+    public int getNumberOfWorkers()
+    {
+        return this.numberOfWorkers;
+    }
     
     /**
     * The instance count, which is the number of virtual machines dedicated to
     * the farm. Supported values are 1-10.
     */
-    public void setNumberOfWorkers(int numberOfWorkers) { this.numberOfWorkers = numberOfWorkers; }
+    public void setNumberOfWorkers(int numberOfWorkers)
+    {
+        this.numberOfWorkers = numberOfWorkers;
+    }
     
     private ServerFarmStatus status;
     
     /**
     * Server farm status. Possible values are Ready or Pending.
     */
-    public ServerFarmStatus getStatus() { return this.status; }
+    public ServerFarmStatus getStatus()
+    {
+        return this.status;
+    }
     
     /**
     * Server farm status. Possible values are Ready or Pending.
     */
-    public void setStatus(ServerFarmStatus status) { this.status = status; }
+    public void setStatus(ServerFarmStatus status)
+    {
+        this.status = status;
+    }
     
     private ServerFarmWorkerSize workerSize;
     
     /**
     * The instance size. Possible values are Small, Medium, or Large.
     */
-    public ServerFarmWorkerSize getWorkerSize() { return this.workerSize; }
+    public ServerFarmWorkerSize getWorkerSize()
+    {
+        return this.workerSize;
+    }
     
     /**
     * The instance size. Possible values are Small, Medium, or Large.
     */
-    public void setWorkerSize(ServerFarmWorkerSize workerSize) { this.workerSize = workerSize; }
-    
-    /**
-    * Initializes a new instance of the ServerFarmCreateParameters class.
-    *
-    */
-    public ServerFarmCreateParameters()
+    public void setWorkerSize(ServerFarmWorkerSize workerSize)
     {
+        this.workerSize = workerSize;
     }
 }

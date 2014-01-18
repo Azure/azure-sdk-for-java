@@ -39,38 +39,56 @@ public class AffinityGroupGetResponse extends OperationResponse
     * this affinity group. If so, the string PersistentVMRole will be returned
     * by this element. Otherwise, this element will not be present.
     */
-    public ArrayList<String> getCapabilities() { return this.capabilities; }
+    public ArrayList<String> getCapabilities()
+    {
+        return this.capabilities;
+    }
     
     /**
     * Indicates if the virtual machine related operations can be performed in
     * this affinity group. If so, the string PersistentVMRole will be returned
     * by this element. Otherwise, this element will not be present.
     */
-    public void setCapabilities(ArrayList<String> capabilities) { this.capabilities = capabilities; }
+    public void setCapabilities(ArrayList<String> capabilities)
+    {
+        this.capabilities = capabilities;
+    }
     
     private String description;
     
     /**
     * The user supplied description of this affinity group.
     */
-    public String getDescription() { return this.description; }
+    public String getDescription()
+    {
+        return this.description;
+    }
     
     /**
     * The user supplied description of this affinity group.
     */
-    public void setDescription(String description) { this.description = description; }
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
     
     private ArrayList<AffinityGroupGetResponse.HostedServiceReference> hostedServices;
     
     /**
     * The hosted services associated with this affinity group.
     */
-    public ArrayList<AffinityGroupGetResponse.HostedServiceReference> getHostedServices() { return this.hostedServices; }
+    public ArrayList<AffinityGroupGetResponse.HostedServiceReference> getHostedServices()
+    {
+        return this.hostedServices;
+    }
     
     /**
     * The hosted services associated with this affinity group.
     */
-    public void setHostedServices(ArrayList<AffinityGroupGetResponse.HostedServiceReference> hostedServices) { this.hostedServices = hostedServices; }
+    public void setHostedServices(ArrayList<AffinityGroupGetResponse.HostedServiceReference> hostedServices)
+    {
+        this.hostedServices = hostedServices;
+    }
     
     private String label;
     
@@ -78,13 +96,19 @@ public class AffinityGroupGetResponse extends OperationResponse
     * The user supplied label of the affinity group returned as a base-64
     * encoded string.
     */
-    public String getLabel() { return this.label; }
+    public String getLabel()
+    {
+        return this.label;
+    }
     
     /**
     * The user supplied label of the affinity group returned as a base-64
     * encoded string.
     */
-    public void setLabel(String label) { this.label = label; }
+    public void setLabel(String label)
+    {
+        this.label = label;
+    }
     
     private String location;
     
@@ -92,37 +116,55 @@ public class AffinityGroupGetResponse extends OperationResponse
     * The location of the data center that the affinity group is associated
     * with.
     */
-    public String getLocation() { return this.location; }
+    public String getLocation()
+    {
+        return this.location;
+    }
     
     /**
     * The location of the data center that the affinity group is associated
     * with.
     */
-    public void setLocation(String location) { this.location = location; }
+    public void setLocation(String location)
+    {
+        this.location = location;
+    }
     
     private String name;
     
     /**
     * The user supplied name of the affinity group.
     */
-    public String getName() { return this.name; }
+    public String getName()
+    {
+        return this.name;
+    }
     
     /**
     * The user supplied name of the affinity group.
     */
-    public void setName(String name) { this.name = name; }
+    public void setName(String name)
+    {
+        this.name = name;
+    }
     
     private ArrayList<AffinityGroupGetResponse.StorageServiceReference> storageServices;
     
     /**
     * The storage services associated with this affinity group.
     */
-    public ArrayList<AffinityGroupGetResponse.StorageServiceReference> getStorageServices() { return this.storageServices; }
+    public ArrayList<AffinityGroupGetResponse.StorageServiceReference> getStorageServices()
+    {
+        return this.storageServices;
+    }
     
     /**
     * The storage services associated with this affinity group.
     */
-    public void setStorageServices(ArrayList<AffinityGroupGetResponse.StorageServiceReference> storageServices) { this.storageServices = storageServices; }
+    public void setStorageServices(ArrayList<AffinityGroupGetResponse.StorageServiceReference> storageServices)
+    {
+        this.storageServices = storageServices;
+    }
     
     /**
     * Initializes a new instance of the AffinityGroupGetResponse class.
@@ -130,6 +172,7 @@ public class AffinityGroupGetResponse extends OperationResponse
     */
     public AffinityGroupGetResponse()
     {
+        super();
         this.capabilities = new ArrayList<String>();
         this.hostedServices = new ArrayList<AffinityGroupGetResponse.HostedServiceReference>();
         this.storageServices = new ArrayList<AffinityGroupGetResponse.StorageServiceReference>();
@@ -145,12 +188,18 @@ public class AffinityGroupGetResponse extends OperationResponse
         /**
         * The name of the hosted service.
         */
-        public String getServiceName() { return this.serviceName; }
+        public String getServiceName()
+        {
+            return this.serviceName;
+        }
         
         /**
         * The name of the hosted service.
         */
-        public void setServiceName(String serviceName) { this.serviceName = serviceName; }
+        public void setServiceName(String serviceName)
+        {
+            this.serviceName = serviceName;
+        }
         
         private URI uri;
         
@@ -158,20 +207,18 @@ public class AffinityGroupGetResponse extends OperationResponse
         * The Service Management API request URI used to perform Get Hosted
         * Service Properties requests against the hosted service.
         */
-        public URI getUri() { return this.uri; }
+        public URI getUri()
+        {
+            return this.uri;
+        }
         
         /**
         * The Service Management API request URI used to perform Get Hosted
         * Service Properties requests against the hosted service.
         */
-        public void setUri(URI uri) { this.uri = uri; }
-        
-        /**
-        * Initializes a new instance of the HostedServiceReference class.
-        *
-        */
-        public HostedServiceReference()
+        public void setUri(URI uri)
         {
+            this.uri = uri;
         }
     }
     
@@ -185,12 +232,18 @@ public class AffinityGroupGetResponse extends OperationResponse
         /**
         * The user supplied name of the storage account.
         */
-        public String getServiceName() { return this.serviceName; }
+        public String getServiceName()
+        {
+            return this.serviceName;
+        }
         
         /**
         * The user supplied name of the storage account.
         */
-        public void setServiceName(String serviceName) { this.serviceName = serviceName; }
+        public void setServiceName(String serviceName)
+        {
+            this.serviceName = serviceName;
+        }
         
         private URI uri;
         
@@ -198,20 +251,18 @@ public class AffinityGroupGetResponse extends OperationResponse
         * The Service Management API request URI used to perform Get Storage
         * Account Properties requests against the storage account.
         */
-        public URI getUri() { return this.uri; }
+        public URI getUri()
+        {
+            return this.uri;
+        }
         
         /**
         * The Service Management API request URI used to perform Get Storage
         * Account Properties requests against the storage account.
         */
-        public void setUri(URI uri) { this.uri = uri; }
-        
-        /**
-        * Initializes a new instance of the StorageServiceReference class.
-        *
-        */
-        public StorageServiceReference()
+        public void setUri(URI uri)
         {
+            this.uri = uri;
         }
     }
 }

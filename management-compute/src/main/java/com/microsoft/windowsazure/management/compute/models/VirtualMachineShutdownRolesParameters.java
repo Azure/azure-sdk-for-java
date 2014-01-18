@@ -36,25 +36,37 @@ public class VirtualMachineShutdownRolesParameters
     * The state of the roles after shutdown.  Possible values include Stopped
     * or StoppedDeallocated
     */
-    public PostShutdownAction getPostShutdownAction() { return this.postShutdownAction; }
+    public PostShutdownAction getPostShutdownAction()
+    {
+        return this.postShutdownAction;
+    }
     
     /**
     * The state of the roles after shutdown.  Possible values include Stopped
     * or StoppedDeallocated
     */
-    public void setPostShutdownAction(PostShutdownAction postShutdownAction) { this.postShutdownAction = postShutdownAction; }
+    public void setPostShutdownAction(PostShutdownAction postShutdownAction)
+    {
+        this.postShutdownAction = postShutdownAction;
+    }
     
     private ArrayList<String> roles;
     
     /**
     * The set of roles to shut down.
     */
-    public ArrayList<String> getRoles() { return this.roles; }
+    public ArrayList<String> getRoles()
+    {
+        return this.roles;
+    }
     
     /**
     * The set of roles to shut down.
     */
-    public void setRoles(ArrayList<String> roles) { this.roles = roles; }
+    public void setRoles(ArrayList<String> roles)
+    {
+        this.roles = roles;
+    }
     
     /**
     * Initializes a new instance of the VirtualMachineShutdownRolesParameters

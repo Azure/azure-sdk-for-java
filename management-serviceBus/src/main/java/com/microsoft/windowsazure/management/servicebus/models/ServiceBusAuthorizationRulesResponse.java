@@ -37,12 +37,18 @@ public class ServiceBusAuthorizationRulesResponse extends OperationResponse impl
     /**
     * The list of authorization rules.
     */
-    public ArrayList<ServiceBusSharedAccessAuthorizationRule> getAuthorizationRules() { return this.authorizationRules; }
+    public ArrayList<ServiceBusSharedAccessAuthorizationRule> getAuthorizationRules()
+    {
+        return this.authorizationRules;
+    }
     
     /**
     * The list of authorization rules.
     */
-    public void setAuthorizationRules(ArrayList<ServiceBusSharedAccessAuthorizationRule> authorizationRules) { this.authorizationRules = authorizationRules; }
+    public void setAuthorizationRules(ArrayList<ServiceBusSharedAccessAuthorizationRule> authorizationRules)
+    {
+        this.authorizationRules = authorizationRules;
+    }
     
     /**
     * Initializes a new instance of the ServiceBusAuthorizationRulesResponse
@@ -51,6 +57,7 @@ public class ServiceBusAuthorizationRulesResponse extends OperationResponse impl
     */
     public ServiceBusAuthorizationRulesResponse()
     {
+        super();
         this.authorizationRules = new ArrayList<ServiceBusSharedAccessAuthorizationRule>();
     }
     

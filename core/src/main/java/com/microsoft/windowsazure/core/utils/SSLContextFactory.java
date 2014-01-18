@@ -101,26 +101,29 @@ public final class SSLContextFactory
                 keyStorePassword, keyStoreType);
         SSLContext sslContext = SSLContext.getInstance("TLS");
         sslContext.init(keyManagers,
-                new TrustManager[] { new X509TrustManager()
+                new TrustManager[]
                 {
-                    public X509Certificate[] getAcceptedIssuers()
+                    new X509TrustManager()
                     {
-                        System.out.println("getAcceptedIssuers =============");
-                        return null;
-                    }
+                        public X509Certificate[] getAcceptedIssuers()
+                        {
+                            // System.out.println("getAcceptedIssuers =============");
+                            return null;
+                        }
 
-                    public void checkClientTrusted(X509Certificate[] certs,
-                            String authType)
-                    {
-                        System.out.println("checkClientTrusted =============");
-                    }
+                        public void checkClientTrusted(X509Certificate[] certs,
+                                String authType)
+                        {
+                            // System.out.println("checkClientTrusted =============");
+                        }
 
-                    public void checkServerTrusted(X509Certificate[] certs,
-                            String authType)
-                    {
-                        System.out.println("checkServerTrusted =============");
+                        public void checkServerTrusted(X509Certificate[] certs,
+                                String authType)
+                        {
+                            // System.out.println("checkServerTrusted =============");
+                        }
                     }
-                } }, new SecureRandom());
+                }, new SecureRandom());
 
         keyStoreInputStream.close();
         return sslContext;

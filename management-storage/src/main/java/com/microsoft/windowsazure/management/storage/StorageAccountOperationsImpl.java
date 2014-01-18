@@ -67,6 +67,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
@@ -100,7 +101,10 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     * Gets a reference to the
     * microsoft.windowsazure.management.storage.StorageManagementClientImpl.
     */
-    public StorageManagementClientImpl getClient() { return this.client; }
+    public StorageManagementClientImpl getClient()
+    {
+        return this.client;
+    }
     
     /**
     * The Create Storage Account operation creates a new storage account in
@@ -248,7 +252,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
         }
         
         Element geoReplicationEnabledElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "GeoReplicationEnabled");
-        geoReplicationEnabledElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.getGeoReplicationEnabled()).toLowerCase()));
+        geoReplicationEnabledElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.isGeoReplicationEnabled()).toLowerCase()));
         createStorageServiceInputElement.appendChild(geoReplicationEnabledElement);
         
         if (parameters.getExtendedProperties() != null)
@@ -295,7 +299,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
+        if (statusCode != HttpStatus.SC_ACCEPTED)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -394,7 +398,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -414,11 +418,11 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
         Document responseDoc = documentBuilder.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagName("AvailabilityResponse");
-        Element availabilityResponseElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element availabilityResponseElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (availabilityResponseElement != null)
         {
             NodeList elements2 = availabilityResponseElement.getElementsByTagName("Result");
-            Element resultElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+            Element resultElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
             if (resultElement != null)
             {
                 boolean resultInstance;
@@ -427,7 +431,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             }
             
             NodeList elements3 = availabilityResponseElement.getElementsByTagName("Reason");
-            Element reasonElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
+            Element reasonElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
             if (reasonElement != null)
             {
                 boolean isNil = false;
@@ -543,14 +547,26 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;
@@ -637,7 +653,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -734,7 +750,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -754,11 +770,11 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
         Document responseDoc = documentBuilder.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagName("StorageService");
-        Element storageServiceElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element storageServiceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (storageServiceElement != null)
         {
             NodeList elements2 = storageServiceElement.getElementsByTagName("Url");
-            Element urlElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+            Element urlElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
             if (urlElement != null)
             {
                 URI urlInstance;
@@ -767,7 +783,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             }
             
             NodeList elements3 = storageServiceElement.getElementsByTagName("ServiceName");
-            Element serviceNameElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
+            Element serviceNameElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
             if (serviceNameElement != null)
             {
                 String serviceNameInstance;
@@ -776,14 +792,14 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             }
             
             NodeList elements4 = storageServiceElement.getElementsByTagName("StorageServiceProperties");
-            Element storageServicePropertiesElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
+            Element storageServicePropertiesElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
             if (storageServicePropertiesElement != null)
             {
                 StorageServiceProperties storageServicePropertiesInstance = new StorageServiceProperties();
                 result.setProperties(storageServicePropertiesInstance);
                 
                 NodeList elements5 = storageServicePropertiesElement.getElementsByTagName("Description");
-                Element descriptionElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
+                Element descriptionElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                 if (descriptionElement != null)
                 {
                     boolean isNil = false;
@@ -801,7 +817,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                 }
                 
                 NodeList elements6 = storageServicePropertiesElement.getElementsByTagName("AffinityGroup");
-                Element affinityGroupElement = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
+                Element affinityGroupElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                 if (affinityGroupElement != null)
                 {
                     String affinityGroupInstance;
@@ -810,7 +826,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                 }
                 
                 NodeList elements7 = storageServicePropertiesElement.getElementsByTagName("Location");
-                Element locationElement = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
+                Element locationElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                 if (locationElement != null)
                 {
                     String locationInstance;
@@ -819,7 +835,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                 }
                 
                 NodeList elements8 = storageServicePropertiesElement.getElementsByTagName("Label");
-                Element labelElement = elements8.getLength() > 0 ? ((Element)elements8.item(0)) : null;
+                Element labelElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
                 if (labelElement != null)
                 {
                     String labelInstance;
@@ -828,7 +844,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                 }
                 
                 NodeList elements9 = storageServicePropertiesElement.getElementsByTagName("Status");
-                Element statusElement = elements9.getLength() > 0 ? ((Element)elements9.item(0)) : null;
+                Element statusElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
                 if (statusElement != null)
                 {
                     StorageServiceStatus statusInstance;
@@ -837,18 +853,18 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                 }
                 
                 NodeList elements10 = storageServicePropertiesElement.getElementsByTagName("Endpoints");
-                Element endpointsSequenceElement = elements10.getLength() > 0 ? ((Element)elements10.item(0)) : null;
+                Element endpointsSequenceElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
                 if (endpointsSequenceElement != null)
                 {
                     for (int i1 = 0; i1 < endpointsSequenceElement.getElementsByTagName("Endpoint").getLength(); i1 = i1 + 1)
                     {
-                        org.w3c.dom.Element endpointsElement = ((org.w3c.dom.Element)endpointsSequenceElement.getElementsByTagName("Endpoint").item(i1));
+                        org.w3c.dom.Element endpointsElement = ((org.w3c.dom.Element) endpointsSequenceElement.getElementsByTagName("Endpoint").item(i1));
                         storageServicePropertiesInstance.getEndpoints().add(new URI(endpointsElement.getTextContent()));
                     }
                 }
                 
                 NodeList elements11 = storageServicePropertiesElement.getElementsByTagName("GeoReplicationEnabled");
-                Element geoReplicationEnabledElement = elements11.getLength() > 0 ? ((Element)elements11.item(0)) : null;
+                Element geoReplicationEnabledElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
                 if (geoReplicationEnabledElement != null)
                 {
                     boolean geoReplicationEnabledInstance;
@@ -857,7 +873,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                 }
                 
                 NodeList elements12 = storageServicePropertiesElement.getElementsByTagName("GeoPrimaryRegion");
-                Element geoPrimaryRegionElement = elements12.getLength() > 0 ? ((Element)elements12.item(0)) : null;
+                Element geoPrimaryRegionElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
                 if (geoPrimaryRegionElement != null)
                 {
                     String geoPrimaryRegionInstance;
@@ -866,7 +882,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                 }
                 
                 NodeList elements13 = storageServicePropertiesElement.getElementsByTagName("StatusOfPrimary");
-                Element statusOfPrimaryElement = elements13.getLength() > 0 ? ((Element)elements13.item(0)) : null;
+                Element statusOfPrimaryElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
                 if (statusOfPrimaryElement != null && (statusOfPrimaryElement.getTextContent() != null && statusOfPrimaryElement.getTextContent().isEmpty() != true) == false)
                 {
                     GeoRegionStatus statusOfPrimaryInstance;
@@ -875,7 +891,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                 }
                 
                 NodeList elements14 = storageServicePropertiesElement.getElementsByTagName("LastGeoFailoverTime");
-                Element lastGeoFailoverTimeElement = elements14.getLength() > 0 ? ((Element)elements14.item(0)) : null;
+                Element lastGeoFailoverTimeElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
                 if (lastGeoFailoverTimeElement != null && (lastGeoFailoverTimeElement.getTextContent() != null && lastGeoFailoverTimeElement.getTextContent().isEmpty() != true) == false)
                 {
                     Calendar lastGeoFailoverTimeInstance;
@@ -887,7 +903,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                 }
                 
                 NodeList elements15 = storageServicePropertiesElement.getElementsByTagName("GeoSecondaryRegion");
-                Element geoSecondaryRegionElement = elements15.getLength() > 0 ? ((Element)elements15.item(0)) : null;
+                Element geoSecondaryRegionElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
                 if (geoSecondaryRegionElement != null)
                 {
                     String geoSecondaryRegionInstance;
@@ -896,7 +912,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                 }
                 
                 NodeList elements16 = storageServicePropertiesElement.getElementsByTagName("StatusOfSecondary");
-                Element statusOfSecondaryElement = elements16.getLength() > 0 ? ((Element)elements16.item(0)) : null;
+                Element statusOfSecondaryElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
                 if (statusOfSecondaryElement != null && (statusOfSecondaryElement.getTextContent() != null && statusOfSecondaryElement.getTextContent().isEmpty() != true) == false)
                 {
                     GeoRegionStatus statusOfSecondaryInstance;
@@ -906,27 +922,27 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             }
             
             NodeList elements17 = storageServiceElement.getElementsByTagName("ExtendedProperties");
-            Element extendedPropertiesSequenceElement = elements17.getLength() > 0 ? ((Element)elements17.item(0)) : null;
+            Element extendedPropertiesSequenceElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
             if (extendedPropertiesSequenceElement != null)
             {
                 for (int i2 = 0; i2 < extendedPropertiesSequenceElement.getElementsByTagName("ExtendedProperty").getLength(); i2 = i2 + 1)
                 {
-                    org.w3c.dom.Element extendedPropertiesElement = ((org.w3c.dom.Element)extendedPropertiesSequenceElement.getElementsByTagName("ExtendedProperty").item(i2));
+                    org.w3c.dom.Element extendedPropertiesElement = ((org.w3c.dom.Element) extendedPropertiesSequenceElement.getElementsByTagName("ExtendedProperty").item(i2));
                     NodeList elements18 = extendedPropertiesElement.getElementsByTagName("Name");
-                    String extendedPropertiesKey = elements18.getLength() > 0 ? ((org.w3c.dom.Element)elements18.item(0)).getTextContent() : null;
+                    String extendedPropertiesKey = elements18.getLength() > 0 ? ((org.w3c.dom.Element) elements18.item(0)).getTextContent() : null;
                     NodeList elements19 = extendedPropertiesElement.getElementsByTagName("Value");
-                    String extendedPropertiesValue = elements19.getLength() > 0 ? ((org.w3c.dom.Element)elements19.item(0)).getTextContent() : null;
+                    String extendedPropertiesValue = elements19.getLength() > 0 ? ((org.w3c.dom.Element) elements19.item(0)).getTextContent() : null;
                     result.getExtendedProperties().put(extendedPropertiesKey, extendedPropertiesValue);
                 }
             }
             
             NodeList elements20 = storageServiceElement.getElementsByTagName("Capabilities");
-            Element capabilitiesSequenceElement = elements20.getLength() > 0 ? ((Element)elements20.item(0)) : null;
+            Element capabilitiesSequenceElement = elements20.getLength() > 0 ? ((Element) elements20.item(0)) : null;
             if (capabilitiesSequenceElement != null)
             {
                 for (int i3 = 0; i3 < capabilitiesSequenceElement.getElementsByTagName("Capability").getLength(); i3 = i3 + 1)
                 {
-                    org.w3c.dom.Element capabilitiesElement = ((org.w3c.dom.Element)capabilitiesSequenceElement.getElementsByTagName("Capability").item(i3));
+                    org.w3c.dom.Element capabilitiesElement = ((org.w3c.dom.Element) capabilitiesSequenceElement.getElementsByTagName("Capability").item(i3));
                     result.getCapabilities().add(capabilitiesElement.getTextContent());
                 }
             }
@@ -1016,7 +1032,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -1036,11 +1052,11 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
         Document responseDoc = documentBuilder.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagName("StorageService");
-        Element storageServiceElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element storageServiceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (storageServiceElement != null)
         {
             NodeList elements2 = storageServiceElement.getElementsByTagName("Url");
-            Element urlElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+            Element urlElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
             if (urlElement != null)
             {
                 URI urlInstance;
@@ -1049,11 +1065,11 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             }
             
             NodeList elements3 = storageServiceElement.getElementsByTagName("StorageServiceKeys");
-            Element storageServiceKeysElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
+            Element storageServiceKeysElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
             if (storageServiceKeysElement != null)
             {
                 NodeList elements4 = storageServiceKeysElement.getElementsByTagName("Primary");
-                Element primaryElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
+                Element primaryElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                 if (primaryElement != null)
                 {
                     String primaryInstance;
@@ -1062,7 +1078,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                 }
                 
                 NodeList elements5 = storageServiceKeysElement.getElementsByTagName("Secondary");
-                Element secondaryElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
+                Element secondaryElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                 if (secondaryElement != null)
                 {
                     String secondaryInstance;
@@ -1149,7 +1165,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -1169,17 +1185,17 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
         Document responseDoc = documentBuilder.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagName("StorageServices");
-        Element storageServicesSequenceElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element storageServicesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (storageServicesSequenceElement != null)
         {
             for (int i1 = 0; i1 < storageServicesSequenceElement.getElementsByTagName("StorageService").getLength(); i1 = i1 + 1)
             {
-                org.w3c.dom.Element storageServicesElement = ((org.w3c.dom.Element)storageServicesSequenceElement.getElementsByTagName("StorageService").item(i1));
+                org.w3c.dom.Element storageServicesElement = ((org.w3c.dom.Element) storageServicesSequenceElement.getElementsByTagName("StorageService").item(i1));
                 StorageServiceListResponse.StorageService storageServiceInstance = new StorageServiceListResponse.StorageService();
                 result.getStorageServices().add(storageServiceInstance);
                 
                 NodeList elements2 = storageServicesElement.getElementsByTagName("Url");
-                Element urlElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+                Element urlElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                 if (urlElement != null)
                 {
                     URI urlInstance;
@@ -1188,7 +1204,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                 }
                 
                 NodeList elements3 = storageServicesElement.getElementsByTagName("ServiceName");
-                Element serviceNameElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
+                Element serviceNameElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                 if (serviceNameElement != null)
                 {
                     String serviceNameInstance;
@@ -1197,14 +1213,14 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                 }
                 
                 NodeList elements4 = storageServicesElement.getElementsByTagName("StorageServiceProperties");
-                Element storageServicePropertiesElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
+                Element storageServicePropertiesElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                 if (storageServicePropertiesElement != null)
                 {
                     StorageServiceProperties storageServicePropertiesInstance = new StorageServiceProperties();
                     storageServiceInstance.setProperties(storageServicePropertiesInstance);
                     
                     NodeList elements5 = storageServicePropertiesElement.getElementsByTagName("Description");
-                    Element descriptionElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
+                    Element descriptionElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                     if (descriptionElement != null)
                     {
                         boolean isNil = false;
@@ -1222,7 +1238,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                     }
                     
                     NodeList elements6 = storageServicePropertiesElement.getElementsByTagName("AffinityGroup");
-                    Element affinityGroupElement = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
+                    Element affinityGroupElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                     if (affinityGroupElement != null)
                     {
                         String affinityGroupInstance;
@@ -1231,7 +1247,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                     }
                     
                     NodeList elements7 = storageServicePropertiesElement.getElementsByTagName("Location");
-                    Element locationElement = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
+                    Element locationElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                     if (locationElement != null)
                     {
                         String locationInstance;
@@ -1240,7 +1256,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                     }
                     
                     NodeList elements8 = storageServicePropertiesElement.getElementsByTagName("Label");
-                    Element labelElement = elements8.getLength() > 0 ? ((Element)elements8.item(0)) : null;
+                    Element labelElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
                     if (labelElement != null)
                     {
                         String labelInstance;
@@ -1249,7 +1265,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                     }
                     
                     NodeList elements9 = storageServicePropertiesElement.getElementsByTagName("Status");
-                    Element statusElement = elements9.getLength() > 0 ? ((Element)elements9.item(0)) : null;
+                    Element statusElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
                     if (statusElement != null)
                     {
                         StorageServiceStatus statusInstance;
@@ -1258,18 +1274,18 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                     }
                     
                     NodeList elements10 = storageServicePropertiesElement.getElementsByTagName("Endpoints");
-                    Element endpointsSequenceElement = elements10.getLength() > 0 ? ((Element)elements10.item(0)) : null;
+                    Element endpointsSequenceElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
                     if (endpointsSequenceElement != null)
                     {
                         for (int i2 = 0; i2 < endpointsSequenceElement.getElementsByTagName("Endpoint").getLength(); i2 = i2 + 1)
                         {
-                            org.w3c.dom.Element endpointsElement = ((org.w3c.dom.Element)endpointsSequenceElement.getElementsByTagName("Endpoint").item(i2));
+                            org.w3c.dom.Element endpointsElement = ((org.w3c.dom.Element) endpointsSequenceElement.getElementsByTagName("Endpoint").item(i2));
                             storageServicePropertiesInstance.getEndpoints().add(new URI(endpointsElement.getTextContent()));
                         }
                     }
                     
                     NodeList elements11 = storageServicePropertiesElement.getElementsByTagName("GeoReplicationEnabled");
-                    Element geoReplicationEnabledElement = elements11.getLength() > 0 ? ((Element)elements11.item(0)) : null;
+                    Element geoReplicationEnabledElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
                     if (geoReplicationEnabledElement != null)
                     {
                         boolean geoReplicationEnabledInstance;
@@ -1278,7 +1294,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                     }
                     
                     NodeList elements12 = storageServicePropertiesElement.getElementsByTagName("GeoPrimaryRegion");
-                    Element geoPrimaryRegionElement = elements12.getLength() > 0 ? ((Element)elements12.item(0)) : null;
+                    Element geoPrimaryRegionElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
                     if (geoPrimaryRegionElement != null)
                     {
                         String geoPrimaryRegionInstance;
@@ -1287,7 +1303,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                     }
                     
                     NodeList elements13 = storageServicePropertiesElement.getElementsByTagName("StatusOfPrimary");
-                    Element statusOfPrimaryElement = elements13.getLength() > 0 ? ((Element)elements13.item(0)) : null;
+                    Element statusOfPrimaryElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
                     if (statusOfPrimaryElement != null && (statusOfPrimaryElement.getTextContent() != null && statusOfPrimaryElement.getTextContent().isEmpty() != true) == false)
                     {
                         GeoRegionStatus statusOfPrimaryInstance;
@@ -1296,7 +1312,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                     }
                     
                     NodeList elements14 = storageServicePropertiesElement.getElementsByTagName("LastGeoFailoverTime");
-                    Element lastGeoFailoverTimeElement = elements14.getLength() > 0 ? ((Element)elements14.item(0)) : null;
+                    Element lastGeoFailoverTimeElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
                     if (lastGeoFailoverTimeElement != null && (lastGeoFailoverTimeElement.getTextContent() != null && lastGeoFailoverTimeElement.getTextContent().isEmpty() != true) == false)
                     {
                         Calendar lastGeoFailoverTimeInstance;
@@ -1308,7 +1324,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                     }
                     
                     NodeList elements15 = storageServicePropertiesElement.getElementsByTagName("GeoSecondaryRegion");
-                    Element geoSecondaryRegionElement = elements15.getLength() > 0 ? ((Element)elements15.item(0)) : null;
+                    Element geoSecondaryRegionElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
                     if (geoSecondaryRegionElement != null)
                     {
                         String geoSecondaryRegionInstance;
@@ -1317,7 +1333,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                     }
                     
                     NodeList elements16 = storageServicePropertiesElement.getElementsByTagName("StatusOfSecondary");
-                    Element statusOfSecondaryElement = elements16.getLength() > 0 ? ((Element)elements16.item(0)) : null;
+                    Element statusOfSecondaryElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
                     if (statusOfSecondaryElement != null && (statusOfSecondaryElement.getTextContent() != null && statusOfSecondaryElement.getTextContent().isEmpty() != true) == false)
                     {
                         GeoRegionStatus statusOfSecondaryInstance;
@@ -1327,16 +1343,16 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                 }
                 
                 NodeList elements17 = storageServicesElement.getElementsByTagName("ExtendedProperties");
-                Element extendedPropertiesSequenceElement = elements17.getLength() > 0 ? ((Element)elements17.item(0)) : null;
+                Element extendedPropertiesSequenceElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
                 if (extendedPropertiesSequenceElement != null)
                 {
                     for (int i3 = 0; i3 < extendedPropertiesSequenceElement.getElementsByTagName("ExtendedProperty").getLength(); i3 = i3 + 1)
                     {
-                        org.w3c.dom.Element extendedPropertiesElement = ((org.w3c.dom.Element)extendedPropertiesSequenceElement.getElementsByTagName("ExtendedProperty").item(i3));
+                        org.w3c.dom.Element extendedPropertiesElement = ((org.w3c.dom.Element) extendedPropertiesSequenceElement.getElementsByTagName("ExtendedProperty").item(i3));
                         NodeList elements18 = extendedPropertiesElement.getElementsByTagName("Name");
-                        String extendedPropertiesKey = elements18.getLength() > 0 ? ((org.w3c.dom.Element)elements18.item(0)).getTextContent() : null;
+                        String extendedPropertiesKey = elements18.getLength() > 0 ? ((org.w3c.dom.Element) elements18.item(0)).getTextContent() : null;
                         NodeList elements19 = extendedPropertiesElement.getElementsByTagName("Value");
-                        String extendedPropertiesValue = elements19.getLength() > 0 ? ((org.w3c.dom.Element)elements19.item(0)).getTextContent() : null;
+                        String extendedPropertiesValue = elements19.getLength() > 0 ? ((org.w3c.dom.Element) elements19.item(0)).getTextContent() : null;
                         storageServiceInstance.getExtendedProperties().put(extendedPropertiesKey, extendedPropertiesValue);
                     }
                 }
@@ -1456,7 +1472,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -1476,11 +1492,11 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
         Document responseDoc = documentBuilder2.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagName("StorageService");
-        Element storageServiceElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element storageServiceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (storageServiceElement != null)
         {
             NodeList elements2 = storageServiceElement.getElementsByTagName("Url");
-            Element urlElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+            Element urlElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
             if (urlElement != null)
             {
                 URI urlInstance;
@@ -1489,11 +1505,11 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             }
             
             NodeList elements3 = storageServiceElement.getElementsByTagName("StorageServiceKeys");
-            Element storageServiceKeysElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
+            Element storageServiceKeysElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
             if (storageServiceKeysElement != null)
             {
                 NodeList elements4 = storageServiceKeysElement.getElementsByTagName("Primary");
-                Element primaryElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
+                Element primaryElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                 if (primaryElement != null)
                 {
                     String primaryInstance;
@@ -1502,7 +1518,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                 }
                 
                 NodeList elements5 = storageServiceKeysElement.getElementsByTagName("Secondary");
-                Element secondaryElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
+                Element secondaryElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                 if (secondaryElement != null)
                 {
                     String secondaryInstance;
@@ -1647,10 +1663,10 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             updateStorageServiceInputElement.appendChild(labelElement);
         }
         
-        if (parameters.getGeoReplicationEnabled() != null)
+        if (parameters.isGeoReplicationEnabled() != null)
         {
             Element geoReplicationEnabledElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "GeoReplicationEnabled");
-            geoReplicationEnabledElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.getGeoReplicationEnabled()).toLowerCase()));
+            geoReplicationEnabledElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.isGeoReplicationEnabled()).toLowerCase()));
             updateStorageServiceInputElement.appendChild(geoReplicationEnabledElement);
         }
         
@@ -1698,7 +1714,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)

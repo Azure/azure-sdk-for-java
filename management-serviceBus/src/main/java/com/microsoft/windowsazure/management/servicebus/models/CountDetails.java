@@ -33,66 +33,88 @@ public class CountDetails
     /**
     * The current number of active messages.
     */
-    public int getActiveMessageCount() { return this.activeMessageCount; }
+    public int getActiveMessageCount()
+    {
+        return this.activeMessageCount;
+    }
     
     /**
     * The current number of active messages.
     */
-    public void setActiveMessageCount(int activeMessageCount) { this.activeMessageCount = activeMessageCount; }
+    public void setActiveMessageCount(int activeMessageCount)
+    {
+        this.activeMessageCount = activeMessageCount;
+    }
     
     private int deadLetterMessageCount;
     
     /**
     * The current number of dead letters.
     */
-    public int getDeadLetterMessageCount() { return this.deadLetterMessageCount; }
+    public int getDeadLetterMessageCount()
+    {
+        return this.deadLetterMessageCount;
+    }
     
     /**
     * The current number of dead letters.
     */
-    public void setDeadLetterMessageCount(int deadLetterMessageCount) { this.deadLetterMessageCount = deadLetterMessageCount; }
+    public void setDeadLetterMessageCount(int deadLetterMessageCount)
+    {
+        this.deadLetterMessageCount = deadLetterMessageCount;
+    }
     
     private int scheduledMessageCount;
     
     /**
     * The current number of scheduled messages.
     */
-    public int getScheduledMessageCount() { return this.scheduledMessageCount; }
+    public int getScheduledMessageCount()
+    {
+        return this.scheduledMessageCount;
+    }
     
     /**
     * The current number of scheduled messages.
     */
-    public void setScheduledMessageCount(int scheduledMessageCount) { this.scheduledMessageCount = scheduledMessageCount; }
+    public void setScheduledMessageCount(int scheduledMessageCount)
+    {
+        this.scheduledMessageCount = scheduledMessageCount;
+    }
     
     private int transferDeadLetterMessageCount;
     
     /**
     * The current number of transfer dead letters.
     */
-    public int getTransferDeadLetterMessageCount() { return this.transferDeadLetterMessageCount; }
+    public int getTransferDeadLetterMessageCount()
+    {
+        return this.transferDeadLetterMessageCount;
+    }
     
     /**
     * The current number of transfer dead letters.
     */
-    public void setTransferDeadLetterMessageCount(int transferDeadLetterMessageCount) { this.transferDeadLetterMessageCount = transferDeadLetterMessageCount; }
+    public void setTransferDeadLetterMessageCount(int transferDeadLetterMessageCount)
+    {
+        this.transferDeadLetterMessageCount = transferDeadLetterMessageCount;
+    }
     
     private int transferMessageCount;
     
     /**
     * The current number of transfer messages.
     */
-    public int getTransferMessageCount() { return this.transferMessageCount; }
+    public int getTransferMessageCount()
+    {
+        return this.transferMessageCount;
+    }
     
     /**
     * The current number of transfer messages.
     */
-    public void setTransferMessageCount(int transferMessageCount) { this.transferMessageCount = transferMessageCount; }
-    
-    /**
-    * Initializes a new instance of the CountDetails class.
-    *
-    */
-    public CountDetails()
+    public void setTransferMessageCount(int transferMessageCount)
     {
+        this.transferMessageCount = transferMessageCount;
     }
 }

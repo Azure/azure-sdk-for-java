@@ -32,25 +32,39 @@ public class Configuration
      * Property name for socket connection timeout used by services created with
      * this configuration.
      */
-    public static final String PROPERTY_CONNECT_TIMEOUT = "com.microsoft.windowsazure.Configuration.connectTimeout";
+    public static final String PROPERTY_CONNECT_TIMEOUT =
+            "com.microsoft.windowsazure.Configuration.connectTimeout";
 
     /**
      * Property name for socket read timeout used by services created with this
      * configuration.
      */
-    public static final String PROPERTY_READ_TIMEOUT = "com.microsoft.windowsazure.Configuration.readTimeout";
+    public static final String PROPERTY_READ_TIMEOUT =
+            "com.microsoft.windowsazure.Configuration.readTimeout";
 
     /**
      * Property name to control if HTTP logging to console is on or off. If
      * property is set, logging is on, regardless of value.
      */
-    public static final String PROPERTY_LOG_HTTP_REQUESTS = "com.microsoft.windowsazure.Configuration.logHttpRequests";
+    public static final String PROPERTY_LOG_HTTP_REQUESTS =
+            "com.microsoft.windowsazure.Configuration.logHttpRequests";
 
+    /**
+     * The configuration instance.
+     */
     private static Configuration instance;
-    Map<String, Object> properties;
-    Builder builder;
+    
+    /**
+     * The configuration properties.
+     */
+    private final Map<String, Object> properties;
+    
+    /**
+     * The builder.
+     */
+    private final Builder builder;
 
-    static Log log = LogFactory.getLog(Configuration.class);
+    private static Log log = LogFactory.getLog(Configuration.class);
 
     public Configuration()
     {

@@ -35,114 +35,160 @@ public class MetricTrigger
     /**
     * The name of the metric.
     */
-    public String getMetricName() { return this.metricName; }
+    public String getMetricName()
+    {
+        return this.metricName;
+    }
     
     /**
     * The name of the metric.
     */
-    public void setMetricName(String metricName) { this.metricName = metricName; }
+    public void setMetricName(String metricName)
+    {
+        this.metricName = metricName;
+    }
     
     private String metricNamespace;
     
     /**
     * The namespace of the metric.
     */
-    public String getMetricNamespace() { return this.metricNamespace; }
+    public String getMetricNamespace()
+    {
+        return this.metricNamespace;
+    }
     
     /**
     * The namespace of the metric.
     */
-    public void setMetricNamespace(String metricNamespace) { this.metricNamespace = metricNamespace; }
+    public void setMetricNamespace(String metricNamespace)
+    {
+        this.metricNamespace = metricNamespace;
+    }
     
     private String metricSource;
     
     /**
     * The metric source.
     */
-    public String getMetricSource() { return this.metricSource; }
+    public String getMetricSource()
+    {
+        return this.metricSource;
+    }
     
     /**
     * The metric source.
     */
-    public void setMetricSource(String metricSource) { this.metricSource = metricSource; }
+    public void setMetricSource(String metricSource)
+    {
+        this.metricSource = metricSource;
+    }
     
     private ComparisonOperationType operator;
     
     /**
     * The operator that is used to evaluate the metric.
     */
-    public ComparisonOperationType getOperator() { return this.operator; }
+    public ComparisonOperationType getOperator()
+    {
+        return this.operator;
+    }
     
     /**
     * The operator that is used to evaluate the metric.
     */
-    public void setOperator(ComparisonOperationType operator) { this.operator = operator; }
+    public void setOperator(ComparisonOperationType operator)
+    {
+        this.operator = operator;
+    }
     
     private MetricStatisticType statistic;
     
     /**
     * How the metrics from multiple instances are combined.
     */
-    public MetricStatisticType getStatistic() { return this.statistic; }
+    public MetricStatisticType getStatistic()
+    {
+        return this.statistic;
+    }
     
     /**
     * How the metrics from multiple instances are combined.
     */
-    public void setStatistic(MetricStatisticType statistic) { this.statistic = statistic; }
+    public void setStatistic(MetricStatisticType statistic)
+    {
+        this.statistic = statistic;
+    }
     
     private double threshold;
     
     /**
     * The percentage of usage that triggers the scaling operation.
     */
-    public double getThreshold() { return this.threshold; }
+    public double getThreshold()
+    {
+        return this.threshold;
+    }
     
     /**
     * The percentage of usage that triggers the scaling operation.
     */
-    public void setThreshold(double threshold) { this.threshold = threshold; }
+    public void setThreshold(double threshold)
+    {
+        this.threshold = threshold;
+    }
     
     private TimeAggregationType timeAggregation;
     
     /**
     * How the data that is collected should be combined over time.
     */
-    public TimeAggregationType getTimeAggregation() { return this.timeAggregation; }
+    public TimeAggregationType getTimeAggregation()
+    {
+        return this.timeAggregation;
+    }
     
     /**
     * How the data that is collected should be combined over time.
     */
-    public void setTimeAggregation(TimeAggregationType timeAggregation) { this.timeAggregation = timeAggregation; }
+    public void setTimeAggregation(TimeAggregationType timeAggregation)
+    {
+        this.timeAggregation = timeAggregation;
+    }
     
     private Duration timeGrain;
     
     /**
     * The frequency of data collection.
     */
-    public Duration getTimeGrain() { return this.timeGrain; }
+    public Duration getTimeGrain()
+    {
+        return this.timeGrain;
+    }
     
     /**
     * The frequency of data collection.
     */
-    public void setTimeGrain(Duration timeGrain) { this.timeGrain = timeGrain; }
+    public void setTimeGrain(Duration timeGrain)
+    {
+        this.timeGrain = timeGrain;
+    }
     
     private Duration timeWindow;
     
     /**
     * The range of time in which instance data is collected.
     */
-    public Duration getTimeWindow() { return this.timeWindow; }
+    public Duration getTimeWindow()
+    {
+        return this.timeWindow;
+    }
     
     /**
     * The range of time in which instance data is collected.
     */
-    public void setTimeWindow(Duration timeWindow) { this.timeWindow = timeWindow; }
-    
-    /**
-    * Initializes a new instance of the MetricTrigger class.
-    *
-    */
-    public MetricTrigger()
+    public void setTimeWindow(Duration timeWindow)
     {
+        this.timeWindow = timeWindow;
     }
 }

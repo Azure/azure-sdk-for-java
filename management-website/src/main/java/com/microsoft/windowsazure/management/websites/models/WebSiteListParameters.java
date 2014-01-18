@@ -35,12 +35,18 @@ public class WebSiteListParameters
     /**
     * Specifies a list of the names of any addtional parameters to return.
     */
-    public ArrayList<String> getPropertiesToInclude() { return this.propertiesToInclude; }
+    public ArrayList<String> getPropertiesToInclude()
+    {
+        return this.propertiesToInclude;
+    }
     
     /**
     * Specifies a list of the names of any addtional parameters to return.
     */
-    public void setPropertiesToInclude(ArrayList<String> propertiesToInclude) { this.propertiesToInclude = propertiesToInclude; }
+    public void setPropertiesToInclude(ArrayList<String> propertiesToInclude)
+    {
+        this.propertiesToInclude = propertiesToInclude;
+    }
     
     /**
     * Initializes a new instance of the WebSiteListParameters class.

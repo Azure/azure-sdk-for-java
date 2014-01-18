@@ -38,7 +38,10 @@ public class VirtualMachineDiskUpdateDataDiskParameters
     * or specifying the target disk size, you can use the DiskLabel element to
     * customize the name property of the target data disk.
     */
-    public String getDiskLabel() { return this.diskLabel; }
+    public String getDiskLabel()
+    {
+        return this.diskLabel;
+    }
     
     /**
     * Optional. Specifies the description of the data disk. When you attach a
@@ -46,7 +49,10 @@ public class VirtualMachineDiskUpdateDataDiskParameters
     * or specifying the target disk size, you can use the DiskLabel element to
     * customize the name property of the target data disk.
     */
-    public void setDiskLabel(String diskLabel) { this.diskLabel = diskLabel; }
+    public void setDiskLabel(String diskLabel)
+    {
+        this.diskLabel = diskLabel;
+    }
     
     private String diskName;
     
@@ -55,14 +61,20 @@ public class VirtualMachineDiskUpdateDataDiskParameters
     * specified disk to create the data disk for the machine and populates
     * this field with the disk name.
     */
-    public String getDiskName() { return this.diskName; }
+    public String getDiskName()
+    {
+        return this.diskName;
+    }
     
     /**
     * Optional. Specifies the name of the disk. Windows Azure uses the
     * specified disk to create the data disk for the machine and populates
     * this field with the disk name.
     */
-    public void setDiskName(String diskName) { this.diskName = diskName; }
+    public void setDiskName(String diskName)
+    {
+        this.diskName = diskName;
+    }
     
     private VirtualHardDiskHostCaching hostCaching;
     
@@ -72,7 +84,10 @@ public class VirtualMachineDiskUpdateDataDiskParameters
     * are: None, ReadOnly, ReadWrite.  Warning: Setting this property impacts
     * the consistency of the disk.
     */
-    public VirtualHardDiskHostCaching getHostCaching() { return this.hostCaching; }
+    public VirtualHardDiskHostCaching getHostCaching()
+    {
+        return this.hostCaching;
+    }
     
     /**
     * Required. Specifies the platform caching behavior of data disk blob for
@@ -80,7 +95,10 @@ public class VirtualMachineDiskUpdateDataDiskParameters
     * are: None, ReadOnly, ReadWrite.  Warning: Setting this property impacts
     * the consistency of the disk.
     */
-    public void setHostCaching(VirtualHardDiskHostCaching hostCaching) { this.hostCaching = hostCaching; }
+    public void setHostCaching(VirtualHardDiskHostCaching hostCaching)
+    {
+        this.hostCaching = hostCaching;
+    }
     
     private double logicalDiskSizeInGB;
     
@@ -91,7 +109,10 @@ public class VirtualMachineDiskUpdateDataDiskParameters
     * creates the empty disk based on size preference and attaches the newly
     * created disk to the Role.
     */
-    public double getLogicalDiskSizeInGB() { return this.logicalDiskSizeInGB; }
+    public double getLogicalDiskSizeInGB()
+    {
+        return this.logicalDiskSizeInGB;
+    }
     
     /**
     * Optional. Specifies the size, in GB, of an empty disk to be attached to
@@ -100,7 +121,10 @@ public class VirtualMachineDiskUpdateDataDiskParameters
     * creates the empty disk based on size preference and attaches the newly
     * created disk to the Role.
     */
-    public void setLogicalDiskSizeInGB(double logicalDiskSizeInGB) { this.logicalDiskSizeInGB = logicalDiskSizeInGB; }
+    public void setLogicalDiskSizeInGB(double logicalDiskSizeInGB)
+    {
+        this.logicalDiskSizeInGB = logicalDiskSizeInGB;
+    }
     
     private Integer logicalUnitNumber;
     
@@ -109,14 +133,20 @@ public class VirtualMachineDiskUpdateDataDiskParameters
     * specifies the slot in which the data drive appears when mounted for
     * usage by the virtual machine.  Valid LUN values are 0 through 15.
     */
-    public Integer getLogicalUnitNumber() { return this.logicalUnitNumber; }
+    public Integer getLogicalUnitNumber()
+    {
+        return this.logicalUnitNumber;
+    }
     
     /**
     * Optional. Specifies the Logical Unit Number (LUN) for the disk. The LUN
     * specifies the slot in which the data drive appears when mounted for
     * usage by the virtual machine.  Valid LUN values are 0 through 15.
     */
-    public void setLogicalUnitNumber(Integer logicalUnitNumber) { this.logicalUnitNumber = logicalUnitNumber; }
+    public void setLogicalUnitNumber(Integer logicalUnitNumber)
+    {
+        this.logicalUnitNumber = logicalUnitNumber;
+    }
     
     private URI mediaLinkUri;
     
@@ -127,7 +157,10 @@ public class VirtualMachineDiskUpdateDataDiskParameters
     * SubscriptionId value in the operation call. Example:
     * http://example.blob.core.windows.net/disks/mydisk.vhd
     */
-    public URI getMediaLinkUri() { return this.mediaLinkUri; }
+    public URI getMediaLinkUri()
+    {
+        return this.mediaLinkUri;
+    }
     
     /**
     * Required. Specifies the location of the blob in Windows Azure blob store
@@ -136,14 +169,8 @@ public class VirtualMachineDiskUpdateDataDiskParameters
     * SubscriptionId value in the operation call. Example:
     * http://example.blob.core.windows.net/disks/mydisk.vhd
     */
-    public void setMediaLinkUri(URI mediaLinkUri) { this.mediaLinkUri = mediaLinkUri; }
-    
-    /**
-    * Initializes a new instance of the
-    * VirtualMachineDiskUpdateDataDiskParameters class.
-    *
-    */
-    public VirtualMachineDiskUpdateDataDiskParameters()
+    public void setMediaLinkUri(URI mediaLinkUri)
     {
+        this.mediaLinkUri = mediaLinkUri;
     }
 }

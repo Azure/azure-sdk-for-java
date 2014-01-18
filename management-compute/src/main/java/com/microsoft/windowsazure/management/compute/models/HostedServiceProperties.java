@@ -38,14 +38,20 @@ public class HostedServiceProperties
     * If the service is associated with an affinity group, the Location
     * element is not returned.
     */
-    public String getAffinityGroup() { return this.affinityGroup; }
+    public String getAffinityGroup()
+    {
+        return this.affinityGroup;
+    }
     
     /**
     * The affinity group with which this cloud service is associated, if any.
     * If the service is associated with an affinity group, the Location
     * element is not returned.
     */
-    public void setAffinityGroup(String affinityGroup) { this.affinityGroup = affinityGroup; }
+    public void setAffinityGroup(String affinityGroup)
+    {
+        this.affinityGroup = affinityGroup;
+    }
     
     private Calendar dateCreated;
     
@@ -55,7 +61,10 @@ public class HostedServiceProperties
     * format. The date 2011-05-11T16:15:26Z is an example that could
     * bereturned by the DateCreated or DateLastModified elements.
     */
-    public Calendar getDateCreated() { return this.dateCreated; }
+    public Calendar getDateCreated()
+    {
+        return this.dateCreated;
+    }
     
     /**
     * The date that the cloud service was created, in
@@ -63,7 +72,10 @@ public class HostedServiceProperties
     * format. The date 2011-05-11T16:15:26Z is an example that could
     * bereturned by the DateCreated or DateLastModified elements.
     */
-    public void setDateCreated(Calendar dateCreated) { this.dateCreated = dateCreated; }
+    public void setDateCreated(Calendar dateCreated)
+    {
+        this.dateCreated = dateCreated;
+    }
     
     private Calendar dateLastModified;
     
@@ -73,7 +85,10 @@ public class HostedServiceProperties
     * format. The date 2011-05-11T16:15:26Z is an example that could be
     * returned by the DateCreated or DateLastModified elements.
     */
-    public Calendar getDateLastModified() { return this.dateLastModified; }
+    public Calendar getDateLastModified()
+    {
+        return this.dateLastModified;
+    }
     
     /**
     * The date that the cloud service was last updated, in
@@ -81,19 +96,28 @@ public class HostedServiceProperties
     * format. The date 2011-05-11T16:15:26Z is an example that could be
     * returned by the DateCreated or DateLastModified elements.
     */
-    public void setDateLastModified(Calendar dateLastModified) { this.dateLastModified = dateLastModified; }
+    public void setDateLastModified(Calendar dateLastModified)
+    {
+        this.dateLastModified = dateLastModified;
+    }
     
     private String description;
     
     /**
     * The description for the cloud service.
     */
-    public String getDescription() { return this.description; }
+    public String getDescription()
+    {
+        return this.description;
+    }
     
     /**
     * The description for the cloud service.
     */
-    public void setDescription(String description) { this.description = description; }
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
     
     private HashMap<String, String> extendedProperties;
     
@@ -109,7 +133,10 @@ public class HostedServiceProperties
     * code 400 (Bad Request) error.  Each extended property value has a
     * maximum length of 255 characters.
     */
-    public HashMap<String, String> getExtendedProperties() { return this.extendedProperties; }
+    public HashMap<String, String> getExtendedProperties()
+    {
+        return this.extendedProperties;
+    }
     
     /**
     * Optional. Represents the name of an extended cloud service property. Each
@@ -123,7 +150,10 @@ public class HostedServiceProperties
     * code 400 (Bad Request) error.  Each extended property value has a
     * maximum length of 255 characters.
     */
-    public void setExtendedProperties(HashMap<String, String> extendedProperties) { this.extendedProperties = extendedProperties; }
+    public void setExtendedProperties(HashMap<String, String> extendedProperties)
+    {
+        this.extendedProperties = extendedProperties;
+    }
     
     private String label;
     
@@ -131,13 +161,19 @@ public class HostedServiceProperties
     * The user-supplied name of the cloud service. This name can be used
     * identify the service for your tracking purposes.
     */
-    public String getLabel() { return this.label; }
+    public String getLabel()
+    {
+        return this.label;
+    }
     
     /**
     * The user-supplied name of the cloud service. This name can be used
     * identify the service for your tracking purposes.
     */
-    public void setLabel(String label) { this.label = label; }
+    public void setLabel(String label)
+    {
+        this.label = label;
+    }
     
     private String location;
     
@@ -146,26 +182,38 @@ public class HostedServiceProperties
     * not associated with an affinity group. If a location has been specified,
     * the AffinityGroup element is not returned.
     */
-    public String getLocation() { return this.location; }
+    public String getLocation()
+    {
+        return this.location;
+    }
     
     /**
     * The geo-location of the cloud service in Windows Azure, if the service is
     * not associated with an affinity group. If a location has been specified,
     * the AffinityGroup element is not returned.
     */
-    public void setLocation(String location) { this.location = location; }
+    public void setLocation(String location)
+    {
+        this.location = location;
+    }
     
     private HostedServiceStatus status;
     
     /**
     * The status of the cloud service.
     */
-    public HostedServiceStatus getStatus() { return this.status; }
+    public HostedServiceStatus getStatus()
+    {
+        return this.status;
+    }
     
     /**
     * The status of the cloud service.
     */
-    public void setStatus(HostedServiceStatus status) { this.status = status; }
+    public void setStatus(HostedServiceStatus status)
+    {
+        this.status = status;
+    }
     
     /**
     * Initializes a new instance of the HostedServiceProperties class.

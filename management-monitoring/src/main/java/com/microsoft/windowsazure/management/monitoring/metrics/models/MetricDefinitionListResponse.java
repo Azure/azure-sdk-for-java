@@ -35,18 +35,16 @@ public class MetricDefinitionListResponse extends OperationResponse
     /**
     * The retrieved metric definitions.
     */
-    public MetricDefinitionCollection getMetricDefinitionCollection() { return this.metricDefinitionCollection; }
+    public MetricDefinitionCollection getMetricDefinitionCollection()
+    {
+        return this.metricDefinitionCollection;
+    }
     
     /**
     * The retrieved metric definitions.
     */
-    public void setMetricDefinitionCollection(MetricDefinitionCollection metricDefinitionCollection) { this.metricDefinitionCollection = metricDefinitionCollection; }
-    
-    /**
-    * Initializes a new instance of the MetricDefinitionListResponse class.
-    *
-    */
-    public MetricDefinitionListResponse()
+    public void setMetricDefinitionCollection(MetricDefinitionCollection metricDefinitionCollection)
     {
+        this.metricDefinitionCollection = metricDefinitionCollection;
     }
 }

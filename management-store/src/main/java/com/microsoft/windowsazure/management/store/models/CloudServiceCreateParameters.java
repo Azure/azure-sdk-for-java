@@ -33,54 +33,70 @@ public class CloudServiceCreateParameters
     /**
     * The description for the cloud service to be created.
     */
-    public String getDescription() { return this.description; }
+    public String getDescription()
+    {
+        return this.description;
+    }
     
     /**
     * The description for the cloud service to be created.
     */
-    public void setDescription(String description) { this.description = description; }
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
     
     private String geoRegion;
     
     /**
     * The geographical region to create the cloud service in.
     */
-    public String getGeoRegion() { return this.geoRegion; }
+    public String getGeoRegion()
+    {
+        return this.geoRegion;
+    }
     
     /**
     * The geographical region to create the cloud service in.
     */
-    public void setGeoRegion(String geoRegion) { this.geoRegion = geoRegion; }
+    public void setGeoRegion(String geoRegion)
+    {
+        this.geoRegion = geoRegion;
+    }
     
     private String label;
     
     /**
     * The label of the cloud service to be created.
     */
-    public String getLabel() { return this.label; }
+    public String getLabel()
+    {
+        return this.label;
+    }
     
     /**
     * The label of the cloud service to be created.
     */
-    public void setLabel(String label) { this.label = label; }
+    public void setLabel(String label)
+    {
+        this.label = label;
+    }
     
     private String name;
     
     /**
     * The name of the cloud service to be created.
     */
-    public String getName() { return this.name; }
+    public String getName()
+    {
+        return this.name;
+    }
     
     /**
     * The name of the cloud service to be created.
     */
-    public void setName(String name) { this.name = name; }
-    
-    /**
-    * Initializes a new instance of the CloudServiceCreateParameters class.
-    *
-    */
-    public CloudServiceCreateParameters()
+    public void setName(String name)
     {
+        this.name = name;
     }
 }

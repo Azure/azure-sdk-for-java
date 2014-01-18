@@ -35,42 +35,52 @@ public class FirewallRuleUpdateParameters
     /**
     * Gets or sets the ending IP address applied to this firewall rule.
     */
-    public InetAddress getEndIPAddress() { return this.endIPAddress; }
+    public InetAddress getEndIPAddress()
+    {
+        return this.endIPAddress;
+    }
     
     /**
     * Gets or sets the ending IP address applied to this firewall rule.
     */
-    public void setEndIPAddress(InetAddress endIPAddress) { this.endIPAddress = endIPAddress; }
+    public void setEndIPAddress(InetAddress endIPAddress)
+    {
+        this.endIPAddress = endIPAddress;
+    }
     
     private String name;
     
     /**
     * Gets or sets the name of this firewall rule.
     */
-    public String getName() { return this.name; }
+    public String getName()
+    {
+        return this.name;
+    }
     
     /**
     * Gets or sets the name of this firewall rule.
     */
-    public void setName(String name) { this.name = name; }
+    public void setName(String name)
+    {
+        this.name = name;
+    }
     
     private InetAddress startIPAddress;
     
     /**
     * Gets or sets the beginning IP address applied to this firewall rule.
     */
-    public InetAddress getStartIPAddress() { return this.startIPAddress; }
+    public InetAddress getStartIPAddress()
+    {
+        return this.startIPAddress;
+    }
     
     /**
     * Gets or sets the beginning IP address applied to this firewall rule.
     */
-    public void setStartIPAddress(InetAddress startIPAddress) { this.startIPAddress = startIPAddress; }
-    
-    /**
-    * Initializes a new instance of the FirewallRuleUpdateParameters class.
-    *
-    */
-    public FirewallRuleUpdateParameters()
+    public void setStartIPAddress(InetAddress startIPAddress)
     {
+        this.startIPAddress = startIPAddress;
     }
 }

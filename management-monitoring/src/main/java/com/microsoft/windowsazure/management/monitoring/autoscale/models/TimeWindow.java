@@ -35,42 +35,52 @@ public class TimeWindow
     /**
     * The end of the time window.
     */
-    public Calendar getEnd() { return this.end; }
+    public Calendar getEnd()
+    {
+        return this.end;
+    }
     
     /**
     * The end of the time window.
     */
-    public void setEnd(Calendar end) { this.end = end; }
+    public void setEnd(Calendar end)
+    {
+        this.end = end;
+    }
     
     private Calendar start;
     
     /**
     * The start of the time window.
     */
-    public Calendar getStart() { return this.start; }
+    public Calendar getStart()
+    {
+        return this.start;
+    }
     
     /**
     * The start of the time window.
     */
-    public void setStart(Calendar start) { this.start = start; }
+    public void setStart(Calendar start)
+    {
+        this.start = start;
+    }
     
     private String timeZone;
     
     /**
     * The time zone information.
     */
-    public String getTimeZone() { return this.timeZone; }
+    public String getTimeZone()
+    {
+        return this.timeZone;
+    }
     
     /**
     * The time zone information.
     */
-    public void setTimeZone(String timeZone) { this.timeZone = timeZone; }
-    
-    /**
-    * Initializes a new instance of the TimeWindow class.
-    *
-    */
-    public TimeWindow()
+    public void setTimeZone(String timeZone)
     {
+        this.timeZone = timeZone;
     }
 }

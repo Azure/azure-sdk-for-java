@@ -37,14 +37,20 @@ public class HostedServiceUpdateParameters
     * to 1024 characters in length. You must specify a value for either Label
     * or Description, or for both.
     */
-    public String getDescription() { return this.description; }
+    public String getDescription()
+    {
+        return this.description;
+    }
     
     /**
     * Optional. A description for the cloud service. The description may be up
     * to 1024 characters in length. You must specify a value for either Label
     * or Description, or for both.
     */
-    public void setDescription(String description) { this.description = description; }
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
     
     private HashMap<String, String> extendedProperties;
     
@@ -60,7 +66,10 @@ public class HostedServiceUpdateParameters
     * code 400 (Bad Request) error.  Each extended property value has a
     * maximum length of 255 characters.
     */
-    public HashMap<String, String> getExtendedProperties() { return this.extendedProperties; }
+    public HashMap<String, String> getExtendedProperties()
+    {
+        return this.extendedProperties;
+    }
     
     /**
     * Optional. Represents the name of an extended cloud service property. Each
@@ -74,7 +83,10 @@ public class HostedServiceUpdateParameters
     * code 400 (Bad Request) error.  Each extended property value has a
     * maximum length of 255 characters.
     */
-    public void setExtendedProperties(HashMap<String, String> extendedProperties) { this.extendedProperties = extendedProperties; }
+    public void setExtendedProperties(HashMap<String, String> extendedProperties)
+    {
+        this.extendedProperties = extendedProperties;
+    }
     
     private String label;
     
@@ -85,7 +97,10 @@ public class HostedServiceUpdateParameters
     * within the subscription. The name can be used identify the service for
     * your tracking purposes.
     */
-    public String getLabel() { return this.label; }
+    public String getLabel()
+    {
+        return this.label;
+    }
     
     /**
     * Optional. A name for the cloud service. The name may be up to 100
@@ -94,7 +109,10 @@ public class HostedServiceUpdateParameters
     * within the subscription. The name can be used identify the service for
     * your tracking purposes.
     */
-    public void setLabel(String label) { this.label = label; }
+    public void setLabel(String label)
+    {
+        this.label = label;
+    }
     
     /**
     * Initializes a new instance of the HostedServiceUpdateParameters class.

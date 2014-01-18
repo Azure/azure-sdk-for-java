@@ -32,15 +32,13 @@ public class ServiceBusNotificationHubResponse extends OperationResponse
 {
     private ServiceBusNotificationHub notificationHub;
     
-    public ServiceBusNotificationHub getNotificationHub() { return this.notificationHub; }
-    
-    public void setNotificationHub(ServiceBusNotificationHub notificationHub) { this.notificationHub = notificationHub; }
-    
-    /**
-    * Initializes a new instance of the ServiceBusNotificationHubResponse class.
-    *
-    */
-    public ServiceBusNotificationHubResponse()
+    public ServiceBusNotificationHub getNotificationHub()
     {
+        return this.notificationHub;
+    }
+    
+    public void setNotificationHub(ServiceBusNotificationHub notificationHub)
+    {
+        this.notificationHub = notificationHub;
     }
 }

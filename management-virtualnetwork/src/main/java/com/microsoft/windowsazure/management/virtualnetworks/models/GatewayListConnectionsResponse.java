@@ -38,12 +38,18 @@ public class GatewayListConnectionsResponse extends OperationResponse implements
     /**
     * The list of connections.
     */
-    public ArrayList<GatewayListConnectionsResponse.GatewayConnection> getConnections() { return this.connections; }
+    public ArrayList<GatewayListConnectionsResponse.GatewayConnection> getConnections()
+    {
+        return this.connections;
+    }
     
     /**
     * The list of connections.
     */
-    public void setConnections(ArrayList<GatewayListConnectionsResponse.GatewayConnection> connections) { this.connections = connections; }
+    public void setConnections(ArrayList<GatewayListConnectionsResponse.GatewayConnection> connections)
+    {
+        this.connections = connections;
+    }
     
     /**
     * Initializes a new instance of the GatewayListConnectionsResponse class.
@@ -51,6 +57,7 @@ public class GatewayListConnectionsResponse extends OperationResponse implements
     */
     public GatewayListConnectionsResponse()
     {
+        super();
         this.connections = new ArrayList<GatewayListConnectionsResponse.GatewayConnection>();
     }
     
@@ -72,14 +79,20 @@ public class GatewayListConnectionsResponse extends OperationResponse implements
         * element contains a list of IP addresses (represented as strings)
         * that are assigned to currently connected VPN clients.
         */
-        public ArrayList<String> getAllocatedIPAddresses() { return this.allocatedIPAddresses; }
+        public ArrayList<String> getAllocatedIPAddresses()
+        {
+            return this.allocatedIPAddresses;
+        }
         
         /**
         * If LocalNetworkSiteName is defined as VPNClientConnection, this
         * element contains a list of IP addresses (represented as strings)
         * that are assigned to currently connected VPN clients.
         */
-        public void setAllocatedIPAddresses(ArrayList<String> allocatedIPAddresses) { this.allocatedIPAddresses = allocatedIPAddresses; }
+        public void setAllocatedIPAddresses(ArrayList<String> allocatedIPAddresses)
+        {
+            this.allocatedIPAddresses = allocatedIPAddresses;
+        }
         
         private GatewayConnectivityState connectivityState;
         
@@ -87,13 +100,19 @@ public class GatewayListConnectionsResponse extends OperationResponse implements
         * The connection state of the site. You can set the connection state to
         * Connected, Connecting or NotConnected.
         */
-        public GatewayConnectivityState getConnectivityState() { return this.connectivityState; }
+        public GatewayConnectivityState getConnectivityState()
+        {
+            return this.connectivityState;
+        }
         
         /**
         * The connection state of the site. You can set the connection state to
         * Connected, Connecting or NotConnected.
         */
-        public void setConnectivityState(GatewayConnectivityState connectivityState) { this.connectivityState = connectivityState; }
+        public void setConnectivityState(GatewayConnectivityState connectivityState)
+        {
+            this.connectivityState = connectivityState;
+        }
         
         private long egressBytesTransferred;
         
@@ -101,13 +120,19 @@ public class GatewayListConnectionsResponse extends OperationResponse implements
         * The number of bytes of data transferred out through this connection
         * since it was started.
         */
-        public long getEgressBytesTransferred() { return this.egressBytesTransferred; }
+        public long getEgressBytesTransferred()
+        {
+            return this.egressBytesTransferred;
+        }
         
         /**
         * The number of bytes of data transferred out through this connection
         * since it was started.
         */
-        public void setEgressBytesTransferred(long egressBytesTransferred) { this.egressBytesTransferred = egressBytesTransferred; }
+        public void setEgressBytesTransferred(long egressBytesTransferred)
+        {
+            this.egressBytesTransferred = egressBytesTransferred;
+        }
         
         private long ingressBytesTransferred;
         
@@ -115,43 +140,67 @@ public class GatewayListConnectionsResponse extends OperationResponse implements
         * The number of bytes of data transferred in through this connection
         * since it was started.
         */
-        public long getIngressBytesTransferred() { return this.ingressBytesTransferred; }
+        public long getIngressBytesTransferred()
+        {
+            return this.ingressBytesTransferred;
+        }
         
         /**
         * The number of bytes of data transferred in through this connection
         * since it was started.
         */
-        public void setIngressBytesTransferred(long ingressBytesTransferred) { this.ingressBytesTransferred = ingressBytesTransferred; }
+        public void setIngressBytesTransferred(long ingressBytesTransferred)
+        {
+            this.ingressBytesTransferred = ingressBytesTransferred;
+        }
         
         private Calendar lastConnectionEstablished;
         
-        public Calendar getLastConnectionEstablished() { return this.lastConnectionEstablished; }
+        public Calendar getLastConnectionEstablished()
+        {
+            return this.lastConnectionEstablished;
+        }
         
-        public void setLastConnectionEstablished(Calendar lastConnectionEstablished) { this.lastConnectionEstablished = lastConnectionEstablished; }
+        public void setLastConnectionEstablished(Calendar lastConnectionEstablished)
+        {
+            this.lastConnectionEstablished = lastConnectionEstablished;
+        }
         
         private GatewayEvent lastEvent;
         
         /**
         * A record of the last provisioning event for this connection.
         */
-        public GatewayEvent getLastEvent() { return this.lastEvent; }
+        public GatewayEvent getLastEvent()
+        {
+            return this.lastEvent;
+        }
         
         /**
         * A record of the last provisioning event for this connection.
         */
-        public void setLastEvent(GatewayEvent lastEvent) { this.lastEvent = lastEvent; }
+        public void setLastEvent(GatewayEvent lastEvent)
+        {
+            this.lastEvent = lastEvent;
+        }
         
         private String localNetworkSiteName;
         
         /**
         * The name of the local network site represented by the connection.
         */
-        public String getLocalNetworkSiteName() { return this.localNetworkSiteName; }
+        public String getLocalNetworkSiteName()
+        {
+            return this.localNetworkSiteName;
+        }
         
         /**
         * The name of the local network site represented by the connection.
         */
-        public void setLocalNetworkSiteName(String localNetworkSiteName) { this.localNetworkSiteName = localNetworkSiteName; }
+        public void setLocalNetworkSiteName(String localNetworkSiteName)
+        {
+            this.localNetworkSiteName = localNetworkSiteName;
+        }
         
         /**
         * Initializes a new instance of the GatewayConnection class.

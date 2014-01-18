@@ -38,12 +38,18 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
     /**
     * The virtual machine disks associated with your subscription.
     */
-    public ArrayList<VirtualMachineDiskListResponse.VirtualMachineDisk> getDisks() { return this.disks; }
+    public ArrayList<VirtualMachineDiskListResponse.VirtualMachineDisk> getDisks()
+    {
+        return this.disks;
+    }
     
     /**
     * The virtual machine disks associated with your subscription.
     */
-    public void setDisks(ArrayList<VirtualMachineDiskListResponse.VirtualMachineDisk> disks) { this.disks = disks; }
+    public void setDisks(ArrayList<VirtualMachineDiskListResponse.VirtualMachineDisk> disks)
+    {
+        this.disks = disks;
+    }
     
     /**
     * Initializes a new instance of the VirtualMachineDiskListResponse class.
@@ -51,6 +57,7 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
     */
     public VirtualMachineDiskListResponse()
     {
+        super();
         this.disks = new ArrayList<VirtualMachineDiskListResponse.VirtualMachineDisk>();
     }
     
@@ -76,7 +83,10 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         * which the media is located. If the storage account does not belong
         * to an affinity group the value is NULL.
         */
-        public String getAffinityGroup() { return this.affinityGroup; }
+        public String getAffinityGroup()
+        {
+            return this.affinityGroup;
+        }
         
         /**
         * The affinity group in which the disk is located. The AffinityGroup
@@ -84,19 +94,28 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         * which the media is located. If the storage account does not belong
         * to an affinity group the value is NULL.
         */
-        public void setAffinityGroup(String affinityGroup) { this.affinityGroup = affinityGroup; }
+        public void setAffinityGroup(String affinityGroup)
+        {
+            this.affinityGroup = affinityGroup;
+        }
         
         private Boolean isCorrupted;
         
         /**
         * Specifies thether the disk is known to be corrupt.
         */
-        public Boolean getIsCorrupted() { return this.isCorrupted; }
+        public Boolean getIsCorrupted()
+        {
+            return this.isCorrupted;
+        }
         
         /**
         * Specifies thether the disk is known to be corrupt.
         */
-        public void setIsCorrupted(Boolean isCorrupted) { this.isCorrupted = isCorrupted; }
+        public void setIsCorrupted(Boolean isCorrupted)
+        {
+            this.isCorrupted = isCorrupted;
+        }
         
         private Boolean isPremium;
         
@@ -104,25 +123,37 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         * Specifies whether or not the disk contains a premium virtual machine
         * image.
         */
-        public Boolean getIsPremium() { return this.isPremium; }
+        public Boolean getIsPremium()
+        {
+            return this.isPremium;
+        }
         
         /**
         * Specifies whether or not the disk contains a premium virtual machine
         * image.
         */
-        public void setIsPremium(Boolean isPremium) { this.isPremium = isPremium; }
+        public void setIsPremium(Boolean isPremium)
+        {
+            this.isPremium = isPremium;
+        }
         
         private String label;
         
         /**
         * The friendly name of the disk.
         */
-        public String getLabel() { return this.label; }
+        public String getLabel()
+        {
+            return this.label;
+        }
         
         /**
         * The friendly name of the disk.
         */
-        public void setLabel(String label) { this.label = label; }
+        public void setLabel(String label)
+        {
+            this.label = label;
+        }
         
         private String location;
         
@@ -132,7 +163,10 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         * disk is located. If the storage account belongs to an affinity group
         * the value is NULL.
         */
-        public String getLocation() { return this.location; }
+        public String getLocation()
+        {
+            return this.location;
+        }
         
         /**
         * The geo-location in which the disk is located. The Location value is
@@ -140,19 +174,28 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         * disk is located. If the storage account belongs to an affinity group
         * the value is NULL.
         */
-        public void setLocation(String location) { this.location = location; }
+        public void setLocation(String location)
+        {
+            this.location = location;
+        }
         
         private double logicalSizeInGB;
         
         /**
         * The size, in GB, of the disk.
         */
-        public double getLogicalSizeInGB() { return this.logicalSizeInGB; }
+        public double getLogicalSizeInGB()
+        {
+            return this.logicalSizeInGB;
+        }
         
         /**
         * The size, in GB, of the disk.
         */
-        public void setLogicalSizeInGB(double logicalSizeInGB) { this.logicalSizeInGB = logicalSizeInGB; }
+        public void setLogicalSizeInGB(double logicalSizeInGB)
+        {
+            this.logicalSizeInGB = logicalSizeInGB;
+        }
         
         private URI mediaLinkUri;
         
@@ -163,7 +206,10 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         * operation call. Example:
         * http://example.blob.core.windows.net/disks/mydisk.vhd
         */
-        public URI getMediaLinkUri() { return this.mediaLinkUri; }
+        public URI getMediaLinkUri()
+        {
+            return this.mediaLinkUri;
+        }
         
         /**
         * The location of the blob in the blob store in which the media for the
@@ -172,7 +218,10 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         * operation call. Example:
         * http://example.blob.core.windows.net/disks/mydisk.vhd
         */
-        public void setMediaLinkUri(URI mediaLinkUri) { this.mediaLinkUri = mediaLinkUri; }
+        public void setMediaLinkUri(URI mediaLinkUri)
+        {
+            this.mediaLinkUri = mediaLinkUri;
+        }
         
         private String name;
         
@@ -180,13 +229,19 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         * The name of the disk. This is the name that is used when creating one
         * or more virtual machines using the disk.
         */
-        public String getName() { return this.name; }
+        public String getName()
+        {
+            return this.name;
+        }
         
         /**
         * The name of the disk. This is the name that is used when creating one
         * or more virtual machines using the disk.
         */
-        public void setName(String name) { this.name = name; }
+        public void setName(String name)
+        {
+            this.name = name;
+        }
         
         private String operatingSystemType;
         
@@ -194,13 +249,19 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         * The operating system type of the OS image.  Possible Values are:
         * Linux, Windows, NULL.
         */
-        public String getOperatingSystemType() { return this.operatingSystemType; }
+        public String getOperatingSystemType()
+        {
+            return this.operatingSystemType;
+        }
         
         /**
         * The operating system type of the OS image.  Possible Values are:
         * Linux, Windows, NULL.
         */
-        public void setOperatingSystemType(String operatingSystemType) { this.operatingSystemType = operatingSystemType; }
+        public void setOperatingSystemType(String operatingSystemType)
+        {
+            this.operatingSystemType = operatingSystemType;
+        }
         
         private String sourceImageName;
         
@@ -210,7 +271,10 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         * OS image by calling the Add Role, Create Deployment, or Provision
         * Disk operations.
         */
-        public String getSourceImageName() { return this.sourceImageName; }
+        public String getSourceImageName()
+        {
+            return this.sourceImageName;
+        }
         
         /**
         * The name of the OS Image from which the disk was created. This
@@ -218,7 +282,10 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         * OS image by calling the Add Role, Create Deployment, or Provision
         * Disk operations.
         */
-        public void setSourceImageName(String sourceImageName) { this.sourceImageName = sourceImageName; }
+        public void setSourceImageName(String sourceImageName)
+        {
+            this.sourceImageName = sourceImageName;
+        }
         
         private VirtualMachineDiskListResponse.VirtualMachineDiskUsageDetails usageDetails;
         
@@ -227,21 +294,19 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         * using the disk. A disk cannot be deleted as long as it is attached
         * to a virtual machine.
         */
-        public VirtualMachineDiskListResponse.VirtualMachineDiskUsageDetails getUsageDetails() { return this.usageDetails; }
+        public VirtualMachineDiskListResponse.VirtualMachineDiskUsageDetails getUsageDetails()
+        {
+            return this.usageDetails;
+        }
         
         /**
         * Contains properties that specify a virtual machine that currently
         * using the disk. A disk cannot be deleted as long as it is attached
         * to a virtual machine.
         */
-        public void setUsageDetails(VirtualMachineDiskListResponse.VirtualMachineDiskUsageDetails usageDetails) { this.usageDetails = usageDetails; }
-        
-        /**
-        * Initializes a new instance of the VirtualMachineDisk class.
-        *
-        */
-        public VirtualMachineDisk()
+        public void setUsageDetails(VirtualMachineDiskListResponse.VirtualMachineDiskUsageDetails usageDetails)
         {
+            this.usageDetails = usageDetails;
         }
     }
     
@@ -257,44 +322,53 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         /**
         * The deployment in which the disk is being used.
         */
-        public String getDeploymentName() { return this.deploymentName; }
+        public String getDeploymentName()
+        {
+            return this.deploymentName;
+        }
         
         /**
         * The deployment in which the disk is being used.
         */
-        public void setDeploymentName(String deploymentName) { this.deploymentName = deploymentName; }
+        public void setDeploymentName(String deploymentName)
+        {
+            this.deploymentName = deploymentName;
+        }
         
         private String hostedServiceName;
         
         /**
         * The hosted service in which the disk is being used.
         */
-        public String getHostedServiceName() { return this.hostedServiceName; }
+        public String getHostedServiceName()
+        {
+            return this.hostedServiceName;
+        }
         
         /**
         * The hosted service in which the disk is being used.
         */
-        public void setHostedServiceName(String hostedServiceName) { this.hostedServiceName = hostedServiceName; }
+        public void setHostedServiceName(String hostedServiceName)
+        {
+            this.hostedServiceName = hostedServiceName;
+        }
         
         private String roleName;
         
         /**
         * The virtual machine that the disk is attached to.
         */
-        public String getRoleName() { return this.roleName; }
+        public String getRoleName()
+        {
+            return this.roleName;
+        }
         
         /**
         * The virtual machine that the disk is attached to.
         */
-        public void setRoleName(String roleName) { this.roleName = roleName; }
-        
-        /**
-        * Initializes a new instance of the VirtualMachineDiskUsageDetails
-        * class.
-        *
-        */
-        public VirtualMachineDiskUsageDetails()
+        public void setRoleName(String roleName)
         {
+            this.roleName = roleName;
         }
     }
 }

@@ -38,12 +38,18 @@ public class ManagementCertificateListResponse extends OperationResponse impleme
     /**
     * The management certificates that are valid for your subscription.
     */
-    public ArrayList<ManagementCertificateListResponse.SubscriptionCertificate> getSubscriptionCertificates() { return this.subscriptionCertificates; }
+    public ArrayList<ManagementCertificateListResponse.SubscriptionCertificate> getSubscriptionCertificates()
+    {
+        return this.subscriptionCertificates;
+    }
     
     /**
     * The management certificates that are valid for your subscription.
     */
-    public void setSubscriptionCertificates(ArrayList<ManagementCertificateListResponse.SubscriptionCertificate> subscriptionCertificates) { this.subscriptionCertificates = subscriptionCertificates; }
+    public void setSubscriptionCertificates(ArrayList<ManagementCertificateListResponse.SubscriptionCertificate> subscriptionCertificates)
+    {
+        this.subscriptionCertificates = subscriptionCertificates;
+    }
     
     /**
     * Initializes a new instance of the ManagementCertificateListResponse class.
@@ -51,6 +57,7 @@ public class ManagementCertificateListResponse extends OperationResponse impleme
     */
     public ManagementCertificateListResponse()
     {
+        super();
         this.subscriptionCertificates = new ArrayList<ManagementCertificateListResponse.SubscriptionCertificate>();
     }
     
@@ -73,12 +80,18 @@ public class ManagementCertificateListResponse extends OperationResponse impleme
         /**
         * The time that the management certificate was created, in UTC.
         */
-        public Calendar getCreated() { return this.created; }
+        public Calendar getCreated()
+        {
+            return this.created;
+        }
         
         /**
         * The time that the management certificate was created, in UTC.
         */
-        public void setCreated(Calendar created) { this.created = created; }
+        public void setCreated(Calendar created)
+        {
+            this.created = created;
+        }
         
         private byte[] data;
         
@@ -86,25 +99,37 @@ public class ManagementCertificateListResponse extends OperationResponse impleme
         * A base64 representation of the data contained in the management
         * certificate, in .cer format.
         */
-        public byte[] getData() { return this.data; }
+        public byte[] getData()
+        {
+            return this.data;
+        }
         
         /**
         * A base64 representation of the data contained in the management
         * certificate, in .cer format.
         */
-        public void setData(byte[] data) { this.data = data; }
+        public void setData(byte[] data)
+        {
+            this.data = data;
+        }
         
         private byte[] publicKey;
         
         /**
         * A base64 representation of the management certificate public key.
         */
-        public byte[] getPublicKey() { return this.publicKey; }
+        public byte[] getPublicKey()
+        {
+            return this.publicKey;
+        }
         
         /**
         * A base64 representation of the management certificate public key.
         */
-        public void setPublicKey(byte[] publicKey) { this.publicKey = publicKey; }
+        public void setPublicKey(byte[] publicKey)
+        {
+            this.publicKey = publicKey;
+        }
         
         private String thumbprint;
         
@@ -112,20 +137,18 @@ public class ManagementCertificateListResponse extends OperationResponse impleme
         * The X509 certificate thumb print property of the management
         * certificate. This thumb print uniquely identifies the certificate.
         */
-        public String getThumbprint() { return this.thumbprint; }
+        public String getThumbprint()
+        {
+            return this.thumbprint;
+        }
         
         /**
         * The X509 certificate thumb print property of the management
         * certificate. This thumb print uniquely identifies the certificate.
         */
-        public void setThumbprint(String thumbprint) { this.thumbprint = thumbprint; }
-        
-        /**
-        * Initializes a new instance of the SubscriptionCertificate class.
-        *
-        */
-        public SubscriptionCertificate()
+        public void setThumbprint(String thumbprint)
         {
+            this.thumbprint = thumbprint;
         }
     }
 }

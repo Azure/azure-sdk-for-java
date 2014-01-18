@@ -33,43 +33,52 @@ public class ManagementCertificateCreateParameters
     /**
     * The certificate’s raw data in base-64 encoded .cer format.
     */
-    public byte[] getData() { return this.data; }
+    public byte[] getData()
+    {
+        return this.data;
+    }
     
     /**
     * The certificate’s raw data in base-64 encoded .cer format.
     */
-    public void setData(byte[] data) { this.data = data; }
+    public void setData(byte[] data)
+    {
+        this.data = data;
+    }
     
     private byte[] publicKey;
     
     /**
     * A base64 representation of the management certificate public key.
     */
-    public byte[] getPublicKey() { return this.publicKey; }
+    public byte[] getPublicKey()
+    {
+        return this.publicKey;
+    }
     
     /**
     * A base64 representation of the management certificate public key.
     */
-    public void setPublicKey(byte[] publicKey) { this.publicKey = publicKey; }
+    public void setPublicKey(byte[] publicKey)
+    {
+        this.publicKey = publicKey;
+    }
     
     private String thumbprint;
     
     /**
     * The thumb print that uniquely identifies the management certificate.
     */
-    public String getThumbprint() { return this.thumbprint; }
+    public String getThumbprint()
+    {
+        return this.thumbprint;
+    }
     
     /**
     * The thumb print that uniquely identifies the management certificate.
     */
-    public void setThumbprint(String thumbprint) { this.thumbprint = thumbprint; }
-    
-    /**
-    * Initializes a new instance of the ManagementCertificateCreateParameters
-    * class.
-    *
-    */
-    public ManagementCertificateCreateParameters()
+    public void setThumbprint(String thumbprint)
     {
+        this.thumbprint = thumbprint;
     }
 }

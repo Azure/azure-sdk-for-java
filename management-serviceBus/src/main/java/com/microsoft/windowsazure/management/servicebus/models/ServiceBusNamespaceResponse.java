@@ -35,18 +35,16 @@ public class ServiceBusNamespaceResponse extends OperationResponse
     /**
     * The namespace.
     */
-    public ServiceBusNamespace getNamespace() { return this.namespace; }
+    public ServiceBusNamespace getNamespace()
+    {
+        return this.namespace;
+    }
     
     /**
     * The namespace.
     */
-    public void setNamespace(ServiceBusNamespace namespace) { this.namespace = namespace; }
-    
-    /**
-    * Initializes a new instance of the ServiceBusNamespaceResponse class.
-    *
-    */
-    public ServiceBusNamespaceResponse()
+    public void setNamespace(ServiceBusNamespace namespace)
     {
+        this.namespace = namespace;
     }
 }

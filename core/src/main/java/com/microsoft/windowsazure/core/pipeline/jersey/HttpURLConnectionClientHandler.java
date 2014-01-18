@@ -302,11 +302,15 @@ public class HttpURLConnectionClientHandler extends TerminatingClientHandler
                 public OutputStream onGetOutputStream() throws IOException
                 {
                     if (inStreamingMode)
+                    {
                         return new StreamingOutputStream(urlConnection,
                                 clientRequest);
+                    }
                     else
+                    {
                         return new BufferingOutputStream(urlConnection,
                                 clientRequest, entityStreamingListener);
+                    }
                 }
             });
         } else
@@ -329,7 +333,9 @@ public class HttpURLConnectionClientHandler extends TerminatingClientHandler
                 .getProperties().get(EntityStreamingListener.class.getName());
 
         if (result != null)
+        {
             return result;
+        }
 
         return EMPTY_STREAMING_LISTENER;
     }
@@ -338,11 +344,15 @@ public class HttpURLConnectionClientHandler extends TerminatingClientHandler
     {
         // Skip if already set
         if (clientRequest.getHeaders().getFirst("Content-Length") != null)
+        {
             return;
+        }
 
         // Skip if size is unknown
         if (size < 0)
+        {
             return;
+        }
 
         clientRequest.getHeaders().putSingle("Content-Length", size);
     }
@@ -358,7 +368,8 @@ public class HttpURLConnectionClientHandler extends TerminatingClientHandler
             {
                 urlConnection.setRequestProperty(e.getKey(),
                         ClientRequest.getHeaderValue(vs.get(0)));
-            } else
+            }
+            else
             {
                 CommaStringBuilder sb = new CommaStringBuilder();
                 for (Object v : e.getValue())
@@ -377,7 +388,9 @@ public class HttpURLConnectionClientHandler extends TerminatingClientHandler
                 .getHeaderFields().entrySet())
         {
             if (e.getKey() != null)
+            {
                 headers.put(e.getKey(), e.getValue());
+            }
         }
         return headers;
     }
@@ -388,7 +401,8 @@ public class HttpURLConnectionClientHandler extends TerminatingClientHandler
         if (urlConnection.getResponseCode() < 300)
         {
             return urlConnection.getInputStream();
-        } else
+        }
+        else
         {
             InputStream ein = urlConnection.getErrorStream();
             return (ein != null) ? ein : new ByteArrayInputStream(new byte[0]);

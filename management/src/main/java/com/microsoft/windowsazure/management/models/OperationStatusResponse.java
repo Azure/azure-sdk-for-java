@@ -44,26 +44,38 @@ public class OperationStatusResponse extends OperationResponse
     * status code for the failed request, and also includes error information
     * regarding the failure.
     */
-    public OperationStatusResponse.ErrorDetails getError() { return this.error; }
+    public OperationStatusResponse.ErrorDetails getError()
+    {
+        return this.error;
+    }
     
     /**
     * If the asynchronous operation failed, the response body includes the HTTP
     * status code for the failed request, and also includes error information
     * regarding the failure.
     */
-    public void setError(OperationStatusResponse.ErrorDetails error) { this.error = error; }
+    public void setError(OperationStatusResponse.ErrorDetails error)
+    {
+        this.error = error;
+    }
     
     private Integer httpStatusCode;
     
     /**
     * The HTTP status code for the asynchronous request.
     */
-    public Integer getHttpStatusCode() { return this.httpStatusCode; }
+    public Integer getHttpStatusCode()
+    {
+        return this.httpStatusCode;
+    }
     
     /**
     * The HTTP status code for the asynchronous request.
     */
-    public void setHttpStatusCode(Integer httpStatusCode) { this.httpStatusCode = httpStatusCode; }
+    public void setHttpStatusCode(Integer httpStatusCode)
+    {
+        this.httpStatusCode = httpStatusCode;
+    }
     
     private String id;
     
@@ -71,32 +83,36 @@ public class OperationStatusResponse extends OperationResponse
     * The request ID of the asynchronous request. This value is returned in the
     * x-ms-request-id response header of the asynchronous request.
     */
-    public String getId() { return this.id; }
+    public String getId()
+    {
+        return this.id;
+    }
     
     /**
     * The request ID of the asynchronous request. This value is returned in the
     * x-ms-request-id response header of the asynchronous request.
     */
-    public void setId(String id) { this.id = id; }
+    public void setId(String id)
+    {
+        this.id = id;
+    }
     
     private OperationStatus status;
     
     /**
     * The status of the asynchronous request.
     */
-    public OperationStatus getStatus() { return this.status; }
+    public OperationStatus getStatus()
+    {
+        return this.status;
+    }
     
     /**
     * The status of the asynchronous request.
     */
-    public void setStatus(OperationStatus status) { this.status = status; }
-    
-    /**
-    * Initializes a new instance of the OperationStatusResponse class.
-    *
-    */
-    public OperationStatusResponse()
+    public void setStatus(OperationStatus status)
     {
+        this.status = status;
     }
     
     /**
@@ -112,13 +128,19 @@ public class OperationStatusResponse extends OperationResponse
         * The management service error code returned if the asynchronous
         * request failed.
         */
-        public String getCode() { return this.code; }
+        public String getCode()
+        {
+            return this.code;
+        }
         
         /**
         * The management service error code returned if the asynchronous
         * request failed.
         */
-        public void setCode(String code) { this.code = code; }
+        public void setCode(String code)
+        {
+            this.code = code;
+        }
         
         private String message;
         
@@ -126,20 +148,18 @@ public class OperationStatusResponse extends OperationResponse
         * The management service error message returned if the asynchronous
         * request failed.
         */
-        public String getMessage() { return this.message; }
+        public String getMessage()
+        {
+            return this.message;
+        }
         
         /**
         * The management service error message returned if the asynchronous
         * request failed.
         */
-        public void setMessage(String message) { this.message = message; }
-        
-        /**
-        * Initializes a new instance of the ErrorDetails class.
-        *
-        */
-        public ErrorDetails()
+        public void setMessage(String message)
         {
+            this.message = message;
         }
     }
 }

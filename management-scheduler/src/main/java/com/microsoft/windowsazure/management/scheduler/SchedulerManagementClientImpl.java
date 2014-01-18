@@ -45,6 +45,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -57,15 +58,24 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
 {
     private URI baseUri;
     
-    public URI getBaseUri() { return this.baseUri; }
+    public URI getBaseUri()
+    {
+        return this.baseUri;
+    }
     
     private SubscriptionCloudCredentials credentials;
     
-    public SubscriptionCloudCredentials getCredentials() { return this.credentials; }
+    public SubscriptionCloudCredentials getCredentials()
+    {
+        return this.credentials;
+    }
     
     private JobCollectionOperations jobCollections;
     
-    public JobCollectionOperations getJobCollectionsOperations() { return this.jobCollections; }
+    public JobCollectionOperations getJobCollectionsOperations()
+    {
+        return this.jobCollections;
+    }
     
     /**
     * Initializes a new instance of the SchedulerManagementClientImpl class.
@@ -224,7 +234,7 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -244,11 +254,11 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
         Document responseDoc = documentBuilder.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagName("Operation");
-        Element operationElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element operationElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (operationElement != null)
         {
             NodeList elements2 = operationElement.getElementsByTagName("ID");
-            Element idElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+            Element idElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
             if (idElement != null)
             {
                 String idInstance;
@@ -257,7 +267,7 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
             }
             
             NodeList elements3 = operationElement.getElementsByTagName("Status");
-            Element statusElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
+            Element statusElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
             if (statusElement != null)
             {
                 SchedulerOperationStatus statusInstance;
@@ -266,7 +276,7 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
             }
             
             NodeList elements4 = operationElement.getElementsByTagName("HttpStatusCode");
-            Element httpStatusCodeElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
+            Element httpStatusCodeElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
             if (httpStatusCodeElement != null)
             {
                 Integer httpStatusCodeInstance;
@@ -275,14 +285,14 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
             }
             
             NodeList elements5 = operationElement.getElementsByTagName("Error");
-            Element errorElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
+            Element errorElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
             if (errorElement != null)
             {
                 SchedulerOperationStatusResponse.ErrorDetails errorInstance = new SchedulerOperationStatusResponse.ErrorDetails();
                 result.setError(errorInstance);
                 
                 NodeList elements6 = errorElement.getElementsByTagName("Code");
-                Element codeElement = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
+                Element codeElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                 if (codeElement != null)
                 {
                     String codeInstance;
@@ -291,7 +301,7 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
                 }
                 
                 NodeList elements7 = errorElement.getElementsByTagName("Message");
-                Element messageElement = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
+                Element messageElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                 if (messageElement != null)
                 {
                     String messageInstance;
@@ -374,7 +384,7 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -394,16 +404,16 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
         Document responseDoc = documentBuilder.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagName("ResourceProviderProperties");
-        Element resourceProviderPropertiesSequenceElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element resourceProviderPropertiesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (resourceProviderPropertiesSequenceElement != null)
         {
             for (int i1 = 0; i1 < resourceProviderPropertiesSequenceElement.getElementsByTagName("ResourceProviderProperty").getLength(); i1 = i1 + 1)
             {
-                org.w3c.dom.Element resourceProviderPropertiesElement = ((org.w3c.dom.Element)resourceProviderPropertiesSequenceElement.getElementsByTagName("ResourceProviderProperty").item(i1));
+                org.w3c.dom.Element resourceProviderPropertiesElement = ((org.w3c.dom.Element) resourceProviderPropertiesSequenceElement.getElementsByTagName("ResourceProviderProperty").item(i1));
                 NodeList elements2 = resourceProviderPropertiesElement.getElementsByTagName("Key");
-                String resourceProviderPropertiesKey = elements2.getLength() > 0 ? ((org.w3c.dom.Element)elements2.item(0)).getTextContent() : null;
+                String resourceProviderPropertiesKey = elements2.getLength() > 0 ? ((org.w3c.dom.Element) elements2.item(0)).getTextContent() : null;
                 NodeList elements3 = resourceProviderPropertiesElement.getElementsByTagName("Value");
-                String resourceProviderPropertiesValue = elements3.getLength() > 0 ? ((org.w3c.dom.Element)elements3.item(0)).getTextContent() : null;
+                String resourceProviderPropertiesValue = elements3.getLength() > 0 ? ((org.w3c.dom.Element) elements3.item(0)).getTextContent() : null;
                 result.getProperties().put(resourceProviderPropertiesKey, resourceProviderPropertiesValue);
             }
         }
@@ -481,7 +491,7 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -567,7 +577,7 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)

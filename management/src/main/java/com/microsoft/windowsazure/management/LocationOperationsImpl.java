@@ -37,6 +37,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -67,7 +68,10 @@ public class LocationOperationsImpl implements ServiceOperations<ManagementClien
     * Gets a reference to the
     * microsoft.windowsazure.management.ManagementClientImpl.
     */
-    public ManagementClientImpl getClient() { return this.client; }
+    public ManagementClientImpl getClient()
+    {
+        return this.client;
+    }
     
     /**
     * The List Locations operation lists all of the data center locations that
@@ -133,7 +137,7 @@ public class LocationOperationsImpl implements ServiceOperations<ManagementClien
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
+        if (statusCode != HttpStatus.SC_OK)
         {
             ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
@@ -153,17 +157,17 @@ public class LocationOperationsImpl implements ServiceOperations<ManagementClien
         Document responseDoc = documentBuilder.parse(responseContent);
         
         NodeList elements = responseDoc.getElementsByTagName("Locations");
-        Element locationsSequenceElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
+        Element locationsSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
         if (locationsSequenceElement != null)
         {
             for (int i1 = 0; i1 < locationsSequenceElement.getElementsByTagName("Location").getLength(); i1 = i1 + 1)
             {
-                org.w3c.dom.Element locationsElement = ((org.w3c.dom.Element)locationsSequenceElement.getElementsByTagName("Location").item(i1));
+                org.w3c.dom.Element locationsElement = ((org.w3c.dom.Element) locationsSequenceElement.getElementsByTagName("Location").item(i1));
                 LocationsListResponse.Location locationInstance = new LocationsListResponse.Location();
                 result.getLocations().add(locationInstance);
                 
                 NodeList elements2 = locationsElement.getElementsByTagName("Name");
-                Element nameElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
+                Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                 if (nameElement != null)
                 {
                     String nameInstance;
@@ -172,7 +176,7 @@ public class LocationOperationsImpl implements ServiceOperations<ManagementClien
                 }
                 
                 NodeList elements3 = locationsElement.getElementsByTagName("DisplayName");
-                Element displayNameElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
+                Element displayNameElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                 if (displayNameElement != null)
                 {
                     String displayNameInstance;
@@ -181,12 +185,12 @@ public class LocationOperationsImpl implements ServiceOperations<ManagementClien
                 }
                 
                 NodeList elements4 = locationsElement.getElementsByTagName("AvailableServices");
-                Element availableServicesSequenceElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
+                Element availableServicesSequenceElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                 if (availableServicesSequenceElement != null)
                 {
                     for (int i2 = 0; i2 < availableServicesSequenceElement.getElementsByTagName("AvailableService").getLength(); i2 = i2 + 1)
                     {
-                        org.w3c.dom.Element availableServicesElement = ((org.w3c.dom.Element)availableServicesSequenceElement.getElementsByTagName("AvailableService").item(i2));
+                        org.w3c.dom.Element availableServicesElement = ((org.w3c.dom.Element) availableServicesSequenceElement.getElementsByTagName("AvailableService").item(i2));
                         locationInstance.getAvailableServices().add(availableServicesElement.getTextContent());
                     }
                 }

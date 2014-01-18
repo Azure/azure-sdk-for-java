@@ -34,9 +34,15 @@ public class ServiceBusNotificationHubsResponse extends OperationResponse implem
 {
     private ArrayList<ServiceBusNotificationHub> notificationHubs;
     
-    public ArrayList<ServiceBusNotificationHub> getNotificationHubs() { return this.notificationHubs; }
+    public ArrayList<ServiceBusNotificationHub> getNotificationHubs()
+    {
+        return this.notificationHubs;
+    }
     
-    public void setNotificationHubs(ArrayList<ServiceBusNotificationHub> notificationHubs) { this.notificationHubs = notificationHubs; }
+    public void setNotificationHubs(ArrayList<ServiceBusNotificationHub> notificationHubs)
+    {
+        this.notificationHubs = notificationHubs;
+    }
     
     /**
     * Initializes a new instance of the ServiceBusNotificationHubsResponse
@@ -45,6 +51,7 @@ public class ServiceBusNotificationHubsResponse extends OperationResponse implem
     */
     public ServiceBusNotificationHubsResponse()
     {
+        super();
         this.notificationHubs = new ArrayList<ServiceBusNotificationHub>();
     }
     

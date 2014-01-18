@@ -36,54 +36,70 @@ public class GatewayGetResponse extends OperationResponse
     /**
     * The type of gateway routing used for this virtual network.
     */
-    public GatewayType getGatewayType() { return this.gatewayType; }
+    public GatewayType getGatewayType()
+    {
+        return this.gatewayType;
+    }
     
     /**
     * The type of gateway routing used for this virtual network.
     */
-    public void setGatewayType(GatewayType gatewayType) { this.gatewayType = gatewayType; }
+    public void setGatewayType(GatewayType gatewayType)
+    {
+        this.gatewayType = gatewayType;
+    }
     
     private GatewayEvent lastEvent;
     
     /**
     * The last recorded event for this virtual network gateway.
     */
-    public GatewayEvent getLastEvent() { return this.lastEvent; }
+    public GatewayEvent getLastEvent()
+    {
+        return this.lastEvent;
+    }
     
     /**
     * The last recorded event for this virtual network gateway.
     */
-    public void setLastEvent(GatewayEvent lastEvent) { this.lastEvent = lastEvent; }
+    public void setLastEvent(GatewayEvent lastEvent)
+    {
+        this.lastEvent = lastEvent;
+    }
     
     private String state;
     
     /**
     * The provisioning state of the virtual network gateway.
     */
-    public String getState() { return this.state; }
+    public String getState()
+    {
+        return this.state;
+    }
     
     /**
     * The provisioning state of the virtual network gateway.
     */
-    public void setState(String state) { this.state = state; }
+    public void setState(String state)
+    {
+        this.state = state;
+    }
     
     private InetAddress vipAddress;
     
     /**
     * The virtual IP address for this virtual network gateway.
     */
-    public InetAddress getVipAddress() { return this.vipAddress; }
+    public InetAddress getVipAddress()
+    {
+        return this.vipAddress;
+    }
     
     /**
     * The virtual IP address for this virtual network gateway.
     */
-    public void setVipAddress(InetAddress vipAddress) { this.vipAddress = vipAddress; }
-    
-    /**
-    * Initializes a new instance of the GatewayGetResponse class.
-    *
-    */
-    public GatewayGetResponse()
+    public void setVipAddress(InetAddress vipAddress)
     {
+        this.vipAddress = vipAddress;
     }
 }

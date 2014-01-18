@@ -38,12 +38,18 @@ public class ClientRootCertificateListResponse extends OperationResponse impleme
     /**
     * The list of client root certificates.
     */
-    public ArrayList<ClientRootCertificateListResponse.ClientRootCertificate> getClientRootCertificates() { return this.clientRootCertificates; }
+    public ArrayList<ClientRootCertificateListResponse.ClientRootCertificate> getClientRootCertificates()
+    {
+        return this.clientRootCertificates;
+    }
     
     /**
     * The list of client root certificates.
     */
-    public void setClientRootCertificates(ArrayList<ClientRootCertificateListResponse.ClientRootCertificate> clientRootCertificates) { this.clientRootCertificates = clientRootCertificates; }
+    public void setClientRootCertificates(ArrayList<ClientRootCertificateListResponse.ClientRootCertificate> clientRootCertificates)
+    {
+        this.clientRootCertificates = clientRootCertificates;
+    }
     
     /**
     * Initializes a new instance of the ClientRootCertificateListResponse class.
@@ -51,6 +57,7 @@ public class ClientRootCertificateListResponse extends OperationResponse impleme
     */
     public ClientRootCertificateListResponse()
     {
+        super();
         this.clientRootCertificates = new ArrayList<ClientRootCertificateListResponse.ClientRootCertificate>();
     }
     
@@ -70,43 +77,53 @@ public class ClientRootCertificateListResponse extends OperationResponse impleme
         /**
         * Specifies the time that the certificate will expire.
         */
-        public Calendar getExpirationTime() { return this.expirationTime; }
+        public Calendar getExpirationTime()
+        {
+            return this.expirationTime;
+        }
         
         /**
         * Specifies the time that the certificate will expire.
         */
-        public void setExpirationTime(Calendar expirationTime) { this.expirationTime = expirationTime; }
+        public void setExpirationTime(Calendar expirationTime)
+        {
+            this.expirationTime = expirationTime;
+        }
         
         private String subject;
         
         /**
         * Specifies the distinguished name of the certificate issuer.
         */
-        public String getSubject() { return this.subject; }
+        public String getSubject()
+        {
+            return this.subject;
+        }
         
         /**
         * Specifies the distinguished name of the certificate issuer.
         */
-        public void setSubject(String subject) { this.subject = subject; }
+        public void setSubject(String subject)
+        {
+            this.subject = subject;
+        }
         
         private String thumbprint;
         
         /**
         * Specifies the thumbprint of the certificate.
         */
-        public String getThumbprint() { return this.thumbprint; }
+        public String getThumbprint()
+        {
+            return this.thumbprint;
+        }
         
         /**
         * Specifies the thumbprint of the certificate.
         */
-        public void setThumbprint(String thumbprint) { this.thumbprint = thumbprint; }
-        
-        /**
-        * Initializes a new instance of the ClientRootCertificate class.
-        *
-        */
-        public ClientRootCertificate()
+        public void setThumbprint(String thumbprint)
         {
+            this.thumbprint = thumbprint;
         }
     }
 }

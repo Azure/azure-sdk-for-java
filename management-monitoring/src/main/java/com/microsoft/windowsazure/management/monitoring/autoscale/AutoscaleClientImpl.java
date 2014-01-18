@@ -39,7 +39,10 @@ public class AutoscaleClientImpl extends ServiceClient<AutoscaleClient> implemen
     /**
     * Optional base uri parameter.
     */
-    public URI getBaseUri() { return this.baseUri; }
+    public URI getBaseUri()
+    {
+        return this.baseUri;
+    }
     
     private SubscriptionCloudCredentials credentials;
     
@@ -51,14 +54,20 @@ public class AutoscaleClientImpl extends ServiceClient<AutoscaleClient> implemen
     * certificates over SSL to ensure that a request made to the service is
     * secure.  No anonymous requests are allowed.
     */
-    public SubscriptionCloudCredentials getCredentials() { return this.credentials; }
+    public SubscriptionCloudCredentials getCredentials()
+    {
+        return this.credentials;
+    }
     
     private SettingOperations settings;
     
     /**
     * Operations for managing the autoscale settings.
     */
-    public SettingOperations getSettingsOperations() { return this.settings; }
+    public SettingOperations getSettingsOperations()
+    {
+        return this.settings;
+    }
     
     /**
     * Initializes a new instance of the AutoscaleClientImpl class.

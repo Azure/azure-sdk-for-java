@@ -33,19 +33,16 @@ public class ServerChangeAdministratorPasswordParameters
     /**
     * Gets or sets new password for the administrator.
     */
-    public String getNewPassword() { return this.newPassword; }
+    public String getNewPassword()
+    {
+        return this.newPassword;
+    }
     
     /**
     * Gets or sets new password for the administrator.
     */
-    public void setNewPassword(String newPassword) { this.newPassword = newPassword; }
-    
-    /**
-    * Initializes a new instance of the
-    * ServerChangeAdministratorPasswordParameters class.
-    *
-    */
-    public ServerChangeAdministratorPasswordParameters()
+    public void setNewPassword(String newPassword)
     {
+        this.newPassword = newPassword;
     }
 }

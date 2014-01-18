@@ -19,7 +19,7 @@ import java.util.Map;
 public interface Builder
 {
 
-    public abstract <S, T> T build(String profile, Class<S> service,
+    <S, T> T build(String profile, Class<S> service,
             Class<T> instance, Map<String, Object> properties);
 
     public interface Factory<T>

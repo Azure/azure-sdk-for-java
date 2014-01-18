@@ -32,15 +32,27 @@ public class AutoscaleSetting
 {
     private boolean enabled;
     
-    public boolean getEnabled() { return this.enabled; }
+    public boolean isEnabled()
+    {
+        return this.enabled;
+    }
     
-    public void setEnabled(boolean enabled) { this.enabled = enabled; }
+    public void setEnabled(boolean enabled)
+    {
+        this.enabled = enabled;
+    }
     
     private ArrayList<AutoscaleProfile> profiles;
     
-    public ArrayList<AutoscaleProfile> getProfiles() { return this.profiles; }
+    public ArrayList<AutoscaleProfile> getProfiles()
+    {
+        return this.profiles;
+    }
     
-    public void setProfiles(ArrayList<AutoscaleProfile> profiles) { this.profiles = profiles; }
+    public void setProfiles(ArrayList<AutoscaleProfile> profiles)
+    {
+        this.profiles = profiles;
+    }
     
     /**
     * Initializes a new instance of the AutoscaleSetting class.

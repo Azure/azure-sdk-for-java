@@ -33,42 +33,52 @@ public class AddOnUpdateParameters
     /**
     * The selected plan for this store addon.
     */
-    public String getPlan() { return this.plan; }
+    public String getPlan()
+    {
+        return this.plan;
+    }
     
     /**
     * The selected plan for this store addon.
     */
-    public void setPlan(String plan) { this.plan = plan; }
+    public void setPlan(String plan)
+    {
+        this.plan = plan;
+    }
     
     private String promotionCode;
     
     /**
     * The promotion code for this store addon.
     */
-    public String getPromotionCode() { return this.promotionCode; }
+    public String getPromotionCode()
+    {
+        return this.promotionCode;
+    }
     
     /**
     * The promotion code for this store addon.
     */
-    public void setPromotionCode(String promotionCode) { this.promotionCode = promotionCode; }
+    public void setPromotionCode(String promotionCode)
+    {
+        this.promotionCode = promotionCode;
+    }
     
     private String type;
     
     /**
     * The type of store item to be created.
     */
-    public String getType() { return this.type; }
+    public String getType()
+    {
+        return this.type;
+    }
     
     /**
     * The type of store item to be created.
     */
-    public void setType(String type) { this.type = type; }
-    
-    /**
-    * Initializes a new instance of the AddOnUpdateParameters class.
-    *
-    */
-    public AddOnUpdateParameters()
+    public void setType(String type)
     {
+        this.type = type;
     }
 }

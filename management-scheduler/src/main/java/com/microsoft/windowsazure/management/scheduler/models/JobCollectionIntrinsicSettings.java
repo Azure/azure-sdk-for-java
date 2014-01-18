@@ -33,30 +33,34 @@ public class JobCollectionIntrinsicSettings
     /**
     * The plan of the resource.
     */
-    public JobCollectionPlan getPlan() { return this.plan; }
+    public JobCollectionPlan getPlan()
+    {
+        return this.plan;
+    }
     
     /**
     * The plan of the resource.
     */
-    public void setPlan(JobCollectionPlan plan) { this.plan = plan; }
+    public void setPlan(JobCollectionPlan plan)
+    {
+        this.plan = plan;
+    }
     
     private JobCollectionQuota quota;
     
     /**
     * Quota settings for the job collection.
     */
-    public JobCollectionQuota getQuota() { return this.quota; }
+    public JobCollectionQuota getQuota()
+    {
+        return this.quota;
+    }
     
     /**
     * Quota settings for the job collection.
     */
-    public void setQuota(JobCollectionQuota quota) { this.quota = quota; }
-    
-    /**
-    * Initializes a new instance of the JobCollectionIntrinsicSettings class.
-    *
-    */
-    public JobCollectionIntrinsicSettings()
+    public void setQuota(JobCollectionQuota quota)
     {
+        this.quota = quota;
     }
 }

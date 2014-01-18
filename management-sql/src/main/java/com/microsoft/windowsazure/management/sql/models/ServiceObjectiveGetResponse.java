@@ -37,48 +37,72 @@ public class ServiceObjectiveGetResponse extends OperationResponse
     /**
     * Gets or sets the service objective description.
     */
-    public String getDescription() { return this.description; }
+    public String getDescription()
+    {
+        return this.description;
+    }
     
     /**
     * Gets or sets the service objective description.
     */
-    public void setDescription(String description) { this.description = description; }
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
     
     private ArrayList<ServiceObjectiveGetResponse.DimensionSettingResponse> dimensionSettings;
     
     /**
     * Gets or sets the service objective dimension settings.
     */
-    public ArrayList<ServiceObjectiveGetResponse.DimensionSettingResponse> getDimensionSettings() { return this.dimensionSettings; }
+    public ArrayList<ServiceObjectiveGetResponse.DimensionSettingResponse> getDimensionSettings()
+    {
+        return this.dimensionSettings;
+    }
     
     /**
     * Gets or sets the service objective dimension settings.
     */
-    public void setDimensionSettings(ArrayList<ServiceObjectiveGetResponse.DimensionSettingResponse> dimensionSettings) { this.dimensionSettings = dimensionSettings; }
+    public void setDimensionSettings(ArrayList<ServiceObjectiveGetResponse.DimensionSettingResponse> dimensionSettings)
+    {
+        this.dimensionSettings = dimensionSettings;
+    }
     
     private boolean enabled;
     
     /**
     * Gets or sets a value indicating whether the service objective is enabled.
     */
-    public boolean getEnabled() { return this.enabled; }
+    public boolean isEnabled()
+    {
+        return this.enabled;
+    }
     
     /**
     * Gets or sets a value indicating whether the service objective is enabled.
     */
-    public void setEnabled(boolean enabled) { this.enabled = enabled; }
+    public void setEnabled(boolean enabled)
+    {
+        this.enabled = enabled;
+    }
     
     private String id;
     
     /**
     * Gets or sets the service objective id.
     */
-    public String getId() { return this.id; }
+    public String getId()
+    {
+        return this.id;
+    }
     
     /**
     * Gets or sets the service objective id.
     */
-    public void setId(String id) { this.id = id; }
+    public void setId(String id)
+    {
+        this.id = id;
+    }
     
     private boolean isDefault;
     
@@ -86,13 +110,19 @@ public class ServiceObjectiveGetResponse extends OperationResponse
     * Gets or sets a value indicating whether the service objective is the
     * default objective.
     */
-    public boolean getIsDefault() { return this.isDefault; }
+    public boolean isDefault()
+    {
+        return this.isDefault;
+    }
     
     /**
     * Gets or sets a value indicating whether the service objective is the
     * default objective.
     */
-    public void setIsDefault(boolean isDefault) { this.isDefault = isDefault; }
+    public void setIsDefault(boolean isDefault)
+    {
+        this.isDefault = isDefault;
+    }
     
     private boolean isSystem;
     
@@ -100,73 +130,109 @@ public class ServiceObjectiveGetResponse extends OperationResponse
     * Gets or sets a value indicating whether the service objective is a system
     * objective.
     */
-    public boolean getIsSystem() { return this.isSystem; }
+    public boolean isSystem()
+    {
+        return this.isSystem;
+    }
     
     /**
     * Gets or sets a value indicating whether the service objective is a system
     * objective.
     */
-    public void setIsSystem(boolean isSystem) { this.isSystem = isSystem; }
+    public void setIsSystem(boolean isSystem)
+    {
+        this.isSystem = isSystem;
+    }
     
     private String name;
     
     /**
     * Gets or sets the name of the service objective.
     */
-    public String getName() { return this.name; }
+    public String getName()
+    {
+        return this.name;
+    }
     
     /**
     * Gets or sets the name of the service objective.
     */
-    public void setName(String name) { this.name = name; }
+    public void setName(String name)
+    {
+        this.name = name;
+    }
     
     private String parentLink;
     
     /**
     * Gets or sets the ParentLink of the service objective.
     */
-    public String getParentLink() { return this.parentLink; }
+    public String getParentLink()
+    {
+        return this.parentLink;
+    }
     
     /**
     * Gets or sets the ParentLink of the service objective.
     */
-    public void setParentLink(String parentLink) { this.parentLink = parentLink; }
+    public void setParentLink(String parentLink)
+    {
+        this.parentLink = parentLink;
+    }
     
     private String selfLink;
     
     /**
     * Gets or sets the SelfLink of the service objective.
     */
-    public String getSelfLink() { return this.selfLink; }
+    public String getSelfLink()
+    {
+        return this.selfLink;
+    }
     
     /**
     * Gets or sets the SelfLink of the service objective.
     */
-    public void setSelfLink(String selfLink) { this.selfLink = selfLink; }
+    public void setSelfLink(String selfLink)
+    {
+        this.selfLink = selfLink;
+    }
     
     private String state;
     
     /**
     * Gets or sets the state of the service objective.
     */
-    public String getState() { return this.state; }
+    public String getState()
+    {
+        return this.state;
+    }
     
     /**
     * Gets or sets the state of the service objective.
     */
-    public void setState(String state) { this.state = state; }
+    public void setState(String state)
+    {
+        this.state = state;
+    }
     
     private String type;
     
     /**
     * Gets or sets the type of resource.
     */
-    public String getType() { return this.type; }
+    public String getType()
+    {
+        return this.type;
+    }
     
     /**
     * Gets or sets the type of resource.
     */
-    public void setType(String type) { this.type = type; }
+    public void setType(String type)
+    {
+        this.type = type;
+    }
     
     /**
     * Initializes a new instance of the ServiceObjectiveGetResponse class.
@@ -174,6 +240,7 @@ public class ServiceObjectiveGetResponse extends OperationResponse
     */
     public ServiceObjectiveGetResponse()
     {
+        super();
         this.dimensionSettings = new ArrayList<ServiceObjectiveGetResponse.DimensionSettingResponse>();
     }
     
@@ -187,24 +254,36 @@ public class ServiceObjectiveGetResponse extends OperationResponse
         /**
         * Gets or sets the dimension setting description.
         */
-        public String getDescription() { return this.description; }
+        public String getDescription()
+        {
+            return this.description;
+        }
         
         /**
         * Gets or sets the dimension setting description.
         */
-        public void setDescription(String description) { this.description = description; }
+        public void setDescription(String description)
+        {
+            this.description = description;
+        }
         
         private String id;
         
         /**
         * Gets or sets the dimension setting id.
         */
-        public String getId() { return this.id; }
+        public String getId()
+        {
+            return this.id;
+        }
         
         /**
         * Gets or sets the dimension setting id.
         */
-        public void setId(String id) { this.id = id; }
+        public void setId(String id)
+        {
+            this.id = id;
+        }
         
         private boolean isDefault;
         
@@ -212,92 +291,126 @@ public class ServiceObjectiveGetResponse extends OperationResponse
         * Gets or sets a value indicating whether the dimension setting is the
         * default setting.
         */
-        public boolean getIsDefault() { return this.isDefault; }
+        public boolean isDefault()
+        {
+            return this.isDefault;
+        }
         
         /**
         * Gets or sets a value indicating whether the dimension setting is the
         * default setting.
         */
-        public void setIsDefault(boolean isDefault) { this.isDefault = isDefault; }
+        public void setIsDefault(boolean isDefault)
+        {
+            this.isDefault = isDefault;
+        }
         
         private String name;
         
         /**
         * Gets or sets the name of the dimension setting.
         */
-        public String getName() { return this.name; }
+        public String getName()
+        {
+            return this.name;
+        }
         
         /**
         * Gets or sets the name of the dimension setting.
         */
-        public void setName(String name) { this.name = name; }
+        public void setName(String name)
+        {
+            this.name = name;
+        }
         
         private byte ordinal;
         
         /**
         * Gets or sets the dimension setting ordinal position.
         */
-        public byte getOrdinal() { return this.ordinal; }
+        public byte getOrdinal()
+        {
+            return this.ordinal;
+        }
         
         /**
         * Gets or sets the dimension setting ordinal position.
         */
-        public void setOrdinal(byte ordinal) { this.ordinal = ordinal; }
+        public void setOrdinal(byte ordinal)
+        {
+            this.ordinal = ordinal;
+        }
         
         private String parentLink;
         
         /**
         * Gets or sets the ParentLink of the dimension setting.
         */
-        public String getParentLink() { return this.parentLink; }
+        public String getParentLink()
+        {
+            return this.parentLink;
+        }
         
         /**
         * Gets or sets the ParentLink of the dimension setting.
         */
-        public void setParentLink(String parentLink) { this.parentLink = parentLink; }
+        public void setParentLink(String parentLink)
+        {
+            this.parentLink = parentLink;
+        }
         
         private String selfLink;
         
         /**
         * Gets or sets the SelfLink of the dimension setting.
         */
-        public String getSelfLink() { return this.selfLink; }
+        public String getSelfLink()
+        {
+            return this.selfLink;
+        }
         
         /**
         * Gets or sets the SelfLink of the dimension setting.
         */
-        public void setSelfLink(String selfLink) { this.selfLink = selfLink; }
+        public void setSelfLink(String selfLink)
+        {
+            this.selfLink = selfLink;
+        }
         
         private String state;
         
         /**
         * Gets or sets the state of the dimension setting.
         */
-        public String getState() { return this.state; }
+        public String getState()
+        {
+            return this.state;
+        }
         
         /**
         * Gets or sets the state of the dimension setting.
         */
-        public void setState(String state) { this.state = state; }
+        public void setState(String state)
+        {
+            this.state = state;
+        }
         
         private String type;
         
         /**
         * Gets or sets the type of resource.
         */
-        public String getType() { return this.type; }
+        public String getType()
+        {
+            return this.type;
+        }
         
         /**
         * Gets or sets the type of resource.
         */
-        public void setType(String type) { this.type = type; }
-        
-        /**
-        * Initializes a new instance of the DimensionSettingResponse class.
-        *
-        */
-        public DimensionSettingResponse()
+        public void setType(String type)
         {
+            this.type = type;
         }
     }
 }

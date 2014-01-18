@@ -36,30 +36,34 @@ public class MetricAvailability
     /**
     * The retention period for the metric at the specified timegrain.
     */
-    public Duration getRetention() { return this.retention; }
+    public Duration getRetention()
+    {
+        return this.retention;
+    }
     
     /**
     * The retention period for the metric at the specified timegrain.
     */
-    public void setRetention(Duration retention) { this.retention = retention; }
+    public void setRetention(Duration retention)
+    {
+        this.retention = retention;
+    }
     
     private Duration timeGrain;
     
     /**
     * The time grain specifies the aggregation interval for the metric.
     */
-    public Duration getTimeGrain() { return this.timeGrain; }
+    public Duration getTimeGrain()
+    {
+        return this.timeGrain;
+    }
     
     /**
     * The time grain specifies the aggregation interval for the metric.
     */
-    public void setTimeGrain(Duration timeGrain) { this.timeGrain = timeGrain; }
-    
-    /**
-    * Initializes a new instance of the MetricAvailability class.
-    *
-    */
-    public MetricAvailability()
+    public void setTimeGrain(Duration timeGrain)
     {
+        this.timeGrain = timeGrain;
     }
 }

@@ -38,12 +38,18 @@ public class CloudServiceListResponse extends OperationResponse implements Itera
     /**
     * The list of cloud service locations for this subscription.
     */
-    public ArrayList<CloudServiceListResponse.CloudService> getCloudServices() { return this.cloudServices; }
+    public ArrayList<CloudServiceListResponse.CloudService> getCloudServices()
+    {
+        return this.cloudServices;
+    }
     
     /**
     * The list of cloud service locations for this subscription.
     */
-    public void setCloudServices(ArrayList<CloudServiceListResponse.CloudService> cloudServices) { this.cloudServices = cloudServices; }
+    public void setCloudServices(ArrayList<CloudServiceListResponse.CloudService> cloudServices)
+    {
+        this.cloudServices = cloudServices;
+    }
     
     /**
     * Initializes a new instance of the CloudServiceListResponse class.
@@ -51,6 +57,7 @@ public class CloudServiceListResponse extends OperationResponse implements Itera
     */
     public CloudServiceListResponse()
     {
+        super();
         this.cloudServices = new ArrayList<CloudServiceListResponse.CloudService>();
     }
     
@@ -74,48 +81,72 @@ public class CloudServiceListResponse extends OperationResponse implements Itera
         /**
         * The description of the cloud service region.
         */
-        public String getDescription() { return this.description; }
+        public String getDescription()
+        {
+            return this.description;
+        }
         
         /**
         * The description of the cloud service region.
         */
-        public void setDescription(String description) { this.description = description; }
+        public void setDescription(String description)
+        {
+            this.description = description;
+        }
         
         private String geoRegion;
         
         /**
         * The geographical region in which this cloud service can run.
         */
-        public String getGeoRegion() { return this.geoRegion; }
+        public String getGeoRegion()
+        {
+            return this.geoRegion;
+        }
         
         /**
         * The geographical region in which this cloud service can run.
         */
-        public void setGeoRegion(String geoRegion) { this.geoRegion = geoRegion; }
+        public void setGeoRegion(String geoRegion)
+        {
+            this.geoRegion = geoRegion;
+        }
         
         private String label;
         
         /**
         * The label of the cloud service region.
         */
-        public String getLabel() { return this.label; }
+        public String getLabel()
+        {
+            return this.label;
+        }
         
         /**
         * The label of the cloud service region.
         */
-        public void setLabel(String label) { this.label = label; }
+        public void setLabel(String label)
+        {
+            this.label = label;
+        }
         
         private String name;
         
         /**
         * The name of the cloud service region.
         */
-        public String getName() { return this.name; }
+        public String getName()
+        {
+            return this.name;
+        }
         
         /**
         * The name of the cloud service region.
         */
-        public void setName(String name) { this.name = name; }
+        public void setName(String name)
+        {
+            this.name = name;
+        }
         
         private ArrayList<CloudServiceListResponse.CloudService.AddOnResource> resources;
         
@@ -123,13 +154,19 @@ public class CloudServiceListResponse extends OperationResponse implements Itera
         * A list of existing store resources installed into a cloud service
         * region.
         */
-        public ArrayList<CloudServiceListResponse.CloudService.AddOnResource> getResources() { return this.resources; }
+        public ArrayList<CloudServiceListResponse.CloudService.AddOnResource> getResources()
+        {
+            return this.resources;
+        }
         
         /**
         * A list of existing store resources installed into a cloud service
         * region.
         */
-        public void setResources(ArrayList<CloudServiceListResponse.CloudService.AddOnResource> resources) { this.resources = resources; }
+        public void setResources(ArrayList<CloudServiceListResponse.CloudService.AddOnResource> resources)
+        {
+            this.resources = resources;
+        }
         
         /**
         * Initializes a new instance of the CloudService class.
@@ -150,84 +187,126 @@ public class CloudServiceListResponse extends OperationResponse implements Itera
             /**
             * The ETag for this store resource.
             */
-            public String getETag() { return this.eTag; }
+            public String getETag()
+            {
+                return this.eTag;
+            }
             
             /**
             * The ETag for this store resource.
             */
-            public void setETag(String eTag) { this.eTag = eTag; }
+            public void setETag(String eTag)
+            {
+                this.eTag = eTag;
+            }
             
             private String name;
             
             /**
             * The user-input name of this store item.
             */
-            public String getName() { return this.name; }
+            public String getName()
+            {
+                return this.name;
+            }
             
             /**
             * The user-input name of this store item.
             */
-            public void setName(String name) { this.name = name; }
+            public void setName(String name)
+            {
+                this.name = name;
+            }
             
             private String namespace;
             
             /**
             * The namespace in which this store item resides.
             */
-            public String getNamespace() { return this.namespace; }
+            public String getNamespace()
+            {
+                return this.namespace;
+            }
             
             /**
             * The namespace in which this store item resides.
             */
-            public void setNamespace(String namespace) { this.namespace = namespace; }
+            public void setNamespace(String namespace)
+            {
+                this.namespace = namespace;
+            }
             
             private HashMap<String, String> outputItems;
             
             /**
             * Output items associated with an individual store resource.
             */
-            public HashMap<String, String> getOutputItems() { return this.outputItems; }
+            public HashMap<String, String> getOutputItems()
+            {
+                return this.outputItems;
+            }
             
             /**
             * Output items associated with an individual store resource.
             */
-            public void setOutputItems(HashMap<String, String> outputItems) { this.outputItems = outputItems; }
+            public void setOutputItems(HashMap<String, String> outputItems)
+            {
+                this.outputItems = outputItems;
+            }
             
             private String plan;
             
             /**
             * The plan for this store item as selected by the user.
             */
-            public String getPlan() { return this.plan; }
+            public String getPlan()
+            {
+                return this.plan;
+            }
             
             /**
             * The plan for this store item as selected by the user.
             */
-            public void setPlan(String plan) { this.plan = plan; }
+            public void setPlan(String plan)
+            {
+                this.plan = plan;
+            }
             
             private String schemaVersion;
             
             /**
             * The schema version for this resource.
             */
-            public String getSchemaVersion() { return this.schemaVersion; }
+            public String getSchemaVersion()
+            {
+                return this.schemaVersion;
+            }
             
             /**
             * The schema version for this resource.
             */
-            public void setSchemaVersion(String schemaVersion) { this.schemaVersion = schemaVersion; }
+            public void setSchemaVersion(String schemaVersion)
+            {
+                this.schemaVersion = schemaVersion;
+            }
             
             private String state;
             
             /**
             * The state of this store resource.
             */
-            public String getState() { return this.state; }
+            public String getState()
+            {
+                return this.state;
+            }
             
             /**
             * The state of this store resource.
             */
-            public void setState(String state) { this.state = state; }
+            public void setState(String state)
+            {
+                this.state = state;
+            }
             
             private CloudServiceListResponse.CloudService.AddOnResource.OperationStatus status;
             
@@ -235,37 +314,55 @@ public class CloudServiceListResponse extends OperationResponse implements Itera
             * Operation status items associated with an individual store
             * resource.
             */
-            public CloudServiceListResponse.CloudService.AddOnResource.OperationStatus getStatus() { return this.status; }
+            public CloudServiceListResponse.CloudService.AddOnResource.OperationStatus getStatus()
+            {
+                return this.status;
+            }
             
             /**
             * Operation status items associated with an individual store
             * resource.
             */
-            public void setStatus(CloudServiceListResponse.CloudService.AddOnResource.OperationStatus status) { this.status = status; }
+            public void setStatus(CloudServiceListResponse.CloudService.AddOnResource.OperationStatus status)
+            {
+                this.status = status;
+            }
             
             private String type;
             
             /**
             * The type of store item.
             */
-            public String getType() { return this.type; }
+            public String getType()
+            {
+                return this.type;
+            }
             
             /**
             * The type of store item.
             */
-            public void setType(String type) { this.type = type; }
+            public void setType(String type)
+            {
+                this.type = type;
+            }
             
             private ArrayList<CloudServiceListResponse.CloudService.AddOnResource.UsageLimit> usageLimits;
             
             /**
             * Usage meters associated with an individual store resource.
             */
-            public ArrayList<CloudServiceListResponse.CloudService.AddOnResource.UsageLimit> getUsageLimits() { return this.usageLimits; }
+            public ArrayList<CloudServiceListResponse.CloudService.AddOnResource.UsageLimit> getUsageLimits()
+            {
+                return this.usageLimits;
+            }
             
             /**
             * Usage meters associated with an individual store resource.
             */
-            public void setUsageLimits(ArrayList<CloudServiceListResponse.CloudService.AddOnResource.UsageLimit> usageLimits) { this.usageLimits = usageLimits; }
+            public void setUsageLimits(ArrayList<CloudServiceListResponse.CloudService.AddOnResource.UsageLimit> usageLimits)
+            {
+                this.usageLimits = usageLimits;
+            }
             
             /**
             * Initializes a new instance of the AddOnResource class.
@@ -287,31 +384,35 @@ public class CloudServiceListResponse extends OperationResponse implements Itera
                 /**
                 * The result of this operation status.
                 */
-                public String getResult() { return this.result; }
+                public String getResult()
+                {
+                    return this.result;
+                }
                 
                 /**
                 * The result of this operation status.
                 */
-                public void setResult(String result) { this.result = result; }
+                public void setResult(String result)
+                {
+                    this.result = result;
+                }
                 
                 private String type;
                 
                 /**
                 * The type of this operation status.
                 */
-                public String getType() { return this.type; }
+                public String getType()
+                {
+                    return this.type;
+                }
                 
                 /**
                 * The type of this operation status.
                 */
-                public void setType(String type) { this.type = type; }
-                
-                /**
-                * Initializes a new instance of the OperationStatus class.
-                *
-                */
-                public OperationStatus()
+                public void setType(String type)
                 {
+                    this.type = type;
                 }
             }
             
@@ -327,56 +428,72 @@ public class CloudServiceListResponse extends OperationResponse implements Itera
                 * Defines the limit of this usage included in this store
                 * resource's plan.
                 */
-                public long getAmountIncluded() { return this.amountIncluded; }
+                public long getAmountIncluded()
+                {
+                    return this.amountIncluded;
+                }
                 
                 /**
                 * Defines the limit of this usage included in this store
                 * resource's plan.
                 */
-                public void setAmountIncluded(long amountIncluded) { this.amountIncluded = amountIncluded; }
+                public void setAmountIncluded(long amountIncluded)
+                {
+                    this.amountIncluded = amountIncluded;
+                }
                 
                 private long amountUsed;
                 
                 /**
                 * The amount of this store resource that has already been used.
                 */
-                public long getAmountUsed() { return this.amountUsed; }
+                public long getAmountUsed()
+                {
+                    return this.amountUsed;
+                }
                 
                 /**
                 * The amount of this store resource that has already been used.
                 */
-                public void setAmountUsed(long amountUsed) { this.amountUsed = amountUsed; }
+                public void setAmountUsed(long amountUsed)
+                {
+                    this.amountUsed = amountUsed;
+                }
                 
                 private String name;
                 
                 /**
                 * The name of this usage limit.
                 */
-                public String getName() { return this.name; }
+                public String getName()
+                {
+                    return this.name;
+                }
                 
                 /**
                 * The name of this usage limit.
                 */
-                public void setName(String name) { this.name = name; }
+                public void setName(String name)
+                {
+                    this.name = name;
+                }
                 
                 private String unit;
                 
                 /**
                 * The unit in which this usage limit is measured.
                 */
-                public String getUnit() { return this.unit; }
+                public String getUnit()
+                {
+                    return this.unit;
+                }
                 
                 /**
                 * The unit in which this usage limit is measured.
                 */
-                public void setUnit(String unit) { this.unit = unit; }
-                
-                /**
-                * Initializes a new instance of the UsageLimit class.
-                *
-                */
-                public UsageLimit()
+                public void setUnit(String unit)
                 {
+                    this.unit = unit;
                 }
             }
         }

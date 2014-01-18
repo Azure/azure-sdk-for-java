@@ -33,24 +33,36 @@ public class JobCollectionCreateParameters
     /**
     * Intrinsic settings for the scheduler job collections.
     */
-    public JobCollectionIntrinsicSettings getIntrinsicSettings() { return this.intrinsicSettings; }
+    public JobCollectionIntrinsicSettings getIntrinsicSettings()
+    {
+        return this.intrinsicSettings;
+    }
     
     /**
     * Intrinsic settings for the scheduler job collections.
     */
-    public void setIntrinsicSettings(JobCollectionIntrinsicSettings intrinsicSettings) { this.intrinsicSettings = intrinsicSettings; }
+    public void setIntrinsicSettings(JobCollectionIntrinsicSettings intrinsicSettings)
+    {
+        this.intrinsicSettings = intrinsicSettings;
+    }
     
     private String label;
     
     /**
     * Label for the resource.
     */
-    public String getLabel() { return this.label; }
+    public String getLabel()
+    {
+        return this.label;
+    }
     
     /**
     * Label for the resource.
     */
-    public void setLabel(String label) { this.label = label; }
+    public void setLabel(String label)
+    {
+        this.label = label;
+    }
     
     private String schemaVersion;
     
@@ -59,20 +71,18 @@ public class JobCollectionCreateParameters
     * specified, you must conform to the contract resource version you
     * registered as default.
     */
-    public String getSchemaVersion() { return this.schemaVersion; }
+    public String getSchemaVersion()
+    {
+        return this.schemaVersion;
+    }
     
     /**
     * The version of the Intrinsic Properties for your Resource. If not
     * specified, you must conform to the contract resource version you
     * registered as default.
     */
-    public void setSchemaVersion(String schemaVersion) { this.schemaVersion = schemaVersion; }
-    
-    /**
-    * Initializes a new instance of the JobCollectionCreateParameters class.
-    *
-    */
-    public JobCollectionCreateParameters()
+    public void setSchemaVersion(String schemaVersion)
     {
+        this.schemaVersion = schemaVersion;
     }
 }
