@@ -77,6 +77,21 @@ def hydraSpecs = [
 //
 // Implementation below here
 
+// Check for required environment variables
+def ensureEnvironment()
+{
+    def env = System.getenv()
+    def notSet = []
+
+    ['PRIVATE_FEED_USER_NAME', 'PRIVATE_FEED_PASSWORD', 'PRIVATE_FEED_URL'].each {
+        if (!env.containsKey(it)) { notSet.add(it) }
+    }
+
+    if (notSet) {
+        throw new Exception("Required environment variables not set: ${notSet}")
+    }
+}
+
 // Download a file from a url
 def download(address)
 {
@@ -150,6 +165,7 @@ def findFile(pattern)
 //
 // Main logic here
 //
+ensureEnvironment()
 download("http://www.nuget.org/nuget.exe")
 restorePackages()
 def hydraPath = findFile('hydra.exe')
