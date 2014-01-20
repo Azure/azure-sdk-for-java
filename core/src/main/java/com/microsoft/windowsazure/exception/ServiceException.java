@@ -34,6 +34,9 @@ import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+/**
+* The Service Exception indicates an error while executing a service operation.
+*/
 public class ServiceException extends Exception
 {
 

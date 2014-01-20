@@ -58,7 +58,9 @@
     <!-- See http://checkstyle.sf.net/config_misc.html#Translation -->
     <module name="Translation"/>
 
-    <module name="FileLength"/>
+    <!-- Removed on 20/01/2014
+        Justification: generated code.
+        <module name="FileLength"/> -->
 
     <!-- Following interprets the header file as regular expressions. -->
     <!-- <module name="RegexpHeader"/>                                -->
@@ -143,7 +145,11 @@
           <property name="max" value="160" />
         </module>
         -->
-        <module name="MethodLength"/>
+        <!-- Removed on 20/01/2014
+            Justification: a lot of the code is generated.
+            As such, method length is not a true representation
+            of complexity / etc issues.
+            <module name="MethodLength"/> -->
         <module name="ParameterNumber"/>
 
 

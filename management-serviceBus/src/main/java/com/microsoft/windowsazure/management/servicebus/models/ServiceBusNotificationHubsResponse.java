@@ -34,14 +34,20 @@ public class ServiceBusNotificationHubsResponse extends OperationResponse implem
 {
     private ArrayList<ServiceBusNotificationHub> notificationHubs;
     
+    /**
+    * @return The NotificationHubs value.
+    */
     public ArrayList<ServiceBusNotificationHub> getNotificationHubs()
     {
         return this.notificationHubs;
     }
     
-    public void setNotificationHubs(ArrayList<ServiceBusNotificationHub> notificationHubs)
+    /**
+    * @param notificationHubsValue The NotificationHubs value.
+    */
+    public void setNotificationHubs(final ArrayList<ServiceBusNotificationHub> notificationHubsValue)
     {
-        this.notificationHubs = notificationHubs;
+        this.notificationHubs = notificationHubsValue;
     }
     
     /**

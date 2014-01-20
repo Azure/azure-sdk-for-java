@@ -33,6 +33,7 @@ public class SshSettingPublicKey
     /**
     * Required. Specifies the SHA1 fingerprint of an X509 certificate
     * associated with the hosted service that includes the SSH public key.
+    * @return The Fingerprint value.
     */
     public String getFingerprint()
     {
@@ -42,10 +43,11 @@ public class SshSettingPublicKey
     /**
     * Required. Specifies the SHA1 fingerprint of an X509 certificate
     * associated with the hosted service that includes the SSH public key.
+    * @param fingerprintValue The Fingerprint value.
     */
-    public void setFingerprint(String fingerprint)
+    public void setFingerprint(final String fingerprintValue)
     {
-        this.fingerprint = fingerprint;
+        this.fingerprint = fingerprintValue;
     }
     
     private String path;
@@ -55,6 +57,7 @@ public class SshSettingPublicKey
     * which stores the SSH public key. If the file already exists, the
     * specified key is appended to the file.
     * Example:/home/user/.ssh/authorized_keys
+    * @return The Path value.
     */
     public String getPath()
     {
@@ -66,9 +69,10 @@ public class SshSettingPublicKey
     * which stores the SSH public key. If the file already exists, the
     * specified key is appended to the file.
     * Example:/home/user/.ssh/authorized_keys
+    * @param pathValue The Path value.
     */
-    public void setPath(String path)
+    public void setPath(final String pathValue)
     {
-        this.path = path;
+        this.path = pathValue;
     }
 }

@@ -36,6 +36,7 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
     
     /**
     * The extensions that are available to add to your cloud service.
+    * @return The ExtensionImages value.
     */
     public ArrayList<HostedServiceListAvailableExtensionsResponse.ExtensionImage> getExtensionImages()
     {
@@ -44,10 +45,11 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
     
     /**
     * The extensions that are available to add to your cloud service.
+    * @param extensionImagesValue The ExtensionImages value.
     */
-    public void setExtensionImages(ArrayList<HostedServiceListAvailableExtensionsResponse.ExtensionImage> extensionImages)
+    public void setExtensionImages(final ArrayList<HostedServiceListAvailableExtensionsResponse.ExtensionImage> extensionImagesValue)
     {
-        this.extensionImages = extensionImages;
+        this.extensionImages = extensionImagesValue;
     }
     
     /**
@@ -79,6 +81,7 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
         
         /**
         * The description of the extension.
+        * @return The Description value.
         */
         public String getDescription()
         {
@@ -87,10 +90,11 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
         
         /**
         * The description of the extension.
+        * @param descriptionValue The Description value.
         */
-        public void setDescription(String description)
+        public void setDescription(final String descriptionValue)
         {
-            this.description = description;
+            this.description = descriptionValue;
         }
         
         private HostingResources hostingResources;
@@ -98,6 +102,7 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
         /**
         * The type of resource that supports the extension. This value can be
         * WebRole, WorkerRole, or WebRole|WorkerRole.
+        * @return The HostingResources value.
         */
         public HostingResources getHostingResources()
         {
@@ -107,16 +112,18 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
         /**
         * The type of resource that supports the extension. This value can be
         * WebRole, WorkerRole, or WebRole|WorkerRole.
+        * @param hostingResourcesValue The HostingResources value.
         */
-        public void setHostingResources(HostingResources hostingResources)
+        public void setHostingResources(final HostingResources hostingResourcesValue)
         {
-            this.hostingResources = hostingResources;
+            this.hostingResources = hostingResourcesValue;
         }
         
         private String label;
         
         /**
         * The label that is used to identify the extension.
+        * @return The Label value.
         */
         public String getLabel()
         {
@@ -125,16 +132,18 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
         
         /**
         * The label that is used to identify the extension.
+        * @param labelValue The Label value.
         */
-        public void setLabel(String label)
+        public void setLabel(final String labelValue)
         {
-            this.label = label;
+            this.label = labelValue;
         }
         
         private String privateConfigurationSchema;
         
         /**
         * The schema of the private configuration.
+        * @return The PrivateConfigurationSchema value.
         */
         public String getPrivateConfigurationSchema()
         {
@@ -143,10 +152,12 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
         
         /**
         * The schema of the private configuration.
+        * @param privateConfigurationSchemaValue The PrivateConfigurationSchema
+        * value.
         */
-        public void setPrivateConfigurationSchema(String privateConfigurationSchema)
+        public void setPrivateConfigurationSchema(final String privateConfigurationSchemaValue)
         {
-            this.privateConfigurationSchema = privateConfigurationSchema;
+            this.privateConfigurationSchema = privateConfigurationSchemaValue;
         }
         
         private String providerNamespace;
@@ -154,6 +165,7 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
         /**
         * The provider namespace of the extension. The provider namespace for
         * Windows Azure extensions is Microsoft.Windows.Azure.Extensions.
+        * @return The ProviderNamespace value.
         */
         public String getProviderNamespace()
         {
@@ -163,16 +175,18 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
         /**
         * The provider namespace of the extension. The provider namespace for
         * Windows Azure extensions is Microsoft.Windows.Azure.Extensions.
+        * @param providerNamespaceValue The ProviderNamespace value.
         */
-        public void setProviderNamespace(String providerNamespace)
+        public void setProviderNamespace(final String providerNamespaceValue)
         {
-            this.providerNamespace = providerNamespace;
+            this.providerNamespace = providerNamespaceValue;
         }
         
         private String publicConfigurationSchema;
         
         /**
         * The schema of the public configuration.
+        * @return The PublicConfigurationSchema value.
         */
         public String getPublicConfigurationSchema()
         {
@@ -181,10 +195,12 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
         
         /**
         * The schema of the public configuration.
+        * @param publicConfigurationSchemaValue The PublicConfigurationSchema
+        * value.
         */
-        public void setPublicConfigurationSchema(String publicConfigurationSchema)
+        public void setPublicConfigurationSchema(final String publicConfigurationSchemaValue)
         {
-            this.publicConfigurationSchema = publicConfigurationSchema;
+            this.publicConfigurationSchema = publicConfigurationSchemaValue;
         }
         
         private String thumbprintAlgorithm;
@@ -192,6 +208,7 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
         /**
         * The thumbprint algorithm of the certificate that is used for
         * encryption.
+        * @return The ThumbprintAlgorithm value.
         */
         public String getThumbprintAlgorithm()
         {
@@ -201,16 +218,18 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
         /**
         * The thumbprint algorithm of the certificate that is used for
         * encryption.
+        * @param thumbprintAlgorithmValue The ThumbprintAlgorithm value.
         */
-        public void setThumbprintAlgorithm(String thumbprintAlgorithm)
+        public void setThumbprintAlgorithm(final String thumbprintAlgorithmValue)
         {
-            this.thumbprintAlgorithm = thumbprintAlgorithm;
+            this.thumbprintAlgorithm = thumbprintAlgorithmValue;
         }
         
         private String type;
         
         /**
         * Required. The type of the extension.
+        * @return The Type value.
         */
         public String getType()
         {
@@ -219,16 +238,18 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
         
         /**
         * Required. The type of the extension.
+        * @param typeValue The Type value.
         */
-        public void setType(String type)
+        public void setType(final String typeValue)
         {
-            this.type = type;
+            this.type = typeValue;
         }
         
         private String version;
         
         /**
         * The version of the extension.
+        * @return The Version value.
         */
         public String getVersion()
         {
@@ -237,10 +258,11 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
         
         /**
         * The version of the extension.
+        * @param versionValue The Version value.
         */
-        public void setVersion(String version)
+        public void setVersion(final String versionValue)
         {
-            this.version = version;
+            this.version = versionValue;
         }
     }
 }

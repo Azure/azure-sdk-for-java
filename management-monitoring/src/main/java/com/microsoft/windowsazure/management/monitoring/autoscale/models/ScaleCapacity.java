@@ -32,6 +32,7 @@ public class ScaleCapacity
     
     /**
     * The default number of instances that are available for the scaling action.
+    * @return The Default value.
     */
     public String getDefault()
     {
@@ -40,8 +41,9 @@ public class ScaleCapacity
     
     /**
     * The default number of instances that are available for the scaling action.
+    * @param defaultValue The Default value.
     */
-    public void setDefault(String defaultValue)
+    public void setDefault(final String defaultValue)
     {
         this.defaultValue = defaultValue;
     }
@@ -50,6 +52,7 @@ public class ScaleCapacity
     
     /**
     * The maximum number of instances that are available for the scaling action.
+    * @return The Maximum value.
     */
     public String getMaximum()
     {
@@ -58,16 +61,18 @@ public class ScaleCapacity
     
     /**
     * The maximum number of instances that are available for the scaling action.
+    * @param maximumValue The Maximum value.
     */
-    public void setMaximum(String maximum)
+    public void setMaximum(final String maximumValue)
     {
-        this.maximum = maximum;
+        this.maximum = maximumValue;
     }
     
     private String minimum;
     
     /**
     * The minimum number of instances that are available for the scaling action.
+    * @return The Minimum value.
     */
     public String getMinimum()
     {
@@ -76,9 +81,10 @@ public class ScaleCapacity
     
     /**
     * The minimum number of instances that are available for the scaling action.
+    * @param minimumValue The Minimum value.
     */
-    public void setMinimum(String minimum)
+    public void setMinimum(final String minimumValue)
     {
-        this.minimum = minimum;
+        this.minimum = minimumValue;
     }
 }

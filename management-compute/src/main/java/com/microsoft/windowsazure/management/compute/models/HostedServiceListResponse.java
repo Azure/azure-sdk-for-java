@@ -37,6 +37,7 @@ public class HostedServiceListResponse extends OperationResponse implements Iter
     
     /**
     * The hosted services associated with your subscription.
+    * @return The HostedServices value.
     */
     public ArrayList<HostedServiceListResponse.HostedService> getHostedServices()
     {
@@ -45,10 +46,11 @@ public class HostedServiceListResponse extends OperationResponse implements Iter
     
     /**
     * The hosted services associated with your subscription.
+    * @param hostedServicesValue The HostedServices value.
     */
-    public void setHostedServices(ArrayList<HostedServiceListResponse.HostedService> hostedServices)
+    public void setHostedServices(final ArrayList<HostedServiceListResponse.HostedService> hostedServicesValue)
     {
-        this.hostedServices = hostedServices;
+        this.hostedServices = hostedServicesValue;
     }
     
     /**
@@ -79,6 +81,7 @@ public class HostedServiceListResponse extends OperationResponse implements Iter
         
         /**
         * The properties that are assigned to the cloud service.
+        * @return The Properties value.
         */
         public HostedServiceProperties getProperties()
         {
@@ -87,10 +90,11 @@ public class HostedServiceListResponse extends OperationResponse implements Iter
         
         /**
         * The properties that are assigned to the cloud service.
+        * @param propertiesValue The Properties value.
         */
-        public void setProperties(HostedServiceProperties properties)
+        public void setProperties(final HostedServiceProperties propertiesValue)
         {
-            this.properties = properties;
+            this.properties = propertiesValue;
         }
         
         private String serviceName;
@@ -100,6 +104,7 @@ public class HostedServiceListResponse extends OperationResponse implements Iter
         * can be used to access the cloud service. For example, if the cloud
         * service name is MyService you could access the cloud service by
         * calling: http://MyService.cloudapp.net
+        * @return The ServiceName value.
         */
         public String getServiceName()
         {
@@ -111,10 +116,11 @@ public class HostedServiceListResponse extends OperationResponse implements Iter
         * can be used to access the cloud service. For example, if the cloud
         * service name is MyService you could access the cloud service by
         * calling: http://MyService.cloudapp.net
+        * @param serviceNameValue The ServiceName value.
         */
-        public void setServiceName(String serviceName)
+        public void setServiceName(final String serviceNameValue)
         {
-            this.serviceName = serviceName;
+            this.serviceName = serviceNameValue;
         }
         
         private URI uri;
@@ -122,6 +128,7 @@ public class HostedServiceListResponse extends OperationResponse implements Iter
         /**
         * The Service Management API request URI used to perform Get Hosted
         * Service Properties requests against the cloud service.
+        * @return The Uri value.
         */
         public URI getUri()
         {
@@ -131,10 +138,11 @@ public class HostedServiceListResponse extends OperationResponse implements Iter
         /**
         * The Service Management API request URI used to perform Get Hosted
         * Service Properties requests against the cloud service.
+        * @param uriValue The Uri value.
         */
-        public void setUri(URI uri)
+        public void setUri(final URI uriValue)
         {
-            this.uri = uri;
+            this.uri = uriValue;
         }
     }
 }

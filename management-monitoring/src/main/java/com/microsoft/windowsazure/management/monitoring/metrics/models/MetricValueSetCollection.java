@@ -34,6 +34,7 @@ public class MetricValueSetCollection
     
     /**
     * The collection.
+    * @return The Value value.
     */
     public ArrayList<MetricValueSet> getValue()
     {
@@ -42,10 +43,11 @@ public class MetricValueSetCollection
     
     /**
     * The collection.
+    * @param valueValue The Value value.
     */
-    public void setValue(ArrayList<MetricValueSet> value)
+    public void setValue(final ArrayList<MetricValueSet> valueValue)
     {
-        this.value = value;
+        this.value = valueValue;
     }
     
     /**

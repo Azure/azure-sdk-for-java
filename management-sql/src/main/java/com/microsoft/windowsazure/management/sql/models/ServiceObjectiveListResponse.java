@@ -36,6 +36,7 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
     
     /**
     * Gets or sets the list of Service Objectives that are existing in a server.
+    * @return The ServiceObjectives value.
     */
     public ArrayList<ServiceObjectiveListResponse.ServiceObjective> getServiceObjectives()
     {
@@ -44,10 +45,11 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
     
     /**
     * Gets or sets the list of Service Objectives that are existing in a server.
+    * @param serviceObjectivesValue The ServiceObjectives value.
     */
-    public void setServiceObjectives(ArrayList<ServiceObjectiveListResponse.ServiceObjective> serviceObjectives)
+    public void setServiceObjectives(final ArrayList<ServiceObjectiveListResponse.ServiceObjective> serviceObjectivesValue)
     {
-        this.serviceObjectives = serviceObjectives;
+        this.serviceObjectives = serviceObjectivesValue;
     }
     
     /**
@@ -78,6 +80,7 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
         
         /**
         * Gets or sets the service objective description.
+        * @return The Description value.
         */
         public String getDescription()
         {
@@ -86,16 +89,18 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
         
         /**
         * Gets or sets the service objective description.
+        * @param descriptionValue The Description value.
         */
-        public void setDescription(String description)
+        public void setDescription(final String descriptionValue)
         {
-            this.description = description;
+            this.description = descriptionValue;
         }
         
         private ArrayList<ServiceObjectiveListResponse.ServiceObjective.DimensionSettingResponse> dimensionSettings;
         
         /**
         * Gets or sets the service objective dimension settings.
+        * @return The DimensionSettings value.
         */
         public ArrayList<ServiceObjectiveListResponse.ServiceObjective.DimensionSettingResponse> getDimensionSettings()
         {
@@ -104,10 +109,11 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
         
         /**
         * Gets or sets the service objective dimension settings.
+        * @param dimensionSettingsValue The DimensionSettings value.
         */
-        public void setDimensionSettings(ArrayList<ServiceObjectiveListResponse.ServiceObjective.DimensionSettingResponse> dimensionSettings)
+        public void setDimensionSettings(final ArrayList<ServiceObjectiveListResponse.ServiceObjective.DimensionSettingResponse> dimensionSettingsValue)
         {
-            this.dimensionSettings = dimensionSettings;
+            this.dimensionSettings = dimensionSettingsValue;
         }
         
         private boolean enabled;
@@ -115,6 +121,7 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
         /**
         * Gets or sets a value indicating whether the service objective is
         * enabled.
+        * @return The Enabled value.
         */
         public boolean isEnabled()
         {
@@ -124,16 +131,18 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
         /**
         * Gets or sets a value indicating whether the service objective is
         * enabled.
+        * @param enabledValue The Enabled value.
         */
-        public void setEnabled(boolean enabled)
+        public void setEnabled(final boolean enabledValue)
         {
-            this.enabled = enabled;
+            this.enabled = enabledValue;
         }
         
         private String id;
         
         /**
         * Gets or sets the service objective id.
+        * @return The Id value.
         */
         public String getId()
         {
@@ -142,10 +151,11 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
         
         /**
         * Gets or sets the service objective id.
+        * @param idValue The Id value.
         */
-        public void setId(String id)
+        public void setId(final String idValue)
         {
-            this.id = id;
+            this.id = idValue;
         }
         
         private boolean isDefault;
@@ -153,6 +163,7 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
         /**
         * Gets or sets a value indicating whether the service objective is the
         * default objective.
+        * @return The IsDefault value.
         */
         public boolean isDefault()
         {
@@ -162,10 +173,11 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
         /**
         * Gets or sets a value indicating whether the service objective is the
         * default objective.
+        * @param isDefaultValue The IsDefault value.
         */
-        public void setIsDefault(boolean isDefault)
+        public void setIsDefault(final boolean isDefaultValue)
         {
-            this.isDefault = isDefault;
+            this.isDefault = isDefaultValue;
         }
         
         private boolean isSystem;
@@ -173,6 +185,7 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
         /**
         * Gets or sets a value indicating whether the service objective is a
         * system objective.
+        * @return The IsSystem value.
         */
         public boolean isSystem()
         {
@@ -182,16 +195,18 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
         /**
         * Gets or sets a value indicating whether the service objective is a
         * system objective.
+        * @param isSystemValue The IsSystem value.
         */
-        public void setIsSystem(boolean isSystem)
+        public void setIsSystem(final boolean isSystemValue)
         {
-            this.isSystem = isSystem;
+            this.isSystem = isSystemValue;
         }
         
         private String name;
         
         /**
         * Gets or sets the name of the service objective.
+        * @return The Name value.
         */
         public String getName()
         {
@@ -200,16 +215,18 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
         
         /**
         * Gets or sets the name of the service objective.
+        * @param nameValue The Name value.
         */
-        public void setName(String name)
+        public void setName(final String nameValue)
         {
-            this.name = name;
+            this.name = nameValue;
         }
         
         private String parentLink;
         
         /**
         * Gets or sets the ParentLink of the service objective.
+        * @return The ParentLink value.
         */
         public String getParentLink()
         {
@@ -218,16 +235,18 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
         
         /**
         * Gets or sets the ParentLink of the service objective.
+        * @param parentLinkValue The ParentLink value.
         */
-        public void setParentLink(String parentLink)
+        public void setParentLink(final String parentLinkValue)
         {
-            this.parentLink = parentLink;
+            this.parentLink = parentLinkValue;
         }
         
         private String selfLink;
         
         /**
         * Gets or sets the SelfLink of the service objective.
+        * @return The SelfLink value.
         */
         public String getSelfLink()
         {
@@ -236,16 +255,18 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
         
         /**
         * Gets or sets the SelfLink of the service objective.
+        * @param selfLinkValue The SelfLink value.
         */
-        public void setSelfLink(String selfLink)
+        public void setSelfLink(final String selfLinkValue)
         {
-            this.selfLink = selfLink;
+            this.selfLink = selfLinkValue;
         }
         
         private String state;
         
         /**
         * Gets or sets the state of the service objective.
+        * @return The State value.
         */
         public String getState()
         {
@@ -254,16 +275,18 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
         
         /**
         * Gets or sets the state of the service objective.
+        * @param stateValue The State value.
         */
-        public void setState(String state)
+        public void setState(final String stateValue)
         {
-            this.state = state;
+            this.state = stateValue;
         }
         
         private String type;
         
         /**
         * Gets or sets the type of resource.
+        * @return The Type value.
         */
         public String getType()
         {
@@ -272,10 +295,11 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
         
         /**
         * Gets or sets the type of resource.
+        * @param typeValue The Type value.
         */
-        public void setType(String type)
+        public void setType(final String typeValue)
         {
-            this.type = type;
+            this.type = typeValue;
         }
         
         /**
@@ -296,6 +320,7 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
             
             /**
             * Gets or sets the dimension setting description.
+            * @return The Description value.
             */
             public String getDescription()
             {
@@ -304,16 +329,18 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
             
             /**
             * Gets or sets the dimension setting description.
+            * @param descriptionValue The Description value.
             */
-            public void setDescription(String description)
+            public void setDescription(final String descriptionValue)
             {
-                this.description = description;
+                this.description = descriptionValue;
             }
             
             private String id;
             
             /**
             * Gets or sets the dimension setting id.
+            * @return The Id value.
             */
             public String getId()
             {
@@ -322,10 +349,11 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
             
             /**
             * Gets or sets the dimension setting id.
+            * @param idValue The Id value.
             */
-            public void setId(String id)
+            public void setId(final String idValue)
             {
-                this.id = id;
+                this.id = idValue;
             }
             
             private boolean isDefault;
@@ -333,6 +361,7 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
             /**
             * Gets or sets a value indicating whether the dimension setting is
             * the default setting.
+            * @return The IsDefault value.
             */
             public boolean isDefault()
             {
@@ -342,16 +371,18 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
             /**
             * Gets or sets a value indicating whether the dimension setting is
             * the default setting.
+            * @param isDefaultValue The IsDefault value.
             */
-            public void setIsDefault(boolean isDefault)
+            public void setIsDefault(final boolean isDefaultValue)
             {
-                this.isDefault = isDefault;
+                this.isDefault = isDefaultValue;
             }
             
             private String name;
             
             /**
             * Gets or sets the name of the dimension setting.
+            * @return The Name value.
             */
             public String getName()
             {
@@ -360,16 +391,18 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
             
             /**
             * Gets or sets the name of the dimension setting.
+            * @param nameValue The Name value.
             */
-            public void setName(String name)
+            public void setName(final String nameValue)
             {
-                this.name = name;
+                this.name = nameValue;
             }
             
             private byte ordinal;
             
             /**
             * Gets or sets the dimension setting ordinal position.
+            * @return The Ordinal value.
             */
             public byte getOrdinal()
             {
@@ -378,16 +411,18 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
             
             /**
             * Gets or sets the dimension setting ordinal position.
+            * @param ordinalValue The Ordinal value.
             */
-            public void setOrdinal(byte ordinal)
+            public void setOrdinal(final byte ordinalValue)
             {
-                this.ordinal = ordinal;
+                this.ordinal = ordinalValue;
             }
             
             private String parentLink;
             
             /**
             * Gets or sets the ParentLink of the dimension setting.
+            * @return The ParentLink value.
             */
             public String getParentLink()
             {
@@ -396,16 +431,18 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
             
             /**
             * Gets or sets the ParentLink of the dimension setting.
+            * @param parentLinkValue The ParentLink value.
             */
-            public void setParentLink(String parentLink)
+            public void setParentLink(final String parentLinkValue)
             {
-                this.parentLink = parentLink;
+                this.parentLink = parentLinkValue;
             }
             
             private String selfLink;
             
             /**
             * Gets or sets the SelfLink of the dimension setting.
+            * @return The SelfLink value.
             */
             public String getSelfLink()
             {
@@ -414,16 +451,18 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
             
             /**
             * Gets or sets the SelfLink of the dimension setting.
+            * @param selfLinkValue The SelfLink value.
             */
-            public void setSelfLink(String selfLink)
+            public void setSelfLink(final String selfLinkValue)
             {
-                this.selfLink = selfLink;
+                this.selfLink = selfLinkValue;
             }
             
             private String state;
             
             /**
             * Gets or sets the state of the dimension setting.
+            * @return The State value.
             */
             public String getState()
             {
@@ -432,16 +471,18 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
             
             /**
             * Gets or sets the state of the dimension setting.
+            * @param stateValue The State value.
             */
-            public void setState(String state)
+            public void setState(final String stateValue)
             {
-                this.state = state;
+                this.state = stateValue;
             }
             
             private String type;
             
             /**
             * Gets or sets the type of resource.
+            * @return The Type value.
             */
             public String getType()
             {
@@ -450,10 +491,11 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
             
             /**
             * Gets or sets the type of resource.
+            * @param typeValue The Type value.
             */
-            public void setType(String type)
+            public void setType(final String typeValue)
             {
-                this.type = type;
+                this.type = typeValue;
             }
         }
     }

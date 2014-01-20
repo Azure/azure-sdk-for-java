@@ -35,6 +35,7 @@ public class GatewayGetResponse extends OperationResponse
     
     /**
     * The type of gateway routing used for this virtual network.
+    * @return The GatewayType value.
     */
     public GatewayType getGatewayType()
     {
@@ -43,16 +44,18 @@ public class GatewayGetResponse extends OperationResponse
     
     /**
     * The type of gateway routing used for this virtual network.
+    * @param gatewayTypeValue The GatewayType value.
     */
-    public void setGatewayType(GatewayType gatewayType)
+    public void setGatewayType(final GatewayType gatewayTypeValue)
     {
-        this.gatewayType = gatewayType;
+        this.gatewayType = gatewayTypeValue;
     }
     
     private GatewayEvent lastEvent;
     
     /**
     * The last recorded event for this virtual network gateway.
+    * @return The LastEvent value.
     */
     public GatewayEvent getLastEvent()
     {
@@ -61,16 +64,18 @@ public class GatewayGetResponse extends OperationResponse
     
     /**
     * The last recorded event for this virtual network gateway.
+    * @param lastEventValue The LastEvent value.
     */
-    public void setLastEvent(GatewayEvent lastEvent)
+    public void setLastEvent(final GatewayEvent lastEventValue)
     {
-        this.lastEvent = lastEvent;
+        this.lastEvent = lastEventValue;
     }
     
     private String state;
     
     /**
     * The provisioning state of the virtual network gateway.
+    * @return The State value.
     */
     public String getState()
     {
@@ -79,16 +84,18 @@ public class GatewayGetResponse extends OperationResponse
     
     /**
     * The provisioning state of the virtual network gateway.
+    * @param stateValue The State value.
     */
-    public void setState(String state)
+    public void setState(final String stateValue)
     {
-        this.state = state;
+        this.state = stateValue;
     }
     
     private InetAddress vipAddress;
     
     /**
     * The virtual IP address for this virtual network gateway.
+    * @return The VipAddress value.
     */
     public InetAddress getVipAddress()
     {
@@ -97,9 +104,10 @@ public class GatewayGetResponse extends OperationResponse
     
     /**
     * The virtual IP address for this virtual network gateway.
+    * @param vipAddressValue The VipAddress value.
     */
-    public void setVipAddress(InetAddress vipAddress)
+    public void setVipAddress(final InetAddress vipAddressValue)
     {
-        this.vipAddress = vipAddress;
+        this.vipAddress = vipAddressValue;
     }
 }

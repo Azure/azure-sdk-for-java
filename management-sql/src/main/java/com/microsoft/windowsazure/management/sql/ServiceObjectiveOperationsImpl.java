@@ -66,6 +66,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
     /**
     * Gets a reference to the
     * microsoft.windowsazure.management.sql.SqlManagementClientImpl.
+    * @return The Client value.
     */
     public SqlManagementClientImpl getClient()
     {
@@ -97,6 +98,16 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
     *
     * @param serverName The name of the SQL Server to be queried.
     * @param serviceObjectiveId The Id of the Service Objective to be obtained.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return Response containing the service objective for a given server and
     * service objective Id.
     */
@@ -136,234 +147,244 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != HttpStatus.SC_OK)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
-        }
-        
-        // Create Result
-        ServiceObjectiveGetResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new ServiceObjectiveGetResponse();
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document responseDoc = documentBuilder.parse(responseContent);
-        
-        NodeList elements = responseDoc.getElementsByTagName("ServiceResource");
-        Element serviceResourceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-        if (serviceResourceElement != null)
-        {
-            NodeList elements2 = serviceResourceElement.getElementsByTagName("Name");
-            Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-            if (nameElement != null)
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
             {
-                String nameInstance;
-                nameInstance = nameElement.getTextContent();
-                result.setName(nameInstance);
+                CloudTracing.receiveResponse(invocationId, httpResponse);
             }
-            
-            NodeList elements3 = serviceResourceElement.getElementsByTagName("Type");
-            Element typeElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-            if (typeElement != null)
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
             {
-                String typeInstance;
-                typeInstance = typeElement.getTextContent();
-                result.setType(typeInstance);
-            }
-            
-            NodeList elements4 = serviceResourceElement.getElementsByTagName("State");
-            Element stateElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-            if (stateElement != null)
-            {
-                String stateInstance;
-                stateInstance = stateElement.getTextContent();
-                result.setState(stateInstance);
-            }
-            
-            NodeList elements5 = serviceResourceElement.getElementsByTagName("SelfLink");
-            Element selfLinkElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-            if (selfLinkElement != null)
-            {
-                String selfLinkInstance;
-                selfLinkInstance = selfLinkElement.getTextContent();
-                result.setSelfLink(selfLinkInstance);
-            }
-            
-            NodeList elements6 = serviceResourceElement.getElementsByTagName("ParentLink");
-            Element parentLinkElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-            if (parentLinkElement != null)
-            {
-                String parentLinkInstance;
-                parentLinkInstance = parentLinkElement.getTextContent();
-                result.setParentLink(parentLinkInstance);
-            }
-            
-            NodeList elements7 = serviceResourceElement.getElementsByTagName("Id");
-            Element idElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-            if (idElement != null)
-            {
-                String idInstance;
-                idInstance = idElement.getTextContent();
-                result.setId(idInstance);
-            }
-            
-            NodeList elements8 = serviceResourceElement.getElementsByTagName("IsDefault");
-            Element isDefaultElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-            if (isDefaultElement != null)
-            {
-                boolean isDefaultInstance;
-                isDefaultInstance = Boolean.parseBoolean(isDefaultElement.getTextContent());
-                result.setIsDefault(isDefaultInstance);
-            }
-            
-            NodeList elements9 = serviceResourceElement.getElementsByTagName("IsSystem");
-            Element isSystemElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-            if (isSystemElement != null)
-            {
-                boolean isSystemInstance;
-                isSystemInstance = Boolean.parseBoolean(isSystemElement.getTextContent());
-                result.setIsSystem(isSystemInstance);
-            }
-            
-            NodeList elements10 = serviceResourceElement.getElementsByTagName("Description");
-            Element descriptionElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
-            if (descriptionElement != null)
-            {
-                String descriptionInstance;
-                descriptionInstance = descriptionElement.getTextContent();
-                result.setDescription(descriptionInstance);
-            }
-            
-            NodeList elements11 = serviceResourceElement.getElementsByTagName("Enabled");
-            Element enabledElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
-            if (enabledElement != null)
-            {
-                boolean enabledInstance;
-                enabledInstance = Boolean.parseBoolean(enabledElement.getTextContent());
-                result.setEnabled(enabledInstance);
-            }
-            
-            NodeList elements12 = serviceResourceElement.getElementsByTagName("DimensionSettings");
-            Element dimensionSettingsSequenceElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
-            if (dimensionSettingsSequenceElement != null)
-            {
-                for (int i1 = 0; i1 < dimensionSettingsSequenceElement.getElementsByTagName("ServiceResource").getLength(); i1 = i1 + 1)
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
                 {
-                    org.w3c.dom.Element dimensionSettingsElement = ((org.w3c.dom.Element) dimensionSettingsSequenceElement.getElementsByTagName("ServiceResource").item(i1));
-                    ServiceObjectiveGetResponse.DimensionSettingResponse serviceResourceInstance = new ServiceObjectiveGetResponse.DimensionSettingResponse();
-                    result.getDimensionSettings().add(serviceResourceInstance);
-                    
-                    NodeList elements13 = dimensionSettingsElement.getElementsByTagName("Name");
-                    Element nameElement2 = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
-                    if (nameElement2 != null)
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            ServiceObjectiveGetResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new ServiceObjectiveGetResponse();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document responseDoc = documentBuilder.parse(responseContent);
+            
+            NodeList elements = responseDoc.getElementsByTagName("ServiceResource");
+            Element serviceResourceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            if (serviceResourceElement != null)
+            {
+                NodeList elements2 = serviceResourceElement.getElementsByTagName("Name");
+                Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                if (nameElement != null)
+                {
+                    String nameInstance;
+                    nameInstance = nameElement.getTextContent();
+                    result.setName(nameInstance);
+                }
+                
+                NodeList elements3 = serviceResourceElement.getElementsByTagName("Type");
+                Element typeElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                if (typeElement != null)
+                {
+                    String typeInstance;
+                    typeInstance = typeElement.getTextContent();
+                    result.setType(typeInstance);
+                }
+                
+                NodeList elements4 = serviceResourceElement.getElementsByTagName("State");
+                Element stateElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                if (stateElement != null)
+                {
+                    String stateInstance;
+                    stateInstance = stateElement.getTextContent();
+                    result.setState(stateInstance);
+                }
+                
+                NodeList elements5 = serviceResourceElement.getElementsByTagName("SelfLink");
+                Element selfLinkElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                if (selfLinkElement != null)
+                {
+                    String selfLinkInstance;
+                    selfLinkInstance = selfLinkElement.getTextContent();
+                    result.setSelfLink(selfLinkInstance);
+                }
+                
+                NodeList elements6 = serviceResourceElement.getElementsByTagName("ParentLink");
+                Element parentLinkElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                if (parentLinkElement != null)
+                {
+                    String parentLinkInstance;
+                    parentLinkInstance = parentLinkElement.getTextContent();
+                    result.setParentLink(parentLinkInstance);
+                }
+                
+                NodeList elements7 = serviceResourceElement.getElementsByTagName("Id");
+                Element idElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
+                if (idElement != null)
+                {
+                    String idInstance;
+                    idInstance = idElement.getTextContent();
+                    result.setId(idInstance);
+                }
+                
+                NodeList elements8 = serviceResourceElement.getElementsByTagName("IsDefault");
+                Element isDefaultElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
+                if (isDefaultElement != null)
+                {
+                    boolean isDefaultInstance;
+                    isDefaultInstance = Boolean.parseBoolean(isDefaultElement.getTextContent());
+                    result.setIsDefault(isDefaultInstance);
+                }
+                
+                NodeList elements9 = serviceResourceElement.getElementsByTagName("IsSystem");
+                Element isSystemElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
+                if (isSystemElement != null)
+                {
+                    boolean isSystemInstance;
+                    isSystemInstance = Boolean.parseBoolean(isSystemElement.getTextContent());
+                    result.setIsSystem(isSystemInstance);
+                }
+                
+                NodeList elements10 = serviceResourceElement.getElementsByTagName("Description");
+                Element descriptionElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
+                if (descriptionElement != null)
+                {
+                    String descriptionInstance;
+                    descriptionInstance = descriptionElement.getTextContent();
+                    result.setDescription(descriptionInstance);
+                }
+                
+                NodeList elements11 = serviceResourceElement.getElementsByTagName("Enabled");
+                Element enabledElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
+                if (enabledElement != null)
+                {
+                    boolean enabledInstance;
+                    enabledInstance = Boolean.parseBoolean(enabledElement.getTextContent());
+                    result.setEnabled(enabledInstance);
+                }
+                
+                NodeList elements12 = serviceResourceElement.getElementsByTagName("DimensionSettings");
+                Element dimensionSettingsSequenceElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
+                if (dimensionSettingsSequenceElement != null)
+                {
+                    for (int i1 = 0; i1 < dimensionSettingsSequenceElement.getElementsByTagName("ServiceResource").getLength(); i1 = i1 + 1)
                     {
-                        String nameInstance2;
-                        nameInstance2 = nameElement2.getTextContent();
-                        serviceResourceInstance.setName(nameInstance2);
-                    }
-                    
-                    NodeList elements14 = dimensionSettingsElement.getElementsByTagName("Type");
-                    Element typeElement2 = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
-                    if (typeElement2 != null)
-                    {
-                        String typeInstance2;
-                        typeInstance2 = typeElement2.getTextContent();
-                        serviceResourceInstance.setType(typeInstance2);
-                    }
-                    
-                    NodeList elements15 = dimensionSettingsElement.getElementsByTagName("State");
-                    Element stateElement2 = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
-                    if (stateElement2 != null)
-                    {
-                        String stateInstance2;
-                        stateInstance2 = stateElement2.getTextContent();
-                        serviceResourceInstance.setState(stateInstance2);
-                    }
-                    
-                    NodeList elements16 = dimensionSettingsElement.getElementsByTagName("SelfLink");
-                    Element selfLinkElement2 = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
-                    if (selfLinkElement2 != null)
-                    {
-                        String selfLinkInstance2;
-                        selfLinkInstance2 = selfLinkElement2.getTextContent();
-                        serviceResourceInstance.setSelfLink(selfLinkInstance2);
-                    }
-                    
-                    NodeList elements17 = dimensionSettingsElement.getElementsByTagName("ParentLink");
-                    Element parentLinkElement2 = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
-                    if (parentLinkElement2 != null)
-                    {
-                        String parentLinkInstance2;
-                        parentLinkInstance2 = parentLinkElement2.getTextContent();
-                        serviceResourceInstance.setParentLink(parentLinkInstance2);
-                    }
-                    
-                    NodeList elements18 = dimensionSettingsElement.getElementsByTagName("Id");
-                    Element idElement2 = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
-                    if (idElement2 != null)
-                    {
-                        String idInstance2;
-                        idInstance2 = idElement2.getTextContent();
-                        serviceResourceInstance.setId(idInstance2);
-                    }
-                    
-                    NodeList elements19 = dimensionSettingsElement.getElementsByTagName("Description");
-                    Element descriptionElement2 = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
-                    if (descriptionElement2 != null)
-                    {
-                        String descriptionInstance2;
-                        descriptionInstance2 = descriptionElement2.getTextContent();
-                        serviceResourceInstance.setDescription(descriptionInstance2);
-                    }
-                    
-                    NodeList elements20 = dimensionSettingsElement.getElementsByTagName("Ordinal");
-                    Element ordinalElement = elements20.getLength() > 0 ? ((Element) elements20.item(0)) : null;
-                    if (ordinalElement != null)
-                    {
-                        byte ordinalInstance;
-                        ordinalInstance = Byte.valueOf(ordinalElement.getTextContent());
-                        serviceResourceInstance.setOrdinal(ordinalInstance);
-                    }
-                    
-                    NodeList elements21 = dimensionSettingsElement.getElementsByTagName("IsDefault");
-                    Element isDefaultElement2 = elements21.getLength() > 0 ? ((Element) elements21.item(0)) : null;
-                    if (isDefaultElement2 != null)
-                    {
-                        boolean isDefaultInstance2;
-                        isDefaultInstance2 = Boolean.parseBoolean(isDefaultElement2.getTextContent());
-                        serviceResourceInstance.setIsDefault(isDefaultInstance2);
+                        org.w3c.dom.Element dimensionSettingsElement = ((org.w3c.dom.Element) dimensionSettingsSequenceElement.getElementsByTagName("ServiceResource").item(i1));
+                        ServiceObjectiveGetResponse.DimensionSettingResponse serviceResourceInstance = new ServiceObjectiveGetResponse.DimensionSettingResponse();
+                        result.getDimensionSettings().add(serviceResourceInstance);
+                        
+                        NodeList elements13 = dimensionSettingsElement.getElementsByTagName("Name");
+                        Element nameElement2 = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
+                        if (nameElement2 != null)
+                        {
+                            String nameInstance2;
+                            nameInstance2 = nameElement2.getTextContent();
+                            serviceResourceInstance.setName(nameInstance2);
+                        }
+                        
+                        NodeList elements14 = dimensionSettingsElement.getElementsByTagName("Type");
+                        Element typeElement2 = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
+                        if (typeElement2 != null)
+                        {
+                            String typeInstance2;
+                            typeInstance2 = typeElement2.getTextContent();
+                            serviceResourceInstance.setType(typeInstance2);
+                        }
+                        
+                        NodeList elements15 = dimensionSettingsElement.getElementsByTagName("State");
+                        Element stateElement2 = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
+                        if (stateElement2 != null)
+                        {
+                            String stateInstance2;
+                            stateInstance2 = stateElement2.getTextContent();
+                            serviceResourceInstance.setState(stateInstance2);
+                        }
+                        
+                        NodeList elements16 = dimensionSettingsElement.getElementsByTagName("SelfLink");
+                        Element selfLinkElement2 = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
+                        if (selfLinkElement2 != null)
+                        {
+                            String selfLinkInstance2;
+                            selfLinkInstance2 = selfLinkElement2.getTextContent();
+                            serviceResourceInstance.setSelfLink(selfLinkInstance2);
+                        }
+                        
+                        NodeList elements17 = dimensionSettingsElement.getElementsByTagName("ParentLink");
+                        Element parentLinkElement2 = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
+                        if (parentLinkElement2 != null)
+                        {
+                            String parentLinkInstance2;
+                            parentLinkInstance2 = parentLinkElement2.getTextContent();
+                            serviceResourceInstance.setParentLink(parentLinkInstance2);
+                        }
+                        
+                        NodeList elements18 = dimensionSettingsElement.getElementsByTagName("Id");
+                        Element idElement2 = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
+                        if (idElement2 != null)
+                        {
+                            String idInstance2;
+                            idInstance2 = idElement2.getTextContent();
+                            serviceResourceInstance.setId(idInstance2);
+                        }
+                        
+                        NodeList elements19 = dimensionSettingsElement.getElementsByTagName("Description");
+                        Element descriptionElement2 = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
+                        if (descriptionElement2 != null)
+                        {
+                            String descriptionInstance2;
+                            descriptionInstance2 = descriptionElement2.getTextContent();
+                            serviceResourceInstance.setDescription(descriptionInstance2);
+                        }
+                        
+                        NodeList elements20 = dimensionSettingsElement.getElementsByTagName("Ordinal");
+                        Element ordinalElement = elements20.getLength() > 0 ? ((Element) elements20.item(0)) : null;
+                        if (ordinalElement != null)
+                        {
+                            byte ordinalInstance;
+                            ordinalInstance = Byte.valueOf(ordinalElement.getTextContent());
+                            serviceResourceInstance.setOrdinal(ordinalInstance);
+                        }
+                        
+                        NodeList elements21 = dimensionSettingsElement.getElementsByTagName("IsDefault");
+                        Element isDefaultElement2 = elements21.getLength() > 0 ? ((Element) elements21.item(0)) : null;
+                        if (isDefaultElement2 != null)
+                        {
+                            boolean isDefaultInstance2;
+                            isDefaultInstance2 = Boolean.parseBoolean(isDefaultElement2.getTextContent());
+                            serviceResourceInstance.setIsDefault(isDefaultInstance2);
+                        }
                     }
                 }
             }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -389,6 +410,16 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
     * Returns information about all Service Objectives on a database server.
     *
     * @param serverName The name of the database server to be queried.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return Response containing the list of service objective for a given
     * server.
     */
@@ -423,240 +454,250 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != HttpStatus.SC_OK)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
-        }
-        
-        // Create Result
-        ServiceObjectiveListResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new ServiceObjectiveListResponse();
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document responseDoc = documentBuilder.parse(responseContent);
-        
-        NodeList elements = responseDoc.getElementsByTagName("ServiceResources");
-        Element serviceResourcesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-        if (serviceResourcesSequenceElement != null)
-        {
-            for (int i1 = 0; i1 < serviceResourcesSequenceElement.getElementsByTagName("ServiceResource").getLength(); i1 = i1 + 1)
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
             {
-                org.w3c.dom.Element serviceResourcesElement = ((org.w3c.dom.Element) serviceResourcesSequenceElement.getElementsByTagName("ServiceResource").item(i1));
-                ServiceObjectiveListResponse.ServiceObjective serviceResourceInstance = new ServiceObjectiveListResponse.ServiceObjective();
-                result.getServiceObjectives().add(serviceResourceInstance);
-                
-                NodeList elements2 = serviceResourcesElement.getElementsByTagName("Name");
-                Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (nameElement != null)
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
                 {
-                    String nameInstance;
-                    nameInstance = nameElement.getTextContent();
-                    serviceResourceInstance.setName(nameInstance);
+                    CloudTracing.error(invocationId, ex);
                 }
-                
-                NodeList elements3 = serviceResourcesElement.getElementsByTagName("Type");
-                Element typeElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                if (typeElement != null)
+                throw ex;
+            }
+            
+            // Create Result
+            ServiceObjectiveListResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new ServiceObjectiveListResponse();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document responseDoc = documentBuilder.parse(responseContent);
+            
+            NodeList elements = responseDoc.getElementsByTagName("ServiceResources");
+            Element serviceResourcesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            if (serviceResourcesSequenceElement != null)
+            {
+                for (int i1 = 0; i1 < serviceResourcesSequenceElement.getElementsByTagName("ServiceResource").getLength(); i1 = i1 + 1)
                 {
-                    String typeInstance;
-                    typeInstance = typeElement.getTextContent();
-                    serviceResourceInstance.setType(typeInstance);
-                }
-                
-                NodeList elements4 = serviceResourcesElement.getElementsByTagName("State");
-                Element stateElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                if (stateElement != null)
-                {
-                    String stateInstance;
-                    stateInstance = stateElement.getTextContent();
-                    serviceResourceInstance.setState(stateInstance);
-                }
-                
-                NodeList elements5 = serviceResourcesElement.getElementsByTagName("SelfLink");
-                Element selfLinkElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                if (selfLinkElement != null)
-                {
-                    String selfLinkInstance;
-                    selfLinkInstance = selfLinkElement.getTextContent();
-                    serviceResourceInstance.setSelfLink(selfLinkInstance);
-                }
-                
-                NodeList elements6 = serviceResourcesElement.getElementsByTagName("ParentLink");
-                Element parentLinkElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                if (parentLinkElement != null)
-                {
-                    String parentLinkInstance;
-                    parentLinkInstance = parentLinkElement.getTextContent();
-                    serviceResourceInstance.setParentLink(parentLinkInstance);
-                }
-                
-                NodeList elements7 = serviceResourcesElement.getElementsByTagName("Id");
-                Element idElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                if (idElement != null)
-                {
-                    String idInstance;
-                    idInstance = idElement.getTextContent();
-                    serviceResourceInstance.setId(idInstance);
-                }
-                
-                NodeList elements8 = serviceResourcesElement.getElementsByTagName("IsDefault");
-                Element isDefaultElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                if (isDefaultElement != null)
-                {
-                    boolean isDefaultInstance;
-                    isDefaultInstance = Boolean.parseBoolean(isDefaultElement.getTextContent());
-                    serviceResourceInstance.setIsDefault(isDefaultInstance);
-                }
-                
-                NodeList elements9 = serviceResourcesElement.getElementsByTagName("IsSystem");
-                Element isSystemElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-                if (isSystemElement != null)
-                {
-                    boolean isSystemInstance;
-                    isSystemInstance = Boolean.parseBoolean(isSystemElement.getTextContent());
-                    serviceResourceInstance.setIsSystem(isSystemInstance);
-                }
-                
-                NodeList elements10 = serviceResourcesElement.getElementsByTagName("Description");
-                Element descriptionElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
-                if (descriptionElement != null)
-                {
-                    String descriptionInstance;
-                    descriptionInstance = descriptionElement.getTextContent();
-                    serviceResourceInstance.setDescription(descriptionInstance);
-                }
-                
-                NodeList elements11 = serviceResourcesElement.getElementsByTagName("Enabled");
-                Element enabledElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
-                if (enabledElement != null)
-                {
-                    boolean enabledInstance;
-                    enabledInstance = Boolean.parseBoolean(enabledElement.getTextContent());
-                    serviceResourceInstance.setEnabled(enabledInstance);
-                }
-                
-                NodeList elements12 = serviceResourcesElement.getElementsByTagName("DimensionSettings");
-                Element dimensionSettingsSequenceElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
-                if (dimensionSettingsSequenceElement != null)
-                {
-                    for (int i2 = 0; i2 < dimensionSettingsSequenceElement.getElementsByTagName("ServiceResource").getLength(); i2 = i2 + 1)
+                    org.w3c.dom.Element serviceResourcesElement = ((org.w3c.dom.Element) serviceResourcesSequenceElement.getElementsByTagName("ServiceResource").item(i1));
+                    ServiceObjectiveListResponse.ServiceObjective serviceResourceInstance = new ServiceObjectiveListResponse.ServiceObjective();
+                    result.getServiceObjectives().add(serviceResourceInstance);
+                    
+                    NodeList elements2 = serviceResourcesElement.getElementsByTagName("Name");
+                    Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                    if (nameElement != null)
                     {
-                        org.w3c.dom.Element dimensionSettingsElement = ((org.w3c.dom.Element) dimensionSettingsSequenceElement.getElementsByTagName("ServiceResource").item(i2));
-                        ServiceObjectiveListResponse.ServiceObjective.DimensionSettingResponse serviceResourceInstance2 = new ServiceObjectiveListResponse.ServiceObjective.DimensionSettingResponse();
-                        serviceResourceInstance.getDimensionSettings().add(serviceResourceInstance2);
-                        
-                        NodeList elements13 = dimensionSettingsElement.getElementsByTagName("Name");
-                        Element nameElement2 = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
-                        if (nameElement2 != null)
+                        String nameInstance;
+                        nameInstance = nameElement.getTextContent();
+                        serviceResourceInstance.setName(nameInstance);
+                    }
+                    
+                    NodeList elements3 = serviceResourcesElement.getElementsByTagName("Type");
+                    Element typeElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                    if (typeElement != null)
+                    {
+                        String typeInstance;
+                        typeInstance = typeElement.getTextContent();
+                        serviceResourceInstance.setType(typeInstance);
+                    }
+                    
+                    NodeList elements4 = serviceResourcesElement.getElementsByTagName("State");
+                    Element stateElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                    if (stateElement != null)
+                    {
+                        String stateInstance;
+                        stateInstance = stateElement.getTextContent();
+                        serviceResourceInstance.setState(stateInstance);
+                    }
+                    
+                    NodeList elements5 = serviceResourcesElement.getElementsByTagName("SelfLink");
+                    Element selfLinkElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                    if (selfLinkElement != null)
+                    {
+                        String selfLinkInstance;
+                        selfLinkInstance = selfLinkElement.getTextContent();
+                        serviceResourceInstance.setSelfLink(selfLinkInstance);
+                    }
+                    
+                    NodeList elements6 = serviceResourcesElement.getElementsByTagName("ParentLink");
+                    Element parentLinkElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                    if (parentLinkElement != null)
+                    {
+                        String parentLinkInstance;
+                        parentLinkInstance = parentLinkElement.getTextContent();
+                        serviceResourceInstance.setParentLink(parentLinkInstance);
+                    }
+                    
+                    NodeList elements7 = serviceResourcesElement.getElementsByTagName("Id");
+                    Element idElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
+                    if (idElement != null)
+                    {
+                        String idInstance;
+                        idInstance = idElement.getTextContent();
+                        serviceResourceInstance.setId(idInstance);
+                    }
+                    
+                    NodeList elements8 = serviceResourcesElement.getElementsByTagName("IsDefault");
+                    Element isDefaultElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
+                    if (isDefaultElement != null)
+                    {
+                        boolean isDefaultInstance;
+                        isDefaultInstance = Boolean.parseBoolean(isDefaultElement.getTextContent());
+                        serviceResourceInstance.setIsDefault(isDefaultInstance);
+                    }
+                    
+                    NodeList elements9 = serviceResourcesElement.getElementsByTagName("IsSystem");
+                    Element isSystemElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
+                    if (isSystemElement != null)
+                    {
+                        boolean isSystemInstance;
+                        isSystemInstance = Boolean.parseBoolean(isSystemElement.getTextContent());
+                        serviceResourceInstance.setIsSystem(isSystemInstance);
+                    }
+                    
+                    NodeList elements10 = serviceResourcesElement.getElementsByTagName("Description");
+                    Element descriptionElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
+                    if (descriptionElement != null)
+                    {
+                        String descriptionInstance;
+                        descriptionInstance = descriptionElement.getTextContent();
+                        serviceResourceInstance.setDescription(descriptionInstance);
+                    }
+                    
+                    NodeList elements11 = serviceResourcesElement.getElementsByTagName("Enabled");
+                    Element enabledElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
+                    if (enabledElement != null)
+                    {
+                        boolean enabledInstance;
+                        enabledInstance = Boolean.parseBoolean(enabledElement.getTextContent());
+                        serviceResourceInstance.setEnabled(enabledInstance);
+                    }
+                    
+                    NodeList elements12 = serviceResourcesElement.getElementsByTagName("DimensionSettings");
+                    Element dimensionSettingsSequenceElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
+                    if (dimensionSettingsSequenceElement != null)
+                    {
+                        for (int i2 = 0; i2 < dimensionSettingsSequenceElement.getElementsByTagName("ServiceResource").getLength(); i2 = i2 + 1)
                         {
-                            String nameInstance2;
-                            nameInstance2 = nameElement2.getTextContent();
-                            serviceResourceInstance2.setName(nameInstance2);
-                        }
-                        
-                        NodeList elements14 = dimensionSettingsElement.getElementsByTagName("Type");
-                        Element typeElement2 = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
-                        if (typeElement2 != null)
-                        {
-                            String typeInstance2;
-                            typeInstance2 = typeElement2.getTextContent();
-                            serviceResourceInstance2.setType(typeInstance2);
-                        }
-                        
-                        NodeList elements15 = dimensionSettingsElement.getElementsByTagName("State");
-                        Element stateElement2 = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
-                        if (stateElement2 != null)
-                        {
-                            String stateInstance2;
-                            stateInstance2 = stateElement2.getTextContent();
-                            serviceResourceInstance2.setState(stateInstance2);
-                        }
-                        
-                        NodeList elements16 = dimensionSettingsElement.getElementsByTagName("SelfLink");
-                        Element selfLinkElement2 = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
-                        if (selfLinkElement2 != null)
-                        {
-                            String selfLinkInstance2;
-                            selfLinkInstance2 = selfLinkElement2.getTextContent();
-                            serviceResourceInstance2.setSelfLink(selfLinkInstance2);
-                        }
-                        
-                        NodeList elements17 = dimensionSettingsElement.getElementsByTagName("ParentLink");
-                        Element parentLinkElement2 = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
-                        if (parentLinkElement2 != null)
-                        {
-                            String parentLinkInstance2;
-                            parentLinkInstance2 = parentLinkElement2.getTextContent();
-                            serviceResourceInstance2.setParentLink(parentLinkInstance2);
-                        }
-                        
-                        NodeList elements18 = dimensionSettingsElement.getElementsByTagName("Id");
-                        Element idElement2 = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
-                        if (idElement2 != null)
-                        {
-                            String idInstance2;
-                            idInstance2 = idElement2.getTextContent();
-                            serviceResourceInstance2.setId(idInstance2);
-                        }
-                        
-                        NodeList elements19 = dimensionSettingsElement.getElementsByTagName("Description");
-                        Element descriptionElement2 = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
-                        if (descriptionElement2 != null)
-                        {
-                            String descriptionInstance2;
-                            descriptionInstance2 = descriptionElement2.getTextContent();
-                            serviceResourceInstance2.setDescription(descriptionInstance2);
-                        }
-                        
-                        NodeList elements20 = dimensionSettingsElement.getElementsByTagName("Ordinal");
-                        Element ordinalElement = elements20.getLength() > 0 ? ((Element) elements20.item(0)) : null;
-                        if (ordinalElement != null)
-                        {
-                            byte ordinalInstance;
-                            ordinalInstance = Byte.valueOf(ordinalElement.getTextContent());
-                            serviceResourceInstance2.setOrdinal(ordinalInstance);
-                        }
-                        
-                        NodeList elements21 = dimensionSettingsElement.getElementsByTagName("IsDefault");
-                        Element isDefaultElement2 = elements21.getLength() > 0 ? ((Element) elements21.item(0)) : null;
-                        if (isDefaultElement2 != null)
-                        {
-                            boolean isDefaultInstance2;
-                            isDefaultInstance2 = Boolean.parseBoolean(isDefaultElement2.getTextContent());
-                            serviceResourceInstance2.setIsDefault(isDefaultInstance2);
+                            org.w3c.dom.Element dimensionSettingsElement = ((org.w3c.dom.Element) dimensionSettingsSequenceElement.getElementsByTagName("ServiceResource").item(i2));
+                            ServiceObjectiveListResponse.ServiceObjective.DimensionSettingResponse serviceResourceInstance2 = new ServiceObjectiveListResponse.ServiceObjective.DimensionSettingResponse();
+                            serviceResourceInstance.getDimensionSettings().add(serviceResourceInstance2);
+                            
+                            NodeList elements13 = dimensionSettingsElement.getElementsByTagName("Name");
+                            Element nameElement2 = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
+                            if (nameElement2 != null)
+                            {
+                                String nameInstance2;
+                                nameInstance2 = nameElement2.getTextContent();
+                                serviceResourceInstance2.setName(nameInstance2);
+                            }
+                            
+                            NodeList elements14 = dimensionSettingsElement.getElementsByTagName("Type");
+                            Element typeElement2 = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
+                            if (typeElement2 != null)
+                            {
+                                String typeInstance2;
+                                typeInstance2 = typeElement2.getTextContent();
+                                serviceResourceInstance2.setType(typeInstance2);
+                            }
+                            
+                            NodeList elements15 = dimensionSettingsElement.getElementsByTagName("State");
+                            Element stateElement2 = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
+                            if (stateElement2 != null)
+                            {
+                                String stateInstance2;
+                                stateInstance2 = stateElement2.getTextContent();
+                                serviceResourceInstance2.setState(stateInstance2);
+                            }
+                            
+                            NodeList elements16 = dimensionSettingsElement.getElementsByTagName("SelfLink");
+                            Element selfLinkElement2 = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
+                            if (selfLinkElement2 != null)
+                            {
+                                String selfLinkInstance2;
+                                selfLinkInstance2 = selfLinkElement2.getTextContent();
+                                serviceResourceInstance2.setSelfLink(selfLinkInstance2);
+                            }
+                            
+                            NodeList elements17 = dimensionSettingsElement.getElementsByTagName("ParentLink");
+                            Element parentLinkElement2 = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
+                            if (parentLinkElement2 != null)
+                            {
+                                String parentLinkInstance2;
+                                parentLinkInstance2 = parentLinkElement2.getTextContent();
+                                serviceResourceInstance2.setParentLink(parentLinkInstance2);
+                            }
+                            
+                            NodeList elements18 = dimensionSettingsElement.getElementsByTagName("Id");
+                            Element idElement2 = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
+                            if (idElement2 != null)
+                            {
+                                String idInstance2;
+                                idInstance2 = idElement2.getTextContent();
+                                serviceResourceInstance2.setId(idInstance2);
+                            }
+                            
+                            NodeList elements19 = dimensionSettingsElement.getElementsByTagName("Description");
+                            Element descriptionElement2 = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
+                            if (descriptionElement2 != null)
+                            {
+                                String descriptionInstance2;
+                                descriptionInstance2 = descriptionElement2.getTextContent();
+                                serviceResourceInstance2.setDescription(descriptionInstance2);
+                            }
+                            
+                            NodeList elements20 = dimensionSettingsElement.getElementsByTagName("Ordinal");
+                            Element ordinalElement = elements20.getLength() > 0 ? ((Element) elements20.item(0)) : null;
+                            if (ordinalElement != null)
+                            {
+                                byte ordinalInstance;
+                                ordinalInstance = Byte.valueOf(ordinalElement.getTextContent());
+                                serviceResourceInstance2.setOrdinal(ordinalInstance);
+                            }
+                            
+                            NodeList elements21 = dimensionSettingsElement.getElementsByTagName("IsDefault");
+                            Element isDefaultElement2 = elements21.getLength() > 0 ? ((Element) elements21.item(0)) : null;
+                            if (isDefaultElement2 != null)
+                            {
+                                boolean isDefaultInstance2;
+                                isDefaultInstance2 = Boolean.parseBoolean(isDefaultElement2.getTextContent());
+                                serviceResourceInstance2.setIsDefault(isDefaultInstance2);
+                            }
                         }
                     }
                 }
             }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
 }

@@ -39,6 +39,7 @@ public class StorageServiceGetResponse extends OperationResponse
     * Indicates if the storage account is able to perform virtual machine
     * related operations. If so, this element returns a string containing
     * PersistentVMRole. Otherwise, this element will not be present.
+    * @return The Capabilities value.
     */
     public ArrayList<String> getCapabilities()
     {
@@ -49,10 +50,11 @@ public class StorageServiceGetResponse extends OperationResponse
     * Indicates if the storage account is able to perform virtual machine
     * related operations. If so, this element returns a string containing
     * PersistentVMRole. Otherwise, this element will not be present.
+    * @param capabilitiesValue The Capabilities value.
     */
-    public void setCapabilities(ArrayList<String> capabilities)
+    public void setCapabilities(final ArrayList<String> capabilitiesValue)
     {
-        this.capabilities = capabilities;
+        this.capabilities = capabilitiesValue;
     }
     
     private HashMap<String, String> extendedProperties;
@@ -68,6 +70,7 @@ public class StorageServiceGetResponse extends OperationResponse
     * to that of another extended property owned by the same storage account,
     * will result in a status code 400 (Bad Request) error.  Each extended
     * property value has a maximum length of 255 characters.
+    * @return The ExtendedProperties value.
     */
     public HashMap<String, String> getExtendedProperties()
     {
@@ -85,16 +88,18 @@ public class StorageServiceGetResponse extends OperationResponse
     * to that of another extended property owned by the same storage account,
     * will result in a status code 400 (Bad Request) error.  Each extended
     * property value has a maximum length of 255 characters.
+    * @param extendedPropertiesValue The ExtendedProperties value.
     */
-    public void setExtendedProperties(HashMap<String, String> extendedProperties)
+    public void setExtendedProperties(final HashMap<String, String> extendedPropertiesValue)
     {
-        this.extendedProperties = extendedProperties;
+        this.extendedProperties = extendedPropertiesValue;
     }
     
     private StorageServiceProperties properties;
     
     /**
     * Details about the storage account.
+    * @return The Properties value.
     */
     public StorageServiceProperties getProperties()
     {
@@ -103,10 +108,11 @@ public class StorageServiceGetResponse extends OperationResponse
     
     /**
     * Details about the storage account.
+    * @param propertiesValue The Properties value.
     */
-    public void setProperties(StorageServiceProperties properties)
+    public void setProperties(final StorageServiceProperties propertiesValue)
     {
-        this.properties = properties;
+        this.properties = propertiesValue;
     }
     
     private String serviceName;
@@ -117,6 +123,7 @@ public class StorageServiceGetResponse extends OperationResponse
     * example, if the service name is MyStorageAccount you could access the
     * blob containers by calling:
     * http://MyStorageAccount.blob.core.windows.net/mycontainer/
+    * @return The ServiceName value.
     */
     public String getServiceName()
     {
@@ -129,10 +136,11 @@ public class StorageServiceGetResponse extends OperationResponse
     * example, if the service name is MyStorageAccount you could access the
     * blob containers by calling:
     * http://MyStorageAccount.blob.core.windows.net/mycontainer/
+    * @param serviceNameValue The ServiceName value.
     */
-    public void setServiceName(String serviceName)
+    public void setServiceName(final String serviceNameValue)
     {
-        this.serviceName = serviceName;
+        this.serviceName = serviceNameValue;
     }
     
     private URI uri;
@@ -140,6 +148,7 @@ public class StorageServiceGetResponse extends OperationResponse
     /**
     * The Service Management API request URI used to perform Get Storage
     * Account Properties requests against the storage account.
+    * @return The Uri value.
     */
     public URI getUri()
     {
@@ -149,10 +158,11 @@ public class StorageServiceGetResponse extends OperationResponse
     /**
     * The Service Management API request URI used to perform Get Storage
     * Account Properties requests against the storage account.
+    * @param uriValue The Uri value.
     */
-    public void setUri(URI uri)
+    public void setUri(final URI uriValue)
     {
-        this.uri = uri;
+        this.uri = uriValue;
     }
     
     /**

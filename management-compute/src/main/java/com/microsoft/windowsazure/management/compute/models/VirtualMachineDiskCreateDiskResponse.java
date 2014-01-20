@@ -38,6 +38,7 @@ public class VirtualMachineDiskCreateDiskResponse extends OperationResponse
     * is derived from storage account that contains the blob in which the
     * media is located. If the storage account does not belong to an affinity
     * group the value is NULL.
+    * @return The AffinityGroup value.
     */
     public String getAffinityGroup()
     {
@@ -49,34 +50,38 @@ public class VirtualMachineDiskCreateDiskResponse extends OperationResponse
     * is derived from storage account that contains the blob in which the
     * media is located. If the storage account does not belong to an affinity
     * group the value is NULL.
+    * @param affinityGroupValue The AffinityGroup value.
     */
-    public void setAffinityGroup(String affinityGroup)
+    public void setAffinityGroup(final String affinityGroupValue)
     {
-        this.affinityGroup = affinityGroup;
+        this.affinityGroup = affinityGroupValue;
     }
     
     private Boolean isPremium;
     
     /**
     * Specifies whether the comtained image is a premium image
+    * @return The IsPremium value.
     */
-    public Boolean getIsPremium()
+    public Boolean isPremium()
     {
         return this.isPremium;
     }
     
     /**
     * Specifies whether the comtained image is a premium image
+    * @param isPremiumValue The IsPremium value.
     */
-    public void setIsPremium(Boolean isPremium)
+    public void setIsPremium(final Boolean isPremiumValue)
     {
-        this.isPremium = isPremium;
+        this.isPremium = isPremiumValue;
     }
     
     private String label;
     
     /**
     * The friendly name of the disk
+    * @return The Label value.
     */
     public String getLabel()
     {
@@ -85,10 +90,11 @@ public class VirtualMachineDiskCreateDiskResponse extends OperationResponse
     
     /**
     * The friendly name of the disk
+    * @param labelValue The Label value.
     */
-    public void setLabel(String label)
+    public void setLabel(final String labelValue)
     {
-        this.label = label;
+        this.label = labelValue;
     }
     
     private String location;
@@ -98,6 +104,7 @@ public class VirtualMachineDiskCreateDiskResponse extends OperationResponse
     * derived from storage account that contains the blob in which the disk is
     * located. If the storage account belongs to an affinity group the value
     * is NULL.
+    * @return The Location value.
     */
     public String getLocation()
     {
@@ -109,16 +116,18 @@ public class VirtualMachineDiskCreateDiskResponse extends OperationResponse
     * derived from storage account that contains the blob in which the disk is
     * located. If the storage account belongs to an affinity group the value
     * is NULL.
+    * @param locationValue The Location value.
     */
-    public void setLocation(String location)
+    public void setLocation(final String locationValue)
     {
-        this.location = location;
+        this.location = locationValue;
     }
     
     private double logicalSizeInGB;
     
     /**
     * The size, in GB, of the disk.
+    * @return The LogicalSizeInGB value.
     */
     public double getLogicalSizeInGB()
     {
@@ -127,10 +136,11 @@ public class VirtualMachineDiskCreateDiskResponse extends OperationResponse
     
     /**
     * The size, in GB, of the disk.
+    * @param logicalSizeInGBValue The LogicalSizeInGB value.
     */
-    public void setLogicalSizeInGB(double logicalSizeInGB)
+    public void setLogicalSizeInGB(final double logicalSizeInGBValue)
     {
-        this.logicalSizeInGB = logicalSizeInGB;
+        this.logicalSizeInGB = logicalSizeInGBValue;
     }
     
     private URI mediaLinkUri;
@@ -140,6 +150,7 @@ public class VirtualMachineDiskCreateDiskResponse extends OperationResponse
     * disk is located. The blob location belongs to a storage account in the
     * subscription specified by the SubscriptionId value in the operation
     * call. Example: http://example.blob.core.windows.net/disks/mydisk.vhd
+    * @return The MediaLinkUri value.
     */
     public URI getMediaLinkUri()
     {
@@ -151,10 +162,11 @@ public class VirtualMachineDiskCreateDiskResponse extends OperationResponse
     * disk is located. The blob location belongs to a storage account in the
     * subscription specified by the SubscriptionId value in the operation
     * call. Example: http://example.blob.core.windows.net/disks/mydisk.vhd
+    * @param mediaLinkUriValue The MediaLinkUri value.
     */
-    public void setMediaLinkUri(URI mediaLinkUri)
+    public void setMediaLinkUri(final URI mediaLinkUriValue)
     {
-        this.mediaLinkUri = mediaLinkUri;
+        this.mediaLinkUri = mediaLinkUriValue;
     }
     
     private String name;
@@ -162,6 +174,7 @@ public class VirtualMachineDiskCreateDiskResponse extends OperationResponse
     /**
     * The name of the disk. This is the name that is used when creating one or
     * more virtual machines using the disk.
+    * @return The Name value.
     */
     public String getName()
     {
@@ -171,16 +184,18 @@ public class VirtualMachineDiskCreateDiskResponse extends OperationResponse
     /**
     * The name of the disk. This is the name that is used when creating one or
     * more virtual machines using the disk.
+    * @param nameValue The Name value.
     */
-    public void setName(String name)
+    public void setName(final String nameValue)
     {
-        this.name = name;
+        this.name = nameValue;
     }
     
     private String operatingSystem;
     
     /**
     * The Operating System type for the disk.
+    * @return The OperatingSystem value.
     */
     public String getOperatingSystem()
     {
@@ -189,10 +204,11 @@ public class VirtualMachineDiskCreateDiskResponse extends OperationResponse
     
     /**
     * The Operating System type for the disk.
+    * @param operatingSystemValue The OperatingSystem value.
     */
-    public void setOperatingSystem(String operatingSystem)
+    public void setOperatingSystem(final String operatingSystemValue)
     {
-        this.operatingSystem = operatingSystem;
+        this.operatingSystem = operatingSystemValue;
     }
     
     private String sourceImageName;
@@ -201,6 +217,7 @@ public class VirtualMachineDiskCreateDiskResponse extends OperationResponse
     * The name of the OS Image from which the disk was created. This property
     * is populated automatically when a disk is created from an OS image by
     * calling the Add Role, Create Deployment, or Provision Disk operations.
+    * @return The SourceImageName value.
     */
     public String getSourceImageName()
     {
@@ -211,10 +228,11 @@ public class VirtualMachineDiskCreateDiskResponse extends OperationResponse
     * The name of the OS Image from which the disk was created. This property
     * is populated automatically when a disk is created from an OS image by
     * calling the Add Role, Create Deployment, or Provision Disk operations.
+    * @param sourceImageNameValue The SourceImageName value.
     */
-    public void setSourceImageName(String sourceImageName)
+    public void setSourceImageName(final String sourceImageNameValue)
     {
-        this.sourceImageName = sourceImageName;
+        this.sourceImageName = sourceImageNameValue;
     }
     
     private VirtualMachineDiskCreateDiskResponse.VirtualMachineDiskUsageDetails usageDetails;
@@ -223,6 +241,7 @@ public class VirtualMachineDiskCreateDiskResponse extends OperationResponse
     * Contains properties that specify a virtual machine that currently using
     * the disk. A disk cannot be deleted as long as it is attached to a
     * virtual machine.
+    * @return The UsageDetails value.
     */
     public VirtualMachineDiskCreateDiskResponse.VirtualMachineDiskUsageDetails getUsageDetails()
     {
@@ -233,10 +252,11 @@ public class VirtualMachineDiskCreateDiskResponse extends OperationResponse
     * Contains properties that specify a virtual machine that currently using
     * the disk. A disk cannot be deleted as long as it is attached to a
     * virtual machine.
+    * @param usageDetailsValue The UsageDetails value.
     */
-    public void setUsageDetails(VirtualMachineDiskCreateDiskResponse.VirtualMachineDiskUsageDetails usageDetails)
+    public void setUsageDetails(final VirtualMachineDiskCreateDiskResponse.VirtualMachineDiskUsageDetails usageDetailsValue)
     {
-        this.usageDetails = usageDetails;
+        this.usageDetails = usageDetailsValue;
     }
     
     /**
@@ -250,6 +270,7 @@ public class VirtualMachineDiskCreateDiskResponse extends OperationResponse
         
         /**
         * The deployment in which the disk is being used.
+        * @return The DeploymentName value.
         */
         public String getDeploymentName()
         {
@@ -258,16 +279,18 @@ public class VirtualMachineDiskCreateDiskResponse extends OperationResponse
         
         /**
         * The deployment in which the disk is being used.
+        * @param deploymentNameValue The DeploymentName value.
         */
-        public void setDeploymentName(String deploymentName)
+        public void setDeploymentName(final String deploymentNameValue)
         {
-            this.deploymentName = deploymentName;
+            this.deploymentName = deploymentNameValue;
         }
         
         private String hostedServiceName;
         
         /**
         * The hosted service in which the disk is being used.
+        * @return The HostedServiceName value.
         */
         public String getHostedServiceName()
         {
@@ -276,16 +299,18 @@ public class VirtualMachineDiskCreateDiskResponse extends OperationResponse
         
         /**
         * The hosted service in which the disk is being used.
+        * @param hostedServiceNameValue The HostedServiceName value.
         */
-        public void setHostedServiceName(String hostedServiceName)
+        public void setHostedServiceName(final String hostedServiceNameValue)
         {
-            this.hostedServiceName = hostedServiceName;
+            this.hostedServiceName = hostedServiceNameValue;
         }
         
         private String roleName;
         
         /**
         * The virtual machine that the disk is attached to.
+        * @return The RoleName value.
         */
         public String getRoleName()
         {
@@ -294,10 +319,11 @@ public class VirtualMachineDiskCreateDiskResponse extends OperationResponse
         
         /**
         * The virtual machine that the disk is attached to.
+        * @param roleNameValue The RoleName value.
         */
-        public void setRoleName(String roleName)
+        public void setRoleName(final String roleNameValue)
         {
-            this.roleName = roleName;
+            this.roleName = roleNameValue;
         }
     }
 }

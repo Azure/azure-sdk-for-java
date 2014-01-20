@@ -31,6 +31,7 @@ public interface AlertsClient extends FilterableService<AlertsClient>
 {
     /**
     * Optional base uri parameter for Azure REST.
+    * @return The BaseUri value.
     */
     URI getBaseUri(); 
     
@@ -41,16 +42,19 @@ public interface AlertsClient extends FilterableService<AlertsClient>
     * Azure Service ManagementAPI use mutual authentication of management
     * certificates over SSL to ensure that a request made to the service is
     * secure.  No anonymous requests are allowed.
+    * @return The Credentials value.
     */
     SubscriptionCloudCredentials getCredentials(); 
     
     /**
     * Operations for managing the alert incidents.
+    * @return The IncidentsOperations value.
     */
     IncidentOperations getIncidentsOperations(); 
     
     /**
     * Operations for managing the alert rules.
+    * @return The RulesOperations value.
     */
     RuleOperations getRulesOperations(); 
 }

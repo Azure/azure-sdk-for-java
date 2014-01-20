@@ -34,6 +34,7 @@ public class ServiceBusNamespaceResponse extends OperationResponse
     
     /**
     * The namespace.
+    * @return The Namespace value.
     */
     public ServiceBusNamespace getNamespace()
     {
@@ -42,9 +43,10 @@ public class ServiceBusNamespaceResponse extends OperationResponse
     
     /**
     * The namespace.
+    * @param namespaceValue The Namespace value.
     */
-    public void setNamespace(ServiceBusNamespace namespace)
+    public void setNamespace(final ServiceBusNamespace namespaceValue)
     {
-        this.namespace = namespace;
+        this.namespace = namespaceValue;
     }
 }

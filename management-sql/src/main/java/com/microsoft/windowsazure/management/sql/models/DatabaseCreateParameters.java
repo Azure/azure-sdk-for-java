@@ -32,6 +32,7 @@ public class DatabaseCreateParameters
     
     /**
     * Gets or sets the collation name for the new database.
+    * @return The CollationName value.
     */
     public String getCollationName()
     {
@@ -40,16 +41,18 @@ public class DatabaseCreateParameters
     
     /**
     * Gets or sets the collation name for the new database.
+    * @param collationNameValue The CollationName value.
     */
-    public void setCollationName(String collationName)
+    public void setCollationName(final String collationNameValue)
     {
-        this.collationName = collationName;
+        this.collationName = collationNameValue;
     }
     
     private String edition;
     
     /**
     * Gets or sets the edition for the new database.
+    * @return The Edition value.
     */
     public String getEdition()
     {
@@ -58,16 +61,18 @@ public class DatabaseCreateParameters
     
     /**
     * Gets or sets the edition for the new database.
+    * @param editionValue The Edition value.
     */
-    public void setEdition(String edition)
+    public void setEdition(final String editionValue)
     {
-        this.edition = edition;
+        this.edition = editionValue;
     }
     
     private long maximumDatabaseSizeInGB;
     
     /**
     * Gets or sets the maximum size of this database, in Gigabytes.
+    * @return The MaximumDatabaseSizeInGB value.
     */
     public long getMaximumDatabaseSizeInGB()
     {
@@ -76,16 +81,18 @@ public class DatabaseCreateParameters
     
     /**
     * Gets or sets the maximum size of this database, in Gigabytes.
+    * @param maximumDatabaseSizeInGBValue The MaximumDatabaseSizeInGB value.
     */
-    public void setMaximumDatabaseSizeInGB(long maximumDatabaseSizeInGB)
+    public void setMaximumDatabaseSizeInGB(final long maximumDatabaseSizeInGBValue)
     {
-        this.maximumDatabaseSizeInGB = maximumDatabaseSizeInGB;
+        this.maximumDatabaseSizeInGB = maximumDatabaseSizeInGBValue;
     }
     
     private String name;
     
     /**
     * Gets or sets the name for the new database.
+    * @return The Name value.
     */
     public String getName()
     {
@@ -94,16 +101,18 @@ public class DatabaseCreateParameters
     
     /**
     * Gets or sets the name for the new database.
+    * @param nameValue The Name value.
     */
-    public void setName(String name)
+    public void setName(final String nameValue)
     {
-        this.name = name;
+        this.name = nameValue;
     }
     
     private String serviceObjectiveId;
     
     /**
     * Gets or sets the id of this service objective.
+    * @return The ServiceObjectiveId value.
     */
     public String getServiceObjectiveId()
     {
@@ -112,9 +121,10 @@ public class DatabaseCreateParameters
     
     /**
     * Gets or sets the id of this service objective.
+    * @param serviceObjectiveIdValue The ServiceObjectiveId value.
     */
-    public void setServiceObjectiveId(String serviceObjectiveId)
+    public void setServiceObjectiveId(final String serviceObjectiveIdValue)
     {
-        this.serviceObjectiveId = serviceObjectiveId;
+        this.serviceObjectiveId = serviceObjectiveIdValue;
     }
 }

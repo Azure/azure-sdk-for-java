@@ -32,6 +32,7 @@ public class RuleMetricDataSource extends RuleDataSource
     
     /**
     * Metric name.
+    * @return The MetricName value.
     */
     public String getMetricName()
     {
@@ -40,10 +41,11 @@ public class RuleMetricDataSource extends RuleDataSource
     
     /**
     * Metric name.
+    * @param metricNameValue The MetricName value.
     */
-    public void setMetricName(String metricName)
+    public void setMetricName(final String metricNameValue)
     {
-        this.metricName = metricName;
+        this.metricName = metricNameValue;
     }
     
     private String metricNamespace;
@@ -51,6 +53,7 @@ public class RuleMetricDataSource extends RuleDataSource
     /**
     * Metric namespace. When creating a rule on endpoint monitoring metrics,
     * WindowsAzure.Availability namespace is required.
+    * @return The MetricNamespace value.
     */
     public String getMetricNamespace()
     {
@@ -60,16 +63,18 @@ public class RuleMetricDataSource extends RuleDataSource
     /**
     * Metric namespace. When creating a rule on endpoint monitoring metrics,
     * WindowsAzure.Availability namespace is required.
+    * @param metricNamespaceValue The MetricNamespace value.
     */
-    public void setMetricNamespace(String metricNamespace)
+    public void setMetricNamespace(final String metricNamespaceValue)
     {
-        this.metricNamespace = metricNamespace;
+        this.metricNamespace = metricNamespaceValue;
     }
     
     private String resourceId;
     
     /**
     * Metric resource id.
+    * @return The ResourceId value.
     */
     public String getResourceId()
     {
@@ -78,9 +83,10 @@ public class RuleMetricDataSource extends RuleDataSource
     
     /**
     * Metric resource id.
+    * @param resourceIdValue The ResourceId value.
     */
-    public void setResourceId(String resourceId)
+    public void setResourceId(final String resourceIdValue)
     {
-        this.resourceId = resourceId;
+        this.resourceId = resourceIdValue;
     }
 }

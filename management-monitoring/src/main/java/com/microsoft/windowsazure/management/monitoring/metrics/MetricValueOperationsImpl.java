@@ -35,7 +35,6 @@ import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
-import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -69,6 +68,7 @@ public class MetricValueOperationsImpl implements ServiceOperations<MetricsClien
     /**
     * Gets a reference to the
     * microsoft.windowsazure.management.monitoring.metrics.MetricsClientImpl.
+    * @return The Client value.
     */
     public MetricsClientImpl getClient()
     {
@@ -109,6 +109,14 @@ public class MetricValueOperationsImpl implements ServiceOperations<MetricsClien
     * @param timeGrain The time grain of the metrics.
     * @param startTime The start time (in UTC) of the metrics.
     * @param endTime The end time (in UTC) of the metrics.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return The List Metric values operation response.
     */
     @Override
@@ -149,16 +157,7 @@ public class MetricValueOperationsImpl implements ServiceOperations<MetricsClien
         simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
         simpleDateFormat2.setTimeZone(TimeZone.getTimeZone("UTC"));
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/monitoring/metricvalues/query?";
-        url = url + "&resourceId=" + URLEncoder.encode(resourceId, "UTF-8");
-        if (metricNamespace != null)
-        {
-            url = url + "&namespace=" + URLEncoder.encode(metricNamespace, "UTF-8");
-        }
-        url = url + "&names=" + URLEncoder.encode(CommaStringBuilder.join(metricNames), "UTF-8");
-        url = url + "&timeGrain=" + URLEncoder.encode(TimeSpan8601Converter.format(timeGrain), "UTF-8");
-        url = url + "&startTime=" + URLEncoder.encode(simpleDateFormat.format(startTime.getTime()), "UTF-8");
-        url = url + "&endTime=" + URLEncoder.encode(simpleDateFormat2.format(endTime.getTime()), "UTF-8");
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/monitoring/metricvalues/query?&resourceId=" + resourceId + "&namespace=" + metricNamespace + "&names=" + CommaStringBuilder.join(metricNames) + "&timeGrain=" + TimeSpan8601Converter.format(timeGrain) + "&startTime=" + simpleDateFormat.format(startTime.getTime()) + "&endTime=" + simpleDateFormat2.format(endTime.getTime());
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -169,43 +168,42 @@ public class MetricValueOperationsImpl implements ServiceOperations<MetricsClien
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != HttpStatus.SC_OK)
-        {
-            ServiceException ex = ServiceException.createFromJson(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
-        }
-        
-        // Create Result
-        MetricValueListResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new MetricValueListResponse();
-        ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode responseDoc = objectMapper.readTree(responseContent);
-        
-        if (responseDoc != null)
-        {
-            JsonNode metricValueSetCollectionValue = responseDoc.get("MetricValueSetCollection");
-            if (metricValueSetCollectionValue != null)
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromJson(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            MetricValueListResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new MetricValueListResponse();
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode responseDoc = objectMapper.readTree(responseContent);
+            
+            if (responseDoc != null)
             {
                 MetricValueSetCollection metricValueSetCollectionInstance = new MetricValueSetCollection();
                 result.setMetricValueSetCollection(metricValueSetCollectionInstance);
                 
-                ArrayNode valueArray = ((ArrayNode) metricValueSetCollectionValue.get("Value"));
+                ArrayNode valueArray = ((ArrayNode) responseDoc.get("Value"));
                 if (valueArray != null)
                 {
                     for (JsonNode valueValue : valueArray)
@@ -354,18 +352,25 @@ public class MetricValueOperationsImpl implements ServiceOperations<MetricsClien
                     }
                 }
             }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
 }

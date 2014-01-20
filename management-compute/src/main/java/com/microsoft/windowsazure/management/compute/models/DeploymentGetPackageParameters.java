@@ -35,6 +35,7 @@ public class DeploymentGetPackageParameters
     /**
     * Required. Specifies the URI of the container to which the packages will
     * be saved.
+    * @return The ContainerUri value.
     */
     public URI getContainerUri()
     {
@@ -44,10 +45,11 @@ public class DeploymentGetPackageParameters
     /**
     * Required. Specifies the URI of the container to which the packages will
     * be saved.
+    * @param containerUriValue The ContainerUri value.
     */
-    public void setContainerUri(URI containerUri)
+    public void setContainerUri(final URI containerUriValue)
     {
-        this.containerUri = containerUri;
+        this.containerUri = containerUriValue;
     }
     
     private Boolean overwriteExisting;
@@ -56,8 +58,9 @@ public class DeploymentGetPackageParameters
     * Optional. Specifies whether an existing package in the storage container
     * should be overwritten. If true the packages with the same names under
     * the specified storage container will be overwritten; otherwise false.
+    * @return The OverwriteExisting value.
     */
-    public Boolean getOverwriteExisting()
+    public Boolean isOverwriteExisting()
     {
         return this.overwriteExisting;
     }
@@ -66,9 +69,10 @@ public class DeploymentGetPackageParameters
     * Optional. Specifies whether an existing package in the storage container
     * should be overwritten. If true the packages with the same names under
     * the specified storage container will be overwritten; otherwise false.
+    * @param overwriteExistingValue The OverwriteExisting value.
     */
-    public void setOverwriteExisting(Boolean overwriteExisting)
+    public void setOverwriteExisting(final Boolean overwriteExistingValue)
     {
-        this.overwriteExisting = overwriteExisting;
+        this.overwriteExisting = overwriteExistingValue;
     }
 }

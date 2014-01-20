@@ -34,6 +34,7 @@ public class ServiceBusTopicResponse extends OperationResponse
     
     /**
     * The requested topic.
+    * @return The Topic value.
     */
     public ServiceBusTopic getTopic()
     {
@@ -42,9 +43,10 @@ public class ServiceBusTopicResponse extends OperationResponse
     
     /**
     * The requested topic.
+    * @param topicValue The Topic value.
     */
-    public void setTopic(ServiceBusTopic topic)
+    public void setTopic(final ServiceBusTopic topicValue)
     {
-        this.topic = topic;
+        this.topic = topicValue;
     }
 }

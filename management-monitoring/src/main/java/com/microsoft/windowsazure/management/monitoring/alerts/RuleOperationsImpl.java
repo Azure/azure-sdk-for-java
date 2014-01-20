@@ -31,7 +31,6 @@ import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.monitoring.alerts.models.ConditionOperator;
 import com.microsoft.windowsazure.management.monitoring.alerts.models.Rule;
 import com.microsoft.windowsazure.management.monitoring.alerts.models.RuleAction;
-import com.microsoft.windowsazure.management.monitoring.alerts.models.RuleCollection;
 import com.microsoft.windowsazure.management.monitoring.alerts.models.RuleCreateOrUpdateParameters;
 import com.microsoft.windowsazure.management.monitoring.alerts.models.RuleEmailAction;
 import com.microsoft.windowsazure.management.monitoring.alerts.models.RuleGetResponse;
@@ -42,7 +41,6 @@ import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -81,6 +79,7 @@ public class RuleOperationsImpl implements ServiceOperations<AlertsClientImpl>, 
     /**
     * Gets a reference to the
     * microsoft.windowsazure.management.monitoring.alerts.AlertsClientImpl.
+    * @return The Client value.
     */
     public AlertsClientImpl getClient()
     {
@@ -108,11 +107,15 @@ public class RuleOperationsImpl implements ServiceOperations<AlertsClientImpl>, 
     /**
     *
     * @param parameters The rule to create or update.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
     @Override
-    public OperationResponse createOrUpdate(RuleCreateOrUpdateParameters parameters) throws UnsupportedEncodingException, IOException, ServiceException
+    public OperationResponse createOrUpdate(RuleCreateOrUpdateParameters parameters) throws IOException, ServiceException
     {
         // Validate
         if (parameters == null)
@@ -255,40 +258,50 @@ public class RuleOperationsImpl implements ServiceOperations<AlertsClientImpl>, 
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != HttpStatus.SC_OK && statusCode != HttpStatus.SC_CREATED)
-        {
-            ServiceException ex = ServiceException.createFromJson(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK && statusCode != HttpStatus.SC_CREATED)
+            {
+                ServiceException ex = ServiceException.createFromJson(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        OperationResponse result = null;
-        result = new OperationResponse();
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -312,6 +325,10 @@ public class RuleOperationsImpl implements ServiceOperations<AlertsClientImpl>, 
     /**
     *
     * @param ruleId The id of the rule to delete.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -348,40 +365,50 @@ public class RuleOperationsImpl implements ServiceOperations<AlertsClientImpl>, 
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != HttpStatus.SC_OK)
-        {
-            ServiceException ex = ServiceException.createFromJson(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromJson(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        OperationResponse result = null;
-        result = new OperationResponse();
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -404,6 +431,12 @@ public class RuleOperationsImpl implements ServiceOperations<AlertsClientImpl>, 
     /**
     *
     * @param ruleId The id of the rule to retrieve.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return The Get Rule operation response.
     */
     @Override
@@ -439,43 +472,42 @@ public class RuleOperationsImpl implements ServiceOperations<AlertsClientImpl>, 
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != HttpStatus.SC_OK)
-        {
-            ServiceException ex = ServiceException.createFromJson(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
-        }
-        
-        // Create Result
-        RuleGetResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new RuleGetResponse();
-        ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode responseDoc = objectMapper.readTree(responseContent);
-        
-        if (responseDoc != null)
-        {
-            JsonNode ruleValue = responseDoc.get("Rule");
-            if (ruleValue != null)
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromJson(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            RuleGetResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new RuleGetResponse();
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode responseDoc = objectMapper.readTree(responseContent);
+            
+            if (responseDoc != null)
             {
                 Rule ruleInstance = new Rule();
                 result.setRule(ruleInstance);
                 
-                JsonNode idValue = ruleValue.get("Id");
+                JsonNode idValue = responseDoc.get("Id");
                 if (idValue != null)
                 {
                     String idInstance;
@@ -483,7 +515,7 @@ public class RuleOperationsImpl implements ServiceOperations<AlertsClientImpl>, 
                     ruleInstance.setId(idInstance);
                 }
                 
-                JsonNode nameValue = ruleValue.get("Name");
+                JsonNode nameValue = responseDoc.get("Name");
                 if (nameValue != null)
                 {
                     String nameInstance;
@@ -491,7 +523,7 @@ public class RuleOperationsImpl implements ServiceOperations<AlertsClientImpl>, 
                     ruleInstance.setName(nameInstance);
                 }
                 
-                JsonNode descriptionValue = ruleValue.get("Description");
+                JsonNode descriptionValue = responseDoc.get("Description");
                 if (descriptionValue != null)
                 {
                     String descriptionInstance;
@@ -499,7 +531,7 @@ public class RuleOperationsImpl implements ServiceOperations<AlertsClientImpl>, 
                     ruleInstance.setDescription(descriptionInstance);
                 }
                 
-                JsonNode isEnabledValue = ruleValue.get("IsEnabled");
+                JsonNode isEnabledValue = responseDoc.get("IsEnabled");
                 if (isEnabledValue != null)
                 {
                     boolean isEnabledInstance;
@@ -507,11 +539,11 @@ public class RuleOperationsImpl implements ServiceOperations<AlertsClientImpl>, 
                     ruleInstance.setIsEnabled(isEnabledInstance);
                 }
                 
-                JsonNode conditionValue = ruleValue.get("Condition");
+                JsonNode conditionValue = responseDoc.get("Condition");
                 if (conditionValue != null)
                 {
                     String typeName = conditionValue.get("odata.type").getTextValue();
-                    if (typeName.equals("Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.ThresholdRuleCondition"))
+                    if (typeName == "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.ThresholdRuleCondition")
                     {
                         ThresholdRuleCondition thresholdRuleConditionInstance = new ThresholdRuleCondition();
                         
@@ -519,7 +551,7 @@ public class RuleOperationsImpl implements ServiceOperations<AlertsClientImpl>, 
                         if (dataSourceValue != null)
                         {
                             String typeName2 = dataSourceValue.get("odata.type").getTextValue();
-                            if (typeName2.equals("Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.RuleMetricDataSource"))
+                            if (typeName2 == "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.RuleMetricDataSource")
                             {
                                 RuleMetricDataSource ruleMetricDataSourceInstance = new RuleMetricDataSource();
                                 
@@ -577,13 +609,13 @@ public class RuleOperationsImpl implements ServiceOperations<AlertsClientImpl>, 
                     }
                 }
                 
-                ArrayNode actionsArray = ((ArrayNode) ruleValue.get("Actions"));
+                ArrayNode actionsArray = ((ArrayNode) responseDoc.get("Actions"));
                 if (actionsArray != null)
                 {
                     for (JsonNode actionsValue : actionsArray)
                     {
                         String typeName3 = actionsValue.get("odata.type").getTextValue();
-                        if (typeName3.equals("Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.RuleEmailAction"))
+                        if (typeName3 == "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.RuleEmailAction")
                         {
                             RuleEmailAction ruleEmailActionInstance = new RuleEmailAction();
                             
@@ -608,7 +640,7 @@ public class RuleOperationsImpl implements ServiceOperations<AlertsClientImpl>, 
                     }
                 }
                 
-                JsonNode lastUpdatedTimeValue = ruleValue.get("LastUpdatedTime");
+                JsonNode lastUpdatedTimeValue = responseDoc.get("LastUpdatedTime");
                 if (lastUpdatedTimeValue != null)
                 {
                     Calendar lastUpdatedTimeInstance;
@@ -619,19 +651,26 @@ public class RuleOperationsImpl implements ServiceOperations<AlertsClientImpl>, 
                     ruleInstance.setLastUpdatedTime(lastUpdatedTimeInstance);
                 }
             }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -654,6 +693,12 @@ public class RuleOperationsImpl implements ServiceOperations<AlertsClientImpl>, 
     /**
     * List the alert rules within a subscription.
     *
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return The List Rules operation response.
     */
     @Override
@@ -684,49 +729,45 @@ public class RuleOperationsImpl implements ServiceOperations<AlertsClientImpl>, 
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != HttpStatus.SC_OK)
-        {
-            ServiceException ex = ServiceException.createFromJson(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
-        }
-        
-        // Create Result
-        RuleListResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new RuleListResponse();
-        ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode responseDoc = objectMapper.readTree(responseContent);
-        
-        if (responseDoc != null)
-        {
-            JsonNode ruleCollectionValue = responseDoc.get("RuleCollection");
-            if (ruleCollectionValue != null)
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
             {
-                RuleCollection ruleCollectionInstance = new RuleCollection();
-                result.setRuleCollection(ruleCollectionInstance);
-                
-                ArrayNode valueArray = ((ArrayNode) ruleCollectionValue.get("Value"));
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromJson(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            RuleListResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new RuleListResponse();
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode responseDoc = objectMapper.readTree(responseContent);
+            
+            if (responseDoc != null)
+            {
+                ArrayNode valueArray = ((ArrayNode) responseDoc.get("Value"));
                 if (valueArray != null)
                 {
                     for (JsonNode valueValue : valueArray)
                     {
                         Rule ruleInstance = new Rule();
-                        ruleCollectionInstance.getValue().add(ruleInstance);
+                        result.getValue().add(ruleInstance);
                         
                         JsonNode idValue = valueValue.get("Id");
                         if (idValue != null)
@@ -764,7 +805,7 @@ public class RuleOperationsImpl implements ServiceOperations<AlertsClientImpl>, 
                         if (conditionValue != null)
                         {
                             String typeName = conditionValue.get("odata.type").getTextValue();
-                            if (typeName.equals("Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.ThresholdRuleCondition"))
+                            if (typeName == "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.ThresholdRuleCondition")
                             {
                                 ThresholdRuleCondition thresholdRuleConditionInstance = new ThresholdRuleCondition();
                                 
@@ -772,7 +813,7 @@ public class RuleOperationsImpl implements ServiceOperations<AlertsClientImpl>, 
                                 if (dataSourceValue != null)
                                 {
                                     String typeName2 = dataSourceValue.get("odata.type").getTextValue();
-                                    if (typeName2.equals("Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.RuleMetricDataSource"))
+                                    if (typeName2 == "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.RuleMetricDataSource")
                                     {
                                         RuleMetricDataSource ruleMetricDataSourceInstance = new RuleMetricDataSource();
                                         
@@ -836,7 +877,7 @@ public class RuleOperationsImpl implements ServiceOperations<AlertsClientImpl>, 
                             for (JsonNode actionsValue : actionsArray)
                             {
                                 String typeName3 = actionsValue.get("odata.type").getTextValue();
-                                if (typeName3.equals("Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.RuleEmailAction"))
+                                if (typeName3 == "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.RuleEmailAction")
                                 {
                                     RuleEmailAction ruleEmailActionInstance = new RuleEmailAction();
                                     
@@ -874,18 +915,25 @@ public class RuleOperationsImpl implements ServiceOperations<AlertsClientImpl>, 
                     }
                 }
             }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
 }

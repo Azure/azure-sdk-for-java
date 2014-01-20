@@ -45,6 +45,18 @@ public interface NotificationHubOperations
     *
     * @param namespaceName The namespace name.
     * @param notificationHubName The notification hub name.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
     * @return A standard storage response including an HTTP status code and
     * request ID.
     */
@@ -65,6 +77,14 @@ public interface NotificationHubOperations
     *
     * @param namespaceName The namespace name.
     * @param notificationHubName The notification hub name.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
     * @return The set of connection details for a service bus entity.
     */
     ServiceBusConnectionDetailsResponse getConnectionDetails(String namespaceName, String notificationHubName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
@@ -82,6 +102,18 @@ public interface NotificationHubOperations
     * Lists the notification hubs associated with a namespace.
     *
     * @param namespaceName The namespace name.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
     * @return A standard storage response including an HTTP status code and
     * request ID.
     */

@@ -35,6 +35,7 @@ public class DomainJoinSettings
     /**
     * Optional. Specifies the values to use to join the virtual machine to the
     * domain.
+    * @return The Credentials value.
     */
     public DomainJoinCredentials getCredentials()
     {
@@ -44,16 +45,18 @@ public class DomainJoinSettings
     /**
     * Optional. Specifies the values to use to join the virtual machine to the
     * domain.
+    * @param credentialsValue The Credentials value.
     */
-    public void setCredentials(DomainJoinCredentials credentials)
+    public void setCredentials(final DomainJoinCredentials credentialsValue)
     {
-        this.credentials = credentials;
+        this.credentials = credentialsValue;
     }
     
     private String domainToJoin;
     
     /**
     * Optional. Specifies the domain to join.
+    * @return The DomainToJoin value.
     */
     public String getDomainToJoin()
     {
@@ -62,10 +65,11 @@ public class DomainJoinSettings
     
     /**
     * Optional. Specifies the domain to join.
+    * @param domainToJoinValue The DomainToJoin value.
     */
-    public void setDomainToJoin(String domainToJoin)
+    public void setDomainToJoin(final String domainToJoinValue)
     {
-        this.domainToJoin = domainToJoin;
+        this.domainToJoin = domainToJoinValue;
     }
     
     private String ldapMachineObjectOU;
@@ -76,6 +80,7 @@ public class DomainJoinSettings
     * computer account is created. This account is in Active Directory on a
     * domain controller in the domain to which the computer is being joined.
     * Example: OU=MyOu,OU=MyParentOu,DC=example.com,DC=MyCompany,DC=com
+    * @return The LdapMachineObjectOU value.
     */
     public String getLdapMachineObjectOU()
     {
@@ -88,16 +93,18 @@ public class DomainJoinSettings
     * computer account is created. This account is in Active Directory on a
     * domain controller in the domain to which the computer is being joined.
     * Example: OU=MyOu,OU=MyParentOu,DC=example.com,DC=MyCompany,DC=com
+    * @param ldapMachineObjectOUValue The LdapMachineObjectOU value.
     */
-    public void setLdapMachineObjectOU(String ldapMachineObjectOU)
+    public void setLdapMachineObjectOU(final String ldapMachineObjectOUValue)
     {
-        this.ldapMachineObjectOU = ldapMachineObjectOU;
+        this.ldapMachineObjectOU = ldapMachineObjectOUValue;
     }
     
     private DomainJoinProvisioning provisioning;
     
     /**
     * Additional information for domain join provisioning.
+    * @return The Provisioning value.
     */
     public DomainJoinProvisioning getProvisioning()
     {
@@ -106,9 +113,10 @@ public class DomainJoinSettings
     
     /**
     * Additional information for domain join provisioning.
+    * @param provisioningValue The Provisioning value.
     */
-    public void setProvisioning(DomainJoinProvisioning provisioning)
+    public void setProvisioning(final DomainJoinProvisioning provisioningValue)
     {
-        this.provisioning = provisioning;
+        this.provisioning = provisioningValue;
     }
 }

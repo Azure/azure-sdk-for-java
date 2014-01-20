@@ -38,6 +38,7 @@ public class AffinityGroupGetResponse extends OperationResponse
     * Indicates if the virtual machine related operations can be performed in
     * this affinity group. If so, the string PersistentVMRole will be returned
     * by this element. Otherwise, this element will not be present.
+    * @return The Capabilities value.
     */
     public ArrayList<String> getCapabilities()
     {
@@ -48,16 +49,18 @@ public class AffinityGroupGetResponse extends OperationResponse
     * Indicates if the virtual machine related operations can be performed in
     * this affinity group. If so, the string PersistentVMRole will be returned
     * by this element. Otherwise, this element will not be present.
+    * @param capabilitiesValue The Capabilities value.
     */
-    public void setCapabilities(ArrayList<String> capabilities)
+    public void setCapabilities(final ArrayList<String> capabilitiesValue)
     {
-        this.capabilities = capabilities;
+        this.capabilities = capabilitiesValue;
     }
     
     private String description;
     
     /**
     * The user supplied description of this affinity group.
+    * @return The Description value.
     */
     public String getDescription()
     {
@@ -66,16 +69,18 @@ public class AffinityGroupGetResponse extends OperationResponse
     
     /**
     * The user supplied description of this affinity group.
+    * @param descriptionValue The Description value.
     */
-    public void setDescription(String description)
+    public void setDescription(final String descriptionValue)
     {
-        this.description = description;
+        this.description = descriptionValue;
     }
     
     private ArrayList<AffinityGroupGetResponse.HostedServiceReference> hostedServices;
     
     /**
     * The hosted services associated with this affinity group.
+    * @return The HostedServices value.
     */
     public ArrayList<AffinityGroupGetResponse.HostedServiceReference> getHostedServices()
     {
@@ -84,10 +89,11 @@ public class AffinityGroupGetResponse extends OperationResponse
     
     /**
     * The hosted services associated with this affinity group.
+    * @param hostedServicesValue The HostedServices value.
     */
-    public void setHostedServices(ArrayList<AffinityGroupGetResponse.HostedServiceReference> hostedServices)
+    public void setHostedServices(final ArrayList<AffinityGroupGetResponse.HostedServiceReference> hostedServicesValue)
     {
-        this.hostedServices = hostedServices;
+        this.hostedServices = hostedServicesValue;
     }
     
     private String label;
@@ -95,6 +101,7 @@ public class AffinityGroupGetResponse extends OperationResponse
     /**
     * The user supplied label of the affinity group returned as a base-64
     * encoded string.
+    * @return The Label value.
     */
     public String getLabel()
     {
@@ -104,10 +111,11 @@ public class AffinityGroupGetResponse extends OperationResponse
     /**
     * The user supplied label of the affinity group returned as a base-64
     * encoded string.
+    * @param labelValue The Label value.
     */
-    public void setLabel(String label)
+    public void setLabel(final String labelValue)
     {
-        this.label = label;
+        this.label = labelValue;
     }
     
     private String location;
@@ -115,6 +123,7 @@ public class AffinityGroupGetResponse extends OperationResponse
     /**
     * The location of the data center that the affinity group is associated
     * with.
+    * @return The Location value.
     */
     public String getLocation()
     {
@@ -124,16 +133,18 @@ public class AffinityGroupGetResponse extends OperationResponse
     /**
     * The location of the data center that the affinity group is associated
     * with.
+    * @param locationValue The Location value.
     */
-    public void setLocation(String location)
+    public void setLocation(final String locationValue)
     {
-        this.location = location;
+        this.location = locationValue;
     }
     
     private String name;
     
     /**
     * The user supplied name of the affinity group.
+    * @return The Name value.
     */
     public String getName()
     {
@@ -142,16 +153,18 @@ public class AffinityGroupGetResponse extends OperationResponse
     
     /**
     * The user supplied name of the affinity group.
+    * @param nameValue The Name value.
     */
-    public void setName(String name)
+    public void setName(final String nameValue)
     {
-        this.name = name;
+        this.name = nameValue;
     }
     
     private ArrayList<AffinityGroupGetResponse.StorageServiceReference> storageServices;
     
     /**
     * The storage services associated with this affinity group.
+    * @return The StorageServices value.
     */
     public ArrayList<AffinityGroupGetResponse.StorageServiceReference> getStorageServices()
     {
@@ -160,10 +173,11 @@ public class AffinityGroupGetResponse extends OperationResponse
     
     /**
     * The storage services associated with this affinity group.
+    * @param storageServicesValue The StorageServices value.
     */
-    public void setStorageServices(ArrayList<AffinityGroupGetResponse.StorageServiceReference> storageServices)
+    public void setStorageServices(final ArrayList<AffinityGroupGetResponse.StorageServiceReference> storageServicesValue)
     {
-        this.storageServices = storageServices;
+        this.storageServices = storageServicesValue;
     }
     
     /**
@@ -187,6 +201,7 @@ public class AffinityGroupGetResponse extends OperationResponse
         
         /**
         * The name of the hosted service.
+        * @return The ServiceName value.
         */
         public String getServiceName()
         {
@@ -195,10 +210,11 @@ public class AffinityGroupGetResponse extends OperationResponse
         
         /**
         * The name of the hosted service.
+        * @param serviceNameValue The ServiceName value.
         */
-        public void setServiceName(String serviceName)
+        public void setServiceName(final String serviceNameValue)
         {
-            this.serviceName = serviceName;
+            this.serviceName = serviceNameValue;
         }
         
         private URI uri;
@@ -206,6 +222,7 @@ public class AffinityGroupGetResponse extends OperationResponse
         /**
         * The Service Management API request URI used to perform Get Hosted
         * Service Properties requests against the hosted service.
+        * @return The Uri value.
         */
         public URI getUri()
         {
@@ -215,10 +232,11 @@ public class AffinityGroupGetResponse extends OperationResponse
         /**
         * The Service Management API request URI used to perform Get Hosted
         * Service Properties requests against the hosted service.
+        * @param uriValue The Uri value.
         */
-        public void setUri(URI uri)
+        public void setUri(final URI uriValue)
         {
-            this.uri = uri;
+            this.uri = uriValue;
         }
     }
     
@@ -231,6 +249,7 @@ public class AffinityGroupGetResponse extends OperationResponse
         
         /**
         * The user supplied name of the storage account.
+        * @return The ServiceName value.
         */
         public String getServiceName()
         {
@@ -239,10 +258,11 @@ public class AffinityGroupGetResponse extends OperationResponse
         
         /**
         * The user supplied name of the storage account.
+        * @param serviceNameValue The ServiceName value.
         */
-        public void setServiceName(String serviceName)
+        public void setServiceName(final String serviceNameValue)
         {
-            this.serviceName = serviceName;
+            this.serviceName = serviceNameValue;
         }
         
         private URI uri;
@@ -250,6 +270,7 @@ public class AffinityGroupGetResponse extends OperationResponse
         /**
         * The Service Management API request URI used to perform Get Storage
         * Account Properties requests against the storage account.
+        * @return The Uri value.
         */
         public URI getUri()
         {
@@ -259,10 +280,11 @@ public class AffinityGroupGetResponse extends OperationResponse
         /**
         * The Service Management API request URI used to perform Get Storage
         * Account Properties requests against the storage account.
+        * @param uriValue The Uri value.
         */
-        public void setUri(URI uri)
+        public void setUri(final URI uriValue)
         {
-            this.uri = uri;
+            this.uri = uriValue;
         }
     }
 }

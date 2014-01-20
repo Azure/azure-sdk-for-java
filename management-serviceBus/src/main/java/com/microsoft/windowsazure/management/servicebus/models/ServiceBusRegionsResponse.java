@@ -36,6 +36,7 @@ public class ServiceBusRegionsResponse extends OperationResponse implements Iter
     
     /**
     * The available regions.
+    * @return The Regions value.
     */
     public ArrayList<ServiceBusLocation> getRegions()
     {
@@ -44,10 +45,11 @@ public class ServiceBusRegionsResponse extends OperationResponse implements Iter
     
     /**
     * The available regions.
+    * @param regionsValue The Regions value.
     */
-    public void setRegions(ArrayList<ServiceBusLocation> regions)
+    public void setRegions(final ArrayList<ServiceBusLocation> regionsValue)
     {
-        this.regions = regions;
+        this.regions = regionsValue;
     }
     
     /**

@@ -45,6 +45,16 @@ public interface LocationOperations
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441293.aspx for
     * more information)
     *
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return The List Locations operation response.
     */
     LocationsListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException;

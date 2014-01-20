@@ -34,6 +34,7 @@ public class Role
     
     /**
     * The name of the role.
+    * @return The AvailabilitySetName value.
     */
     public String getAvailabilitySetName()
     {
@@ -42,10 +43,11 @@ public class Role
     
     /**
     * The name of the role.
+    * @param availabilitySetNameValue The AvailabilitySetName value.
     */
-    public void setAvailabilitySetName(String availabilitySetName)
+    public void setAvailabilitySetName(final String availabilitySetNameValue)
     {
-        this.availabilitySetName = availabilitySetName;
+        this.availabilitySetName = availabilitySetNameValue;
     }
     
     private ArrayList<ConfigurationSet> configurationSets;
@@ -53,6 +55,7 @@ public class Role
     /**
     * A collection of values that represents system or application
     * configuration settings.
+    * @return The ConfigurationSets value.
     */
     public ArrayList<ConfigurationSet> getConfigurationSets()
     {
@@ -62,10 +65,11 @@ public class Role
     /**
     * A collection of values that represents system or application
     * configuration settings.
+    * @param configurationSetsValue The ConfigurationSets value.
     */
-    public void setConfigurationSets(ArrayList<ConfigurationSet> configurationSets)
+    public void setConfigurationSets(final ArrayList<ConfigurationSet> configurationSetsValue)
     {
-        this.configurationSets = configurationSets;
+        this.configurationSets = configurationSetsValue;
     }
     
     private ArrayList<DataVirtualHardDisk> dataVirtualHardDisks;
@@ -73,6 +77,7 @@ public class Role
     /**
     * Contains the parameters Windows Azure uses to create a data disk for a
     * virtual machine.
+    * @return The DataVirtualHardDisks value.
     */
     public ArrayList<DataVirtualHardDisk> getDataVirtualHardDisks()
     {
@@ -82,10 +87,11 @@ public class Role
     /**
     * Contains the parameters Windows Azure uses to create a data disk for a
     * virtual machine.
+    * @param dataVirtualHardDisksValue The DataVirtualHardDisks value.
     */
-    public void setDataVirtualHardDisks(ArrayList<DataVirtualHardDisk> dataVirtualHardDisks)
+    public void setDataVirtualHardDisks(final ArrayList<DataVirtualHardDisk> dataVirtualHardDisksValue)
     {
-        this.dataVirtualHardDisks = dataVirtualHardDisks;
+        this.dataVirtualHardDisks = dataVirtualHardDisksValue;
     }
     
     private String defaultWinRmCertificateThumbprint;
@@ -93,6 +99,7 @@ public class Role
     /**
     * The read-only thumbprint of the certificate that is used with the HTTPS
     * listener for WinRM.
+    * @return The DefaultWinRmCertificateThumbprint value.
     */
     public String getDefaultWinRmCertificateThumbprint()
     {
@@ -102,16 +109,19 @@ public class Role
     /**
     * The read-only thumbprint of the certificate that is used with the HTTPS
     * listener for WinRM.
+    * @param defaultWinRmCertificateThumbprintValue The
+    * DefaultWinRmCertificateThumbprint value.
     */
-    public void setDefaultWinRmCertificateThumbprint(String defaultWinRmCertificateThumbprint)
+    public void setDefaultWinRmCertificateThumbprint(final String defaultWinRmCertificateThumbprintValue)
     {
-        this.defaultWinRmCertificateThumbprint = defaultWinRmCertificateThumbprint;
+        this.defaultWinRmCertificateThumbprint = defaultWinRmCertificateThumbprintValue;
     }
     
     private String label;
     
     /**
     * The friendly name for the role.
+    * @return The Label value.
     */
     public String getLabel()
     {
@@ -120,10 +130,11 @@ public class Role
     
     /**
     * The friendly name for the role.
+    * @param labelValue The Label value.
     */
-    public void setLabel(String label)
+    public void setLabel(final String labelValue)
     {
-        this.label = label;
+        this.label = labelValue;
     }
     
     private String oSVersion;
@@ -131,6 +142,7 @@ public class Role
     /**
     * The version of the operating system on which the role instances are
     * running.
+    * @return The OSVersion value.
     */
     public String getOSVersion()
     {
@@ -140,10 +152,11 @@ public class Role
     /**
     * The version of the operating system on which the role instances are
     * running.
+    * @param oSVersionValue The OSVersion value.
     */
-    public void setOSVersion(String oSVersion)
+    public void setOSVersion(final String oSVersionValue)
     {
-        this.oSVersion = oSVersion;
+        this.oSVersion = oSVersionValue;
     }
     
     private OSVirtualHardDisk oSVirtualHardDisk;
@@ -151,6 +164,7 @@ public class Role
     /**
     * Contains the parameters Windows Azure uses to create the operating system
     * disk for the virtual machine.
+    * @return The OSVirtualHardDisk value.
     */
     public OSVirtualHardDisk getOSVirtualHardDisk()
     {
@@ -160,16 +174,18 @@ public class Role
     /**
     * Contains the parameters Windows Azure uses to create the operating system
     * disk for the virtual machine.
+    * @param oSVirtualHardDiskValue The OSVirtualHardDisk value.
     */
-    public void setOSVirtualHardDisk(OSVirtualHardDisk oSVirtualHardDisk)
+    public void setOSVirtualHardDisk(final OSVirtualHardDisk oSVirtualHardDiskValue)
     {
-        this.oSVirtualHardDisk = oSVirtualHardDisk;
+        this.oSVirtualHardDisk = oSVirtualHardDiskValue;
     }
     
     private String roleName;
     
     /**
     * The name of the role.
+    * @return The RoleName value.
     */
     public String getRoleName()
     {
@@ -178,28 +194,31 @@ public class Role
     
     /**
     * The name of the role.
+    * @param roleNameValue The RoleName value.
     */
-    public void setRoleName(String roleName)
+    public void setRoleName(final String roleNameValue)
     {
-        this.roleName = roleName;
+        this.roleName = roleNameValue;
     }
     
-    private VirtualMachineRoleSize roleSize;
+    private String roleSize;
     
     /**
     * The size of the role instance.
+    * @return The RoleSize value.
     */
-    public VirtualMachineRoleSize getRoleSize()
+    public String getRoleSize()
     {
         return this.roleSize;
     }
     
     /**
     * The size of the role instance.
+    * @param roleSizeValue The RoleSize value.
     */
-    public void setRoleSize(VirtualMachineRoleSize roleSize)
+    public void setRoleSize(final String roleSizeValue)
     {
-        this.roleSize = roleSize;
+        this.roleSize = roleSizeValue;
     }
     
     private String roleType;
@@ -207,6 +226,7 @@ public class Role
     /**
     * Specifies the type of the role. This element is only listed for Virtual
     * Machine deployments and by default is PersistentVMRole.
+    * @return The RoleType value.
     */
     public String getRoleType()
     {
@@ -216,10 +236,11 @@ public class Role
     /**
     * Specifies the type of the role. This element is only listed for Virtual
     * Machine deployments and by default is PersistentVMRole.
+    * @param roleTypeValue The RoleType value.
     */
-    public void setRoleType(String roleType)
+    public void setRoleType(final String roleTypeValue)
     {
-        this.roleType = roleType;
+        this.roleType = roleTypeValue;
     }
     
     /**

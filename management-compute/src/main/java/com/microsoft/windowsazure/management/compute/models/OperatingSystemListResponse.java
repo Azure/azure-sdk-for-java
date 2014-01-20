@@ -36,6 +36,7 @@ public class OperatingSystemListResponse extends OperationResponse implements It
     
     /**
     * The operating systems that are valid for your subscription.
+    * @return The OperatingSystems value.
     */
     public ArrayList<OperatingSystemListResponse.OperatingSystem> getOperatingSystems()
     {
@@ -44,10 +45,11 @@ public class OperatingSystemListResponse extends OperationResponse implements It
     
     /**
     * The operating systems that are valid for your subscription.
+    * @param operatingSystemsValue The OperatingSystems value.
     */
-    public void setOperatingSystems(ArrayList<OperatingSystemListResponse.OperatingSystem> operatingSystems)
+    public void setOperatingSystems(final ArrayList<OperatingSystemListResponse.OperatingSystem> operatingSystemsValue)
     {
-        this.operatingSystems = operatingSystems;
+        this.operatingSystems = operatingSystemsValue;
     }
     
     /**
@@ -82,6 +84,7 @@ public class OperatingSystemListResponse extends OperationResponse implements It
         * that is substantially compatible with Windows Server 2008 SP2. A
         * value of 2 corresponds to the Windows Azure guest operating system
         * that is substantially compatible with Windows Server 2008 R2.
+        * @return The Family value.
         */
         public int getFamily()
         {
@@ -94,16 +97,18 @@ public class OperatingSystemListResponse extends OperationResponse implements It
         * that is substantially compatible with Windows Server 2008 SP2. A
         * value of 2 corresponds to the Windows Azure guest operating system
         * that is substantially compatible with Windows Server 2008 R2.
+        * @param familyValue The Family value.
         */
-        public void setFamily(int family)
+        public void setFamily(final int familyValue)
         {
-            this.family = family;
+            this.family = familyValue;
         }
         
         private String familyLabel;
         
         /**
         * The label of the operating system family.
+        * @return The FamilyLabel value.
         */
         public String getFamilyLabel()
         {
@@ -112,10 +117,11 @@ public class OperatingSystemListResponse extends OperationResponse implements It
         
         /**
         * The label of the operating system family.
+        * @param familyLabelValue The FamilyLabel value.
         */
-        public void setFamilyLabel(String familyLabel)
+        public void setFamilyLabel(final String familyLabelValue)
         {
-            this.familyLabel = familyLabel;
+            this.familyLabel = familyLabelValue;
         }
         
         private boolean isActive;
@@ -134,8 +140,9 @@ public class OperatingSystemListResponse extends OperationResponse implements It
         * service. In this case you will either need to manually configure
         * your service to run on a newer version, or configure your service to
         * use auto-upgrade to manage operating system upgrades.
+        * @return The IsActive value.
         */
-        public boolean getIsActive()
+        public boolean isActive()
         {
             return this.isActive;
         }
@@ -154,10 +161,11 @@ public class OperatingSystemListResponse extends OperationResponse implements It
         * service. In this case you will either need to manually configure
         * your service to run on a newer version, or configure your service to
         * use auto-upgrade to manage operating system upgrades.
+        * @param isActiveValue The IsActive value.
         */
-        public void setIsActive(boolean isActive)
+        public void setIsActive(final boolean isActiveValue)
         {
-            this.isActive = isActive;
+            this.isActive = isActiveValue;
         }
         
         private boolean isDefault;
@@ -170,8 +178,9 @@ public class OperatingSystemListResponse extends OperationResponse implements It
         * exactly one default operating system version at any given time, for
         * which the IsDefault element is set to true; for all other versions,
         * IsDefault is set to false.
+        * @return The IsDefault value.
         */
-        public boolean getIsDefault()
+        public boolean isDefault()
         {
             return this.isDefault;
         }
@@ -184,16 +193,18 @@ public class OperatingSystemListResponse extends OperationResponse implements It
         * exactly one default operating system version at any given time, for
         * which the IsDefault element is set to true; for all other versions,
         * IsDefault is set to false.
+        * @param isDefaultValue The IsDefault value.
         */
-        public void setIsDefault(boolean isDefault)
+        public void setIsDefault(final boolean isDefaultValue)
         {
-            this.isDefault = isDefault;
+            this.isDefault = isDefaultValue;
         }
         
         private String label;
         
         /**
         * The label of the operating system version.
+        * @return The Label value.
         */
         public String getLabel()
         {
@@ -202,10 +213,11 @@ public class OperatingSystemListResponse extends OperationResponse implements It
         
         /**
         * The label of the operating system version.
+        * @param labelValue The Label value.
         */
-        public void setLabel(String label)
+        public void setLabel(final String labelValue)
         {
-            this.label = label;
+            this.label = labelValue;
         }
         
         private String version;
@@ -216,6 +228,7 @@ public class OperatingSystemListResponse extends OperationResponse implements It
         * particular version of the Windows Azure guest operating system. See
         * Configuring Settings for the Windows Azure Guest OS for additional
         * details.
+        * @return The Version value.
         */
         public String getVersion()
         {
@@ -228,10 +241,11 @@ public class OperatingSystemListResponse extends OperationResponse implements It
         * particular version of the Windows Azure guest operating system. See
         * Configuring Settings for the Windows Azure Guest OS for additional
         * details.
+        * @param versionValue The Version value.
         */
-        public void setVersion(String version)
+        public void setVersion(final String versionValue)
         {
-            this.version = version;
+            this.version = versionValue;
         }
     }
 }

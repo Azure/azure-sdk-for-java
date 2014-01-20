@@ -38,6 +38,7 @@ public class AlertsClientImpl extends ServiceClient<AlertsClient> implements Ale
     
     /**
     * Optional base uri parameter for Azure REST.
+    * @return The BaseUri value.
     */
     public URI getBaseUri()
     {
@@ -53,6 +54,7 @@ public class AlertsClientImpl extends ServiceClient<AlertsClient> implements Ale
     * Azure Service ManagementAPI use mutual authentication of management
     * certificates over SSL to ensure that a request made to the service is
     * secure.  No anonymous requests are allowed.
+    * @return The Credentials value.
     */
     public SubscriptionCloudCredentials getCredentials()
     {
@@ -63,6 +65,7 @@ public class AlertsClientImpl extends ServiceClient<AlertsClient> implements Ale
     
     /**
     * Operations for managing the alert incidents.
+    * @return The IncidentsOperations value.
     */
     public IncidentOperations getIncidentsOperations()
     {
@@ -73,6 +76,7 @@ public class AlertsClientImpl extends ServiceClient<AlertsClient> implements Ale
     
     /**
     * Operations for managing the alert rules.
+    * @return The RulesOperations value.
     */
     public RuleOperations getRulesOperations()
     {
@@ -132,6 +136,8 @@ public class AlertsClientImpl extends ServiceClient<AlertsClient> implements Ale
     * The Windows Azure Service ManagementAPI use mutual authentication of
     * management certificates over SSL to ensure that a request made to the
     * service is secure.  No anonymous requests are allowed.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
     */
     @Inject
     public AlertsClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, @Named(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS) SubscriptionCloudCredentials credentials) throws java.net.URISyntaxException

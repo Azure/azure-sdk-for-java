@@ -34,6 +34,7 @@ public class DacImportParameters
     
     /**
     * Gets or sets credentials for getting the DAC.
+    * @return The BlobCredentials value.
     */
     public DacImportParameters.BlobCredentialsParameter getBlobCredentials()
     {
@@ -42,16 +43,18 @@ public class DacImportParameters
     
     /**
     * Gets or sets credentials for getting the DAC.
+    * @param blobCredentialsValue The BlobCredentials value.
     */
-    public void setBlobCredentials(DacImportParameters.BlobCredentialsParameter blobCredentials)
+    public void setBlobCredentials(final DacImportParameters.BlobCredentialsParameter blobCredentialsValue)
     {
-        this.blobCredentials = blobCredentials;
+        this.blobCredentials = blobCredentialsValue;
     }
     
     private DacImportParameters.ConnectionInfoParameter connectionInfo;
     
     /**
     * Gets or sets connection information for the SQL Server Database.
+    * @return The ConnectionInfo value.
     */
     public DacImportParameters.ConnectionInfoParameter getConnectionInfo()
     {
@@ -60,16 +63,18 @@ public class DacImportParameters
     
     /**
     * Gets or sets connection information for the SQL Server Database.
+    * @param connectionInfoValue The ConnectionInfo value.
     */
-    public void setConnectionInfo(DacImportParameters.ConnectionInfoParameter connectionInfo)
+    public void setConnectionInfo(final DacImportParameters.ConnectionInfoParameter connectionInfoValue)
     {
-        this.connectionInfo = connectionInfo;
+        this.connectionInfo = connectionInfoValue;
     }
     
     private int databaseSizeInGB;
     
     /**
     * Gets or sets the size of this database.
+    * @return The DatabaseSizeInGB value.
     */
     public int getDatabaseSizeInGB()
     {
@@ -78,10 +83,11 @@ public class DacImportParameters
     
     /**
     * Gets or sets the size of this database.
+    * @param databaseSizeInGBValue The DatabaseSizeInGB value.
     */
-    public void setDatabaseSizeInGB(int databaseSizeInGB)
+    public void setDatabaseSizeInGB(final int databaseSizeInGBValue)
     {
-        this.databaseSizeInGB = databaseSizeInGB;
+        this.databaseSizeInGB = databaseSizeInGBValue;
     }
     
     /**
@@ -93,6 +99,7 @@ public class DacImportParameters
         
         /**
         * Gets or sets the key for the Windows Azure Storage account.
+        * @return The StorageAccessKey value.
         */
         public String getStorageAccessKey()
         {
@@ -101,10 +108,11 @@ public class DacImportParameters
         
         /**
         * Gets or sets the key for the Windows Azure Storage account.
+        * @param storageAccessKeyValue The StorageAccessKey value.
         */
-        public void setStorageAccessKey(String storageAccessKey)
+        public void setStorageAccessKey(final String storageAccessKeyValue)
         {
-            this.storageAccessKey = storageAccessKey;
+            this.storageAccessKey = storageAccessKeyValue;
         }
         
         private URI uri;
@@ -112,6 +120,7 @@ public class DacImportParameters
         /**
         * Gets or sets the URI of the DAC file stored in Windows Azure Blob
         * Storage.
+        * @return The Uri value.
         */
         public URI getUri()
         {
@@ -121,10 +130,11 @@ public class DacImportParameters
         /**
         * Gets or sets the URI of the DAC file stored in Windows Azure Blob
         * Storage.
+        * @param uriValue The Uri value.
         */
-        public void setUri(URI uri)
+        public void setUri(final URI uriValue)
         {
-            this.uri = uri;
+            this.uri = uriValue;
         }
     }
     
@@ -137,6 +147,7 @@ public class DacImportParameters
         
         /**
         * Gets or sets the name of the database.
+        * @return The DatabaseName value.
         */
         public String getDatabaseName()
         {
@@ -145,16 +156,18 @@ public class DacImportParameters
         
         /**
         * Gets or sets the name of the database.
+        * @param databaseNameValue The DatabaseName value.
         */
-        public void setDatabaseName(String databaseName)
+        public void setDatabaseName(final String databaseNameValue)
         {
-            this.databaseName = databaseName;
+            this.databaseName = databaseNameValue;
         }
         
         private String password;
         
         /**
         * Gets or sets the password for the database user.
+        * @return The Password value.
         */
         public String getPassword()
         {
@@ -163,16 +176,18 @@ public class DacImportParameters
         
         /**
         * Gets or sets the password for the database user.
+        * @param passwordValue The Password value.
         */
-        public void setPassword(String password)
+        public void setPassword(final String passwordValue)
         {
-            this.password = password;
+            this.password = passwordValue;
         }
         
         private String serverName;
         
         /**
         * Gets or sets the SQL server name.
+        * @return The ServerName value.
         */
         public String getServerName()
         {
@@ -181,16 +196,18 @@ public class DacImportParameters
         
         /**
         * Gets or sets the SQL server name.
+        * @param serverNameValue The ServerName value.
         */
-        public void setServerName(String serverName)
+        public void setServerName(final String serverNameValue)
         {
-            this.serverName = serverName;
+            this.serverName = serverNameValue;
         }
         
         private String userName;
         
         /**
         * Gets or sets the username of the database user.
+        * @return The UserName value.
         */
         public String getUserName()
         {
@@ -199,10 +216,11 @@ public class DacImportParameters
         
         /**
         * Gets or sets the username of the database user.
+        * @param userNameValue The UserName value.
         */
-        public void setUserName(String userName)
+        public void setUserName(final String userNameValue)
         {
-            this.userName = userName;
+            this.userName = userNameValue;
         }
     }
 }

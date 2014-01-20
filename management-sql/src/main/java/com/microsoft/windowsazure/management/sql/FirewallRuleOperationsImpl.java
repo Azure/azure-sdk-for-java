@@ -36,7 +36,6 @@ import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.text.ParseException;
 import java.util.HashMap;
@@ -46,7 +45,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -88,6 +86,7 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
     /**
     * Gets a reference to the
     * microsoft.windowsazure.management.sql.SqlManagementClientImpl.
+    * @return The Client value.
     */
     public SqlManagementClientImpl getClient()
     {
@@ -127,11 +126,23 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
     * @param serverName The name of the SQL database server to which this rule
     * will be applied.
     * @param parameters Parameters for the Create Firewall Rule operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
     @Override
-    public FirewallRuleCreateResponse create(String serverName, FirewallRuleCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException, ParseException
+    public FirewallRuleCreateResponse create(String serverName, FirewallRuleCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, ParseException
     {
         // Validate
         if (serverName == null)
@@ -211,96 +222,106 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != HttpStatus.SC_CREATED)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_CREATED)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            FirewallRuleCreateResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new FirewallRuleCreateResponse();
+            DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
+            Document responseDoc = documentBuilder2.parse(responseContent);
+            
+            NodeList elements = responseDoc.getElementsByTagName("ServiceResource");
+            Element serviceResourceElement2 = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            if (serviceResourceElement2 != null)
+            {
+                NodeList elements2 = serviceResourceElement2.getElementsByTagName("Name");
+                Element nameElement2 = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                if (nameElement2 != null)
+                {
+                    String nameInstance;
+                    nameInstance = nameElement2.getTextContent();
+                    result.setName(nameInstance);
+                }
+                
+                NodeList elements3 = serviceResourceElement2.getElementsByTagName("Type");
+                Element typeElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                if (typeElement != null)
+                {
+                    String typeInstance;
+                    typeInstance = typeElement.getTextContent();
+                    result.setType(typeInstance);
+                }
+                
+                NodeList elements4 = serviceResourceElement2.getElementsByTagName("State");
+                Element stateElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                if (stateElement != null)
+                {
+                    String stateInstance;
+                    stateInstance = stateElement.getTextContent();
+                    result.setState(stateInstance);
+                }
+                
+                NodeList elements5 = serviceResourceElement2.getElementsByTagName("StartIPAddress");
+                Element startIPAddressElement2 = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                if (startIPAddressElement2 != null)
+                {
+                    InetAddress startIPAddressInstance;
+                    startIPAddressInstance = InetAddress.getByName(startIPAddressElement2.getTextContent());
+                    result.setStartIPAddress(startIPAddressInstance);
+                }
+                
+                NodeList elements6 = serviceResourceElement2.getElementsByTagName("EndIPAddress");
+                Element endIPAddressElement2 = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                if (endIPAddressElement2 != null)
+                {
+                    InetAddress endIPAddressInstance;
+                    endIPAddressInstance = InetAddress.getByName(endIPAddressElement2.getTextContent());
+                    result.setEndIPAddress(endIPAddressInstance);
+                }
+            }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        FirewallRuleCreateResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new FirewallRuleCreateResponse();
-        DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
-        Document responseDoc = documentBuilder2.parse(responseContent);
-        
-        NodeList elements = responseDoc.getElementsByTagName("ServiceResource");
-        Element serviceResourceElement2 = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-        if (serviceResourceElement2 != null)
+        finally
         {
-            NodeList elements2 = serviceResourceElement2.getElementsByTagName("Name");
-            Element nameElement2 = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-            if (nameElement2 != null)
+            if (httpResponse != null && httpResponse.getEntity() != null)
             {
-                String nameInstance;
-                nameInstance = nameElement2.getTextContent();
-                result.setName(nameInstance);
-            }
-            
-            NodeList elements3 = serviceResourceElement2.getElementsByTagName("Type");
-            Element typeElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-            if (typeElement != null)
-            {
-                String typeInstance;
-                typeInstance = typeElement.getTextContent();
-                result.setType(typeInstance);
-            }
-            
-            NodeList elements4 = serviceResourceElement2.getElementsByTagName("State");
-            Element stateElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-            if (stateElement != null)
-            {
-                String stateInstance;
-                stateInstance = stateElement.getTextContent();
-                result.setState(stateInstance);
-            }
-            
-            NodeList elements5 = serviceResourceElement2.getElementsByTagName("StartIPAddress");
-            Element startIPAddressElement2 = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-            if (startIPAddressElement2 != null)
-            {
-                InetAddress startIPAddressInstance;
-                startIPAddressInstance = InetAddress.getByName(startIPAddressElement2.getTextContent());
-                result.setStartIPAddress(startIPAddressInstance);
-            }
-            
-            NodeList elements6 = serviceResourceElement2.getElementsByTagName("EndIPAddress");
-            Element endIPAddressElement2 = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-            if (endIPAddressElement2 != null)
-            {
-                InetAddress endIPAddressInstance;
-                endIPAddressInstance = InetAddress.getByName(endIPAddressElement2.getTextContent());
-                result.setEndIPAddress(endIPAddressInstance);
+                httpResponse.getEntity().getContent().close();
             }
         }
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-        {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
-        }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -336,6 +357,10 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
     * @param serverName The name of the server that will be have new firewall
     * rule applied to it.
     * @param ruleName The name of the new firewall rule.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -375,40 +400,50 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != HttpStatus.SC_OK)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        OperationResponse result = null;
-        result = new OperationResponse();
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -440,6 +475,16 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
     * more information)
     *
     * @param serverName The name of the server for which the call is being made.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -474,94 +519,104 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != HttpStatus.SC_OK)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
-        }
-        
-        // Create Result
-        FirewallRuleListResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new FirewallRuleListResponse();
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document responseDoc = documentBuilder.parse(responseContent);
-        
-        NodeList elements = responseDoc.getElementsByTagName("ServiceResources");
-        Element serviceResourcesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-        if (serviceResourcesSequenceElement != null)
-        {
-            for (int i1 = 0; i1 < serviceResourcesSequenceElement.getElementsByTagName("ServiceResource").getLength(); i1 = i1 + 1)
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
             {
-                org.w3c.dom.Element serviceResourcesElement = ((org.w3c.dom.Element) serviceResourcesSequenceElement.getElementsByTagName("ServiceResource").item(i1));
-                FirewallRuleListResponse.FirewallRule serviceResourceInstance = new FirewallRuleListResponse.FirewallRule();
-                result.getFirewallRules().add(serviceResourceInstance);
-                
-                NodeList elements2 = serviceResourcesElement.getElementsByTagName("Name");
-                Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (nameElement != null)
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
                 {
-                    String nameInstance;
-                    nameInstance = nameElement.getTextContent();
-                    serviceResourceInstance.setName(nameInstance);
+                    CloudTracing.error(invocationId, ex);
                 }
-                
-                NodeList elements3 = serviceResourcesElement.getElementsByTagName("Type");
-                Element typeElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                if (typeElement != null)
+                throw ex;
+            }
+            
+            // Create Result
+            FirewallRuleListResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new FirewallRuleListResponse();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document responseDoc = documentBuilder.parse(responseContent);
+            
+            NodeList elements = responseDoc.getElementsByTagName("ServiceResources");
+            Element serviceResourcesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            if (serviceResourcesSequenceElement != null)
+            {
+                for (int i1 = 0; i1 < serviceResourcesSequenceElement.getElementsByTagName("ServiceResource").getLength(); i1 = i1 + 1)
                 {
-                    String typeInstance;
-                    typeInstance = typeElement.getTextContent();
-                    serviceResourceInstance.setType(typeInstance);
-                }
-                
-                NodeList elements4 = serviceResourcesElement.getElementsByTagName("StartIPAddress");
-                Element startIPAddressElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                if (startIPAddressElement != null)
-                {
-                    InetAddress startIPAddressInstance;
-                    startIPAddressInstance = InetAddress.getByName(startIPAddressElement.getTextContent());
-                    serviceResourceInstance.setStartIPAddress(startIPAddressInstance);
-                }
-                
-                NodeList elements5 = serviceResourcesElement.getElementsByTagName("EndIPAddress");
-                Element endIPAddressElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                if (endIPAddressElement != null)
-                {
-                    InetAddress endIPAddressInstance;
-                    endIPAddressInstance = InetAddress.getByName(endIPAddressElement.getTextContent());
-                    serviceResourceInstance.setEndIPAddress(endIPAddressInstance);
+                    org.w3c.dom.Element serviceResourcesElement = ((org.w3c.dom.Element) serviceResourcesSequenceElement.getElementsByTagName("ServiceResource").item(i1));
+                    FirewallRuleListResponse.FirewallRule serviceResourceInstance = new FirewallRuleListResponse.FirewallRule();
+                    result.getFirewallRules().add(serviceResourceInstance);
+                    
+                    NodeList elements2 = serviceResourcesElement.getElementsByTagName("Name");
+                    Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                    if (nameElement != null)
+                    {
+                        String nameInstance;
+                        nameInstance = nameElement.getTextContent();
+                        serviceResourceInstance.setName(nameInstance);
+                    }
+                    
+                    NodeList elements3 = serviceResourcesElement.getElementsByTagName("Type");
+                    Element typeElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                    if (typeElement != null)
+                    {
+                        String typeInstance;
+                        typeInstance = typeElement.getTextContent();
+                        serviceResourceInstance.setType(typeInstance);
+                    }
+                    
+                    NodeList elements4 = serviceResourcesElement.getElementsByTagName("StartIPAddress");
+                    Element startIPAddressElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                    if (startIPAddressElement != null)
+                    {
+                        InetAddress startIPAddressInstance;
+                        startIPAddressInstance = InetAddress.getByName(startIPAddressElement.getTextContent());
+                        serviceResourceInstance.setStartIPAddress(startIPAddressInstance);
+                    }
+                    
+                    NodeList elements5 = serviceResourcesElement.getElementsByTagName("EndIPAddress");
+                    Element endIPAddressElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                    if (endIPAddressElement != null)
+                    {
+                        InetAddress endIPAddressInstance;
+                        endIPAddressInstance = InetAddress.getByName(endIPAddressElement.getTextContent());
+                        serviceResourceInstance.setEndIPAddress(endIPAddressInstance);
+                    }
                 }
             }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -599,11 +654,23 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
     * will be applied.
     * @param ruleName The name of the firewall rule to be updated.
     * @param parameters Parameters for the Update Firewall Rule operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
     @Override
-    public FirewallRuleUpdateResponse update(String serverName, String ruleName, FirewallRuleUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException, ParseException
+    public FirewallRuleUpdateResponse update(String serverName, String ruleName, FirewallRuleUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, ParseException
     {
         // Validate
         if (serverName == null)
@@ -688,95 +755,105 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != HttpStatus.SC_OK)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            FirewallRuleUpdateResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new FirewallRuleUpdateResponse();
+            DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
+            Document responseDoc = documentBuilder2.parse(responseContent);
+            
+            NodeList elements = responseDoc.getElementsByTagName("ServiceResource");
+            Element serviceResourceElement2 = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            if (serviceResourceElement2 != null)
+            {
+                NodeList elements2 = serviceResourceElement2.getElementsByTagName("Name");
+                Element nameElement2 = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                if (nameElement2 != null)
+                {
+                    String nameInstance;
+                    nameInstance = nameElement2.getTextContent();
+                    result.setName(nameInstance);
+                }
+                
+                NodeList elements3 = serviceResourceElement2.getElementsByTagName("Type");
+                Element typeElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                if (typeElement != null)
+                {
+                    String typeInstance;
+                    typeInstance = typeElement.getTextContent();
+                    result.setType(typeInstance);
+                }
+                
+                NodeList elements4 = serviceResourceElement2.getElementsByTagName("State");
+                Element stateElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                if (stateElement != null)
+                {
+                    String stateInstance;
+                    stateInstance = stateElement.getTextContent();
+                    result.setState(stateInstance);
+                }
+                
+                NodeList elements5 = serviceResourceElement2.getElementsByTagName("StartIPAddress");
+                Element startIPAddressElement2 = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                if (startIPAddressElement2 != null)
+                {
+                    InetAddress startIPAddressInstance;
+                    startIPAddressInstance = InetAddress.getByName(startIPAddressElement2.getTextContent());
+                    result.setStartIPAddress(startIPAddressInstance);
+                }
+                
+                NodeList elements6 = serviceResourceElement2.getElementsByTagName("EndIPAddress");
+                Element endIPAddressElement2 = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                if (endIPAddressElement2 != null)
+                {
+                    InetAddress endIPAddressInstance;
+                    endIPAddressInstance = InetAddress.getByName(endIPAddressElement2.getTextContent());
+                    result.setEndIPAddress(endIPAddressInstance);
+                }
+            }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        FirewallRuleUpdateResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new FirewallRuleUpdateResponse();
-        DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
-        Document responseDoc = documentBuilder2.parse(responseContent);
-        
-        NodeList elements = responseDoc.getElementsByTagName("ServiceResource");
-        Element serviceResourceElement2 = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-        if (serviceResourceElement2 != null)
+        finally
         {
-            NodeList elements2 = serviceResourceElement2.getElementsByTagName("Name");
-            Element nameElement2 = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-            if (nameElement2 != null)
+            if (httpResponse != null && httpResponse.getEntity() != null)
             {
-                String nameInstance;
-                nameInstance = nameElement2.getTextContent();
-                result.setName(nameInstance);
-            }
-            
-            NodeList elements3 = serviceResourceElement2.getElementsByTagName("Type");
-            Element typeElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-            if (typeElement != null)
-            {
-                String typeInstance;
-                typeInstance = typeElement.getTextContent();
-                result.setType(typeInstance);
-            }
-            
-            NodeList elements4 = serviceResourceElement2.getElementsByTagName("State");
-            Element stateElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-            if (stateElement != null)
-            {
-                String stateInstance;
-                stateInstance = stateElement.getTextContent();
-                result.setState(stateInstance);
-            }
-            
-            NodeList elements5 = serviceResourceElement2.getElementsByTagName("StartIPAddress");
-            Element startIPAddressElement2 = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-            if (startIPAddressElement2 != null)
-            {
-                InetAddress startIPAddressInstance;
-                startIPAddressInstance = InetAddress.getByName(startIPAddressElement2.getTextContent());
-                result.setStartIPAddress(startIPAddressInstance);
-            }
-            
-            NodeList elements6 = serviceResourceElement2.getElementsByTagName("EndIPAddress");
-            Element endIPAddressElement2 = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-            if (endIPAddressElement2 != null)
-            {
-                InetAddress endIPAddressInstance;
-                endIPAddressInstance = InetAddress.getByName(endIPAddressElement2.getTextContent());
-                result.setEndIPAddress(endIPAddressInstance);
+                httpResponse.getEntity().getContent().close();
             }
         }
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-        {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
-        }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
 }

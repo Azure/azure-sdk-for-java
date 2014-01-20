@@ -35,6 +35,7 @@ public class GatewayGetDeviceConfigurationScriptResponse extends OperationRespon
     
     /**
     * The requested configuration script for the local network device.
+    * @return The ConfigurationScript value.
     */
     public String getConfigurationScript()
     {
@@ -43,9 +44,10 @@ public class GatewayGetDeviceConfigurationScriptResponse extends OperationRespon
     
     /**
     * The requested configuration script for the local network device.
+    * @param configurationScriptValue The ConfigurationScript value.
     */
-    public void setConfigurationScript(String configurationScript)
+    public void setConfigurationScript(final String configurationScriptValue)
     {
-        this.configurationScript = configurationScript;
+        this.configurationScript = configurationScriptValue;
     }
 }

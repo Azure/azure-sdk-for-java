@@ -34,6 +34,7 @@ public class WebSiteGetResponse extends OperationResponse
     
     /**
     * Details for the requested website.
+    * @return The WebSite value.
     */
     public WebSite getWebSite()
     {
@@ -42,9 +43,10 @@ public class WebSiteGetResponse extends OperationResponse
     
     /**
     * Details for the requested website.
+    * @param webSiteValue The WebSite value.
     */
-    public void setWebSite(WebSite webSite)
+    public void setWebSite(final WebSite webSiteValue)
     {
-        this.webSite = webSite;
+        this.webSite = webSiteValue;
     }
 }

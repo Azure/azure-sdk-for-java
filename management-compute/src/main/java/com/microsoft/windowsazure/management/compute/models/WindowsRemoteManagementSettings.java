@@ -36,6 +36,7 @@ public class WindowsRemoteManagementSettings
     /**
     * Required. Contains a collection of information for enabling remote
     * Windows PowerShell.
+    * @return The Listeners value.
     */
     public ArrayList<WindowsRemoteManagementListener> getListeners()
     {
@@ -45,10 +46,11 @@ public class WindowsRemoteManagementSettings
     /**
     * Required. Contains a collection of information for enabling remote
     * Windows PowerShell.
+    * @param listenersValue The Listeners value.
     */
-    public void setListeners(ArrayList<WindowsRemoteManagementListener> listeners)
+    public void setListeners(final ArrayList<WindowsRemoteManagementListener> listenersValue)
     {
-        this.listeners = listeners;
+        this.listeners = listenersValue;
     }
     
     /**

@@ -34,6 +34,7 @@ public class DnsSettings
     
     /**
     * Contains a collection of objects that define the DNS server settings.
+    * @return The DnsServers value.
     */
     public ArrayList<DnsServer> getDnsServers()
     {
@@ -42,10 +43,11 @@ public class DnsSettings
     
     /**
     * Contains a collection of objects that define the DNS server settings.
+    * @param dnsServersValue The DnsServers value.
     */
-    public void setDnsServers(ArrayList<DnsServer> dnsServers)
+    public void setDnsServers(final ArrayList<DnsServer> dnsServersValue)
     {
-        this.dnsServers = dnsServers;
+        this.dnsServers = dnsServersValue;
     }
     
     /**

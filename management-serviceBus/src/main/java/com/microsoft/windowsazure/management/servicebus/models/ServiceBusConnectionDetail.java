@@ -34,6 +34,7 @@ public class ServiceBusConnectionDetail
     
     /**
     * The type of authorization for the connection to the entity.
+    * @return The AuthorizationType value.
     */
     public String getAuthorizationType()
     {
@@ -42,16 +43,18 @@ public class ServiceBusConnectionDetail
     
     /**
     * The type of authorization for the connection to the entity.
+    * @param authorizationTypeValue The AuthorizationType value.
     */
-    public void setAuthorizationType(String authorizationType)
+    public void setAuthorizationType(final String authorizationTypeValue)
     {
-        this.authorizationType = authorizationType;
+        this.authorizationType = authorizationTypeValue;
     }
     
     private String connectionString;
     
     /**
     * The connection string to the entity.
+    * @return The ConnectionString value.
     */
     public String getConnectionString()
     {
@@ -60,16 +63,18 @@ public class ServiceBusConnectionDetail
     
     /**
     * The connection string to the entity.
+    * @param connectionStringValue The ConnectionString value.
     */
-    public void setConnectionString(String connectionString)
+    public void setConnectionString(final String connectionStringValue)
     {
-        this.connectionString = connectionString;
+        this.connectionString = connectionStringValue;
     }
     
     private String keyName;
     
     /**
     * The name of the key used in the connection.
+    * @return The KeyName value.
     */
     public String getKeyName()
     {
@@ -78,16 +83,18 @@ public class ServiceBusConnectionDetail
     
     /**
     * The name of the key used in the connection.
+    * @param keyNameValue The KeyName value.
     */
-    public void setKeyName(String keyName)
+    public void setKeyName(final String keyNameValue)
     {
-        this.keyName = keyName;
+        this.keyName = keyNameValue;
     }
     
     private ArrayList<AccessRight> rights;
     
     /**
     * The rights connections to the entity via the connection string will have.
+    * @return The Rights value.
     */
     public ArrayList<AccessRight> getRights()
     {
@@ -96,10 +103,11 @@ public class ServiceBusConnectionDetail
     
     /**
     * The rights connections to the entity via the connection string will have.
+    * @param rightsValue The Rights value.
     */
-    public void setRights(ArrayList<AccessRight> rights)
+    public void setRights(final ArrayList<AccessRight> rightsValue)
     {
-        this.rights = rights;
+        this.rights = rightsValue;
     }
     
     /**

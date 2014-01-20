@@ -34,6 +34,7 @@ public class AvailabilityMetricSettingValue extends MetricSettingValue
     
     /**
     * The locations from which the Urls can be monitored.
+    * @return The AvailableLocations value.
     */
     public ArrayList<NameConfig> getAvailableLocations()
     {
@@ -42,16 +43,18 @@ public class AvailabilityMetricSettingValue extends MetricSettingValue
     
     /**
     * The locations from which the Urls can be monitored.
+    * @param availableLocationsValue The AvailableLocations value.
     */
-    public void setAvailableLocations(ArrayList<NameConfig> availableLocations)
+    public void setAvailableLocations(final ArrayList<NameConfig> availableLocationsValue)
     {
-        this.availableLocations = availableLocations;
+        this.availableLocations = availableLocationsValue;
     }
     
     private ArrayList<EndpointConfig> endpoints;
     
     /**
     * The configuration for Urls to be monitored using endpoint monitoiring.
+    * @return The Endpoints value.
     */
     public ArrayList<EndpointConfig> getEndpoints()
     {
@@ -60,10 +63,11 @@ public class AvailabilityMetricSettingValue extends MetricSettingValue
     
     /**
     * The configuration for Urls to be monitored using endpoint monitoiring.
+    * @param endpointsValue The Endpoints value.
     */
-    public void setEndpoints(ArrayList<EndpointConfig> endpoints)
+    public void setEndpoints(final ArrayList<EndpointConfig> endpointsValue)
     {
-        this.endpoints = endpoints;
+        this.endpoints = endpointsValue;
     }
     
     /**

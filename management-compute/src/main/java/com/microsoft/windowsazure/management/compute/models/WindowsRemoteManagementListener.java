@@ -36,6 +36,7 @@ public class WindowsRemoteManagementListener
     * thumbprint of the service certificate that is used to provision the
     * WinRM HTTPS listener. If this value is not specified, a self-signed
     * certificate is generated and used for the virtual machine.
+    * @return The CertificateThumbprint value.
     */
     public String getCertificateThumbprint()
     {
@@ -48,10 +49,11 @@ public class WindowsRemoteManagementListener
     * thumbprint of the service certificate that is used to provision the
     * WinRM HTTPS listener. If this value is not specified, a self-signed
     * certificate is generated and used for the virtual machine.
+    * @param certificateThumbprintValue The CertificateThumbprint value.
     */
-    public void setCertificateThumbprint(String certificateThumbprint)
+    public void setCertificateThumbprint(final String certificateThumbprintValue)
     {
-        this.certificateThumbprint = certificateThumbprint;
+        this.certificateThumbprint = certificateThumbprintValue;
     }
     
     private VirtualMachineWindowsRemoteManagementListenerType listenerType;
@@ -59,6 +61,7 @@ public class WindowsRemoteManagementListener
     /**
     * Specifies the type of listener. This value can be Http or Https. The
     * value is case sensitive.
+    * @return The ListenerType value.
     */
     public VirtualMachineWindowsRemoteManagementListenerType getListenerType()
     {
@@ -68,9 +71,10 @@ public class WindowsRemoteManagementListener
     /**
     * Specifies the type of listener. This value can be Http or Https. The
     * value is case sensitive.
+    * @param listenerTypeValue The ListenerType value.
     */
-    public void setListenerType(VirtualMachineWindowsRemoteManagementListenerType listenerType)
+    public void setListenerType(final VirtualMachineWindowsRemoteManagementListenerType listenerTypeValue)
     {
-        this.listenerType = listenerType;
+        this.listenerType = listenerTypeValue;
     }
 }

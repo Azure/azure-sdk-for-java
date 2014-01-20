@@ -37,6 +37,7 @@ public class VirtualMachineCaptureParameters
     * Reprovision – this value causes the virtual machine to be redeployed
     * after the image is captured by using the specified information in
     * ProvisioningConfiguration.
+    * @return The PostCaptureAction value.
     */
     public PostCaptureAction getPostCaptureAction()
     {
@@ -50,10 +51,11 @@ public class VirtualMachineCaptureParameters
     * Reprovision – this value causes the virtual machine to be redeployed
     * after the image is captured by using the specified information in
     * ProvisioningConfiguration.
+    * @param postCaptureActionValue The PostCaptureAction value.
     */
-    public void setPostCaptureAction(PostCaptureAction postCaptureAction)
+    public void setPostCaptureAction(final PostCaptureAction postCaptureActionValue)
     {
-        this.postCaptureAction = postCaptureAction;
+        this.postCaptureAction = postCaptureActionValue;
     }
     
     private ConfigurationSet provisioningConfiguration;
@@ -62,6 +64,7 @@ public class VirtualMachineCaptureParameters
     * Optional. Provides information to be used to redeploy the virtual machine
     * after the image has been captured. This element is only used when the
     * PostCaptureAction is set to Reprovision.
+    * @return The ProvisioningConfiguration value.
     */
     public ConfigurationSet getProvisioningConfiguration()
     {
@@ -72,10 +75,11 @@ public class VirtualMachineCaptureParameters
     * Optional. Provides information to be used to redeploy the virtual machine
     * after the image has been captured. This element is only used when the
     * PostCaptureAction is set to Reprovision.
+    * @param provisioningConfigurationValue The ProvisioningConfiguration value.
     */
-    public void setProvisioningConfiguration(ConfigurationSet provisioningConfiguration)
+    public void setProvisioningConfiguration(final ConfigurationSet provisioningConfigurationValue)
     {
-        this.provisioningConfiguration = provisioningConfiguration;
+        this.provisioningConfiguration = provisioningConfigurationValue;
     }
     
     private String targetImageLabel;
@@ -84,6 +88,7 @@ public class VirtualMachineCaptureParameters
     * Required. Specifies the friendly name of the captured image. This is the
     * value that appears in the Name column for the image in the Windows Azure
     * Management Portal.
+    * @return The TargetImageLabel value.
     */
     public String getTargetImageLabel()
     {
@@ -94,16 +99,18 @@ public class VirtualMachineCaptureParameters
     * Required. Specifies the friendly name of the captured image. This is the
     * value that appears in the Name column for the image in the Windows Azure
     * Management Portal.
+    * @param targetImageLabelValue The TargetImageLabel value.
     */
-    public void setTargetImageLabel(String targetImageLabel)
+    public void setTargetImageLabel(final String targetImageLabelValue)
     {
-        this.targetImageLabel = targetImageLabel;
+        this.targetImageLabel = targetImageLabelValue;
     }
     
     private String targetImageName;
     
     /**
     * Required. Specifies the image name of the captured image.
+    * @return The TargetImageName value.
     */
     public String getTargetImageName()
     {
@@ -112,9 +119,10 @@ public class VirtualMachineCaptureParameters
     
     /**
     * Required. Specifies the image name of the captured image.
+    * @param targetImageNameValue The TargetImageName value.
     */
-    public void setTargetImageName(String targetImageName)
+    public void setTargetImageName(final String targetImageNameValue)
     {
-        this.targetImageName = targetImageName;
+        this.targetImageName = targetImageNameValue;
     }
 }

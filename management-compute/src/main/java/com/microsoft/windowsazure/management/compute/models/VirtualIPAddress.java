@@ -34,6 +34,7 @@ public class VirtualIPAddress
     
     /**
     * The virtual IP address of the deployment.
+    * @return The Address value.
     */
     public InetAddress getAddress()
     {
@@ -42,34 +43,38 @@ public class VirtualIPAddress
     
     /**
     * The virtual IP address of the deployment.
+    * @param addressValue The Address value.
     */
-    public void setAddress(InetAddress address)
+    public void setAddress(final InetAddress addressValue)
     {
-        this.address = address;
+        this.address = addressValue;
     }
     
     private Boolean isDnsProgrammed;
     
     /**
     * Indicates whether the IP address is DNS programmed.
+    * @return The IsDnsProgrammed value.
     */
-    public Boolean getIsDnsProgrammed()
+    public Boolean isDnsProgrammed()
     {
         return this.isDnsProgrammed;
     }
     
     /**
     * Indicates whether the IP address is DNS programmed.
+    * @param isDnsProgrammedValue The IsDnsProgrammed value.
     */
-    public void setIsDnsProgrammed(Boolean isDnsProgrammed)
+    public void setIsDnsProgrammed(final Boolean isDnsProgrammedValue)
     {
-        this.isDnsProgrammed = isDnsProgrammed;
+        this.isDnsProgrammed = isDnsProgrammedValue;
     }
     
     private String name;
     
     /**
     * The name of the virtual IP.
+    * @return The Name value.
     */
     public String getName()
     {
@@ -78,9 +83,10 @@ public class VirtualIPAddress
     
     /**
     * The name of the virtual IP.
+    * @param nameValue The Name value.
     */
-    public void setName(String name)
+    public void setName(final String nameValue)
     {
-        this.name = name;
+        this.name = nameValue;
     }
 }

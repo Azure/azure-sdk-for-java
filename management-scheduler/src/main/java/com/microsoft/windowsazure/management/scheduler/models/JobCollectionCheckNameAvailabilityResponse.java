@@ -34,6 +34,7 @@ public class JobCollectionCheckNameAvailabilityResponse extends OperationRespons
     
     /**
     * Whether the name is available.
+    * @return The IsAvailable value.
     */
     public boolean isAvailable()
     {
@@ -42,9 +43,10 @@ public class JobCollectionCheckNameAvailabilityResponse extends OperationRespons
     
     /**
     * Whether the name is available.
+    * @param isAvailableValue The IsAvailable value.
     */
-    public void setIsAvailable(boolean isAvailable)
+    public void setIsAvailable(final boolean isAvailableValue)
     {
-        this.isAvailable = isAvailable;
+        this.isAvailable = isAvailableValue;
     }
 }
