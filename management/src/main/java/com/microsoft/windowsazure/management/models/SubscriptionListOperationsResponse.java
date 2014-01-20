@@ -41,6 +41,7 @@ public class SubscriptionListOperationsResponse extends OperationResponse
     * requests must include this parameter to continue listing operations from
     * where the last response left off. This element exists only if the
     * complete list of subscription operations was not returned.
+    * @return The ContinuationToken value.
     */
     public String getContinuationToken()
     {
@@ -52,10 +53,11 @@ public class SubscriptionListOperationsResponse extends OperationResponse
     * requests must include this parameter to continue listing operations from
     * where the last response left off. This element exists only if the
     * complete list of subscription operations was not returned.
+    * @param continuationTokenValue The ContinuationToken value.
     */
-    public void setContinuationToken(String continuationToken)
+    public void setContinuationToken(final String continuationTokenValue)
     {
-        this.continuationToken = continuationToken;
+        this.continuationToken = continuationTokenValue;
     }
     
     private ArrayList<SubscriptionListOperationsResponse.SubscriptionOperation> subscriptionOperations;
@@ -63,6 +65,7 @@ public class SubscriptionListOperationsResponse extends OperationResponse
     /**
     * The list of operations that have been performed on the subscription
     * during the specified timeframe.
+    * @return The SubscriptionOperations value.
     */
     public ArrayList<SubscriptionListOperationsResponse.SubscriptionOperation> getSubscriptionOperations()
     {
@@ -72,10 +75,11 @@ public class SubscriptionListOperationsResponse extends OperationResponse
     /**
     * The list of operations that have been performed on the subscription
     * during the specified timeframe.
+    * @param subscriptionOperationsValue The SubscriptionOperations value.
     */
-    public void setSubscriptionOperations(ArrayList<SubscriptionListOperationsResponse.SubscriptionOperation> subscriptionOperations)
+    public void setSubscriptionOperations(final ArrayList<SubscriptionListOperationsResponse.SubscriptionOperation> subscriptionOperationsValue)
     {
-        this.subscriptionOperations = subscriptionOperations;
+        this.subscriptionOperations = subscriptionOperationsValue;
     }
     
     /**
@@ -99,6 +103,7 @@ public class SubscriptionListOperationsResponse extends OperationResponse
         /**
         * The IP address of the client computer that initiated the operation.
         * This element is returned only if UsedServiceManagementApi is true.
+        * @return The ClientIPAddress value.
         */
         public InetAddress getClientIPAddress()
         {
@@ -108,10 +113,11 @@ public class SubscriptionListOperationsResponse extends OperationResponse
         /**
         * The IP address of the client computer that initiated the operation.
         * This element is returned only if UsedServiceManagementApi is true.
+        * @param clientIPAddressValue The ClientIPAddress value.
         */
-        public void setClientIPAddress(InetAddress clientIPAddress)
+        public void setClientIPAddress(final InetAddress clientIPAddressValue)
         {
-            this.clientIPAddress = clientIPAddress;
+            this.clientIPAddress = clientIPAddressValue;
         }
         
         private String subscriptionCertificateThumbprint;
@@ -119,6 +125,7 @@ public class SubscriptionListOperationsResponse extends OperationResponse
         /**
         * The thumbprint of the subscription certificate used to initiate the
         * operation.
+        * @return The SubscriptionCertificateThumbprint value.
         */
         public String getSubscriptionCertificateThumbprint()
         {
@@ -128,10 +135,12 @@ public class SubscriptionListOperationsResponse extends OperationResponse
         /**
         * The thumbprint of the subscription certificate used to initiate the
         * operation.
+        * @param subscriptionCertificateThumbprintValue The
+        * SubscriptionCertificateThumbprint value.
         */
-        public void setSubscriptionCertificateThumbprint(String subscriptionCertificateThumbprint)
+        public void setSubscriptionCertificateThumbprint(final String subscriptionCertificateThumbprintValue)
         {
-            this.subscriptionCertificateThumbprint = subscriptionCertificateThumbprint;
+            this.subscriptionCertificateThumbprint = subscriptionCertificateThumbprintValue;
         }
         
         private boolean usedServiceManagementApi;
@@ -140,8 +149,9 @@ public class SubscriptionListOperationsResponse extends OperationResponse
         * Indicates whether the operation was initiated by using the Service
         * Management API. False if it was initiated by another source, such as
         * the Management Portal.
+        * @return The UsedServiceManagementApi value.
         */
-        public boolean getUsedServiceManagementApi()
+        public boolean isUsedServiceManagementApi()
         {
             return this.usedServiceManagementApi;
         }
@@ -150,10 +160,12 @@ public class SubscriptionListOperationsResponse extends OperationResponse
         * Indicates whether the operation was initiated by using the Service
         * Management API. False if it was initiated by another source, such as
         * the Management Portal.
+        * @param usedServiceManagementApiValue The UsedServiceManagementApi
+        * value.
         */
-        public void setUsedServiceManagementApi(boolean usedServiceManagementApi)
+        public void setUsedServiceManagementApi(final boolean usedServiceManagementApiValue)
         {
-            this.usedServiceManagementApi = usedServiceManagementApi;
+            this.usedServiceManagementApi = usedServiceManagementApiValue;
         }
         
         private String userEmailAddress;
@@ -162,6 +174,7 @@ public class SubscriptionListOperationsResponse extends OperationResponse
         * The email associated with the Windows Live ID of the user who
         * initiated the operation from the Management Portal. This element is
         * returned only if UsedServiceManagementApi is false.
+        * @return The UserEmailAddress value.
         */
         public String getUserEmailAddress()
         {
@@ -172,10 +185,11 @@ public class SubscriptionListOperationsResponse extends OperationResponse
         * The email associated with the Windows Live ID of the user who
         * initiated the operation from the Management Portal. This element is
         * returned only if UsedServiceManagementApi is false.
+        * @param userEmailAddressValue The UserEmailAddress value.
         */
-        public void setUserEmailAddress(String userEmailAddress)
+        public void setUserEmailAddress(final String userEmailAddressValue)
         {
-            this.userEmailAddress = userEmailAddress;
+            this.userEmailAddress = userEmailAddressValue;
         }
     }
     
@@ -190,6 +204,7 @@ public class SubscriptionListOperationsResponse extends OperationResponse
         /**
         * A collection of attributes that identifies the source of the
         * operation.
+        * @return The OperationCaller value.
         */
         public SubscriptionListOperationsResponse.OperationCallerDetails getOperationCaller()
         {
@@ -199,16 +214,18 @@ public class SubscriptionListOperationsResponse extends OperationResponse
         /**
         * A collection of attributes that identifies the source of the
         * operation.
+        * @param operationCallerValue The OperationCaller value.
         */
-        public void setOperationCaller(SubscriptionListOperationsResponse.OperationCallerDetails operationCaller)
+        public void setOperationCaller(final SubscriptionListOperationsResponse.OperationCallerDetails operationCallerValue)
         {
-            this.operationCaller = operationCaller;
+            this.operationCaller = operationCallerValue;
         }
         
         private Calendar operationCompletedTime;
         
         /**
         * The time that the operation finished executing.
+        * @return The OperationCompletedTime value.
         */
         public Calendar getOperationCompletedTime()
         {
@@ -217,16 +234,18 @@ public class SubscriptionListOperationsResponse extends OperationResponse
         
         /**
         * The time that the operation finished executing.
+        * @param operationCompletedTimeValue The OperationCompletedTime value.
         */
-        public void setOperationCompletedTime(Calendar operationCompletedTime)
+        public void setOperationCompletedTime(final Calendar operationCompletedTimeValue)
         {
-            this.operationCompletedTime = operationCompletedTime;
+            this.operationCompletedTime = operationCompletedTimeValue;
         }
         
         private String operationId;
         
         /**
         * The globally unique identifier (GUID) of the operation.
+        * @return The OperationId value.
         */
         public String getOperationId()
         {
@@ -235,16 +254,18 @@ public class SubscriptionListOperationsResponse extends OperationResponse
         
         /**
         * The globally unique identifier (GUID) of the operation.
+        * @param operationIdValue The OperationId value.
         */
-        public void setOperationId(String operationId)
+        public void setOperationId(final String operationIdValue)
         {
-            this.operationId = operationId;
+            this.operationId = operationIdValue;
         }
         
         private String operationName;
         
         /**
         * The name of the performed operation.
+        * @return The OperationName value.
         */
         public String getOperationName()
         {
@@ -253,10 +274,11 @@ public class SubscriptionListOperationsResponse extends OperationResponse
         
         /**
         * The name of the performed operation.
+        * @param operationNameValue The OperationName value.
         */
-        public void setOperationName(String operationName)
+        public void setOperationName(final String operationNameValue)
         {
-            this.operationName = operationName;
+            this.operationName = operationNameValue;
         }
         
         private String operationObjectId;
@@ -265,6 +287,7 @@ public class SubscriptionListOperationsResponse extends OperationResponse
         * The target object for the operation. This value is equal to the URL
         * for performing an HTTP GET on the object, and corresponds to the
         * same values for the ObjectIdFilter in the request.
+        * @return The OperationObjectId value.
         */
         public String getOperationObjectId()
         {
@@ -275,16 +298,18 @@ public class SubscriptionListOperationsResponse extends OperationResponse
         * The target object for the operation. This value is equal to the URL
         * for performing an HTTP GET on the object, and corresponds to the
         * same values for the ObjectIdFilter in the request.
+        * @param operationObjectIdValue The OperationObjectId value.
         */
-        public void setOperationObjectId(String operationObjectId)
+        public void setOperationObjectId(final String operationObjectIdValue)
         {
-            this.operationObjectId = operationObjectId;
+            this.operationObjectId = operationObjectIdValue;
         }
         
         private HashMap<String, String> operationParameters;
         
         /**
         * The collection of parameters for the performed operation.
+        * @return The OperationParameters value.
         */
         public HashMap<String, String> getOperationParameters()
         {
@@ -293,16 +318,18 @@ public class SubscriptionListOperationsResponse extends OperationResponse
         
         /**
         * The collection of parameters for the performed operation.
+        * @param operationParametersValue The OperationParameters value.
         */
-        public void setOperationParameters(HashMap<String, String> operationParameters)
+        public void setOperationParameters(final HashMap<String, String> operationParametersValue)
         {
-            this.operationParameters = operationParameters;
+            this.operationParameters = operationParametersValue;
         }
         
         private Calendar operationStartedTime;
         
         /**
         * The time that the operation started to execute.
+        * @return The OperationStartedTime value.
         */
         public Calendar getOperationStartedTime()
         {
@@ -311,10 +338,11 @@ public class SubscriptionListOperationsResponse extends OperationResponse
         
         /**
         * The time that the operation started to execute.
+        * @param operationStartedTimeValue The OperationStartedTime value.
         */
-        public void setOperationStartedTime(Calendar operationStartedTime)
+        public void setOperationStartedTime(final Calendar operationStartedTimeValue)
         {
-            this.operationStartedTime = operationStartedTime;
+            this.operationStartedTime = operationStartedTimeValue;
         }
         
         private String operationStatus;
@@ -326,6 +354,7 @@ public class SubscriptionListOperationsResponse extends OperationResponse
         * <Status>Succeeded</Status> <HttpStatusCode>200</HttpStatusCode>
         * </OperationStatus>  Possible values of the Status element,
         * whichholds the operation status, are: Succeeded, Failed, InProgress.
+        * @return The OperationStatus value.
         */
         public String getOperationStatus()
         {
@@ -339,10 +368,11 @@ public class SubscriptionListOperationsResponse extends OperationResponse
         * <Status>Succeeded</Status> <HttpStatusCode>200</HttpStatusCode>
         * </OperationStatus>  Possible values of the Status element,
         * whichholds the operation status, are: Succeeded, Failed, InProgress.
+        * @param operationStatusValue The OperationStatus value.
         */
-        public void setOperationStatus(String operationStatus)
+        public void setOperationStatus(final String operationStatusValue)
         {
-            this.operationStatus = operationStatus;
+            this.operationStatus = operationStatusValue;
         }
         
         /**

@@ -41,7 +41,6 @@ import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.ParseException;
@@ -55,7 +54,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -66,6 +64,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
+import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -92,6 +91,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     /**
     * Gets a reference to the
     * microsoft.windowsazure.management.servicebus.ServiceBusManagementClientImpl.
+    * @return The Client value.
     */
     public ServiceBusManagementClientImpl getClient()
     {
@@ -105,7 +105,6 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj870968.aspx for
     * more information)
     *
-    * @param namespaceName The namespace name.
     * @return The response to a query for the availability status of a
     * namespace name.
     */
@@ -128,7 +127,14 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj870968.aspx for
     * more information)
     *
-    * @param namespaceName The namespace name.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
     * @return The response to a query for the availability status of a
     * namespace name.
     */
@@ -136,10 +142,6 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     public CheckNamespaceAvailabilityResponse checkAvailability(String namespaceName) throws IOException, ServiceException, ParserConfigurationException, SAXException
     {
         // Validate
-        if (namespaceName == null)
-        {
-            throw new NullPointerException("namespaceName");
-        }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
@@ -246,8 +248,6 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj856303.aspx for
     * more information)
     *
-    * @param namespaceName The namespace name.
-    * @param region The namespace region.
     * @return The response to a request for a particular namespace.
     */
     @Override
@@ -268,18 +268,26 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj856303.aspx for
     * more information)
     *
-    * @param namespaceName The namespace name.
-    * @param region The namespace region.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
     * @return The response to a request for a particular namespace.
     */
     @Override
-    public ServiceBusNamespaceResponse create(String namespaceName, String region) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException, ParseException, URISyntaxException
+    public ServiceBusNamespaceResponse create(String namespaceName, String region) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, ParseException, URISyntaxException
     {
         // Validate
-        if (namespaceName == null)
-        {
-            throw new NullPointerException("namespaceName");
-        }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
@@ -317,7 +325,9 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
         Element contentElement = requestDoc.createElementNS("http://www.w3.org/2005/Atom", "content");
         entryElement.appendChild(contentElement);
         
-        String typeAttribute = null;
+        Attr typeAttribute = requestDoc.createAttribute("type");
+        typeAttribute.setValue("application/xml");
+        contentElement.setAttributeNode(typeAttribute);
         
         Element namespaceDescriptionElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "NamespaceDescription");
         contentElement.appendChild(namespaceDescriptionElement);
@@ -481,8 +491,6 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     * The create namespace authorization rule operation creates an
     * authorization rule for a namespace
     *
-    * @param namespaceName The namespace name.
-    * @param rule The shared access authorization rule.
     * @return A response to a request for a particular authorization rule.
     */
     @Override
@@ -501,12 +509,22 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     * The create namespace authorization rule operation creates an
     * authorization rule for a namespace
     *
-    * @param namespaceName The namespace name.
-    * @param rule The shared access authorization rule.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return A response to a request for a particular authorization rule.
     */
     @Override
-    public ServiceBusAuthorizationRuleResponse createAuthorizationRule(String namespaceName, ServiceBusSharedAccessAuthorizationRule rule) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException, ParseException
+    public ServiceBusAuthorizationRuleResponse createAuthorizationRule(String namespaceName, ServiceBusSharedAccessAuthorizationRule rule) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, ParseException
     {
         // Validate
         if (namespaceName == null)
@@ -554,7 +572,9 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
         Element contentElement = requestDoc.createElementNS("http://www.w3.org/2005/Atom", "content");
         entryElement.appendChild(contentElement);
         
-        String typeAttribute = null;
+        Attr typeAttribute = requestDoc.createAttribute("type");
+        typeAttribute.setValue("application/atom+xml");
+        contentElement.setAttributeNode(typeAttribute);
         
         Element sharedAccessAuthorizationRuleElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SharedAccessAuthorizationRule");
         contentElement.appendChild(sharedAccessAuthorizationRuleElement);
@@ -784,7 +804,6 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj856296.aspx for
     * more information)
     *
-    * @param namespaceName The namespace name.
     * @return A standard storage response including an HTTP status code and
     * request ID.
     */
@@ -807,7 +826,10 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj856296.aspx for
     * more information)
     *
-    * @param namespaceName The namespace name.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard storage response including an HTTP status code and
     * request ID.
     */
@@ -815,10 +837,6 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     public OperationResponse delete(String namespaceName) throws IOException, ServiceException
     {
         // Validate
-        if (namespaceName == null)
-        {
-            throw new NullPointerException("namespaceName");
-        }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
@@ -884,8 +902,6 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     * The delete namespace authorization rule operation deletes an
     * authorization rule for a namespace
     *
-    * @param namespaceName The namespace name.
-    * @param ruleName The rule name.
     * @return A standard storage response including an HTTP status code and
     * request ID.
     */
@@ -905,8 +921,10 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     * The delete namespace authorization rule operation deletes an
     * authorization rule for a namespace
     *
-    * @param namespaceName The namespace name.
-    * @param ruleName The rule name.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard storage response including an HTTP status code and
     * request ID.
     */
@@ -987,7 +1005,6 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn140232.aspx for
     * more information)
     *
-    * @param namespaceName The namespace name.
     * @return The response to a request for a particular namespace.
     */
     @Override
@@ -1007,17 +1024,24 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn140232.aspx for
     * more information)
     *
-    * @param namespaceName The namespace name.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
     * @return The response to a request for a particular namespace.
     */
     @Override
     public ServiceBusNamespaceResponse get(String namespaceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException, URISyntaxException
     {
         // Validate
-        if (namespaceName == null)
-        {
-            throw new NullPointerException("namespaceName");
-        }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
@@ -1180,7 +1204,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     
     /**
     * The get authorization rule operation gets an authorization rule for a
-    * namespace by name.
+    * namespace by name
     *
     * @param namespaceName The namespace to get the authorization rule for.
     * @param entityName The entity name to get the authorization rule for.
@@ -1200,10 +1224,20 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     
     /**
     * The get authorization rule operation gets an authorization rule for a
-    * namespace by name.
+    * namespace by name
     *
     * @param namespaceName The namespace to get the authorization rule for.
     * @param entityName The entity name to get the authorization rule for.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return A response to a request for a particular authorization rule.
     */
     @Override
@@ -1400,7 +1434,6 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
     * more information)
     *
-    * @param namespaceName The namespace name.
     * @return A response to a request for a list of namespaces.
     */
     @Override
@@ -1422,17 +1455,20 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
     * more information)
     *
-    * @param namespaceName The namespace name.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
     * @return A response to a request for a list of namespaces.
     */
     @Override
     public ServiceBusNamespaceDescriptionResponse getNamespaceDescription(String namespaceName) throws IOException, ServiceException, ParserConfigurationException, SAXException
     {
         // Validate
-        if (namespaceName == null)
-        {
-            throw new NullPointerException("namespaceName");
-        }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
@@ -1577,7 +1613,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn140232.asp for
     * more information)
     *
-    * @return The response to the request for a listing of namespaces.
+    * @return The response to the request for a listing of namespaces
     */
     @Override
     public Future<ServiceBusNamespacesResponse> listAsync()
@@ -1596,7 +1632,19 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn140232.asp for
     * more information)
     *
-    * @return The response to the request for a listing of namespaces.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
+    * @return The response to the request for a listing of namespaces
     */
     @Override
     public ServiceBusNamespacesResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException, URISyntaxException
@@ -1770,7 +1818,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     
     /**
     * The get authorization rules operation gets the authorization rules for a
-    * namespace.
+    * namespace
     *
     * @param namespaceName The namespace to get the authorization rule for.
     * @return A response to a request for a list of authorization rules.
@@ -1789,9 +1837,19 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     
     /**
     * The get authorization rules operation gets the authorization rules for a
-    * namespace.
+    * namespace
     *
     * @param namespaceName The namespace to get the authorization rule for.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return A response to a request for a list of authorization rules.
     */
     @Override
@@ -1987,8 +2045,6 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     * The update authorization rule operation updates an authorization rule for
     * a namespace.
     *
-    * @param namespaceName The namespace name.
-    * @param rule Updated access authorization rule.
     * @return A response to a request for a particular authorization rule.
     */
     @Override
@@ -2007,18 +2063,24 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     * The update authorization rule operation updates an authorization rule for
     * a namespace.
     *
-    * @param namespaceName The namespace name.
-    * @param rule Updated access authorization rule.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return A response to a request for a particular authorization rule.
     */
     @Override
-    public ServiceBusAuthorizationRuleResponse updateAuthorizationRule(String namespaceName, ServiceBusSharedAccessAuthorizationRule rule) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException, ParseException
+    public ServiceBusAuthorizationRuleResponse updateAuthorizationRule(String namespaceName, ServiceBusSharedAccessAuthorizationRule rule) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, ParseException
     {
         // Validate
-        if (namespaceName == null)
-        {
-            throw new NullPointerException("namespaceName");
-        }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
@@ -2059,7 +2121,9 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
             Element contentElement = requestDoc.createElementNS("http://www.w3.org/2005/Atom", "content");
             entryElement.appendChild(contentElement);
             
-            String typeAttribute = null;
+            Attr typeAttribute = requestDoc.createAttribute("type");
+            typeAttribute.setValue("application/atom+xml");
+            contentElement.setAttributeNode(typeAttribute);
             
             Element sharedAccessAuthorizationRuleElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SharedAccessAuthorizationRule");
             contentElement.appendChild(sharedAccessAuthorizationRuleElement);

@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
-* The response to the request for a listing of namespaces.
+* The response to the request for a listing of namespaces
 */
 public class ServiceBusNamespacesResponse extends OperationResponse implements Iterable<ServiceBusNamespace>
 {
@@ -36,6 +36,7 @@ public class ServiceBusNamespacesResponse extends OperationResponse implements I
     
     /**
     * The list of namespaces.
+    * @return The Namespaces value.
     */
     public ArrayList<ServiceBusNamespace> getNamespaces()
     {
@@ -44,10 +45,11 @@ public class ServiceBusNamespacesResponse extends OperationResponse implements I
     
     /**
     * The list of namespaces.
+    * @param namespacesValue The Namespaces value.
     */
-    public void setNamespaces(ArrayList<ServiceBusNamespace> namespaces)
+    public void setNamespaces(final ArrayList<ServiceBusNamespace> namespacesValue)
     {
-        this.namespaces = namespaces;
+        this.namespaces = namespacesValue;
     }
     
     /**

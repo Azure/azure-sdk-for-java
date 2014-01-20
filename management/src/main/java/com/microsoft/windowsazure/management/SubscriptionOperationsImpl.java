@@ -77,6 +77,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
     /**
     * Gets a reference to the
     * microsoft.windowsazure.management.ManagementClientImpl.
+    * @return The Client value.
     */
     public ManagementClientImpl getClient()
     {
@@ -109,6 +110,18 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh403995.aspx for
     * more information)
     *
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return The Get Subscription operation response.
     */
     @Override
@@ -137,204 +150,214 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != HttpStatus.SC_OK)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            SubscriptionGetResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new SubscriptionGetResponse();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document responseDoc = documentBuilder.parse(responseContent);
+            
+            NodeList elements = responseDoc.getElementsByTagName("Subscription");
+            Element subscriptionElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            if (subscriptionElement != null)
+            {
+                NodeList elements2 = subscriptionElement.getElementsByTagName("SubscriptionID");
+                Element subscriptionIDElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                if (subscriptionIDElement != null)
+                {
+                    String subscriptionIDInstance;
+                    subscriptionIDInstance = subscriptionIDElement.getTextContent();
+                    result.setSubscriptionID(subscriptionIDInstance);
+                }
+                
+                NodeList elements3 = subscriptionElement.getElementsByTagName("SubscriptionName");
+                Element subscriptionNameElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                if (subscriptionNameElement != null)
+                {
+                    String subscriptionNameInstance;
+                    subscriptionNameInstance = subscriptionNameElement.getTextContent();
+                    result.setSubscriptionName(subscriptionNameInstance);
+                }
+                
+                NodeList elements4 = subscriptionElement.getElementsByTagName("SubscriptionStatus");
+                Element subscriptionStatusElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                if (subscriptionStatusElement != null)
+                {
+                    SubscriptionStatus subscriptionStatusInstance;
+                    subscriptionStatusInstance = SubscriptionStatus.valueOf(subscriptionStatusElement.getTextContent());
+                    result.setSubscriptionStatus(subscriptionStatusInstance);
+                }
+                
+                NodeList elements5 = subscriptionElement.getElementsByTagName("AccountAdminLiveEmailId");
+                Element accountAdminLiveEmailIdElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                if (accountAdminLiveEmailIdElement != null)
+                {
+                    String accountAdminLiveEmailIdInstance;
+                    accountAdminLiveEmailIdInstance = accountAdminLiveEmailIdElement.getTextContent();
+                    result.setAccountAdminLiveEmailId(accountAdminLiveEmailIdInstance);
+                }
+                
+                NodeList elements6 = subscriptionElement.getElementsByTagName("ServiceAdminLiveEmailId");
+                Element serviceAdminLiveEmailIdElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                if (serviceAdminLiveEmailIdElement != null)
+                {
+                    String serviceAdminLiveEmailIdInstance;
+                    serviceAdminLiveEmailIdInstance = serviceAdminLiveEmailIdElement.getTextContent();
+                    result.setServiceAdminLiveEmailId(serviceAdminLiveEmailIdInstance);
+                }
+                
+                NodeList elements7 = subscriptionElement.getElementsByTagName("MaxCoreCount");
+                Element maxCoreCountElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
+                if (maxCoreCountElement != null)
+                {
+                    int maxCoreCountInstance;
+                    maxCoreCountInstance = Integer.parseInt(maxCoreCountElement.getTextContent());
+                    result.setMaximumCoreCount(maxCoreCountInstance);
+                }
+                
+                NodeList elements8 = subscriptionElement.getElementsByTagName("MaxStorageAccounts");
+                Element maxStorageAccountsElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
+                if (maxStorageAccountsElement != null)
+                {
+                    int maxStorageAccountsInstance;
+                    maxStorageAccountsInstance = Integer.parseInt(maxStorageAccountsElement.getTextContent());
+                    result.setMaximumStorageAccounts(maxStorageAccountsInstance);
+                }
+                
+                NodeList elements9 = subscriptionElement.getElementsByTagName("MaxHostedServices");
+                Element maxHostedServicesElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
+                if (maxHostedServicesElement != null)
+                {
+                    int maxHostedServicesInstance;
+                    maxHostedServicesInstance = Integer.parseInt(maxHostedServicesElement.getTextContent());
+                    result.setMaximumHostedServices(maxHostedServicesInstance);
+                }
+                
+                NodeList elements10 = subscriptionElement.getElementsByTagName("CurrentCoreCount");
+                Element currentCoreCountElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
+                if (currentCoreCountElement != null)
+                {
+                    int currentCoreCountInstance;
+                    currentCoreCountInstance = Integer.parseInt(currentCoreCountElement.getTextContent());
+                    result.setCurrentCoreCount(currentCoreCountInstance);
+                }
+                
+                NodeList elements11 = subscriptionElement.getElementsByTagName("CurrentStorageAccounts");
+                Element currentStorageAccountsElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
+                if (currentStorageAccountsElement != null)
+                {
+                    int currentStorageAccountsInstance;
+                    currentStorageAccountsInstance = Integer.parseInt(currentStorageAccountsElement.getTextContent());
+                    result.setCurrentStorageAccounts(currentStorageAccountsInstance);
+                }
+                
+                NodeList elements12 = subscriptionElement.getElementsByTagName("CurrentHostedServices");
+                Element currentHostedServicesElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
+                if (currentHostedServicesElement != null)
+                {
+                    int currentHostedServicesInstance;
+                    currentHostedServicesInstance = Integer.parseInt(currentHostedServicesElement.getTextContent());
+                    result.setCurrentHostedServices(currentHostedServicesInstance);
+                }
+                
+                NodeList elements13 = subscriptionElement.getElementsByTagName("MaxVirtualNetworkSites");
+                Element maxVirtualNetworkSitesElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
+                if (maxVirtualNetworkSitesElement != null)
+                {
+                    int maxVirtualNetworkSitesInstance;
+                    maxVirtualNetworkSitesInstance = Integer.parseInt(maxVirtualNetworkSitesElement.getTextContent());
+                    result.setMaximumVirtualNetworkSites(maxVirtualNetworkSitesInstance);
+                }
+                
+                NodeList elements14 = subscriptionElement.getElementsByTagName("CurrentVirtualNetworkSites");
+                Element currentVirtualNetworkSitesElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
+                if (currentVirtualNetworkSitesElement != null)
+                {
+                    int currentVirtualNetworkSitesInstance;
+                    currentVirtualNetworkSitesInstance = Integer.parseInt(currentVirtualNetworkSitesElement.getTextContent());
+                    result.setCurrentVirtualNetworkSites(currentVirtualNetworkSitesInstance);
+                }
+                
+                NodeList elements15 = subscriptionElement.getElementsByTagName("MaxLocalNetworkSites");
+                Element maxLocalNetworkSitesElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
+                if (maxLocalNetworkSitesElement != null)
+                {
+                    int maxLocalNetworkSitesInstance;
+                    maxLocalNetworkSitesInstance = Integer.parseInt(maxLocalNetworkSitesElement.getTextContent());
+                    result.setMaximumLocalNetworkSites(maxLocalNetworkSitesInstance);
+                }
+                
+                NodeList elements16 = subscriptionElement.getElementsByTagName("MaxDnsServers");
+                Element maxDnsServersElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
+                if (maxDnsServersElement != null)
+                {
+                    int maxDnsServersInstance;
+                    maxDnsServersInstance = Integer.parseInt(maxDnsServersElement.getTextContent());
+                    result.setMaximumDnsServers(maxDnsServersInstance);
+                }
+                
+                NodeList elements17 = subscriptionElement.getElementsByTagName("CurrentLocalNetworkSites");
+                Element currentLocalNetworkSitesElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
+                if (currentLocalNetworkSitesElement != null)
+                {
+                    int currentLocalNetworkSitesInstance;
+                    currentLocalNetworkSitesInstance = Integer.parseInt(currentLocalNetworkSitesElement.getTextContent());
+                    result.setCurrentLocalNetworkSites(currentLocalNetworkSitesInstance);
+                }
+                
+                NodeList elements18 = subscriptionElement.getElementsByTagName("CurrentDnsServers");
+                Element currentDnsServersElement = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
+                if (currentDnsServersElement != null)
+                {
+                    int currentDnsServersInstance;
+                    currentDnsServersInstance = Integer.parseInt(currentDnsServersElement.getTextContent());
+                    result.setCurrentDnsServers(currentDnsServersInstance);
+                }
+            }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        SubscriptionGetResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new SubscriptionGetResponse();
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document responseDoc = documentBuilder.parse(responseContent);
-        
-        NodeList elements = responseDoc.getElementsByTagName("Subscription");
-        Element subscriptionElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-        if (subscriptionElement != null)
+        finally
         {
-            NodeList elements2 = subscriptionElement.getElementsByTagName("SubscriptionID");
-            Element subscriptionIDElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-            if (subscriptionIDElement != null)
+            if (httpResponse != null && httpResponse.getEntity() != null)
             {
-                String subscriptionIDInstance;
-                subscriptionIDInstance = subscriptionIDElement.getTextContent();
-                result.setSubscriptionID(subscriptionIDInstance);
-            }
-            
-            NodeList elements3 = subscriptionElement.getElementsByTagName("SubscriptionName");
-            Element subscriptionNameElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-            if (subscriptionNameElement != null)
-            {
-                String subscriptionNameInstance;
-                subscriptionNameInstance = subscriptionNameElement.getTextContent();
-                result.setSubscriptionName(subscriptionNameInstance);
-            }
-            
-            NodeList elements4 = subscriptionElement.getElementsByTagName("SubscriptionStatus");
-            Element subscriptionStatusElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-            if (subscriptionStatusElement != null)
-            {
-                SubscriptionStatus subscriptionStatusInstance;
-                subscriptionStatusInstance = SubscriptionStatus.valueOf(subscriptionStatusElement.getTextContent());
-                result.setSubscriptionStatus(subscriptionStatusInstance);
-            }
-            
-            NodeList elements5 = subscriptionElement.getElementsByTagName("AccountAdminLiveEmailId");
-            Element accountAdminLiveEmailIdElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-            if (accountAdminLiveEmailIdElement != null)
-            {
-                String accountAdminLiveEmailIdInstance;
-                accountAdminLiveEmailIdInstance = accountAdminLiveEmailIdElement.getTextContent();
-                result.setAccountAdminLiveEmailId(accountAdminLiveEmailIdInstance);
-            }
-            
-            NodeList elements6 = subscriptionElement.getElementsByTagName("ServiceAdminLiveEmailId");
-            Element serviceAdminLiveEmailIdElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-            if (serviceAdminLiveEmailIdElement != null)
-            {
-                String serviceAdminLiveEmailIdInstance;
-                serviceAdminLiveEmailIdInstance = serviceAdminLiveEmailIdElement.getTextContent();
-                result.setServiceAdminLiveEmailId(serviceAdminLiveEmailIdInstance);
-            }
-            
-            NodeList elements7 = subscriptionElement.getElementsByTagName("MaxCoreCount");
-            Element maxCoreCountElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-            if (maxCoreCountElement != null)
-            {
-                int maxCoreCountInstance;
-                maxCoreCountInstance = Integer.parseInt(maxCoreCountElement.getTextContent());
-                result.setMaximumCoreCount(maxCoreCountInstance);
-            }
-            
-            NodeList elements8 = subscriptionElement.getElementsByTagName("MaxStorageAccounts");
-            Element maxStorageAccountsElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-            if (maxStorageAccountsElement != null)
-            {
-                int maxStorageAccountsInstance;
-                maxStorageAccountsInstance = Integer.parseInt(maxStorageAccountsElement.getTextContent());
-                result.setMaximumStorageAccounts(maxStorageAccountsInstance);
-            }
-            
-            NodeList elements9 = subscriptionElement.getElementsByTagName("MaxHostedServices");
-            Element maxHostedServicesElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-            if (maxHostedServicesElement != null)
-            {
-                int maxHostedServicesInstance;
-                maxHostedServicesInstance = Integer.parseInt(maxHostedServicesElement.getTextContent());
-                result.setMaximumHostedServices(maxHostedServicesInstance);
-            }
-            
-            NodeList elements10 = subscriptionElement.getElementsByTagName("CurrentCoreCount");
-            Element currentCoreCountElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
-            if (currentCoreCountElement != null)
-            {
-                int currentCoreCountInstance;
-                currentCoreCountInstance = Integer.parseInt(currentCoreCountElement.getTextContent());
-                result.setCurrentCoreCount(currentCoreCountInstance);
-            }
-            
-            NodeList elements11 = subscriptionElement.getElementsByTagName("CurrentStorageAccounts");
-            Element currentStorageAccountsElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
-            if (currentStorageAccountsElement != null)
-            {
-                int currentStorageAccountsInstance;
-                currentStorageAccountsInstance = Integer.parseInt(currentStorageAccountsElement.getTextContent());
-                result.setCurrentStorageAccounts(currentStorageAccountsInstance);
-            }
-            
-            NodeList elements12 = subscriptionElement.getElementsByTagName("CurrentHostedServices");
-            Element currentHostedServicesElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
-            if (currentHostedServicesElement != null)
-            {
-                int currentHostedServicesInstance;
-                currentHostedServicesInstance = Integer.parseInt(currentHostedServicesElement.getTextContent());
-                result.setCurrentHostedServices(currentHostedServicesInstance);
-            }
-            
-            NodeList elements13 = subscriptionElement.getElementsByTagName("MaxVirtualNetworkSites");
-            Element maxVirtualNetworkSitesElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
-            if (maxVirtualNetworkSitesElement != null)
-            {
-                int maxVirtualNetworkSitesInstance;
-                maxVirtualNetworkSitesInstance = Integer.parseInt(maxVirtualNetworkSitesElement.getTextContent());
-                result.setMaximumVirtualNetworkSites(maxVirtualNetworkSitesInstance);
-            }
-            
-            NodeList elements14 = subscriptionElement.getElementsByTagName("CurrentVirtualNetworkSites");
-            Element currentVirtualNetworkSitesElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
-            if (currentVirtualNetworkSitesElement != null)
-            {
-                int currentVirtualNetworkSitesInstance;
-                currentVirtualNetworkSitesInstance = Integer.parseInt(currentVirtualNetworkSitesElement.getTextContent());
-                result.setCurrentVirtualNetworkSites(currentVirtualNetworkSitesInstance);
-            }
-            
-            NodeList elements15 = subscriptionElement.getElementsByTagName("MaxLocalNetworkSites");
-            Element maxLocalNetworkSitesElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
-            if (maxLocalNetworkSitesElement != null)
-            {
-                int maxLocalNetworkSitesInstance;
-                maxLocalNetworkSitesInstance = Integer.parseInt(maxLocalNetworkSitesElement.getTextContent());
-                result.setMaximumLocalNetworkSites(maxLocalNetworkSitesInstance);
-            }
-            
-            NodeList elements16 = subscriptionElement.getElementsByTagName("MaxDnsServers");
-            Element maxDnsServersElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
-            if (maxDnsServersElement != null)
-            {
-                int maxDnsServersInstance;
-                maxDnsServersInstance = Integer.parseInt(maxDnsServersElement.getTextContent());
-                result.setMaximumDnsServers(maxDnsServersInstance);
-            }
-            
-            NodeList elements17 = subscriptionElement.getElementsByTagName("CurrentLocalNetworkSites");
-            Element currentLocalNetworkSitesElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
-            if (currentLocalNetworkSitesElement != null)
-            {
-                int currentLocalNetworkSitesInstance;
-                currentLocalNetworkSitesInstance = Integer.parseInt(currentLocalNetworkSitesElement.getTextContent());
-                result.setCurrentLocalNetworkSites(currentLocalNetworkSitesInstance);
-            }
-            
-            NodeList elements18 = subscriptionElement.getElementsByTagName("CurrentDnsServers");
-            Element currentDnsServersElement = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
-            if (currentDnsServersElement != null)
-            {
-                int currentDnsServersInstance;
-                currentDnsServersInstance = Integer.parseInt(currentDnsServersElement.getTextContent());
-                result.setCurrentDnsServers(currentDnsServersInstance);
+                httpResponse.getEntity().getContent().close();
             }
         }
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-        {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
-        }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -369,6 +392,16 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
     *
     * @param parameters Parameters supplied to the List Subscription Operations
     * operation.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return The List Subscription Operations operation response.
     */
     @Override
@@ -420,191 +453,201 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != HttpStatus.SC_OK)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
-        }
-        
-        // Create Result
-        SubscriptionListOperationsResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new SubscriptionListOperationsResponse();
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document responseDoc = documentBuilder.parse(responseContent);
-        
-        NodeList elements = responseDoc.getElementsByTagName("SubscriptionOperationCollection");
-        Element subscriptionOperationCollectionElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-        if (subscriptionOperationCollectionElement != null)
-        {
-            NodeList elements2 = subscriptionOperationCollectionElement.getElementsByTagName("ContinuationToken");
-            Element continuationTokenElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-            if (continuationTokenElement != null)
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
             {
-                String continuationTokenInstance;
-                continuationTokenInstance = continuationTokenElement.getTextContent();
-                result.setContinuationToken(continuationTokenInstance);
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
             }
             
-            NodeList elements3 = subscriptionOperationCollectionElement.getElementsByTagName("SubscriptionOperations");
-            Element subscriptionOperationsSequenceElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-            if (subscriptionOperationsSequenceElement != null)
+            // Create Result
+            SubscriptionListOperationsResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new SubscriptionListOperationsResponse();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document responseDoc = documentBuilder.parse(responseContent);
+            
+            NodeList elements = responseDoc.getElementsByTagName("SubscriptionOperationCollection");
+            Element subscriptionOperationCollectionElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            if (subscriptionOperationCollectionElement != null)
             {
-                for (int i1 = 0; i1 < subscriptionOperationsSequenceElement.getElementsByTagName("SubscriptionOperation").getLength(); i1 = i1 + 1)
+                NodeList elements2 = subscriptionOperationCollectionElement.getElementsByTagName("ContinuationToken");
+                Element continuationTokenElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                if (continuationTokenElement != null)
                 {
-                    org.w3c.dom.Element subscriptionOperationsElement = ((org.w3c.dom.Element) subscriptionOperationsSequenceElement.getElementsByTagName("SubscriptionOperation").item(i1));
-                    SubscriptionListOperationsResponse.SubscriptionOperation subscriptionOperationInstance = new SubscriptionListOperationsResponse.SubscriptionOperation();
-                    result.getSubscriptionOperations().add(subscriptionOperationInstance);
-                    
-                    NodeList elements4 = subscriptionOperationsElement.getElementsByTagName("OperationId");
-                    Element operationIdElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                    if (operationIdElement != null)
+                    String continuationTokenInstance;
+                    continuationTokenInstance = continuationTokenElement.getTextContent();
+                    result.setContinuationToken(continuationTokenInstance);
+                }
+                
+                NodeList elements3 = subscriptionOperationCollectionElement.getElementsByTagName("SubscriptionOperations");
+                Element subscriptionOperationsSequenceElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                if (subscriptionOperationsSequenceElement != null)
+                {
+                    for (int i1 = 0; i1 < subscriptionOperationsSequenceElement.getElementsByTagName("SubscriptionOperation").getLength(); i1 = i1 + 1)
                     {
-                        String operationIdInstance;
-                        operationIdInstance = operationIdElement.getTextContent();
-                        subscriptionOperationInstance.setOperationId(operationIdInstance);
-                    }
-                    
-                    NodeList elements5 = subscriptionOperationsElement.getElementsByTagName("OperationObjectId");
-                    Element operationObjectIdElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                    if (operationObjectIdElement != null)
-                    {
-                        String operationObjectIdInstance;
-                        operationObjectIdInstance = operationObjectIdElement.getTextContent();
-                        subscriptionOperationInstance.setOperationObjectId(operationObjectIdInstance);
-                    }
-                    
-                    NodeList elements6 = subscriptionOperationsElement.getElementsByTagName("OperationName");
-                    Element operationNameElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                    if (operationNameElement != null)
-                    {
-                        String operationNameInstance;
-                        operationNameInstance = operationNameElement.getTextContent();
-                        subscriptionOperationInstance.setOperationName(operationNameInstance);
-                    }
-                    
-                    NodeList elements7 = subscriptionOperationsElement.getElementsByTagName("OperationParameters");
-                    Element operationParametersSequenceElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                    if (operationParametersSequenceElement != null)
-                    {
-                        for (int i2 = 0; i2 < operationParametersSequenceElement.getElementsByTagName("OperationParameter").getLength(); i2 = i2 + 1)
-                        {
-                            org.w3c.dom.Element operationParametersElement = ((org.w3c.dom.Element) operationParametersSequenceElement.getElementsByTagName("OperationParameter").item(i2));
-                            NodeList elements8 = operationParametersElement.getElementsByTagNameNS("http://schemas.datacontract.org/2004/07/Microsoft.WindowsAzure.ServiceManagement", "Name");
-                            String operationParametersKey = elements8.getLength() > 0 ? ((org.w3c.dom.Element) elements8.item(0)).getTextContent() : null;
-                            NodeList elements9 = operationParametersElement.getElementsByTagNameNS("http://schemas.datacontract.org/2004/07/Microsoft.WindowsAzure.ServiceManagement", "Value");
-                            String operationParametersValue = elements9.getLength() > 0 ? ((org.w3c.dom.Element) elements9.item(0)).getTextContent() : null;
-                            subscriptionOperationInstance.getOperationParameters().put(operationParametersKey, operationParametersValue);
-                        }
-                    }
-                    
-                    NodeList elements10 = subscriptionOperationsElement.getElementsByTagName("OperationCaller");
-                    Element operationCallerElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
-                    if (operationCallerElement != null)
-                    {
-                        SubscriptionListOperationsResponse.OperationCallerDetails operationCallerInstance = new SubscriptionListOperationsResponse.OperationCallerDetails();
-                        subscriptionOperationInstance.setOperationCaller(operationCallerInstance);
+                        org.w3c.dom.Element subscriptionOperationsElement = ((org.w3c.dom.Element) subscriptionOperationsSequenceElement.getElementsByTagName("SubscriptionOperation").item(i1));
+                        SubscriptionListOperationsResponse.SubscriptionOperation subscriptionOperationInstance = new SubscriptionListOperationsResponse.SubscriptionOperation();
+                        result.getSubscriptionOperations().add(subscriptionOperationInstance);
                         
-                        NodeList elements11 = operationCallerElement.getElementsByTagName("UsedServiceManagementApi");
-                        Element usedServiceManagementApiElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
-                        if (usedServiceManagementApiElement != null)
+                        NodeList elements4 = subscriptionOperationsElement.getElementsByTagName("OperationId");
+                        Element operationIdElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                        if (operationIdElement != null)
                         {
-                            boolean usedServiceManagementApiInstance;
-                            usedServiceManagementApiInstance = Boolean.parseBoolean(usedServiceManagementApiElement.getTextContent());
-                            operationCallerInstance.setUsedServiceManagementApi(usedServiceManagementApiInstance);
+                            String operationIdInstance;
+                            operationIdInstance = operationIdElement.getTextContent();
+                            subscriptionOperationInstance.setOperationId(operationIdInstance);
                         }
                         
-                        NodeList elements12 = operationCallerElement.getElementsByTagName("UserEmailAddress");
-                        Element userEmailAddressElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
-                        if (userEmailAddressElement != null)
+                        NodeList elements5 = subscriptionOperationsElement.getElementsByTagName("OperationObjectId");
+                        Element operationObjectIdElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                        if (operationObjectIdElement != null)
                         {
-                            String userEmailAddressInstance;
-                            userEmailAddressInstance = userEmailAddressElement.getTextContent();
-                            operationCallerInstance.setUserEmailAddress(userEmailAddressInstance);
+                            String operationObjectIdInstance;
+                            operationObjectIdInstance = operationObjectIdElement.getTextContent();
+                            subscriptionOperationInstance.setOperationObjectId(operationObjectIdInstance);
                         }
                         
-                        NodeList elements13 = operationCallerElement.getElementsByTagName("SubscriptionCertificateThumbprint");
-                        Element subscriptionCertificateThumbprintElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
-                        if (subscriptionCertificateThumbprintElement != null)
+                        NodeList elements6 = subscriptionOperationsElement.getElementsByTagName("OperationName");
+                        Element operationNameElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                        if (operationNameElement != null)
                         {
-                            String subscriptionCertificateThumbprintInstance;
-                            subscriptionCertificateThumbprintInstance = subscriptionCertificateThumbprintElement.getTextContent();
-                            operationCallerInstance.setSubscriptionCertificateThumbprint(subscriptionCertificateThumbprintInstance);
+                            String operationNameInstance;
+                            operationNameInstance = operationNameElement.getTextContent();
+                            subscriptionOperationInstance.setOperationName(operationNameInstance);
                         }
                         
-                        NodeList elements14 = operationCallerElement.getElementsByTagName("ClientIP");
-                        Element clientIPElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
-                        if (clientIPElement != null)
+                        NodeList elements7 = subscriptionOperationsElement.getElementsByTagName("OperationParameters");
+                        Element operationParametersSequenceElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
+                        if (operationParametersSequenceElement != null)
                         {
-                            InetAddress clientIPInstance;
-                            clientIPInstance = InetAddress.getByName(clientIPElement.getTextContent());
-                            operationCallerInstance.setClientIPAddress(clientIPInstance);
+                            for (int i2 = 0; i2 < operationParametersSequenceElement.getElementsByTagName("OperationParameter").getLength(); i2 = i2 + 1)
+                            {
+                                org.w3c.dom.Element operationParametersElement = ((org.w3c.dom.Element) operationParametersSequenceElement.getElementsByTagName("OperationParameter").item(i2));
+                                NodeList elements8 = operationParametersElement.getElementsByTagNameNS("http://schemas.datacontract.org/2004/07/Microsoft.WindowsAzure.ServiceManagement", "Name");
+                                String operationParametersKey = elements8.getLength() > 0 ? ((org.w3c.dom.Element) elements8.item(0)).getTextContent() : null;
+                                NodeList elements9 = operationParametersElement.getElementsByTagNameNS("http://schemas.datacontract.org/2004/07/Microsoft.WindowsAzure.ServiceManagement", "Value");
+                                String operationParametersValue = elements9.getLength() > 0 ? ((org.w3c.dom.Element) elements9.item(0)).getTextContent() : null;
+                                subscriptionOperationInstance.getOperationParameters().put(operationParametersKey, operationParametersValue);
+                            }
                         }
-                    }
-                    
-                    NodeList elements15 = subscriptionOperationsElement.getElementsByTagName("OperationStatus");
-                    Element operationStatusElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
-                    if (operationStatusElement != null)
-                    {
-                        String operationStatusInstance;
-                        operationStatusInstance = operationStatusElement.getTextContent();
-                        subscriptionOperationInstance.setOperationStatus(operationStatusInstance);
-                    }
-                    
-                    NodeList elements16 = subscriptionOperationsElement.getElementsByTagName("OperationStartedTime");
-                    Element operationStartedTimeElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
-                    if (operationStartedTimeElement != null)
-                    {
-                        Calendar operationStartedTimeInstance;
-                        SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.setTime(simpleDateFormat3.parse(operationStartedTimeElement.getTextContent()));
-                        operationStartedTimeInstance = calendar;
-                        subscriptionOperationInstance.setOperationStartedTime(operationStartedTimeInstance);
-                    }
-                    
-                    NodeList elements17 = subscriptionOperationsElement.getElementsByTagName("OperationCompletedTime");
-                    Element operationCompletedTimeElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
-                    if (operationCompletedTimeElement != null)
-                    {
-                        Calendar operationCompletedTimeInstance;
-                        SimpleDateFormat simpleDateFormat4 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                        Calendar calendar2 = Calendar.getInstance();
-                        calendar2.setTime(simpleDateFormat4.parse(operationCompletedTimeElement.getTextContent()));
-                        operationCompletedTimeInstance = calendar2;
-                        subscriptionOperationInstance.setOperationCompletedTime(operationCompletedTimeInstance);
+                        
+                        NodeList elements10 = subscriptionOperationsElement.getElementsByTagName("OperationCaller");
+                        Element operationCallerElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
+                        if (operationCallerElement != null)
+                        {
+                            SubscriptionListOperationsResponse.OperationCallerDetails operationCallerInstance = new SubscriptionListOperationsResponse.OperationCallerDetails();
+                            subscriptionOperationInstance.setOperationCaller(operationCallerInstance);
+                            
+                            NodeList elements11 = operationCallerElement.getElementsByTagName("UsedServiceManagementApi");
+                            Element usedServiceManagementApiElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
+                            if (usedServiceManagementApiElement != null)
+                            {
+                                boolean usedServiceManagementApiInstance;
+                                usedServiceManagementApiInstance = Boolean.parseBoolean(usedServiceManagementApiElement.getTextContent());
+                                operationCallerInstance.setUsedServiceManagementApi(usedServiceManagementApiInstance);
+                            }
+                            
+                            NodeList elements12 = operationCallerElement.getElementsByTagName("UserEmailAddress");
+                            Element userEmailAddressElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
+                            if (userEmailAddressElement != null)
+                            {
+                                String userEmailAddressInstance;
+                                userEmailAddressInstance = userEmailAddressElement.getTextContent();
+                                operationCallerInstance.setUserEmailAddress(userEmailAddressInstance);
+                            }
+                            
+                            NodeList elements13 = operationCallerElement.getElementsByTagName("SubscriptionCertificateThumbprint");
+                            Element subscriptionCertificateThumbprintElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
+                            if (subscriptionCertificateThumbprintElement != null)
+                            {
+                                String subscriptionCertificateThumbprintInstance;
+                                subscriptionCertificateThumbprintInstance = subscriptionCertificateThumbprintElement.getTextContent();
+                                operationCallerInstance.setSubscriptionCertificateThumbprint(subscriptionCertificateThumbprintInstance);
+                            }
+                            
+                            NodeList elements14 = operationCallerElement.getElementsByTagName("ClientIP");
+                            Element clientIPElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
+                            if (clientIPElement != null)
+                            {
+                                InetAddress clientIPInstance;
+                                clientIPInstance = InetAddress.getByName(clientIPElement.getTextContent());
+                                operationCallerInstance.setClientIPAddress(clientIPInstance);
+                            }
+                        }
+                        
+                        NodeList elements15 = subscriptionOperationsElement.getElementsByTagName("OperationStatus");
+                        Element operationStatusElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
+                        if (operationStatusElement != null)
+                        {
+                            String operationStatusInstance;
+                            operationStatusInstance = operationStatusElement.getTextContent();
+                            subscriptionOperationInstance.setOperationStatus(operationStatusInstance);
+                        }
+                        
+                        NodeList elements16 = subscriptionOperationsElement.getElementsByTagName("OperationStartedTime");
+                        Element operationStartedTimeElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
+                        if (operationStartedTimeElement != null)
+                        {
+                            Calendar operationStartedTimeInstance;
+                            SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                            Calendar calendar = Calendar.getInstance();
+                            calendar.setTime(simpleDateFormat3.parse(operationStartedTimeElement.getTextContent()));
+                            operationStartedTimeInstance = calendar;
+                            subscriptionOperationInstance.setOperationStartedTime(operationStartedTimeInstance);
+                        }
+                        
+                        NodeList elements17 = subscriptionOperationsElement.getElementsByTagName("OperationCompletedTime");
+                        Element operationCompletedTimeElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
+                        if (operationCompletedTimeElement != null)
+                        {
+                            Calendar operationCompletedTimeInstance;
+                            SimpleDateFormat simpleDateFormat4 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                            Calendar calendar2 = Calendar.getInstance();
+                            calendar2.setTime(simpleDateFormat4.parse(operationCompletedTimeElement.getTextContent()));
+                            operationCompletedTimeInstance = calendar2;
+                            subscriptionOperationInstance.setOperationCompletedTime(operationCompletedTimeInstance);
+                        }
                     }
                 }
             }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -630,6 +673,10 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
     * Register a resource with your subscription.
     *
     * @param resourceName Name of the resource to register.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -665,40 +712,50 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != HttpStatus.SC_OK && statusCode != HttpStatus.SC_ACCEPTED)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK && statusCode != HttpStatus.SC_ACCEPTED)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        OperationResponse result = null;
-        result = new OperationResponse();
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -724,6 +781,10 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
     * Unregister a resource with your subscription.
     *
     * @param resourceName Name of the resource to unregister.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -759,39 +820,49 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != HttpStatus.SC_OK && statusCode != HttpStatus.SC_ACCEPTED)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK && statusCode != HttpStatus.SC_ACCEPTED)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        OperationResponse result = null;
-        result = new OperationResponse();
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
 }

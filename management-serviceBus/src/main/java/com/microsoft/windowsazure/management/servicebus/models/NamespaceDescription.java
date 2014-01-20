@@ -34,6 +34,7 @@ public class NamespaceDescription
     
     /**
     * The authorization type.
+    * @return The AuthorizationType value.
     */
     public String getAuthorizationType()
     {
@@ -42,10 +43,11 @@ public class NamespaceDescription
     
     /**
     * The authorization type.
+    * @param authorizationTypeValue The AuthorizationType value.
     */
-    public void setAuthorizationType(String authorizationType)
+    public void setAuthorizationType(final String authorizationTypeValue)
     {
-        this.authorizationType = authorizationType;
+        this.authorizationType = authorizationTypeValue;
     }
     
     private String connectionString;
@@ -54,6 +56,7 @@ public class NamespaceDescription
     * Namespace connection string.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
     * more information)
+    * @return The ConnectionString value.
     */
     public String getConnectionString()
     {
@@ -64,10 +67,11 @@ public class NamespaceDescription
     * Namespace connection string.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
     * more information)
+    * @param connectionStringValue The ConnectionString value.
     */
-    public void setConnectionString(String connectionString)
+    public void setConnectionString(final String connectionStringValue)
     {
-        this.connectionString = connectionString;
+        this.connectionString = connectionStringValue;
     }
     
     private String keyName;
@@ -76,6 +80,7 @@ public class NamespaceDescription
     * Default ACS access key to generate the access token.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
     * more information)
+    * @return The KeyName value.
     */
     public String getKeyName()
     {
@@ -86,16 +91,18 @@ public class NamespaceDescription
     * Default ACS access key to generate the access token.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
     * more information)
+    * @param keyNameValue The KeyName value.
     */
-    public void setKeyName(String keyName)
+    public void setKeyName(final String keyNameValue)
     {
-        this.keyName = keyName;
+        this.keyName = keyNameValue;
     }
     
     private ArrayList<AccessRight> rights;
     
     /**
     * The rights associated with a namespace.
+    * @return The Rights value.
     */
     public ArrayList<AccessRight> getRights()
     {
@@ -104,16 +111,18 @@ public class NamespaceDescription
     
     /**
     * The rights associated with a namespace.
+    * @param rightsValue The Rights value.
     */
-    public void setRights(ArrayList<AccessRight> rights)
+    public void setRights(final ArrayList<AccessRight> rightsValue)
     {
-        this.rights = rights;
+        this.rights = rightsValue;
     }
     
     private String secondaryConnectionString;
     
     /**
     * Secondary namespace connection string.
+    * @return The SecondaryConnectionString value.
     */
     public String getSecondaryConnectionString()
     {
@@ -122,10 +131,11 @@ public class NamespaceDescription
     
     /**
     * Secondary namespace connection string.
+    * @param secondaryConnectionStringValue The SecondaryConnectionString value.
     */
-    public void setSecondaryConnectionString(String secondaryConnectionString)
+    public void setSecondaryConnectionString(final String secondaryConnectionStringValue)
     {
-        this.secondaryConnectionString = secondaryConnectionString;
+        this.secondaryConnectionString = secondaryConnectionStringValue;
     }
     
     /**

@@ -36,6 +36,7 @@ public class ServiceBusConnectionDetailsResponse extends OperationResponse imple
     
     /**
     * The set of connection details for a service bus entitiy.
+    * @return The ConnectionDetails value.
     */
     public ArrayList<ServiceBusConnectionDetail> getConnectionDetails()
     {
@@ -44,10 +45,11 @@ public class ServiceBusConnectionDetailsResponse extends OperationResponse imple
     
     /**
     * The set of connection details for a service bus entitiy.
+    * @param connectionDetailsValue The ConnectionDetails value.
     */
-    public void setConnectionDetails(ArrayList<ServiceBusConnectionDetail> connectionDetails)
+    public void setConnectionDetails(final ArrayList<ServiceBusConnectionDetail> connectionDetailsValue)
     {
-        this.connectionDetails = connectionDetails;
+        this.connectionDetails = connectionDetailsValue;
     }
     
     /**

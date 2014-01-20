@@ -40,6 +40,7 @@ public class SubscriptionListOperationsParameters
     * operations from where the last response left off. If no token is
     * specified, a filter is not applied and the response will begin at the
     * specified StartTime.
+    * @return The ContinuationToken value.
     */
     public String getContinuationToken()
     {
@@ -54,10 +55,11 @@ public class SubscriptionListOperationsParameters
     * operations from where the last response left off. If no token is
     * specified, a filter is not applied and the response will begin at the
     * specified StartTime.
+    * @param continuationTokenValue The ContinuationToken value.
     */
-    public void setContinuationToken(String continuationToken)
+    public void setContinuationToken(final String continuationTokenValue)
     {
-        this.continuationToken = continuationToken;
+        this.continuationToken = continuationTokenValue;
     }
     
     private Calendar endTime;
@@ -66,6 +68,7 @@ public class SubscriptionListOperationsParameters
     * Required. The end of the timeframe to begin listing subscription
     * operations in UTC format. This parameter and the StartTime parameter
     * indicate the timeframe to retrieve subscription operations.
+    * @return The EndTime value.
     */
     public Calendar getEndTime()
     {
@@ -76,10 +79,11 @@ public class SubscriptionListOperationsParameters
     * Required. The end of the timeframe to begin listing subscription
     * operations in UTC format. This parameter and the StartTime parameter
     * indicate the timeframe to retrieve subscription operations.
+    * @param endTimeValue The EndTime value.
     */
-    public void setEndTime(Calendar endTime)
+    public void setEndTime(final Calendar endTimeValue)
     {
-        this.endTime = endTime;
+        this.endTime = endTimeValue;
     }
     
     private String objectIdFilter;
@@ -89,6 +93,7 @@ public class SubscriptionListOperationsParameters
     * type and object ID. This parameter must be set equal to the URL value
     * for performing an HTTP GET on the object. If no object is specified, a
     * filter is not applied.
+    * @return The ObjectIdFilter value.
     */
     public String getObjectIdFilter()
     {
@@ -100,10 +105,11 @@ public class SubscriptionListOperationsParameters
     * type and object ID. This parameter must be set equal to the URL value
     * for performing an HTTP GET on the object. If no object is specified, a
     * filter is not applied.
+    * @param objectIdFilterValue The ObjectIdFilter value.
     */
-    public void setObjectIdFilter(String objectIdFilter)
+    public void setObjectIdFilter(final String objectIdFilterValue)
     {
-        this.objectIdFilter = objectIdFilter;
+        this.objectIdFilter = objectIdFilterValue;
     }
     
     private OperationStatus operationStatus;
@@ -114,6 +120,7 @@ public class SubscriptionListOperationsParameters
     * combined with the ObjectIdFilter to selectsubscription operations for an
     * object with a specific resultstatus. If no result status is specified, a
     * filter is not applied.
+    * @return The OperationStatus value.
     */
     public OperationStatus getOperationStatus()
     {
@@ -126,10 +133,11 @@ public class SubscriptionListOperationsParameters
     * combined with the ObjectIdFilter to selectsubscription operations for an
     * object with a specific resultstatus. If no result status is specified, a
     * filter is not applied.
+    * @param operationStatusValue The OperationStatus value.
     */
-    public void setOperationStatus(OperationStatus operationStatus)
+    public void setOperationStatus(final OperationStatus operationStatusValue)
     {
-        this.operationStatus = operationStatus;
+        this.operationStatus = operationStatusValue;
     }
     
     private Calendar startTime;
@@ -139,6 +147,7 @@ public class SubscriptionListOperationsParameters
     * operations in UTC format. This parameter and theEndTime parameter
     * indicate the timeframe to retrieve subscription operations. This
     * parameter cannot indicate a start date of more than 90 days in the past.
+    * @return The StartTime value.
     */
     public Calendar getStartTime()
     {
@@ -150,9 +159,10 @@ public class SubscriptionListOperationsParameters
     * operations in UTC format. This parameter and theEndTime parameter
     * indicate the timeframe to retrieve subscription operations. This
     * parameter cannot indicate a start date of more than 90 days in the past.
+    * @param startTimeValue The StartTime value.
     */
-    public void setStartTime(Calendar startTime)
+    public void setStartTime(final Calendar startTimeValue)
     {
-        this.startTime = startTime;
+        this.startTime = startTimeValue;
     }
 }

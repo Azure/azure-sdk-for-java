@@ -36,6 +36,7 @@ public class ServiceBusQueuesResponse extends OperationResponse implements Itera
     
     /**
     * The listing of queues.
+    * @return The Queues value.
     */
     public ArrayList<ServiceBusQueue> getQueues()
     {
@@ -44,10 +45,11 @@ public class ServiceBusQueuesResponse extends OperationResponse implements Itera
     
     /**
     * The listing of queues.
+    * @param queuesValue The Queues value.
     */
-    public void setQueues(ArrayList<ServiceBusQueue> queues)
+    public void setQueues(final ArrayList<ServiceBusQueue> queuesValue)
     {
-        this.queues = queues;
+        this.queues = queuesValue;
     }
     
     /**

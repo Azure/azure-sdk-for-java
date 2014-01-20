@@ -36,6 +36,7 @@ public class AffinityGroupListResponse extends OperationResponse implements Iter
     
     /**
     * The affinity groups associated with the specified subscription.
+    * @return The AffinityGroups value.
     */
     public ArrayList<AffinityGroupListResponse.AffinityGroup> getAffinityGroups()
     {
@@ -44,10 +45,11 @@ public class AffinityGroupListResponse extends OperationResponse implements Iter
     
     /**
     * The affinity groups associated with the specified subscription.
+    * @param affinityGroupsValue The AffinityGroups value.
     */
-    public void setAffinityGroups(ArrayList<AffinityGroupListResponse.AffinityGroup> affinityGroups)
+    public void setAffinityGroups(final ArrayList<AffinityGroupListResponse.AffinityGroup> affinityGroupsValue)
     {
-        this.affinityGroups = affinityGroups;
+        this.affinityGroups = affinityGroupsValue;
     }
     
     /**
@@ -81,6 +83,7 @@ public class AffinityGroupListResponse extends OperationResponse implements Iter
         * related operations. If so, the string PersistentVMRole will be
         * returned by this element. Otherwise, this element will not be
         * present.
+        * @return The Capabilities value.
         */
         public ArrayList<String> getCapabilities()
         {
@@ -92,16 +95,18 @@ public class AffinityGroupListResponse extends OperationResponse implements Iter
         * related operations. If so, the string PersistentVMRole will be
         * returned by this element. Otherwise, this element will not be
         * present.
+        * @param capabilitiesValue The Capabilities value.
         */
-        public void setCapabilities(ArrayList<String> capabilities)
+        public void setCapabilities(final ArrayList<String> capabilitiesValue)
         {
-            this.capabilities = capabilities;
+            this.capabilities = capabilitiesValue;
         }
         
         private String description;
         
         /**
         * The user supplied description of this affinity group.
+        * @return The Description value.
         */
         public String getDescription()
         {
@@ -110,10 +115,11 @@ public class AffinityGroupListResponse extends OperationResponse implements Iter
         
         /**
         * The user supplied description of this affinity group.
+        * @param descriptionValue The Description value.
         */
-        public void setDescription(String description)
+        public void setDescription(final String descriptionValue)
         {
-            this.description = description;
+            this.description = descriptionValue;
         }
         
         private String label;
@@ -121,6 +127,7 @@ public class AffinityGroupListResponse extends OperationResponse implements Iter
         /**
         * The user supplied label of the affinity group returned as a base-64
         * encoded string.
+        * @return The Label value.
         */
         public String getLabel()
         {
@@ -130,10 +137,11 @@ public class AffinityGroupListResponse extends OperationResponse implements Iter
         /**
         * The user supplied label of the affinity group returned as a base-64
         * encoded string.
+        * @param labelValue The Label value.
         */
-        public void setLabel(String label)
+        public void setLabel(final String labelValue)
         {
-            this.label = label;
+            this.label = labelValue;
         }
         
         private String location;
@@ -141,6 +149,7 @@ public class AffinityGroupListResponse extends OperationResponse implements Iter
         /**
         * The user specified data center that this affinity groups is located
         * in.
+        * @return The Location value.
         */
         public String getLocation()
         {
@@ -150,16 +159,18 @@ public class AffinityGroupListResponse extends OperationResponse implements Iter
         /**
         * The user specified data center that this affinity groups is located
         * in.
+        * @param locationValue The Location value.
         */
-        public void setLocation(String location)
+        public void setLocation(final String locationValue)
         {
-            this.location = location;
+            this.location = locationValue;
         }
         
         private String name;
         
         /**
         * The user supplied name of the affinity group.
+        * @return The Name value.
         */
         public String getName()
         {
@@ -168,10 +179,11 @@ public class AffinityGroupListResponse extends OperationResponse implements Iter
         
         /**
         * The user supplied name of the affinity group.
+        * @param nameValue The Name value.
         */
-        public void setName(String name)
+        public void setName(final String nameValue)
         {
-            this.name = name;
+            this.name = nameValue;
         }
         
         /**

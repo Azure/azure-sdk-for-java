@@ -66,6 +66,7 @@ public class RelayOperationsImpl implements ServiceOperations<ServiceBusManageme
     /**
     * Gets a reference to the
     * microsoft.windowsazure.management.servicebus.ServiceBusManagementClientImpl.
+    * @return The Client value.
     */
     public ServiceBusManagementClientImpl getClient()
     {
@@ -75,8 +76,6 @@ public class RelayOperationsImpl implements ServiceOperations<ServiceBusManageme
     /**
     * Gets the set of connection strings for a relay.
     *
-    * @param namespaceName The namespace name.
-    * @param relayName The relay name.
     * @return The set of connection details for a service bus entity.
     */
     @Override
@@ -94,22 +93,20 @@ public class RelayOperationsImpl implements ServiceOperations<ServiceBusManageme
     /**
     * Gets the set of connection strings for a relay.
     *
-    * @param namespaceName The namespace name.
-    * @param relayName The relay name.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
     * @return The set of connection details for a service bus entity.
     */
     @Override
     public ServiceBusConnectionDetailsResponse getConnectionDetails(String namespaceName, String relayName) throws IOException, ServiceException, ParserConfigurationException, SAXException
     {
         // Validate
-        if (namespaceName == null)
-        {
-            throw new NullPointerException("namespaceName");
-        }
-        if (relayName == null)
-        {
-            throw new NullPointerException("relayName");
-        }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();

@@ -37,7 +37,6 @@ import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -50,7 +49,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -60,6 +58,7 @@ import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
+import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -86,6 +85,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
     /**
     * Gets a reference to the
     * microsoft.windowsazure.management.servicebus.ServiceBusManagementClientImpl.
+    * @return The Client value.
     */
     public ServiceBusManagementClientImpl getClient()
     {
@@ -100,8 +100,6 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780728.aspx for
     * more information)
     *
-    * @param namespaceName The namespace name.
-    * @param topic The Service Bus topic.
     * @return A response to a request for a particular topic.
     */
     @Override
@@ -124,22 +122,26 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780728.aspx for
     * more information)
     *
-    * @param namespaceName The namespace name.
-    * @param topic The Service Bus topic.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
     * @return A response to a request for a particular topic.
     */
     @Override
-    public ServiceBusTopicResponse create(String namespaceName, ServiceBusTopic topic) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException, ParseException, URISyntaxException
+    public ServiceBusTopicResponse create(String namespaceName, ServiceBusTopic topic) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, ParseException, URISyntaxException
     {
         // Validate
-        if (namespaceName == null)
-        {
-            throw new NullPointerException("namespaceName");
-        }
-        if (topic == null)
-        {
-            throw new NullPointerException("topic");
-        }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
@@ -171,198 +173,205 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
         DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
         Document requestDoc = documentBuilder.newDocument();
         
-        Element entryElement = requestDoc.createElementNS("http://www.w3.org/2005/Atom", "entry");
-        requestDoc.appendChild(entryElement);
-        
-        Element contentElement = requestDoc.createElementNS("http://www.w3.org/2005/Atom", "content");
-        entryElement.appendChild(contentElement);
-        
-        String typeAttribute = null;
-        
-        Element topicDescriptionElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "TopicDescription");
-        contentElement.appendChild(topicDescriptionElement);
-        
-        if (topic.getDefaultMessageTimeToLive() != null)
+        if (topic != null)
         {
-            Element defaultMessageTimeToLiveElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "DefaultMessageTimeToLive");
-            defaultMessageTimeToLiveElement.appendChild(requestDoc.createTextNode(topic.getDefaultMessageTimeToLive()));
-            topicDescriptionElement.appendChild(defaultMessageTimeToLiveElement);
-        }
-        
-        Element maxSizeInMegabytesElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "MaxSizeInMegabytes");
-        maxSizeInMegabytesElement.appendChild(requestDoc.createTextNode(Integer.toString(topic.getMaxSizeInMegabytes())));
-        topicDescriptionElement.appendChild(maxSizeInMegabytesElement);
-        
-        Element requiresDuplicateDetectionElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "RequiresDuplicateDetection");
-        requiresDuplicateDetectionElement.appendChild(requestDoc.createTextNode(Boolean.toString(topic.isRequiresDuplicateDetection()).toLowerCase()));
-        topicDescriptionElement.appendChild(requiresDuplicateDetectionElement);
-        
-        if (topic.getDuplicateDetectionHistoryTimeWindow() != null)
-        {
-            Element duplicateDetectionHistoryTimeWindowElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "DuplicateDetectionHistoryTimeWindow");
-            duplicateDetectionHistoryTimeWindowElement.appendChild(requestDoc.createTextNode(topic.getDuplicateDetectionHistoryTimeWindow()));
-            topicDescriptionElement.appendChild(duplicateDetectionHistoryTimeWindowElement);
-        }
-        
-        Element enableBatchedOperationsElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "EnableBatchedOperations");
-        enableBatchedOperationsElement.appendChild(requestDoc.createTextNode(Boolean.toString(topic.isEnableBatchedOperations()).toLowerCase()));
-        topicDescriptionElement.appendChild(enableBatchedOperationsElement);
-        
-        Element sizeInBytesElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SizeInBytes");
-        sizeInBytesElement.appendChild(requestDoc.createTextNode(Integer.toString(topic.getSizeInBytes())));
-        topicDescriptionElement.appendChild(sizeInBytesElement);
-        
-        Element filteringMessagesBeforePublishingElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "FilteringMessagesBeforePublishing");
-        filteringMessagesBeforePublishingElement.appendChild(requestDoc.createTextNode(Boolean.toString(topic.isFilteringMessagesBeforePublishing()).toLowerCase()));
-        topicDescriptionElement.appendChild(filteringMessagesBeforePublishingElement);
-        
-        Element isAnonymousAccessibleElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "IsAnonymousAccessible");
-        isAnonymousAccessibleElement.appendChild(requestDoc.createTextNode(Boolean.toString(topic.isAnonymousAccessible()).toLowerCase()));
-        topicDescriptionElement.appendChild(isAnonymousAccessibleElement);
-        
-        if (topic.getAuthorizationRules() != null)
-        {
-            Element authorizationRulesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationRules");
-            for (ServiceBusSharedAccessAuthorizationRule authorizationRulesItem : topic.getAuthorizationRules())
+            Element entryElement = requestDoc.createElementNS("http://www.w3.org/2005/Atom", "entry");
+            requestDoc.appendChild(entryElement);
+            
+            Element contentElement = requestDoc.createElementNS("http://www.w3.org/2005/Atom", "content");
+            entryElement.appendChild(contentElement);
+            
+            Attr typeAttribute = requestDoc.createAttribute("type");
+            typeAttribute.setValue("application/atom+xml;type=entry;charset=utf-8");
+            contentElement.setAttributeNode(typeAttribute);
+            
+            Element topicDescriptionElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "TopicDescription");
+            contentElement.appendChild(topicDescriptionElement);
+            
+            if (topic.getDefaultMessageTimeToLive() != null)
             {
-                Element authorizationRuleElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationRule");
-                authorizationRulesSequenceElement.appendChild(authorizationRuleElement);
-                
-                String typeAttribute2 = null;
-                
-                if (authorizationRulesItem.getClaimType() != null)
-                {
-                    Element claimTypeElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ClaimType");
-                    claimTypeElement.appendChild(requestDoc.createTextNode(authorizationRulesItem.getClaimType()));
-                    authorizationRuleElement.appendChild(claimTypeElement);
-                }
-                
-                if (authorizationRulesItem.getClaimValue() != null)
-                {
-                    Element claimValueElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ClaimValue");
-                    claimValueElement.appendChild(requestDoc.createTextNode(authorizationRulesItem.getClaimValue()));
-                    authorizationRuleElement.appendChild(claimValueElement);
-                }
-                
-                if (authorizationRulesItem.getRights() != null)
-                {
-                    Element rightsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Rights");
-                    for (AccessRight rightsItem : authorizationRulesItem.getRights())
-                    {
-                        Element rightsItemElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights");
-                        rightsItemElement.appendChild(requestDoc.createTextNode(rightsItem.toString()));
-                        rightsSequenceElement.appendChild(rightsItemElement);
-                    }
-                    authorizationRuleElement.appendChild(rightsSequenceElement);
-                }
-                
-                Element createdTimeElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CreatedTime");
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
-                simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-                createdTimeElement.appendChild(requestDoc.createTextNode(simpleDateFormat.format(authorizationRulesItem.getCreatedTime().getTime())));
-                authorizationRuleElement.appendChild(createdTimeElement);
-                
-                if (authorizationRulesItem.getKeyName() != null)
-                {
-                    Element keyNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "KeyName");
-                    keyNameElement.appendChild(requestDoc.createTextNode(authorizationRulesItem.getKeyName()));
-                    authorizationRuleElement.appendChild(keyNameElement);
-                }
-                
-                Element modifiedTimeElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ModifiedTime");
-                SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
-                simpleDateFormat2.setTimeZone(TimeZone.getTimeZone("UTC"));
-                modifiedTimeElement.appendChild(requestDoc.createTextNode(simpleDateFormat2.format(authorizationRulesItem.getModifiedTime().getTime())));
-                authorizationRuleElement.appendChild(modifiedTimeElement);
-                
-                if (authorizationRulesItem.getPrimaryKey() != null)
-                {
-                    Element primaryKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "PrimaryKey");
-                    primaryKeyElement.appendChild(requestDoc.createTextNode(authorizationRulesItem.getPrimaryKey()));
-                    authorizationRuleElement.appendChild(primaryKeyElement);
-                }
-                
-                if (authorizationRulesItem.getSecondaryKey() != null)
-                {
-                    Element secondaryKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SecondaryKey");
-                    secondaryKeyElement.appendChild(requestDoc.createTextNode(authorizationRulesItem.getSecondaryKey()));
-                    authorizationRuleElement.appendChild(secondaryKeyElement);
-                }
+                Element defaultMessageTimeToLiveElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "DefaultMessageTimeToLive");
+                defaultMessageTimeToLiveElement.appendChild(requestDoc.createTextNode(topic.getDefaultMessageTimeToLive()));
+                topicDescriptionElement.appendChild(defaultMessageTimeToLiveElement);
             }
-            topicDescriptionElement.appendChild(authorizationRulesSequenceElement);
-        }
-        
-        if (topic.getStatus() != null)
-        {
-            Element statusElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Status");
-            statusElement.appendChild(requestDoc.createTextNode(topic.getStatus()));
-            topicDescriptionElement.appendChild(statusElement);
-        }
-        
-        Element createdAtElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CreatedAt");
-        SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
-        simpleDateFormat3.setTimeZone(TimeZone.getTimeZone("UTC"));
-        createdAtElement.appendChild(requestDoc.createTextNode(simpleDateFormat3.format(topic.getCreatedAt().getTime())));
-        topicDescriptionElement.appendChild(createdAtElement);
-        
-        Element updatedAtElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "UpdatedAt");
-        SimpleDateFormat simpleDateFormat4 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
-        simpleDateFormat4.setTimeZone(TimeZone.getTimeZone("UTC"));
-        updatedAtElement.appendChild(requestDoc.createTextNode(simpleDateFormat4.format(topic.getUpdatedAt().getTime())));
-        topicDescriptionElement.appendChild(updatedAtElement);
-        
-        Element accessedAtElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessedAt");
-        SimpleDateFormat simpleDateFormat5 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
-        simpleDateFormat5.setTimeZone(TimeZone.getTimeZone("UTC"));
-        accessedAtElement.appendChild(requestDoc.createTextNode(simpleDateFormat5.format(topic.getAccessedAt().getTime())));
-        topicDescriptionElement.appendChild(accessedAtElement);
-        
-        Element supportOrderingElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SupportOrdering");
-        supportOrderingElement.appendChild(requestDoc.createTextNode(Boolean.toString(topic.isSupportOrdering()).toLowerCase()));
-        topicDescriptionElement.appendChild(supportOrderingElement);
-        
-        if (topic.getCountDetails() != null)
-        {
-            Element countDetailsElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CountDetails");
-            topicDescriptionElement.appendChild(countDetailsElement);
             
-            Element activeMessageCountElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2011/06/servicebus", "ActiveMessageCount");
-            activeMessageCountElement.appendChild(requestDoc.createTextNode(Integer.toString(topic.getCountDetails().getActiveMessageCount())));
-            countDetailsElement.appendChild(activeMessageCountElement);
+            Element maxSizeInMegabytesElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "MaxSizeInMegabytes");
+            maxSizeInMegabytesElement.appendChild(requestDoc.createTextNode(Integer.toString(topic.getMaxSizeInMegabytes())));
+            topicDescriptionElement.appendChild(maxSizeInMegabytesElement);
             
-            Element deadLetterMessageCountElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2011/06/servicebus", "DeadLetterMessageCount");
-            deadLetterMessageCountElement.appendChild(requestDoc.createTextNode(Integer.toString(topic.getCountDetails().getDeadLetterMessageCount())));
-            countDetailsElement.appendChild(deadLetterMessageCountElement);
+            Element requiresDuplicateDetectionElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "RequiresDuplicateDetection");
+            requiresDuplicateDetectionElement.appendChild(requestDoc.createTextNode(Boolean.toString(topic.isRequiresDuplicateDetection()).toLowerCase()));
+            topicDescriptionElement.appendChild(requiresDuplicateDetectionElement);
             
-            Element scheduledMessageCountElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2011/06/servicebus", "ScheduledMessageCount");
-            scheduledMessageCountElement.appendChild(requestDoc.createTextNode(Integer.toString(topic.getCountDetails().getScheduledMessageCount())));
-            countDetailsElement.appendChild(scheduledMessageCountElement);
+            if (topic.getDuplicateDetectionHistoryTimeWindow() != null)
+            {
+                Element duplicateDetectionHistoryTimeWindowElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "DuplicateDetectionHistoryTimeWindow");
+                duplicateDetectionHistoryTimeWindowElement.appendChild(requestDoc.createTextNode(topic.getDuplicateDetectionHistoryTimeWindow()));
+                topicDescriptionElement.appendChild(duplicateDetectionHistoryTimeWindowElement);
+            }
             
-            Element transferDeadLetterMessageCountElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2011/06/servicebus", "TransferDeadLetterMessageCount");
-            transferDeadLetterMessageCountElement.appendChild(requestDoc.createTextNode(Integer.toString(topic.getCountDetails().getTransferDeadLetterMessageCount())));
-            countDetailsElement.appendChild(transferDeadLetterMessageCountElement);
+            Element enableBatchedOperationsElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "EnableBatchedOperations");
+            enableBatchedOperationsElement.appendChild(requestDoc.createTextNode(Boolean.toString(topic.isEnableBatchedOperations()).toLowerCase()));
+            topicDescriptionElement.appendChild(enableBatchedOperationsElement);
             
-            Element transferMessageCountElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2011/06/servicebus", "TransferMessageCount");
-            transferMessageCountElement.appendChild(requestDoc.createTextNode(Integer.toString(topic.getCountDetails().getTransferMessageCount())));
-            countDetailsElement.appendChild(transferMessageCountElement);
-        }
-        
-        Element subscriptionCountElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SubscriptionCount");
-        subscriptionCountElement.appendChild(requestDoc.createTextNode(Integer.toString(topic.getSubscriptionCount())));
-        topicDescriptionElement.appendChild(subscriptionCountElement);
-        
-        if (topic.getAutoDeleteOnIdle() != null)
-        {
-            Element autoDeleteOnIdleElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AutoDeleteOnIdle");
-            autoDeleteOnIdleElement.appendChild(requestDoc.createTextNode(topic.getAutoDeleteOnIdle()));
-            topicDescriptionElement.appendChild(autoDeleteOnIdleElement);
-        }
-        
-        if (topic.getEntityAvailabilityStatus() != null)
-        {
-            Element entityAvailabilityStatusElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "EntityAvailabilityStatus");
-            entityAvailabilityStatusElement.appendChild(requestDoc.createTextNode(topic.getEntityAvailabilityStatus()));
-            topicDescriptionElement.appendChild(entityAvailabilityStatusElement);
+            Element sizeInBytesElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SizeInBytes");
+            sizeInBytesElement.appendChild(requestDoc.createTextNode(Integer.toString(topic.getSizeInBytes())));
+            topicDescriptionElement.appendChild(sizeInBytesElement);
+            
+            Element filteringMessagesBeforePublishingElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "FilteringMessagesBeforePublishing");
+            filteringMessagesBeforePublishingElement.appendChild(requestDoc.createTextNode(Boolean.toString(topic.isFilteringMessagesBeforePublishing()).toLowerCase()));
+            topicDescriptionElement.appendChild(filteringMessagesBeforePublishingElement);
+            
+            Element isAnonymousAccessibleElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "IsAnonymousAccessible");
+            isAnonymousAccessibleElement.appendChild(requestDoc.createTextNode(Boolean.toString(topic.isAnonymousAccessible()).toLowerCase()));
+            topicDescriptionElement.appendChild(isAnonymousAccessibleElement);
+            
+            if (topic.getAuthorizationRules() != null)
+            {
+                Element authorizationRulesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationRules");
+                for (ServiceBusSharedAccessAuthorizationRule authorizationRulesItem : topic.getAuthorizationRules())
+                {
+                    Element authorizationRuleElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationRule");
+                    authorizationRulesSequenceElement.appendChild(authorizationRuleElement);
+                    
+                    Attr typeAttribute2 = requestDoc.createAttribute("http://www.w3.org/2001/XMLSchema-instance", "type");
+                    typeAttribute2.setValue("SharedAccessAuthorizationRule");
+                    authorizationRuleElement.setAttributeNode(typeAttribute2);
+                    
+                    if (authorizationRulesItem.getClaimType() != null)
+                    {
+                        Element claimTypeElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ClaimType");
+                        claimTypeElement.appendChild(requestDoc.createTextNode(authorizationRulesItem.getClaimType()));
+                        authorizationRuleElement.appendChild(claimTypeElement);
+                    }
+                    
+                    if (authorizationRulesItem.getClaimValue() != null)
+                    {
+                        Element claimValueElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ClaimValue");
+                        claimValueElement.appendChild(requestDoc.createTextNode(authorizationRulesItem.getClaimValue()));
+                        authorizationRuleElement.appendChild(claimValueElement);
+                    }
+                    
+                    if (authorizationRulesItem.getRights() != null)
+                    {
+                        Element rightsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Rights");
+                        for (AccessRight rightsItem : authorizationRulesItem.getRights())
+                        {
+                            Element rightsItemElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights");
+                            rightsItemElement.appendChild(requestDoc.createTextNode(rightsItem.toString()));
+                            rightsSequenceElement.appendChild(rightsItemElement);
+                        }
+                        authorizationRuleElement.appendChild(rightsSequenceElement);
+                    }
+                    
+                    Element createdTimeElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CreatedTime");
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+                    simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    createdTimeElement.appendChild(requestDoc.createTextNode(simpleDateFormat.format(authorizationRulesItem.getCreatedTime().getTime())));
+                    authorizationRuleElement.appendChild(createdTimeElement);
+                    
+                    if (authorizationRulesItem.getKeyName() != null)
+                    {
+                        Element keyNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "KeyName");
+                        keyNameElement.appendChild(requestDoc.createTextNode(authorizationRulesItem.getKeyName()));
+                        authorizationRuleElement.appendChild(keyNameElement);
+                    }
+                    
+                    Element modifiedTimeElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ModifiedTime");
+                    SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+                    simpleDateFormat2.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    modifiedTimeElement.appendChild(requestDoc.createTextNode(simpleDateFormat2.format(authorizationRulesItem.getModifiedTime().getTime())));
+                    authorizationRuleElement.appendChild(modifiedTimeElement);
+                    
+                    if (authorizationRulesItem.getPrimaryKey() != null)
+                    {
+                        Element primaryKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "PrimaryKey");
+                        primaryKeyElement.appendChild(requestDoc.createTextNode(authorizationRulesItem.getPrimaryKey()));
+                        authorizationRuleElement.appendChild(primaryKeyElement);
+                    }
+                    
+                    if (authorizationRulesItem.getSecondaryKey() != null)
+                    {
+                        Element secondaryKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SecondaryKey");
+                        secondaryKeyElement.appendChild(requestDoc.createTextNode(authorizationRulesItem.getSecondaryKey()));
+                        authorizationRuleElement.appendChild(secondaryKeyElement);
+                    }
+                }
+                topicDescriptionElement.appendChild(authorizationRulesSequenceElement);
+            }
+            
+            if (topic.getStatus() != null)
+            {
+                Element statusElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Status");
+                statusElement.appendChild(requestDoc.createTextNode(topic.getStatus()));
+                topicDescriptionElement.appendChild(statusElement);
+            }
+            
+            Element createdAtElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CreatedAt");
+            SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+            simpleDateFormat3.setTimeZone(TimeZone.getTimeZone("UTC"));
+            createdAtElement.appendChild(requestDoc.createTextNode(simpleDateFormat3.format(topic.getCreatedAt().getTime())));
+            topicDescriptionElement.appendChild(createdAtElement);
+            
+            Element updatedAtElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "UpdatedAt");
+            SimpleDateFormat simpleDateFormat4 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+            simpleDateFormat4.setTimeZone(TimeZone.getTimeZone("UTC"));
+            updatedAtElement.appendChild(requestDoc.createTextNode(simpleDateFormat4.format(topic.getUpdatedAt().getTime())));
+            topicDescriptionElement.appendChild(updatedAtElement);
+            
+            Element accessedAtElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessedAt");
+            SimpleDateFormat simpleDateFormat5 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+            simpleDateFormat5.setTimeZone(TimeZone.getTimeZone("UTC"));
+            accessedAtElement.appendChild(requestDoc.createTextNode(simpleDateFormat5.format(topic.getAccessedAt().getTime())));
+            topicDescriptionElement.appendChild(accessedAtElement);
+            
+            Element supportOrderingElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SupportOrdering");
+            supportOrderingElement.appendChild(requestDoc.createTextNode(Boolean.toString(topic.isSupportOrdering()).toLowerCase()));
+            topicDescriptionElement.appendChild(supportOrderingElement);
+            
+            if (topic.getCountDetails() != null)
+            {
+                Element countDetailsElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CountDetails");
+                topicDescriptionElement.appendChild(countDetailsElement);
+                
+                Element activeMessageCountElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2011/06/servicebus", "ActiveMessageCount");
+                activeMessageCountElement.appendChild(requestDoc.createTextNode(Integer.toString(topic.getCountDetails().getActiveMessageCount())));
+                countDetailsElement.appendChild(activeMessageCountElement);
+                
+                Element deadLetterMessageCountElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2011/06/servicebus", "DeadLetterMessageCount");
+                deadLetterMessageCountElement.appendChild(requestDoc.createTextNode(Integer.toString(topic.getCountDetails().getDeadLetterMessageCount())));
+                countDetailsElement.appendChild(deadLetterMessageCountElement);
+                
+                Element scheduledMessageCountElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2011/06/servicebus", "ScheduledMessageCount");
+                scheduledMessageCountElement.appendChild(requestDoc.createTextNode(Integer.toString(topic.getCountDetails().getScheduledMessageCount())));
+                countDetailsElement.appendChild(scheduledMessageCountElement);
+                
+                Element transferDeadLetterMessageCountElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2011/06/servicebus", "TransferDeadLetterMessageCount");
+                transferDeadLetterMessageCountElement.appendChild(requestDoc.createTextNode(Integer.toString(topic.getCountDetails().getTransferDeadLetterMessageCount())));
+                countDetailsElement.appendChild(transferDeadLetterMessageCountElement);
+                
+                Element transferMessageCountElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2011/06/servicebus", "TransferMessageCount");
+                transferMessageCountElement.appendChild(requestDoc.createTextNode(Integer.toString(topic.getCountDetails().getTransferMessageCount())));
+                countDetailsElement.appendChild(transferMessageCountElement);
+            }
+            
+            Element subscriptionCountElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SubscriptionCount");
+            subscriptionCountElement.appendChild(requestDoc.createTextNode(Integer.toString(topic.getSubscriptionCount())));
+            topicDescriptionElement.appendChild(subscriptionCountElement);
+            
+            if (topic.getAutoDeleteOnIdle() != null)
+            {
+                Element autoDeleteOnIdleElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AutoDeleteOnIdle");
+                autoDeleteOnIdleElement.appendChild(requestDoc.createTextNode(topic.getAutoDeleteOnIdle()));
+                topicDescriptionElement.appendChild(autoDeleteOnIdleElement);
+            }
+            
+            if (topic.getEntityAvailabilityStatus() != null)
+            {
+                Element entityAvailabilityStatusElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "EntityAvailabilityStatus");
+                entityAvailabilityStatusElement.appendChild(requestDoc.createTextNode(topic.getEntityAvailabilityStatus()));
+                topicDescriptionElement.appendChild(entityAvailabilityStatusElement);
+            }
         }
         
         DOMSource domSource = new DOMSource(requestDoc);
@@ -705,8 +714,6 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
     * more information)
     *
-    * @param namespaceName The namespace name.
-    * @param topicName The topic.
     * @return A response to a request for a particular topic.
     */
     @Override
@@ -729,22 +736,24 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
     * more information)
     *
-    * @param namespaceName The namespace name.
-    * @param topicName The topic.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
     * @return A response to a request for a particular topic.
     */
     @Override
     public ServiceBusTopicResponse get(String namespaceName, String topicName) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException, URISyntaxException
     {
         // Validate
-        if (namespaceName == null)
-        {
-            throw new NullPointerException("namespaceName");
-        }
-        if (topicName == null)
-        {
-            throw new NullPointerException("topicName");
-        }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
@@ -1092,8 +1101,6 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
     /**
     * Gets the set of connection strings for a topic.
     *
-    * @param namespaceName The namespace name.
-    * @param topicName The topic.
     * @return The set of connection details for a service bus entity.
     */
     @Override
@@ -1111,22 +1118,20 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
     /**
     * Gets the set of connection strings for a topic.
     *
-    * @param namespaceName The namespace name.
-    * @param topicName The topic.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
     * @return The set of connection details for a service bus entity.
     */
     @Override
     public ServiceBusConnectionDetailsResponse getConnectionDetails(String namespaceName, String topicName) throws IOException, ServiceException, ParserConfigurationException, SAXException
     {
         // Validate
-        if (namespaceName == null)
-        {
-            throw new NullPointerException("namespaceName");
-        }
-        if (topicName == null)
-        {
-            throw new NullPointerException("topicName");
-        }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
@@ -1263,7 +1268,6 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780744.aspx for
     * more information)
     *
-    * @param namespaceName The namespace name.
     * @return A response to a request for a list of topics.
     */
     @Override
@@ -1284,17 +1288,24 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780744.aspx for
     * more information)
     *
-    * @param namespaceName The namespace name.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
     * @return A response to a request for a list of topics.
     */
     @Override
     public ServiceBusTopicsResponse list(String namespaceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException, URISyntaxException
     {
         // Validate
-        if (namespaceName == null)
-        {
-            throw new NullPointerException("namespaceName");
-        }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
@@ -1653,8 +1664,6 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj839740.aspx for
     * more information)
     *
-    * @param namespaceName The namespace name.
-    * @param topic The Service Bus topic.
     * @return A response to a request for a particular topic.
     */
     @Override
@@ -1674,22 +1683,24 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj839740.aspx for
     * more information)
     *
-    * @param namespaceName The namespace name.
-    * @param topic The Service Bus topic.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return A response to a request for a particular topic.
     */
     @Override
-    public ServiceBusTopicResponse update(String namespaceName, ServiceBusTopic topic) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException, ParseException
+    public ServiceBusTopicResponse update(String namespaceName, ServiceBusTopic topic) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, ParseException
     {
         // Validate
-        if (namespaceName == null)
-        {
-            throw new NullPointerException("namespaceName");
-        }
-        if (topic == null)
-        {
-            throw new NullPointerException("topic");
-        }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
@@ -1722,198 +1733,205 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
         DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
         Document requestDoc = documentBuilder.newDocument();
         
-        Element entryElement = requestDoc.createElementNS("http://www.w3.org/2005/Atom", "entry");
-        requestDoc.appendChild(entryElement);
-        
-        Element contentElement = requestDoc.createElementNS("http://www.w3.org/2005/Atom", "content");
-        entryElement.appendChild(contentElement);
-        
-        String typeAttribute = null;
-        
-        Element topicDescriptionElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "TopicDescription");
-        contentElement.appendChild(topicDescriptionElement);
-        
-        if (topic.getDefaultMessageTimeToLive() != null)
+        if (topic != null)
         {
-            Element defaultMessageTimeToLiveElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "DefaultMessageTimeToLive");
-            defaultMessageTimeToLiveElement.appendChild(requestDoc.createTextNode(topic.getDefaultMessageTimeToLive()));
-            topicDescriptionElement.appendChild(defaultMessageTimeToLiveElement);
-        }
-        
-        Element maxSizeInMegabytesElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "MaxSizeInMegabytes");
-        maxSizeInMegabytesElement.appendChild(requestDoc.createTextNode(Integer.toString(topic.getMaxSizeInMegabytes())));
-        topicDescriptionElement.appendChild(maxSizeInMegabytesElement);
-        
-        Element requiresDuplicateDetectionElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "RequiresDuplicateDetection");
-        requiresDuplicateDetectionElement.appendChild(requestDoc.createTextNode(Boolean.toString(topic.isRequiresDuplicateDetection()).toLowerCase()));
-        topicDescriptionElement.appendChild(requiresDuplicateDetectionElement);
-        
-        if (topic.getDuplicateDetectionHistoryTimeWindow() != null)
-        {
-            Element duplicateDetectionHistoryTimeWindowElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "DuplicateDetectionHistoryTimeWindow");
-            duplicateDetectionHistoryTimeWindowElement.appendChild(requestDoc.createTextNode(topic.getDuplicateDetectionHistoryTimeWindow()));
-            topicDescriptionElement.appendChild(duplicateDetectionHistoryTimeWindowElement);
-        }
-        
-        Element enableBatchedOperationsElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "EnableBatchedOperations");
-        enableBatchedOperationsElement.appendChild(requestDoc.createTextNode(Boolean.toString(topic.isEnableBatchedOperations()).toLowerCase()));
-        topicDescriptionElement.appendChild(enableBatchedOperationsElement);
-        
-        Element sizeInBytesElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SizeInBytes");
-        sizeInBytesElement.appendChild(requestDoc.createTextNode(Integer.toString(topic.getSizeInBytes())));
-        topicDescriptionElement.appendChild(sizeInBytesElement);
-        
-        Element filteringMessagesBeforePublishingElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "FilteringMessagesBeforePublishing");
-        filteringMessagesBeforePublishingElement.appendChild(requestDoc.createTextNode(Boolean.toString(topic.isFilteringMessagesBeforePublishing()).toLowerCase()));
-        topicDescriptionElement.appendChild(filteringMessagesBeforePublishingElement);
-        
-        Element isAnonymousAccessibleElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "IsAnonymousAccessible");
-        isAnonymousAccessibleElement.appendChild(requestDoc.createTextNode(Boolean.toString(topic.isAnonymousAccessible()).toLowerCase()));
-        topicDescriptionElement.appendChild(isAnonymousAccessibleElement);
-        
-        if (topic.getAuthorizationRules() != null)
-        {
-            Element authorizationRulesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationRules");
-            for (ServiceBusSharedAccessAuthorizationRule authorizationRulesItem : topic.getAuthorizationRules())
+            Element entryElement = requestDoc.createElementNS("http://www.w3.org/2005/Atom", "entry");
+            requestDoc.appendChild(entryElement);
+            
+            Element contentElement = requestDoc.createElementNS("http://www.w3.org/2005/Atom", "content");
+            entryElement.appendChild(contentElement);
+            
+            Attr typeAttribute = requestDoc.createAttribute("type");
+            typeAttribute.setValue("application/atom+xml;type=entry;charset=utf-8");
+            contentElement.setAttributeNode(typeAttribute);
+            
+            Element topicDescriptionElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "TopicDescription");
+            contentElement.appendChild(topicDescriptionElement);
+            
+            if (topic.getDefaultMessageTimeToLive() != null)
             {
-                Element authorizationRuleElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationRule");
-                authorizationRulesSequenceElement.appendChild(authorizationRuleElement);
-                
-                String typeAttribute2 = null;
-                
-                if (authorizationRulesItem.getClaimType() != null)
-                {
-                    Element claimTypeElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ClaimType");
-                    claimTypeElement.appendChild(requestDoc.createTextNode(authorizationRulesItem.getClaimType()));
-                    authorizationRuleElement.appendChild(claimTypeElement);
-                }
-                
-                if (authorizationRulesItem.getClaimValue() != null)
-                {
-                    Element claimValueElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ClaimValue");
-                    claimValueElement.appendChild(requestDoc.createTextNode(authorizationRulesItem.getClaimValue()));
-                    authorizationRuleElement.appendChild(claimValueElement);
-                }
-                
-                if (authorizationRulesItem.getRights() != null)
-                {
-                    Element rightsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Rights");
-                    for (AccessRight rightsItem : authorizationRulesItem.getRights())
-                    {
-                        Element rightsItemElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights");
-                        rightsItemElement.appendChild(requestDoc.createTextNode(rightsItem.toString()));
-                        rightsSequenceElement.appendChild(rightsItemElement);
-                    }
-                    authorizationRuleElement.appendChild(rightsSequenceElement);
-                }
-                
-                Element createdTimeElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CreatedTime");
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
-                simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-                createdTimeElement.appendChild(requestDoc.createTextNode(simpleDateFormat.format(authorizationRulesItem.getCreatedTime().getTime())));
-                authorizationRuleElement.appendChild(createdTimeElement);
-                
-                if (authorizationRulesItem.getKeyName() != null)
-                {
-                    Element keyNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "KeyName");
-                    keyNameElement.appendChild(requestDoc.createTextNode(authorizationRulesItem.getKeyName()));
-                    authorizationRuleElement.appendChild(keyNameElement);
-                }
-                
-                Element modifiedTimeElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ModifiedTime");
-                SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
-                simpleDateFormat2.setTimeZone(TimeZone.getTimeZone("UTC"));
-                modifiedTimeElement.appendChild(requestDoc.createTextNode(simpleDateFormat2.format(authorizationRulesItem.getModifiedTime().getTime())));
-                authorizationRuleElement.appendChild(modifiedTimeElement);
-                
-                if (authorizationRulesItem.getPrimaryKey() != null)
-                {
-                    Element primaryKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "PrimaryKey");
-                    primaryKeyElement.appendChild(requestDoc.createTextNode(authorizationRulesItem.getPrimaryKey()));
-                    authorizationRuleElement.appendChild(primaryKeyElement);
-                }
-                
-                if (authorizationRulesItem.getSecondaryKey() != null)
-                {
-                    Element secondaryKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SecondaryKey");
-                    secondaryKeyElement.appendChild(requestDoc.createTextNode(authorizationRulesItem.getSecondaryKey()));
-                    authorizationRuleElement.appendChild(secondaryKeyElement);
-                }
+                Element defaultMessageTimeToLiveElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "DefaultMessageTimeToLive");
+                defaultMessageTimeToLiveElement.appendChild(requestDoc.createTextNode(topic.getDefaultMessageTimeToLive()));
+                topicDescriptionElement.appendChild(defaultMessageTimeToLiveElement);
             }
-            topicDescriptionElement.appendChild(authorizationRulesSequenceElement);
-        }
-        
-        if (topic.getStatus() != null)
-        {
-            Element statusElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Status");
-            statusElement.appendChild(requestDoc.createTextNode(topic.getStatus()));
-            topicDescriptionElement.appendChild(statusElement);
-        }
-        
-        Element createdAtElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CreatedAt");
-        SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
-        simpleDateFormat3.setTimeZone(TimeZone.getTimeZone("UTC"));
-        createdAtElement.appendChild(requestDoc.createTextNode(simpleDateFormat3.format(topic.getCreatedAt().getTime())));
-        topicDescriptionElement.appendChild(createdAtElement);
-        
-        Element updatedAtElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "UpdatedAt");
-        SimpleDateFormat simpleDateFormat4 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
-        simpleDateFormat4.setTimeZone(TimeZone.getTimeZone("UTC"));
-        updatedAtElement.appendChild(requestDoc.createTextNode(simpleDateFormat4.format(topic.getUpdatedAt().getTime())));
-        topicDescriptionElement.appendChild(updatedAtElement);
-        
-        Element accessedAtElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessedAt");
-        SimpleDateFormat simpleDateFormat5 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
-        simpleDateFormat5.setTimeZone(TimeZone.getTimeZone("UTC"));
-        accessedAtElement.appendChild(requestDoc.createTextNode(simpleDateFormat5.format(topic.getAccessedAt().getTime())));
-        topicDescriptionElement.appendChild(accessedAtElement);
-        
-        Element supportOrderingElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SupportOrdering");
-        supportOrderingElement.appendChild(requestDoc.createTextNode(Boolean.toString(topic.isSupportOrdering()).toLowerCase()));
-        topicDescriptionElement.appendChild(supportOrderingElement);
-        
-        if (topic.getCountDetails() != null)
-        {
-            Element countDetailsElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CountDetails");
-            topicDescriptionElement.appendChild(countDetailsElement);
             
-            Element activeMessageCountElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2011/06/servicebus", "ActiveMessageCount");
-            activeMessageCountElement.appendChild(requestDoc.createTextNode(Integer.toString(topic.getCountDetails().getActiveMessageCount())));
-            countDetailsElement.appendChild(activeMessageCountElement);
+            Element maxSizeInMegabytesElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "MaxSizeInMegabytes");
+            maxSizeInMegabytesElement.appendChild(requestDoc.createTextNode(Integer.toString(topic.getMaxSizeInMegabytes())));
+            topicDescriptionElement.appendChild(maxSizeInMegabytesElement);
             
-            Element deadLetterMessageCountElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2011/06/servicebus", "DeadLetterMessageCount");
-            deadLetterMessageCountElement.appendChild(requestDoc.createTextNode(Integer.toString(topic.getCountDetails().getDeadLetterMessageCount())));
-            countDetailsElement.appendChild(deadLetterMessageCountElement);
+            Element requiresDuplicateDetectionElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "RequiresDuplicateDetection");
+            requiresDuplicateDetectionElement.appendChild(requestDoc.createTextNode(Boolean.toString(topic.isRequiresDuplicateDetection()).toLowerCase()));
+            topicDescriptionElement.appendChild(requiresDuplicateDetectionElement);
             
-            Element scheduledMessageCountElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2011/06/servicebus", "ScheduledMessageCount");
-            scheduledMessageCountElement.appendChild(requestDoc.createTextNode(Integer.toString(topic.getCountDetails().getScheduledMessageCount())));
-            countDetailsElement.appendChild(scheduledMessageCountElement);
+            if (topic.getDuplicateDetectionHistoryTimeWindow() != null)
+            {
+                Element duplicateDetectionHistoryTimeWindowElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "DuplicateDetectionHistoryTimeWindow");
+                duplicateDetectionHistoryTimeWindowElement.appendChild(requestDoc.createTextNode(topic.getDuplicateDetectionHistoryTimeWindow()));
+                topicDescriptionElement.appendChild(duplicateDetectionHistoryTimeWindowElement);
+            }
             
-            Element transferDeadLetterMessageCountElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2011/06/servicebus", "TransferDeadLetterMessageCount");
-            transferDeadLetterMessageCountElement.appendChild(requestDoc.createTextNode(Integer.toString(topic.getCountDetails().getTransferDeadLetterMessageCount())));
-            countDetailsElement.appendChild(transferDeadLetterMessageCountElement);
+            Element enableBatchedOperationsElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "EnableBatchedOperations");
+            enableBatchedOperationsElement.appendChild(requestDoc.createTextNode(Boolean.toString(topic.isEnableBatchedOperations()).toLowerCase()));
+            topicDescriptionElement.appendChild(enableBatchedOperationsElement);
             
-            Element transferMessageCountElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2011/06/servicebus", "TransferMessageCount");
-            transferMessageCountElement.appendChild(requestDoc.createTextNode(Integer.toString(topic.getCountDetails().getTransferMessageCount())));
-            countDetailsElement.appendChild(transferMessageCountElement);
-        }
-        
-        Element subscriptionCountElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SubscriptionCount");
-        subscriptionCountElement.appendChild(requestDoc.createTextNode(Integer.toString(topic.getSubscriptionCount())));
-        topicDescriptionElement.appendChild(subscriptionCountElement);
-        
-        if (topic.getAutoDeleteOnIdle() != null)
-        {
-            Element autoDeleteOnIdleElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AutoDeleteOnIdle");
-            autoDeleteOnIdleElement.appendChild(requestDoc.createTextNode(topic.getAutoDeleteOnIdle()));
-            topicDescriptionElement.appendChild(autoDeleteOnIdleElement);
-        }
-        
-        if (topic.getEntityAvailabilityStatus() != null)
-        {
-            Element entityAvailabilityStatusElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "EntityAvailabilityStatus");
-            entityAvailabilityStatusElement.appendChild(requestDoc.createTextNode(topic.getEntityAvailabilityStatus()));
-            topicDescriptionElement.appendChild(entityAvailabilityStatusElement);
+            Element sizeInBytesElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SizeInBytes");
+            sizeInBytesElement.appendChild(requestDoc.createTextNode(Integer.toString(topic.getSizeInBytes())));
+            topicDescriptionElement.appendChild(sizeInBytesElement);
+            
+            Element filteringMessagesBeforePublishingElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "FilteringMessagesBeforePublishing");
+            filteringMessagesBeforePublishingElement.appendChild(requestDoc.createTextNode(Boolean.toString(topic.isFilteringMessagesBeforePublishing()).toLowerCase()));
+            topicDescriptionElement.appendChild(filteringMessagesBeforePublishingElement);
+            
+            Element isAnonymousAccessibleElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "IsAnonymousAccessible");
+            isAnonymousAccessibleElement.appendChild(requestDoc.createTextNode(Boolean.toString(topic.isAnonymousAccessible()).toLowerCase()));
+            topicDescriptionElement.appendChild(isAnonymousAccessibleElement);
+            
+            if (topic.getAuthorizationRules() != null)
+            {
+                Element authorizationRulesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationRules");
+                for (ServiceBusSharedAccessAuthorizationRule authorizationRulesItem : topic.getAuthorizationRules())
+                {
+                    Element authorizationRuleElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationRule");
+                    authorizationRulesSequenceElement.appendChild(authorizationRuleElement);
+                    
+                    Attr typeAttribute2 = requestDoc.createAttribute("http://www.w3.org/2001/XMLSchema-instance", "type");
+                    typeAttribute2.setValue("SharedAccessAuthorizationRule");
+                    authorizationRuleElement.setAttributeNode(typeAttribute2);
+                    
+                    if (authorizationRulesItem.getClaimType() != null)
+                    {
+                        Element claimTypeElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ClaimType");
+                        claimTypeElement.appendChild(requestDoc.createTextNode(authorizationRulesItem.getClaimType()));
+                        authorizationRuleElement.appendChild(claimTypeElement);
+                    }
+                    
+                    if (authorizationRulesItem.getClaimValue() != null)
+                    {
+                        Element claimValueElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ClaimValue");
+                        claimValueElement.appendChild(requestDoc.createTextNode(authorizationRulesItem.getClaimValue()));
+                        authorizationRuleElement.appendChild(claimValueElement);
+                    }
+                    
+                    if (authorizationRulesItem.getRights() != null)
+                    {
+                        Element rightsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Rights");
+                        for (AccessRight rightsItem : authorizationRulesItem.getRights())
+                        {
+                            Element rightsItemElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights");
+                            rightsItemElement.appendChild(requestDoc.createTextNode(rightsItem.toString()));
+                            rightsSequenceElement.appendChild(rightsItemElement);
+                        }
+                        authorizationRuleElement.appendChild(rightsSequenceElement);
+                    }
+                    
+                    Element createdTimeElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CreatedTime");
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+                    simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    createdTimeElement.appendChild(requestDoc.createTextNode(simpleDateFormat.format(authorizationRulesItem.getCreatedTime().getTime())));
+                    authorizationRuleElement.appendChild(createdTimeElement);
+                    
+                    if (authorizationRulesItem.getKeyName() != null)
+                    {
+                        Element keyNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "KeyName");
+                        keyNameElement.appendChild(requestDoc.createTextNode(authorizationRulesItem.getKeyName()));
+                        authorizationRuleElement.appendChild(keyNameElement);
+                    }
+                    
+                    Element modifiedTimeElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ModifiedTime");
+                    SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+                    simpleDateFormat2.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    modifiedTimeElement.appendChild(requestDoc.createTextNode(simpleDateFormat2.format(authorizationRulesItem.getModifiedTime().getTime())));
+                    authorizationRuleElement.appendChild(modifiedTimeElement);
+                    
+                    if (authorizationRulesItem.getPrimaryKey() != null)
+                    {
+                        Element primaryKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "PrimaryKey");
+                        primaryKeyElement.appendChild(requestDoc.createTextNode(authorizationRulesItem.getPrimaryKey()));
+                        authorizationRuleElement.appendChild(primaryKeyElement);
+                    }
+                    
+                    if (authorizationRulesItem.getSecondaryKey() != null)
+                    {
+                        Element secondaryKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SecondaryKey");
+                        secondaryKeyElement.appendChild(requestDoc.createTextNode(authorizationRulesItem.getSecondaryKey()));
+                        authorizationRuleElement.appendChild(secondaryKeyElement);
+                    }
+                }
+                topicDescriptionElement.appendChild(authorizationRulesSequenceElement);
+            }
+            
+            if (topic.getStatus() != null)
+            {
+                Element statusElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Status");
+                statusElement.appendChild(requestDoc.createTextNode(topic.getStatus()));
+                topicDescriptionElement.appendChild(statusElement);
+            }
+            
+            Element createdAtElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CreatedAt");
+            SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+            simpleDateFormat3.setTimeZone(TimeZone.getTimeZone("UTC"));
+            createdAtElement.appendChild(requestDoc.createTextNode(simpleDateFormat3.format(topic.getCreatedAt().getTime())));
+            topicDescriptionElement.appendChild(createdAtElement);
+            
+            Element updatedAtElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "UpdatedAt");
+            SimpleDateFormat simpleDateFormat4 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+            simpleDateFormat4.setTimeZone(TimeZone.getTimeZone("UTC"));
+            updatedAtElement.appendChild(requestDoc.createTextNode(simpleDateFormat4.format(topic.getUpdatedAt().getTime())));
+            topicDescriptionElement.appendChild(updatedAtElement);
+            
+            Element accessedAtElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessedAt");
+            SimpleDateFormat simpleDateFormat5 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+            simpleDateFormat5.setTimeZone(TimeZone.getTimeZone("UTC"));
+            accessedAtElement.appendChild(requestDoc.createTextNode(simpleDateFormat5.format(topic.getAccessedAt().getTime())));
+            topicDescriptionElement.appendChild(accessedAtElement);
+            
+            Element supportOrderingElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SupportOrdering");
+            supportOrderingElement.appendChild(requestDoc.createTextNode(Boolean.toString(topic.isSupportOrdering()).toLowerCase()));
+            topicDescriptionElement.appendChild(supportOrderingElement);
+            
+            if (topic.getCountDetails() != null)
+            {
+                Element countDetailsElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CountDetails");
+                topicDescriptionElement.appendChild(countDetailsElement);
+                
+                Element activeMessageCountElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2011/06/servicebus", "ActiveMessageCount");
+                activeMessageCountElement.appendChild(requestDoc.createTextNode(Integer.toString(topic.getCountDetails().getActiveMessageCount())));
+                countDetailsElement.appendChild(activeMessageCountElement);
+                
+                Element deadLetterMessageCountElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2011/06/servicebus", "DeadLetterMessageCount");
+                deadLetterMessageCountElement.appendChild(requestDoc.createTextNode(Integer.toString(topic.getCountDetails().getDeadLetterMessageCount())));
+                countDetailsElement.appendChild(deadLetterMessageCountElement);
+                
+                Element scheduledMessageCountElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2011/06/servicebus", "ScheduledMessageCount");
+                scheduledMessageCountElement.appendChild(requestDoc.createTextNode(Integer.toString(topic.getCountDetails().getScheduledMessageCount())));
+                countDetailsElement.appendChild(scheduledMessageCountElement);
+                
+                Element transferDeadLetterMessageCountElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2011/06/servicebus", "TransferDeadLetterMessageCount");
+                transferDeadLetterMessageCountElement.appendChild(requestDoc.createTextNode(Integer.toString(topic.getCountDetails().getTransferDeadLetterMessageCount())));
+                countDetailsElement.appendChild(transferDeadLetterMessageCountElement);
+                
+                Element transferMessageCountElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2011/06/servicebus", "TransferMessageCount");
+                transferMessageCountElement.appendChild(requestDoc.createTextNode(Integer.toString(topic.getCountDetails().getTransferMessageCount())));
+                countDetailsElement.appendChild(transferMessageCountElement);
+            }
+            
+            Element subscriptionCountElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SubscriptionCount");
+            subscriptionCountElement.appendChild(requestDoc.createTextNode(Integer.toString(topic.getSubscriptionCount())));
+            topicDescriptionElement.appendChild(subscriptionCountElement);
+            
+            if (topic.getAutoDeleteOnIdle() != null)
+            {
+                Element autoDeleteOnIdleElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AutoDeleteOnIdle");
+                autoDeleteOnIdleElement.appendChild(requestDoc.createTextNode(topic.getAutoDeleteOnIdle()));
+                topicDescriptionElement.appendChild(autoDeleteOnIdleElement);
+            }
+            
+            if (topic.getEntityAvailabilityStatus() != null)
+            {
+                Element entityAvailabilityStatusElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "EntityAvailabilityStatus");
+                entityAvailabilityStatusElement.appendChild(requestDoc.createTextNode(topic.getEntityAvailabilityStatus()));
+                topicDescriptionElement.appendChild(entityAvailabilityStatusElement);
+            }
         }
         
         DOMSource domSource = new DOMSource(requestDoc);

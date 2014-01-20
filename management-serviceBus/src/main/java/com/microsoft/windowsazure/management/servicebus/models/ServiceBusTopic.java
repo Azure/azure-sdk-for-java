@@ -32,6 +32,7 @@ public class ServiceBusTopic
     
     /**
     * The time the queue was last accessed.
+    * @return The AccessedAt value.
     */
     public Calendar getAccessedAt()
     {
@@ -40,10 +41,11 @@ public class ServiceBusTopic
     
     /**
     * The time the queue was last accessed.
+    * @param accessedAtValue The AccessedAt value.
     */
-    public void setAccessedAt(Calendar accessedAt)
+    public void setAccessedAt(final Calendar accessedAtValue)
     {
-        this.accessedAt = accessedAt;
+        this.accessedAt = accessedAtValue;
     }
     
     private ArrayList<ServiceBusSharedAccessAuthorizationRule> authorizationRules;
@@ -52,6 +54,7 @@ public class ServiceBusTopic
     * Gets the authorization rules for the description.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
     * more information)
+    * @return The AuthorizationRules value.
     */
     public ArrayList<ServiceBusSharedAccessAuthorizationRule> getAuthorizationRules()
     {
@@ -62,16 +65,18 @@ public class ServiceBusTopic
     * Gets the authorization rules for the description.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
     * more information)
+    * @param authorizationRulesValue The AuthorizationRules value.
     */
-    public void setAuthorizationRules(ArrayList<ServiceBusSharedAccessAuthorizationRule> authorizationRules)
+    public void setAuthorizationRules(final ArrayList<ServiceBusSharedAccessAuthorizationRule> authorizationRulesValue)
     {
-        this.authorizationRules = authorizationRules;
+        this.authorizationRules = authorizationRulesValue;
     }
     
     private String autoDeleteOnIdle;
     
     /**
     * Implemented.
+    * @return The AutoDeleteOnIdle value.
     */
     public String getAutoDeleteOnIdle()
     {
@@ -80,16 +85,18 @@ public class ServiceBusTopic
     
     /**
     * Implemented.
+    * @param autoDeleteOnIdleValue The AutoDeleteOnIdle value.
     */
-    public void setAutoDeleteOnIdle(String autoDeleteOnIdle)
+    public void setAutoDeleteOnIdle(final String autoDeleteOnIdleValue)
     {
-        this.autoDeleteOnIdle = autoDeleteOnIdle;
+        this.autoDeleteOnIdle = autoDeleteOnIdleValue;
     }
     
     private CountDetails countDetails;
     
     /**
     * Current queue statistics.
+    * @return The CountDetails value.
     */
     public CountDetails getCountDetails()
     {
@@ -98,16 +105,18 @@ public class ServiceBusTopic
     
     /**
     * Current queue statistics.
+    * @param countDetailsValue The CountDetails value.
     */
-    public void setCountDetails(CountDetails countDetails)
+    public void setCountDetails(final CountDetails countDetailsValue)
     {
-        this.countDetails = countDetails;
+        this.countDetails = countDetailsValue;
     }
     
     private Calendar createdAt;
     
     /**
     * The time the queue was created at.
+    * @return The CreatedAt value.
     */
     public Calendar getCreatedAt()
     {
@@ -116,10 +125,11 @@ public class ServiceBusTopic
     
     /**
     * The time the queue was created at.
+    * @param createdAtValue The CreatedAt value.
     */
-    public void setCreatedAt(Calendar createdAt)
+    public void setCreatedAt(final Calendar createdAtValue)
     {
-        this.createdAt = createdAt;
+        this.createdAt = createdAtValue;
     }
     
     private String defaultMessageTimeToLive;
@@ -134,6 +144,7 @@ public class ServiceBusTopic
     * second - TimeSpan.MaxValue* Default: TimeSpan.MaxValue  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj839740.aspx for
     * more information)
+    * @return The DefaultMessageTimeToLive value.
     */
     public String getDefaultMessageTimeToLive()
     {
@@ -150,10 +161,11 @@ public class ServiceBusTopic
     * second - TimeSpan.MaxValue* Default: TimeSpan.MaxValue  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj839740.aspx for
     * more information)
+    * @param defaultMessageTimeToLiveValue The DefaultMessageTimeToLive value.
     */
-    public void setDefaultMessageTimeToLive(String defaultMessageTimeToLive)
+    public void setDefaultMessageTimeToLive(final String defaultMessageTimeToLiveValue)
     {
-        this.defaultMessageTimeToLive = defaultMessageTimeToLive;
+        this.defaultMessageTimeToLive = defaultMessageTimeToLiveValue;
     }
     
     private String duplicateDetectionHistoryTimeWindow;
@@ -163,6 +175,7 @@ public class ServiceBusTopic
     * duplication.* Range: 1 second - 7 days* Default: 10 minutes  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
     * more information)
+    * @return The DuplicateDetectionHistoryTimeWindow value.
     */
     public String getDuplicateDetectionHistoryTimeWindow()
     {
@@ -174,10 +187,12 @@ public class ServiceBusTopic
     * duplication.* Range: 1 second - 7 days* Default: 10 minutes  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
     * more information)
+    * @param duplicateDetectionHistoryTimeWindowValue The
+    * DuplicateDetectionHistoryTimeWindow value.
     */
-    public void setDuplicateDetectionHistoryTimeWindow(String duplicateDetectionHistoryTimeWindow)
+    public void setDuplicateDetectionHistoryTimeWindow(final String duplicateDetectionHistoryTimeWindowValue)
     {
-        this.duplicateDetectionHistoryTimeWindow = duplicateDetectionHistoryTimeWindow;
+        this.duplicateDetectionHistoryTimeWindow = duplicateDetectionHistoryTimeWindowValue;
     }
     
     private boolean enableBatchedOperations;
@@ -190,6 +205,7 @@ public class ServiceBusTopic
     * this feature.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
     * more information)
+    * @return The EnableBatchedOperations value.
     */
     public boolean isEnableBatchedOperations()
     {
@@ -204,16 +220,18 @@ public class ServiceBusTopic
     * this feature.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
     * more information)
+    * @param enableBatchedOperationsValue The EnableBatchedOperations value.
     */
-    public void setEnableBatchedOperations(boolean enableBatchedOperations)
+    public void setEnableBatchedOperations(final boolean enableBatchedOperationsValue)
     {
-        this.enableBatchedOperations = enableBatchedOperations;
+        this.enableBatchedOperations = enableBatchedOperationsValue;
     }
     
     private String entityAvailabilityStatus;
     
     /**
     * The current availability status of the topic.
+    * @return The EntityAvailabilityStatus value.
     */
     public String getEntityAvailabilityStatus()
     {
@@ -222,10 +240,11 @@ public class ServiceBusTopic
     
     /**
     * The current availability status of the topic.
+    * @param entityAvailabilityStatusValue The EntityAvailabilityStatus value.
     */
-    public void setEntityAvailabilityStatus(String entityAvailabilityStatus)
+    public void setEntityAvailabilityStatus(final String entityAvailabilityStatusValue)
     {
-        this.entityAvailabilityStatus = entityAvailabilityStatus;
+        this.entityAvailabilityStatus = entityAvailabilityStatusValue;
     }
     
     private boolean filteringMessagesBeforePublishing;
@@ -234,6 +253,7 @@ public class ServiceBusTopic
     * Gets or sets whether messages should be filtered before publishing.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
     * more information)
+    * @return The FilteringMessagesBeforePublishing value.
     */
     public boolean isFilteringMessagesBeforePublishing()
     {
@@ -244,10 +264,12 @@ public class ServiceBusTopic
     * Gets or sets whether messages should be filtered before publishing.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
     * more information)
+    * @param filteringMessagesBeforePublishingValue The
+    * FilteringMessagesBeforePublishing value.
     */
-    public void setFilteringMessagesBeforePublishing(boolean filteringMessagesBeforePublishing)
+    public void setFilteringMessagesBeforePublishing(final boolean filteringMessagesBeforePublishingValue)
     {
-        this.filteringMessagesBeforePublishing = filteringMessagesBeforePublishing;
+        this.filteringMessagesBeforePublishing = filteringMessagesBeforePublishingValue;
     }
     
     private boolean isAnonymousAccessible;
@@ -256,6 +278,7 @@ public class ServiceBusTopic
     * Gets whether anonymous access is allowed.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
     * more information)
+    * @return The IsAnonymousAccessible value.
     */
     public boolean isAnonymousAccessible()
     {
@@ -266,10 +289,11 @@ public class ServiceBusTopic
     * Gets whether anonymous access is allowed.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
     * more information)
+    * @param isAnonymousAccessibleValue The IsAnonymousAccessible value.
     */
-    public void setIsAnonymousAccessible(boolean isAnonymousAccessible)
+    public void setIsAnonymousAccessible(final boolean isAnonymousAccessibleValue)
     {
-        this.isAnonymousAccessible = isAnonymousAccessible;
+        this.isAnonymousAccessible = isAnonymousAccessibleValue;
     }
     
     private int maxSizeInMegabytes;
@@ -286,6 +310,7 @@ public class ServiceBusTopic
     * Default: 1*1024  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
     * more information)
+    * @return The MaxSizeInMegabytes value.
     */
     public int getMaxSizeInMegabytes()
     {
@@ -304,16 +329,18 @@ public class ServiceBusTopic
     * Default: 1*1024  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
     * more information)
+    * @param maxSizeInMegabytesValue The MaxSizeInMegabytes value.
     */
-    public void setMaxSizeInMegabytes(int maxSizeInMegabytes)
+    public void setMaxSizeInMegabytes(final int maxSizeInMegabytesValue)
     {
-        this.maxSizeInMegabytes = maxSizeInMegabytes;
+        this.maxSizeInMegabytes = maxSizeInMegabytesValue;
     }
     
     private String name;
     
     /**
     * The name of the topic.
+    * @return The Name value.
     */
     public String getName()
     {
@@ -322,10 +349,11 @@ public class ServiceBusTopic
     
     /**
     * The name of the topic.
+    * @param nameValue The Name value.
     */
-    public void setName(String name)
+    public void setName(final String nameValue)
     {
-        this.name = name;
+        this.name = nameValue;
     }
     
     private boolean requiresDuplicateDetection;
@@ -336,6 +364,7 @@ public class ServiceBusTopic
     * only at topic creation time.* Default: false  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
     * more information)
+    * @return The RequiresDuplicateDetection value.
     */
     public boolean isRequiresDuplicateDetection()
     {
@@ -348,10 +377,12 @@ public class ServiceBusTopic
     * only at topic creation time.* Default: false  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
     * more information)
+    * @param requiresDuplicateDetectionValue The RequiresDuplicateDetection
+    * value.
     */
-    public void setRequiresDuplicateDetection(boolean requiresDuplicateDetection)
+    public void setRequiresDuplicateDetection(final boolean requiresDuplicateDetectionValue)
     {
-        this.requiresDuplicateDetection = requiresDuplicateDetection;
+        this.requiresDuplicateDetection = requiresDuplicateDetectionValue;
     }
     
     private int sizeInBytes;
@@ -361,6 +392,7 @@ public class ServiceBusTopic
     * topic currently occupy. (read-only)* Range: 0 -MaxTopicSizeinMegaBytes
     * (see http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx
     * for more information)
+    * @return The SizeInBytes value.
     */
     public int getSizeInBytes()
     {
@@ -372,10 +404,11 @@ public class ServiceBusTopic
     * topic currently occupy. (read-only)* Range: 0 -MaxTopicSizeinMegaBytes
     * (see http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx
     * for more information)
+    * @param sizeInBytesValue The SizeInBytes value.
     */
-    public void setSizeInBytes(int sizeInBytes)
+    public void setSizeInBytes(final int sizeInBytesValue)
     {
-        this.sizeInBytes = sizeInBytes;
+        this.sizeInBytes = sizeInBytesValue;
     }
     
     private String status;
@@ -385,6 +418,7 @@ public class ServiceBusTopic
     * a topic is disabled, that topic cannot send or receive messages.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
     * more information)
+    * @return The Status value.
     */
     public String getStatus()
     {
@@ -396,16 +430,18 @@ public class ServiceBusTopic
     * a topic is disabled, that topic cannot send or receive messages.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
     * more information)
+    * @param statusValue The Status value.
     */
-    public void setStatus(String status)
+    public void setStatus(final String statusValue)
     {
-        this.status = status;
+        this.status = statusValue;
     }
     
     private int subscriptionCount;
     
     /**
     * The current number of subscriptions to the topic.
+    * @return The SubscriptionCount value.
     */
     public int getSubscriptionCount()
     {
@@ -414,10 +450,11 @@ public class ServiceBusTopic
     
     /**
     * The current number of subscriptions to the topic.
+    * @param subscriptionCountValue The SubscriptionCount value.
     */
-    public void setSubscriptionCount(int subscriptionCount)
+    public void setSubscriptionCount(final int subscriptionCountValue)
     {
-        this.subscriptionCount = subscriptionCount;
+        this.subscriptionCount = subscriptionCountValue;
     }
     
     private boolean supportOrdering;
@@ -426,6 +463,7 @@ public class ServiceBusTopic
     * Gets or sets whether the topics can be ordered.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
     * more information)
+    * @return The SupportOrdering value.
     */
     public boolean isSupportOrdering()
     {
@@ -436,16 +474,18 @@ public class ServiceBusTopic
     * Gets or sets whether the topics can be ordered.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
     * more information)
+    * @param supportOrderingValue The SupportOrdering value.
     */
-    public void setSupportOrdering(boolean supportOrdering)
+    public void setSupportOrdering(final boolean supportOrderingValue)
     {
-        this.supportOrdering = supportOrdering;
+        this.supportOrdering = supportOrderingValue;
     }
     
     private Calendar updatedAt;
     
     /**
     * The time the queue was last updated.
+    * @return The UpdatedAt value.
     */
     public Calendar getUpdatedAt()
     {
@@ -454,10 +494,11 @@ public class ServiceBusTopic
     
     /**
     * The time the queue was last updated.
+    * @param updatedAtValue The UpdatedAt value.
     */
-    public void setUpdatedAt(Calendar updatedAt)
+    public void setUpdatedAt(final Calendar updatedAtValue)
     {
-        this.updatedAt = updatedAt;
+        this.updatedAt = updatedAtValue;
     }
     
     /**

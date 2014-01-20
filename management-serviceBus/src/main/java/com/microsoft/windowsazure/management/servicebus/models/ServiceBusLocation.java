@@ -32,6 +32,7 @@ public class ServiceBusLocation
     
     /**
     * The region code.
+    * @return The Code value.
     */
     public String getCode()
     {
@@ -40,16 +41,18 @@ public class ServiceBusLocation
     
     /**
     * The region code.
+    * @param codeValue The Code value.
     */
-    public void setCode(String code)
+    public void setCode(final String codeValue)
     {
-        this.code = code;
+        this.code = codeValue;
     }
     
     private String fullName;
     
     /**
     * The fulle name of the region.
+    * @return The FullName value.
     */
     public String getFullName()
     {
@@ -58,9 +61,10 @@ public class ServiceBusLocation
     
     /**
     * The fulle name of the region.
+    * @param fullNameValue The FullName value.
     */
-    public void setFullName(String fullName)
+    public void setFullName(final String fullNameValue)
     {
-        this.fullName = fullName;
+        this.fullName = fullNameValue;
     }
 }

@@ -45,6 +45,7 @@ public interface ManagementClient extends FilterableService<ManagementClient>
 {
     /**
     * The URI used as the base for all Service Management requests.
+    * @return The BaseUri value.
     */
     URI getBaseUri(); 
     
@@ -55,6 +56,7 @@ public interface ManagementClient extends FilterableService<ManagementClient>
     * Azure Service ManagementAPI use mutual authentication of management
     * certificates over SSL to ensure that a request made to the service is
     * secure.  No anonymous requests are allowed.
+    * @return The Credentials value.
     */
     SubscriptionCloudCredentials getCredentials(); 
     
@@ -62,6 +64,7 @@ public interface ManagementClient extends FilterableService<ManagementClient>
     * Operations for managing affinity groups beneath your subscription.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460798.aspx for
     * more information)
+    * @return The AffinityGroupsOperations value.
     */
     AffinityGroupOperations getAffinityGroupsOperations(); 
     
@@ -70,6 +73,7 @@ public interface ManagementClient extends FilterableService<ManagementClient>
     * data center locations for a hosted service in your subscription.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441299.aspx for
     * more information)
+    * @return The LocationsOperations value.
     */
     LocationOperations getLocationsOperations(); 
     
@@ -79,6 +83,7 @@ public interface ManagementClient extends FilterableService<ManagementClient>
     * associated with your Windows Azure subscription.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154124.aspx for
     * more information)
+    * @return The ManagementCertificatesOperations value.
     */
     ManagementCertificateOperations getManagementCertificatesOperations(); 
     
@@ -86,6 +91,7 @@ public interface ManagementClient extends FilterableService<ManagementClient>
     * Operation for listing subscription operations and details.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715315.aspx for
     * more information)
+    * @return The SubscriptionsOperations value.
     */
     SubscriptionOperations getSubscriptionsOperations(); 
     
@@ -100,6 +106,14 @@ public interface ManagementClient extends FilterableService<ManagementClient>
     * @param requestId The request ID for the request you wish to track. The
     * request ID is returned in the x-ms-request-id response header for every
     * request.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the

@@ -34,6 +34,7 @@ public class SubscriptionGetResponse extends OperationResponse
     
     /**
     * The live ID of the account administrator.
+    * @return The AccountAdminLiveEmailId value.
     */
     public String getAccountAdminLiveEmailId()
     {
@@ -42,16 +43,18 @@ public class SubscriptionGetResponse extends OperationResponse
     
     /**
     * The live ID of the account administrator.
+    * @param accountAdminLiveEmailIdValue The AccountAdminLiveEmailId value.
     */
-    public void setAccountAdminLiveEmailId(String accountAdminLiveEmailId)
+    public void setAccountAdminLiveEmailId(final String accountAdminLiveEmailIdValue)
     {
-        this.accountAdminLiveEmailId = accountAdminLiveEmailId;
+        this.accountAdminLiveEmailId = accountAdminLiveEmailIdValue;
     }
     
     private int currentCoreCount;
     
     /**
     * The number of currently allocated cores.
+    * @return The CurrentCoreCount value.
     */
     public int getCurrentCoreCount()
     {
@@ -60,16 +63,18 @@ public class SubscriptionGetResponse extends OperationResponse
     
     /**
     * The number of currently allocated cores.
+    * @param currentCoreCountValue The CurrentCoreCount value.
     */
-    public void setCurrentCoreCount(int currentCoreCount)
+    public void setCurrentCoreCount(final int currentCoreCountValue)
     {
-        this.currentCoreCount = currentCoreCount;
+        this.currentCoreCount = currentCoreCountValue;
     }
     
     private int currentDnsServers;
     
     /**
     * The current number of DNS servers allocated on this subscription.
+    * @return The CurrentDnsServers value.
     */
     public int getCurrentDnsServers()
     {
@@ -78,16 +83,18 @@ public class SubscriptionGetResponse extends OperationResponse
     
     /**
     * The current number of DNS servers allocated on this subscription.
+    * @param currentDnsServersValue The CurrentDnsServers value.
     */
-    public void setCurrentDnsServers(int currentDnsServers)
+    public void setCurrentDnsServers(final int currentDnsServersValue)
     {
-        this.currentDnsServers = currentDnsServers;
+        this.currentDnsServers = currentDnsServersValue;
     }
     
     private int currentHostedServices;
     
     /**
     * The number of currently allocated cloud services.
+    * @return The CurrentHostedServices value.
     */
     public int getCurrentHostedServices()
     {
@@ -96,10 +103,11 @@ public class SubscriptionGetResponse extends OperationResponse
     
     /**
     * The number of currently allocated cloud services.
+    * @param currentHostedServicesValue The CurrentHostedServices value.
     */
-    public void setCurrentHostedServices(int currentHostedServices)
+    public void setCurrentHostedServices(final int currentHostedServicesValue)
     {
-        this.currentHostedServices = currentHostedServices;
+        this.currentHostedServices = currentHostedServicesValue;
     }
     
     private int currentLocalNetworkSites;
@@ -107,6 +115,7 @@ public class SubscriptionGetResponse extends OperationResponse
     /**
     * The current number of local virtual network sites that are allocated on
     * this subscription.
+    * @return The CurrentLocalNetworkSites value.
     */
     public int getCurrentLocalNetworkSites()
     {
@@ -116,16 +125,18 @@ public class SubscriptionGetResponse extends OperationResponse
     /**
     * The current number of local virtual network sites that are allocated on
     * this subscription.
+    * @param currentLocalNetworkSitesValue The CurrentLocalNetworkSites value.
     */
-    public void setCurrentLocalNetworkSites(int currentLocalNetworkSites)
+    public void setCurrentLocalNetworkSites(final int currentLocalNetworkSitesValue)
     {
-        this.currentLocalNetworkSites = currentLocalNetworkSites;
+        this.currentLocalNetworkSites = currentLocalNetworkSitesValue;
     }
     
     private int currentStorageAccounts;
     
     /**
     * The number of currently allocated storage accounts.
+    * @return The CurrentStorageAccounts value.
     */
     public int getCurrentStorageAccounts()
     {
@@ -134,16 +145,18 @@ public class SubscriptionGetResponse extends OperationResponse
     
     /**
     * The number of currently allocated storage accounts.
+    * @param currentStorageAccountsValue The CurrentStorageAccounts value.
     */
-    public void setCurrentStorageAccounts(int currentStorageAccounts)
+    public void setCurrentStorageAccounts(final int currentStorageAccountsValue)
     {
-        this.currentStorageAccounts = currentStorageAccounts;
+        this.currentStorageAccounts = currentStorageAccountsValue;
     }
     
     private int currentVirtualNetworkSites;
     
     /**
     * The number of currently allocated virtual network sites.
+    * @return The CurrentVirtualNetworkSites value.
     */
     public int getCurrentVirtualNetworkSites()
     {
@@ -152,16 +165,19 @@ public class SubscriptionGetResponse extends OperationResponse
     
     /**
     * The number of currently allocated virtual network sites.
+    * @param currentVirtualNetworkSitesValue The CurrentVirtualNetworkSites
+    * value.
     */
-    public void setCurrentVirtualNetworkSites(int currentVirtualNetworkSites)
+    public void setCurrentVirtualNetworkSites(final int currentVirtualNetworkSitesValue)
     {
-        this.currentVirtualNetworkSites = currentVirtualNetworkSites;
+        this.currentVirtualNetworkSites = currentVirtualNetworkSitesValue;
     }
     
     private int maximumCoreCount;
     
     /**
     * The maximum number of cores that can be allocated on this subscription.
+    * @return The MaximumCoreCount value.
     */
     public int getMaximumCoreCount()
     {
@@ -170,10 +186,11 @@ public class SubscriptionGetResponse extends OperationResponse
     
     /**
     * The maximum number of cores that can be allocated on this subscription.
+    * @param maximumCoreCountValue The MaximumCoreCount value.
     */
-    public void setMaximumCoreCount(int maximumCoreCount)
+    public void setMaximumCoreCount(final int maximumCoreCountValue)
     {
-        this.maximumCoreCount = maximumCoreCount;
+        this.maximumCoreCount = maximumCoreCountValue;
     }
     
     private int maximumDnsServers;
@@ -181,6 +198,7 @@ public class SubscriptionGetResponse extends OperationResponse
     /**
     * The maximum number of DNS servers that can be allocated on this
     * subscription.
+    * @return The MaximumDnsServers value.
     */
     public int getMaximumDnsServers()
     {
@@ -190,10 +208,11 @@ public class SubscriptionGetResponse extends OperationResponse
     /**
     * The maximum number of DNS servers that can be allocated on this
     * subscription.
+    * @param maximumDnsServersValue The MaximumDnsServers value.
     */
-    public void setMaximumDnsServers(int maximumDnsServers)
+    public void setMaximumDnsServers(final int maximumDnsServersValue)
     {
-        this.maximumDnsServers = maximumDnsServers;
+        this.maximumDnsServers = maximumDnsServersValue;
     }
     
     private int maximumHostedServices;
@@ -201,6 +220,7 @@ public class SubscriptionGetResponse extends OperationResponse
     /**
     * The maximum number of cloud services that can be allocated on this
     * subscription.
+    * @return The MaximumHostedServices value.
     */
     public int getMaximumHostedServices()
     {
@@ -210,10 +230,11 @@ public class SubscriptionGetResponse extends OperationResponse
     /**
     * The maximum number of cloud services that can be allocated on this
     * subscription.
+    * @param maximumHostedServicesValue The MaximumHostedServices value.
     */
-    public void setMaximumHostedServices(int maximumHostedServices)
+    public void setMaximumHostedServices(final int maximumHostedServicesValue)
     {
-        this.maximumHostedServices = maximumHostedServices;
+        this.maximumHostedServices = maximumHostedServicesValue;
     }
     
     private int maximumLocalNetworkSites;
@@ -221,6 +242,7 @@ public class SubscriptionGetResponse extends OperationResponse
     /**
     * The maximum number of local virtual network sites that can be allocated
     * on this subscription.
+    * @return The MaximumLocalNetworkSites value.
     */
     public int getMaximumLocalNetworkSites()
     {
@@ -230,10 +252,11 @@ public class SubscriptionGetResponse extends OperationResponse
     /**
     * The maximum number of local virtual network sites that can be allocated
     * on this subscription.
+    * @param maximumLocalNetworkSitesValue The MaximumLocalNetworkSites value.
     */
-    public void setMaximumLocalNetworkSites(int maximumLocalNetworkSites)
+    public void setMaximumLocalNetworkSites(final int maximumLocalNetworkSitesValue)
     {
-        this.maximumLocalNetworkSites = maximumLocalNetworkSites;
+        this.maximumLocalNetworkSites = maximumLocalNetworkSitesValue;
     }
     
     private int maximumStorageAccounts;
@@ -241,6 +264,7 @@ public class SubscriptionGetResponse extends OperationResponse
     /**
     * The maximum number of storage accounts that can be allocated on this
     * subscription.
+    * @return The MaximumStorageAccounts value.
     */
     public int getMaximumStorageAccounts()
     {
@@ -250,10 +274,11 @@ public class SubscriptionGetResponse extends OperationResponse
     /**
     * The maximum number of storage accounts that can be allocated on this
     * subscription.
+    * @param maximumStorageAccountsValue The MaximumStorageAccounts value.
     */
-    public void setMaximumStorageAccounts(int maximumStorageAccounts)
+    public void setMaximumStorageAccounts(final int maximumStorageAccountsValue)
     {
-        this.maximumStorageAccounts = maximumStorageAccounts;
+        this.maximumStorageAccounts = maximumStorageAccountsValue;
     }
     
     private int maximumVirtualNetworkSites;
@@ -261,6 +286,7 @@ public class SubscriptionGetResponse extends OperationResponse
     /**
     * The maximum number of virtual network sites that can be allocated on this
     * subscription.
+    * @return The MaximumVirtualNetworkSites value.
     */
     public int getMaximumVirtualNetworkSites()
     {
@@ -270,16 +296,19 @@ public class SubscriptionGetResponse extends OperationResponse
     /**
     * The maximum number of virtual network sites that can be allocated on this
     * subscription.
+    * @param maximumVirtualNetworkSitesValue The MaximumVirtualNetworkSites
+    * value.
     */
-    public void setMaximumVirtualNetworkSites(int maximumVirtualNetworkSites)
+    public void setMaximumVirtualNetworkSites(final int maximumVirtualNetworkSitesValue)
     {
-        this.maximumVirtualNetworkSites = maximumVirtualNetworkSites;
+        this.maximumVirtualNetworkSites = maximumVirtualNetworkSitesValue;
     }
     
     private String serviceAdminLiveEmailId;
     
     /**
     * The live ID of the subscription administrator.
+    * @return The ServiceAdminLiveEmailId value.
     */
     public String getServiceAdminLiveEmailId()
     {
@@ -288,16 +317,18 @@ public class SubscriptionGetResponse extends OperationResponse
     
     /**
     * The live ID of the subscription administrator.
+    * @param serviceAdminLiveEmailIdValue The ServiceAdminLiveEmailId value.
     */
-    public void setServiceAdminLiveEmailId(String serviceAdminLiveEmailId)
+    public void setServiceAdminLiveEmailId(final String serviceAdminLiveEmailIdValue)
     {
-        this.serviceAdminLiveEmailId = serviceAdminLiveEmailId;
+        this.serviceAdminLiveEmailId = serviceAdminLiveEmailIdValue;
     }
     
     private String subscriptionID;
     
     /**
     * The subscription ID that the operation was called on.
+    * @return The SubscriptionID value.
     */
     public String getSubscriptionID()
     {
@@ -306,16 +337,18 @@ public class SubscriptionGetResponse extends OperationResponse
     
     /**
     * The subscription ID that the operation was called on.
+    * @param subscriptionIDValue The SubscriptionID value.
     */
-    public void setSubscriptionID(String subscriptionID)
+    public void setSubscriptionID(final String subscriptionIDValue)
     {
-        this.subscriptionID = subscriptionID;
+        this.subscriptionID = subscriptionIDValue;
     }
     
     private String subscriptionName;
     
     /**
     * The user-supplied name of the subscription.
+    * @return The SubscriptionName value.
     */
     public String getSubscriptionName()
     {
@@ -324,16 +357,18 @@ public class SubscriptionGetResponse extends OperationResponse
     
     /**
     * The user-supplied name of the subscription.
+    * @param subscriptionNameValue The SubscriptionName value.
     */
-    public void setSubscriptionName(String subscriptionName)
+    public void setSubscriptionName(final String subscriptionNameValue)
     {
-        this.subscriptionName = subscriptionName;
+        this.subscriptionName = subscriptionNameValue;
     }
     
     private SubscriptionStatus subscriptionStatus;
     
     /**
     * The subscription status.
+    * @return The SubscriptionStatus value.
     */
     public SubscriptionStatus getSubscriptionStatus()
     {
@@ -342,9 +377,10 @@ public class SubscriptionGetResponse extends OperationResponse
     
     /**
     * The subscription status.
+    * @param subscriptionStatusValue The SubscriptionStatus value.
     */
-    public void setSubscriptionStatus(SubscriptionStatus subscriptionStatus)
+    public void setSubscriptionStatus(final SubscriptionStatus subscriptionStatusValue)
     {
-        this.subscriptionStatus = subscriptionStatus;
+        this.subscriptionStatus = subscriptionStatusValue;
     }
 }

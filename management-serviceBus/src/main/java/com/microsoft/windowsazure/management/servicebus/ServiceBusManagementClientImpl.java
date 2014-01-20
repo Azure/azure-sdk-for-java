@@ -65,6 +65,7 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
     
     /**
     * The URI used as the base for all Service Bus requests.
+    * @return The BaseUri value.
     */
     public URI getBaseUri()
     {
@@ -80,6 +81,7 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
     * Azure Service ManagementAPI use mutual authentication of management
     * certificates over SSL to ensure that a request made to the service is
     * secure.  No anonymous requests are allowed.
+    * @return The Credentials value.
     */
     public SubscriptionCloudCredentials getCredentials()
     {
@@ -91,6 +93,7 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
     /**
     * The Service Bus Management API includes operations for managing Service
     * Bus namespaces.
+    * @return The NamespacesOperations value.
     */
     public NamespaceOperations getNamespacesOperations()
     {
@@ -101,7 +104,8 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
     
     /**
     * The Service Bus Management API includes operations for managing Service
-    * Bus notification hubs.
+    * Bus queues.
+    * @return The NotificationHubsOperations value.
     */
     public NotificationHubOperations getNotificationHubsOperations()
     {
@@ -113,6 +117,7 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
     /**
     * The Service Bus Management API includes operations for managing Service
     * Bus queues.
+    * @return The QueuesOperations value.
     */
     public QueueOperations getQueuesOperations()
     {
@@ -124,6 +129,7 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
     /**
     * The Service Bus Management API includes operations for managing Service
     * Bus relays.
+    * @return The RelaysOperations value.
     */
     public RelayOperations getRelaysOperations()
     {
@@ -135,6 +141,7 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
     /**
     * The Service Bus Management API includes operations for managing Service
     * Bus topics for a namespace.
+    * @return The TopicsOperations value.
     */
     public TopicOperations getTopicsOperations()
     {
@@ -197,6 +204,8 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
     * The Windows Azure Service ManagementAPI use mutual authentication of
     * management certificates over SSL to ensure that a request made to the
     * service is secure.  No anonymous requests are allowed.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
     */
     @Inject
     public ServiceBusManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, @Named(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS) SubscriptionCloudCredentials credentials) throws java.net.URISyntaxException
@@ -264,6 +273,14 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
     * @param requestId The request ID for the request you wish to track. The
     * request ID is returned in the x-ms-request-id response header for every
     * request.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -431,6 +448,14 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj860465.aspx for
     * more information)
     *
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
     * @return A response to a request for a list of regions.
     */
     @Override

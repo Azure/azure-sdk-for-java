@@ -36,6 +36,7 @@ public class LocationsListResponse extends OperationResponse implements Iterable
     
     /**
     * The data center locations that are valid for your subscription.
+    * @return The Locations value.
     */
     public ArrayList<LocationsListResponse.Location> getLocations()
     {
@@ -44,10 +45,11 @@ public class LocationsListResponse extends OperationResponse implements Iterable
     
     /**
     * The data center locations that are valid for your subscription.
+    * @param locationsValue The Locations value.
     */
-    public void setLocations(ArrayList<LocationsListResponse.Location> locations)
+    public void setLocations(final ArrayList<LocationsListResponse.Location> locationsValue)
     {
-        this.locations = locations;
+        this.locations = locationsValue;
     }
     
     /**
@@ -78,6 +80,7 @@ public class LocationsListResponse extends OperationResponse implements Iterable
         
         /**
         * Indicates the services available at a location.
+        * @return The AvailableServices value.
         */
         public ArrayList<String> getAvailableServices()
         {
@@ -86,16 +89,18 @@ public class LocationsListResponse extends OperationResponse implements Iterable
         
         /**
         * Indicates the services available at a location.
+        * @param availableServicesValue The AvailableServices value.
         */
-        public void setAvailableServices(ArrayList<String> availableServices)
+        public void setAvailableServices(final ArrayList<String> availableServicesValue)
         {
-            this.availableServices = availableServices;
+            this.availableServices = availableServicesValue;
         }
         
         private String displayName;
         
         /**
         * The localized name of data center location.
+        * @return The DisplayName value.
         */
         public String getDisplayName()
         {
@@ -104,10 +109,11 @@ public class LocationsListResponse extends OperationResponse implements Iterable
         
         /**
         * The localized name of data center location.
+        * @param displayNameValue The DisplayName value.
         */
-        public void setDisplayName(String displayName)
+        public void setDisplayName(final String displayNameValue)
         {
-            this.displayName = displayName;
+            this.displayName = displayNameValue;
         }
         
         private String name;
@@ -115,6 +121,7 @@ public class LocationsListResponse extends OperationResponse implements Iterable
         /**
         * The name of a data center location that is valid for your
         * subscription.
+        * @return The Name value.
         */
         public String getName()
         {
@@ -124,10 +131,11 @@ public class LocationsListResponse extends OperationResponse implements Iterable
         /**
         * The name of a data center location that is valid for your
         * subscription.
+        * @param nameValue The Name value.
         */
-        public void setName(String name)
+        public void setName(final String nameValue)
         {
-            this.name = name;
+            this.name = nameValue;
         }
         
         /**
