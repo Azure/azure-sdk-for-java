@@ -36,13 +36,21 @@ public class WebSpacesListResponse extends OperationResponse implements Iterable
     
     /**
     * The web spaces associated with the specified subscription.
+    * @return The WebSpaces value.
     */
-    public ArrayList<WebSpacesListResponse.WebSpace> getWebSpaces() { return this.webSpaces; }
+    public ArrayList<WebSpacesListResponse.WebSpace> getWebSpaces()
+    {
+        return this.webSpaces;
+    }
     
     /**
     * The web spaces associated with the specified subscription.
+    * @param webSpacesValue The WebSpaces value.
     */
-    public void setWebSpaces(ArrayList<WebSpacesListResponse.WebSpace> webSpaces) { this.webSpaces = webSpaces; }
+    public void setWebSpaces(final ArrayList<WebSpacesListResponse.WebSpace> webSpacesValue)
+    {
+        this.webSpaces = webSpacesValue;
+    }
     
     /**
     * Initializes a new instance of the WebSpacesListResponse class.
@@ -50,6 +58,7 @@ public class WebSpacesListResponse extends OperationResponse implements Iterable
     */
     public WebSpacesListResponse()
     {
+        super();
         this.webSpaces = new ArrayList<WebSpacesListResponse.WebSpace>();
     }
     
@@ -71,85 +80,141 @@ public class WebSpacesListResponse extends OperationResponse implements Iterable
         
         /**
         * Possible values are Normal or Limited.
+        * @return The AvailabilityState value.
         */
-        public WebSpaceAvailabilityState getAvailabilityState() { return this.availabilityState; }
+        public WebSpaceAvailabilityState getAvailabilityState()
+        {
+            return this.availabilityState;
+        }
         
         /**
         * Possible values are Normal or Limited.
+        * @param availabilityStateValue The AvailabilityState value.
         */
-        public void setAvailabilityState(WebSpaceAvailabilityState availabilityState) { this.availabilityState = availabilityState; }
+        public void setAvailabilityState(final WebSpaceAvailabilityState availabilityStateValue)
+        {
+            this.availabilityState = availabilityStateValue;
+        }
         
         private Integer currentNumberOfWorkers;
         
         /**
         * The current number of workers.
+        * @return The CurrentNumberOfWorkers value.
         */
-        public Integer getCurrentNumberOfWorkers() { return this.currentNumberOfWorkers; }
+        public Integer getCurrentNumberOfWorkers()
+        {
+            return this.currentNumberOfWorkers;
+        }
         
         /**
         * The current number of workers.
+        * @param currentNumberOfWorkersValue The CurrentNumberOfWorkers value.
         */
-        public void setCurrentNumberOfWorkers(Integer currentNumberOfWorkers) { this.currentNumberOfWorkers = currentNumberOfWorkers; }
+        public void setCurrentNumberOfWorkers(final Integer currentNumberOfWorkersValue)
+        {
+            this.currentNumberOfWorkers = currentNumberOfWorkersValue;
+        }
         
         private WebSpaceWorkerSize currentWorkerSize;
         
         /**
         * The current worker size. Possible values are Small, Medium, or Large.
+        * @return The CurrentWorkerSize value.
         */
-        public WebSpaceWorkerSize getCurrentWorkerSize() { return this.currentWorkerSize; }
+        public WebSpaceWorkerSize getCurrentWorkerSize()
+        {
+            return this.currentWorkerSize;
+        }
         
         /**
         * The current worker size. Possible values are Small, Medium, or Large.
+        * @param currentWorkerSizeValue The CurrentWorkerSize value.
         */
-        public void setCurrentWorkerSize(WebSpaceWorkerSize currentWorkerSize) { this.currentWorkerSize = currentWorkerSize; }
+        public void setCurrentWorkerSize(final WebSpaceWorkerSize currentWorkerSizeValue)
+        {
+            this.currentWorkerSize = currentWorkerSizeValue;
+        }
         
         private String geoLocation;
         
         /**
         * The location of the datacenter for the web space.
+        * @return The GeoLocation value.
         */
-        public String getGeoLocation() { return this.geoLocation; }
+        public String getGeoLocation()
+        {
+            return this.geoLocation;
+        }
         
         /**
         * The location of the datacenter for the web space.
+        * @param geoLocationValue The GeoLocation value.
         */
-        public void setGeoLocation(String geoLocation) { this.geoLocation = geoLocation; }
+        public void setGeoLocation(final String geoLocationValue)
+        {
+            this.geoLocation = geoLocationValue;
+        }
         
         private String geoRegion;
         
         /**
         * The geographical region where the webspace is located.
+        * @return The GeoRegion value.
         */
-        public String getGeoRegion() { return this.geoRegion; }
+        public String getGeoRegion()
+        {
+            return this.geoRegion;
+        }
         
         /**
         * The geographical region where the webspace is located.
+        * @param geoRegionValue The GeoRegion value.
         */
-        public void setGeoRegion(String geoRegion) { this.geoRegion = geoRegion; }
+        public void setGeoRegion(final String geoRegionValue)
+        {
+            this.geoRegion = geoRegionValue;
+        }
         
         private String name;
         
         /**
         * The name of the webspace.
+        * @return The Name value.
         */
-        public String getName() { return this.name; }
+        public String getName()
+        {
+            return this.name;
+        }
         
         /**
         * The name of the webspace.
+        * @param nameValue The Name value.
         */
-        public void setName(String name) { this.name = name; }
+        public void setName(final String nameValue)
+        {
+            this.name = nameValue;
+        }
         
         private String plan;
         
         /**
         * The name of the webspace.
+        * @return The Plan value.
         */
-        public String getPlan() { return this.plan; }
+        public String getPlan()
+        {
+            return this.plan;
+        }
         
         /**
         * The name of the webspace.
+        * @param planValue The Plan value.
         */
-        public void setPlan(String plan) { this.plan = plan; }
+        public void setPlan(final String planValue)
+        {
+            this.plan = planValue;
+        }
         
         private WebSpaceStatus status;
         
@@ -157,48 +222,64 @@ public class WebSpacesListResponse extends OperationResponse implements Iterable
         * The status of the Web Space. Possible values are Ready or Limited.
         * Note: The Limited status occurs only if the datacenter is
         * encountering an operational issue.
+        * @return The Status value.
         */
-        public WebSpaceStatus getStatus() { return this.status; }
+        public WebSpaceStatus getStatus()
+        {
+            return this.status;
+        }
         
         /**
         * The status of the Web Space. Possible values are Ready or Limited.
         * Note: The Limited status occurs only if the datacenter is
         * encountering an operational issue.
+        * @param statusValue The Status value.
         */
-        public void setStatus(WebSpaceStatus status) { this.status = status; }
+        public void setStatus(final WebSpaceStatus statusValue)
+        {
+            this.status = statusValue;
+        }
         
         private String subscription;
         
         /**
         * The subscription ID.
+        * @return The Subscription value.
         */
-        public String getSubscription() { return this.subscription; }
+        public String getSubscription()
+        {
+            return this.subscription;
+        }
         
         /**
         * The subscription ID.
+        * @param subscriptionValue The Subscription value.
         */
-        public void setSubscription(String subscription) { this.subscription = subscription; }
+        public void setSubscription(final String subscriptionValue)
+        {
+            this.subscription = subscriptionValue;
+        }
         
         private WebSpaceWorkerSize workerSize;
         
         /**
         * The worker size. Possible values are Small, Medium, and Large. For
         * JSON, the equivalents are 0 = Small, 1 = Medium, 2 = Large.
+        * @return The WorkerSize value.
         */
-        public WebSpaceWorkerSize getWorkerSize() { return this.workerSize; }
+        public WebSpaceWorkerSize getWorkerSize()
+        {
+            return this.workerSize;
+        }
         
         /**
         * The worker size. Possible values are Small, Medium, and Large. For
         * JSON, the equivalents are 0 = Small, 1 = Medium, 2 = Large.
+        * @param workerSizeValue The WorkerSize value.
         */
-        public void setWorkerSize(WebSpaceWorkerSize workerSize) { this.workerSize = workerSize; }
-        
-        /**
-        * Initializes a new instance of the WebSpace class.
-        *
-        */
-        public WebSpace()
+        public void setWorkerSize(final WebSpaceWorkerSize workerSizeValue)
         {
+            this.workerSize = workerSizeValue;
         }
     }
 }

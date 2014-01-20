@@ -33,42 +33,52 @@ public class JobErrorAction
     /**
     * Queue and message for a queue message action type.
     */
-    public JobQueueMessage getQueueMessage() { return this.queueMessage; }
+    public JobQueueMessage getQueueMessage()
+    {
+        return this.queueMessage;
+    }
     
     /**
     * Queue and message for a queue message action type.
     */
-    public void setQueueMessage(JobQueueMessage queueMessage) { this.queueMessage = queueMessage; }
+    public void setQueueMessage(JobQueueMessage queueMessage)
+    {
+        this.queueMessage = queueMessage;
+    }
     
     private JobHttpRequest request;
     
     /**
     * Request for a http or https action type.
     */
-    public JobHttpRequest getRequest() { return this.request; }
+    public JobHttpRequest getRequest()
+    {
+        return this.request;
+    }
     
     /**
     * Request for a http or https action type.
     */
-    public void setRequest(JobHttpRequest request) { this.request = request; }
+    public void setRequest(JobHttpRequest request)
+    {
+        this.request = request;
+    }
     
     private JobActionType type;
     
     /**
     * Type of action. Can be one of http, https, storageQueue.
     */
-    public JobActionType getType() { return this.type; }
+    public JobActionType getType()
+    {
+        return this.type;
+    }
     
     /**
     * Type of action. Can be one of http, https, storageQueue.
     */
-    public void setType(JobActionType type) { this.type = type; }
-    
-    /**
-    * Initializes a new instance of the JobErrorAction class.
-    *
-    */
-    public JobErrorAction()
+    public void setType(JobActionType type)
     {
+        this.type = type;
     }
 }

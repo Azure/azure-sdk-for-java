@@ -35,19 +35,19 @@ public class WebSiteDeleteRepositoryResponse extends OperationResponse
     
     /**
     * Contains the URI of the web site repository.
+    * @return The Uri value.
     */
-    public URI getUri() { return this.uri; }
+    public URI getUri()
+    {
+        return this.uri;
+    }
     
     /**
     * Contains the URI of the web site repository.
+    * @param uriValue The Uri value.
     */
-    public void setUri(URI uri) { this.uri = uri; }
-    
-    /**
-    * Initializes a new instance of the WebSiteDeleteRepositoryResponse class.
-    *
-    */
-    public WebSiteDeleteRepositoryResponse()
+    public void setUri(final URI uriValue)
     {
+        this.uri = uriValue;
     }
 }

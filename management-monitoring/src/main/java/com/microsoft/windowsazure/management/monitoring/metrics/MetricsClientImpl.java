@@ -38,27 +38,53 @@ public class MetricsClientImpl extends ServiceClient<MetricsClient> implements M
     
     /**
     * Optional base uri parameter.
+    * @return The BaseUri value.
     */
-    public URI getBaseUri() { return this.baseUri; }
+    public URI getBaseUri()
+    {
+        return this.baseUri;
+    }
     
     private SubscriptionCloudCredentials credentials;
     
     /**
     * Windows Azure subscription id.
+    * @return The Credentials value.
     */
-    public SubscriptionCloudCredentials getCredentials() { return this.credentials; }
+    public SubscriptionCloudCredentials getCredentials()
+    {
+        return this.credentials;
+    }
     
     private MetricDefinitionOperations metricDefinitions;
     
-    public MetricDefinitionOperations getMetricDefinitionsOperations() { return this.metricDefinitions; }
+    /**
+    * @return The MetricDefinitionsOperations value.
+    */
+    public MetricDefinitionOperations getMetricDefinitionsOperations()
+    {
+        return this.metricDefinitions;
+    }
     
     private MetricSettingOperations metricSettings;
     
-    public MetricSettingOperations getMetricSettingsOperations() { return this.metricSettings; }
+    /**
+    * @return The MetricSettingsOperations value.
+    */
+    public MetricSettingOperations getMetricSettingsOperations()
+    {
+        return this.metricSettings;
+    }
     
     private MetricValueOperations metricValues;
     
-    public MetricValueOperations getMetricValuesOperations() { return this.metricValues; }
+    /**
+    * @return The MetricValuesOperations value.
+    */
+    public MetricValueOperations getMetricValuesOperations()
+    {
+        return this.metricValues;
+    }
     
     /**
     * Initializes a new instance of the MetricsClientImpl class.
@@ -104,6 +130,8 @@ public class MetricsClientImpl extends ServiceClient<MetricsClient> implements M
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
     * @param credentials Windows Azure subscription id.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
     */
     @Inject
     public MetricsClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, @Named(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS) SubscriptionCloudCredentials credentials) throws java.net.URISyntaxException

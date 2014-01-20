@@ -30,7 +30,10 @@ public class JobCollectionJobsUpdateStateParameters
 {
     private JobState state;
     
-    public JobState getState() { return this.state; }
+    public JobState getState()
+    {
+        return this.state;
+    }
     
     public void setState(JobState state)
     {
@@ -40,14 +43,8 @@ public class JobCollectionJobsUpdateStateParameters
     
     private boolean stateIsIncluded;
     
-    public boolean getStateIsIncluded() { return this.stateIsIncluded; }
-    
-    /**
-    * Initializes a new instance of the JobCollectionJobsUpdateStateParameters
-    * class.
-    *
-    */
-    public JobCollectionJobsUpdateStateParameters()
+    public boolean isStateIsIncluded()
     {
+        return this.stateIsIncluded;
     }
 }

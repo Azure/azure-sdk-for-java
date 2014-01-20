@@ -34,19 +34,19 @@ public class RuleGetResponse extends OperationResponse
     
     /**
     * The retrieved rule.
+    * @return The Rule value.
     */
-    public Rule getRule() { return this.rule; }
+    public Rule getRule()
+    {
+        return this.rule;
+    }
     
     /**
     * The retrieved rule.
+    * @param ruleValue The Rule value.
     */
-    public void setRule(Rule rule) { this.rule = rule; }
-    
-    /**
-    * Initializes a new instance of the RuleGetResponse class.
-    *
-    */
-    public RuleGetResponse()
+    public void setRule(final Rule ruleValue)
     {
+        this.rule = ruleValue;
     }
 }

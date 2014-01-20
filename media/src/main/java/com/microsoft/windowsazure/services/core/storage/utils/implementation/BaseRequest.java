@@ -37,7 +37,8 @@ import com.microsoft.windowsazure.services.core.storage.utils.Utility;
 /**
  * RESERVED FOR INTERNAL USE. The Base Request class for the protocol layer.
  */
-public final class BaseRequest {
+public final class BaseRequest
+{
     /**
      * Adds the lease id.
      * 
@@ -46,8 +47,11 @@ public final class BaseRequest {
      * @param leaseId
      *            the lease id to add to the HttpURLConnection.
      */
-    public static void addLeaseId(final HttpURLConnection request, final String leaseId) {
-        if (leaseId != null) {
+    public static void addLeaseId(final HttpURLConnection request,
+            final String leaseId)
+    {
+        if (leaseId != null)
+        {
             BaseRequest.addOptionalHeader(request, "x-ms-lease-id", leaseId);
         }
     }
@@ -65,11 +69,16 @@ public final class BaseRequest {
      * @param metadata
      *            The metadata.
      */
-    public static void addMetadata(final HttpURLConnection request, final HashMap<String, String> metadata,
-            final OperationContext opContext) {
-        if (metadata != null) {
-            for (final Entry<String, String> entry : metadata.entrySet()) {
-                addMetadata(request, entry.getKey(), entry.getValue(), opContext);
+    public static void addMetadata(final HttpURLConnection request,
+            final HashMap<String, String> metadata,
+            final OperationContext opContext)
+    {
+        if (metadata != null)
+        {
+            for (final Entry<String, String> entry : metadata.entrySet())
+            {
+                addMetadata(request, entry.getKey(), entry.getValue(),
+                        opContext);
             }
         }
     }
@@ -86,11 +95,15 @@ public final class BaseRequest {
      * @param value
      *            The metadata value.
      */
-    public static void addMetadata(final HttpURLConnection request, final String name, final String value,
-            final OperationContext opContext) {
+    public static void addMetadata(final HttpURLConnection request,
+            final String name, final String value,
+            final OperationContext opContext)
+    {
         Utility.assertNotNullOrEmpty("value", value);
 
-        request.setRequestProperty(Constants.HeaderConstants.PREFIX_FOR_STORAGE_METADATA + name, value);
+        request.setRequestProperty(
+                Constants.HeaderConstants.PREFIX_FOR_STORAGE_METADATA + name,
+                value);
     }
 
     /**
@@ -103,8 +116,11 @@ public final class BaseRequest {
      * @param value
      *            the metadata value.
      */
-    public static void addOptionalHeader(final HttpURLConnection request, final String name, final String value) {
-        if (value != null && !value.equals(Constants.EMPTY_STRING)) {
+    public static void addOptionalHeader(final HttpURLConnection request,
+            final String name, final String value)
+    {
+        if (value != null && !value.equals(Constants.EMPTY_STRING))
+        {
             request.setRequestProperty(name, value);
         }
     }
@@ -118,14 +134,18 @@ public final class BaseRequest {
      *            the snapshot version to the query builder.
      * @throws StorageException
      */
-    public static void addSnapshot(final UriQueryBuilder builder, final String snapshotVersion) throws StorageException {
-        if (snapshotVersion != null) {
+    public static void addSnapshot(final UriQueryBuilder builder,
+            final String snapshotVersion) throws StorageException
+    {
+        if (snapshotVersion != null)
+        {
             builder.add("snapshot", snapshotVersion);
         }
     }
 
     /**
-     * Creates the specified resource. Note request is set to setFixedLengthStreamingMode(0); Sign with 0 length.
+     * Creates the specified resource. Note request is set to
+     * setFixedLengthStreamingMode(0); Sign with 0 length.
      * 
      * @param uri
      *            the request Uri.
@@ -143,13 +163,17 @@ public final class BaseRequest {
      * @throws StorageException
      * @throws IllegalArgumentException
      */
-    public static HttpURLConnection create(final URI uri, final int timeout, UriQueryBuilder builder,
-            final OperationContext opContext) throws IOException, URISyntaxException, StorageException {
-        if (builder == null) {
+    public static HttpURLConnection create(final URI uri, final int timeout,
+            UriQueryBuilder builder, final OperationContext opContext)
+            throws IOException, URISyntaxException, StorageException
+    {
+        if (builder == null)
+        {
             builder = new UriQueryBuilder();
         }
 
-        final HttpURLConnection retConnection = createURLConnection(uri, timeout, builder, opContext);
+        final HttpURLConnection retConnection = createURLConnection(uri,
+                timeout, builder, opContext);
         retConnection.setFixedLengthStreamingMode(0);
         retConnection.setDoOutput(true);
         retConnection.setRequestMethod("PUT");
@@ -175,38 +199,49 @@ public final class BaseRequest {
      *             if there is an improperly formated URI
      * @throws StorageException
      */
-    public static HttpURLConnection createURLConnection(final URI uri, final int timeoutInMs, UriQueryBuilder builder,
-            final OperationContext opContext) throws IOException, URISyntaxException, StorageException {
-        if (builder == null) {
+    public static HttpURLConnection createURLConnection(final URI uri,
+            final int timeoutInMs, UriQueryBuilder builder,
+            final OperationContext opContext) throws IOException,
+            URISyntaxException, StorageException
+    {
+        if (builder == null)
+        {
             builder = new UriQueryBuilder();
         }
 
-        if (timeoutInMs != 0) {
+        if (timeoutInMs != 0)
+        {
             builder.add("timeout", String.valueOf(timeoutInMs / 1000));
         }
 
         final URL resourceUrl = builder.addToURI(uri).toURL();
 
-        final HttpURLConnection retConnection = (HttpURLConnection) resourceUrl.openConnection();
+        final HttpURLConnection retConnection = (HttpURLConnection) resourceUrl
+                .openConnection();
 
         retConnection.setReadTimeout(timeoutInMs);
 
         // Note : accept behavior, java by default sends Accept behavior
-        // as text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2 This will need to be set for table requests.
+        // as text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2 This will
+        // need to be set for table requests.
         //
         // To override set retConnection.setRequestProperty("Accept",
         // "application/atom+xml");
 
-        retConnection.setRequestProperty(Constants.HeaderConstants.STORAGE_VERSION_HEADER,
+        retConnection.setRequestProperty(
+                Constants.HeaderConstants.STORAGE_VERSION_HEADER,
                 Constants.HeaderConstants.TARGET_STORAGE_VERSION);
-        retConnection.setRequestProperty(Constants.HeaderConstants.USER_AGENT, getUserAgent());
-        retConnection.setRequestProperty(Constants.HeaderConstants.CLIENT_REQUEST_ID_HEADER,
+        retConnection.setRequestProperty(Constants.HeaderConstants.USER_AGENT,
+                getUserAgent());
+        retConnection.setRequestProperty(
+                Constants.HeaderConstants.CLIENT_REQUEST_ID_HEADER,
                 opContext.getClientRequestID());
 
         // Java6 TODO remove me, this has to be manually set or it will
         // sometimes default to application/x-www-form-urlencoded without us
         // knowing causing auth fails in Java5.
-        retConnection.setRequestProperty(Constants.HeaderConstants.CONTENT_TYPE, "");
+        retConnection.setRequestProperty(
+                Constants.HeaderConstants.CONTENT_TYPE, "");
         return retConnection;
     }
 
@@ -228,13 +263,17 @@ public final class BaseRequest {
      *             if there is an improperly formated URI
      * @throws StorageException
      */
-    public static HttpURLConnection delete(final URI uri, final int timeout, UriQueryBuilder builder,
-            final OperationContext opContext) throws IOException, URISyntaxException, StorageException {
-        if (builder == null) {
+    public static HttpURLConnection delete(final URI uri, final int timeout,
+            UriQueryBuilder builder, final OperationContext opContext)
+            throws IOException, URISyntaxException, StorageException
+    {
+        if (builder == null)
+        {
             builder = new UriQueryBuilder();
         }
 
-        final HttpURLConnection retConnection = createURLConnection(uri, timeout, builder, opContext);
+        final HttpURLConnection retConnection = createURLConnection(uri,
+                timeout, builder, opContext);
 
         retConnection.setDoOutput(true);
         retConnection.setRequestMethod("DELETE");
@@ -258,14 +297,19 @@ public final class BaseRequest {
      * @throws URISyntaxException
      * @throws IOException
      * */
-    public static HttpURLConnection getMetadata(final URI uri, final int timeout, UriQueryBuilder builder,
-            final OperationContext opContext) throws StorageException, IOException, URISyntaxException {
-        if (builder == null) {
+    public static HttpURLConnection getMetadata(final URI uri,
+            final int timeout, UriQueryBuilder builder,
+            final OperationContext opContext) throws StorageException,
+            IOException, URISyntaxException
+    {
+        if (builder == null)
+        {
             builder = new UriQueryBuilder();
         }
 
         builder.add("comp", "metadata");
-        final HttpURLConnection retConnection = createURLConnection(uri, timeout, builder, opContext);
+        final HttpURLConnection retConnection = createURLConnection(uri,
+                timeout, builder, opContext);
 
         retConnection.setDoOutput(true);
         retConnection.setRequestMethod("HEAD");
@@ -289,13 +333,18 @@ public final class BaseRequest {
      * @throws URISyntaxException
      * @throws IOException
      * */
-    public static HttpURLConnection getProperties(final URI uri, final int timeout, UriQueryBuilder builder,
-            final OperationContext opContext) throws IOException, URISyntaxException, StorageException {
-        if (builder == null) {
+    public static HttpURLConnection getProperties(final URI uri,
+            final int timeout, UriQueryBuilder builder,
+            final OperationContext opContext) throws IOException,
+            URISyntaxException, StorageException
+    {
+        if (builder == null)
+        {
             builder = new UriQueryBuilder();
         }
 
-        final HttpURLConnection retConnection = createURLConnection(uri, timeout, builder, opContext);
+        final HttpURLConnection retConnection = createURLConnection(uri,
+                timeout, builder, opContext);
 
         retConnection.setDoOutput(true);
         retConnection.setRequestMethod("HEAD");
@@ -304,7 +353,8 @@ public final class BaseRequest {
     }
 
     /**
-     * Creates a HttpURLConnection used to retrieve the Analytics service properties from the storage service.
+     * Creates a HttpURLConnection used to retrieve the Analytics service
+     * properties from the storage service.
      * 
      * @param uri
      *            The service endpoint.
@@ -319,16 +369,21 @@ public final class BaseRequest {
      * @throws URISyntaxException
      * @throws StorageException
      */
-    public static HttpURLConnection getServiceProperties(final URI uri, final int timeout, UriQueryBuilder builder,
-            final OperationContext opContext) throws IOException, URISyntaxException, StorageException {
-        if (builder == null) {
+    public static HttpURLConnection getServiceProperties(final URI uri,
+            final int timeout, UriQueryBuilder builder,
+            final OperationContext opContext) throws IOException,
+            URISyntaxException, StorageException
+    {
+        if (builder == null)
+        {
             builder = new UriQueryBuilder();
         }
 
         builder.add("comp", "properties");
         builder.add("restype", "service");
 
-        final HttpURLConnection retConnection = createURLConnection(uri, timeout, builder, opContext);
+        final HttpURLConnection retConnection = createURLConnection(uri,
+                timeout, builder, opContext);
 
         retConnection.setDoOutput(true);
         retConnection.setRequestMethod("GET");
@@ -341,16 +396,20 @@ public final class BaseRequest {
      * 
      * @return the user agent to send over the wire to identify the client.
      */
-    public static String getUserAgent() {
-        if (userAgent == null) {
-            userAgent = String.format("%s/%s", Constants.HeaderConstants.USER_AGENT_PREFIX,
+    public static String getUserAgent()
+    {
+        if (userAgent == null)
+        {
+            userAgent = String.format("%s/%s",
+                    Constants.HeaderConstants.USER_AGENT_PREFIX,
                     Constants.HeaderConstants.USER_AGENT_VERSION);
         }
         return userAgent;
     }
 
     /**
-     * Writes the contents of the ServiceProperties object to a byte array in XML form.
+     * Writes the contents of the ServiceProperties object to a byte array in
+     * XML form.
      * 
      * @param properties
      *            the ServiceProperties to write to the stream.
@@ -361,8 +420,10 @@ public final class BaseRequest {
      *             if there is an error writing the content to the stream.
      * @throws StorageException
      */
-    public static byte[] serializeServicePropertiesToByteArray(final ServiceProperties properties,
-            final OperationContext opContext) throws XMLStreamException, StorageException {
+    public static byte[] serializeServicePropertiesToByteArray(
+            final ServiceProperties properties, final OperationContext opContext)
+            throws XMLStreamException, StorageException
+    {
         return properties.serializeToByteArray(opContext);
     }
 
@@ -382,15 +443,20 @@ public final class BaseRequest {
      * @throws URISyntaxException
      * @throws IOException
      * */
-    public static HttpURLConnection setMetadata(final URI uri, final int timeout, UriQueryBuilder builder,
-            final OperationContext opContext) throws IOException, URISyntaxException, StorageException {
+    public static HttpURLConnection setMetadata(final URI uri,
+            final int timeout, UriQueryBuilder builder,
+            final OperationContext opContext) throws IOException,
+            URISyntaxException, StorageException
+    {
 
-        if (builder == null) {
+        if (builder == null)
+        {
             builder = new UriQueryBuilder();
         }
 
         builder.add("comp", "metadata");
-        final HttpURLConnection retConnection = createURLConnection(uri, timeout, builder, opContext);
+        final HttpURLConnection retConnection = createURLConnection(uri,
+                timeout, builder, opContext);
 
         retConnection.setFixedLengthStreamingMode(0);
         retConnection.setDoOutput(true);
@@ -400,7 +466,8 @@ public final class BaseRequest {
     }
 
     /**
-     * Creates a HttpURLConnection used to set the Analytics service properties on the storage service.
+     * Creates a HttpURLConnection used to set the Analytics service properties
+     * on the storage service.
      * 
      * @param uri
      *            The service endpoint.
@@ -415,16 +482,21 @@ public final class BaseRequest {
      * @throws URISyntaxException
      * @throws StorageException
      */
-    public static HttpURLConnection setServiceProperties(final URI uri, final int timeout, UriQueryBuilder builder,
-            final OperationContext opContext) throws IOException, URISyntaxException, StorageException {
-        if (builder == null) {
+    public static HttpURLConnection setServiceProperties(final URI uri,
+            final int timeout, UriQueryBuilder builder,
+            final OperationContext opContext) throws IOException,
+            URISyntaxException, StorageException
+    {
+        if (builder == null)
+        {
             builder = new UriQueryBuilder();
         }
 
         builder.add("comp", "properties");
         builder.add("restype", "service");
 
-        final HttpURLConnection retConnection = createURLConnection(uri, timeout, builder, opContext);
+        final HttpURLConnection retConnection = createURLConnection(uri,
+                timeout, builder, opContext);
 
         retConnection.setDoOutput(true);
         retConnection.setRequestMethod("PUT");
@@ -433,141 +505,184 @@ public final class BaseRequest {
     }
 
     /**
-     * Signs the request appropriately to make it an authenticated request for Blob and Queue.
+     * Signs the request appropriately to make it an authenticated request for
+     * Blob and Queue.
      * 
      * @param request
      *            a HttpURLConnection for the operation.
      * @param credentials
      *            the credentials to use for signing.
      * @param contentLength
-     *            the length of the content written to the output stream, -1 if unknown.
+     *            the length of the content written to the output stream, -1 if
+     *            unknown.
      * @param opContext
      *            an object used to track the execution of the operation
      * @throws InvalidKeyException
      *             if the credentials key is invalid.
      * @throws StorageException
      */
-    public static void signRequestForBlobAndQueue(final HttpURLConnection request, final Credentials credentials,
-            final Long contentLength, final OperationContext opContext) throws InvalidKeyException, StorageException {
-        request.setRequestProperty(Constants.HeaderConstants.DATE, Utility.getGMTTime());
-        final Canonicalizer canonicalizer = CanonicalizerFactory.getBlobQueueFullCanonicalizer(request);
+    public static void signRequestForBlobAndQueue(
+            final HttpURLConnection request, final Credentials credentials,
+            final Long contentLength, final OperationContext opContext)
+            throws InvalidKeyException, StorageException
+    {
+        request.setRequestProperty(Constants.HeaderConstants.DATE,
+                Utility.getGMTTime());
+        final Canonicalizer canonicalizer = CanonicalizerFactory
+                .getBlobQueueFullCanonicalizer(request);
 
-        final String stringToSign = canonicalizer.canonicalize(request, credentials.getAccountName(), contentLength,
-                opContext);
+        final String stringToSign = canonicalizer.canonicalize(request,
+                credentials.getAccountName(), contentLength, opContext);
 
-        final String computedBase64Signature = StorageKey.computeMacSha256(credentials.getKey(), stringToSign);
+        final String computedBase64Signature = StorageKey.computeMacSha256(
+                credentials.getKey(), stringToSign);
 
         // V2 add logging
-        // System.out.println(String.format("Signing %s\r\n%s\r\n", stringToSign, computedBase64Signature));
-        request.setRequestProperty(Constants.HeaderConstants.AUTHORIZATION,
-                String.format("%s %s:%s", "SharedKey", credentials.getAccountName(), computedBase64Signature));
+        // System.out.println(String.format("Signing %s\r\n%s\r\n",
+        // stringToSign, computedBase64Signature));
+        request.setRequestProperty(
+                Constants.HeaderConstants.AUTHORIZATION,
+                String.format("%s %s:%s", "SharedKey",
+                        credentials.getAccountName(), computedBase64Signature));
     }
 
     /**
      * 
-     * Signs the request appropriately to make it an authenticated request for Blob and Queue.
+     * Signs the request appropriately to make it an authenticated request for
+     * Blob and Queue.
      * 
      * @param request
      *            a HttpURLConnection for the operation.
      * @param credentials
      *            the credentials to use for signing.
      * @param contentLength
-     *            the length of the content written to the output stream, -1 if unknown.
+     *            the length of the content written to the output stream, -1 if
+     *            unknown.
      * @param opContext
      *            an object used to track the execution of the operation
      * @throws InvalidKeyException
      *             if the credentials key is invalid.
      * @throws StorageException
      */
-    public static void signRequestForBlobAndQueueSharedKeyLite(final HttpURLConnection request,
-            final Credentials credentials, final Long contentLength, final OperationContext opContext)
-            throws InvalidKeyException, StorageException {
-        request.setRequestProperty(Constants.HeaderConstants.DATE, Utility.getGMTTime());
+    public static void signRequestForBlobAndQueueSharedKeyLite(
+            final HttpURLConnection request, final Credentials credentials,
+            final Long contentLength, final OperationContext opContext)
+            throws InvalidKeyException, StorageException
+    {
+        request.setRequestProperty(Constants.HeaderConstants.DATE,
+                Utility.getGMTTime());
 
-        final Canonicalizer canonicalizer = CanonicalizerFactory.getBlobQueueLiteCanonicalizer(request);
+        final Canonicalizer canonicalizer = CanonicalizerFactory
+                .getBlobQueueLiteCanonicalizer(request);
 
-        final String stringToSign = canonicalizer.canonicalize(request, credentials.getAccountName(), contentLength,
-                opContext);
+        final String stringToSign = canonicalizer.canonicalize(request,
+                credentials.getAccountName(), contentLength, opContext);
 
-        final String computedBase64Signature = StorageKey.computeMacSha256(credentials.getKey(), stringToSign);
+        final String computedBase64Signature = StorageKey.computeMacSha256(
+                credentials.getKey(), stringToSign);
 
         // VNext add logging
         // System.out.println(String.format("Signing %s\r\n%s\r\n",
         // stringToSign, computedBase64Signature));
-        request.setRequestProperty(Constants.HeaderConstants.AUTHORIZATION,
-                String.format("%s %s:%s", "SharedKeyLite", credentials.getAccountName(), computedBase64Signature));
+        request.setRequestProperty(
+                Constants.HeaderConstants.AUTHORIZATION,
+                String.format("%s %s:%s", "SharedKeyLite",
+                        credentials.getAccountName(), computedBase64Signature));
     }
 
     /**
      * 
-     * Signs the request appropriately to make it an authenticated request for Table.
+     * Signs the request appropriately to make it an authenticated request for
+     * Table.
      * 
      * @param request
      *            a HttpURLConnection for the operation.
      * @param credentials
      *            the credentials to use for signing.
      * @param contentLength
-     *            the length of the content written to the output stream, -1 if unknown.
+     *            the length of the content written to the output stream, -1 if
+     *            unknown.
      * @param opContext
      *            an object used to track the execution of the operation
      * @throws InvalidKeyException
      *             if the credentials key is invalid.
      * @throws StorageException
      */
-    public static void signRequestForTableSharedKey(final HttpURLConnection request, final Credentials credentials,
-            final Long contentLength, final OperationContext opContext) throws InvalidKeyException, StorageException {
-        request.setRequestProperty(Constants.HeaderConstants.DATE, Utility.getGMTTime());
+    public static void signRequestForTableSharedKey(
+            final HttpURLConnection request, final Credentials credentials,
+            final Long contentLength, final OperationContext opContext)
+            throws InvalidKeyException, StorageException
+    {
+        request.setRequestProperty(Constants.HeaderConstants.DATE,
+                Utility.getGMTTime());
 
-        final Canonicalizer canonicalizer = CanonicalizerFactory.getTableFullCanonicalizer(request);
+        final Canonicalizer canonicalizer = CanonicalizerFactory
+                .getTableFullCanonicalizer(request);
 
-        final String stringToSign = canonicalizer.canonicalize(request, credentials.getAccountName(), contentLength,
-                opContext);
+        final String stringToSign = canonicalizer.canonicalize(request,
+                credentials.getAccountName(), contentLength, opContext);
 
-        final String computedBase64Signature = StorageKey.computeMacSha256(credentials.getKey(), stringToSign);
+        final String computedBase64Signature = StorageKey.computeMacSha256(
+                credentials.getKey(), stringToSign);
 
         // TODO Vnext add logging
-        // System.out.println(String.format("Signing %s\r\n%s\r\n", stringToSign, computedBase64Signature));
-        request.setRequestProperty(Constants.HeaderConstants.AUTHORIZATION,
-                String.format("%s %s:%s", "SharedKey", credentials.getAccountName(), computedBase64Signature));
+        // System.out.println(String.format("Signing %s\r\n%s\r\n",
+        // stringToSign, computedBase64Signature));
+        request.setRequestProperty(
+                Constants.HeaderConstants.AUTHORIZATION,
+                String.format("%s %s:%s", "SharedKey",
+                        credentials.getAccountName(), computedBase64Signature));
     }
 
     /**
      * 
-     * Signs the request appropriately to make it an authenticated request for Table.
+     * Signs the request appropriately to make it an authenticated request for
+     * Table.
      * 
      * @param request
      *            a HttpURLConnection for the operation.
      * @param credentials
      *            the credentials to use for signing.
      * @param contentLength
-     *            the length of the content written to the output stream, -1 if unknown.
+     *            the length of the content written to the output stream, -1 if
+     *            unknown.
      * @param opContext
      *            an object used to track the execution of the operation
      * @throws InvalidKeyException
      *             if the credentials key is invalid.
      * @throws StorageException
      */
-    public static void signRequestForTableSharedKeyLite(final HttpURLConnection request, final Credentials credentials,
-            final Long contentLength, final OperationContext opContext) throws InvalidKeyException, StorageException {
-        request.setRequestProperty(Constants.HeaderConstants.DATE, Utility.getGMTTime());
+    public static void signRequestForTableSharedKeyLite(
+            final HttpURLConnection request, final Credentials credentials,
+            final Long contentLength, final OperationContext opContext)
+            throws InvalidKeyException, StorageException
+    {
+        request.setRequestProperty(Constants.HeaderConstants.DATE,
+                Utility.getGMTTime());
 
-        final Canonicalizer canonicalizer = CanonicalizerFactory.getTableLiteCanonicalizer(request);
+        final Canonicalizer canonicalizer = CanonicalizerFactory
+                .getTableLiteCanonicalizer(request);
 
-        final String stringToSign = canonicalizer.canonicalize(request, credentials.getAccountName(), contentLength,
-                opContext);
+        final String stringToSign = canonicalizer.canonicalize(request,
+                credentials.getAccountName(), contentLength, opContext);
 
-        final String computedBase64Signature = StorageKey.computeMacSha256(credentials.getKey(), stringToSign);
+        final String computedBase64Signature = StorageKey.computeMacSha256(
+                credentials.getKey(), stringToSign);
 
         // TODO Vnext add logging
-        // System.out.println(String.format("Signing %s\r\n%s\r\n", stringToSign, computedBase64Signature));
-        request.setRequestProperty(Constants.HeaderConstants.AUTHORIZATION,
-                String.format("%s %s:%s", "SharedKeyLite", credentials.getAccountName(), computedBase64Signature));
+        // System.out.println(String.format("Signing %s\r\n%s\r\n",
+        // stringToSign, computedBase64Signature));
+        request.setRequestProperty(
+                Constants.HeaderConstants.AUTHORIZATION,
+                String.format("%s %s:%s", "SharedKeyLite",
+                        credentials.getAccountName(), computedBase64Signature));
     }
 
     /**
      * Private Default Ctor
      */
-    private BaseRequest() {
+    private BaseRequest()
+    {
         // No op
     }
 }

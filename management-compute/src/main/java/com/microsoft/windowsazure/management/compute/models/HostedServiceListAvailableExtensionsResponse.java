@@ -36,13 +36,21 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
     
     /**
     * The extensions that are available to add to your cloud service.
+    * @return The ExtensionImages value.
     */
-    public ArrayList<HostedServiceListAvailableExtensionsResponse.ExtensionImage> getExtensionImages() { return this.extensionImages; }
+    public ArrayList<HostedServiceListAvailableExtensionsResponse.ExtensionImage> getExtensionImages()
+    {
+        return this.extensionImages;
+    }
     
     /**
     * The extensions that are available to add to your cloud service.
+    * @param extensionImagesValue The ExtensionImages value.
     */
-    public void setExtensionImages(ArrayList<HostedServiceListAvailableExtensionsResponse.ExtensionImage> extensionImages) { this.extensionImages = extensionImages; }
+    public void setExtensionImages(final ArrayList<HostedServiceListAvailableExtensionsResponse.ExtensionImage> extensionImagesValue)
+    {
+        this.extensionImages = extensionImagesValue;
+    }
     
     /**
     * Initializes a new instance of the
@@ -51,6 +59,7 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
     */
     public HostedServiceListAvailableExtensionsResponse()
     {
+        super();
         this.extensionImages = new ArrayList<HostedServiceListAvailableExtensionsResponse.ExtensionImage>();
     }
     
@@ -72,122 +81,188 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
         
         /**
         * The description of the extension.
+        * @return The Description value.
         */
-        public String getDescription() { return this.description; }
+        public String getDescription()
+        {
+            return this.description;
+        }
         
         /**
         * The description of the extension.
+        * @param descriptionValue The Description value.
         */
-        public void setDescription(String description) { this.description = description; }
+        public void setDescription(final String descriptionValue)
+        {
+            this.description = descriptionValue;
+        }
         
         private HostingResources hostingResources;
         
         /**
         * The type of resource that supports the extension. This value can be
         * WebRole, WorkerRole, or WebRole|WorkerRole.
+        * @return The HostingResources value.
         */
-        public HostingResources getHostingResources() { return this.hostingResources; }
+        public HostingResources getHostingResources()
+        {
+            return this.hostingResources;
+        }
         
         /**
         * The type of resource that supports the extension. This value can be
         * WebRole, WorkerRole, or WebRole|WorkerRole.
+        * @param hostingResourcesValue The HostingResources value.
         */
-        public void setHostingResources(HostingResources hostingResources) { this.hostingResources = hostingResources; }
+        public void setHostingResources(final HostingResources hostingResourcesValue)
+        {
+            this.hostingResources = hostingResourcesValue;
+        }
         
         private String label;
         
         /**
         * The label that is used to identify the extension.
+        * @return The Label value.
         */
-        public String getLabel() { return this.label; }
+        public String getLabel()
+        {
+            return this.label;
+        }
         
         /**
         * The label that is used to identify the extension.
+        * @param labelValue The Label value.
         */
-        public void setLabel(String label) { this.label = label; }
+        public void setLabel(final String labelValue)
+        {
+            this.label = labelValue;
+        }
         
         private String privateConfigurationSchema;
         
         /**
         * The schema of the private configuration.
+        * @return The PrivateConfigurationSchema value.
         */
-        public String getPrivateConfigurationSchema() { return this.privateConfigurationSchema; }
+        public String getPrivateConfigurationSchema()
+        {
+            return this.privateConfigurationSchema;
+        }
         
         /**
         * The schema of the private configuration.
+        * @param privateConfigurationSchemaValue The PrivateConfigurationSchema
+        * value.
         */
-        public void setPrivateConfigurationSchema(String privateConfigurationSchema) { this.privateConfigurationSchema = privateConfigurationSchema; }
+        public void setPrivateConfigurationSchema(final String privateConfigurationSchemaValue)
+        {
+            this.privateConfigurationSchema = privateConfigurationSchemaValue;
+        }
         
         private String providerNamespace;
         
         /**
         * The provider namespace of the extension. The provider namespace for
         * Windows Azure extensions is Microsoft.Windows.Azure.Extensions.
+        * @return The ProviderNamespace value.
         */
-        public String getProviderNamespace() { return this.providerNamespace; }
+        public String getProviderNamespace()
+        {
+            return this.providerNamespace;
+        }
         
         /**
         * The provider namespace of the extension. The provider namespace for
         * Windows Azure extensions is Microsoft.Windows.Azure.Extensions.
+        * @param providerNamespaceValue The ProviderNamespace value.
         */
-        public void setProviderNamespace(String providerNamespace) { this.providerNamespace = providerNamespace; }
+        public void setProviderNamespace(final String providerNamespaceValue)
+        {
+            this.providerNamespace = providerNamespaceValue;
+        }
         
         private String publicConfigurationSchema;
         
         /**
         * The schema of the public configuration.
+        * @return The PublicConfigurationSchema value.
         */
-        public String getPublicConfigurationSchema() { return this.publicConfigurationSchema; }
+        public String getPublicConfigurationSchema()
+        {
+            return this.publicConfigurationSchema;
+        }
         
         /**
         * The schema of the public configuration.
+        * @param publicConfigurationSchemaValue The PublicConfigurationSchema
+        * value.
         */
-        public void setPublicConfigurationSchema(String publicConfigurationSchema) { this.publicConfigurationSchema = publicConfigurationSchema; }
+        public void setPublicConfigurationSchema(final String publicConfigurationSchemaValue)
+        {
+            this.publicConfigurationSchema = publicConfigurationSchemaValue;
+        }
         
         private String thumbprintAlgorithm;
         
         /**
         * The thumbprint algorithm of the certificate that is used for
         * encryption.
+        * @return The ThumbprintAlgorithm value.
         */
-        public String getThumbprintAlgorithm() { return this.thumbprintAlgorithm; }
+        public String getThumbprintAlgorithm()
+        {
+            return this.thumbprintAlgorithm;
+        }
         
         /**
         * The thumbprint algorithm of the certificate that is used for
         * encryption.
+        * @param thumbprintAlgorithmValue The ThumbprintAlgorithm value.
         */
-        public void setThumbprintAlgorithm(String thumbprintAlgorithm) { this.thumbprintAlgorithm = thumbprintAlgorithm; }
+        public void setThumbprintAlgorithm(final String thumbprintAlgorithmValue)
+        {
+            this.thumbprintAlgorithm = thumbprintAlgorithmValue;
+        }
         
         private String type;
         
         /**
         * Required. The type of the extension.
+        * @return The Type value.
         */
-        public String getType() { return this.type; }
+        public String getType()
+        {
+            return this.type;
+        }
         
         /**
         * Required. The type of the extension.
+        * @param typeValue The Type value.
         */
-        public void setType(String type) { this.type = type; }
+        public void setType(final String typeValue)
+        {
+            this.type = typeValue;
+        }
         
         private String version;
         
         /**
         * The version of the extension.
+        * @return The Version value.
         */
-        public String getVersion() { return this.version; }
+        public String getVersion()
+        {
+            return this.version;
+        }
         
         /**
         * The version of the extension.
+        * @param versionValue The Version value.
         */
-        public void setVersion(String version) { this.version = version; }
-        
-        /**
-        * Initializes a new instance of the ExtensionImage class.
-        *
-        */
-        public ExtensionImage()
+        public void setVersion(final String versionValue)
         {
+            this.version = versionValue;
         }
     }
 }

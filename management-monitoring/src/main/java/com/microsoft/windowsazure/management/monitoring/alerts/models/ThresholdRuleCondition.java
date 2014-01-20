@@ -34,57 +34,81 @@ public class ThresholdRuleCondition extends RuleCondition
     
     /**
     * Condition data source.
+    * @return The DataSource value.
     */
-    public RuleDataSource getDataSource() { return this.dataSource; }
+    public RuleDataSource getDataSource()
+    {
+        return this.dataSource;
+    }
     
     /**
     * Condition data source.
+    * @param dataSourceValue The DataSource value.
     */
-    public void setDataSource(RuleDataSource dataSource) { this.dataSource = dataSource; }
+    public void setDataSource(final RuleDataSource dataSourceValue)
+    {
+        this.dataSource = dataSourceValue;
+    }
     
     private ConditionOperator operator;
     
     /**
     * Condition operator.
+    * @return The Operator value.
     */
-    public ConditionOperator getOperator() { return this.operator; }
+    public ConditionOperator getOperator()
+    {
+        return this.operator;
+    }
     
     /**
     * Condition operator.
+    * @param operatorValue The Operator value.
     */
-    public void setOperator(ConditionOperator operator) { this.operator = operator; }
+    public void setOperator(final ConditionOperator operatorValue)
+    {
+        this.operator = operatorValue;
+    }
     
     private double threshold;
     
     /**
     * Condition threshold.
+    * @return The Threshold value.
     */
-    public double getThreshold() { return this.threshold; }
+    public double getThreshold()
+    {
+        return this.threshold;
+    }
     
     /**
     * Condition threshold.
+    * @param thresholdValue The Threshold value.
     */
-    public void setThreshold(double threshold) { this.threshold = threshold; }
+    public void setThreshold(final double thresholdValue)
+    {
+        this.threshold = thresholdValue;
+    }
     
     private Duration windowSize;
     
     /**
     * The time period over which the alert rule is evaluated. Condition window
     * size depends on the metric.
+    * @return The WindowSize value.
     */
-    public Duration getWindowSize() { return this.windowSize; }
+    public Duration getWindowSize()
+    {
+        return this.windowSize;
+    }
     
     /**
     * The time period over which the alert rule is evaluated. Condition window
     * size depends on the metric.
+    * @param windowSizeValue The WindowSize value.
     */
-    public void setWindowSize(Duration windowSize) { this.windowSize = windowSize; }
-    
-    /**
-    * Initializes a new instance of the ThresholdRuleCondition class.
-    *
-    */
-    public ThresholdRuleCondition()
+    public void setWindowSize(final Duration windowSizeValue)
     {
+        this.windowSize = windowSizeValue;
     }
 }

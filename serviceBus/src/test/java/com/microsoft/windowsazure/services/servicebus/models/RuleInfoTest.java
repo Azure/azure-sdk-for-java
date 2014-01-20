@@ -23,15 +23,17 @@ import org.junit.Test;
 import com.microsoft.windowsazure.services.servicebus.implementation.Filter;
 import com.microsoft.windowsazure.services.servicebus.implementation.RuleAction;
 
-public class RuleInfoTest {
+public class RuleInfoTest
+{
 
     @Test
-    public void testGetSetFilter() {
+    public void testGetSetFilter()
+    {
         // Arrange
         Filter expectedFilter = new Filter();
         RuleInfo RuleInfo = new RuleInfo();
 
-        // Act 
+        // Act
         Filter actualFilter = RuleInfo.setFilter(expectedFilter).getFilter();
 
         // Assert
@@ -40,25 +42,28 @@ public class RuleInfoTest {
     }
 
     @Test
-    public void testGetSetAction() {
+    public void testGetSetAction()
+    {
         // Arrange
         RuleAction expectedAction = new RuleAction();
         RuleInfo RuleInfo = new RuleInfo();
 
-        // Act 
-        RuleAction actualAction = RuleInfo.setAction(expectedAction).getAction();
+        // Act
+        RuleAction actualAction = RuleInfo.setAction(expectedAction)
+                .getAction();
 
         // Assert
         assertEquals(expectedAction, actualAction);
     }
 
     @Test
-    public void testGetSetTag() {
+    public void testGetSetTag()
+    {
         // Arrange
         String expectedTag = "expectedTag";
         RuleInfo RuleInfo = new RuleInfo();
 
-        // Act 
+        // Act
         String actualTag = RuleInfo.setTag(expectedTag).getTag();
 
         // Assert
@@ -66,12 +71,13 @@ public class RuleInfoTest {
     }
 
     @Test
-    public void testGetSetName() {
+    public void testGetSetName()
+    {
         // Arrange
         String expectedName = "expectedName";
         RuleInfo RuleInfo = new RuleInfo();
 
-        // Act 
+        // Act
         String actualName = RuleInfo.setName(expectedName).getName();
 
         // Assert
@@ -79,13 +85,15 @@ public class RuleInfoTest {
     }
 
     @Test
-    public void testGetSetCreatedAt() {
+    public void testGetSetCreatedAt()
+    {
         // Arrange
         Calendar expectedCreatedAt = Calendar.getInstance();
         RuleInfo RuleInfo = new RuleInfo();
 
-        // Act 
-        Calendar actualCreatedAt = RuleInfo.setCreatedAt(expectedCreatedAt).getCreatedAt();
+        // Act
+        Calendar actualCreatedAt = RuleInfo.setCreatedAt(expectedCreatedAt)
+                .getCreatedAt();
 
         // Assert
         assertEquals(expectedCreatedAt, actualCreatedAt);

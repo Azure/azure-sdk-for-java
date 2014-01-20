@@ -38,124 +38,197 @@ public class VirtualMachineGetResponse extends OperationResponse
     * value controls the virtual machine allocation in the Windows Azure
     * environment. Virtual machines specified in the same availability set are
     * allocated to different nodes to maximize availability.
+    * @return The AvailabilitySetName value.
     */
-    public String getAvailabilitySetName() { return this.availabilitySetName; }
+    public String getAvailabilitySetName()
+    {
+        return this.availabilitySetName;
+    }
     
     /**
     * The name of the availability set the virtual machine belongs to. This
     * value controls the virtual machine allocation in the Windows Azure
     * environment. Virtual machines specified in the same availability set are
     * allocated to different nodes to maximize availability.
+    * @param availabilitySetNameValue The AvailabilitySetName value.
     */
-    public void setAvailabilitySetName(String availabilitySetName) { this.availabilitySetName = availabilitySetName; }
+    public void setAvailabilitySetName(final String availabilitySetNameValue)
+    {
+        this.availabilitySetName = availabilitySetNameValue;
+    }
     
     private ArrayList<ConfigurationSet> configurationSets;
     
     /**
     * Contains the collection of configuration sets that contain system and
     * application configuration settings.
+    * @return The ConfigurationSets value.
     */
-    public ArrayList<ConfigurationSet> getConfigurationSets() { return this.configurationSets; }
+    public ArrayList<ConfigurationSet> getConfigurationSets()
+    {
+        return this.configurationSets;
+    }
     
     /**
     * Contains the collection of configuration sets that contain system and
     * application configuration settings.
+    * @param configurationSetsValue The ConfigurationSets value.
     */
-    public void setConfigurationSets(ArrayList<ConfigurationSet> configurationSets) { this.configurationSets = configurationSets; }
+    public void setConfigurationSets(final ArrayList<ConfigurationSet> configurationSetsValue)
+    {
+        this.configurationSets = configurationSetsValue;
+    }
     
     private ArrayList<DataVirtualHardDisk> dataVirtualHardDisks;
     
     /**
     * Contains the parameters Windows Azure used to create the data disk for
     * the virtual machine.
+    * @return The DataVirtualHardDisks value.
     */
-    public ArrayList<DataVirtualHardDisk> getDataVirtualHardDisks() { return this.dataVirtualHardDisks; }
+    public ArrayList<DataVirtualHardDisk> getDataVirtualHardDisks()
+    {
+        return this.dataVirtualHardDisks;
+    }
     
     /**
     * Contains the parameters Windows Azure used to create the data disk for
     * the virtual machine.
+    * @param dataVirtualHardDisksValue The DataVirtualHardDisks value.
     */
-    public void setDataVirtualHardDisks(ArrayList<DataVirtualHardDisk> dataVirtualHardDisks) { this.dataVirtualHardDisks = dataVirtualHardDisks; }
+    public void setDataVirtualHardDisks(final ArrayList<DataVirtualHardDisk> dataVirtualHardDisksValue)
+    {
+        this.dataVirtualHardDisks = dataVirtualHardDisksValue;
+    }
     
     private String defaultWinRmCertificateThumbprint;
     
     /**
     * The read-only thumbprint of the certificate that is used with the HTTPS
     * listener for WinRM.
+    * @return The DefaultWinRmCertificateThumbprint value.
     */
-    public String getDefaultWinRmCertificateThumbprint() { return this.defaultWinRmCertificateThumbprint; }
+    public String getDefaultWinRmCertificateThumbprint()
+    {
+        return this.defaultWinRmCertificateThumbprint;
+    }
     
     /**
     * The read-only thumbprint of the certificate that is used with the HTTPS
     * listener for WinRM.
+    * @param defaultWinRmCertificateThumbprintValue The
+    * DefaultWinRmCertificateThumbprint value.
     */
-    public void setDefaultWinRmCertificateThumbprint(String defaultWinRmCertificateThumbprint) { this.defaultWinRmCertificateThumbprint = defaultWinRmCertificateThumbprint; }
+    public void setDefaultWinRmCertificateThumbprint(final String defaultWinRmCertificateThumbprintValue)
+    {
+        this.defaultWinRmCertificateThumbprint = defaultWinRmCertificateThumbprintValue;
+    }
     
     private String osVersion;
     
     /**
     * The version of the operating system on which the role instances are
     * running.
+    * @return The OsVersion value.
     */
-    public String getOsVersion() { return this.osVersion; }
+    public String getOsVersion()
+    {
+        return this.osVersion;
+    }
     
     /**
     * The version of the operating system on which the role instances are
     * running.
+    * @param osVersionValue The OsVersion value.
     */
-    public void setOsVersion(String osVersion) { this.osVersion = osVersion; }
+    public void setOsVersion(final String osVersionValue)
+    {
+        this.osVersion = osVersionValue;
+    }
     
     private OSVirtualHardDisk oSVirtualHardDisk;
     
     /**
     * Contains the parameters Windows Azure used to create the operating system
     * disk for the virtual machine.
+    * @return The OSVirtualHardDisk value.
     */
-    public OSVirtualHardDisk getOSVirtualHardDisk() { return this.oSVirtualHardDisk; }
+    public OSVirtualHardDisk getOSVirtualHardDisk()
+    {
+        return this.oSVirtualHardDisk;
+    }
     
     /**
     * Contains the parameters Windows Azure used to create the operating system
     * disk for the virtual machine.
+    * @param oSVirtualHardDiskValue The OSVirtualHardDisk value.
     */
-    public void setOSVirtualHardDisk(OSVirtualHardDisk oSVirtualHardDisk) { this.oSVirtualHardDisk = oSVirtualHardDisk; }
+    public void setOSVirtualHardDisk(final OSVirtualHardDisk oSVirtualHardDiskValue)
+    {
+        this.oSVirtualHardDisk = oSVirtualHardDiskValue;
+    }
     
     private String roleName;
     
     /**
     * The name for the virtual machine. The name is unique within Windows Azure.
+    * @return The RoleName value.
     */
-    public String getRoleName() { return this.roleName; }
+    public String getRoleName()
+    {
+        return this.roleName;
+    }
     
     /**
     * The name for the virtual machine. The name is unique within Windows Azure.
+    * @param roleNameValue The RoleName value.
     */
-    public void setRoleName(String roleName) { this.roleName = roleName; }
+    public void setRoleName(final String roleNameValue)
+    {
+        this.roleName = roleNameValue;
+    }
     
-    private VirtualMachineRoleSize roleSize;
+    private String roleSize;
     
     /**
     * The size of the virtual machine.
+    * @return The RoleSize value.
     */
-    public VirtualMachineRoleSize getRoleSize() { return this.roleSize; }
+    public String getRoleSize()
+    {
+        return this.roleSize;
+    }
     
     /**
     * The size of the virtual machine.
+    * @param roleSizeValue The RoleSize value.
     */
-    public void setRoleSize(VirtualMachineRoleSize roleSize) { this.roleSize = roleSize; }
+    public void setRoleSize(final String roleSizeValue)
+    {
+        this.roleSize = roleSizeValue;
+    }
     
     private VirtualMachineRoleType roleType;
     
     /**
     * The type of the role for the virtual machine. The only supported value is
     * PersistentVMRole.
+    * @return The RoleType value.
     */
-    public VirtualMachineRoleType getRoleType() { return this.roleType; }
+    public VirtualMachineRoleType getRoleType()
+    {
+        return this.roleType;
+    }
     
     /**
     * The type of the role for the virtual machine. The only supported value is
     * PersistentVMRole.
+    * @param roleTypeValue The RoleType value.
     */
-    public void setRoleType(VirtualMachineRoleType roleType) { this.roleType = roleType; }
+    public void setRoleType(final VirtualMachineRoleType roleTypeValue)
+    {
+        this.roleType = roleTypeValue;
+    }
     
     /**
     * Initializes a new instance of the VirtualMachineGetResponse class.
@@ -163,6 +236,7 @@ public class VirtualMachineGetResponse extends OperationResponse
     */
     public VirtualMachineGetResponse()
     {
+        super();
         this.configurationSets = new ArrayList<ConfigurationSet>();
         this.dataVirtualHardDisks = new ArrayList<DataVirtualHardDisk>();
     }

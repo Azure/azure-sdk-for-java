@@ -36,27 +36,43 @@ public class VirtualMachineDiskUpdateDiskParameters
     * Optional.  Specifies whether the disk contains an operation system.
     * Note: Only a disk with an operating system installed can be mounted as
     * OS Drive.
+    * @return The HasOperatingSystem value.
     */
-    public Boolean getHasOperatingSystem() { return this.hasOperatingSystem; }
+    public Boolean isHasOperatingSystem()
+    {
+        return this.hasOperatingSystem;
+    }
     
     /**
     * Optional.  Specifies whether the disk contains an operation system.
     * Note: Only a disk with an operating system installed can be mounted as
     * OS Drive.
+    * @param hasOperatingSystemValue The HasOperatingSystem value.
     */
-    public void setHasOperatingSystem(Boolean hasOperatingSystem) { this.hasOperatingSystem = hasOperatingSystem; }
+    public void setHasOperatingSystem(final Boolean hasOperatingSystemValue)
+    {
+        this.hasOperatingSystem = hasOperatingSystemValue;
+    }
     
     private String label;
     
     /**
     * Required. Specifies the friendly name of the disk.
+    * @return The Label value.
     */
-    public String getLabel() { return this.label; }
+    public String getLabel()
+    {
+        return this.label;
+    }
     
     /**
     * Required. Specifies the friendly name of the disk.
+    * @param labelValue The Label value.
     */
-    public void setLabel(String label) { this.label = label; }
+    public void setLabel(final String labelValue)
+    {
+        this.label = labelValue;
+    }
     
     private URI mediaLinkUri;
     
@@ -65,51 +81,66 @@ public class VirtualMachineDiskUpdateDiskParameters
     * The blob location must belong to a storage account in the subscription
     * specified by the SubscriptionId value in the operation call.  Example:
     * http://example.blob.core.windows.net/disks/mydisk.vhd
+    * @return The MediaLinkUri value.
     */
-    public URI getMediaLinkUri() { return this.mediaLinkUri; }
+    public URI getMediaLinkUri()
+    {
+        return this.mediaLinkUri;
+    }
     
     /**
     * Optional. Specifies the location of the blob in Windows Azure storage.
     * The blob location must belong to a storage account in the subscription
     * specified by the SubscriptionId value in the operation call.  Example:
     * http://example.blob.core.windows.net/disks/mydisk.vhd
+    * @param mediaLinkUriValue The MediaLinkUri value.
     */
-    public void setMediaLinkUri(URI mediaLinkUri) { this.mediaLinkUri = mediaLinkUri; }
+    public void setMediaLinkUri(final URI mediaLinkUriValue)
+    {
+        this.mediaLinkUri = mediaLinkUriValue;
+    }
     
     private String name;
     
     /**
     * Required. Specifies a name for the disk. Windows Azure uses the name to
     * identify the disk when creating virtual machines from the disk.
+    * @return The Name value.
     */
-    public String getName() { return this.name; }
+    public String getName()
+    {
+        return this.name;
+    }
     
     /**
     * Required. Specifies a name for the disk. Windows Azure uses the name to
     * identify the disk when creating virtual machines from the disk.
+    * @param nameValue The Name value.
     */
-    public void setName(String name) { this.name = name; }
+    public void setName(final String nameValue)
+    {
+        this.name = nameValue;
+    }
     
     private String operatingSystemType;
     
     /**
     * Optional. The operating system type of the disk. Possible values are:
     * Linux, Windows.
+    * @return The OperatingSystemType value.
     */
-    public String getOperatingSystemType() { return this.operatingSystemType; }
+    public String getOperatingSystemType()
+    {
+        return this.operatingSystemType;
+    }
     
     /**
     * Optional. The operating system type of the disk. Possible values are:
     * Linux, Windows.
+    * @param operatingSystemTypeValue The OperatingSystemType value.
     */
-    public void setOperatingSystemType(String operatingSystemType) { this.operatingSystemType = operatingSystemType; }
-    
-    /**
-    * Initializes a new instance of the VirtualMachineDiskUpdateDiskParameters
-    * class.
-    *
-    */
-    public VirtualMachineDiskUpdateDiskParameters()
+    public void setOperatingSystemType(final String operatingSystemTypeValue)
     {
+        this.operatingSystemType = operatingSystemTypeValue;
     }
 }

@@ -37,12 +37,18 @@ public class JobListResponse extends OperationResponse implements Iterable<Job>
     /**
     * The relevant jobs.
     */
-    public ArrayList<Job> getJobs() { return this.jobs; }
+    public ArrayList<Job> getJobs()
+    {
+        return this.jobs;
+    }
     
     /**
     * The relevant jobs.
     */
-    public void setJobs(ArrayList<Job> jobs) { this.jobs = jobs; }
+    public void setJobs(ArrayList<Job> jobs)
+    {
+        this.jobs = jobs;
+    }
     
     /**
     * Initializes a new instance of the JobListResponse class.
@@ -50,6 +56,7 @@ public class JobListResponse extends OperationResponse implements Iterable<Job>
     */
     public JobListResponse()
     {
+        super();
         this.jobs = new ArrayList<Job>();
     }
     

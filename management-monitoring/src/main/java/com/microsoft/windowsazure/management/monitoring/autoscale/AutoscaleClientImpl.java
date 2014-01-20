@@ -38,8 +38,12 @@ public class AutoscaleClientImpl extends ServiceClient<AutoscaleClient> implemen
     
     /**
     * Optional base uri parameter.
+    * @return The BaseUri value.
     */
-    public URI getBaseUri() { return this.baseUri; }
+    public URI getBaseUri()
+    {
+        return this.baseUri;
+    }
     
     private SubscriptionCloudCredentials credentials;
     
@@ -50,15 +54,23 @@ public class AutoscaleClientImpl extends ServiceClient<AutoscaleClient> implemen
     * Azure Service ManagementAPI use mutual authentication of management
     * certificates over SSL to ensure that a request made to the service is
     * secure.  No anonymous requests are allowed.
+    * @return The Credentials value.
     */
-    public SubscriptionCloudCredentials getCredentials() { return this.credentials; }
+    public SubscriptionCloudCredentials getCredentials()
+    {
+        return this.credentials;
+    }
     
     private SettingOperations settings;
     
     /**
     * Operations for managing the autoscale settings.
+    * @return The SettingsOperations value.
     */
-    public SettingOperations getSettingsOperations() { return this.settings; }
+    public SettingOperations getSettingsOperations()
+    {
+        return this.settings;
+    }
     
     /**
     * Initializes a new instance of the AutoscaleClientImpl class.
@@ -112,6 +124,8 @@ public class AutoscaleClientImpl extends ServiceClient<AutoscaleClient> implemen
     * The Windows Azure Service ManagementAPI use mutual authentication of
     * management certificates over SSL to ensure that a request made to the
     * service is secure.  No anonymous requests are allowed.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
     */
     @Inject
     public AutoscaleClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, @Named(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS) SubscriptionCloudCredentials credentials) throws java.net.URISyntaxException

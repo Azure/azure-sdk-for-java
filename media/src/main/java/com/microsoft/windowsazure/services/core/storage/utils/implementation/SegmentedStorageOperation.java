@@ -18,16 +18,20 @@ import com.microsoft.windowsazure.services.core.storage.RequestOptions;
 import com.microsoft.windowsazure.services.core.storage.ResultContinuation;
 
 /**
- * RESERVED FOR INTERNAL USE. A base class which encapsulate the execution of a given segmented storage operation.
+ * RESERVED FOR INTERNAL USE. A base class which encapsulate the execution of a
+ * given segmented storage operation.
  * 
  * @param <C>
  *            The service client type
  * @param <P>
- *            The type of the parent object, i.e. CloudBlobContainer for downloadAttributes etc.
+ *            The type of the parent object, i.e. CloudBlobContainer for
+ *            downloadAttributes etc.
  * @param <R>
  *            The type of the expected result
  */
-public abstract class SegmentedStorageOperation<C, P, R> extends StorageOperation<C, P, R> {
+public abstract class SegmentedStorageOperation<C, P, R> extends
+        StorageOperation<C, P, R>
+{
 
     /**
      * Holds the ResultContinuation between executions.
@@ -40,7 +44,8 @@ public abstract class SegmentedStorageOperation<C, P, R> extends StorageOperatio
      * @param options
      *            the RequestOptions to use
      */
-    public SegmentedStorageOperation(final RequestOptions options) {
+    public SegmentedStorageOperation(final RequestOptions options)
+    {
         super(options);
     }
 
@@ -52,7 +57,9 @@ public abstract class SegmentedStorageOperation<C, P, R> extends StorageOperatio
      * @param token
      *            the ResultContinuation to use
      */
-    public SegmentedStorageOperation(final RequestOptions options, final ResultContinuation token) {
+    public SegmentedStorageOperation(final RequestOptions options,
+            final ResultContinuation token)
+    {
         super(options);
         this.setToken(token);
     }
@@ -60,7 +67,8 @@ public abstract class SegmentedStorageOperation<C, P, R> extends StorageOperatio
     /**
      * @return the token.
      */
-    protected final ResultContinuation getToken() {
+    protected final ResultContinuation getToken()
+    {
         return this.token;
     }
 
@@ -68,7 +76,8 @@ public abstract class SegmentedStorageOperation<C, P, R> extends StorageOperatio
      * @param token
      *            the token to set.
      */
-    protected final void setToken(final ResultContinuation token) {
+    protected final void setToken(final ResultContinuation token)
+    {
         this.token = token;
     }
 }

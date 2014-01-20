@@ -22,103 +22,117 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-public class CustomPropertiesMapper {
+public class CustomPropertiesMapper
+{
     // Fri, 04 Mar 2011 08:49:37 GMT
     private static final String RFC_1123 = "EEE, dd MMM yyyy HH:mm:ss zzz";
 
-    public String toString(Object value) {
-        if (value == null) {
+    public String toString(Object value)
+    {
+        if (value == null)
+        {
             return null;
         }
 
         Class<? extends Object> type = value.getClass();
-        if (type == Byte.class) {
+        if (type == Byte.class)
+        {
             return value.toString();
-        }
-        else if (type == Short.class) {
+        } else if (type == Short.class)
+        {
             return value.toString();
-        }
-        else if (type == Integer.class) {
+        } else if (type == Integer.class)
+        {
             return value.toString();
-        }
-        else if (type == Long.class) {
+        } else if (type == Long.class)
+        {
             return value.toString();
-        }
-        else if (type == Float.class) {
+        } else if (type == Float.class)
+        {
             return value.toString();
-        }
-        else if (type == Double.class) {
+        } else if (type == Double.class)
+        {
             return value.toString();
-        }
-        else if (type == Boolean.class) {
+        } else if (type == Boolean.class)
+        {
             return value.toString();
-        }
-        else if (Calendar.class.isAssignableFrom(type)) {
+        } else if (Calendar.class.isAssignableFrom(type))
+        {
             DateFormat format = new SimpleDateFormat(RFC_1123, Locale.US);
             Calendar calendar = (Calendar) value;
             format.setTimeZone(calendar.getTimeZone());
             String formatted = format.format(calendar.getTime());
             return "\"" + formatted + "\"";
-        }
-        else if (Date.class.isAssignableFrom(type)) {
+        } else if (Date.class.isAssignableFrom(type))
+        {
             DateFormat format = new SimpleDateFormat(RFC_1123, Locale.US);
             format.setTimeZone(TimeZone.getTimeZone("GMT"));
             String formatted = format.format((Date) value);
             return "\"" + formatted + "\"";
-        }
-        else {
+        } else
+        {
             return "\"" + value.toString() + "\"";
         }
     }
 
-    public Object fromString(String value) throws ParseException {
-        if (value == null) {
+    public Object fromString(String value) throws ParseException
+    {
+        if (value == null)
+        {
             return null;
         }
 
-        if (value.startsWith("\"") && value.endsWith("\"")) {
+        if (value.startsWith("\"") && value.endsWith("\""))
+        {
             String text = value.substring(1, value.length() - 1);
-            if (isRFC1123(text)) {
-                SimpleDateFormat format = new SimpleDateFormat(RFC_1123, Locale.US);
+            if (isRFC1123(text))
+            {
+                SimpleDateFormat format = new SimpleDateFormat(RFC_1123,
+                        Locale.US);
                 return format.parse(text);
             }
 
             return text;
-        }
-        else if ("true".equals(value)) {
+        } else if ("true".equals(value))
+        {
             return Boolean.TRUE;
-        }
-        else if ("false".equals(value)) {
+        } else if ("false".equals(value))
+        {
             return Boolean.FALSE;
-        }
-        else if (isInteger(value)) {
+        } else if (isInteger(value))
+        {
             return Integer.parseInt(value);
-        }
-        else {
+        } else
+        {
             return Double.parseDouble(value);
         }
     }
 
-    private boolean isRFC1123(String text) {
-        if (text.length() != RFC_1123.length()) {
+    private boolean isRFC1123(String text)
+    {
+        if (text.length() != RFC_1123.length())
+        {
             return false;
         }
-        try {
+        try
+        {
             SimpleDateFormat format = new SimpleDateFormat(RFC_1123, Locale.US);
             format.parse(text);
             return true;
-        }
-        catch (ParseException e) {
+        } catch (ParseException e)
+        {
             return false;
         }
     }
 
-    private boolean isInteger(String value) {
-        try {
+    private boolean isInteger(String value)
+    {
+        try
+        {
             Integer.parseInt(value);
             return true;
-        }
-        catch (NumberFormatException e) {
+        } catch (NumberFormatException e)
+        {
             return false;
         }
     }

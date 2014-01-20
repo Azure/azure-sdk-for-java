@@ -23,6 +23,7 @@ package com.microsoft.windowsazure.serviceruntime;
 /**
  *
  */
-public class XmlGoalStateDeserializerTests {
+public class XmlGoalStateDeserializerTests
+{
 
 }

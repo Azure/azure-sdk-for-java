@@ -43,6 +43,7 @@ public interface VirtualNetworkManagementClient extends FilterableService<Virtua
 {
     /**
     * The URI used as the base for all SQL requests.
+    * @return The BaseUri value.
     */
     URI getBaseUri(); 
     
@@ -53,16 +54,34 @@ public interface VirtualNetworkManagementClient extends FilterableService<Virtua
     * Azure Service ManagementAPI use mutual authentication of management
     * certificates over SSL to ensure that a request made to the service is
     * secure.  No anonymous requests are allowed.
+    * @return The Credentials value.
     */
     SubscriptionCloudCredentials getCredentials(); 
     
+    /**
+    * @return The ClientRootCertificatesOperations value.
+    */
     ClientRootCertificateOperations getClientRootCertificatesOperations(); 
     
+    /**
+    * @return The GatewaysOperations value.
+    */
     GatewayOperations getGatewaysOperations(); 
     
+    /**
+    * @return The NetworksOperations value.
+    */
     NetworkOperations getNetworksOperations(); 
     
+    /**
+    * @return The ReservedIPsOperations value.
+    */
     ReservedIPOperations getReservedIPsOperations(); 
+    
+    /**
+    * @return The StaticIPsOperations value.
+    */
+    StaticIPOperations getStaticIPsOperations(); 
     
     /**
     * The Get Operation Status operation returns the status of thespecified
@@ -75,6 +94,14 @@ public interface VirtualNetworkManagementClient extends FilterableService<Virtua
     * @param requestId The request ID for the request you wish to track. The
     * request ID is returned in the x-ms-request-id response header for every
     * request.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the

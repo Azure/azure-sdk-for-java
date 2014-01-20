@@ -15,9 +15,11 @@
 package com.microsoft.windowsazure.services.blob.client;
 
 /**
- * Specifies which details to include when listing the containers in this storage account.
+ * Specifies which details to include when listing the containers in this
+ * storage account.
  */
-public enum ContainerListingDetails {
+public enum ContainerListingDetails
+{
     /**
      * Specifies including all available details.
      */
@@ -44,7 +46,8 @@ public enum ContainerListingDetails {
      * @param val
      *            The value being assigned.
      */
-    ContainerListingDetails(final int val) {
+    ContainerListingDetails(final int val)
+    {
         this.value = val;
     }
 }

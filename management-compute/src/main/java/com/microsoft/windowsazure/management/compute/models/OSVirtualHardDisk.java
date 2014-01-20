@@ -36,86 +36,126 @@ public class OSVirtualHardDisk
     /**
     * Specifies the friendly name an operating system image in the image
     * repository.
+    * @return The DiskLabel value.
     */
-    public String getDiskLabel() { return this.diskLabel; }
+    public String getDiskLabel()
+    {
+        return this.diskLabel;
+    }
     
     /**
     * Specifies the friendly name an operating system image in the image
     * repository.
+    * @param diskLabelValue The DiskLabel value.
     */
-    public void setDiskLabel(String diskLabel) { this.diskLabel = diskLabel; }
+    public void setDiskLabel(final String diskLabelValue)
+    {
+        this.diskLabel = diskLabelValue;
+    }
     
     private String diskName;
     
     /**
     * Specifies the name an operating system image in the image repository.
+    * @return The DiskName value.
     */
-    public String getDiskName() { return this.diskName; }
+    public String getDiskName()
+    {
+        return this.diskName;
+    }
     
     /**
     * Specifies the name an operating system image in the image repository.
+    * @param diskNameValue The DiskName value.
     */
-    public void setDiskName(String diskName) { this.diskName = diskName; }
+    public void setDiskName(final String diskNameValue)
+    {
+        this.diskName = diskNameValue;
+    }
     
     private VirtualHardDiskHostCaching hostCaching;
     
     /**
     * Specifies the platform caching behavior of the operating system disk blob
     * for read/write efficiency.
+    * @return The HostCaching value.
     */
-    public VirtualHardDiskHostCaching getHostCaching() { return this.hostCaching; }
+    public VirtualHardDiskHostCaching getHostCaching()
+    {
+        return this.hostCaching;
+    }
     
     /**
     * Specifies the platform caching behavior of the operating system disk blob
     * for read/write efficiency.
+    * @param hostCachingValue The HostCaching value.
     */
-    public void setHostCaching(VirtualHardDiskHostCaching hostCaching) { this.hostCaching = hostCaching; }
+    public void setHostCaching(final VirtualHardDiskHostCaching hostCachingValue)
+    {
+        this.hostCaching = hostCachingValue;
+    }
     
     private URI mediaLink;
     
     /**
     * Specifies the location of the operating system disk in Windows Azure
     * storage.
+    * @return The MediaLink value.
     */
-    public URI getMediaLink() { return this.mediaLink; }
+    public URI getMediaLink()
+    {
+        return this.mediaLink;
+    }
     
     /**
     * Specifies the location of the operating system disk in Windows Azure
     * storage.
+    * @param mediaLinkValue The MediaLink value.
     */
-    public void setMediaLink(URI mediaLink) { this.mediaLink = mediaLink; }
+    public void setMediaLink(final URI mediaLinkValue)
+    {
+        this.mediaLink = mediaLinkValue;
+    }
     
     private String operatingSystem;
     
     /**
     * The operating system running in the virtual machine.
+    * @return The OperatingSystem value.
     */
-    public String getOperatingSystem() { return this.operatingSystem; }
+    public String getOperatingSystem()
+    {
+        return this.operatingSystem;
+    }
     
     /**
     * The operating system running in the virtual machine.
+    * @param operatingSystemValue The OperatingSystem value.
     */
-    public void setOperatingSystem(String operatingSystem) { this.operatingSystem = operatingSystem; }
+    public void setOperatingSystem(final String operatingSystemValue)
+    {
+        this.operatingSystem = operatingSystemValue;
+    }
     
     private String sourceImageName;
     
     /**
     * Specifies the name of the source image that was used to provision the
     * virtual machine.
+    * @return The SourceImageName value.
     */
-    public String getSourceImageName() { return this.sourceImageName; }
+    public String getSourceImageName()
+    {
+        return this.sourceImageName;
+    }
     
     /**
     * Specifies the name of the source image that was used to provision the
     * virtual machine.
+    * @param sourceImageNameValue The SourceImageName value.
     */
-    public void setSourceImageName(String sourceImageName) { this.sourceImageName = sourceImageName; }
-    
-    /**
-    * Initializes a new instance of the OSVirtualHardDisk class.
-    *
-    */
-    public OSVirtualHardDisk()
+    public void setSourceImageName(final String sourceImageNameValue)
     {
+        this.sourceImageName = sourceImageNameValue;
     }
 }

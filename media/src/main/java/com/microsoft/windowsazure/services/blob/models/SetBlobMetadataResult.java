@@ -19,69 +19,82 @@ import java.util.Date;
 import com.microsoft.windowsazure.services.blob.BlobContract;
 
 /**
- * A wrapper class for the response returned from a Blob Service REST API Set Blob Metadata operation. This is
- * returned by calls to implementations of
- * {@link BlobContract#setBlobMetadata(String, String, java.util.HashMap, SetBlobMetadataOptions)}.
+ * A wrapper class for the response returned from a Blob Service REST API Set
+ * Blob Metadata operation. This is returned by calls to implementations of
+ * {@link BlobContract#setBlobMetadata(String, String, java.util.HashMap, SetBlobMetadataOptions)}
+ * .
  * <p>
- * See the <a href="http://msdn.microsoft.com/en-us/library/windowsazure/dd179414.aspx">Set Blob Metadata</a>
- * documentation on MSDN for details of the underlying Blob Service REST API operation.
+ * See the <a
+ * href="http://msdn.microsoft.com/en-us/library/windowsazure/dd179414.aspx">Set
+ * Blob Metadata</a> documentation on MSDN for details of the underlying Blob
+ * Service REST API operation.
  */
-public class SetBlobMetadataResult {
+public class SetBlobMetadataResult
+{
     private String etag;
     private Date lastModified;
 
     /**
      * Gets the ETag of the blob.
      * <p>
-     * This value can be used in an access condition when updating or deleting a blob to prevent the client from
-     * modifying data that has been changed by another client.
+     * This value can be used in an access condition when updating or deleting a
+     * blob to prevent the client from modifying data that has been changed by
+     * another client.
      * 
-     * @return
-     *         A {@link String} containing the server-assigned ETag value for the blob.
+     * @return A {@link String} containing the server-assigned ETag value for
+     *         the blob.
      */
-    public String getEtag() {
+    public String getEtag()
+    {
         return etag;
     }
 
     /**
-     * Reserved for internal use. Sets the ETag of the blob from the <strong>ETag</strong> element returned in the
-     * response.
+     * Reserved for internal use. Sets the ETag of the blob from the
+     * <strong>ETag</strong> element returned in the response.
      * <p>
-     * This method is invoked by the API to set the value from the Blob Service REST API operation response returned by
-     * the server.
+     * This method is invoked by the API to set the value from the Blob Service
+     * REST API operation response returned by the server.
      * 
      * @param etag
-     *            A {@link String} containing the server-assigned ETag value for the blob.
+     *            A {@link String} containing the server-assigned ETag value for
+     *            the blob.
      */
-    public void setEtag(String etag) {
+    public void setEtag(String etag)
+    {
         this.etag = etag;
     }
 
     /**
      * Gets the last modified time of the blob.
      * <p>
-     * Any operation that modifies the blob, including updates to the blob's metadata or properties, changes the last
-     * modified time of the blob. This value can be used in an access condition when updating or deleting a blob to
-     * prevent the client from modifying data that has been changed by another client.
+     * Any operation that modifies the blob, including updates to the blob's
+     * metadata or properties, changes the last modified time of the blob. This
+     * value can be used in an access condition when updating or deleting a blob
+     * to prevent the client from modifying data that has been changed by
+     * another client.
      * 
-     * @return
-     *         A {@link java.util.Date} containing the last modified time of the page blob.
+     * @return A {@link java.util.Date} containing the last modified time of the
+     *         page blob.
      */
-    public Date getLastModified() {
+    public Date getLastModified()
+    {
         return lastModified;
     }
 
     /**
-     * Reserved for internal use. Sets the last modified time of the blob from the <strong>Last-Modified</strong>
-     * element returned in the response.
+     * Reserved for internal use. Sets the last modified time of the blob from
+     * the <strong>Last-Modified</strong> element returned in the response.
      * <p>
-     * This method is invoked by the API to set the value from the Blob Service REST API operation response returned by
-     * the server.
+     * This method is invoked by the API to set the value from the Blob Service
+     * REST API operation response returned by the server.
      * 
      * @param lastModified
-     *            A {@link java.util.Date} containing the last modified time of the blob.
+     *            A {@link java.util.Date} containing the last modified time of
+     *            the blob.
      */
-    public void setLastModified(Date lastModified) {
+    public void setLastModified(Date lastModified)
+    {
         this.lastModified = lastModified;
     }
 }

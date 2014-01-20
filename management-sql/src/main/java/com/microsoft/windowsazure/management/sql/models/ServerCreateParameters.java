@@ -32,43 +32,59 @@ public class ServerCreateParameters
     
     /**
     * Gets or sets the administrator password.
+    * @return The AdministratorPassword value.
     */
-    public String getAdministratorPassword() { return this.administratorPassword; }
+    public String getAdministratorPassword()
+    {
+        return this.administratorPassword;
+    }
     
     /**
     * Gets or sets the administrator password.
+    * @param administratorPasswordValue The AdministratorPassword value.
     */
-    public void setAdministratorPassword(String administratorPassword) { this.administratorPassword = administratorPassword; }
+    public void setAdministratorPassword(final String administratorPasswordValue)
+    {
+        this.administratorPassword = administratorPasswordValue;
+    }
     
     private String administratorUserName;
     
     /**
     * Gets or sets the administrator username.
+    * @return The AdministratorUserName value.
     */
-    public String getAdministratorUserName() { return this.administratorUserName; }
+    public String getAdministratorUserName()
+    {
+        return this.administratorUserName;
+    }
     
     /**
     * Gets or sets the administrator username.
+    * @param administratorUserNameValue The AdministratorUserName value.
     */
-    public void setAdministratorUserName(String administratorUserName) { this.administratorUserName = administratorUserName; }
+    public void setAdministratorUserName(final String administratorUserNameValue)
+    {
+        this.administratorUserName = administratorUserNameValue;
+    }
     
     private String location;
     
     /**
     * Gets or sets the region in which this server will be created.
+    * @return The Location value.
     */
-    public String getLocation() { return this.location; }
+    public String getLocation()
+    {
+        return this.location;
+    }
     
     /**
     * Gets or sets the region in which this server will be created.
+    * @param locationValue The Location value.
     */
-    public void setLocation(String location) { this.location = location; }
-    
-    /**
-    * Initializes a new instance of the ServerCreateParameters class.
-    *
-    */
-    public ServerCreateParameters()
+    public void setLocation(final String locationValue)
     {
+        this.location = locationValue;
     }
 }

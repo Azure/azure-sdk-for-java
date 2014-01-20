@@ -19,22 +19,31 @@ package com.microsoft.windowsazure.services.media.entityoperations;
  * Generic implementation of Delete operation usable by most entities
  * 
  */
-public class DefaultDeleteOperation implements EntityDeleteOperation {
+public class DefaultDeleteOperation implements EntityDeleteOperation
+{
     private final EntityOperationBase.EntityUriBuilder uriBuilder;
     private EntityProxyData proxyData;
 
     /**
      * 
      */
-    public DefaultDeleteOperation(String entityUri, String entityId) {
-        uriBuilder = new EntityOperationBase.EntityIdUriBuilder(entityUri, entityId);
+    public DefaultDeleteOperation(String entityUri, String entityId)
+    {
+        uriBuilder = new EntityOperationBase.EntityIdUriBuilder(entityUri,
+                entityId);
     }
 
-    /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.entityoperations.EntityDeleteOperation#setProxyData(com.microsoft.windowsazure.services.media.entityoperations.EntityProxyData)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.microsoft.windowsazure.services.media.entityoperations.
+     * EntityDeleteOperation
+     * #setProxyData(com.microsoft.windowsazure.services.media
+     * .entityoperations.EntityProxyData)
      */
     @Override
-    public void setProxyData(EntityProxyData proxyData) {
+    public void setProxyData(EntityProxyData proxyData)
+    {
         this.proxyData = proxyData;
     }
 
@@ -43,15 +52,21 @@ public class DefaultDeleteOperation implements EntityDeleteOperation {
      * 
      * @return the proxyData
      */
-    protected EntityProxyData getProxyData() {
+    protected EntityProxyData getProxyData()
+    {
         return proxyData;
     }
 
-    /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.entities.EntityDeleteOperation#getUri()
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.microsoft.windowsazure.services.media.entities.EntityDeleteOperation
+     * #getUri()
      */
     @Override
-    public String getUri() {
+    public String getUri()
+    {
         return uriBuilder.getUri();
     }
 }

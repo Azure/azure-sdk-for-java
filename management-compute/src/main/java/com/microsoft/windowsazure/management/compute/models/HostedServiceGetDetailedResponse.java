@@ -37,13 +37,21 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse
     
     /**
     * The deployments that exist in the cloud service.
+    * @return The Deployments value.
     */
-    public ArrayList<HostedServiceGetDetailedResponse.Deployment> getDeployments() { return this.deployments; }
+    public ArrayList<HostedServiceGetDetailedResponse.Deployment> getDeployments()
+    {
+        return this.deployments;
+    }
     
     /**
     * The deployments that exist in the cloud service.
+    * @param deploymentsValue The Deployments value.
     */
-    public void setDeployments(ArrayList<HostedServiceGetDetailedResponse.Deployment> deployments) { this.deployments = deployments; }
+    public void setDeployments(final ArrayList<HostedServiceGetDetailedResponse.Deployment> deploymentsValue)
+    {
+        this.deployments = deploymentsValue;
+    }
     
     /**
     * Initializes a new instance of the HostedServiceGetDetailedResponse class.
@@ -51,6 +59,7 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse
     */
     public HostedServiceGetDetailedResponse()
     {
+        super();
         this.deployments = new ArrayList<HostedServiceGetDetailedResponse.Deployment>();
     }
     
@@ -63,49 +72,81 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse
         
         /**
         * The configuration file of the deployment.
+        * @return The Configuration value.
         */
-        public String getConfiguration() { return this.configuration; }
+        public String getConfiguration()
+        {
+            return this.configuration;
+        }
         
         /**
         * The configuration file of the deployment.
+        * @param configurationValue The Configuration value.
         */
-        public void setConfiguration(String configuration) { this.configuration = configuration; }
+        public void setConfiguration(final String configurationValue)
+        {
+            this.configuration = configurationValue;
+        }
         
         private Calendar createdTime;
         
         /**
         * The time that the deployment was created.
+        * @return The CreatedTime value.
         */
-        public Calendar getCreatedTime() { return this.createdTime; }
+        public Calendar getCreatedTime()
+        {
+            return this.createdTime;
+        }
         
         /**
         * The time that the deployment was created.
+        * @param createdTimeValue The CreatedTime value.
         */
-        public void setCreatedTime(Calendar createdTime) { this.createdTime = createdTime; }
+        public void setCreatedTime(final Calendar createdTimeValue)
+        {
+            this.createdTime = createdTimeValue;
+        }
         
         private DeploymentSlot deploymentSlot;
         
         /**
         * The deployment environment in which this deployment is running.
+        * @return The DeploymentSlot value.
         */
-        public DeploymentSlot getDeploymentSlot() { return this.deploymentSlot; }
+        public DeploymentSlot getDeploymentSlot()
+        {
+            return this.deploymentSlot;
+        }
         
         /**
         * The deployment environment in which this deployment is running.
+        * @param deploymentSlotValue The DeploymentSlot value.
         */
-        public void setDeploymentSlot(DeploymentSlot deploymentSlot) { this.deploymentSlot = deploymentSlot; }
+        public void setDeploymentSlot(final DeploymentSlot deploymentSlotValue)
+        {
+            this.deploymentSlot = deploymentSlotValue;
+        }
         
         private DnsSettings dnsSettings;
         
         /**
         * The custom DNS settings that are specified for deployment.
+        * @return The DnsSettings value.
         */
-        public DnsSettings getDnsSettings() { return this.dnsSettings; }
+        public DnsSettings getDnsSettings()
+        {
+            return this.dnsSettings;
+        }
         
         /**
         * The custom DNS settings that are specified for deployment.
+        * @param dnsSettingsValue The DnsSettings value.
         */
-        public void setDnsSettings(DnsSettings dnsSettings) { this.dnsSettings = dnsSettings; }
+        public void setDnsSettings(final DnsSettings dnsSettingsValue)
+        {
+            this.dnsSettings = dnsSettingsValue;
+        }
         
         private HashMap<String, String> extendedProperties;
         
@@ -120,8 +161,12 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse
         * identical to that of another extended property owned by the same
         * service, will result in a status code 400 (Bad Request) error.  Each
         * extended property value has a maximum length of 255 characters.
+        * @return The ExtendedProperties value.
         */
-        public HashMap<String, String> getExtendedProperties() { return this.extendedProperties; }
+        public HashMap<String, String> getExtendedProperties()
+        {
+            return this.extendedProperties;
+        }
         
         /**
         * Optional. Represents the name of an extended cloud service property.
@@ -134,34 +179,54 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse
         * identical to that of another extended property owned by the same
         * service, will result in a status code 400 (Bad Request) error.  Each
         * extended property value has a maximum length of 255 characters.
+        * @param extendedPropertiesValue The ExtendedProperties value.
         */
-        public void setExtendedProperties(HashMap<String, String> extendedProperties) { this.extendedProperties = extendedProperties; }
+        public void setExtendedProperties(final HashMap<String, String> extendedPropertiesValue)
+        {
+            this.extendedProperties = extendedPropertiesValue;
+        }
         
         private String label;
         
         /**
         * The user-supplied name of the deployment. This name can be used
         * identify the deployment for your tracking purposes.
+        * @return The Label value.
         */
-        public String getLabel() { return this.label; }
+        public String getLabel()
+        {
+            return this.label;
+        }
         
         /**
         * The user-supplied name of the deployment. This name can be used
         * identify the deployment for your tracking purposes.
+        * @param labelValue The Label value.
         */
-        public void setLabel(String label) { this.label = label; }
+        public void setLabel(final String labelValue)
+        {
+            this.label = labelValue;
+        }
         
         private String lastModifiedTime;
         
         /**
         * The last time that the deployment was modified.
+        * @return The LastModifiedTime value.
         */
-        public String getLastModifiedTime() { return this.lastModifiedTime; }
+        public String getLastModifiedTime()
+        {
+            return this.lastModifiedTime;
+        }
         
         /**
         * The last time that the deployment was modified.
+        * @param lastModifiedTimeValue The LastModifiedTime value.
         */
-        public void setLastModifiedTime(String lastModifiedTime) { this.lastModifiedTime = lastModifiedTime; }
+        public void setLastModifiedTime(final String lastModifiedTimeValue)
+        {
+            this.lastModifiedTime = lastModifiedTimeValue;
+        }
         
         private boolean locked;
         
@@ -169,85 +234,145 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse
         * Indicates whether the deployment is locked for new write operations.
         * True if the deployment is locked because an existing operation is
         * updating the deployment; otherwise false.
+        * @return The Locked value.
         */
-        public boolean getLocked() { return this.locked; }
+        public boolean isLocked()
+        {
+            return this.locked;
+        }
         
         /**
         * Indicates whether the deployment is locked for new write operations.
         * True if the deployment is locked because an existing operation is
         * updating the deployment; otherwise false.
+        * @param lockedValue The Locked value.
         */
-        public void setLocked(boolean locked) { this.locked = locked; }
+        public void setLocked(final boolean lockedValue)
+        {
+            this.locked = lockedValue;
+        }
         
         private String name;
         
-        public String getName() { return this.name; }
+        /**
+        * @return The Name value.
+        */
+        public String getName()
+        {
+            return this.name;
+        }
         
-        public void setName(String name) { this.name = name; }
+        /**
+        * @param nameValue The Name value.
+        */
+        public void setName(final String nameValue)
+        {
+            this.name = nameValue;
+        }
         
         private PersistentVMDowntime persistentVMDowntime;
         
         /**
         * Specifies information about when the virtual machine has been started
         * and stopped.
+        * @return The PersistentVMDowntime value.
         */
-        public PersistentVMDowntime getPersistentVMDowntime() { return this.persistentVMDowntime; }
+        public PersistentVMDowntime getPersistentVMDowntime()
+        {
+            return this.persistentVMDowntime;
+        }
         
         /**
         * Specifies information about when the virtual machine has been started
         * and stopped.
+        * @param persistentVMDowntimeValue The PersistentVMDowntime value.
         */
-        public void setPersistentVMDowntime(PersistentVMDowntime persistentVMDowntime) { this.persistentVMDowntime = persistentVMDowntime; }
+        public void setPersistentVMDowntime(final PersistentVMDowntime persistentVMDowntimeValue)
+        {
+            this.persistentVMDowntime = persistentVMDowntimeValue;
+        }
         
         private String privateId;
         
         /**
         * The unique identifier for this deployment.
+        * @return The PrivateId value.
         */
-        public String getPrivateId() { return this.privateId; }
+        public String getPrivateId()
+        {
+            return this.privateId;
+        }
         
         /**
         * The unique identifier for this deployment.
+        * @param privateIdValue The PrivateId value.
         */
-        public void setPrivateId(String privateId) { this.privateId = privateId; }
+        public void setPrivateId(final String privateIdValue)
+        {
+            this.privateId = privateIdValue;
+        }
         
         private ArrayList<RoleInstance> roleInstances;
         
         /**
         * The list of role instances in the deployment.
+        * @return The RoleInstances value.
         */
-        public ArrayList<RoleInstance> getRoleInstances() { return this.roleInstances; }
+        public ArrayList<RoleInstance> getRoleInstances()
+        {
+            return this.roleInstances;
+        }
         
         /**
         * The list of role instances in the deployment.
+        * @param roleInstancesValue The RoleInstances value.
         */
-        public void setRoleInstances(ArrayList<RoleInstance> roleInstances) { this.roleInstances = roleInstances; }
+        public void setRoleInstances(final ArrayList<RoleInstance> roleInstancesValue)
+        {
+            this.roleInstances = roleInstancesValue;
+        }
         
         private ArrayList<Role> roles;
         
         /**
         * The list of roles in the deployment.
+        * @return The Roles value.
         */
-        public ArrayList<Role> getRoles() { return this.roles; }
+        public ArrayList<Role> getRoles()
+        {
+            return this.roles;
+        }
         
         /**
         * The list of roles in the deployment.
+        * @param rolesValue The Roles value.
         */
-        public void setRoles(ArrayList<Role> roles) { this.roles = roles; }
+        public void setRoles(final ArrayList<Role> rolesValue)
+        {
+            this.roles = rolesValue;
+        }
         
         private String rollbackAllowed;
         
         /**
         * Indicates whether the Rollback Update Or Upgrade operation is allowed
         * at this time. True if the operation is allowed; otherwise false.
+        * @return The RollbackAllowed value.
         */
-        public String getRollbackAllowed() { return this.rollbackAllowed; }
+        public String getRollbackAllowed()
+        {
+            return this.rollbackAllowed;
+        }
         
         /**
         * Indicates whether the Rollback Update Or Upgrade operation is allowed
         * at this time. True if the operation is allowed; otherwise false.
+        * @param rollbackAllowedValue The RollbackAllowed value.
         */
-        public void setRollbackAllowed(String rollbackAllowed) { this.rollbackAllowed = rollbackAllowed; }
+        public void setRollbackAllowed(final String rollbackAllowedValue)
+        {
+            this.rollbackAllowed = rollbackAllowedValue;
+        }
         
         private String sdkVersion;
         
@@ -256,52 +381,84 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse
         * .cspkg that created this deployment.  The first two numerical
         * components of the returned version represent the version of the SDK
         * used to create the package.
+        * @return The SdkVersion value.
         */
-        public String getSdkVersion() { return this.sdkVersion; }
+        public String getSdkVersion()
+        {
+            return this.sdkVersion;
+        }
         
         /**
         * The version of the Windows Azure SDK that was used to generate the
         * .cspkg that created this deployment.  The first two numerical
         * components of the returned version represent the version of the SDK
         * used to create the package.
+        * @param sdkVersionValue The SdkVersion value.
         */
-        public void setSdkVersion(String sdkVersion) { this.sdkVersion = sdkVersion; }
+        public void setSdkVersion(final String sdkVersionValue)
+        {
+            this.sdkVersion = sdkVersionValue;
+        }
         
         private DeploymentStatus status;
         
         /**
         * The status of the deployment.
+        * @return The Status value.
         */
-        public DeploymentStatus getStatus() { return this.status; }
+        public DeploymentStatus getStatus()
+        {
+            return this.status;
+        }
         
         /**
         * The status of the deployment.
+        * @param statusValue The Status value.
         */
-        public void setStatus(DeploymentStatus status) { this.status = status; }
+        public void setStatus(final DeploymentStatus statusValue)
+        {
+            this.status = statusValue;
+        }
         
         private int upgradeDomainCount;
         
         /**
         * The number of upgrade domains available to this cloud service.
+        * @return The UpgradeDomainCount value.
         */
-        public int getUpgradeDomainCount() { return this.upgradeDomainCount; }
+        public int getUpgradeDomainCount()
+        {
+            return this.upgradeDomainCount;
+        }
         
         /**
         * The number of upgrade domains available to this cloud service.
+        * @param upgradeDomainCountValue The UpgradeDomainCount value.
         */
-        public void setUpgradeDomainCount(int upgradeDomainCount) { this.upgradeDomainCount = upgradeDomainCount; }
+        public void setUpgradeDomainCount(final int upgradeDomainCountValue)
+        {
+            this.upgradeDomainCount = upgradeDomainCountValue;
+        }
         
         private UpgradeStatus upgradeStatus;
         
         /**
         * Specifies information about an update occurring on the deployment.
+        * @return The UpgradeStatus value.
         */
-        public UpgradeStatus getUpgradeStatus() { return this.upgradeStatus; }
+        public UpgradeStatus getUpgradeStatus()
+        {
+            return this.upgradeStatus;
+        }
         
         /**
         * Specifies information about an update occurring on the deployment.
+        * @param upgradeStatusValue The UpgradeStatus value.
         */
-        public void setUpgradeStatus(UpgradeStatus upgradeStatus) { this.upgradeStatus = upgradeStatus; }
+        public void setUpgradeStatus(final UpgradeStatus upgradeStatusValue)
+        {
+            this.upgradeStatus = upgradeStatusValue;
+        }
         
         private URI uri;
         
@@ -309,39 +466,63 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse
         * The URL used to access the hosted service.  For example, if the
         * service name is MyService you could access the access the service by
         * calling: http://MyService.cloudapp.net
+        * @return The Uri value.
         */
-        public URI getUri() { return this.uri; }
+        public URI getUri()
+        {
+            return this.uri;
+        }
         
         /**
         * The URL used to access the hosted service.  For example, if the
         * service name is MyService you could access the access the service by
         * calling: http://MyService.cloudapp.net
+        * @param uriValue The Uri value.
         */
-        public void setUri(URI uri) { this.uri = uri; }
+        public void setUri(final URI uriValue)
+        {
+            this.uri = uriValue;
+        }
         
         private ArrayList<VirtualIPAddress> virtualIPAddresses;
         
         /**
         * The virtual IP addresses that are specified for thedeployment.
+        * @return The VirtualIPAddresses value.
         */
-        public ArrayList<VirtualIPAddress> getVirtualIPAddresses() { return this.virtualIPAddresses; }
+        public ArrayList<VirtualIPAddress> getVirtualIPAddresses()
+        {
+            return this.virtualIPAddresses;
+        }
         
         /**
         * The virtual IP addresses that are specified for thedeployment.
+        * @param virtualIPAddressesValue The VirtualIPAddresses value.
         */
-        public void setVirtualIPAddresses(ArrayList<VirtualIPAddress> virtualIPAddresses) { this.virtualIPAddresses = virtualIPAddresses; }
+        public void setVirtualIPAddresses(final ArrayList<VirtualIPAddress> virtualIPAddressesValue)
+        {
+            this.virtualIPAddresses = virtualIPAddressesValue;
+        }
         
         private String virtualNetworkName;
         
         /**
         * The name of the Virtual Network that the virtual machine connects to.
+        * @return The VirtualNetworkName value.
         */
-        public String getVirtualNetworkName() { return this.virtualNetworkName; }
+        public String getVirtualNetworkName()
+        {
+            return this.virtualNetworkName;
+        }
         
         /**
         * The name of the Virtual Network that the virtual machine connects to.
+        * @param virtualNetworkNameValue The VirtualNetworkName value.
         */
-        public void setVirtualNetworkName(String virtualNetworkName) { this.virtualNetworkName = virtualNetworkName; }
+        public void setVirtualNetworkName(final String virtualNetworkNameValue)
+        {
+            this.virtualNetworkName = virtualNetworkNameValue;
+        }
         
         /**
         * Initializes a new instance of the Deployment class.

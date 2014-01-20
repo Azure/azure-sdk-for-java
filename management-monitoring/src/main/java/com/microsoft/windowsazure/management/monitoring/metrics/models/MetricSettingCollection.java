@@ -34,13 +34,21 @@ public class MetricSettingCollection
     
     /**
     * The collection.
+    * @return The Value value.
     */
-    public ArrayList<MetricSetting> getValue() { return this.value; }
+    public ArrayList<MetricSetting> getValue()
+    {
+        return this.value;
+    }
     
     /**
     * The collection.
+    * @param valueValue The Value value.
     */
-    public void setValue(ArrayList<MetricSetting> value) { this.value = value; }
+    public void setValue(final ArrayList<MetricSetting> valueValue)
+    {
+        this.value = valueValue;
+    }
     
     /**
     * Initializes a new instance of the MetricSettingCollection class.

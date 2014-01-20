@@ -36,13 +36,21 @@ public class ServiceBusNamespaceDescriptionResponse extends OperationResponse im
     
     /**
     * The descriptions for the namespace.
+    * @return The NamespaceDescriptions value.
     */
-    public ArrayList<NamespaceDescription> getNamespaceDescriptions() { return this.namespaceDescriptions; }
+    public ArrayList<NamespaceDescription> getNamespaceDescriptions()
+    {
+        return this.namespaceDescriptions;
+    }
     
     /**
     * The descriptions for the namespace.
+    * @param namespaceDescriptionsValue The NamespaceDescriptions value.
     */
-    public void setNamespaceDescriptions(ArrayList<NamespaceDescription> namespaceDescriptions) { this.namespaceDescriptions = namespaceDescriptions; }
+    public void setNamespaceDescriptions(final ArrayList<NamespaceDescription> namespaceDescriptionsValue)
+    {
+        this.namespaceDescriptions = namespaceDescriptionsValue;
+    }
     
     /**
     * Initializes a new instance of the ServiceBusNamespaceDescriptionResponse
@@ -51,6 +59,7 @@ public class ServiceBusNamespaceDescriptionResponse extends OperationResponse im
     */
     public ServiceBusNamespaceDescriptionResponse()
     {
+        super();
         this.namespaceDescriptions = new ArrayList<NamespaceDescription>();
     }
     

@@ -36,13 +36,21 @@ public class ServiceBusQueuesResponse extends OperationResponse implements Itera
     
     /**
     * The listing of queues.
+    * @return The Queues value.
     */
-    public ArrayList<ServiceBusQueue> getQueues() { return this.queues; }
+    public ArrayList<ServiceBusQueue> getQueues()
+    {
+        return this.queues;
+    }
     
     /**
     * The listing of queues.
+    * @param queuesValue The Queues value.
     */
-    public void setQueues(ArrayList<ServiceBusQueue> queues) { this.queues = queues; }
+    public void setQueues(final ArrayList<ServiceBusQueue> queuesValue)
+    {
+        this.queues = queuesValue;
+    }
     
     /**
     * Initializes a new instance of the ServiceBusQueuesResponse class.
@@ -50,6 +58,7 @@ public class ServiceBusQueuesResponse extends OperationResponse implements Itera
     */
     public ServiceBusQueuesResponse()
     {
+        super();
         this.queues = new ArrayList<ServiceBusQueue>();
     }
     

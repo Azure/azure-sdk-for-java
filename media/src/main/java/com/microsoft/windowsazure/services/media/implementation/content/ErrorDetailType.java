@@ -20,12 +20,13 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
 /**
- * This type maps the XML returned in the odata ATOM serialization
- * for ErrorDetail entities.
+ * This type maps the XML returned in the odata ATOM serialization for
+ * ErrorDetail entities.
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ErrorDetailType implements MediaServiceDTO {
+public class ErrorDetailType implements MediaServiceDTO
+{
 
     /** The code. */
     @XmlElement(name = "Code", namespace = Constants.ODATA_DATA_NS)
@@ -40,7 +41,8 @@ public class ErrorDetailType implements MediaServiceDTO {
      * 
      * @return the code
      */
-    public String getCode() {
+    public String getCode()
+    {
         return code;
     }
 
@@ -51,7 +53,8 @@ public class ErrorDetailType implements MediaServiceDTO {
      *            the id to set
      * @return the error detail type
      */
-    public ErrorDetailType setCode(String code) {
+    public ErrorDetailType setCode(String code)
+    {
         this.code = code;
         return this;
     }
@@ -61,7 +64,8 @@ public class ErrorDetailType implements MediaServiceDTO {
      * 
      * @return the message
      */
-    public String getMessage() {
+    public String getMessage()
+    {
         return message;
     }
 
@@ -72,7 +76,8 @@ public class ErrorDetailType implements MediaServiceDTO {
      *            the message to set
      * @return the error detail type
      */
-    public ErrorDetailType setMessage(String message) {
+    public ErrorDetailType setMessage(String message)
+    {
         this.message = message;
         return this;
     }

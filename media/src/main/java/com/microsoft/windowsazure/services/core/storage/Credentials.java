@@ -20,9 +20,11 @@ package com.microsoft.windowsazure.services.core.storage;
 import com.microsoft.windowsazure.services.core.storage.utils.Base64;
 
 /**
- * Represents the credentials used to sign a request against the storage services.
+ * Represents the credentials used to sign a request against the storage
+ * services.
  */
-public final class Credentials {
+public final class Credentials
+{
     /**
      * Stores the Account name for the credentials.
      */
@@ -44,21 +46,26 @@ public final class Credentials {
     private String signingAccountName;
 
     /**
-     * Creates an instance of the <code>Credentials</code> class, using the specified storage account name and access
-     * key; the specified access key is in the form of a byte array.
+     * Creates an instance of the <code>Credentials</code> class, using the
+     * specified storage account name and access key; the specified access key
+     * is in the form of a byte array.
      * 
      * @param accountName
-     *            A <code>String</code> that represents the name of the storage account.
+     *            A <code>String</code> that represents the name of the storage
+     *            account.
      * @param key
      *            An array of bytes that represent the account access key.
      * 
      */
-    public Credentials(final String accountName, final byte[] key) {
-        if (accountName == null || accountName.length() == 0) {
+    public Credentials(final String accountName, final byte[] key)
+    {
+        if (accountName == null || accountName.length() == 0)
+        {
             throw new IllegalArgumentException("Invalid accountName");
         }
 
-        if (key == null) {
+        if (key == null)
+        {
             throw new IllegalArgumentException("Invalid key");
         }
 
@@ -68,25 +75,31 @@ public final class Credentials {
     }
 
     /**
-     * Creates an instance of the <code>Credentials</code> class, using the specified storage account name and access
-     * key; the specified access key is stored as a <code>String</code>.
+     * Creates an instance of the <code>Credentials</code> class, using the
+     * specified storage account name and access key; the specified access key
+     * is stored as a <code>String</code>.
      * 
      * @param accountName
-     *            A <code>String</code> that represents the name of the storage account.
+     *            A <code>String</code> that represents the name of the storage
+     *            account.
      * @param key
-     *            A <code>String</code> that represents the Base-64-encoded account access key.
+     *            A <code>String</code> that represents the Base-64-encoded
+     *            account access key.
      * 
      */
-    public Credentials(final String accountName, final String key) {
+    public Credentials(final String accountName, final String key)
+    {
         this(accountName, Base64.decode(key));
     }
 
     /**
      * Exports the value of the access key to a Base64-encoded string.
      * 
-     * @return A <code>String</code> that represents the Base64-encoded access key.
+     * @return A <code>String</code> that represents the Base64-encoded access
+     *         key.
      */
-    public String exportBase64EncodedKey() {
+    public String exportBase64EncodedKey()
+    {
         return this.getKey().getBase64EncodedKey();
     }
 
@@ -95,24 +108,28 @@ public final class Credentials {
      * 
      * @return A byte array that represents the access key.
      */
-    public byte[] exportKey() {
+    public byte[] exportKey()
+    {
         return this.getKey().getKey();
     }
 
     /**
      * Returns the account name to be used in signing the request.
      * 
-     * @return A <code>String</code> that represents the account name to be used in signing the request.
+     * @return A <code>String</code> that represents the account name to be used
+     *         in signing the request.
      */
-    public String getAccountName() {
+    public String getAccountName()
+    {
         return this.accountName;
     }
 
     /**
-     * Returns the account name whose key is used to sign requests.
-     * Internal use only.
+     * Returns the account name whose key is used to sign requests. Internal use
+     * only.
      */
-    public String getSigningAccountName() {
+    public String getSigningAccountName()
+    {
         return this.signingAccountName;
     }
 
@@ -120,16 +137,19 @@ public final class Credentials {
      * Returns the name of the access key to be used when signing the request.
      * Internal use only.
      */
-    public String getKeyName() {
+    public String getKeyName()
+    {
         return this.keyName;
     }
 
     /**
      * Returns the access key to be used in signing the request.
      * 
-     * @return A <code>String</code> that represents the access key to be used in signing the request.
+     * @return A <code>String</code> that represents the access key to be used
+     *         in signing the request.
      */
-    public StorageKey getKey() {
+    public StorageKey getKey()
+    {
         return this.key;
     }
 
@@ -137,9 +157,11 @@ public final class Credentials {
      * Sets the account name to be used in signing the request.
      * 
      * @param accountName
-     *            A <code>String</code> that represents the account name being set.
+     *            A <code>String</code> that represents the account name being
+     *            set.
      */
-    protected void setAccountName(final String accountName) {
+    protected void setAccountName(final String accountName)
+    {
         this.accountName = accountName;
     }
 
@@ -147,9 +169,11 @@ public final class Credentials {
      * Sets the account name whose key is used to sign requests.
      * 
      * @param signingAccountName
-     *            A <code>String</code> that represents the account name whose key is used to sign requests.
+     *            A <code>String</code> that represents the account name whose
+     *            key is used to sign requests.
      */
-    protected void setSigningAccountName(final String signingAccountName) {
+    protected void setSigningAccountName(final String signingAccountName)
+    {
         this.signingAccountName = signingAccountName;
     }
 
@@ -157,9 +181,11 @@ public final class Credentials {
      * Sets the name of the access key to be used when signing the request.
      * 
      * @param keyName
-     *            A <code>String</code> that represents the name of the access key to be used when signing the request.
+     *            A <code>String</code> that represents the name of the access
+     *            key to be used when signing the request.
      */
-    protected void setKeyName(final String keyName) {
+    protected void setKeyName(final String keyName)
+    {
         this.keyName = keyName;
     }
 }

@@ -34,19 +34,19 @@ public class IncidentGetResponse extends OperationResponse
     
     /**
     * The retrieved incident.
+    * @return The Incident value.
     */
-    public Incident getIncident() { return this.incident; }
+    public Incident getIncident()
+    {
+        return this.incident;
+    }
     
     /**
     * The retrieved incident.
+    * @param incidentValue The Incident value.
     */
-    public void setIncident(Incident incident) { this.incident = incident; }
-    
-    /**
-    * Initializes a new instance of the IncidentGetResponse class.
-    *
-    */
-    public IncidentGetResponse()
+    public void setIncident(final Incident incidentValue)
     {
+        this.incident = incidentValue;
     }
 }

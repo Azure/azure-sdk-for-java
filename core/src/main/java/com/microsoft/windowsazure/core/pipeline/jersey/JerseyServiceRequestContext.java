@@ -20,70 +20,84 @@ import com.sun.jersey.api.client.ClientRequest;
 import java.net.URI;
 import java.util.List;
 
-public class JerseyServiceRequestContext implements ServiceRequestContext {
-    ClientRequest clientRequest;
+public class JerseyServiceRequestContext implements ServiceRequestContext
+{
+    private ClientRequest clientRequest;
 
-    public JerseyServiceRequestContext(ClientRequest clientRequest) {
+    public JerseyServiceRequestContext(ClientRequest clientRequest)
+    {
         this.clientRequest = clientRequest;
     }
 
     @Override
-    public Object getProperty(String name) {
+    public Object getProperty(String name)
+    {
         return clientRequest.getProperties().get(name);
     }
 
     @Override
-    public void setProperty(String name, Object value) {
+    public void setProperty(String name, Object value)
+    {
         clientRequest.getProperties().put(name, value);
     }
-    
+
     @Override
-    public URI getURI() {
+    public URI getURI()
+    {
         return clientRequest.getURI();
     }
 
     @Override
-    public void setURI(URI uri) {
+    public void setURI(URI uri)
+    {
         clientRequest.setURI(uri);
     }
 
     @Override
-    public String getMethod() {
+    public String getMethod()
+    {
         return clientRequest.getMethod();
     }
 
     @Override
-    public void setMethod(String method) {
+    public void setMethod(String method)
+    {
         clientRequest.setMethod(method);
     }
 
     @Override
-    public Object getEntity() {
+    public Object getEntity()
+    {
         return clientRequest.getEntity();
     }
 
     @Override
-    public void setEntity(Object entity) {
+    public void setEntity(Object entity)
+    {
         clientRequest.setEntity(entity);
     }
 
     @Override
-    public String getHeader(String name) {
+    public String getHeader(String name)
+    {
         List<Object> headers = clientRequest.getHeaders().get(name);
-        if (headers != null && headers.size() > 0) {
+        if (headers != null && headers.size() > 0)
+        {
             return (String) headers.get(0);
         }
-       
+
         return null;
     }
-    
+
     @Override
-    public void setHeader(String name, String value) {
+    public void setHeader(String name, String value)
+    {
         clientRequest.getHeaders().add(name, value);
     }
-    
+
     @Override
-    public void removeHeader(String name) {
+    public void removeHeader(String name)
+    {
         clientRequest.getHeaders().remove(name);
     }
 }

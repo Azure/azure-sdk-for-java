@@ -33,7 +33,6 @@ import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.ParseException;
@@ -46,15 +45,16 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
+import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -81,8 +81,12 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
     /**
     * Gets a reference to the
     * microsoft.windowsazure.management.sql.SqlManagementClientImpl.
+    * @return The Client value.
     */
-    public SqlManagementClientImpl getClient() { return this.client; }
+    public SqlManagementClientImpl getClient()
+    {
+        return this.client;
+    }
     
     /**
     * Export DAC into Windows Azure blob storage.
@@ -108,10 +112,20 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
     *
     * @param serverName The name of the server being exported from.
     * @param parameters Export parameters.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return Response for an DAC Import/Export request.
     */
     @Override
-    public DacImportExportResponse exportDatabase(String serverName, DacExportParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException
+    public DacImportExportResponse exportDatabase(String serverName, DacExportParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
     {
         // Validate
         if (serverName == null)
@@ -190,7 +204,9 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
                 Element blobCredentialsElement = requestDoc.createElementNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "BlobCredentials");
                 exportInputElement.appendChild(blobCredentialsElement);
                 
-                String typeAttribute = null;
+                Attr typeAttribute = requestDoc.createAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "type");
+                typeAttribute.setValue("BlobStorageAccessKeyCredentials");
+                blobCredentialsElement.setAttributeNode(typeAttribute);
                 
                 Element uriElement = requestDoc.createElementNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "Uri");
                 uriElement.appendChild(requestDoc.createTextNode(parameters.getBlobCredentials().getUri().toString()));
@@ -237,53 +253,63 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            DacImportExportResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new DacImportExportResponse();
+            DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
+            Document responseDoc = documentBuilder2.parse(responseContent);
+            
+            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/", "guid");
+            Element guidElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            if (guidElement != null)
+            {
+                result.setGuid(guidElement.getTextContent());
+            }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        DacImportExportResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new DacImportExportResponse();
-        DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
-        Document responseDoc = documentBuilder2.parse(responseContent);
-        
-        NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/", "guid");
-        Element guidElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
-        if (guidElement != null)
+        finally
         {
-            result.setGuid(guidElement.getTextContent());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-        {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
-        }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -316,6 +342,18 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
     * @param username The server's username.
     * @param password The server's password.
     * @param requestId The request ID of the operation being queried.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return The response structure for the DAC GetStatus operation.
     */
     @Override
@@ -369,157 +407,167 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
-        }
-        
-        // Create Result
-        DacGetStatusResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new DacGetStatusResponse();
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document responseDoc = documentBuilder.parse(responseContent);
-        
-        NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "ArrayOfStatusInfo");
-        Element arrayOfStatusInfoElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
-        if (arrayOfStatusInfoElement != null)
-        {
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            DacGetStatusResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new DacGetStatusResponse();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document responseDoc = documentBuilder.parse(responseContent);
+            
+            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "ArrayOfStatusInfo");
+            Element arrayOfStatusInfoElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (arrayOfStatusInfoElement != null)
             {
-                for (int i1 = 0; i1 < arrayOfStatusInfoElement.getElementsByTagNameNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "StatusInfo").getLength(); i1 = i1 + 1)
+                if (arrayOfStatusInfoElement != null)
                 {
-                    org.w3c.dom.Element statusInfoElement = ((org.w3c.dom.Element)arrayOfStatusInfoElement.getElementsByTagNameNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "StatusInfo").item(i1));
-                    DacGetStatusResponse.StatusInfo statusInfoInstance = new DacGetStatusResponse.StatusInfo();
-                    result.getStatusInfoList().add(statusInfoInstance);
-                    
-                    NodeList elements2 = statusInfoElement.getElementsByTagNameNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "BlobUri");
-                    Element blobUriElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
-                    if (blobUriElement != null)
+                    for (int i1 = 0; i1 < arrayOfStatusInfoElement.getElementsByTagNameNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "StatusInfo").getLength(); i1 = i1 + 1)
                     {
-                        URI blobUriInstance;
-                        blobUriInstance = new URI(blobUriElement.getTextContent());
-                        statusInfoInstance.setBlobUri(blobUriInstance);
-                    }
-                    
-                    NodeList elements3 = statusInfoElement.getElementsByTagNameNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "DatabaseName");
-                    Element databaseNameElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
-                    if (databaseNameElement != null)
-                    {
-                        String databaseNameInstance;
-                        databaseNameInstance = databaseNameElement.getTextContent();
-                        statusInfoInstance.setDatabaseName(databaseNameInstance);
-                    }
-                    
-                    NodeList elements4 = statusInfoElement.getElementsByTagNameNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "ErrorMessage");
-                    Element errorMessageElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
-                    if (errorMessageElement != null)
-                    {
-                        boolean isNil = false;
-                        String nilAttribute = errorMessageElement.getAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
-                        if (nilAttribute != null)
+                        org.w3c.dom.Element statusInfoElement = ((org.w3c.dom.Element) arrayOfStatusInfoElement.getElementsByTagNameNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "StatusInfo").item(i1));
+                        DacGetStatusResponse.StatusInfo statusInfoInstance = new DacGetStatusResponse.StatusInfo();
+                        result.getStatusInfoList().add(statusInfoInstance);
+                        
+                        NodeList elements2 = statusInfoElement.getElementsByTagNameNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "BlobUri");
+                        Element blobUriElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                        if (blobUriElement != null)
                         {
-                            isNil = nilAttribute == "true";
+                            URI blobUriInstance;
+                            blobUriInstance = new URI(blobUriElement.getTextContent());
+                            statusInfoInstance.setBlobUri(blobUriInstance);
                         }
-                        if (isNil == false)
+                        
+                        NodeList elements3 = statusInfoElement.getElementsByTagNameNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "DatabaseName");
+                        Element databaseNameElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                        if (databaseNameElement != null)
                         {
-                            String errorMessageInstance;
-                            errorMessageInstance = errorMessageElement.getTextContent();
-                            statusInfoInstance.setErrorMessage(errorMessageInstance);
+                            String databaseNameInstance;
+                            databaseNameInstance = databaseNameElement.getTextContent();
+                            statusInfoInstance.setDatabaseName(databaseNameInstance);
                         }
-                    }
-                    
-                    NodeList elements5 = statusInfoElement.getElementsByTagNameNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "LastModifiedTime");
-                    Element lastModifiedTimeElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
-                    if (lastModifiedTimeElement != null)
-                    {
-                        Calendar lastModifiedTimeInstance;
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.setTime(simpleDateFormat.parse(lastModifiedTimeElement.getTextContent()));
-                        lastModifiedTimeInstance = calendar;
-                        statusInfoInstance.setLastModifiedTime(lastModifiedTimeInstance);
-                    }
-                    
-                    NodeList elements6 = statusInfoElement.getElementsByTagNameNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "QueuedTime");
-                    Element queuedTimeElement = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
-                    if (queuedTimeElement != null)
-                    {
-                        Calendar queuedTimeInstance;
-                        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                        Calendar calendar2 = Calendar.getInstance();
-                        calendar2.setTime(simpleDateFormat2.parse(queuedTimeElement.getTextContent()));
-                        queuedTimeInstance = calendar2;
-                        statusInfoInstance.setQueuedTime(queuedTimeInstance);
-                    }
-                    
-                    NodeList elements7 = statusInfoElement.getElementsByTagNameNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "RequestId");
-                    Element requestIdElement = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
-                    if (requestIdElement != null)
-                    {
-                        String requestIdInstance;
-                        requestIdInstance = requestIdElement.getTextContent();
-                        statusInfoInstance.setRequestId(requestIdInstance);
-                    }
-                    
-                    NodeList elements8 = statusInfoElement.getElementsByTagNameNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "RequestType");
-                    Element requestTypeElement = elements8.getLength() > 0 ? ((Element)elements8.item(0)) : null;
-                    if (requestTypeElement != null)
-                    {
-                        String requestTypeInstance;
-                        requestTypeInstance = requestTypeElement.getTextContent();
-                        statusInfoInstance.setRequestType(requestTypeInstance);
-                    }
-                    
-                    NodeList elements9 = statusInfoElement.getElementsByTagNameNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "ServerName");
-                    Element serverNameElement = elements9.getLength() > 0 ? ((Element)elements9.item(0)) : null;
-                    if (serverNameElement != null)
-                    {
-                        String serverNameInstance;
-                        serverNameInstance = serverNameElement.getTextContent();
-                        statusInfoInstance.setServerName(serverNameInstance);
-                    }
-                    
-                    NodeList elements10 = statusInfoElement.getElementsByTagNameNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "Status");
-                    Element statusElement = elements10.getLength() > 0 ? ((Element)elements10.item(0)) : null;
-                    if (statusElement != null)
-                    {
-                        String statusInstance;
-                        statusInstance = statusElement.getTextContent();
-                        statusInfoInstance.setStatus(statusInstance);
+                        
+                        NodeList elements4 = statusInfoElement.getElementsByTagNameNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "ErrorMessage");
+                        Element errorMessageElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                        if (errorMessageElement != null)
+                        {
+                            boolean isNil = false;
+                            Attr nilAttribute = errorMessageElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                            if (nilAttribute != null)
+                            {
+                                isNil = nilAttribute.getValue() == "true";
+                            }
+                            if (isNil == false)
+                            {
+                                String errorMessageInstance;
+                                errorMessageInstance = errorMessageElement.getTextContent();
+                                statusInfoInstance.setErrorMessage(errorMessageInstance);
+                            }
+                        }
+                        
+                        NodeList elements5 = statusInfoElement.getElementsByTagNameNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "LastModifiedTime");
+                        Element lastModifiedTimeElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                        if (lastModifiedTimeElement != null)
+                        {
+                            Calendar lastModifiedTimeInstance;
+                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                            Calendar calendar = Calendar.getInstance();
+                            calendar.setTime(simpleDateFormat.parse(lastModifiedTimeElement.getTextContent()));
+                            lastModifiedTimeInstance = calendar;
+                            statusInfoInstance.setLastModifiedTime(lastModifiedTimeInstance);
+                        }
+                        
+                        NodeList elements6 = statusInfoElement.getElementsByTagNameNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "QueuedTime");
+                        Element queuedTimeElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                        if (queuedTimeElement != null)
+                        {
+                            Calendar queuedTimeInstance;
+                            SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                            Calendar calendar2 = Calendar.getInstance();
+                            calendar2.setTime(simpleDateFormat2.parse(queuedTimeElement.getTextContent()));
+                            queuedTimeInstance = calendar2;
+                            statusInfoInstance.setQueuedTime(queuedTimeInstance);
+                        }
+                        
+                        NodeList elements7 = statusInfoElement.getElementsByTagNameNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "RequestId");
+                        Element requestIdElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
+                        if (requestIdElement != null)
+                        {
+                            String requestIdInstance;
+                            requestIdInstance = requestIdElement.getTextContent();
+                            statusInfoInstance.setRequestId(requestIdInstance);
+                        }
+                        
+                        NodeList elements8 = statusInfoElement.getElementsByTagNameNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "RequestType");
+                        Element requestTypeElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
+                        if (requestTypeElement != null)
+                        {
+                            String requestTypeInstance;
+                            requestTypeInstance = requestTypeElement.getTextContent();
+                            statusInfoInstance.setRequestType(requestTypeInstance);
+                        }
+                        
+                        NodeList elements9 = statusInfoElement.getElementsByTagNameNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "ServerName");
+                        Element serverNameElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
+                        if (serverNameElement != null)
+                        {
+                            String serverNameInstance;
+                            serverNameInstance = serverNameElement.getTextContent();
+                            statusInfoInstance.setServerName(serverNameInstance);
+                        }
+                        
+                        NodeList elements10 = statusInfoElement.getElementsByTagNameNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "Status");
+                        Element statusElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
+                        if (statusElement != null)
+                        {
+                            String statusInstance;
+                            statusInstance = statusElement.getTextContent();
+                            statusInfoInstance.setStatus(statusInstance);
+                        }
                     }
                 }
             }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -546,10 +594,20 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
     *
     * @param serverName The name of the server being imported to.
     * @param parameters Import parameters.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return Response for an DAC Import/Export request.
     */
     @Override
-    public DacImportExportResponse importDatabase(String serverName, DacImportParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException
+    public DacImportExportResponse importDatabase(String serverName, DacImportParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
     {
         // Validate
         if (serverName == null)
@@ -628,7 +686,9 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
                 Element blobCredentialsElement = requestDoc.createElementNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "BlobCredentials");
                 importInputElement.appendChild(blobCredentialsElement);
                 
-                String typeAttribute = null;
+                Attr typeAttribute = requestDoc.createAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "type");
+                typeAttribute.setValue("BlobStorageAccessKeyCredentials");
+                blobCredentialsElement.setAttributeNode(typeAttribute);
                 
                 Element uriElement = requestDoc.createElementNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "Uri");
                 uriElement.appendChild(requestDoc.createTextNode(parameters.getBlobCredentials().getUri().toString()));
@@ -679,52 +739,62 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            DacImportExportResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new DacImportExportResponse();
+            DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
+            Document responseDoc = documentBuilder2.parse(responseContent);
+            
+            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/", "guid");
+            Element guidElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            if (guidElement != null)
+            {
+                result.setGuid(guidElement.getTextContent());
+            }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        DacImportExportResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new DacImportExportResponse();
-        DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
-        Document responseDoc = documentBuilder2.parse(responseContent);
-        
-        NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/", "guid");
-        Element guidElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
-        if (guidElement != null)
+        finally
         {
-            result.setGuid(guidElement.getTextContent());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-        {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
-        }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
 }

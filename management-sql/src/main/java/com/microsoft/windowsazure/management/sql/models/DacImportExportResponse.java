@@ -34,19 +34,19 @@ public class DacImportExportResponse extends OperationResponse
     
     /**
     * Gets or sets the operation's identifier.
+    * @return The Guid value.
     */
-    public String getGuid() { return this.guid; }
+    public String getGuid()
+    {
+        return this.guid;
+    }
     
     /**
     * Gets or sets the operation's identifier.
+    * @param guidValue The Guid value.
     */
-    public void setGuid(String guid) { this.guid = guid; }
-    
-    /**
-    * Initializes a new instance of the DacImportExportResponse class.
-    *
-    */
-    public DacImportExportResponse()
+    public void setGuid(final String guidValue)
     {
+        this.guid = guidValue;
     }
 }

@@ -35,13 +35,21 @@ public class VirtualMachineImageCreateParameters
     
     /**
     * Optional. Specifies the description of the OS image.
+    * @return The Description value.
     */
-    public String getDescription() { return this.description; }
+    public String getDescription()
+    {
+        return this.description;
+    }
     
     /**
     * Optional. Specifies the description of the OS image.
+    * @param descriptionValue The Description value.
     */
-    public void setDescription(String description) { this.description = description; }
+    public void setDescription(final String descriptionValue)
+    {
+        this.description = descriptionValue;
+    }
     
     private String eula;
     
@@ -49,81 +57,129 @@ public class VirtualMachineImageCreateParameters
     * Optional. Specifies the End User License Agreement that is associated
     * with the image. The value for this element is a string, but it is
     * recommended that the value be a URL that points to a EULA.
+    * @return The Eula value.
     */
-    public String getEula() { return this.eula; }
+    public String getEula()
+    {
+        return this.eula;
+    }
     
     /**
     * Optional. Specifies the End User License Agreement that is associated
     * with the image. The value for this element is a string, but it is
     * recommended that the value be a URL that points to a EULA.
+    * @param eulaValue The Eula value.
     */
-    public void setEula(String eula) { this.eula = eula; }
+    public void setEula(final String eulaValue)
+    {
+        this.eula = eulaValue;
+    }
     
     private URI iconUri;
     
     /**
     * Optional. Specifies the Uri to the icon that is displayed for the image
     * in the Management Portal.
+    * @return The IconUri value.
     */
-    public URI getIconUri() { return this.iconUri; }
+    public URI getIconUri()
+    {
+        return this.iconUri;
+    }
     
     /**
     * Optional. Specifies the Uri to the icon that is displayed for the image
     * in the Management Portal.
+    * @param iconUriValue The IconUri value.
     */
-    public void setIconUri(URI iconUri) { this.iconUri = iconUri; }
+    public void setIconUri(final URI iconUriValue)
+    {
+        this.iconUri = iconUriValue;
+    }
     
     private String imageFamily;
     
     /**
     * Optional. Specifies a value that can be used to group OS images.
+    * @return The ImageFamily value.
     */
-    public String getImageFamily() { return this.imageFamily; }
+    public String getImageFamily()
+    {
+        return this.imageFamily;
+    }
     
     /**
     * Optional. Specifies a value that can be used to group OS images.
+    * @param imageFamilyValue The ImageFamily value.
     */
-    public void setImageFamily(String imageFamily) { this.imageFamily = imageFamily; }
+    public void setImageFamily(final String imageFamilyValue)
+    {
+        this.imageFamily = imageFamilyValue;
+    }
     
     private boolean isPremium;
     
     /**
     * Indicates if the image contains software or associated services that will
     * incur charges above the core price for the virtual machine.
+    * @return The IsPremium value.
     */
-    public boolean getIsPremium() { return this.isPremium; }
+    public boolean isPremium()
+    {
+        return this.isPremium;
+    }
     
     /**
     * Indicates if the image contains software or associated services that will
     * incur charges above the core price for the virtual machine.
+    * @param isPremiumValue The IsPremium value.
     */
-    public void setIsPremium(boolean isPremium) { this.isPremium = isPremium; }
+    public void setIsPremium(final boolean isPremiumValue)
+    {
+        this.isPremium = isPremiumValue;
+    }
     
     private String label;
     
     /**
     * Required. Specifies the friendly name of the image.
+    * @return The Label value.
     */
-    public String getLabel() { return this.label; }
+    public String getLabel()
+    {
+        return this.label;
+    }
     
     /**
     * Required. Specifies the friendly name of the image.
+    * @param labelValue The Label value.
     */
-    public void setLabel(String label) { this.label = label; }
+    public void setLabel(final String labelValue)
+    {
+        this.label = labelValue;
+    }
     
     private String language;
     
     /**
     * Specifies the language of the image.  The Language element is only
     * available using version 2013-03-01 or higher.
+    * @return The Language value.
     */
-    public String getLanguage() { return this.language; }
+    public String getLanguage()
+    {
+        return this.language;
+    }
     
     /**
     * Specifies the language of the image.  The Language element is only
     * available using version 2013-03-01 or higher.
+    * @param languageValue The Language value.
     */
-    public void setLanguage(String language) { this.language = language; }
+    public void setLanguage(final String languageValue)
+    {
+        this.language = languageValue;
+    }
     
     private URI mediaLinkUri;
     
@@ -132,98 +188,154 @@ public class VirtualMachineImageCreateParameters
     * The blob location must belong to a storage account in the subscription
     * specified by the SubscriptionId value in the operation call.  Example:
     * http://example.blob.core.windows.net/disks/mydisk.vhd
+    * @return The MediaLinkUri value.
     */
-    public URI getMediaLinkUri() { return this.mediaLinkUri; }
+    public URI getMediaLinkUri()
+    {
+        return this.mediaLinkUri;
+    }
     
     /**
     * Required. Specifies the location of the blob in Windows Azure storage.
     * The blob location must belong to a storage account in the subscription
     * specified by the SubscriptionId value in the operation call.  Example:
     * http://example.blob.core.windows.net/disks/mydisk.vhd
+    * @param mediaLinkUriValue The MediaLinkUri value.
     */
-    public void setMediaLinkUri(URI mediaLinkUri) { this.mediaLinkUri = mediaLinkUri; }
+    public void setMediaLinkUri(final URI mediaLinkUriValue)
+    {
+        this.mediaLinkUri = mediaLinkUriValue;
+    }
     
     private String name;
     
     /**
     * Required. Specifies a name that Windows Azure uses to identify the image
     * when creating one or more virtual machines.
+    * @return The Name value.
     */
-    public String getName() { return this.name; }
+    public String getName()
+    {
+        return this.name;
+    }
     
     /**
     * Required. Specifies a name that Windows Azure uses to identify the image
     * when creating one or more virtual machines.
+    * @param nameValue The Name value.
     */
-    public void setName(String name) { this.name = name; }
+    public void setName(final String nameValue)
+    {
+        this.name = nameValue;
+    }
     
     private String operatingSystemType;
     
     /**
     * Required. The operating system type of the OS image. Possible values are:
     * Linux, Windows.
+    * @return The OperatingSystemType value.
     */
-    public String getOperatingSystemType() { return this.operatingSystemType; }
+    public String getOperatingSystemType()
+    {
+        return this.operatingSystemType;
+    }
     
     /**
     * Required. The operating system type of the OS image. Possible values are:
     * Linux, Windows.
+    * @param operatingSystemTypeValue The OperatingSystemType value.
     */
-    public void setOperatingSystemType(String operatingSystemType) { this.operatingSystemType = operatingSystemType; }
+    public void setOperatingSystemType(final String operatingSystemTypeValue)
+    {
+        this.operatingSystemType = operatingSystemTypeValue;
+    }
     
     private URI privacyUri;
     
     /**
     * Optional. Specifies the URI that points to a document that contains the
     * privacy policy related to the OS image.
+    * @return The PrivacyUri value.
     */
-    public URI getPrivacyUri() { return this.privacyUri; }
+    public URI getPrivacyUri()
+    {
+        return this.privacyUri;
+    }
     
     /**
     * Optional. Specifies the URI that points to a document that contains the
     * privacy policy related to the OS image.
+    * @param privacyUriValue The PrivacyUri value.
     */
-    public void setPrivacyUri(URI privacyUri) { this.privacyUri = privacyUri; }
+    public void setPrivacyUri(final URI privacyUriValue)
+    {
+        this.privacyUri = privacyUriValue;
+    }
     
     private Calendar publishedDate;
     
     /**
     * Optional. Specifies the date when the OS image was added to the image
     * repository.
+    * @return The PublishedDate value.
     */
-    public Calendar getPublishedDate() { return this.publishedDate; }
+    public Calendar getPublishedDate()
+    {
+        return this.publishedDate;
+    }
     
     /**
     * Optional. Specifies the date when the OS image was added to the image
     * repository.
+    * @param publishedDateValue The PublishedDate value.
     */
-    public void setPublishedDate(Calendar publishedDate) { this.publishedDate = publishedDate; }
+    public void setPublishedDate(final Calendar publishedDateValue)
+    {
+        this.publishedDate = publishedDateValue;
+    }
     
-    private VirtualMachineRoleSize recommendedVMSize;
-    
-    /**
-    * Optional. Specifies the size to use for the virtual machine that is
-    * created from the OS image.
-    */
-    public VirtualMachineRoleSize getRecommendedVMSize() { return this.recommendedVMSize; }
+    private String recommendedVMSize;
     
     /**
     * Optional. Specifies the size to use for the virtual machine that is
     * created from the OS image.
+    * @return The RecommendedVMSize value.
     */
-    public void setRecommendedVMSize(VirtualMachineRoleSize recommendedVMSize) { this.recommendedVMSize = recommendedVMSize; }
+    public String getRecommendedVMSize()
+    {
+        return this.recommendedVMSize;
+    }
+    
+    /**
+    * Optional. Specifies the size to use for the virtual machine that is
+    * created from the OS image.
+    * @param recommendedVMSizeValue The RecommendedVMSize value.
+    */
+    public void setRecommendedVMSize(final String recommendedVMSizeValue)
+    {
+        this.recommendedVMSize = recommendedVMSizeValue;
+    }
     
     private boolean showInGui;
     
     /**
     * Specifies whether the image should appear in the image gallery.
+    * @return The ShowInGui value.
     */
-    public boolean getShowInGui() { return this.showInGui; }
+    public boolean isShowInGui()
+    {
+        return this.showInGui;
+    }
     
     /**
     * Specifies whether the image should appear in the image gallery.
+    * @param showInGuiValue The ShowInGui value.
     */
-    public void setShowInGui(boolean showInGui) { this.showInGui = showInGui; }
+    public void setShowInGui(final boolean showInGuiValue)
+    {
+        this.showInGui = showInGuiValue;
+    }
     
     private URI smallIconUri;
     
@@ -231,22 +343,21 @@ public class VirtualMachineImageCreateParameters
     * Specifies the URI to the small icon that is displayed when the image is
     * presented in the Windows Azure Management Portal.  The SmallIconUri
     * element is only available using version 2013-03-01 or higher.
+    * @return The SmallIconUri value.
     */
-    public URI getSmallIconUri() { return this.smallIconUri; }
+    public URI getSmallIconUri()
+    {
+        return this.smallIconUri;
+    }
     
     /**
     * Specifies the URI to the small icon that is displayed when the image is
     * presented in the Windows Azure Management Portal.  The SmallIconUri
     * element is only available using version 2013-03-01 or higher.
+    * @param smallIconUriValue The SmallIconUri value.
     */
-    public void setSmallIconUri(URI smallIconUri) { this.smallIconUri = smallIconUri; }
-    
-    /**
-    * Initializes a new instance of the VirtualMachineImageCreateParameters
-    * class.
-    *
-    */
-    public VirtualMachineImageCreateParameters()
+    public void setSmallIconUri(final URI smallIconUriValue)
     {
+        this.smallIconUri = smallIconUriValue;
     }
 }

@@ -32,11 +32,9 @@ import com.microsoft.windowsazure.management.sql.models.DatabaseListResponse;
 import com.microsoft.windowsazure.management.sql.models.DatabaseUpdateParameters;
 import com.microsoft.windowsazure.management.sql.models.DatabaseUpdateResponse;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.util.concurrent.Future;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.xml.sax.SAXException;
 
@@ -52,10 +50,22 @@ public interface DatabaseOperations
     * @param serverName The name of the SQL Server where the database will be
     * created.
     * @param parameters The parameters for the create database operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    DatabaseCreateResponse create(String serverName, DatabaseCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException, ParseException;
+    DatabaseCreateResponse create(String serverName, DatabaseCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, ParseException;
     
     /**
     * Creates a database in a SQL Server database server.
@@ -75,6 +85,10 @@ public interface DatabaseOperations
     *
     * @param serverName The name of the server on which the database is found.
     * @param databaseName The name of the database to be deleted.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -98,6 +112,16 @@ public interface DatabaseOperations
     * @param serverName The name of the SQL Server on which the database is
     * housed.
     * @param databaseName The name of the SQL Server database to be obtained.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -118,6 +142,16 @@ public interface DatabaseOperations
     * Returns the list SQL Server databases.
     *
     * @param serverName The name of the database server to be queried.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return Response containing the list of databases for a given server.
     */
     DatabaseListResponse list(String serverName) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException;
@@ -136,10 +170,22 @@ public interface DatabaseOperations
     * @param serverName The name of the SQL Server where the database is housed.
     * @param databaseName The name of the SQL Server database to be obtained.
     * @param parameters The parameters for the update database operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    DatabaseUpdateResponse update(String serverName, String databaseName, DatabaseUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException, ParseException;
+    DatabaseUpdateResponse update(String serverName, String databaseName, DatabaseUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, ParseException;
     
     /**
     * Updates SQL Server database information.

@@ -34,115 +34,179 @@ public class MetricTrigger
     
     /**
     * The name of the metric.
+    * @return The MetricName value.
     */
-    public String getMetricName() { return this.metricName; }
+    public String getMetricName()
+    {
+        return this.metricName;
+    }
     
     /**
     * The name of the metric.
+    * @param metricNameValue The MetricName value.
     */
-    public void setMetricName(String metricName) { this.metricName = metricName; }
+    public void setMetricName(final String metricNameValue)
+    {
+        this.metricName = metricNameValue;
+    }
     
     private String metricNamespace;
     
     /**
     * The namespace of the metric.
+    * @return The MetricNamespace value.
     */
-    public String getMetricNamespace() { return this.metricNamespace; }
+    public String getMetricNamespace()
+    {
+        return this.metricNamespace;
+    }
     
     /**
     * The namespace of the metric.
+    * @param metricNamespaceValue The MetricNamespace value.
     */
-    public void setMetricNamespace(String metricNamespace) { this.metricNamespace = metricNamespace; }
+    public void setMetricNamespace(final String metricNamespaceValue)
+    {
+        this.metricNamespace = metricNamespaceValue;
+    }
     
     private String metricSource;
     
     /**
     * The metric source.
+    * @return The MetricSource value.
     */
-    public String getMetricSource() { return this.metricSource; }
+    public String getMetricSource()
+    {
+        return this.metricSource;
+    }
     
     /**
     * The metric source.
+    * @param metricSourceValue The MetricSource value.
     */
-    public void setMetricSource(String metricSource) { this.metricSource = metricSource; }
+    public void setMetricSource(final String metricSourceValue)
+    {
+        this.metricSource = metricSourceValue;
+    }
     
     private ComparisonOperationType operator;
     
     /**
     * The operator that is used to evaluate the metric.
+    * @return The Operator value.
     */
-    public ComparisonOperationType getOperator() { return this.operator; }
+    public ComparisonOperationType getOperator()
+    {
+        return this.operator;
+    }
     
     /**
     * The operator that is used to evaluate the metric.
+    * @param operatorValue The Operator value.
     */
-    public void setOperator(ComparisonOperationType operator) { this.operator = operator; }
+    public void setOperator(final ComparisonOperationType operatorValue)
+    {
+        this.operator = operatorValue;
+    }
     
     private MetricStatisticType statistic;
     
     /**
     * How the metrics from multiple instances are combined.
+    * @return The Statistic value.
     */
-    public MetricStatisticType getStatistic() { return this.statistic; }
+    public MetricStatisticType getStatistic()
+    {
+        return this.statistic;
+    }
     
     /**
     * How the metrics from multiple instances are combined.
+    * @param statisticValue The Statistic value.
     */
-    public void setStatistic(MetricStatisticType statistic) { this.statistic = statistic; }
+    public void setStatistic(final MetricStatisticType statisticValue)
+    {
+        this.statistic = statisticValue;
+    }
     
     private double threshold;
     
     /**
     * The percentage of usage that triggers the scaling operation.
+    * @return The Threshold value.
     */
-    public double getThreshold() { return this.threshold; }
+    public double getThreshold()
+    {
+        return this.threshold;
+    }
     
     /**
     * The percentage of usage that triggers the scaling operation.
+    * @param thresholdValue The Threshold value.
     */
-    public void setThreshold(double threshold) { this.threshold = threshold; }
+    public void setThreshold(final double thresholdValue)
+    {
+        this.threshold = thresholdValue;
+    }
     
     private TimeAggregationType timeAggregation;
     
     /**
     * How the data that is collected should be combined over time.
+    * @return The TimeAggregation value.
     */
-    public TimeAggregationType getTimeAggregation() { return this.timeAggregation; }
+    public TimeAggregationType getTimeAggregation()
+    {
+        return this.timeAggregation;
+    }
     
     /**
     * How the data that is collected should be combined over time.
+    * @param timeAggregationValue The TimeAggregation value.
     */
-    public void setTimeAggregation(TimeAggregationType timeAggregation) { this.timeAggregation = timeAggregation; }
+    public void setTimeAggregation(final TimeAggregationType timeAggregationValue)
+    {
+        this.timeAggregation = timeAggregationValue;
+    }
     
     private Duration timeGrain;
     
     /**
     * The frequency of data collection.
+    * @return The TimeGrain value.
     */
-    public Duration getTimeGrain() { return this.timeGrain; }
+    public Duration getTimeGrain()
+    {
+        return this.timeGrain;
+    }
     
     /**
     * The frequency of data collection.
+    * @param timeGrainValue The TimeGrain value.
     */
-    public void setTimeGrain(Duration timeGrain) { this.timeGrain = timeGrain; }
+    public void setTimeGrain(final Duration timeGrainValue)
+    {
+        this.timeGrain = timeGrainValue;
+    }
     
     private Duration timeWindow;
     
     /**
     * The range of time in which instance data is collected.
+    * @return The TimeWindow value.
     */
-    public Duration getTimeWindow() { return this.timeWindow; }
+    public Duration getTimeWindow()
+    {
+        return this.timeWindow;
+    }
     
     /**
     * The range of time in which instance data is collected.
+    * @param timeWindowValue The TimeWindow value.
     */
-    public void setTimeWindow(Duration timeWindow) { this.timeWindow = timeWindow; }
-    
-    /**
-    * Initializes a new instance of the MetricTrigger class.
-    *
-    */
-    public MetricTrigger()
+    public void setTimeWindow(final Duration timeWindowValue)
     {
+        this.timeWindow = timeWindowValue;
     }
 }

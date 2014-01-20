@@ -68,7 +68,6 @@ import com.microsoft.windowsazure.management.compute.models.UpgradeDomainState;
 import com.microsoft.windowsazure.management.compute.models.UpgradeStatus;
 import com.microsoft.windowsazure.management.compute.models.VirtualHardDiskHostCaching;
 import com.microsoft.windowsazure.management.compute.models.VirtualIPAddress;
-import com.microsoft.windowsazure.management.compute.models.VirtualMachineRoleSize;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineWindowsRemoteManagementListenerType;
 import com.microsoft.windowsazure.management.compute.models.WindowsRemoteManagementListener;
 import com.microsoft.windowsazure.management.compute.models.WindowsRemoteManagementSettings;
@@ -77,11 +76,9 @@ import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -94,13 +91,13 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -132,8 +129,12 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     /**
     * Gets a reference to the
     * microsoft.windowsazure.management.compute.ComputeManagementClientImpl.
+    * @return The Client value.
     */
-    public ComputeManagementClientImpl getClient() { return this.client; }
+    public ComputeManagementClientImpl getClient()
+    {
+        return this.client;
+    }
     
     /**
     * The Change Deployment Configuration operation initiates a change to the
@@ -180,11 +181,21 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * @param deploymentName The deployment to change configuration for.
     * @param parameters Parameters supplied to the Change Configuration
     * Deployment operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
     @Override
-    public OperationResponse beginChangingConfigurationByName(String serviceName, String deploymentName, DeploymentChangeConfigurationParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException
+    public OperationResponse beginChangingConfigurationByName(String serviceName, String deploymentName, DeploymentChangeConfigurationParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
     {
         // Validate
         if (serviceName == null)
@@ -206,29 +217,38 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         }
         if (parameters.getExtensionConfiguration() != null)
         {
-            for (ExtensionConfiguration.Extension allRolesParameterItem : parameters.getExtensionConfiguration().getAllRoles())
+            if (parameters.getExtensionConfiguration().getAllRoles() != null)
             {
-                if (allRolesParameterItem.getId() == null)
+                for (ExtensionConfiguration.Extension allRolesParameterItem : parameters.getExtensionConfiguration().getAllRoles())
                 {
-                    throw new NullPointerException("parameters.ExtensionConfiguration.AllRoles.Id");
-                }
-            }
-            for (ExtensionConfiguration.NamedRole namedRolesParameterItem : parameters.getExtensionConfiguration().getNamedRoles())
-            {
-                if (namedRolesParameterItem.getExtensions() == null)
-                {
-                    throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.Extensions");
-                }
-                for (ExtensionConfiguration.Extension extensionsParameterItem : namedRolesParameterItem.getExtensions())
-                {
-                    if (extensionsParameterItem.getId() == null)
+                    if (allRolesParameterItem.getId() == null)
                     {
-                        throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.Extensions.Id");
+                        throw new NullPointerException("parameters.ExtensionConfiguration.AllRoles.Id");
                     }
                 }
-                if (namedRolesParameterItem.getRoleName() == null)
+            }
+            if (parameters.getExtensionConfiguration().getNamedRoles() != null)
+            {
+                for (ExtensionConfiguration.NamedRole namedRolesParameterItem : parameters.getExtensionConfiguration().getNamedRoles())
                 {
-                    throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.RoleName");
+                    if (namedRolesParameterItem.getExtensions() == null)
+                    {
+                        throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.Extensions");
+                    }
+                    if (namedRolesParameterItem.getExtensions() != null)
+                    {
+                        for (ExtensionConfiguration.Extension extensionsParameterItem : namedRolesParameterItem.getExtensions())
+                        {
+                            if (extensionsParameterItem.getId() == null)
+                            {
+                                throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.Extensions.Id");
+                            }
+                        }
+                    }
+                    if (namedRolesParameterItem.getRoleName() == null)
+                    {
+                        throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.RoleName");
+                    }
                 }
             }
         }
@@ -269,10 +289,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         configurationElement.appendChild(requestDoc.createTextNode(new String(Base64.encodeBase64(parameters.getConfiguration().getBytes()))));
         changeConfigurationElement.appendChild(configurationElement);
         
-        if (parameters.getTreatWarningsAsError() != null)
+        if (parameters.isTreatWarningsAsError() != null)
         {
             Element treatWarningsAsErrorElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "TreatWarningsAsError");
-            treatWarningsAsErrorElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.getTreatWarningsAsError()).toLowerCase()));
+            treatWarningsAsErrorElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.isTreatWarningsAsError()).toLowerCase()));
             changeConfigurationElement.appendChild(treatWarningsAsErrorElement);
         }
         
@@ -365,40 +385,50 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        OperationResponse result = null;
-        result = new OperationResponse();
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -446,11 +476,21 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * @param deploymentSlot The slot to change deployment configuration for.
     * @param parameters Parameters supplied to the Change Configuration
     * Deployment operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
     @Override
-    public OperationResponse beginChangingConfigurationBySlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentChangeConfigurationParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException
+    public OperationResponse beginChangingConfigurationBySlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentChangeConfigurationParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
     {
         // Validate
         if (serviceName == null)
@@ -468,29 +508,38 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         }
         if (parameters.getExtensionConfiguration() != null)
         {
-            for (ExtensionConfiguration.Extension allRolesParameterItem : parameters.getExtensionConfiguration().getAllRoles())
+            if (parameters.getExtensionConfiguration().getAllRoles() != null)
             {
-                if (allRolesParameterItem.getId() == null)
+                for (ExtensionConfiguration.Extension allRolesParameterItem : parameters.getExtensionConfiguration().getAllRoles())
                 {
-                    throw new NullPointerException("parameters.ExtensionConfiguration.AllRoles.Id");
-                }
-            }
-            for (ExtensionConfiguration.NamedRole namedRolesParameterItem : parameters.getExtensionConfiguration().getNamedRoles())
-            {
-                if (namedRolesParameterItem.getExtensions() == null)
-                {
-                    throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.Extensions");
-                }
-                for (ExtensionConfiguration.Extension extensionsParameterItem : namedRolesParameterItem.getExtensions())
-                {
-                    if (extensionsParameterItem.getId() == null)
+                    if (allRolesParameterItem.getId() == null)
                     {
-                        throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.Extensions.Id");
+                        throw new NullPointerException("parameters.ExtensionConfiguration.AllRoles.Id");
                     }
                 }
-                if (namedRolesParameterItem.getRoleName() == null)
+            }
+            if (parameters.getExtensionConfiguration().getNamedRoles() != null)
+            {
+                for (ExtensionConfiguration.NamedRole namedRolesParameterItem : parameters.getExtensionConfiguration().getNamedRoles())
                 {
-                    throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.RoleName");
+                    if (namedRolesParameterItem.getExtensions() == null)
+                    {
+                        throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.Extensions");
+                    }
+                    if (namedRolesParameterItem.getExtensions() != null)
+                    {
+                        for (ExtensionConfiguration.Extension extensionsParameterItem : namedRolesParameterItem.getExtensions())
+                        {
+                            if (extensionsParameterItem.getId() == null)
+                            {
+                                throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.Extensions.Id");
+                            }
+                        }
+                    }
+                    if (namedRolesParameterItem.getRoleName() == null)
+                    {
+                        throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.RoleName");
+                    }
                 }
             }
         }
@@ -531,10 +580,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         configurationElement.appendChild(requestDoc.createTextNode(new String(Base64.encodeBase64(parameters.getConfiguration().getBytes()))));
         changeConfigurationElement.appendChild(configurationElement);
         
-        if (parameters.getTreatWarningsAsError() != null)
+        if (parameters.isTreatWarningsAsError() != null)
         {
             Element treatWarningsAsErrorElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "TreatWarningsAsError");
-            treatWarningsAsErrorElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.getTreatWarningsAsError()).toLowerCase()));
+            treatWarningsAsErrorElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.isTreatWarningsAsError()).toLowerCase()));
             changeConfigurationElement.appendChild(treatWarningsAsErrorElement);
         }
         
@@ -627,40 +676,50 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        OperationResponse result = null;
-        result = new OperationResponse();
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -704,11 +763,21 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * @param serviceName The cloud service to create a deployment for.
     * @param deploymentSlot The slot to create a deployment for.
     * @param parameters Parameters supplied to the Create Deployment operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
     @Override
-    public OperationResponse beginCreating(String serviceName, DeploymentSlot deploymentSlot, DeploymentCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException
+    public OperationResponse beginCreating(String serviceName, DeploymentSlot deploymentSlot, DeploymentCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
     {
         // Validate
         if (serviceName == null)
@@ -726,29 +795,38 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         }
         if (parameters.getExtensionConfiguration() != null)
         {
-            for (ExtensionConfiguration.Extension allRolesParameterItem : parameters.getExtensionConfiguration().getAllRoles())
+            if (parameters.getExtensionConfiguration().getAllRoles() != null)
             {
-                if (allRolesParameterItem.getId() == null)
+                for (ExtensionConfiguration.Extension allRolesParameterItem : parameters.getExtensionConfiguration().getAllRoles())
                 {
-                    throw new NullPointerException("parameters.ExtensionConfiguration.AllRoles.Id");
-                }
-            }
-            for (ExtensionConfiguration.NamedRole namedRolesParameterItem : parameters.getExtensionConfiguration().getNamedRoles())
-            {
-                if (namedRolesParameterItem.getExtensions() == null)
-                {
-                    throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.Extensions");
-                }
-                for (ExtensionConfiguration.Extension extensionsParameterItem : namedRolesParameterItem.getExtensions())
-                {
-                    if (extensionsParameterItem.getId() == null)
+                    if (allRolesParameterItem.getId() == null)
                     {
-                        throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.Extensions.Id");
+                        throw new NullPointerException("parameters.ExtensionConfiguration.AllRoles.Id");
                     }
                 }
-                if (namedRolesParameterItem.getRoleName() == null)
+            }
+            if (parameters.getExtensionConfiguration().getNamedRoles() != null)
+            {
+                for (ExtensionConfiguration.NamedRole namedRolesParameterItem : parameters.getExtensionConfiguration().getNamedRoles())
                 {
-                    throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.RoleName");
+                    if (namedRolesParameterItem.getExtensions() == null)
+                    {
+                        throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.Extensions");
+                    }
+                    if (namedRolesParameterItem.getExtensions() != null)
+                    {
+                        for (ExtensionConfiguration.Extension extensionsParameterItem : namedRolesParameterItem.getExtensions())
+                        {
+                            if (extensionsParameterItem.getId() == null)
+                            {
+                                throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.Extensions.Id");
+                            }
+                        }
+                    }
+                    if (namedRolesParameterItem.getRoleName() == null)
+                    {
+                        throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.RoleName");
+                    }
                 }
             }
         }
@@ -817,17 +895,17 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         configurationElement.appendChild(requestDoc.createTextNode(new String(Base64.encodeBase64(parameters.getConfiguration().getBytes()))));
         createDeploymentElement.appendChild(configurationElement);
         
-        if (parameters.getStartDeployment() != null)
+        if (parameters.isStartDeployment() != null)
         {
             Element startDeploymentElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StartDeployment");
-            startDeploymentElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.getStartDeployment()).toLowerCase()));
+            startDeploymentElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.isStartDeployment()).toLowerCase()));
             createDeploymentElement.appendChild(startDeploymentElement);
         }
         
-        if (parameters.getTreatWarningsAsError() != null)
+        if (parameters.isTreatWarningsAsError() != null)
         {
             Element treatWarningsAsErrorElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "TreatWarningsAsError");
-            treatWarningsAsErrorElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.getTreatWarningsAsError()).toLowerCase()));
+            treatWarningsAsErrorElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.isTreatWarningsAsError()).toLowerCase()));
             createDeploymentElement.appendChild(treatWarningsAsErrorElement);
         }
         
@@ -913,40 +991,50 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        OperationResponse result = null;
-        result = new OperationResponse();
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -990,6 +1078,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * @param deploymentName The name of your deployment.
     * @param deleteFromStorage Optional. Specifies that the source blob for the
     * disk should also be deleted from storage.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -1020,11 +1112,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "?";
-        if (deleteFromStorage == true)
-        {
-            url = url + "&comp=" + URLEncoder.encode("media");
-        }
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "?comp=" + deleteFromStorage;
         
         // Create HTTP transport objects
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
@@ -1034,40 +1122,50 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        OperationResponse result = null;
-        result = new OperationResponse();
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -1107,6 +1205,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     *
     * @param serviceName The name of the cloud service.
     * @param deploymentSlot The deployment slot.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -1142,40 +1244,50 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        OperationResponse result = null;
-        result = new OperationResponse();
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -1219,6 +1331,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * @param serviceName The name of the cloud service.
     * @param deploymentName The name of your deployment.
     * @param roleInstanceName The name of your role instance.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -1265,40 +1381,50 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        OperationResponse result = null;
-        result = new OperationResponse();
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -1342,6 +1468,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * @param serviceName The name of the cloud service.
     * @param deploymentSlot The deployment slot.
     * @param roleInstanceName The name of your role instance.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -1384,40 +1514,50 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        OperationResponse result = null;
-        result = new OperationResponse();
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -1461,6 +1601,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * @param serviceName The name of the cloud service.
     * @param deploymentName The name of your deployment.
     * @param roleInstanceName The name of your role instance.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -1507,40 +1651,50 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        OperationResponse result = null;
-        result = new OperationResponse();
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -1584,6 +1738,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * @param serviceName The name of the cloud service.
     * @param deploymentSlot The deployment slot.
     * @param roleInstanceName The name of your role instance.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -1626,40 +1784,50 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        OperationResponse result = null;
-        result = new OperationResponse();
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -1703,11 +1871,21 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     *
     * @param serviceName The cloud service to swap deployments for.
     * @param parameters Parameters supplied to the Swap Deployment operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
     @Override
-    public OperationResponse beginSwapping(String serviceName, DeploymentSwapParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException
+    public OperationResponse beginSwapping(String serviceName, DeploymentSwapParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
     {
         // Validate
         if (serviceName == null)
@@ -1779,40 +1957,50 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        OperationResponse result = null;
-        result = new OperationResponse();
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -1860,11 +2048,21 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * @param deploymentName The name of your deployment.
     * @param parameters Parameters supplied to the Update Deployment Status
     * operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
     @Override
-    public OperationResponse beginUpdatingStatusByDeploymentName(String serviceName, String deploymentName, DeploymentUpdateStatusParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException
+    public OperationResponse beginUpdatingStatusByDeploymentName(String serviceName, String deploymentName, DeploymentUpdateStatusParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
     {
         // Validate
         if (serviceName == null)
@@ -1930,40 +2128,50 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        OperationResponse result = null;
-        result = new OperationResponse();
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -2011,11 +2219,21 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * @param deploymentSlot The deployment slot.
     * @param parameters Parameters supplied to the Update Deployment Status
     * operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
     @Override
-    public OperationResponse beginUpdatingStatusByDeploymentSlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentUpdateStatusParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException
+    public OperationResponse beginUpdatingStatusByDeploymentSlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentUpdateStatusParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
     {
         // Validate
         if (serviceName == null)
@@ -2077,40 +2295,50 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        OperationResponse result = null;
-        result = new OperationResponse();
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -2196,11 +2424,21 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * @param serviceName The cloud service to upgrade.
     * @param deploymentName The deployment to upgrade.
     * @param parameters Parameters supplied to the Upgrade Deployment operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
     @Override
-    public OperationResponse beginUpgradingByName(String serviceName, String deploymentName, DeploymentUpgradeParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException
+    public OperationResponse beginUpgradingByName(String serviceName, String deploymentName, DeploymentUpgradeParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
     {
         // Validate
         if (serviceName == null)
@@ -2222,29 +2460,38 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         }
         if (parameters.getExtensionConfiguration() != null)
         {
-            for (ExtensionConfiguration.Extension allRolesParameterItem : parameters.getExtensionConfiguration().getAllRoles())
+            if (parameters.getExtensionConfiguration().getAllRoles() != null)
             {
-                if (allRolesParameterItem.getId() == null)
+                for (ExtensionConfiguration.Extension allRolesParameterItem : parameters.getExtensionConfiguration().getAllRoles())
                 {
-                    throw new NullPointerException("parameters.ExtensionConfiguration.AllRoles.Id");
-                }
-            }
-            for (ExtensionConfiguration.NamedRole namedRolesParameterItem : parameters.getExtensionConfiguration().getNamedRoles())
-            {
-                if (namedRolesParameterItem.getExtensions() == null)
-                {
-                    throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.Extensions");
-                }
-                for (ExtensionConfiguration.Extension extensionsParameterItem : namedRolesParameterItem.getExtensions())
-                {
-                    if (extensionsParameterItem.getId() == null)
+                    if (allRolesParameterItem.getId() == null)
                     {
-                        throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.Extensions.Id");
+                        throw new NullPointerException("parameters.ExtensionConfiguration.AllRoles.Id");
                     }
                 }
-                if (namedRolesParameterItem.getRoleName() == null)
+            }
+            if (parameters.getExtensionConfiguration().getNamedRoles() != null)
+            {
+                for (ExtensionConfiguration.NamedRole namedRolesParameterItem : parameters.getExtensionConfiguration().getNamedRoles())
                 {
-                    throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.RoleName");
+                    if (namedRolesParameterItem.getExtensions() == null)
+                    {
+                        throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.Extensions");
+                    }
+                    if (namedRolesParameterItem.getExtensions() != null)
+                    {
+                        for (ExtensionConfiguration.Extension extensionsParameterItem : namedRolesParameterItem.getExtensions())
+                        {
+                            if (extensionsParameterItem.getId() == null)
+                            {
+                                throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.Extensions.Id");
+                            }
+                        }
+                    }
+                    if (namedRolesParameterItem.getRoleName() == null)
+                    {
+                        throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.RoleName");
+                    }
                 }
             }
         }
@@ -2317,7 +2564,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         }
         
         Element forceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Force");
-        forceElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.getForce()).toLowerCase()));
+        forceElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.isForce()).toLowerCase()));
         upgradeDeploymentElement.appendChild(forceElement);
         
         if (parameters.getExtendedProperties() != null)
@@ -2402,40 +2649,50 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        OperationResponse result = null;
-        result = new OperationResponse();
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -2521,11 +2778,21 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * @param serviceName The cloud service to upgrade.
     * @param deploymentSlot The slot to upgrade.
     * @param parameters Parameters supplied to the Upgrade Deployment operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
     @Override
-    public OperationResponse beginUpgradingBySlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentUpgradeParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException
+    public OperationResponse beginUpgradingBySlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentUpgradeParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
     {
         // Validate
         if (serviceName == null)
@@ -2543,29 +2810,38 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         }
         if (parameters.getExtensionConfiguration() != null)
         {
-            for (ExtensionConfiguration.Extension allRolesParameterItem : parameters.getExtensionConfiguration().getAllRoles())
+            if (parameters.getExtensionConfiguration().getAllRoles() != null)
             {
-                if (allRolesParameterItem.getId() == null)
+                for (ExtensionConfiguration.Extension allRolesParameterItem : parameters.getExtensionConfiguration().getAllRoles())
                 {
-                    throw new NullPointerException("parameters.ExtensionConfiguration.AllRoles.Id");
-                }
-            }
-            for (ExtensionConfiguration.NamedRole namedRolesParameterItem : parameters.getExtensionConfiguration().getNamedRoles())
-            {
-                if (namedRolesParameterItem.getExtensions() == null)
-                {
-                    throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.Extensions");
-                }
-                for (ExtensionConfiguration.Extension extensionsParameterItem : namedRolesParameterItem.getExtensions())
-                {
-                    if (extensionsParameterItem.getId() == null)
+                    if (allRolesParameterItem.getId() == null)
                     {
-                        throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.Extensions.Id");
+                        throw new NullPointerException("parameters.ExtensionConfiguration.AllRoles.Id");
                     }
                 }
-                if (namedRolesParameterItem.getRoleName() == null)
+            }
+            if (parameters.getExtensionConfiguration().getNamedRoles() != null)
+            {
+                for (ExtensionConfiguration.NamedRole namedRolesParameterItem : parameters.getExtensionConfiguration().getNamedRoles())
                 {
-                    throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.RoleName");
+                    if (namedRolesParameterItem.getExtensions() == null)
+                    {
+                        throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.Extensions");
+                    }
+                    if (namedRolesParameterItem.getExtensions() != null)
+                    {
+                        for (ExtensionConfiguration.Extension extensionsParameterItem : namedRolesParameterItem.getExtensions())
+                        {
+                            if (extensionsParameterItem.getId() == null)
+                            {
+                                throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.Extensions.Id");
+                            }
+                        }
+                    }
+                    if (namedRolesParameterItem.getRoleName() == null)
+                    {
+                        throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.RoleName");
+                    }
                 }
             }
         }
@@ -2638,7 +2914,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         }
         
         Element forceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Force");
-        forceElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.getForce()).toLowerCase()));
+        forceElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.isForce()).toLowerCase()));
         upgradeDeploymentElement.appendChild(forceElement);
         
         if (parameters.getExtendedProperties() != null)
@@ -2723,40 +2999,50 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        OperationResponse result = null;
-        result = new OperationResponse();
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -2842,11 +3128,21 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * @param deploymentName The name of your deployment.
     * @param parameters Parameters supplied to the Walk Upgrade Domain
     * operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
     @Override
-    public OperationResponse beginWalkingUpgradeDomainByDeploymentName(String serviceName, String deploymentName, DeploymentWalkUpgradeDomainParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException
+    public OperationResponse beginWalkingUpgradeDomainByDeploymentName(String serviceName, String deploymentName, DeploymentWalkUpgradeDomainParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
     {
         // Validate
         if (serviceName == null)
@@ -2911,40 +3207,50 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        OperationResponse result = null;
-        result = new OperationResponse();
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -3030,11 +3336,21 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * @param deploymentSlot The deployment slot.
     * @param parameters Parameters supplied to the Walk Upgrade Domain
     * operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
     @Override
-    public OperationResponse beginWalkingUpgradeDomainByDeploymentSlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentWalkUpgradeDomainParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException
+    public OperationResponse beginWalkingUpgradeDomainByDeploymentSlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentWalkUpgradeDomainParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
     {
         // Validate
         if (serviceName == null)
@@ -3095,40 +3411,50 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        OperationResponse result = null;
-        result = new OperationResponse();
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -3183,6 +3509,18 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * @param deploymentName The deployment to change configuration for.
     * @param parameters Parameters supplied to the Change Configuration
     * Deployment operation.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -3232,14 +3570,26 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;
@@ -3305,6 +3655,18 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * @param deploymentSlot The slot to change deployment configuration for.
     * @param parameters Parameters supplied to the Change Configuration
     * Deployment operation.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -3354,14 +3716,26 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;
@@ -3423,6 +3797,29 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * @param serviceName The cloud service to create a deployment for.
     * @param deploymentSlot The slot to create a deployment for.
     * @param parameters Parameters supplied to the Create Deployment operation.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -3434,7 +3831,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse create(String serviceName, DeploymentSlot deploymentSlot, DeploymentCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, ServiceException, URISyntaxException, ParseException
+    public ComputeOperationStatusResponse create(String serviceName, DeploymentSlot deploymentSlot, DeploymentCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, ServiceException, URISyntaxException, ParseException
     {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
@@ -3472,14 +3869,26 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;
@@ -3541,6 +3950,18 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * @param deploymentName The name of your deployment.
     * @param deleteFromStorage Optional. Specifies that the source blob for the
     * disk should also be deleted from storage.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -3590,14 +4011,26 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;
@@ -3655,6 +4088,18 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     *
     * @param serviceName The name of the cloud service.
     * @param deploymentSlot The deployment slot.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -3703,14 +4148,26 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;
@@ -3754,6 +4211,18 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     *
     * @param serviceName The name of the cloud service.
     * @param deploymentName The name of the deployment.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return A deployment that exists in the cloud service.
     */
     @Override
@@ -3792,1337 +4261,1356 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
-        }
-        
-        // Create Result
-        DeploymentGetResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new DeploymentGetResponse();
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document responseDoc = documentBuilder.parse(responseContent);
-        
-        NodeList elements = responseDoc.getElementsByTagName("Deployment");
-        Element deploymentElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
-        if (deploymentElement != null)
-        {
-            NodeList elements2 = deploymentElement.getElementsByTagName("Name");
-            Element nameElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
-            if (nameElement != null)
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
             {
-                String nameInstance;
-                nameInstance = nameElement.getTextContent();
-                result.setName(nameInstance);
+                CloudTracing.receiveResponse(invocationId, httpResponse);
             }
-            
-            NodeList elements3 = deploymentElement.getElementsByTagName("DeploymentSlot");
-            Element deploymentSlotElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
-            if (deploymentSlotElement != null)
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
             {
-                DeploymentSlot deploymentSlotInstance;
-                deploymentSlotInstance = DeploymentSlot.valueOf(deploymentSlotElement.getTextContent());
-                result.setDeploymentSlot(deploymentSlotInstance);
-            }
-            
-            NodeList elements4 = deploymentElement.getElementsByTagName("PrivateID");
-            Element privateIDElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
-            if (privateIDElement != null)
-            {
-                String privateIDInstance;
-                privateIDInstance = privateIDElement.getTextContent();
-                result.setPrivateId(privateIDInstance);
-            }
-            
-            NodeList elements5 = deploymentElement.getElementsByTagName("Status");
-            Element statusElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
-            if (statusElement != null)
-            {
-                DeploymentStatus statusInstance;
-                statusInstance = DeploymentStatus.valueOf(statusElement.getTextContent());
-                result.setStatus(statusInstance);
-            }
-            
-            NodeList elements6 = deploymentElement.getElementsByTagName("Label");
-            Element labelElement = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
-            if (labelElement != null)
-            {
-                String labelInstance;
-                labelInstance = labelElement.getTextContent() != null ? new String(Base64.decodeBase64(labelElement.getTextContent().getBytes())) : null;
-                result.setLabel(labelInstance);
-            }
-            
-            NodeList elements7 = deploymentElement.getElementsByTagName("Url");
-            Element urlElement = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
-            if (urlElement != null)
-            {
-                URI urlInstance;
-                urlInstance = new URI(urlElement.getTextContent());
-                result.setUri(urlInstance);
-            }
-            
-            NodeList elements8 = deploymentElement.getElementsByTagName("Configuration");
-            Element configurationElement = elements8.getLength() > 0 ? ((Element)elements8.item(0)) : null;
-            if (configurationElement != null)
-            {
-                String configurationInstance;
-                configurationInstance = configurationElement.getTextContent() != null ? new String(Base64.decodeBase64(configurationElement.getTextContent().getBytes())) : null;
-                result.setConfiguration(configurationInstance);
-            }
-            
-            NodeList elements9 = deploymentElement.getElementsByTagName("RoleInstanceList");
-            Element roleInstanceListSequenceElement = elements9.getLength() > 0 ? ((Element)elements9.item(0)) : null;
-            if (roleInstanceListSequenceElement != null)
-            {
-                for (int i1 = 0; i1 < roleInstanceListSequenceElement.getElementsByTagName("RoleInstance").getLength(); i1 = i1 + 1)
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
                 {
-                    org.w3c.dom.Element roleInstanceListElement = ((org.w3c.dom.Element)roleInstanceListSequenceElement.getElementsByTagName("RoleInstance").item(i1));
-                    RoleInstance roleInstanceInstance = new RoleInstance();
-                    result.getRoleInstances().add(roleInstanceInstance);
-                    
-                    NodeList elements10 = roleInstanceListElement.getElementsByTagName("RoleName");
-                    Element roleNameElement = elements10.getLength() > 0 ? ((Element)elements10.item(0)) : null;
-                    if (roleNameElement != null)
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            DeploymentGetResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new DeploymentGetResponse();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document responseDoc = documentBuilder.parse(responseContent);
+            
+            NodeList elements = responseDoc.getElementsByTagName("Deployment");
+            Element deploymentElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            if (deploymentElement != null)
+            {
+                NodeList elements2 = deploymentElement.getElementsByTagName("Name");
+                Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                if (nameElement != null)
+                {
+                    String nameInstance;
+                    nameInstance = nameElement.getTextContent();
+                    result.setName(nameInstance);
+                }
+                
+                NodeList elements3 = deploymentElement.getElementsByTagName("DeploymentSlot");
+                Element deploymentSlotElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                if (deploymentSlotElement != null)
+                {
+                    DeploymentSlot deploymentSlotInstance;
+                    deploymentSlotInstance = DeploymentSlot.valueOf(deploymentSlotElement.getTextContent());
+                    result.setDeploymentSlot(deploymentSlotInstance);
+                }
+                
+                NodeList elements4 = deploymentElement.getElementsByTagName("PrivateID");
+                Element privateIDElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                if (privateIDElement != null)
+                {
+                    String privateIDInstance;
+                    privateIDInstance = privateIDElement.getTextContent();
+                    result.setPrivateId(privateIDInstance);
+                }
+                
+                NodeList elements5 = deploymentElement.getElementsByTagName("Status");
+                Element statusElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                if (statusElement != null)
+                {
+                    DeploymentStatus statusInstance;
+                    statusInstance = DeploymentStatus.valueOf(statusElement.getTextContent());
+                    result.setStatus(statusInstance);
+                }
+                
+                NodeList elements6 = deploymentElement.getElementsByTagName("Label");
+                Element labelElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                if (labelElement != null)
+                {
+                    String labelInstance;
+                    labelInstance = labelElement.getTextContent() != null ? new String(Base64.decodeBase64(labelElement.getTextContent().getBytes())) : null;
+                    result.setLabel(labelInstance);
+                }
+                
+                NodeList elements7 = deploymentElement.getElementsByTagName("Url");
+                Element urlElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
+                if (urlElement != null)
+                {
+                    URI urlInstance;
+                    urlInstance = new URI(urlElement.getTextContent());
+                    result.setUri(urlInstance);
+                }
+                
+                NodeList elements8 = deploymentElement.getElementsByTagName("Configuration");
+                Element configurationElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
+                if (configurationElement != null)
+                {
+                    String configurationInstance;
+                    configurationInstance = configurationElement.getTextContent() != null ? new String(Base64.decodeBase64(configurationElement.getTextContent().getBytes())) : null;
+                    result.setConfiguration(configurationInstance);
+                }
+                
+                NodeList elements9 = deploymentElement.getElementsByTagName("RoleInstanceList");
+                Element roleInstanceListSequenceElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
+                if (roleInstanceListSequenceElement != null)
+                {
+                    for (int i1 = 0; i1 < roleInstanceListSequenceElement.getElementsByTagName("RoleInstance").getLength(); i1 = i1 + 1)
                     {
-                        String roleNameInstance;
-                        roleNameInstance = roleNameElement.getTextContent();
-                        roleInstanceInstance.setRoleName(roleNameInstance);
-                    }
-                    
-                    NodeList elements11 = roleInstanceListElement.getElementsByTagName("InstanceName");
-                    Element instanceNameElement = elements11.getLength() > 0 ? ((Element)elements11.item(0)) : null;
-                    if (instanceNameElement != null)
-                    {
-                        String instanceNameInstance;
-                        instanceNameInstance = instanceNameElement.getTextContent();
-                        roleInstanceInstance.setInstanceName(instanceNameInstance);
-                    }
-                    
-                    NodeList elements12 = roleInstanceListElement.getElementsByTagName("InstanceStatus");
-                    Element instanceStatusElement = elements12.getLength() > 0 ? ((Element)elements12.item(0)) : null;
-                    if (instanceStatusElement != null)
-                    {
-                        String instanceStatusInstance;
-                        instanceStatusInstance = instanceStatusElement.getTextContent();
-                        roleInstanceInstance.setInstanceStatus(instanceStatusInstance);
-                    }
-                    
-                    NodeList elements13 = roleInstanceListElement.getElementsByTagName("InstanceUpgradeDomain");
-                    Element instanceUpgradeDomainElement = elements13.getLength() > 0 ? ((Element)elements13.item(0)) : null;
-                    if (instanceUpgradeDomainElement != null && (instanceUpgradeDomainElement.getTextContent() != null && instanceUpgradeDomainElement.getTextContent().isEmpty() != true) == false)
-                    {
-                        int instanceUpgradeDomainInstance;
-                        instanceUpgradeDomainInstance = Integer.parseInt(instanceUpgradeDomainElement.getTextContent());
-                        roleInstanceInstance.setInstanceUpgradeDomain(instanceUpgradeDomainInstance);
-                    }
-                    
-                    NodeList elements14 = roleInstanceListElement.getElementsByTagName("InstanceFaultDomain");
-                    Element instanceFaultDomainElement = elements14.getLength() > 0 ? ((Element)elements14.item(0)) : null;
-                    if (instanceFaultDomainElement != null && (instanceFaultDomainElement.getTextContent() != null && instanceFaultDomainElement.getTextContent().isEmpty() != true) == false)
-                    {
-                        int instanceFaultDomainInstance;
-                        instanceFaultDomainInstance = Integer.parseInt(instanceFaultDomainElement.getTextContent());
-                        roleInstanceInstance.setInstanceFaultDomain(instanceFaultDomainInstance);
-                    }
-                    
-                    NodeList elements15 = roleInstanceListElement.getElementsByTagName("InstanceSize");
-                    Element instanceSizeElement = elements15.getLength() > 0 ? ((Element)elements15.item(0)) : null;
-                    if (instanceSizeElement != null && (instanceSizeElement.getTextContent() != null && instanceSizeElement.getTextContent().isEmpty() != true) == false)
-                    {
-                        VirtualMachineRoleSize instanceSizeInstance;
-                        instanceSizeInstance = VirtualMachineRoleSize.valueOf(instanceSizeElement.getTextContent());
-                        roleInstanceInstance.setInstanceSize(instanceSizeInstance);
-                    }
-                    
-                    NodeList elements16 = roleInstanceListElement.getElementsByTagName("InstanceStateDetails");
-                    Element instanceStateDetailsElement = elements16.getLength() > 0 ? ((Element)elements16.item(0)) : null;
-                    if (instanceStateDetailsElement != null)
-                    {
-                        String instanceStateDetailsInstance;
-                        instanceStateDetailsInstance = instanceStateDetailsElement.getTextContent();
-                        roleInstanceInstance.setInstanceStateDetails(instanceStateDetailsInstance);
-                    }
-                    
-                    NodeList elements17 = roleInstanceListElement.getElementsByTagName("InstanceErrorCode");
-                    Element instanceErrorCodeElement = elements17.getLength() > 0 ? ((Element)elements17.item(0)) : null;
-                    if (instanceErrorCodeElement != null)
-                    {
-                        String instanceErrorCodeInstance;
-                        instanceErrorCodeInstance = instanceErrorCodeElement.getTextContent();
-                        roleInstanceInstance.setInstanceErrorCode(instanceErrorCodeInstance);
-                    }
-                    
-                    NodeList elements18 = roleInstanceListElement.getElementsByTagName("IpAddress");
-                    Element ipAddressElement = elements18.getLength() > 0 ? ((Element)elements18.item(0)) : null;
-                    if (ipAddressElement != null)
-                    {
-                        InetAddress ipAddressInstance;
-                        ipAddressInstance = InetAddress.getByName(ipAddressElement.getTextContent());
-                        roleInstanceInstance.setIPAddress(ipAddressInstance);
-                    }
-                    
-                    NodeList elements19 = roleInstanceListElement.getElementsByTagName("InstanceEndpoints");
-                    Element instanceEndpointsSequenceElement = elements19.getLength() > 0 ? ((Element)elements19.item(0)) : null;
-                    if (instanceEndpointsSequenceElement != null)
-                    {
-                        for (int i2 = 0; i2 < instanceEndpointsSequenceElement.getElementsByTagName("InstanceEndpoint").getLength(); i2 = i2 + 1)
+                        org.w3c.dom.Element roleInstanceListElement = ((org.w3c.dom.Element) roleInstanceListSequenceElement.getElementsByTagName("RoleInstance").item(i1));
+                        RoleInstance roleInstanceInstance = new RoleInstance();
+                        result.getRoleInstances().add(roleInstanceInstance);
+                        
+                        NodeList elements10 = roleInstanceListElement.getElementsByTagName("RoleName");
+                        Element roleNameElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
+                        if (roleNameElement != null)
                         {
-                            org.w3c.dom.Element instanceEndpointsElement = ((org.w3c.dom.Element)instanceEndpointsSequenceElement.getElementsByTagName("InstanceEndpoint").item(i2));
-                            InstanceEndpoint instanceEndpointInstance = new InstanceEndpoint();
-                            roleInstanceInstance.getInstanceEndpoints().add(instanceEndpointInstance);
-                            
-                            NodeList elements20 = instanceEndpointsElement.getElementsByTagName("LocalPort");
-                            Element localPortElement = elements20.getLength() > 0 ? ((Element)elements20.item(0)) : null;
-                            if (localPortElement != null && (localPortElement.getTextContent() != null && localPortElement.getTextContent().isEmpty() != true) == false)
+                            String roleNameInstance;
+                            roleNameInstance = roleNameElement.getTextContent();
+                            roleInstanceInstance.setRoleName(roleNameInstance);
+                        }
+                        
+                        NodeList elements11 = roleInstanceListElement.getElementsByTagName("InstanceName");
+                        Element instanceNameElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
+                        if (instanceNameElement != null)
+                        {
+                            String instanceNameInstance;
+                            instanceNameInstance = instanceNameElement.getTextContent();
+                            roleInstanceInstance.setInstanceName(instanceNameInstance);
+                        }
+                        
+                        NodeList elements12 = roleInstanceListElement.getElementsByTagName("InstanceStatus");
+                        Element instanceStatusElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
+                        if (instanceStatusElement != null)
+                        {
+                            String instanceStatusInstance;
+                            instanceStatusInstance = instanceStatusElement.getTextContent();
+                            roleInstanceInstance.setInstanceStatus(instanceStatusInstance);
+                        }
+                        
+                        NodeList elements13 = roleInstanceListElement.getElementsByTagName("InstanceUpgradeDomain");
+                        Element instanceUpgradeDomainElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
+                        if (instanceUpgradeDomainElement != null && (instanceUpgradeDomainElement.getTextContent() != null && instanceUpgradeDomainElement.getTextContent().isEmpty() != true) == false)
+                        {
+                            int instanceUpgradeDomainInstance;
+                            instanceUpgradeDomainInstance = Integer.parseInt(instanceUpgradeDomainElement.getTextContent());
+                            roleInstanceInstance.setInstanceUpgradeDomain(instanceUpgradeDomainInstance);
+                        }
+                        
+                        NodeList elements14 = roleInstanceListElement.getElementsByTagName("InstanceFaultDomain");
+                        Element instanceFaultDomainElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
+                        if (instanceFaultDomainElement != null && (instanceFaultDomainElement.getTextContent() != null && instanceFaultDomainElement.getTextContent().isEmpty() != true) == false)
+                        {
+                            int instanceFaultDomainInstance;
+                            instanceFaultDomainInstance = Integer.parseInt(instanceFaultDomainElement.getTextContent());
+                            roleInstanceInstance.setInstanceFaultDomain(instanceFaultDomainInstance);
+                        }
+                        
+                        NodeList elements15 = roleInstanceListElement.getElementsByTagName("InstanceSize");
+                        Element instanceSizeElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
+                        if (instanceSizeElement != null)
+                        {
+                            String instanceSizeInstance;
+                            instanceSizeInstance = instanceSizeElement.getTextContent();
+                            roleInstanceInstance.setInstanceSize(instanceSizeInstance);
+                        }
+                        
+                        NodeList elements16 = roleInstanceListElement.getElementsByTagName("InstanceStateDetails");
+                        Element instanceStateDetailsElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
+                        if (instanceStateDetailsElement != null)
+                        {
+                            String instanceStateDetailsInstance;
+                            instanceStateDetailsInstance = instanceStateDetailsElement.getTextContent();
+                            roleInstanceInstance.setInstanceStateDetails(instanceStateDetailsInstance);
+                        }
+                        
+                        NodeList elements17 = roleInstanceListElement.getElementsByTagName("InstanceErrorCode");
+                        Element instanceErrorCodeElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
+                        if (instanceErrorCodeElement != null)
+                        {
+                            String instanceErrorCodeInstance;
+                            instanceErrorCodeInstance = instanceErrorCodeElement.getTextContent();
+                            roleInstanceInstance.setInstanceErrorCode(instanceErrorCodeInstance);
+                        }
+                        
+                        NodeList elements18 = roleInstanceListElement.getElementsByTagName("IpAddress");
+                        Element ipAddressElement = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
+                        if (ipAddressElement != null)
+                        {
+                            InetAddress ipAddressInstance;
+                            ipAddressInstance = InetAddress.getByName(ipAddressElement.getTextContent());
+                            roleInstanceInstance.setIPAddress(ipAddressInstance);
+                        }
+                        
+                        NodeList elements19 = roleInstanceListElement.getElementsByTagName("InstanceEndpoints");
+                        Element instanceEndpointsSequenceElement = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
+                        if (instanceEndpointsSequenceElement != null)
+                        {
+                            for (int i2 = 0; i2 < instanceEndpointsSequenceElement.getElementsByTagName("InstanceEndpoint").getLength(); i2 = i2 + 1)
                             {
-                                int localPortInstance;
-                                localPortInstance = Integer.parseInt(localPortElement.getTextContent());
-                                instanceEndpointInstance.setLocalPort(localPortInstance);
-                            }
-                            
-                            NodeList elements21 = instanceEndpointsElement.getElementsByTagName("Name");
-                            Element nameElement2 = elements21.getLength() > 0 ? ((Element)elements21.item(0)) : null;
-                            if (nameElement2 != null)
-                            {
-                                String nameInstance2;
-                                nameInstance2 = nameElement2.getTextContent();
-                                instanceEndpointInstance.setName(nameInstance2);
-                            }
-                            
-                            NodeList elements22 = instanceEndpointsElement.getElementsByTagName("PublicPort");
-                            Element publicPortElement = elements22.getLength() > 0 ? ((Element)elements22.item(0)) : null;
-                            if (publicPortElement != null)
-                            {
-                                int publicPortInstance;
-                                publicPortInstance = Integer.parseInt(publicPortElement.getTextContent());
-                                instanceEndpointInstance.setPort(publicPortInstance);
-                            }
-                            
-                            NodeList elements23 = instanceEndpointsElement.getElementsByTagName("Protocol");
-                            Element protocolElement = elements23.getLength() > 0 ? ((Element)elements23.item(0)) : null;
-                            if (protocolElement != null)
-                            {
-                                String protocolInstance;
-                                protocolInstance = protocolElement.getTextContent();
-                                instanceEndpointInstance.setProtocol(protocolInstance);
-                            }
-                            
-                            NodeList elements24 = instanceEndpointsElement.getElementsByTagName("Vip");
-                            Element vipElement = elements24.getLength() > 0 ? ((Element)elements24.item(0)) : null;
-                            if (vipElement != null)
-                            {
-                                InetAddress vipInstance;
-                                vipInstance = InetAddress.getByName(vipElement.getTextContent());
-                                instanceEndpointInstance.setVirtualIPAddress(vipInstance);
+                                org.w3c.dom.Element instanceEndpointsElement = ((org.w3c.dom.Element) instanceEndpointsSequenceElement.getElementsByTagName("InstanceEndpoint").item(i2));
+                                InstanceEndpoint instanceEndpointInstance = new InstanceEndpoint();
+                                roleInstanceInstance.getInstanceEndpoints().add(instanceEndpointInstance);
+                                
+                                NodeList elements20 = instanceEndpointsElement.getElementsByTagName("LocalPort");
+                                Element localPortElement = elements20.getLength() > 0 ? ((Element) elements20.item(0)) : null;
+                                if (localPortElement != null && (localPortElement.getTextContent() != null && localPortElement.getTextContent().isEmpty() != true) == false)
+                                {
+                                    int localPortInstance;
+                                    localPortInstance = Integer.parseInt(localPortElement.getTextContent());
+                                    instanceEndpointInstance.setLocalPort(localPortInstance);
+                                }
+                                
+                                NodeList elements21 = instanceEndpointsElement.getElementsByTagName("Name");
+                                Element nameElement2 = elements21.getLength() > 0 ? ((Element) elements21.item(0)) : null;
+                                if (nameElement2 != null)
+                                {
+                                    String nameInstance2;
+                                    nameInstance2 = nameElement2.getTextContent();
+                                    instanceEndpointInstance.setName(nameInstance2);
+                                }
+                                
+                                NodeList elements22 = instanceEndpointsElement.getElementsByTagName("PublicPort");
+                                Element publicPortElement = elements22.getLength() > 0 ? ((Element) elements22.item(0)) : null;
+                                if (publicPortElement != null)
+                                {
+                                    int publicPortInstance;
+                                    publicPortInstance = Integer.parseInt(publicPortElement.getTextContent());
+                                    instanceEndpointInstance.setPort(publicPortInstance);
+                                }
+                                
+                                NodeList elements23 = instanceEndpointsElement.getElementsByTagName("Protocol");
+                                Element protocolElement = elements23.getLength() > 0 ? ((Element) elements23.item(0)) : null;
+                                if (protocolElement != null)
+                                {
+                                    String protocolInstance;
+                                    protocolInstance = protocolElement.getTextContent();
+                                    instanceEndpointInstance.setProtocol(protocolInstance);
+                                }
+                                
+                                NodeList elements24 = instanceEndpointsElement.getElementsByTagName("Vip");
+                                Element vipElement = elements24.getLength() > 0 ? ((Element) elements24.item(0)) : null;
+                                if (vipElement != null)
+                                {
+                                    InetAddress vipInstance;
+                                    vipInstance = InetAddress.getByName(vipElement.getTextContent());
+                                    instanceEndpointInstance.setVirtualIPAddress(vipInstance);
+                                }
                             }
                         }
-                    }
-                    
-                    NodeList elements25 = roleInstanceListElement.getElementsByTagName("PowerState");
-                    Element powerStateElement = elements25.getLength() > 0 ? ((Element)elements25.item(0)) : null;
-                    if (powerStateElement != null)
-                    {
-                        RoleInstancePowerState powerStateInstance;
-                        powerStateInstance = RoleInstancePowerState.valueOf(powerStateElement.getTextContent());
-                        roleInstanceInstance.setPowerState(powerStateInstance);
-                    }
-                    
-                    NodeList elements26 = roleInstanceListElement.getElementsByTagName("HostName");
-                    Element hostNameElement = elements26.getLength() > 0 ? ((Element)elements26.item(0)) : null;
-                    if (hostNameElement != null)
-                    {
-                        String hostNameInstance;
-                        hostNameInstance = hostNameElement.getTextContent();
-                        roleInstanceInstance.setHostName(hostNameInstance);
-                    }
-                    
-                    NodeList elements27 = roleInstanceListElement.getElementsByTagName("RemoteAccessCertificateThumbprint");
-                    Element remoteAccessCertificateThumbprintElement = elements27.getLength() > 0 ? ((Element)elements27.item(0)) : null;
-                    if (remoteAccessCertificateThumbprintElement != null)
-                    {
-                        String remoteAccessCertificateThumbprintInstance;
-                        remoteAccessCertificateThumbprintInstance = remoteAccessCertificateThumbprintElement.getTextContent();
-                        roleInstanceInstance.setRemoteAccessCertificateThumbprint(remoteAccessCertificateThumbprintInstance);
-                    }
-                }
-            }
-            
-            NodeList elements28 = deploymentElement.getElementsByTagName("UpgradeStatus");
-            Element upgradeStatusElement = elements28.getLength() > 0 ? ((Element)elements28.item(0)) : null;
-            if (upgradeStatusElement != null)
-            {
-                UpgradeStatus upgradeStatusInstance = new UpgradeStatus();
-                result.setUpgradeStatus(upgradeStatusInstance);
-                
-                NodeList elements29 = upgradeStatusElement.getElementsByTagName("UpgradeType");
-                Element upgradeTypeElement = elements29.getLength() > 0 ? ((Element)elements29.item(0)) : null;
-                if (upgradeTypeElement != null)
-                {
-                    DeploymentUpgradeType upgradeTypeInstance;
-                    upgradeTypeInstance = DeploymentUpgradeType.valueOf(upgradeTypeElement.getTextContent());
-                    upgradeStatusInstance.setUpgradeType(upgradeTypeInstance);
-                }
-                
-                NodeList elements30 = upgradeStatusElement.getElementsByTagName("CurrentUpgradeDomainState");
-                Element currentUpgradeDomainStateElement = elements30.getLength() > 0 ? ((Element)elements30.item(0)) : null;
-                if (currentUpgradeDomainStateElement != null)
-                {
-                    UpgradeDomainState currentUpgradeDomainStateInstance;
-                    currentUpgradeDomainStateInstance = UpgradeDomainState.valueOf(currentUpgradeDomainStateElement.getTextContent());
-                    upgradeStatusInstance.setCurrentUpgradeDomainState(currentUpgradeDomainStateInstance);
-                }
-                
-                NodeList elements31 = upgradeStatusElement.getElementsByTagName("CurrentUpgradeDomain");
-                Element currentUpgradeDomainElement = elements31.getLength() > 0 ? ((Element)elements31.item(0)) : null;
-                if (currentUpgradeDomainElement != null)
-                {
-                    int currentUpgradeDomainInstance;
-                    currentUpgradeDomainInstance = Integer.parseInt(currentUpgradeDomainElement.getTextContent());
-                    upgradeStatusInstance.setCurrentUpgradeDomain(currentUpgradeDomainInstance);
-                }
-            }
-            
-            NodeList elements32 = deploymentElement.getElementsByTagName("UpgradeDomainCount");
-            Element upgradeDomainCountElement = elements32.getLength() > 0 ? ((Element)elements32.item(0)) : null;
-            if (upgradeDomainCountElement != null)
-            {
-                int upgradeDomainCountInstance;
-                upgradeDomainCountInstance = Integer.parseInt(upgradeDomainCountElement.getTextContent());
-                result.setUpgradeDomainCount(upgradeDomainCountInstance);
-            }
-            
-            NodeList elements33 = deploymentElement.getElementsByTagName("RoleList");
-            Element roleListSequenceElement = elements33.getLength() > 0 ? ((Element)elements33.item(0)) : null;
-            if (roleListSequenceElement != null)
-            {
-                for (int i3 = 0; i3 < roleListSequenceElement.getElementsByTagName("Role").getLength(); i3 = i3 + 1)
-                {
-                    org.w3c.dom.Element roleListElement = ((org.w3c.dom.Element)roleListSequenceElement.getElementsByTagName("Role").item(i3));
-                    Role roleInstance = new Role();
-                    result.getRoles().add(roleInstance);
-                    
-                    NodeList elements34 = roleListElement.getElementsByTagName("RoleName");
-                    Element roleNameElement2 = elements34.getLength() > 0 ? ((Element)elements34.item(0)) : null;
-                    if (roleNameElement2 != null)
-                    {
-                        String roleNameInstance2;
-                        roleNameInstance2 = roleNameElement2.getTextContent();
-                        roleInstance.setRoleName(roleNameInstance2);
-                    }
-                    
-                    NodeList elements35 = roleListElement.getElementsByTagName("OsVersion");
-                    Element osVersionElement = elements35.getLength() > 0 ? ((Element)elements35.item(0)) : null;
-                    if (osVersionElement != null)
-                    {
-                        String osVersionInstance;
-                        osVersionInstance = osVersionElement.getTextContent();
-                        roleInstance.setOSVersion(osVersionInstance);
-                    }
-                    
-                    NodeList elements36 = roleListElement.getElementsByTagName("RoleType");
-                    Element roleTypeElement = elements36.getLength() > 0 ? ((Element)elements36.item(0)) : null;
-                    if (roleTypeElement != null)
-                    {
-                        String roleTypeInstance;
-                        roleTypeInstance = roleTypeElement.getTextContent();
-                        roleInstance.setRoleType(roleTypeInstance);
-                    }
-                    
-                    NodeList elements37 = roleListElement.getElementsByTagName("ConfigurationSets");
-                    Element configurationSetsSequenceElement = elements37.getLength() > 0 ? ((Element)elements37.item(0)) : null;
-                    if (configurationSetsSequenceElement != null)
-                    {
-                        for (int i4 = 0; i4 < configurationSetsSequenceElement.getElementsByTagName("ConfigurationSet").getLength(); i4 = i4 + 1)
+                        
+                        NodeList elements25 = roleInstanceListElement.getElementsByTagName("PowerState");
+                        Element powerStateElement = elements25.getLength() > 0 ? ((Element) elements25.item(0)) : null;
+                        if (powerStateElement != null)
                         {
-                            org.w3c.dom.Element configurationSetsElement = ((org.w3c.dom.Element)configurationSetsSequenceElement.getElementsByTagName("ConfigurationSet").item(i4));
-                            ConfigurationSet configurationSetInstance = new ConfigurationSet();
-                            roleInstance.getConfigurationSets().add(configurationSetInstance);
-                            
-                            NodeList elements38 = configurationSetsElement.getElementsByTagName("ConfigurationSetType");
-                            Element configurationSetTypeElement = elements38.getLength() > 0 ? ((Element)elements38.item(0)) : null;
-                            if (configurationSetTypeElement != null)
+                            RoleInstancePowerState powerStateInstance;
+                            powerStateInstance = RoleInstancePowerState.valueOf(powerStateElement.getTextContent());
+                            roleInstanceInstance.setPowerState(powerStateInstance);
+                        }
+                        
+                        NodeList elements26 = roleInstanceListElement.getElementsByTagName("HostName");
+                        Element hostNameElement = elements26.getLength() > 0 ? ((Element) elements26.item(0)) : null;
+                        if (hostNameElement != null)
+                        {
+                            String hostNameInstance;
+                            hostNameInstance = hostNameElement.getTextContent();
+                            roleInstanceInstance.setHostName(hostNameInstance);
+                        }
+                        
+                        NodeList elements27 = roleInstanceListElement.getElementsByTagName("RemoteAccessCertificateThumbprint");
+                        Element remoteAccessCertificateThumbprintElement = elements27.getLength() > 0 ? ((Element) elements27.item(0)) : null;
+                        if (remoteAccessCertificateThumbprintElement != null)
+                        {
+                            String remoteAccessCertificateThumbprintInstance;
+                            remoteAccessCertificateThumbprintInstance = remoteAccessCertificateThumbprintElement.getTextContent();
+                            roleInstanceInstance.setRemoteAccessCertificateThumbprint(remoteAccessCertificateThumbprintInstance);
+                        }
+                    }
+                }
+                
+                NodeList elements28 = deploymentElement.getElementsByTagName("UpgradeStatus");
+                Element upgradeStatusElement = elements28.getLength() > 0 ? ((Element) elements28.item(0)) : null;
+                if (upgradeStatusElement != null)
+                {
+                    UpgradeStatus upgradeStatusInstance = new UpgradeStatus();
+                    result.setUpgradeStatus(upgradeStatusInstance);
+                    
+                    NodeList elements29 = upgradeStatusElement.getElementsByTagName("UpgradeType");
+                    Element upgradeTypeElement = elements29.getLength() > 0 ? ((Element) elements29.item(0)) : null;
+                    if (upgradeTypeElement != null)
+                    {
+                        DeploymentUpgradeType upgradeTypeInstance;
+                        upgradeTypeInstance = DeploymentUpgradeType.valueOf(upgradeTypeElement.getTextContent());
+                        upgradeStatusInstance.setUpgradeType(upgradeTypeInstance);
+                    }
+                    
+                    NodeList elements30 = upgradeStatusElement.getElementsByTagName("CurrentUpgradeDomainState");
+                    Element currentUpgradeDomainStateElement = elements30.getLength() > 0 ? ((Element) elements30.item(0)) : null;
+                    if (currentUpgradeDomainStateElement != null)
+                    {
+                        UpgradeDomainState currentUpgradeDomainStateInstance;
+                        currentUpgradeDomainStateInstance = UpgradeDomainState.valueOf(currentUpgradeDomainStateElement.getTextContent());
+                        upgradeStatusInstance.setCurrentUpgradeDomainState(currentUpgradeDomainStateInstance);
+                    }
+                    
+                    NodeList elements31 = upgradeStatusElement.getElementsByTagName("CurrentUpgradeDomain");
+                    Element currentUpgradeDomainElement = elements31.getLength() > 0 ? ((Element) elements31.item(0)) : null;
+                    if (currentUpgradeDomainElement != null)
+                    {
+                        int currentUpgradeDomainInstance;
+                        currentUpgradeDomainInstance = Integer.parseInt(currentUpgradeDomainElement.getTextContent());
+                        upgradeStatusInstance.setCurrentUpgradeDomain(currentUpgradeDomainInstance);
+                    }
+                }
+                
+                NodeList elements32 = deploymentElement.getElementsByTagName("UpgradeDomainCount");
+                Element upgradeDomainCountElement = elements32.getLength() > 0 ? ((Element) elements32.item(0)) : null;
+                if (upgradeDomainCountElement != null)
+                {
+                    int upgradeDomainCountInstance;
+                    upgradeDomainCountInstance = Integer.parseInt(upgradeDomainCountElement.getTextContent());
+                    result.setUpgradeDomainCount(upgradeDomainCountInstance);
+                }
+                
+                NodeList elements33 = deploymentElement.getElementsByTagName("RoleList");
+                Element roleListSequenceElement = elements33.getLength() > 0 ? ((Element) elements33.item(0)) : null;
+                if (roleListSequenceElement != null)
+                {
+                    for (int i3 = 0; i3 < roleListSequenceElement.getElementsByTagName("Role").getLength(); i3 = i3 + 1)
+                    {
+                        org.w3c.dom.Element roleListElement = ((org.w3c.dom.Element) roleListSequenceElement.getElementsByTagName("Role").item(i3));
+                        Role roleInstance = new Role();
+                        result.getRoles().add(roleInstance);
+                        
+                        NodeList elements34 = roleListElement.getElementsByTagName("RoleName");
+                        Element roleNameElement2 = elements34.getLength() > 0 ? ((Element) elements34.item(0)) : null;
+                        if (roleNameElement2 != null)
+                        {
+                            String roleNameInstance2;
+                            roleNameInstance2 = roleNameElement2.getTextContent();
+                            roleInstance.setRoleName(roleNameInstance2);
+                        }
+                        
+                        NodeList elements35 = roleListElement.getElementsByTagName("OsVersion");
+                        Element osVersionElement = elements35.getLength() > 0 ? ((Element) elements35.item(0)) : null;
+                        if (osVersionElement != null)
+                        {
+                            String osVersionInstance;
+                            osVersionInstance = osVersionElement.getTextContent();
+                            roleInstance.setOSVersion(osVersionInstance);
+                        }
+                        
+                        NodeList elements36 = roleListElement.getElementsByTagName("RoleType");
+                        Element roleTypeElement = elements36.getLength() > 0 ? ((Element) elements36.item(0)) : null;
+                        if (roleTypeElement != null)
+                        {
+                            String roleTypeInstance;
+                            roleTypeInstance = roleTypeElement.getTextContent();
+                            roleInstance.setRoleType(roleTypeInstance);
+                        }
+                        
+                        NodeList elements37 = roleListElement.getElementsByTagName("ConfigurationSets");
+                        Element configurationSetsSequenceElement = elements37.getLength() > 0 ? ((Element) elements37.item(0)) : null;
+                        if (configurationSetsSequenceElement != null)
+                        {
+                            for (int i4 = 0; i4 < configurationSetsSequenceElement.getElementsByTagName("ConfigurationSet").getLength(); i4 = i4 + 1)
                             {
-                                String configurationSetTypeInstance;
-                                configurationSetTypeInstance = configurationSetTypeElement.getTextContent();
-                                configurationSetInstance.setConfigurationSetType(configurationSetTypeInstance);
-                            }
-                            
-                            NodeList elements39 = configurationSetsElement.getElementsByTagName("InputEndpoints");
-                            Element inputEndpointsSequenceElement = elements39.getLength() > 0 ? ((Element)elements39.item(0)) : null;
-                            if (inputEndpointsSequenceElement != null)
-                            {
-                                for (int i5 = 0; i5 < inputEndpointsSequenceElement.getElementsByTagName("InputEndpoint").getLength(); i5 = i5 + 1)
+                                org.w3c.dom.Element configurationSetsElement = ((org.w3c.dom.Element) configurationSetsSequenceElement.getElementsByTagName("ConfigurationSet").item(i4));
+                                ConfigurationSet configurationSetInstance = new ConfigurationSet();
+                                roleInstance.getConfigurationSets().add(configurationSetInstance);
+                                
+                                NodeList elements38 = configurationSetsElement.getElementsByTagName("ConfigurationSetType");
+                                Element configurationSetTypeElement = elements38.getLength() > 0 ? ((Element) elements38.item(0)) : null;
+                                if (configurationSetTypeElement != null)
                                 {
-                                    org.w3c.dom.Element inputEndpointsElement = ((org.w3c.dom.Element)inputEndpointsSequenceElement.getElementsByTagName("InputEndpoint").item(i5));
-                                    InputEndpoint inputEndpointInstance = new InputEndpoint();
-                                    configurationSetInstance.getInputEndpoints().add(inputEndpointInstance);
-                                    
-                                    NodeList elements40 = inputEndpointsElement.getElementsByTagName("LoadBalancedEndpointSetName");
-                                    Element loadBalancedEndpointSetNameElement = elements40.getLength() > 0 ? ((Element)elements40.item(0)) : null;
-                                    if (loadBalancedEndpointSetNameElement != null)
+                                    String configurationSetTypeInstance;
+                                    configurationSetTypeInstance = configurationSetTypeElement.getTextContent();
+                                    configurationSetInstance.setConfigurationSetType(configurationSetTypeInstance);
+                                }
+                                
+                                NodeList elements39 = configurationSetsElement.getElementsByTagName("InputEndpoints");
+                                Element inputEndpointsSequenceElement = elements39.getLength() > 0 ? ((Element) elements39.item(0)) : null;
+                                if (inputEndpointsSequenceElement != null)
+                                {
+                                    for (int i5 = 0; i5 < inputEndpointsSequenceElement.getElementsByTagName("InputEndpoint").getLength(); i5 = i5 + 1)
                                     {
-                                        String loadBalancedEndpointSetNameInstance;
-                                        loadBalancedEndpointSetNameInstance = loadBalancedEndpointSetNameElement.getTextContent();
-                                        inputEndpointInstance.setLoadBalancedEndpointSetName(loadBalancedEndpointSetNameInstance);
-                                    }
-                                    
-                                    NodeList elements41 = inputEndpointsElement.getElementsByTagName("LocalPort");
-                                    Element localPortElement2 = elements41.getLength() > 0 ? ((Element)elements41.item(0)) : null;
-                                    if (localPortElement2 != null && (localPortElement2.getTextContent() != null && localPortElement2.getTextContent().isEmpty() != true) == false)
-                                    {
-                                        int localPortInstance2;
-                                        localPortInstance2 = Integer.parseInt(localPortElement2.getTextContent());
-                                        inputEndpointInstance.setLocalPort(localPortInstance2);
-                                    }
-                                    
-                                    NodeList elements42 = inputEndpointsElement.getElementsByTagName("Name");
-                                    Element nameElement3 = elements42.getLength() > 0 ? ((Element)elements42.item(0)) : null;
-                                    if (nameElement3 != null)
-                                    {
-                                        String nameInstance3;
-                                        nameInstance3 = nameElement3.getTextContent();
-                                        inputEndpointInstance.setName(nameInstance3);
-                                    }
-                                    
-                                    NodeList elements43 = inputEndpointsElement.getElementsByTagName("Port");
-                                    Element portElement = elements43.getLength() > 0 ? ((Element)elements43.item(0)) : null;
-                                    if (portElement != null && (portElement.getTextContent() != null && portElement.getTextContent().isEmpty() != true) == false)
-                                    {
-                                        int portInstance;
-                                        portInstance = Integer.parseInt(portElement.getTextContent());
-                                        inputEndpointInstance.setPort(portInstance);
-                                    }
-                                    
-                                    NodeList elements44 = inputEndpointsElement.getElementsByTagName("LoadBalancerProbe");
-                                    Element loadBalancerProbeElement = elements44.getLength() > 0 ? ((Element)elements44.item(0)) : null;
-                                    if (loadBalancerProbeElement != null)
-                                    {
-                                        LoadBalancerProbe loadBalancerProbeInstance = new LoadBalancerProbe();
-                                        inputEndpointInstance.setLoadBalancerProbe(loadBalancerProbeInstance);
+                                        org.w3c.dom.Element inputEndpointsElement = ((org.w3c.dom.Element) inputEndpointsSequenceElement.getElementsByTagName("InputEndpoint").item(i5));
+                                        InputEndpoint inputEndpointInstance = new InputEndpoint();
+                                        configurationSetInstance.getInputEndpoints().add(inputEndpointInstance);
                                         
-                                        NodeList elements45 = loadBalancerProbeElement.getElementsByTagName("Path");
-                                        Element pathElement = elements45.getLength() > 0 ? ((Element)elements45.item(0)) : null;
-                                        if (pathElement != null)
+                                        NodeList elements40 = inputEndpointsElement.getElementsByTagName("LoadBalancedEndpointSetName");
+                                        Element loadBalancedEndpointSetNameElement = elements40.getLength() > 0 ? ((Element) elements40.item(0)) : null;
+                                        if (loadBalancedEndpointSetNameElement != null)
                                         {
-                                            String pathInstance;
-                                            pathInstance = pathElement.getTextContent();
-                                            loadBalancerProbeInstance.setPath(pathInstance);
+                                            String loadBalancedEndpointSetNameInstance;
+                                            loadBalancedEndpointSetNameInstance = loadBalancedEndpointSetNameElement.getTextContent();
+                                            inputEndpointInstance.setLoadBalancedEndpointSetName(loadBalancedEndpointSetNameInstance);
                                         }
                                         
-                                        NodeList elements46 = loadBalancerProbeElement.getElementsByTagName("Port");
-                                        Element portElement2 = elements46.getLength() > 0 ? ((Element)elements46.item(0)) : null;
-                                        if (portElement2 != null)
+                                        NodeList elements41 = inputEndpointsElement.getElementsByTagName("LocalPort");
+                                        Element localPortElement2 = elements41.getLength() > 0 ? ((Element) elements41.item(0)) : null;
+                                        if (localPortElement2 != null && (localPortElement2.getTextContent() != null && localPortElement2.getTextContent().isEmpty() != true) == false)
                                         {
-                                            int portInstance2;
-                                            portInstance2 = Integer.parseInt(portElement2.getTextContent());
-                                            loadBalancerProbeInstance.setPort(portInstance2);
+                                            int localPortInstance2;
+                                            localPortInstance2 = Integer.parseInt(localPortElement2.getTextContent());
+                                            inputEndpointInstance.setLocalPort(localPortInstance2);
                                         }
                                         
-                                        NodeList elements47 = loadBalancerProbeElement.getElementsByTagName("Protocol");
-                                        Element protocolElement2 = elements47.getLength() > 0 ? ((Element)elements47.item(0)) : null;
-                                        if (protocolElement2 != null)
+                                        NodeList elements42 = inputEndpointsElement.getElementsByTagName("Name");
+                                        Element nameElement3 = elements42.getLength() > 0 ? ((Element) elements42.item(0)) : null;
+                                        if (nameElement3 != null)
                                         {
-                                            LoadBalancerProbeTransportProtocol protocolInstance2;
-                                            protocolInstance2 = com.microsoft.windowsazure.management.compute.ComputeManagementClientImpl.parseLoadBalancerProbeTransportProtocol(protocolElement2.getTextContent());
-                                            loadBalancerProbeInstance.setProtocol(protocolInstance2);
+                                            String nameInstance3;
+                                            nameInstance3 = nameElement3.getTextContent();
+                                            inputEndpointInstance.setName(nameInstance3);
                                         }
                                         
-                                        NodeList elements48 = loadBalancerProbeElement.getElementsByTagName("IntervalInSeconds");
-                                        Element intervalInSecondsElement = elements48.getLength() > 0 ? ((Element)elements48.item(0)) : null;
-                                        if (intervalInSecondsElement != null && (intervalInSecondsElement.getTextContent() != null && intervalInSecondsElement.getTextContent().isEmpty() != true) == false)
+                                        NodeList elements43 = inputEndpointsElement.getElementsByTagName("Port");
+                                        Element portElement = elements43.getLength() > 0 ? ((Element) elements43.item(0)) : null;
+                                        if (portElement != null && (portElement.getTextContent() != null && portElement.getTextContent().isEmpty() != true) == false)
                                         {
-                                            int intervalInSecondsInstance;
-                                            intervalInSecondsInstance = Integer.parseInt(intervalInSecondsElement.getTextContent());
-                                            loadBalancerProbeInstance.setIntervalInSeconds(intervalInSecondsInstance);
+                                            int portInstance;
+                                            portInstance = Integer.parseInt(portElement.getTextContent());
+                                            inputEndpointInstance.setPort(portInstance);
                                         }
                                         
-                                        NodeList elements49 = loadBalancerProbeElement.getElementsByTagName("TimeoutInSeconds");
-                                        Element timeoutInSecondsElement = elements49.getLength() > 0 ? ((Element)elements49.item(0)) : null;
-                                        if (timeoutInSecondsElement != null && (timeoutInSecondsElement.getTextContent() != null && timeoutInSecondsElement.getTextContent().isEmpty() != true) == false)
+                                        NodeList elements44 = inputEndpointsElement.getElementsByTagName("LoadBalancerProbe");
+                                        Element loadBalancerProbeElement = elements44.getLength() > 0 ? ((Element) elements44.item(0)) : null;
+                                        if (loadBalancerProbeElement != null)
                                         {
-                                            int timeoutInSecondsInstance;
-                                            timeoutInSecondsInstance = Integer.parseInt(timeoutInSecondsElement.getTextContent());
-                                            loadBalancerProbeInstance.setTimeoutInSeconds(timeoutInSecondsInstance);
-                                        }
-                                    }
-                                    
-                                    NodeList elements50 = inputEndpointsElement.getElementsByTagName("Protocol");
-                                    Element protocolElement3 = elements50.getLength() > 0 ? ((Element)elements50.item(0)) : null;
-                                    if (protocolElement3 != null)
-                                    {
-                                        String protocolInstance3;
-                                        protocolInstance3 = protocolElement3.getTextContent();
-                                        inputEndpointInstance.setProtocol(protocolInstance3);
-                                    }
-                                    
-                                    NodeList elements51 = inputEndpointsElement.getElementsByTagName("Vip");
-                                    Element vipElement2 = elements51.getLength() > 0 ? ((Element)elements51.item(0)) : null;
-                                    if (vipElement2 != null)
-                                    {
-                                        InetAddress vipInstance2;
-                                        vipInstance2 = InetAddress.getByName(vipElement2.getTextContent());
-                                        inputEndpointInstance.setVirtualIPAddress(vipInstance2);
-                                    }
-                                    
-                                    NodeList elements52 = inputEndpointsElement.getElementsByTagName("EnableDirectServerReturn");
-                                    Element enableDirectServerReturnElement = elements52.getLength() > 0 ? ((Element)elements52.item(0)) : null;
-                                    if (enableDirectServerReturnElement != null && (enableDirectServerReturnElement.getTextContent() != null && enableDirectServerReturnElement.getTextContent().isEmpty() != true) == false)
-                                    {
-                                        boolean enableDirectServerReturnInstance;
-                                        enableDirectServerReturnInstance = Boolean.parseBoolean(enableDirectServerReturnElement.getTextContent());
-                                        inputEndpointInstance.setEnableDirectServerReturn(enableDirectServerReturnInstance);
-                                    }
-                                    
-                                    NodeList elements53 = inputEndpointsElement.getElementsByTagName("EndpointAcl");
-                                    Element endpointAclElement = elements53.getLength() > 0 ? ((Element)elements53.item(0)) : null;
-                                    if (endpointAclElement != null)
-                                    {
-                                        EndpointAcl endpointAclInstance = new EndpointAcl();
-                                        inputEndpointInstance.setEndpointAcl(endpointAclInstance);
-                                        
-                                        NodeList elements54 = endpointAclElement.getElementsByTagName("Rules");
-                                        Element rulesSequenceElement = elements54.getLength() > 0 ? ((Element)elements54.item(0)) : null;
-                                        if (rulesSequenceElement != null)
-                                        {
-                                            for (int i6 = 0; i6 < rulesSequenceElement.getElementsByTagName("Rule").getLength(); i6 = i6 + 1)
+                                            LoadBalancerProbe loadBalancerProbeInstance = new LoadBalancerProbe();
+                                            inputEndpointInstance.setLoadBalancerProbe(loadBalancerProbeInstance);
+                                            
+                                            NodeList elements45 = loadBalancerProbeElement.getElementsByTagName("Path");
+                                            Element pathElement = elements45.getLength() > 0 ? ((Element) elements45.item(0)) : null;
+                                            if (pathElement != null)
                                             {
-                                                org.w3c.dom.Element rulesElement = ((org.w3c.dom.Element)rulesSequenceElement.getElementsByTagName("Rule").item(i6));
-                                                AccessControlListRule ruleInstance = new AccessControlListRule();
-                                                endpointAclInstance.getRules().add(ruleInstance);
-                                                
-                                                NodeList elements55 = rulesElement.getElementsByTagName("Order");
-                                                Element orderElement = elements55.getLength() > 0 ? ((Element)elements55.item(0)) : null;
-                                                if (orderElement != null && (orderElement.getTextContent() != null && orderElement.getTextContent().isEmpty() != true) == false)
+                                                String pathInstance;
+                                                pathInstance = pathElement.getTextContent();
+                                                loadBalancerProbeInstance.setPath(pathInstance);
+                                            }
+                                            
+                                            NodeList elements46 = loadBalancerProbeElement.getElementsByTagName("Port");
+                                            Element portElement2 = elements46.getLength() > 0 ? ((Element) elements46.item(0)) : null;
+                                            if (portElement2 != null)
+                                            {
+                                                int portInstance2;
+                                                portInstance2 = Integer.parseInt(portElement2.getTextContent());
+                                                loadBalancerProbeInstance.setPort(portInstance2);
+                                            }
+                                            
+                                            NodeList elements47 = loadBalancerProbeElement.getElementsByTagName("Protocol");
+                                            Element protocolElement2 = elements47.getLength() > 0 ? ((Element) elements47.item(0)) : null;
+                                            if (protocolElement2 != null)
+                                            {
+                                                LoadBalancerProbeTransportProtocol protocolInstance2;
+                                                protocolInstance2 = com.microsoft.windowsazure.management.compute.ComputeManagementClientImpl.parseLoadBalancerProbeTransportProtocol(protocolElement2.getTextContent());
+                                                loadBalancerProbeInstance.setProtocol(protocolInstance2);
+                                            }
+                                            
+                                            NodeList elements48 = loadBalancerProbeElement.getElementsByTagName("IntervalInSeconds");
+                                            Element intervalInSecondsElement = elements48.getLength() > 0 ? ((Element) elements48.item(0)) : null;
+                                            if (intervalInSecondsElement != null && (intervalInSecondsElement.getTextContent() != null && intervalInSecondsElement.getTextContent().isEmpty() != true) == false)
+                                            {
+                                                int intervalInSecondsInstance;
+                                                intervalInSecondsInstance = Integer.parseInt(intervalInSecondsElement.getTextContent());
+                                                loadBalancerProbeInstance.setIntervalInSeconds(intervalInSecondsInstance);
+                                            }
+                                            
+                                            NodeList elements49 = loadBalancerProbeElement.getElementsByTagName("TimeoutInSeconds");
+                                            Element timeoutInSecondsElement = elements49.getLength() > 0 ? ((Element) elements49.item(0)) : null;
+                                            if (timeoutInSecondsElement != null && (timeoutInSecondsElement.getTextContent() != null && timeoutInSecondsElement.getTextContent().isEmpty() != true) == false)
+                                            {
+                                                int timeoutInSecondsInstance;
+                                                timeoutInSecondsInstance = Integer.parseInt(timeoutInSecondsElement.getTextContent());
+                                                loadBalancerProbeInstance.setTimeoutInSeconds(timeoutInSecondsInstance);
+                                            }
+                                        }
+                                        
+                                        NodeList elements50 = inputEndpointsElement.getElementsByTagName("Protocol");
+                                        Element protocolElement3 = elements50.getLength() > 0 ? ((Element) elements50.item(0)) : null;
+                                        if (protocolElement3 != null)
+                                        {
+                                            String protocolInstance3;
+                                            protocolInstance3 = protocolElement3.getTextContent();
+                                            inputEndpointInstance.setProtocol(protocolInstance3);
+                                        }
+                                        
+                                        NodeList elements51 = inputEndpointsElement.getElementsByTagName("Vip");
+                                        Element vipElement2 = elements51.getLength() > 0 ? ((Element) elements51.item(0)) : null;
+                                        if (vipElement2 != null)
+                                        {
+                                            InetAddress vipInstance2;
+                                            vipInstance2 = InetAddress.getByName(vipElement2.getTextContent());
+                                            inputEndpointInstance.setVirtualIPAddress(vipInstance2);
+                                        }
+                                        
+                                        NodeList elements52 = inputEndpointsElement.getElementsByTagName("EnableDirectServerReturn");
+                                        Element enableDirectServerReturnElement = elements52.getLength() > 0 ? ((Element) elements52.item(0)) : null;
+                                        if (enableDirectServerReturnElement != null && (enableDirectServerReturnElement.getTextContent() != null && enableDirectServerReturnElement.getTextContent().isEmpty() != true) == false)
+                                        {
+                                            boolean enableDirectServerReturnInstance;
+                                            enableDirectServerReturnInstance = Boolean.parseBoolean(enableDirectServerReturnElement.getTextContent());
+                                            inputEndpointInstance.setEnableDirectServerReturn(enableDirectServerReturnInstance);
+                                        }
+                                        
+                                        NodeList elements53 = inputEndpointsElement.getElementsByTagName("EndpointAcl");
+                                        Element endpointAclElement = elements53.getLength() > 0 ? ((Element) elements53.item(0)) : null;
+                                        if (endpointAclElement != null)
+                                        {
+                                            EndpointAcl endpointAclInstance = new EndpointAcl();
+                                            inputEndpointInstance.setEndpointAcl(endpointAclInstance);
+                                            
+                                            NodeList elements54 = endpointAclElement.getElementsByTagName("Rules");
+                                            Element rulesSequenceElement = elements54.getLength() > 0 ? ((Element) elements54.item(0)) : null;
+                                            if (rulesSequenceElement != null)
+                                            {
+                                                for (int i6 = 0; i6 < rulesSequenceElement.getElementsByTagName("Rule").getLength(); i6 = i6 + 1)
                                                 {
-                                                    int orderInstance;
-                                                    orderInstance = Integer.parseInt(orderElement.getTextContent());
-                                                    ruleInstance.setOrder(orderInstance);
-                                                }
-                                                
-                                                NodeList elements56 = rulesElement.getElementsByTagName("Action");
-                                                Element actionElement = elements56.getLength() > 0 ? ((Element)elements56.item(0)) : null;
-                                                if (actionElement != null)
-                                                {
-                                                    String actionInstance;
-                                                    actionInstance = actionElement.getTextContent();
-                                                    ruleInstance.setAction(actionInstance);
-                                                }
-                                                
-                                                NodeList elements57 = rulesElement.getElementsByTagName("RemoteSubnet");
-                                                Element remoteSubnetElement = elements57.getLength() > 0 ? ((Element)elements57.item(0)) : null;
-                                                if (remoteSubnetElement != null)
-                                                {
-                                                    String remoteSubnetInstance;
-                                                    remoteSubnetInstance = remoteSubnetElement.getTextContent();
-                                                    ruleInstance.setRemoteSubnet(remoteSubnetInstance);
-                                                }
-                                                
-                                                NodeList elements58 = rulesElement.getElementsByTagName("Description");
-                                                Element descriptionElement = elements58.getLength() > 0 ? ((Element)elements58.item(0)) : null;
-                                                if (descriptionElement != null)
-                                                {
-                                                    String descriptionInstance;
-                                                    descriptionInstance = descriptionElement.getTextContent();
-                                                    ruleInstance.setDescription(descriptionInstance);
+                                                    org.w3c.dom.Element rulesElement = ((org.w3c.dom.Element) rulesSequenceElement.getElementsByTagName("Rule").item(i6));
+                                                    AccessControlListRule ruleInstance = new AccessControlListRule();
+                                                    endpointAclInstance.getRules().add(ruleInstance);
+                                                    
+                                                    NodeList elements55 = rulesElement.getElementsByTagName("Order");
+                                                    Element orderElement = elements55.getLength() > 0 ? ((Element) elements55.item(0)) : null;
+                                                    if (orderElement != null && (orderElement.getTextContent() != null && orderElement.getTextContent().isEmpty() != true) == false)
+                                                    {
+                                                        int orderInstance;
+                                                        orderInstance = Integer.parseInt(orderElement.getTextContent());
+                                                        ruleInstance.setOrder(orderInstance);
+                                                    }
+                                                    
+                                                    NodeList elements56 = rulesElement.getElementsByTagName("Action");
+                                                    Element actionElement = elements56.getLength() > 0 ? ((Element) elements56.item(0)) : null;
+                                                    if (actionElement != null)
+                                                    {
+                                                        String actionInstance;
+                                                        actionInstance = actionElement.getTextContent();
+                                                        ruleInstance.setAction(actionInstance);
+                                                    }
+                                                    
+                                                    NodeList elements57 = rulesElement.getElementsByTagName("RemoteSubnet");
+                                                    Element remoteSubnetElement = elements57.getLength() > 0 ? ((Element) elements57.item(0)) : null;
+                                                    if (remoteSubnetElement != null)
+                                                    {
+                                                        String remoteSubnetInstance;
+                                                        remoteSubnetInstance = remoteSubnetElement.getTextContent();
+                                                        ruleInstance.setRemoteSubnet(remoteSubnetInstance);
+                                                    }
+                                                    
+                                                    NodeList elements58 = rulesElement.getElementsByTagName("Description");
+                                                    Element descriptionElement = elements58.getLength() > 0 ? ((Element) elements58.item(0)) : null;
+                                                    if (descriptionElement != null)
+                                                    {
+                                                        String descriptionInstance;
+                                                        descriptionInstance = descriptionElement.getTextContent();
+                                                        ruleInstance.setDescription(descriptionInstance);
+                                                    }
                                                 }
                                             }
                                         }
                                     }
                                 }
-                            }
-                            
-                            NodeList elements59 = configurationSetsElement.getElementsByTagName("SubnetNames");
-                            Element subnetNamesSequenceElement = elements59.getLength() > 0 ? ((Element)elements59.item(0)) : null;
-                            if (subnetNamesSequenceElement != null)
-                            {
-                                for (int i7 = 0; i7 < subnetNamesSequenceElement.getElementsByTagName("SubnetName").getLength(); i7 = i7 + 1)
-                                {
-                                    org.w3c.dom.Element subnetNamesElement = ((org.w3c.dom.Element)subnetNamesSequenceElement.getElementsByTagName("SubnetName").item(i7));
-                                    configurationSetInstance.getSubnetNames().add(subnetNamesElement.getTextContent());
-                                }
-                            }
-                            
-                            NodeList elements60 = configurationSetsElement.getElementsByTagName("ComputerName");
-                            Element computerNameElement = elements60.getLength() > 0 ? ((Element)elements60.item(0)) : null;
-                            if (computerNameElement != null)
-                            {
-                                String computerNameInstance;
-                                computerNameInstance = computerNameElement.getTextContent();
-                                configurationSetInstance.setComputerName(computerNameInstance);
-                            }
-                            
-                            NodeList elements61 = configurationSetsElement.getElementsByTagName("AdminPassword");
-                            Element adminPasswordElement = elements61.getLength() > 0 ? ((Element)elements61.item(0)) : null;
-                            if (adminPasswordElement != null)
-                            {
-                                String adminPasswordInstance;
-                                adminPasswordInstance = adminPasswordElement.getTextContent();
-                                configurationSetInstance.setAdminPassword(adminPasswordInstance);
-                            }
-                            
-                            NodeList elements62 = configurationSetsElement.getElementsByTagName("ResetPasswordOnFirstLogon");
-                            Element resetPasswordOnFirstLogonElement = elements62.getLength() > 0 ? ((Element)elements62.item(0)) : null;
-                            if (resetPasswordOnFirstLogonElement != null && (resetPasswordOnFirstLogonElement.getTextContent() != null && resetPasswordOnFirstLogonElement.getTextContent().isEmpty() != true) == false)
-                            {
-                                boolean resetPasswordOnFirstLogonInstance;
-                                resetPasswordOnFirstLogonInstance = Boolean.parseBoolean(resetPasswordOnFirstLogonElement.getTextContent());
-                                configurationSetInstance.setResetPasswordOnFirstLogon(resetPasswordOnFirstLogonInstance);
-                            }
-                            
-                            NodeList elements63 = configurationSetsElement.getElementsByTagName("EnableAutomaticUpdates");
-                            Element enableAutomaticUpdatesElement = elements63.getLength() > 0 ? ((Element)elements63.item(0)) : null;
-                            if (enableAutomaticUpdatesElement != null && (enableAutomaticUpdatesElement.getTextContent() != null && enableAutomaticUpdatesElement.getTextContent().isEmpty() != true) == false)
-                            {
-                                boolean enableAutomaticUpdatesInstance;
-                                enableAutomaticUpdatesInstance = Boolean.parseBoolean(enableAutomaticUpdatesElement.getTextContent());
-                                configurationSetInstance.setEnableAutomaticUpdates(enableAutomaticUpdatesInstance);
-                            }
-                            
-                            NodeList elements64 = configurationSetsElement.getElementsByTagName("TimeZone");
-                            Element timeZoneElement = elements64.getLength() > 0 ? ((Element)elements64.item(0)) : null;
-                            if (timeZoneElement != null)
-                            {
-                                String timeZoneInstance;
-                                timeZoneInstance = timeZoneElement.getTextContent();
-                                configurationSetInstance.setTimeZone(timeZoneInstance);
-                            }
-                            
-                            NodeList elements65 = configurationSetsElement.getElementsByTagName("DomainJoin");
-                            Element domainJoinElement = elements65.getLength() > 0 ? ((Element)elements65.item(0)) : null;
-                            if (domainJoinElement != null)
-                            {
-                                DomainJoinSettings domainJoinInstance = new DomainJoinSettings();
-                                configurationSetInstance.setDomainJoin(domainJoinInstance);
                                 
-                                NodeList elements66 = domainJoinElement.getElementsByTagName("Credentials");
-                                Element credentialsElement = elements66.getLength() > 0 ? ((Element)elements66.item(0)) : null;
-                                if (credentialsElement != null)
+                                NodeList elements59 = configurationSetsElement.getElementsByTagName("SubnetNames");
+                                Element subnetNamesSequenceElement = elements59.getLength() > 0 ? ((Element) elements59.item(0)) : null;
+                                if (subnetNamesSequenceElement != null)
                                 {
-                                    DomainJoinCredentials credentialsInstance = new DomainJoinCredentials();
-                                    domainJoinInstance.setCredentials(credentialsInstance);
-                                    
-                                    NodeList elements67 = credentialsElement.getElementsByTagName("Domain");
-                                    Element domainElement = elements67.getLength() > 0 ? ((Element)elements67.item(0)) : null;
-                                    if (domainElement != null)
+                                    for (int i7 = 0; i7 < subnetNamesSequenceElement.getElementsByTagName("SubnetName").getLength(); i7 = i7 + 1)
                                     {
-                                        String domainInstance;
-                                        domainInstance = domainElement.getTextContent();
-                                        credentialsInstance.setDomain(domainInstance);
-                                    }
-                                    
-                                    NodeList elements68 = credentialsElement.getElementsByTagName("Username");
-                                    Element usernameElement = elements68.getLength() > 0 ? ((Element)elements68.item(0)) : null;
-                                    if (usernameElement != null)
-                                    {
-                                        String usernameInstance;
-                                        usernameInstance = usernameElement.getTextContent();
-                                        credentialsInstance.setUserName(usernameInstance);
-                                    }
-                                    
-                                    NodeList elements69 = credentialsElement.getElementsByTagName("Password");
-                                    Element passwordElement = elements69.getLength() > 0 ? ((Element)elements69.item(0)) : null;
-                                    if (passwordElement != null)
-                                    {
-                                        String passwordInstance;
-                                        passwordInstance = passwordElement.getTextContent();
-                                        credentialsInstance.setPassword(passwordInstance);
+                                        org.w3c.dom.Element subnetNamesElement = ((org.w3c.dom.Element) subnetNamesSequenceElement.getElementsByTagName("SubnetName").item(i7));
+                                        configurationSetInstance.getSubnetNames().add(subnetNamesElement.getTextContent());
                                     }
                                 }
                                 
-                                NodeList elements70 = domainJoinElement.getElementsByTagName("JoinDomain");
-                                Element joinDomainElement = elements70.getLength() > 0 ? ((Element)elements70.item(0)) : null;
-                                if (joinDomainElement != null)
+                                NodeList elements60 = configurationSetsElement.getElementsByTagName("StaticVirtualNetworkIPAddress");
+                                Element staticVirtualNetworkIPAddressElement = elements60.getLength() > 0 ? ((Element) elements60.item(0)) : null;
+                                if (staticVirtualNetworkIPAddressElement != null)
                                 {
-                                    String joinDomainInstance;
-                                    joinDomainInstance = joinDomainElement.getTextContent();
-                                    domainJoinInstance.setDomainToJoin(joinDomainInstance);
+                                    String staticVirtualNetworkIPAddressInstance;
+                                    staticVirtualNetworkIPAddressInstance = staticVirtualNetworkIPAddressElement.getTextContent();
+                                    configurationSetInstance.setStaticVirtualNetworkIPAddress(staticVirtualNetworkIPAddressInstance);
                                 }
                                 
-                                NodeList elements71 = domainJoinElement.getElementsByTagName("MachineObjectOU");
-                                Element machineObjectOUElement = elements71.getLength() > 0 ? ((Element)elements71.item(0)) : null;
-                                if (machineObjectOUElement != null)
+                                NodeList elements61 = configurationSetsElement.getElementsByTagName("ComputerName");
+                                Element computerNameElement = elements61.getLength() > 0 ? ((Element) elements61.item(0)) : null;
+                                if (computerNameElement != null)
                                 {
-                                    String machineObjectOUInstance;
-                                    machineObjectOUInstance = machineObjectOUElement.getTextContent();
-                                    domainJoinInstance.setLdapMachineObjectOU(machineObjectOUInstance);
+                                    String computerNameInstance;
+                                    computerNameInstance = computerNameElement.getTextContent();
+                                    configurationSetInstance.setComputerName(computerNameInstance);
                                 }
                                 
-                                NodeList elements72 = domainJoinElement.getElementsByTagName("Provisioning");
-                                Element provisioningElement = elements72.getLength() > 0 ? ((Element)elements72.item(0)) : null;
-                                if (provisioningElement != null)
+                                NodeList elements62 = configurationSetsElement.getElementsByTagName("AdminPassword");
+                                Element adminPasswordElement = elements62.getLength() > 0 ? ((Element) elements62.item(0)) : null;
+                                if (adminPasswordElement != null)
                                 {
-                                    DomainJoinProvisioning provisioningInstance = new DomainJoinProvisioning();
-                                    domainJoinInstance.setProvisioning(provisioningInstance);
-                                    
-                                    NodeList elements73 = provisioningElement.getElementsByTagName("AccountData");
-                                    Element accountDataElement = elements73.getLength() > 0 ? ((Element)elements73.item(0)) : null;
-                                    if (accountDataElement != null)
-                                    {
-                                        String accountDataInstance;
-                                        accountDataInstance = accountDataElement.getTextContent();
-                                        provisioningInstance.setAccountData(accountDataInstance);
-                                    }
+                                    String adminPasswordInstance;
+                                    adminPasswordInstance = adminPasswordElement.getTextContent();
+                                    configurationSetInstance.setAdminPassword(adminPasswordInstance);
                                 }
-                            }
-                            
-                            NodeList elements74 = configurationSetsElement.getElementsByTagName("StoredCertificateSettings");
-                            Element storedCertificateSettingsSequenceElement = elements74.getLength() > 0 ? ((Element)elements74.item(0)) : null;
-                            if (storedCertificateSettingsSequenceElement != null)
-                            {
-                                for (int i8 = 0; i8 < storedCertificateSettingsSequenceElement.getElementsByTagName("CertificateSetting").getLength(); i8 = i8 + 1)
-                                {
-                                    org.w3c.dom.Element storedCertificateSettingsElement = ((org.w3c.dom.Element)storedCertificateSettingsSequenceElement.getElementsByTagName("CertificateSetting").item(i8));
-                                    StoredCertificateSettings certificateSettingInstance = new StoredCertificateSettings();
-                                    configurationSetInstance.getStoredCertificateSettings().add(certificateSettingInstance);
-                                    
-                                    NodeList elements75 = storedCertificateSettingsElement.getElementsByTagName("StoreLocation");
-                                    Element storeLocationElement = elements75.getLength() > 0 ? ((Element)elements75.item(0)) : null;
-                                    if (storeLocationElement != null)
-                                    {
-                                    }
-                                    
-                                    NodeList elements76 = storedCertificateSettingsElement.getElementsByTagName("StoreName");
-                                    Element storeNameElement = elements76.getLength() > 0 ? ((Element)elements76.item(0)) : null;
-                                    if (storeNameElement != null)
-                                    {
-                                        String storeNameInstance;
-                                        storeNameInstance = storeNameElement.getTextContent();
-                                        certificateSettingInstance.setStoreName(storeNameInstance);
-                                    }
-                                    
-                                    NodeList elements77 = storedCertificateSettingsElement.getElementsByTagName("Thumbprint");
-                                    Element thumbprintElement = elements77.getLength() > 0 ? ((Element)elements77.item(0)) : null;
-                                    if (thumbprintElement != null)
-                                    {
-                                        String thumbprintInstance;
-                                        thumbprintInstance = thumbprintElement.getTextContent();
-                                        certificateSettingInstance.setThumbprint(thumbprintInstance);
-                                    }
-                                }
-                            }
-                            
-                            NodeList elements78 = configurationSetsElement.getElementsByTagName("WinRM");
-                            Element winRMElement = elements78.getLength() > 0 ? ((Element)elements78.item(0)) : null;
-                            if (winRMElement != null)
-                            {
-                                WindowsRemoteManagementSettings winRMInstance = new WindowsRemoteManagementSettings();
-                                configurationSetInstance.setWindowsRemoteManagement(winRMInstance);
                                 
-                                NodeList elements79 = winRMElement.getElementsByTagName("Listeners");
-                                Element listenersSequenceElement = elements79.getLength() > 0 ? ((Element)elements79.item(0)) : null;
-                                if (listenersSequenceElement != null)
+                                NodeList elements63 = configurationSetsElement.getElementsByTagName("ResetPasswordOnFirstLogon");
+                                Element resetPasswordOnFirstLogonElement = elements63.getLength() > 0 ? ((Element) elements63.item(0)) : null;
+                                if (resetPasswordOnFirstLogonElement != null && (resetPasswordOnFirstLogonElement.getTextContent() != null && resetPasswordOnFirstLogonElement.getTextContent().isEmpty() != true) == false)
                                 {
-                                    for (int i9 = 0; i9 < listenersSequenceElement.getElementsByTagName("Listener").getLength(); i9 = i9 + 1)
+                                    boolean resetPasswordOnFirstLogonInstance;
+                                    resetPasswordOnFirstLogonInstance = Boolean.parseBoolean(resetPasswordOnFirstLogonElement.getTextContent());
+                                    configurationSetInstance.setResetPasswordOnFirstLogon(resetPasswordOnFirstLogonInstance);
+                                }
+                                
+                                NodeList elements64 = configurationSetsElement.getElementsByTagName("EnableAutomaticUpdates");
+                                Element enableAutomaticUpdatesElement = elements64.getLength() > 0 ? ((Element) elements64.item(0)) : null;
+                                if (enableAutomaticUpdatesElement != null && (enableAutomaticUpdatesElement.getTextContent() != null && enableAutomaticUpdatesElement.getTextContent().isEmpty() != true) == false)
+                                {
+                                    boolean enableAutomaticUpdatesInstance;
+                                    enableAutomaticUpdatesInstance = Boolean.parseBoolean(enableAutomaticUpdatesElement.getTextContent());
+                                    configurationSetInstance.setEnableAutomaticUpdates(enableAutomaticUpdatesInstance);
+                                }
+                                
+                                NodeList elements65 = configurationSetsElement.getElementsByTagName("TimeZone");
+                                Element timeZoneElement = elements65.getLength() > 0 ? ((Element) elements65.item(0)) : null;
+                                if (timeZoneElement != null)
+                                {
+                                    String timeZoneInstance;
+                                    timeZoneInstance = timeZoneElement.getTextContent();
+                                    configurationSetInstance.setTimeZone(timeZoneInstance);
+                                }
+                                
+                                NodeList elements66 = configurationSetsElement.getElementsByTagName("DomainJoin");
+                                Element domainJoinElement = elements66.getLength() > 0 ? ((Element) elements66.item(0)) : null;
+                                if (domainJoinElement != null)
+                                {
+                                    DomainJoinSettings domainJoinInstance = new DomainJoinSettings();
+                                    configurationSetInstance.setDomainJoin(domainJoinInstance);
+                                    
+                                    NodeList elements67 = domainJoinElement.getElementsByTagName("Credentials");
+                                    Element credentialsElement = elements67.getLength() > 0 ? ((Element) elements67.item(0)) : null;
+                                    if (credentialsElement != null)
                                     {
-                                        org.w3c.dom.Element listenersElement = ((org.w3c.dom.Element)listenersSequenceElement.getElementsByTagName("Listener").item(i9));
-                                        WindowsRemoteManagementListener listenerInstance = new WindowsRemoteManagementListener();
-                                        winRMInstance.getListeners().add(listenerInstance);
+                                        DomainJoinCredentials credentialsInstance = new DomainJoinCredentials();
+                                        domainJoinInstance.setCredentials(credentialsInstance);
                                         
-                                        NodeList elements80 = listenersElement.getElementsByTagName("Protocol");
-                                        Element protocolElement4 = elements80.getLength() > 0 ? ((Element)elements80.item(0)) : null;
-                                        if (protocolElement4 != null)
+                                        NodeList elements68 = credentialsElement.getElementsByTagName("Domain");
+                                        Element domainElement = elements68.getLength() > 0 ? ((Element) elements68.item(0)) : null;
+                                        if (domainElement != null)
                                         {
-                                            VirtualMachineWindowsRemoteManagementListenerType protocolInstance4;
-                                            protocolInstance4 = VirtualMachineWindowsRemoteManagementListenerType.valueOf(protocolElement4.getTextContent());
-                                            listenerInstance.setListenerType(protocolInstance4);
+                                            String domainInstance;
+                                            domainInstance = domainElement.getTextContent();
+                                            credentialsInstance.setDomain(domainInstance);
                                         }
                                         
-                                        NodeList elements81 = listenersElement.getElementsByTagName("CertificateThumbprint");
-                                        Element certificateThumbprintElement = elements81.getLength() > 0 ? ((Element)elements81.item(0)) : null;
-                                        if (certificateThumbprintElement != null)
+                                        NodeList elements69 = credentialsElement.getElementsByTagName("Username");
+                                        Element usernameElement = elements69.getLength() > 0 ? ((Element) elements69.item(0)) : null;
+                                        if (usernameElement != null)
                                         {
-                                            String certificateThumbprintInstance;
-                                            certificateThumbprintInstance = certificateThumbprintElement.getTextContent();
-                                            listenerInstance.setCertificateThumbprint(certificateThumbprintInstance);
+                                            String usernameInstance;
+                                            usernameInstance = usernameElement.getTextContent();
+                                            credentialsInstance.setUserName(usernameInstance);
+                                        }
+                                        
+                                        NodeList elements70 = credentialsElement.getElementsByTagName("Password");
+                                        Element passwordElement = elements70.getLength() > 0 ? ((Element) elements70.item(0)) : null;
+                                        if (passwordElement != null)
+                                        {
+                                            String passwordInstance;
+                                            passwordInstance = passwordElement.getTextContent();
+                                            credentialsInstance.setPassword(passwordInstance);
                                         }
                                     }
-                                }
-                            }
-                            
-                            NodeList elements82 = configurationSetsElement.getElementsByTagName("AdminUsername");
-                            Element adminUsernameElement = elements82.getLength() > 0 ? ((Element)elements82.item(0)) : null;
-                            if (adminUsernameElement != null)
-                            {
-                                String adminUsernameInstance;
-                                adminUsernameInstance = adminUsernameElement.getTextContent();
-                                configurationSetInstance.setAdminUserName(adminUsernameInstance);
-                            }
-                            
-                            NodeList elements83 = configurationSetsElement.getElementsByTagName("HostName");
-                            Element hostNameElement2 = elements83.getLength() > 0 ? ((Element)elements83.item(0)) : null;
-                            if (hostNameElement2 != null)
-                            {
-                                String hostNameInstance2;
-                                hostNameInstance2 = hostNameElement2.getTextContent();
-                                configurationSetInstance.setHostName(hostNameInstance2);
-                            }
-                            
-                            NodeList elements84 = configurationSetsElement.getElementsByTagName("UserName");
-                            Element userNameElement = elements84.getLength() > 0 ? ((Element)elements84.item(0)) : null;
-                            if (userNameElement != null)
-                            {
-                                String userNameInstance;
-                                userNameInstance = userNameElement.getTextContent();
-                                configurationSetInstance.setUserName(userNameInstance);
-                            }
-                            
-                            NodeList elements85 = configurationSetsElement.getElementsByTagName("UserPassword");
-                            Element userPasswordElement = elements85.getLength() > 0 ? ((Element)elements85.item(0)) : null;
-                            if (userPasswordElement != null)
-                            {
-                                String userPasswordInstance;
-                                userPasswordInstance = userPasswordElement.getTextContent();
-                                configurationSetInstance.setUserPassword(userPasswordInstance);
-                            }
-                            
-                            NodeList elements86 = configurationSetsElement.getElementsByTagName("DisableSshPasswordAuthentication");
-                            Element disableSshPasswordAuthenticationElement = elements86.getLength() > 0 ? ((Element)elements86.item(0)) : null;
-                            if (disableSshPasswordAuthenticationElement != null && (disableSshPasswordAuthenticationElement.getTextContent() != null && disableSshPasswordAuthenticationElement.getTextContent().isEmpty() != true) == false)
-                            {
-                                boolean disableSshPasswordAuthenticationInstance;
-                                disableSshPasswordAuthenticationInstance = Boolean.parseBoolean(disableSshPasswordAuthenticationElement.getTextContent());
-                                configurationSetInstance.setDisableSshPasswordAuthentication(disableSshPasswordAuthenticationInstance);
-                            }
-                            
-                            NodeList elements87 = configurationSetsElement.getElementsByTagName("SSH");
-                            Element sSHElement = elements87.getLength() > 0 ? ((Element)elements87.item(0)) : null;
-                            if (sSHElement != null)
-                            {
-                                SshSettings sSHInstance = new SshSettings();
-                                configurationSetInstance.setSshSettings(sSHInstance);
-                                
-                                NodeList elements88 = sSHElement.getElementsByTagName("PublicKeys");
-                                Element publicKeysSequenceElement = elements88.getLength() > 0 ? ((Element)elements88.item(0)) : null;
-                                if (publicKeysSequenceElement != null)
-                                {
-                                    for (int i10 = 0; i10 < publicKeysSequenceElement.getElementsByTagName("PublicKey").getLength(); i10 = i10 + 1)
+                                    
+                                    NodeList elements71 = domainJoinElement.getElementsByTagName("JoinDomain");
+                                    Element joinDomainElement = elements71.getLength() > 0 ? ((Element) elements71.item(0)) : null;
+                                    if (joinDomainElement != null)
                                     {
-                                        org.w3c.dom.Element publicKeysElement = ((org.w3c.dom.Element)publicKeysSequenceElement.getElementsByTagName("PublicKey").item(i10));
-                                        SshSettingPublicKey publicKeyInstance = new SshSettingPublicKey();
-                                        sSHInstance.getPublicKeys().add(publicKeyInstance);
+                                        String joinDomainInstance;
+                                        joinDomainInstance = joinDomainElement.getTextContent();
+                                        domainJoinInstance.setDomainToJoin(joinDomainInstance);
+                                    }
+                                    
+                                    NodeList elements72 = domainJoinElement.getElementsByTagName("MachineObjectOU");
+                                    Element machineObjectOUElement = elements72.getLength() > 0 ? ((Element) elements72.item(0)) : null;
+                                    if (machineObjectOUElement != null)
+                                    {
+                                        String machineObjectOUInstance;
+                                        machineObjectOUInstance = machineObjectOUElement.getTextContent();
+                                        domainJoinInstance.setLdapMachineObjectOU(machineObjectOUInstance);
+                                    }
+                                    
+                                    NodeList elements73 = domainJoinElement.getElementsByTagName("Provisioning");
+                                    Element provisioningElement = elements73.getLength() > 0 ? ((Element) elements73.item(0)) : null;
+                                    if (provisioningElement != null)
+                                    {
+                                        DomainJoinProvisioning provisioningInstance = new DomainJoinProvisioning();
+                                        domainJoinInstance.setProvisioning(provisioningInstance);
                                         
-                                        NodeList elements89 = publicKeysElement.getElementsByTagName("Fingerprint");
-                                        Element fingerprintElement = elements89.getLength() > 0 ? ((Element)elements89.item(0)) : null;
-                                        if (fingerprintElement != null)
+                                        NodeList elements74 = provisioningElement.getElementsByTagName("AccountData");
+                                        Element accountDataElement = elements74.getLength() > 0 ? ((Element) elements74.item(0)) : null;
+                                        if (accountDataElement != null)
                                         {
-                                            String fingerprintInstance;
-                                            fingerprintInstance = fingerprintElement.getTextContent();
-                                            publicKeyInstance.setFingerprint(fingerprintInstance);
-                                        }
-                                        
-                                        NodeList elements90 = publicKeysElement.getElementsByTagName("Path");
-                                        Element pathElement2 = elements90.getLength() > 0 ? ((Element)elements90.item(0)) : null;
-                                        if (pathElement2 != null)
-                                        {
-                                            String pathInstance2;
-                                            pathInstance2 = pathElement2.getTextContent();
-                                            publicKeyInstance.setPath(pathInstance2);
+                                            String accountDataInstance;
+                                            accountDataInstance = accountDataElement.getTextContent();
+                                            provisioningInstance.setAccountData(accountDataInstance);
                                         }
                                     }
                                 }
                                 
-                                NodeList elements91 = sSHElement.getElementsByTagName("KeyPairs");
-                                Element keyPairsSequenceElement = elements91.getLength() > 0 ? ((Element)elements91.item(0)) : null;
-                                if (keyPairsSequenceElement != null)
+                                NodeList elements75 = configurationSetsElement.getElementsByTagName("StoredCertificateSettings");
+                                Element storedCertificateSettingsSequenceElement = elements75.getLength() > 0 ? ((Element) elements75.item(0)) : null;
+                                if (storedCertificateSettingsSequenceElement != null)
                                 {
-                                    for (int i11 = 0; i11 < keyPairsSequenceElement.getElementsByTagName("KeyPair").getLength(); i11 = i11 + 1)
+                                    for (int i8 = 0; i8 < storedCertificateSettingsSequenceElement.getElementsByTagName("CertificateSetting").getLength(); i8 = i8 + 1)
                                     {
-                                        org.w3c.dom.Element keyPairsElement = ((org.w3c.dom.Element)keyPairsSequenceElement.getElementsByTagName("KeyPair").item(i11));
-                                        SshSettingKeyPair keyPairInstance = new SshSettingKeyPair();
-                                        sSHInstance.getKeyPairs().add(keyPairInstance);
+                                        org.w3c.dom.Element storedCertificateSettingsElement = ((org.w3c.dom.Element) storedCertificateSettingsSequenceElement.getElementsByTagName("CertificateSetting").item(i8));
+                                        StoredCertificateSettings certificateSettingInstance = new StoredCertificateSettings();
+                                        configurationSetInstance.getStoredCertificateSettings().add(certificateSettingInstance);
                                         
-                                        NodeList elements92 = keyPairsElement.getElementsByTagName("Fingerprint");
-                                        Element fingerprintElement2 = elements92.getLength() > 0 ? ((Element)elements92.item(0)) : null;
-                                        if (fingerprintElement2 != null)
+                                        NodeList elements76 = storedCertificateSettingsElement.getElementsByTagName("StoreLocation");
+                                        Element storeLocationElement = elements76.getLength() > 0 ? ((Element) elements76.item(0)) : null;
+                                        if (storeLocationElement != null)
                                         {
-                                            String fingerprintInstance2;
-                                            fingerprintInstance2 = fingerprintElement2.getTextContent();
-                                            keyPairInstance.setFingerprint(fingerprintInstance2);
                                         }
                                         
-                                        NodeList elements93 = keyPairsElement.getElementsByTagName("Path");
-                                        Element pathElement3 = elements93.getLength() > 0 ? ((Element)elements93.item(0)) : null;
-                                        if (pathElement3 != null)
+                                        NodeList elements77 = storedCertificateSettingsElement.getElementsByTagName("StoreName");
+                                        Element storeNameElement = elements77.getLength() > 0 ? ((Element) elements77.item(0)) : null;
+                                        if (storeNameElement != null)
                                         {
-                                            String pathInstance3;
-                                            pathInstance3 = pathElement3.getTextContent();
-                                            keyPairInstance.setPath(pathInstance3);
+                                            String storeNameInstance;
+                                            storeNameInstance = storeNameElement.getTextContent();
+                                            certificateSettingInstance.setStoreName(storeNameInstance);
+                                        }
+                                        
+                                        NodeList elements78 = storedCertificateSettingsElement.getElementsByTagName("Thumbprint");
+                                        Element thumbprintElement = elements78.getLength() > 0 ? ((Element) elements78.item(0)) : null;
+                                        if (thumbprintElement != null)
+                                        {
+                                            String thumbprintInstance;
+                                            thumbprintInstance = thumbprintElement.getTextContent();
+                                            certificateSettingInstance.setThumbprint(thumbprintInstance);
+                                        }
+                                    }
+                                }
+                                
+                                NodeList elements79 = configurationSetsElement.getElementsByTagName("WinRM");
+                                Element winRMElement = elements79.getLength() > 0 ? ((Element) elements79.item(0)) : null;
+                                if (winRMElement != null)
+                                {
+                                    WindowsRemoteManagementSettings winRMInstance = new WindowsRemoteManagementSettings();
+                                    configurationSetInstance.setWindowsRemoteManagement(winRMInstance);
+                                    
+                                    NodeList elements80 = winRMElement.getElementsByTagName("Listeners");
+                                    Element listenersSequenceElement = elements80.getLength() > 0 ? ((Element) elements80.item(0)) : null;
+                                    if (listenersSequenceElement != null)
+                                    {
+                                        for (int i9 = 0; i9 < listenersSequenceElement.getElementsByTagName("Listener").getLength(); i9 = i9 + 1)
+                                        {
+                                            org.w3c.dom.Element listenersElement = ((org.w3c.dom.Element) listenersSequenceElement.getElementsByTagName("Listener").item(i9));
+                                            WindowsRemoteManagementListener listenerInstance = new WindowsRemoteManagementListener();
+                                            winRMInstance.getListeners().add(listenerInstance);
+                                            
+                                            NodeList elements81 = listenersElement.getElementsByTagName("Protocol");
+                                            Element protocolElement4 = elements81.getLength() > 0 ? ((Element) elements81.item(0)) : null;
+                                            if (protocolElement4 != null)
+                                            {
+                                                VirtualMachineWindowsRemoteManagementListenerType protocolInstance4;
+                                                protocolInstance4 = VirtualMachineWindowsRemoteManagementListenerType.valueOf(protocolElement4.getTextContent());
+                                                listenerInstance.setListenerType(protocolInstance4);
+                                            }
+                                            
+                                            NodeList elements82 = listenersElement.getElementsByTagName("CertificateThumbprint");
+                                            Element certificateThumbprintElement = elements82.getLength() > 0 ? ((Element) elements82.item(0)) : null;
+                                            if (certificateThumbprintElement != null)
+                                            {
+                                                String certificateThumbprintInstance;
+                                                certificateThumbprintInstance = certificateThumbprintElement.getTextContent();
+                                                listenerInstance.setCertificateThumbprint(certificateThumbprintInstance);
+                                            }
+                                        }
+                                    }
+                                }
+                                
+                                NodeList elements83 = configurationSetsElement.getElementsByTagName("AdminUsername");
+                                Element adminUsernameElement = elements83.getLength() > 0 ? ((Element) elements83.item(0)) : null;
+                                if (adminUsernameElement != null)
+                                {
+                                    String adminUsernameInstance;
+                                    adminUsernameInstance = adminUsernameElement.getTextContent();
+                                    configurationSetInstance.setAdminUserName(adminUsernameInstance);
+                                }
+                                
+                                NodeList elements84 = configurationSetsElement.getElementsByTagName("HostName");
+                                Element hostNameElement2 = elements84.getLength() > 0 ? ((Element) elements84.item(0)) : null;
+                                if (hostNameElement2 != null)
+                                {
+                                    String hostNameInstance2;
+                                    hostNameInstance2 = hostNameElement2.getTextContent();
+                                    configurationSetInstance.setHostName(hostNameInstance2);
+                                }
+                                
+                                NodeList elements85 = configurationSetsElement.getElementsByTagName("UserName");
+                                Element userNameElement = elements85.getLength() > 0 ? ((Element) elements85.item(0)) : null;
+                                if (userNameElement != null)
+                                {
+                                    String userNameInstance;
+                                    userNameInstance = userNameElement.getTextContent();
+                                    configurationSetInstance.setUserName(userNameInstance);
+                                }
+                                
+                                NodeList elements86 = configurationSetsElement.getElementsByTagName("UserPassword");
+                                Element userPasswordElement = elements86.getLength() > 0 ? ((Element) elements86.item(0)) : null;
+                                if (userPasswordElement != null)
+                                {
+                                    String userPasswordInstance;
+                                    userPasswordInstance = userPasswordElement.getTextContent();
+                                    configurationSetInstance.setUserPassword(userPasswordInstance);
+                                }
+                                
+                                NodeList elements87 = configurationSetsElement.getElementsByTagName("DisableSshPasswordAuthentication");
+                                Element disableSshPasswordAuthenticationElement = elements87.getLength() > 0 ? ((Element) elements87.item(0)) : null;
+                                if (disableSshPasswordAuthenticationElement != null && (disableSshPasswordAuthenticationElement.getTextContent() != null && disableSshPasswordAuthenticationElement.getTextContent().isEmpty() != true) == false)
+                                {
+                                    boolean disableSshPasswordAuthenticationInstance;
+                                    disableSshPasswordAuthenticationInstance = Boolean.parseBoolean(disableSshPasswordAuthenticationElement.getTextContent());
+                                    configurationSetInstance.setDisableSshPasswordAuthentication(disableSshPasswordAuthenticationInstance);
+                                }
+                                
+                                NodeList elements88 = configurationSetsElement.getElementsByTagName("SSH");
+                                Element sSHElement = elements88.getLength() > 0 ? ((Element) elements88.item(0)) : null;
+                                if (sSHElement != null)
+                                {
+                                    SshSettings sSHInstance = new SshSettings();
+                                    configurationSetInstance.setSshSettings(sSHInstance);
+                                    
+                                    NodeList elements89 = sSHElement.getElementsByTagName("PublicKeys");
+                                    Element publicKeysSequenceElement = elements89.getLength() > 0 ? ((Element) elements89.item(0)) : null;
+                                    if (publicKeysSequenceElement != null)
+                                    {
+                                        for (int i10 = 0; i10 < publicKeysSequenceElement.getElementsByTagName("PublicKey").getLength(); i10 = i10 + 1)
+                                        {
+                                            org.w3c.dom.Element publicKeysElement = ((org.w3c.dom.Element) publicKeysSequenceElement.getElementsByTagName("PublicKey").item(i10));
+                                            SshSettingPublicKey publicKeyInstance = new SshSettingPublicKey();
+                                            sSHInstance.getPublicKeys().add(publicKeyInstance);
+                                            
+                                            NodeList elements90 = publicKeysElement.getElementsByTagName("Fingerprint");
+                                            Element fingerprintElement = elements90.getLength() > 0 ? ((Element) elements90.item(0)) : null;
+                                            if (fingerprintElement != null)
+                                            {
+                                                String fingerprintInstance;
+                                                fingerprintInstance = fingerprintElement.getTextContent();
+                                                publicKeyInstance.setFingerprint(fingerprintInstance);
+                                            }
+                                            
+                                            NodeList elements91 = publicKeysElement.getElementsByTagName("Path");
+                                            Element pathElement2 = elements91.getLength() > 0 ? ((Element) elements91.item(0)) : null;
+                                            if (pathElement2 != null)
+                                            {
+                                                String pathInstance2;
+                                                pathInstance2 = pathElement2.getTextContent();
+                                                publicKeyInstance.setPath(pathInstance2);
+                                            }
+                                        }
+                                    }
+                                    
+                                    NodeList elements92 = sSHElement.getElementsByTagName("KeyPairs");
+                                    Element keyPairsSequenceElement = elements92.getLength() > 0 ? ((Element) elements92.item(0)) : null;
+                                    if (keyPairsSequenceElement != null)
+                                    {
+                                        for (int i11 = 0; i11 < keyPairsSequenceElement.getElementsByTagName("KeyPair").getLength(); i11 = i11 + 1)
+                                        {
+                                            org.w3c.dom.Element keyPairsElement = ((org.w3c.dom.Element) keyPairsSequenceElement.getElementsByTagName("KeyPair").item(i11));
+                                            SshSettingKeyPair keyPairInstance = new SshSettingKeyPair();
+                                            sSHInstance.getKeyPairs().add(keyPairInstance);
+                                            
+                                            NodeList elements93 = keyPairsElement.getElementsByTagName("Fingerprint");
+                                            Element fingerprintElement2 = elements93.getLength() > 0 ? ((Element) elements93.item(0)) : null;
+                                            if (fingerprintElement2 != null)
+                                            {
+                                                String fingerprintInstance2;
+                                                fingerprintInstance2 = fingerprintElement2.getTextContent();
+                                                keyPairInstance.setFingerprint(fingerprintInstance2);
+                                            }
+                                            
+                                            NodeList elements94 = keyPairsElement.getElementsByTagName("Path");
+                                            Element pathElement3 = elements94.getLength() > 0 ? ((Element) elements94.item(0)) : null;
+                                            if (pathElement3 != null)
+                                            {
+                                                String pathInstance3;
+                                                pathInstance3 = pathElement3.getTextContent();
+                                                keyPairInstance.setPath(pathInstance3);
+                                            }
                                         }
                                     }
                                 }
                             }
                         }
-                    }
-                    
-                    NodeList elements94 = roleListElement.getElementsByTagName("AvailabilitySetName");
-                    Element availabilitySetNameElement = elements94.getLength() > 0 ? ((Element)elements94.item(0)) : null;
-                    if (availabilitySetNameElement != null)
-                    {
-                        String availabilitySetNameInstance;
-                        availabilitySetNameInstance = availabilitySetNameElement.getTextContent();
-                        roleInstance.setAvailabilitySetName(availabilitySetNameInstance);
-                    }
-                    
-                    NodeList elements95 = roleListElement.getElementsByTagName("DataVirtualHardDisks");
-                    Element dataVirtualHardDisksSequenceElement = elements95.getLength() > 0 ? ((Element)elements95.item(0)) : null;
-                    if (dataVirtualHardDisksSequenceElement != null)
-                    {
-                        for (int i12 = 0; i12 < dataVirtualHardDisksSequenceElement.getElementsByTagName("DataVirtualHardDisk").getLength(); i12 = i12 + 1)
+                        
+                        NodeList elements95 = roleListElement.getElementsByTagName("AvailabilitySetName");
+                        Element availabilitySetNameElement = elements95.getLength() > 0 ? ((Element) elements95.item(0)) : null;
+                        if (availabilitySetNameElement != null)
                         {
-                            org.w3c.dom.Element dataVirtualHardDisksElement = ((org.w3c.dom.Element)dataVirtualHardDisksSequenceElement.getElementsByTagName("DataVirtualHardDisk").item(i12));
-                            DataVirtualHardDisk dataVirtualHardDiskInstance = new DataVirtualHardDisk();
-                            roleInstance.getDataVirtualHardDisks().add(dataVirtualHardDiskInstance);
-                            
-                            NodeList elements96 = dataVirtualHardDisksElement.getElementsByTagName("HostCaching");
-                            Element hostCachingElement = elements96.getLength() > 0 ? ((Element)elements96.item(0)) : null;
-                            if (hostCachingElement != null && (hostCachingElement.getTextContent() != null && hostCachingElement.getTextContent().isEmpty() != true) == false)
+                            String availabilitySetNameInstance;
+                            availabilitySetNameInstance = availabilitySetNameElement.getTextContent();
+                            roleInstance.setAvailabilitySetName(availabilitySetNameInstance);
+                        }
+                        
+                        NodeList elements96 = roleListElement.getElementsByTagName("DataVirtualHardDisks");
+                        Element dataVirtualHardDisksSequenceElement = elements96.getLength() > 0 ? ((Element) elements96.item(0)) : null;
+                        if (dataVirtualHardDisksSequenceElement != null)
+                        {
+                            for (int i12 = 0; i12 < dataVirtualHardDisksSequenceElement.getElementsByTagName("DataVirtualHardDisk").getLength(); i12 = i12 + 1)
                             {
-                                VirtualHardDiskHostCaching hostCachingInstance;
-                                hostCachingInstance = VirtualHardDiskHostCaching.valueOf(hostCachingElement.getTextContent());
-                                dataVirtualHardDiskInstance.setHostCaching(hostCachingInstance);
-                            }
-                            
-                            NodeList elements97 = dataVirtualHardDisksElement.getElementsByTagName("DiskLabel");
-                            Element diskLabelElement = elements97.getLength() > 0 ? ((Element)elements97.item(0)) : null;
-                            if (diskLabelElement != null)
-                            {
-                                String diskLabelInstance;
-                                diskLabelInstance = diskLabelElement.getTextContent();
-                                dataVirtualHardDiskInstance.setDiskLabel(diskLabelInstance);
-                            }
-                            
-                            NodeList elements98 = dataVirtualHardDisksElement.getElementsByTagName("DiskName");
-                            Element diskNameElement = elements98.getLength() > 0 ? ((Element)elements98.item(0)) : null;
-                            if (diskNameElement != null)
-                            {
-                                String diskNameInstance;
-                                diskNameInstance = diskNameElement.getTextContent();
-                                dataVirtualHardDiskInstance.setDiskName(diskNameInstance);
-                            }
-                            
-                            NodeList elements99 = dataVirtualHardDisksElement.getElementsByTagName("Lun");
-                            Element lunElement = elements99.getLength() > 0 ? ((Element)elements99.item(0)) : null;
-                            if (lunElement != null && (lunElement.getTextContent() != null && lunElement.getTextContent().isEmpty() != true) == false)
-                            {
-                                int lunInstance;
-                                lunInstance = Integer.parseInt(lunElement.getTextContent());
-                                dataVirtualHardDiskInstance.setLogicalUnitNumber(lunInstance);
-                            }
-                            
-                            NodeList elements100 = dataVirtualHardDisksElement.getElementsByTagName("LogicalDiskSizeInGB");
-                            Element logicalDiskSizeInGBElement = elements100.getLength() > 0 ? ((Element)elements100.item(0)) : null;
-                            if (logicalDiskSizeInGBElement != null)
-                            {
-                                int logicalDiskSizeInGBInstance;
-                                logicalDiskSizeInGBInstance = Integer.parseInt(logicalDiskSizeInGBElement.getTextContent());
-                                dataVirtualHardDiskInstance.setLogicalDiskSizeInGB(logicalDiskSizeInGBInstance);
-                            }
-                            
-                            NodeList elements101 = dataVirtualHardDisksElement.getElementsByTagName("MediaLink");
-                            Element mediaLinkElement = elements101.getLength() > 0 ? ((Element)elements101.item(0)) : null;
-                            if (mediaLinkElement != null)
-                            {
-                                URI mediaLinkInstance;
-                                mediaLinkInstance = new URI(mediaLinkElement.getTextContent());
-                                dataVirtualHardDiskInstance.setMediaLink(mediaLinkInstance);
-                            }
-                        }
-                    }
-                    
-                    NodeList elements102 = roleListElement.getElementsByTagName("Label");
-                    Element labelElement2 = elements102.getLength() > 0 ? ((Element)elements102.item(0)) : null;
-                    if (labelElement2 != null)
-                    {
-                        String labelInstance2;
-                        labelInstance2 = labelElement2.getTextContent();
-                        roleInstance.setLabel(labelInstance2);
-                    }
-                    
-                    NodeList elements103 = roleListElement.getElementsByTagName("OSVirtualHardDisk");
-                    Element oSVirtualHardDiskElement = elements103.getLength() > 0 ? ((Element)elements103.item(0)) : null;
-                    if (oSVirtualHardDiskElement != null)
-                    {
-                        OSVirtualHardDisk oSVirtualHardDiskInstance = new OSVirtualHardDisk();
-                        roleInstance.setOSVirtualHardDisk(oSVirtualHardDiskInstance);
-                        
-                        NodeList elements104 = oSVirtualHardDiskElement.getElementsByTagName("HostCaching");
-                        Element hostCachingElement2 = elements104.getLength() > 0 ? ((Element)elements104.item(0)) : null;
-                        if (hostCachingElement2 != null && (hostCachingElement2.getTextContent() != null && hostCachingElement2.getTextContent().isEmpty() != true) == false)
-                        {
-                            VirtualHardDiskHostCaching hostCachingInstance2;
-                            hostCachingInstance2 = VirtualHardDiskHostCaching.valueOf(hostCachingElement2.getTextContent());
-                            oSVirtualHardDiskInstance.setHostCaching(hostCachingInstance2);
-                        }
-                        
-                        NodeList elements105 = oSVirtualHardDiskElement.getElementsByTagName("DiskLabel");
-                        Element diskLabelElement2 = elements105.getLength() > 0 ? ((Element)elements105.item(0)) : null;
-                        if (diskLabelElement2 != null)
-                        {
-                            String diskLabelInstance2;
-                            diskLabelInstance2 = diskLabelElement2.getTextContent();
-                            oSVirtualHardDiskInstance.setDiskLabel(diskLabelInstance2);
-                        }
-                        
-                        NodeList elements106 = oSVirtualHardDiskElement.getElementsByTagName("DiskName");
-                        Element diskNameElement2 = elements106.getLength() > 0 ? ((Element)elements106.item(0)) : null;
-                        if (diskNameElement2 != null)
-                        {
-                            String diskNameInstance2;
-                            diskNameInstance2 = diskNameElement2.getTextContent();
-                            oSVirtualHardDiskInstance.setDiskName(diskNameInstance2);
-                        }
-                        
-                        NodeList elements107 = oSVirtualHardDiskElement.getElementsByTagName("MediaLink");
-                        Element mediaLinkElement2 = elements107.getLength() > 0 ? ((Element)elements107.item(0)) : null;
-                        if (mediaLinkElement2 != null)
-                        {
-                            URI mediaLinkInstance2;
-                            mediaLinkInstance2 = new URI(mediaLinkElement2.getTextContent());
-                            oSVirtualHardDiskInstance.setMediaLink(mediaLinkInstance2);
-                        }
-                        
-                        NodeList elements108 = oSVirtualHardDiskElement.getElementsByTagName("SourceImageName");
-                        Element sourceImageNameElement = elements108.getLength() > 0 ? ((Element)elements108.item(0)) : null;
-                        if (sourceImageNameElement != null)
-                        {
-                            String sourceImageNameInstance;
-                            sourceImageNameInstance = sourceImageNameElement.getTextContent();
-                            oSVirtualHardDiskInstance.setSourceImageName(sourceImageNameInstance);
-                        }
-                        
-                        NodeList elements109 = oSVirtualHardDiskElement.getElementsByTagName("OS");
-                        Element osElement = elements109.getLength() > 0 ? ((Element)elements109.item(0)) : null;
-                        if (osElement != null)
-                        {
-                            String osInstance;
-                            osInstance = osElement.getTextContent();
-                            oSVirtualHardDiskInstance.setOperatingSystem(osInstance);
-                        }
-                    }
-                    
-                    NodeList elements110 = roleListElement.getElementsByTagName("RoleSize");
-                    Element roleSizeElement = elements110.getLength() > 0 ? ((Element)elements110.item(0)) : null;
-                    if (roleSizeElement != null && (roleSizeElement.getTextContent() != null && roleSizeElement.getTextContent().isEmpty() != true) == false)
-                    {
-                        VirtualMachineRoleSize roleSizeInstance;
-                        roleSizeInstance = VirtualMachineRoleSize.valueOf(roleSizeElement.getTextContent());
-                        roleInstance.setRoleSize(roleSizeInstance);
-                    }
-                    
-                    NodeList elements111 = roleListElement.getElementsByTagName("DefaultWinRmCertificateThumbprint");
-                    Element defaultWinRmCertificateThumbprintElement = elements111.getLength() > 0 ? ((Element)elements111.item(0)) : null;
-                    if (defaultWinRmCertificateThumbprintElement != null)
-                    {
-                        String defaultWinRmCertificateThumbprintInstance;
-                        defaultWinRmCertificateThumbprintInstance = defaultWinRmCertificateThumbprintElement.getTextContent();
-                        roleInstance.setDefaultWinRmCertificateThumbprint(defaultWinRmCertificateThumbprintInstance);
-                    }
-                }
-            }
-            
-            NodeList elements112 = deploymentElement.getElementsByTagName("SdkVersion");
-            Element sdkVersionElement = elements112.getLength() > 0 ? ((Element)elements112.item(0)) : null;
-            if (sdkVersionElement != null)
-            {
-                String sdkVersionInstance;
-                sdkVersionInstance = sdkVersionElement.getTextContent();
-                result.setSdkVersion(sdkVersionInstance);
-            }
-            
-            NodeList elements113 = deploymentElement.getElementsByTagName("Locked");
-            Element lockedElement = elements113.getLength() > 0 ? ((Element)elements113.item(0)) : null;
-            if (lockedElement != null)
-            {
-                boolean lockedInstance;
-                lockedInstance = Boolean.parseBoolean(lockedElement.getTextContent());
-                result.setLocked(lockedInstance);
-            }
-            
-            NodeList elements114 = deploymentElement.getElementsByTagName("RollbackAllowed");
-            Element rollbackAllowedElement = elements114.getLength() > 0 ? ((Element)elements114.item(0)) : null;
-            if (rollbackAllowedElement != null)
-            {
-                String rollbackAllowedInstance;
-                rollbackAllowedInstance = rollbackAllowedElement.getTextContent();
-                result.setRollbackAllowed(rollbackAllowedInstance);
-            }
-            
-            NodeList elements115 = deploymentElement.getElementsByTagName("CreatedTime");
-            Element createdTimeElement = elements115.getLength() > 0 ? ((Element)elements115.item(0)) : null;
-            if (createdTimeElement != null)
-            {
-                Calendar createdTimeInstance;
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(simpleDateFormat.parse(createdTimeElement.getTextContent()));
-                createdTimeInstance = calendar;
-                result.setCreatedTime(createdTimeInstance);
-            }
-            
-            NodeList elements116 = deploymentElement.getElementsByTagName("LastModifiedTime");
-            Element lastModifiedTimeElement = elements116.getLength() > 0 ? ((Element)elements116.item(0)) : null;
-            if (lastModifiedTimeElement != null)
-            {
-                Calendar lastModifiedTimeInstance;
-                SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                Calendar calendar2 = Calendar.getInstance();
-                calendar2.setTime(simpleDateFormat2.parse(lastModifiedTimeElement.getTextContent()));
-                lastModifiedTimeInstance = calendar2;
-                result.setLastModifiedTime(lastModifiedTimeInstance);
-            }
-            
-            NodeList elements117 = deploymentElement.getElementsByTagName("VirtualNetworkName");
-            Element virtualNetworkNameElement = elements117.getLength() > 0 ? ((Element)elements117.item(0)) : null;
-            if (virtualNetworkNameElement != null)
-            {
-                String virtualNetworkNameInstance;
-                virtualNetworkNameInstance = virtualNetworkNameElement.getTextContent();
-                result.setVirtualNetworkName(virtualNetworkNameInstance);
-            }
-            
-            NodeList elements118 = deploymentElement.getElementsByTagName("ExtendedProperties");
-            Element extendedPropertiesSequenceElement = elements118.getLength() > 0 ? ((Element)elements118.item(0)) : null;
-            if (extendedPropertiesSequenceElement != null)
-            {
-                for (int i13 = 0; i13 < extendedPropertiesSequenceElement.getElementsByTagName("ExtendedProperty").getLength(); i13 = i13 + 1)
-                {
-                    org.w3c.dom.Element extendedPropertiesElement = ((org.w3c.dom.Element)extendedPropertiesSequenceElement.getElementsByTagName("ExtendedProperty").item(i13));
-                    NodeList elements119 = extendedPropertiesElement.getElementsByTagName("Name");
-                    String extendedPropertiesKey = elements119.getLength() > 0 ? ((org.w3c.dom.Element)elements119.item(0)).getTextContent() : null;
-                    NodeList elements120 = extendedPropertiesElement.getElementsByTagName("Value");
-                    String extendedPropertiesValue = elements120.getLength() > 0 ? ((org.w3c.dom.Element)elements120.item(0)).getTextContent() : null;
-                    result.getExtendedProperties().put(extendedPropertiesKey, extendedPropertiesValue);
-                }
-            }
-            
-            NodeList elements121 = deploymentElement.getElementsByTagName("PersistentVMDowntime");
-            Element persistentVMDowntimeElement = elements121.getLength() > 0 ? ((Element)elements121.item(0)) : null;
-            if (persistentVMDowntimeElement != null)
-            {
-                PersistentVMDowntime persistentVMDowntimeInstance = new PersistentVMDowntime();
-                result.setPersistentVMDowntime(persistentVMDowntimeInstance);
-                
-                NodeList elements122 = persistentVMDowntimeElement.getElementsByTagName("StartTime");
-                Element startTimeElement = elements122.getLength() > 0 ? ((Element)elements122.item(0)) : null;
-                if (startTimeElement != null)
-                {
-                    Calendar startTimeInstance;
-                    SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                    Calendar calendar3 = Calendar.getInstance();
-                    calendar3.setTime(simpleDateFormat3.parse(startTimeElement.getTextContent()));
-                    startTimeInstance = calendar3;
-                    persistentVMDowntimeInstance.setStartTime(startTimeInstance);
-                }
-                
-                NodeList elements123 = persistentVMDowntimeElement.getElementsByTagName("EndTime");
-                Element endTimeElement = elements123.getLength() > 0 ? ((Element)elements123.item(0)) : null;
-                if (endTimeElement != null)
-                {
-                    Calendar endTimeInstance;
-                    SimpleDateFormat simpleDateFormat4 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                    Calendar calendar4 = Calendar.getInstance();
-                    calendar4.setTime(simpleDateFormat4.parse(endTimeElement.getTextContent()));
-                    endTimeInstance = calendar4;
-                    persistentVMDowntimeInstance.setEndTime(endTimeInstance);
-                }
-                
-                NodeList elements124 = persistentVMDowntimeElement.getElementsByTagName("Status");
-                Element statusElement2 = elements124.getLength() > 0 ? ((Element)elements124.item(0)) : null;
-                if (statusElement2 != null)
-                {
-                    String statusInstance2;
-                    statusInstance2 = statusElement2.getTextContent();
-                    persistentVMDowntimeInstance.setStatus(statusInstance2);
-                }
-            }
-            
-            NodeList elements125 = deploymentElement.getElementsByTagName("VirtualIPs");
-            Element virtualIPsSequenceElement = elements125.getLength() > 0 ? ((Element)elements125.item(0)) : null;
-            if (virtualIPsSequenceElement != null)
-            {
-                for (int i14 = 0; i14 < virtualIPsSequenceElement.getElementsByTagName("VirtualIP").getLength(); i14 = i14 + 1)
-                {
-                    org.w3c.dom.Element virtualIPsElement = ((org.w3c.dom.Element)virtualIPsSequenceElement.getElementsByTagName("VirtualIP").item(i14));
-                    VirtualIPAddress virtualIPInstance = new VirtualIPAddress();
-                    result.getVirtualIPAddresses().add(virtualIPInstance);
-                    
-                    NodeList elements126 = virtualIPsElement.getElementsByTagName("Address");
-                    Element addressElement = elements126.getLength() > 0 ? ((Element)elements126.item(0)) : null;
-                    if (addressElement != null)
-                    {
-                        InetAddress addressInstance;
-                        addressInstance = InetAddress.getByName(addressElement.getTextContent());
-                        virtualIPInstance.setAddress(addressInstance);
-                    }
-                    
-                    NodeList elements127 = virtualIPsElement.getElementsByTagName("Name");
-                    Element nameElement4 = elements127.getLength() > 0 ? ((Element)elements127.item(0)) : null;
-                    if (nameElement4 != null)
-                    {
-                        String nameInstance4;
-                        nameInstance4 = nameElement4.getTextContent();
-                        virtualIPInstance.setName(nameInstance4);
-                    }
-                    
-                    NodeList elements128 = virtualIPsElement.getElementsByTagName("IsDnsProgrammed");
-                    Element isDnsProgrammedElement = elements128.getLength() > 0 ? ((Element)elements128.item(0)) : null;
-                    if (isDnsProgrammedElement != null && (isDnsProgrammedElement.getTextContent() != null && isDnsProgrammedElement.getTextContent().isEmpty() != true) == false)
-                    {
-                        boolean isDnsProgrammedInstance;
-                        isDnsProgrammedInstance = Boolean.parseBoolean(isDnsProgrammedElement.getTextContent());
-                        virtualIPInstance.setIsDnsProgrammed(isDnsProgrammedInstance);
-                    }
-                }
-            }
-            
-            NodeList elements129 = deploymentElement.getElementsByTagName("ReservedIPName");
-            Element reservedIPNameElement = elements129.getLength() > 0 ? ((Element)elements129.item(0)) : null;
-            if (reservedIPNameElement != null)
-            {
-                String reservedIPNameInstance;
-                reservedIPNameInstance = reservedIPNameElement.getTextContent();
-                result.setReservedIPName(reservedIPNameInstance);
-            }
-            
-            NodeList elements130 = deploymentElement.getElementsByTagName("Dns");
-            Element dnsElement = elements130.getLength() > 0 ? ((Element)elements130.item(0)) : null;
-            if (dnsElement != null)
-            {
-                DnsSettings dnsInstance = new DnsSettings();
-                result.setDnsSettings(dnsInstance);
-                
-                NodeList elements131 = dnsElement.getElementsByTagName("DnsServers");
-                Element dnsServersSequenceElement = elements131.getLength() > 0 ? ((Element)elements131.item(0)) : null;
-                if (dnsServersSequenceElement != null)
-                {
-                    for (int i15 = 0; i15 < dnsServersSequenceElement.getElementsByTagName("DnsServer").getLength(); i15 = i15 + 1)
-                    {
-                        org.w3c.dom.Element dnsServersElement = ((org.w3c.dom.Element)dnsServersSequenceElement.getElementsByTagName("DnsServer").item(i15));
-                        DnsServer dnsServerInstance = new DnsServer();
-                        dnsInstance.getDnsServers().add(dnsServerInstance);
-                        
-                        NodeList elements132 = dnsServersElement.getElementsByTagName("Name");
-                        Element nameElement5 = elements132.getLength() > 0 ? ((Element)elements132.item(0)) : null;
-                        if (nameElement5 != null)
-                        {
-                            String nameInstance5;
-                            nameInstance5 = nameElement5.getTextContent();
-                            dnsServerInstance.setName(nameInstance5);
-                        }
-                        
-                        NodeList elements133 = dnsServersElement.getElementsByTagName("Address");
-                        Element addressElement2 = elements133.getLength() > 0 ? ((Element)elements133.item(0)) : null;
-                        if (addressElement2 != null)
-                        {
-                            InetAddress addressInstance2;
-                            addressInstance2 = InetAddress.getByName(addressElement2.getTextContent());
-                            dnsServerInstance.setAddress(addressInstance2);
-                        }
-                    }
-                }
-            }
-            
-            NodeList elements134 = deploymentElement.getElementsByTagName("ExtensionConfiguration");
-            Element extensionConfigurationElement = elements134.getLength() > 0 ? ((Element)elements134.item(0)) : null;
-            if (extensionConfigurationElement != null)
-            {
-                ExtensionConfiguration extensionConfigurationInstance = new ExtensionConfiguration();
-                result.setExtensionConfiguration(extensionConfigurationInstance);
-                
-                NodeList elements135 = extensionConfigurationElement.getElementsByTagName("AllRoles");
-                Element allRolesSequenceElement = elements135.getLength() > 0 ? ((Element)elements135.item(0)) : null;
-                if (allRolesSequenceElement != null)
-                {
-                    for (int i16 = 0; i16 < allRolesSequenceElement.getElementsByTagName("Extension").getLength(); i16 = i16 + 1)
-                    {
-                        org.w3c.dom.Element allRolesElement = ((org.w3c.dom.Element)allRolesSequenceElement.getElementsByTagName("Extension").item(i16));
-                        ExtensionConfiguration.Extension extensionInstance = new ExtensionConfiguration.Extension();
-                        extensionConfigurationInstance.getAllRoles().add(extensionInstance);
-                        
-                        NodeList elements136 = allRolesElement.getElementsByTagName("Id");
-                        Element idElement = elements136.getLength() > 0 ? ((Element)elements136.item(0)) : null;
-                        if (idElement != null)
-                        {
-                            String idInstance;
-                            idInstance = idElement.getTextContent();
-                            extensionInstance.setId(idInstance);
-                        }
-                    }
-                }
-                
-                NodeList elements137 = extensionConfigurationElement.getElementsByTagName("NamedRoles");
-                Element namedRolesSequenceElement = elements137.getLength() > 0 ? ((Element)elements137.item(0)) : null;
-                if (namedRolesSequenceElement != null)
-                {
-                    for (int i17 = 0; i17 < namedRolesSequenceElement.getElementsByTagName("Role").getLength(); i17 = i17 + 1)
-                    {
-                        org.w3c.dom.Element namedRolesElement = ((org.w3c.dom.Element)namedRolesSequenceElement.getElementsByTagName("Role").item(i17));
-                        ExtensionConfiguration.NamedRole roleInstance2 = new ExtensionConfiguration.NamedRole();
-                        extensionConfigurationInstance.getNamedRoles().add(roleInstance2);
-                        
-                        NodeList elements138 = namedRolesElement.getElementsByTagName("RoleName");
-                        Element roleNameElement3 = elements138.getLength() > 0 ? ((Element)elements138.item(0)) : null;
-                        if (roleNameElement3 != null)
-                        {
-                            String roleNameInstance3;
-                            roleNameInstance3 = roleNameElement3.getTextContent();
-                            roleInstance2.setRoleName(roleNameInstance3);
-                        }
-                        
-                        NodeList elements139 = namedRolesElement.getElementsByTagName("Extensions");
-                        Element extensionsSequenceElement = elements139.getLength() > 0 ? ((Element)elements139.item(0)) : null;
-                        if (extensionsSequenceElement != null)
-                        {
-                            for (int i18 = 0; i18 < extensionsSequenceElement.getElementsByTagName("Extension").getLength(); i18 = i18 + 1)
-                            {
-                                org.w3c.dom.Element extensionsElement = ((org.w3c.dom.Element)extensionsSequenceElement.getElementsByTagName("Extension").item(i18));
-                                ExtensionConfiguration.Extension extensionInstance2 = new ExtensionConfiguration.Extension();
-                                roleInstance2.getExtensions().add(extensionInstance2);
+                                org.w3c.dom.Element dataVirtualHardDisksElement = ((org.w3c.dom.Element) dataVirtualHardDisksSequenceElement.getElementsByTagName("DataVirtualHardDisk").item(i12));
+                                DataVirtualHardDisk dataVirtualHardDiskInstance = new DataVirtualHardDisk();
+                                roleInstance.getDataVirtualHardDisks().add(dataVirtualHardDiskInstance);
                                 
-                                NodeList elements140 = extensionsElement.getElementsByTagName("Id");
-                                Element idElement2 = elements140.getLength() > 0 ? ((Element)elements140.item(0)) : null;
-                                if (idElement2 != null)
+                                NodeList elements97 = dataVirtualHardDisksElement.getElementsByTagName("HostCaching");
+                                Element hostCachingElement = elements97.getLength() > 0 ? ((Element) elements97.item(0)) : null;
+                                if (hostCachingElement != null && (hostCachingElement.getTextContent() != null && hostCachingElement.getTextContent().isEmpty() != true) == false)
                                 {
-                                    String idInstance2;
-                                    idInstance2 = idElement2.getTextContent();
-                                    extensionInstance2.setId(idInstance2);
+                                    VirtualHardDiskHostCaching hostCachingInstance;
+                                    hostCachingInstance = VirtualHardDiskHostCaching.valueOf(hostCachingElement.getTextContent());
+                                    dataVirtualHardDiskInstance.setHostCaching(hostCachingInstance);
+                                }
+                                
+                                NodeList elements98 = dataVirtualHardDisksElement.getElementsByTagName("DiskLabel");
+                                Element diskLabelElement = elements98.getLength() > 0 ? ((Element) elements98.item(0)) : null;
+                                if (diskLabelElement != null)
+                                {
+                                    String diskLabelInstance;
+                                    diskLabelInstance = diskLabelElement.getTextContent();
+                                    dataVirtualHardDiskInstance.setDiskLabel(diskLabelInstance);
+                                }
+                                
+                                NodeList elements99 = dataVirtualHardDisksElement.getElementsByTagName("DiskName");
+                                Element diskNameElement = elements99.getLength() > 0 ? ((Element) elements99.item(0)) : null;
+                                if (diskNameElement != null)
+                                {
+                                    String diskNameInstance;
+                                    diskNameInstance = diskNameElement.getTextContent();
+                                    dataVirtualHardDiskInstance.setDiskName(diskNameInstance);
+                                }
+                                
+                                NodeList elements100 = dataVirtualHardDisksElement.getElementsByTagName("Lun");
+                                Element lunElement = elements100.getLength() > 0 ? ((Element) elements100.item(0)) : null;
+                                if (lunElement != null && (lunElement.getTextContent() != null && lunElement.getTextContent().isEmpty() != true) == false)
+                                {
+                                    int lunInstance;
+                                    lunInstance = Integer.parseInt(lunElement.getTextContent());
+                                    dataVirtualHardDiskInstance.setLogicalUnitNumber(lunInstance);
+                                }
+                                
+                                NodeList elements101 = dataVirtualHardDisksElement.getElementsByTagName("LogicalDiskSizeInGB");
+                                Element logicalDiskSizeInGBElement = elements101.getLength() > 0 ? ((Element) elements101.item(0)) : null;
+                                if (logicalDiskSizeInGBElement != null)
+                                {
+                                    int logicalDiskSizeInGBInstance;
+                                    logicalDiskSizeInGBInstance = Integer.parseInt(logicalDiskSizeInGBElement.getTextContent());
+                                    dataVirtualHardDiskInstance.setLogicalDiskSizeInGB(logicalDiskSizeInGBInstance);
+                                }
+                                
+                                NodeList elements102 = dataVirtualHardDisksElement.getElementsByTagName("MediaLink");
+                                Element mediaLinkElement = elements102.getLength() > 0 ? ((Element) elements102.item(0)) : null;
+                                if (mediaLinkElement != null)
+                                {
+                                    URI mediaLinkInstance;
+                                    mediaLinkInstance = new URI(mediaLinkElement.getTextContent());
+                                    dataVirtualHardDiskInstance.setMediaLink(mediaLinkInstance);
+                                }
+                            }
+                        }
+                        
+                        NodeList elements103 = roleListElement.getElementsByTagName("Label");
+                        Element labelElement2 = elements103.getLength() > 0 ? ((Element) elements103.item(0)) : null;
+                        if (labelElement2 != null)
+                        {
+                            String labelInstance2;
+                            labelInstance2 = labelElement2.getTextContent();
+                            roleInstance.setLabel(labelInstance2);
+                        }
+                        
+                        NodeList elements104 = roleListElement.getElementsByTagName("OSVirtualHardDisk");
+                        Element oSVirtualHardDiskElement = elements104.getLength() > 0 ? ((Element) elements104.item(0)) : null;
+                        if (oSVirtualHardDiskElement != null)
+                        {
+                            OSVirtualHardDisk oSVirtualHardDiskInstance = new OSVirtualHardDisk();
+                            roleInstance.setOSVirtualHardDisk(oSVirtualHardDiskInstance);
+                            
+                            NodeList elements105 = oSVirtualHardDiskElement.getElementsByTagName("HostCaching");
+                            Element hostCachingElement2 = elements105.getLength() > 0 ? ((Element) elements105.item(0)) : null;
+                            if (hostCachingElement2 != null && (hostCachingElement2.getTextContent() != null && hostCachingElement2.getTextContent().isEmpty() != true) == false)
+                            {
+                                VirtualHardDiskHostCaching hostCachingInstance2;
+                                hostCachingInstance2 = VirtualHardDiskHostCaching.valueOf(hostCachingElement2.getTextContent());
+                                oSVirtualHardDiskInstance.setHostCaching(hostCachingInstance2);
+                            }
+                            
+                            NodeList elements106 = oSVirtualHardDiskElement.getElementsByTagName("DiskLabel");
+                            Element diskLabelElement2 = elements106.getLength() > 0 ? ((Element) elements106.item(0)) : null;
+                            if (diskLabelElement2 != null)
+                            {
+                                String diskLabelInstance2;
+                                diskLabelInstance2 = diskLabelElement2.getTextContent();
+                                oSVirtualHardDiskInstance.setDiskLabel(diskLabelInstance2);
+                            }
+                            
+                            NodeList elements107 = oSVirtualHardDiskElement.getElementsByTagName("DiskName");
+                            Element diskNameElement2 = elements107.getLength() > 0 ? ((Element) elements107.item(0)) : null;
+                            if (diskNameElement2 != null)
+                            {
+                                String diskNameInstance2;
+                                diskNameInstance2 = diskNameElement2.getTextContent();
+                                oSVirtualHardDiskInstance.setDiskName(diskNameInstance2);
+                            }
+                            
+                            NodeList elements108 = oSVirtualHardDiskElement.getElementsByTagName("MediaLink");
+                            Element mediaLinkElement2 = elements108.getLength() > 0 ? ((Element) elements108.item(0)) : null;
+                            if (mediaLinkElement2 != null)
+                            {
+                                URI mediaLinkInstance2;
+                                mediaLinkInstance2 = new URI(mediaLinkElement2.getTextContent());
+                                oSVirtualHardDiskInstance.setMediaLink(mediaLinkInstance2);
+                            }
+                            
+                            NodeList elements109 = oSVirtualHardDiskElement.getElementsByTagName("SourceImageName");
+                            Element sourceImageNameElement = elements109.getLength() > 0 ? ((Element) elements109.item(0)) : null;
+                            if (sourceImageNameElement != null)
+                            {
+                                String sourceImageNameInstance;
+                                sourceImageNameInstance = sourceImageNameElement.getTextContent();
+                                oSVirtualHardDiskInstance.setSourceImageName(sourceImageNameInstance);
+                            }
+                            
+                            NodeList elements110 = oSVirtualHardDiskElement.getElementsByTagName("OS");
+                            Element osElement = elements110.getLength() > 0 ? ((Element) elements110.item(0)) : null;
+                            if (osElement != null)
+                            {
+                                String osInstance;
+                                osInstance = osElement.getTextContent();
+                                oSVirtualHardDiskInstance.setOperatingSystem(osInstance);
+                            }
+                        }
+                        
+                        NodeList elements111 = roleListElement.getElementsByTagName("RoleSize");
+                        Element roleSizeElement = elements111.getLength() > 0 ? ((Element) elements111.item(0)) : null;
+                        if (roleSizeElement != null)
+                        {
+                            String roleSizeInstance;
+                            roleSizeInstance = roleSizeElement.getTextContent();
+                            roleInstance.setRoleSize(roleSizeInstance);
+                        }
+                        
+                        NodeList elements112 = roleListElement.getElementsByTagName("DefaultWinRmCertificateThumbprint");
+                        Element defaultWinRmCertificateThumbprintElement = elements112.getLength() > 0 ? ((Element) elements112.item(0)) : null;
+                        if (defaultWinRmCertificateThumbprintElement != null)
+                        {
+                            String defaultWinRmCertificateThumbprintInstance;
+                            defaultWinRmCertificateThumbprintInstance = defaultWinRmCertificateThumbprintElement.getTextContent();
+                            roleInstance.setDefaultWinRmCertificateThumbprint(defaultWinRmCertificateThumbprintInstance);
+                        }
+                    }
+                }
+                
+                NodeList elements113 = deploymentElement.getElementsByTagName("SdkVersion");
+                Element sdkVersionElement = elements113.getLength() > 0 ? ((Element) elements113.item(0)) : null;
+                if (sdkVersionElement != null)
+                {
+                    String sdkVersionInstance;
+                    sdkVersionInstance = sdkVersionElement.getTextContent();
+                    result.setSdkVersion(sdkVersionInstance);
+                }
+                
+                NodeList elements114 = deploymentElement.getElementsByTagName("Locked");
+                Element lockedElement = elements114.getLength() > 0 ? ((Element) elements114.item(0)) : null;
+                if (lockedElement != null)
+                {
+                    boolean lockedInstance;
+                    lockedInstance = Boolean.parseBoolean(lockedElement.getTextContent());
+                    result.setLocked(lockedInstance);
+                }
+                
+                NodeList elements115 = deploymentElement.getElementsByTagName("RollbackAllowed");
+                Element rollbackAllowedElement = elements115.getLength() > 0 ? ((Element) elements115.item(0)) : null;
+                if (rollbackAllowedElement != null)
+                {
+                    String rollbackAllowedInstance;
+                    rollbackAllowedInstance = rollbackAllowedElement.getTextContent();
+                    result.setRollbackAllowed(rollbackAllowedInstance);
+                }
+                
+                NodeList elements116 = deploymentElement.getElementsByTagName("CreatedTime");
+                Element createdTimeElement = elements116.getLength() > 0 ? ((Element) elements116.item(0)) : null;
+                if (createdTimeElement != null)
+                {
+                    Calendar createdTimeInstance;
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(simpleDateFormat.parse(createdTimeElement.getTextContent()));
+                    createdTimeInstance = calendar;
+                    result.setCreatedTime(createdTimeInstance);
+                }
+                
+                NodeList elements117 = deploymentElement.getElementsByTagName("LastModifiedTime");
+                Element lastModifiedTimeElement = elements117.getLength() > 0 ? ((Element) elements117.item(0)) : null;
+                if (lastModifiedTimeElement != null)
+                {
+                    Calendar lastModifiedTimeInstance;
+                    SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                    Calendar calendar2 = Calendar.getInstance();
+                    calendar2.setTime(simpleDateFormat2.parse(lastModifiedTimeElement.getTextContent()));
+                    lastModifiedTimeInstance = calendar2;
+                    result.setLastModifiedTime(lastModifiedTimeInstance);
+                }
+                
+                NodeList elements118 = deploymentElement.getElementsByTagName("VirtualNetworkName");
+                Element virtualNetworkNameElement = elements118.getLength() > 0 ? ((Element) elements118.item(0)) : null;
+                if (virtualNetworkNameElement != null)
+                {
+                    String virtualNetworkNameInstance;
+                    virtualNetworkNameInstance = virtualNetworkNameElement.getTextContent();
+                    result.setVirtualNetworkName(virtualNetworkNameInstance);
+                }
+                
+                NodeList elements119 = deploymentElement.getElementsByTagName("ExtendedProperties");
+                Element extendedPropertiesSequenceElement = elements119.getLength() > 0 ? ((Element) elements119.item(0)) : null;
+                if (extendedPropertiesSequenceElement != null)
+                {
+                    for (int i13 = 0; i13 < extendedPropertiesSequenceElement.getElementsByTagName("ExtendedProperty").getLength(); i13 = i13 + 1)
+                    {
+                        org.w3c.dom.Element extendedPropertiesElement = ((org.w3c.dom.Element) extendedPropertiesSequenceElement.getElementsByTagName("ExtendedProperty").item(i13));
+                        NodeList elements120 = extendedPropertiesElement.getElementsByTagName("Name");
+                        String extendedPropertiesKey = elements120.getLength() > 0 ? ((org.w3c.dom.Element) elements120.item(0)).getTextContent() : null;
+                        NodeList elements121 = extendedPropertiesElement.getElementsByTagName("Value");
+                        String extendedPropertiesValue = elements121.getLength() > 0 ? ((org.w3c.dom.Element) elements121.item(0)).getTextContent() : null;
+                        result.getExtendedProperties().put(extendedPropertiesKey, extendedPropertiesValue);
+                    }
+                }
+                
+                NodeList elements122 = deploymentElement.getElementsByTagName("PersistentVMDowntime");
+                Element persistentVMDowntimeElement = elements122.getLength() > 0 ? ((Element) elements122.item(0)) : null;
+                if (persistentVMDowntimeElement != null)
+                {
+                    PersistentVMDowntime persistentVMDowntimeInstance = new PersistentVMDowntime();
+                    result.setPersistentVMDowntime(persistentVMDowntimeInstance);
+                    
+                    NodeList elements123 = persistentVMDowntimeElement.getElementsByTagName("StartTime");
+                    Element startTimeElement = elements123.getLength() > 0 ? ((Element) elements123.item(0)) : null;
+                    if (startTimeElement != null)
+                    {
+                        Calendar startTimeInstance;
+                        SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                        Calendar calendar3 = Calendar.getInstance();
+                        calendar3.setTime(simpleDateFormat3.parse(startTimeElement.getTextContent()));
+                        startTimeInstance = calendar3;
+                        persistentVMDowntimeInstance.setStartTime(startTimeInstance);
+                    }
+                    
+                    NodeList elements124 = persistentVMDowntimeElement.getElementsByTagName("EndTime");
+                    Element endTimeElement = elements124.getLength() > 0 ? ((Element) elements124.item(0)) : null;
+                    if (endTimeElement != null)
+                    {
+                        Calendar endTimeInstance;
+                        SimpleDateFormat simpleDateFormat4 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                        Calendar calendar4 = Calendar.getInstance();
+                        calendar4.setTime(simpleDateFormat4.parse(endTimeElement.getTextContent()));
+                        endTimeInstance = calendar4;
+                        persistentVMDowntimeInstance.setEndTime(endTimeInstance);
+                    }
+                    
+                    NodeList elements125 = persistentVMDowntimeElement.getElementsByTagName("Status");
+                    Element statusElement2 = elements125.getLength() > 0 ? ((Element) elements125.item(0)) : null;
+                    if (statusElement2 != null)
+                    {
+                        String statusInstance2;
+                        statusInstance2 = statusElement2.getTextContent();
+                        persistentVMDowntimeInstance.setStatus(statusInstance2);
+                    }
+                }
+                
+                NodeList elements126 = deploymentElement.getElementsByTagName("VirtualIPs");
+                Element virtualIPsSequenceElement = elements126.getLength() > 0 ? ((Element) elements126.item(0)) : null;
+                if (virtualIPsSequenceElement != null)
+                {
+                    for (int i14 = 0; i14 < virtualIPsSequenceElement.getElementsByTagName("VirtualIP").getLength(); i14 = i14 + 1)
+                    {
+                        org.w3c.dom.Element virtualIPsElement = ((org.w3c.dom.Element) virtualIPsSequenceElement.getElementsByTagName("VirtualIP").item(i14));
+                        VirtualIPAddress virtualIPInstance = new VirtualIPAddress();
+                        result.getVirtualIPAddresses().add(virtualIPInstance);
+                        
+                        NodeList elements127 = virtualIPsElement.getElementsByTagName("Address");
+                        Element addressElement = elements127.getLength() > 0 ? ((Element) elements127.item(0)) : null;
+                        if (addressElement != null)
+                        {
+                            InetAddress addressInstance;
+                            addressInstance = InetAddress.getByName(addressElement.getTextContent());
+                            virtualIPInstance.setAddress(addressInstance);
+                        }
+                        
+                        NodeList elements128 = virtualIPsElement.getElementsByTagName("Name");
+                        Element nameElement4 = elements128.getLength() > 0 ? ((Element) elements128.item(0)) : null;
+                        if (nameElement4 != null)
+                        {
+                            String nameInstance4;
+                            nameInstance4 = nameElement4.getTextContent();
+                            virtualIPInstance.setName(nameInstance4);
+                        }
+                        
+                        NodeList elements129 = virtualIPsElement.getElementsByTagName("IsDnsProgrammed");
+                        Element isDnsProgrammedElement = elements129.getLength() > 0 ? ((Element) elements129.item(0)) : null;
+                        if (isDnsProgrammedElement != null && (isDnsProgrammedElement.getTextContent() != null && isDnsProgrammedElement.getTextContent().isEmpty() != true) == false)
+                        {
+                            boolean isDnsProgrammedInstance;
+                            isDnsProgrammedInstance = Boolean.parseBoolean(isDnsProgrammedElement.getTextContent());
+                            virtualIPInstance.setIsDnsProgrammed(isDnsProgrammedInstance);
+                        }
+                    }
+                }
+                
+                NodeList elements130 = deploymentElement.getElementsByTagName("ReservedIPName");
+                Element reservedIPNameElement = elements130.getLength() > 0 ? ((Element) elements130.item(0)) : null;
+                if (reservedIPNameElement != null)
+                {
+                    String reservedIPNameInstance;
+                    reservedIPNameInstance = reservedIPNameElement.getTextContent();
+                    result.setReservedIPName(reservedIPNameInstance);
+                }
+                
+                NodeList elements131 = deploymentElement.getElementsByTagName("Dns");
+                Element dnsElement = elements131.getLength() > 0 ? ((Element) elements131.item(0)) : null;
+                if (dnsElement != null)
+                {
+                    DnsSettings dnsInstance = new DnsSettings();
+                    result.setDnsSettings(dnsInstance);
+                    
+                    NodeList elements132 = dnsElement.getElementsByTagName("DnsServers");
+                    Element dnsServersSequenceElement = elements132.getLength() > 0 ? ((Element) elements132.item(0)) : null;
+                    if (dnsServersSequenceElement != null)
+                    {
+                        for (int i15 = 0; i15 < dnsServersSequenceElement.getElementsByTagName("DnsServer").getLength(); i15 = i15 + 1)
+                        {
+                            org.w3c.dom.Element dnsServersElement = ((org.w3c.dom.Element) dnsServersSequenceElement.getElementsByTagName("DnsServer").item(i15));
+                            DnsServer dnsServerInstance = new DnsServer();
+                            dnsInstance.getDnsServers().add(dnsServerInstance);
+                            
+                            NodeList elements133 = dnsServersElement.getElementsByTagName("Name");
+                            Element nameElement5 = elements133.getLength() > 0 ? ((Element) elements133.item(0)) : null;
+                            if (nameElement5 != null)
+                            {
+                                String nameInstance5;
+                                nameInstance5 = nameElement5.getTextContent();
+                                dnsServerInstance.setName(nameInstance5);
+                            }
+                            
+                            NodeList elements134 = dnsServersElement.getElementsByTagName("Address");
+                            Element addressElement2 = elements134.getLength() > 0 ? ((Element) elements134.item(0)) : null;
+                            if (addressElement2 != null)
+                            {
+                                InetAddress addressInstance2;
+                                addressInstance2 = InetAddress.getByName(addressElement2.getTextContent());
+                                dnsServerInstance.setAddress(addressInstance2);
+                            }
+                        }
+                    }
+                }
+                
+                NodeList elements135 = deploymentElement.getElementsByTagName("ExtensionConfiguration");
+                Element extensionConfigurationElement = elements135.getLength() > 0 ? ((Element) elements135.item(0)) : null;
+                if (extensionConfigurationElement != null)
+                {
+                    ExtensionConfiguration extensionConfigurationInstance = new ExtensionConfiguration();
+                    result.setExtensionConfiguration(extensionConfigurationInstance);
+                    
+                    NodeList elements136 = extensionConfigurationElement.getElementsByTagName("AllRoles");
+                    Element allRolesSequenceElement = elements136.getLength() > 0 ? ((Element) elements136.item(0)) : null;
+                    if (allRolesSequenceElement != null)
+                    {
+                        for (int i16 = 0; i16 < allRolesSequenceElement.getElementsByTagName("Extension").getLength(); i16 = i16 + 1)
+                        {
+                            org.w3c.dom.Element allRolesElement = ((org.w3c.dom.Element) allRolesSequenceElement.getElementsByTagName("Extension").item(i16));
+                            ExtensionConfiguration.Extension extensionInstance = new ExtensionConfiguration.Extension();
+                            extensionConfigurationInstance.getAllRoles().add(extensionInstance);
+                            
+                            NodeList elements137 = allRolesElement.getElementsByTagName("Id");
+                            Element idElement = elements137.getLength() > 0 ? ((Element) elements137.item(0)) : null;
+                            if (idElement != null)
+                            {
+                                String idInstance;
+                                idInstance = idElement.getTextContent();
+                                extensionInstance.setId(idInstance);
+                            }
+                        }
+                    }
+                    
+                    NodeList elements138 = extensionConfigurationElement.getElementsByTagName("NamedRoles");
+                    Element namedRolesSequenceElement = elements138.getLength() > 0 ? ((Element) elements138.item(0)) : null;
+                    if (namedRolesSequenceElement != null)
+                    {
+                        for (int i17 = 0; i17 < namedRolesSequenceElement.getElementsByTagName("Role").getLength(); i17 = i17 + 1)
+                        {
+                            org.w3c.dom.Element namedRolesElement = ((org.w3c.dom.Element) namedRolesSequenceElement.getElementsByTagName("Role").item(i17));
+                            ExtensionConfiguration.NamedRole roleInstance2 = new ExtensionConfiguration.NamedRole();
+                            extensionConfigurationInstance.getNamedRoles().add(roleInstance2);
+                            
+                            NodeList elements139 = namedRolesElement.getElementsByTagName("RoleName");
+                            Element roleNameElement3 = elements139.getLength() > 0 ? ((Element) elements139.item(0)) : null;
+                            if (roleNameElement3 != null)
+                            {
+                                String roleNameInstance3;
+                                roleNameInstance3 = roleNameElement3.getTextContent();
+                                roleInstance2.setRoleName(roleNameInstance3);
+                            }
+                            
+                            NodeList elements140 = namedRolesElement.getElementsByTagName("Extensions");
+                            Element extensionsSequenceElement = elements140.getLength() > 0 ? ((Element) elements140.item(0)) : null;
+                            if (extensionsSequenceElement != null)
+                            {
+                                for (int i18 = 0; i18 < extensionsSequenceElement.getElementsByTagName("Extension").getLength(); i18 = i18 + 1)
+                                {
+                                    org.w3c.dom.Element extensionsElement = ((org.w3c.dom.Element) extensionsSequenceElement.getElementsByTagName("Extension").item(i18));
+                                    ExtensionConfiguration.Extension extensionInstance2 = new ExtensionConfiguration.Extension();
+                                    roleInstance2.getExtensions().add(extensionInstance2);
+                                    
+                                    NodeList elements141 = extensionsElement.getElementsByTagName("Id");
+                                    Element idElement2 = elements141.getLength() > 0 ? ((Element) elements141.item(0)) : null;
+                                    if (idElement2 != null)
+                                    {
+                                        String idInstance2;
+                                        idInstance2 = idElement2.getTextContent();
+                                        extensionInstance2.setId(idInstance2);
+                                    }
                                 }
                             }
                         }
                     }
                 }
             }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -5155,6 +5643,18 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     *
     * @param serviceName The name of the cloud service.
     * @param deploymentSlot The deployment slot.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return A deployment that exists in the cloud service.
     */
     @Override
@@ -5189,1337 +5689,1356 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
-        }
-        
-        // Create Result
-        DeploymentGetResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new DeploymentGetResponse();
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document responseDoc = documentBuilder.parse(responseContent);
-        
-        NodeList elements = responseDoc.getElementsByTagName("Deployment");
-        Element deploymentElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
-        if (deploymentElement != null)
-        {
-            NodeList elements2 = deploymentElement.getElementsByTagName("Name");
-            Element nameElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
-            if (nameElement != null)
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
             {
-                String nameInstance;
-                nameInstance = nameElement.getTextContent();
-                result.setName(nameInstance);
+                CloudTracing.receiveResponse(invocationId, httpResponse);
             }
-            
-            NodeList elements3 = deploymentElement.getElementsByTagName("DeploymentSlot");
-            Element deploymentSlotElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
-            if (deploymentSlotElement != null)
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
             {
-                DeploymentSlot deploymentSlotInstance;
-                deploymentSlotInstance = DeploymentSlot.valueOf(deploymentSlotElement.getTextContent());
-                result.setDeploymentSlot(deploymentSlotInstance);
-            }
-            
-            NodeList elements4 = deploymentElement.getElementsByTagName("PrivateID");
-            Element privateIDElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
-            if (privateIDElement != null)
-            {
-                String privateIDInstance;
-                privateIDInstance = privateIDElement.getTextContent();
-                result.setPrivateId(privateIDInstance);
-            }
-            
-            NodeList elements5 = deploymentElement.getElementsByTagName("Status");
-            Element statusElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
-            if (statusElement != null)
-            {
-                DeploymentStatus statusInstance;
-                statusInstance = DeploymentStatus.valueOf(statusElement.getTextContent());
-                result.setStatus(statusInstance);
-            }
-            
-            NodeList elements6 = deploymentElement.getElementsByTagName("Label");
-            Element labelElement = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
-            if (labelElement != null)
-            {
-                String labelInstance;
-                labelInstance = labelElement.getTextContent() != null ? new String(Base64.decodeBase64(labelElement.getTextContent().getBytes())) : null;
-                result.setLabel(labelInstance);
-            }
-            
-            NodeList elements7 = deploymentElement.getElementsByTagName("Url");
-            Element urlElement = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
-            if (urlElement != null)
-            {
-                URI urlInstance;
-                urlInstance = new URI(urlElement.getTextContent());
-                result.setUri(urlInstance);
-            }
-            
-            NodeList elements8 = deploymentElement.getElementsByTagName("Configuration");
-            Element configurationElement = elements8.getLength() > 0 ? ((Element)elements8.item(0)) : null;
-            if (configurationElement != null)
-            {
-                String configurationInstance;
-                configurationInstance = configurationElement.getTextContent() != null ? new String(Base64.decodeBase64(configurationElement.getTextContent().getBytes())) : null;
-                result.setConfiguration(configurationInstance);
-            }
-            
-            NodeList elements9 = deploymentElement.getElementsByTagName("RoleInstanceList");
-            Element roleInstanceListSequenceElement = elements9.getLength() > 0 ? ((Element)elements9.item(0)) : null;
-            if (roleInstanceListSequenceElement != null)
-            {
-                for (int i1 = 0; i1 < roleInstanceListSequenceElement.getElementsByTagName("RoleInstance").getLength(); i1 = i1 + 1)
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
                 {
-                    org.w3c.dom.Element roleInstanceListElement = ((org.w3c.dom.Element)roleInstanceListSequenceElement.getElementsByTagName("RoleInstance").item(i1));
-                    RoleInstance roleInstanceInstance = new RoleInstance();
-                    result.getRoleInstances().add(roleInstanceInstance);
-                    
-                    NodeList elements10 = roleInstanceListElement.getElementsByTagName("RoleName");
-                    Element roleNameElement = elements10.getLength() > 0 ? ((Element)elements10.item(0)) : null;
-                    if (roleNameElement != null)
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            DeploymentGetResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new DeploymentGetResponse();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document responseDoc = documentBuilder.parse(responseContent);
+            
+            NodeList elements = responseDoc.getElementsByTagName("Deployment");
+            Element deploymentElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            if (deploymentElement != null)
+            {
+                NodeList elements2 = deploymentElement.getElementsByTagName("Name");
+                Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                if (nameElement != null)
+                {
+                    String nameInstance;
+                    nameInstance = nameElement.getTextContent();
+                    result.setName(nameInstance);
+                }
+                
+                NodeList elements3 = deploymentElement.getElementsByTagName("DeploymentSlot");
+                Element deploymentSlotElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                if (deploymentSlotElement != null)
+                {
+                    DeploymentSlot deploymentSlotInstance;
+                    deploymentSlotInstance = DeploymentSlot.valueOf(deploymentSlotElement.getTextContent());
+                    result.setDeploymentSlot(deploymentSlotInstance);
+                }
+                
+                NodeList elements4 = deploymentElement.getElementsByTagName("PrivateID");
+                Element privateIDElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                if (privateIDElement != null)
+                {
+                    String privateIDInstance;
+                    privateIDInstance = privateIDElement.getTextContent();
+                    result.setPrivateId(privateIDInstance);
+                }
+                
+                NodeList elements5 = deploymentElement.getElementsByTagName("Status");
+                Element statusElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                if (statusElement != null)
+                {
+                    DeploymentStatus statusInstance;
+                    statusInstance = DeploymentStatus.valueOf(statusElement.getTextContent());
+                    result.setStatus(statusInstance);
+                }
+                
+                NodeList elements6 = deploymentElement.getElementsByTagName("Label");
+                Element labelElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                if (labelElement != null)
+                {
+                    String labelInstance;
+                    labelInstance = labelElement.getTextContent() != null ? new String(Base64.decodeBase64(labelElement.getTextContent().getBytes())) : null;
+                    result.setLabel(labelInstance);
+                }
+                
+                NodeList elements7 = deploymentElement.getElementsByTagName("Url");
+                Element urlElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
+                if (urlElement != null)
+                {
+                    URI urlInstance;
+                    urlInstance = new URI(urlElement.getTextContent());
+                    result.setUri(urlInstance);
+                }
+                
+                NodeList elements8 = deploymentElement.getElementsByTagName("Configuration");
+                Element configurationElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
+                if (configurationElement != null)
+                {
+                    String configurationInstance;
+                    configurationInstance = configurationElement.getTextContent() != null ? new String(Base64.decodeBase64(configurationElement.getTextContent().getBytes())) : null;
+                    result.setConfiguration(configurationInstance);
+                }
+                
+                NodeList elements9 = deploymentElement.getElementsByTagName("RoleInstanceList");
+                Element roleInstanceListSequenceElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
+                if (roleInstanceListSequenceElement != null)
+                {
+                    for (int i1 = 0; i1 < roleInstanceListSequenceElement.getElementsByTagName("RoleInstance").getLength(); i1 = i1 + 1)
                     {
-                        String roleNameInstance;
-                        roleNameInstance = roleNameElement.getTextContent();
-                        roleInstanceInstance.setRoleName(roleNameInstance);
-                    }
-                    
-                    NodeList elements11 = roleInstanceListElement.getElementsByTagName("InstanceName");
-                    Element instanceNameElement = elements11.getLength() > 0 ? ((Element)elements11.item(0)) : null;
-                    if (instanceNameElement != null)
-                    {
-                        String instanceNameInstance;
-                        instanceNameInstance = instanceNameElement.getTextContent();
-                        roleInstanceInstance.setInstanceName(instanceNameInstance);
-                    }
-                    
-                    NodeList elements12 = roleInstanceListElement.getElementsByTagName("InstanceStatus");
-                    Element instanceStatusElement = elements12.getLength() > 0 ? ((Element)elements12.item(0)) : null;
-                    if (instanceStatusElement != null)
-                    {
-                        String instanceStatusInstance;
-                        instanceStatusInstance = instanceStatusElement.getTextContent();
-                        roleInstanceInstance.setInstanceStatus(instanceStatusInstance);
-                    }
-                    
-                    NodeList elements13 = roleInstanceListElement.getElementsByTagName("InstanceUpgradeDomain");
-                    Element instanceUpgradeDomainElement = elements13.getLength() > 0 ? ((Element)elements13.item(0)) : null;
-                    if (instanceUpgradeDomainElement != null && (instanceUpgradeDomainElement.getTextContent() != null && instanceUpgradeDomainElement.getTextContent().isEmpty() != true) == false)
-                    {
-                        int instanceUpgradeDomainInstance;
-                        instanceUpgradeDomainInstance = Integer.parseInt(instanceUpgradeDomainElement.getTextContent());
-                        roleInstanceInstance.setInstanceUpgradeDomain(instanceUpgradeDomainInstance);
-                    }
-                    
-                    NodeList elements14 = roleInstanceListElement.getElementsByTagName("InstanceFaultDomain");
-                    Element instanceFaultDomainElement = elements14.getLength() > 0 ? ((Element)elements14.item(0)) : null;
-                    if (instanceFaultDomainElement != null && (instanceFaultDomainElement.getTextContent() != null && instanceFaultDomainElement.getTextContent().isEmpty() != true) == false)
-                    {
-                        int instanceFaultDomainInstance;
-                        instanceFaultDomainInstance = Integer.parseInt(instanceFaultDomainElement.getTextContent());
-                        roleInstanceInstance.setInstanceFaultDomain(instanceFaultDomainInstance);
-                    }
-                    
-                    NodeList elements15 = roleInstanceListElement.getElementsByTagName("InstanceSize");
-                    Element instanceSizeElement = elements15.getLength() > 0 ? ((Element)elements15.item(0)) : null;
-                    if (instanceSizeElement != null && (instanceSizeElement.getTextContent() != null && instanceSizeElement.getTextContent().isEmpty() != true) == false)
-                    {
-                        VirtualMachineRoleSize instanceSizeInstance;
-                        instanceSizeInstance = VirtualMachineRoleSize.valueOf(instanceSizeElement.getTextContent());
-                        roleInstanceInstance.setInstanceSize(instanceSizeInstance);
-                    }
-                    
-                    NodeList elements16 = roleInstanceListElement.getElementsByTagName("InstanceStateDetails");
-                    Element instanceStateDetailsElement = elements16.getLength() > 0 ? ((Element)elements16.item(0)) : null;
-                    if (instanceStateDetailsElement != null)
-                    {
-                        String instanceStateDetailsInstance;
-                        instanceStateDetailsInstance = instanceStateDetailsElement.getTextContent();
-                        roleInstanceInstance.setInstanceStateDetails(instanceStateDetailsInstance);
-                    }
-                    
-                    NodeList elements17 = roleInstanceListElement.getElementsByTagName("InstanceErrorCode");
-                    Element instanceErrorCodeElement = elements17.getLength() > 0 ? ((Element)elements17.item(0)) : null;
-                    if (instanceErrorCodeElement != null)
-                    {
-                        String instanceErrorCodeInstance;
-                        instanceErrorCodeInstance = instanceErrorCodeElement.getTextContent();
-                        roleInstanceInstance.setInstanceErrorCode(instanceErrorCodeInstance);
-                    }
-                    
-                    NodeList elements18 = roleInstanceListElement.getElementsByTagName("IpAddress");
-                    Element ipAddressElement = elements18.getLength() > 0 ? ((Element)elements18.item(0)) : null;
-                    if (ipAddressElement != null)
-                    {
-                        InetAddress ipAddressInstance;
-                        ipAddressInstance = InetAddress.getByName(ipAddressElement.getTextContent());
-                        roleInstanceInstance.setIPAddress(ipAddressInstance);
-                    }
-                    
-                    NodeList elements19 = roleInstanceListElement.getElementsByTagName("InstanceEndpoints");
-                    Element instanceEndpointsSequenceElement = elements19.getLength() > 0 ? ((Element)elements19.item(0)) : null;
-                    if (instanceEndpointsSequenceElement != null)
-                    {
-                        for (int i2 = 0; i2 < instanceEndpointsSequenceElement.getElementsByTagName("InstanceEndpoint").getLength(); i2 = i2 + 1)
+                        org.w3c.dom.Element roleInstanceListElement = ((org.w3c.dom.Element) roleInstanceListSequenceElement.getElementsByTagName("RoleInstance").item(i1));
+                        RoleInstance roleInstanceInstance = new RoleInstance();
+                        result.getRoleInstances().add(roleInstanceInstance);
+                        
+                        NodeList elements10 = roleInstanceListElement.getElementsByTagName("RoleName");
+                        Element roleNameElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
+                        if (roleNameElement != null)
                         {
-                            org.w3c.dom.Element instanceEndpointsElement = ((org.w3c.dom.Element)instanceEndpointsSequenceElement.getElementsByTagName("InstanceEndpoint").item(i2));
-                            InstanceEndpoint instanceEndpointInstance = new InstanceEndpoint();
-                            roleInstanceInstance.getInstanceEndpoints().add(instanceEndpointInstance);
-                            
-                            NodeList elements20 = instanceEndpointsElement.getElementsByTagName("LocalPort");
-                            Element localPortElement = elements20.getLength() > 0 ? ((Element)elements20.item(0)) : null;
-                            if (localPortElement != null && (localPortElement.getTextContent() != null && localPortElement.getTextContent().isEmpty() != true) == false)
+                            String roleNameInstance;
+                            roleNameInstance = roleNameElement.getTextContent();
+                            roleInstanceInstance.setRoleName(roleNameInstance);
+                        }
+                        
+                        NodeList elements11 = roleInstanceListElement.getElementsByTagName("InstanceName");
+                        Element instanceNameElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
+                        if (instanceNameElement != null)
+                        {
+                            String instanceNameInstance;
+                            instanceNameInstance = instanceNameElement.getTextContent();
+                            roleInstanceInstance.setInstanceName(instanceNameInstance);
+                        }
+                        
+                        NodeList elements12 = roleInstanceListElement.getElementsByTagName("InstanceStatus");
+                        Element instanceStatusElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
+                        if (instanceStatusElement != null)
+                        {
+                            String instanceStatusInstance;
+                            instanceStatusInstance = instanceStatusElement.getTextContent();
+                            roleInstanceInstance.setInstanceStatus(instanceStatusInstance);
+                        }
+                        
+                        NodeList elements13 = roleInstanceListElement.getElementsByTagName("InstanceUpgradeDomain");
+                        Element instanceUpgradeDomainElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
+                        if (instanceUpgradeDomainElement != null && (instanceUpgradeDomainElement.getTextContent() != null && instanceUpgradeDomainElement.getTextContent().isEmpty() != true) == false)
+                        {
+                            int instanceUpgradeDomainInstance;
+                            instanceUpgradeDomainInstance = Integer.parseInt(instanceUpgradeDomainElement.getTextContent());
+                            roleInstanceInstance.setInstanceUpgradeDomain(instanceUpgradeDomainInstance);
+                        }
+                        
+                        NodeList elements14 = roleInstanceListElement.getElementsByTagName("InstanceFaultDomain");
+                        Element instanceFaultDomainElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
+                        if (instanceFaultDomainElement != null && (instanceFaultDomainElement.getTextContent() != null && instanceFaultDomainElement.getTextContent().isEmpty() != true) == false)
+                        {
+                            int instanceFaultDomainInstance;
+                            instanceFaultDomainInstance = Integer.parseInt(instanceFaultDomainElement.getTextContent());
+                            roleInstanceInstance.setInstanceFaultDomain(instanceFaultDomainInstance);
+                        }
+                        
+                        NodeList elements15 = roleInstanceListElement.getElementsByTagName("InstanceSize");
+                        Element instanceSizeElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
+                        if (instanceSizeElement != null)
+                        {
+                            String instanceSizeInstance;
+                            instanceSizeInstance = instanceSizeElement.getTextContent();
+                            roleInstanceInstance.setInstanceSize(instanceSizeInstance);
+                        }
+                        
+                        NodeList elements16 = roleInstanceListElement.getElementsByTagName("InstanceStateDetails");
+                        Element instanceStateDetailsElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
+                        if (instanceStateDetailsElement != null)
+                        {
+                            String instanceStateDetailsInstance;
+                            instanceStateDetailsInstance = instanceStateDetailsElement.getTextContent();
+                            roleInstanceInstance.setInstanceStateDetails(instanceStateDetailsInstance);
+                        }
+                        
+                        NodeList elements17 = roleInstanceListElement.getElementsByTagName("InstanceErrorCode");
+                        Element instanceErrorCodeElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
+                        if (instanceErrorCodeElement != null)
+                        {
+                            String instanceErrorCodeInstance;
+                            instanceErrorCodeInstance = instanceErrorCodeElement.getTextContent();
+                            roleInstanceInstance.setInstanceErrorCode(instanceErrorCodeInstance);
+                        }
+                        
+                        NodeList elements18 = roleInstanceListElement.getElementsByTagName("IpAddress");
+                        Element ipAddressElement = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
+                        if (ipAddressElement != null)
+                        {
+                            InetAddress ipAddressInstance;
+                            ipAddressInstance = InetAddress.getByName(ipAddressElement.getTextContent());
+                            roleInstanceInstance.setIPAddress(ipAddressInstance);
+                        }
+                        
+                        NodeList elements19 = roleInstanceListElement.getElementsByTagName("InstanceEndpoints");
+                        Element instanceEndpointsSequenceElement = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
+                        if (instanceEndpointsSequenceElement != null)
+                        {
+                            for (int i2 = 0; i2 < instanceEndpointsSequenceElement.getElementsByTagName("InstanceEndpoint").getLength(); i2 = i2 + 1)
                             {
-                                int localPortInstance;
-                                localPortInstance = Integer.parseInt(localPortElement.getTextContent());
-                                instanceEndpointInstance.setLocalPort(localPortInstance);
-                            }
-                            
-                            NodeList elements21 = instanceEndpointsElement.getElementsByTagName("Name");
-                            Element nameElement2 = elements21.getLength() > 0 ? ((Element)elements21.item(0)) : null;
-                            if (nameElement2 != null)
-                            {
-                                String nameInstance2;
-                                nameInstance2 = nameElement2.getTextContent();
-                                instanceEndpointInstance.setName(nameInstance2);
-                            }
-                            
-                            NodeList elements22 = instanceEndpointsElement.getElementsByTagName("PublicPort");
-                            Element publicPortElement = elements22.getLength() > 0 ? ((Element)elements22.item(0)) : null;
-                            if (publicPortElement != null)
-                            {
-                                int publicPortInstance;
-                                publicPortInstance = Integer.parseInt(publicPortElement.getTextContent());
-                                instanceEndpointInstance.setPort(publicPortInstance);
-                            }
-                            
-                            NodeList elements23 = instanceEndpointsElement.getElementsByTagName("Protocol");
-                            Element protocolElement = elements23.getLength() > 0 ? ((Element)elements23.item(0)) : null;
-                            if (protocolElement != null)
-                            {
-                                String protocolInstance;
-                                protocolInstance = protocolElement.getTextContent();
-                                instanceEndpointInstance.setProtocol(protocolInstance);
-                            }
-                            
-                            NodeList elements24 = instanceEndpointsElement.getElementsByTagName("Vip");
-                            Element vipElement = elements24.getLength() > 0 ? ((Element)elements24.item(0)) : null;
-                            if (vipElement != null)
-                            {
-                                InetAddress vipInstance;
-                                vipInstance = InetAddress.getByName(vipElement.getTextContent());
-                                instanceEndpointInstance.setVirtualIPAddress(vipInstance);
+                                org.w3c.dom.Element instanceEndpointsElement = ((org.w3c.dom.Element) instanceEndpointsSequenceElement.getElementsByTagName("InstanceEndpoint").item(i2));
+                                InstanceEndpoint instanceEndpointInstance = new InstanceEndpoint();
+                                roleInstanceInstance.getInstanceEndpoints().add(instanceEndpointInstance);
+                                
+                                NodeList elements20 = instanceEndpointsElement.getElementsByTagName("LocalPort");
+                                Element localPortElement = elements20.getLength() > 0 ? ((Element) elements20.item(0)) : null;
+                                if (localPortElement != null && (localPortElement.getTextContent() != null && localPortElement.getTextContent().isEmpty() != true) == false)
+                                {
+                                    int localPortInstance;
+                                    localPortInstance = Integer.parseInt(localPortElement.getTextContent());
+                                    instanceEndpointInstance.setLocalPort(localPortInstance);
+                                }
+                                
+                                NodeList elements21 = instanceEndpointsElement.getElementsByTagName("Name");
+                                Element nameElement2 = elements21.getLength() > 0 ? ((Element) elements21.item(0)) : null;
+                                if (nameElement2 != null)
+                                {
+                                    String nameInstance2;
+                                    nameInstance2 = nameElement2.getTextContent();
+                                    instanceEndpointInstance.setName(nameInstance2);
+                                }
+                                
+                                NodeList elements22 = instanceEndpointsElement.getElementsByTagName("PublicPort");
+                                Element publicPortElement = elements22.getLength() > 0 ? ((Element) elements22.item(0)) : null;
+                                if (publicPortElement != null)
+                                {
+                                    int publicPortInstance;
+                                    publicPortInstance = Integer.parseInt(publicPortElement.getTextContent());
+                                    instanceEndpointInstance.setPort(publicPortInstance);
+                                }
+                                
+                                NodeList elements23 = instanceEndpointsElement.getElementsByTagName("Protocol");
+                                Element protocolElement = elements23.getLength() > 0 ? ((Element) elements23.item(0)) : null;
+                                if (protocolElement != null)
+                                {
+                                    String protocolInstance;
+                                    protocolInstance = protocolElement.getTextContent();
+                                    instanceEndpointInstance.setProtocol(protocolInstance);
+                                }
+                                
+                                NodeList elements24 = instanceEndpointsElement.getElementsByTagName("Vip");
+                                Element vipElement = elements24.getLength() > 0 ? ((Element) elements24.item(0)) : null;
+                                if (vipElement != null)
+                                {
+                                    InetAddress vipInstance;
+                                    vipInstance = InetAddress.getByName(vipElement.getTextContent());
+                                    instanceEndpointInstance.setVirtualIPAddress(vipInstance);
+                                }
                             }
                         }
-                    }
-                    
-                    NodeList elements25 = roleInstanceListElement.getElementsByTagName("PowerState");
-                    Element powerStateElement = elements25.getLength() > 0 ? ((Element)elements25.item(0)) : null;
-                    if (powerStateElement != null)
-                    {
-                        RoleInstancePowerState powerStateInstance;
-                        powerStateInstance = RoleInstancePowerState.valueOf(powerStateElement.getTextContent());
-                        roleInstanceInstance.setPowerState(powerStateInstance);
-                    }
-                    
-                    NodeList elements26 = roleInstanceListElement.getElementsByTagName("HostName");
-                    Element hostNameElement = elements26.getLength() > 0 ? ((Element)elements26.item(0)) : null;
-                    if (hostNameElement != null)
-                    {
-                        String hostNameInstance;
-                        hostNameInstance = hostNameElement.getTextContent();
-                        roleInstanceInstance.setHostName(hostNameInstance);
-                    }
-                    
-                    NodeList elements27 = roleInstanceListElement.getElementsByTagName("RemoteAccessCertificateThumbprint");
-                    Element remoteAccessCertificateThumbprintElement = elements27.getLength() > 0 ? ((Element)elements27.item(0)) : null;
-                    if (remoteAccessCertificateThumbprintElement != null)
-                    {
-                        String remoteAccessCertificateThumbprintInstance;
-                        remoteAccessCertificateThumbprintInstance = remoteAccessCertificateThumbprintElement.getTextContent();
-                        roleInstanceInstance.setRemoteAccessCertificateThumbprint(remoteAccessCertificateThumbprintInstance);
-                    }
-                }
-            }
-            
-            NodeList elements28 = deploymentElement.getElementsByTagName("UpgradeStatus");
-            Element upgradeStatusElement = elements28.getLength() > 0 ? ((Element)elements28.item(0)) : null;
-            if (upgradeStatusElement != null)
-            {
-                UpgradeStatus upgradeStatusInstance = new UpgradeStatus();
-                result.setUpgradeStatus(upgradeStatusInstance);
-                
-                NodeList elements29 = upgradeStatusElement.getElementsByTagName("UpgradeType");
-                Element upgradeTypeElement = elements29.getLength() > 0 ? ((Element)elements29.item(0)) : null;
-                if (upgradeTypeElement != null)
-                {
-                    DeploymentUpgradeType upgradeTypeInstance;
-                    upgradeTypeInstance = DeploymentUpgradeType.valueOf(upgradeTypeElement.getTextContent());
-                    upgradeStatusInstance.setUpgradeType(upgradeTypeInstance);
-                }
-                
-                NodeList elements30 = upgradeStatusElement.getElementsByTagName("CurrentUpgradeDomainState");
-                Element currentUpgradeDomainStateElement = elements30.getLength() > 0 ? ((Element)elements30.item(0)) : null;
-                if (currentUpgradeDomainStateElement != null)
-                {
-                    UpgradeDomainState currentUpgradeDomainStateInstance;
-                    currentUpgradeDomainStateInstance = UpgradeDomainState.valueOf(currentUpgradeDomainStateElement.getTextContent());
-                    upgradeStatusInstance.setCurrentUpgradeDomainState(currentUpgradeDomainStateInstance);
-                }
-                
-                NodeList elements31 = upgradeStatusElement.getElementsByTagName("CurrentUpgradeDomain");
-                Element currentUpgradeDomainElement = elements31.getLength() > 0 ? ((Element)elements31.item(0)) : null;
-                if (currentUpgradeDomainElement != null)
-                {
-                    int currentUpgradeDomainInstance;
-                    currentUpgradeDomainInstance = Integer.parseInt(currentUpgradeDomainElement.getTextContent());
-                    upgradeStatusInstance.setCurrentUpgradeDomain(currentUpgradeDomainInstance);
-                }
-            }
-            
-            NodeList elements32 = deploymentElement.getElementsByTagName("UpgradeDomainCount");
-            Element upgradeDomainCountElement = elements32.getLength() > 0 ? ((Element)elements32.item(0)) : null;
-            if (upgradeDomainCountElement != null)
-            {
-                int upgradeDomainCountInstance;
-                upgradeDomainCountInstance = Integer.parseInt(upgradeDomainCountElement.getTextContent());
-                result.setUpgradeDomainCount(upgradeDomainCountInstance);
-            }
-            
-            NodeList elements33 = deploymentElement.getElementsByTagName("RoleList");
-            Element roleListSequenceElement = elements33.getLength() > 0 ? ((Element)elements33.item(0)) : null;
-            if (roleListSequenceElement != null)
-            {
-                for (int i3 = 0; i3 < roleListSequenceElement.getElementsByTagName("Role").getLength(); i3 = i3 + 1)
-                {
-                    org.w3c.dom.Element roleListElement = ((org.w3c.dom.Element)roleListSequenceElement.getElementsByTagName("Role").item(i3));
-                    Role roleInstance = new Role();
-                    result.getRoles().add(roleInstance);
-                    
-                    NodeList elements34 = roleListElement.getElementsByTagName("RoleName");
-                    Element roleNameElement2 = elements34.getLength() > 0 ? ((Element)elements34.item(0)) : null;
-                    if (roleNameElement2 != null)
-                    {
-                        String roleNameInstance2;
-                        roleNameInstance2 = roleNameElement2.getTextContent();
-                        roleInstance.setRoleName(roleNameInstance2);
-                    }
-                    
-                    NodeList elements35 = roleListElement.getElementsByTagName("OsVersion");
-                    Element osVersionElement = elements35.getLength() > 0 ? ((Element)elements35.item(0)) : null;
-                    if (osVersionElement != null)
-                    {
-                        String osVersionInstance;
-                        osVersionInstance = osVersionElement.getTextContent();
-                        roleInstance.setOSVersion(osVersionInstance);
-                    }
-                    
-                    NodeList elements36 = roleListElement.getElementsByTagName("RoleType");
-                    Element roleTypeElement = elements36.getLength() > 0 ? ((Element)elements36.item(0)) : null;
-                    if (roleTypeElement != null)
-                    {
-                        String roleTypeInstance;
-                        roleTypeInstance = roleTypeElement.getTextContent();
-                        roleInstance.setRoleType(roleTypeInstance);
-                    }
-                    
-                    NodeList elements37 = roleListElement.getElementsByTagName("ConfigurationSets");
-                    Element configurationSetsSequenceElement = elements37.getLength() > 0 ? ((Element)elements37.item(0)) : null;
-                    if (configurationSetsSequenceElement != null)
-                    {
-                        for (int i4 = 0; i4 < configurationSetsSequenceElement.getElementsByTagName("ConfigurationSet").getLength(); i4 = i4 + 1)
+                        
+                        NodeList elements25 = roleInstanceListElement.getElementsByTagName("PowerState");
+                        Element powerStateElement = elements25.getLength() > 0 ? ((Element) elements25.item(0)) : null;
+                        if (powerStateElement != null)
                         {
-                            org.w3c.dom.Element configurationSetsElement = ((org.w3c.dom.Element)configurationSetsSequenceElement.getElementsByTagName("ConfigurationSet").item(i4));
-                            ConfigurationSet configurationSetInstance = new ConfigurationSet();
-                            roleInstance.getConfigurationSets().add(configurationSetInstance);
-                            
-                            NodeList elements38 = configurationSetsElement.getElementsByTagName("ConfigurationSetType");
-                            Element configurationSetTypeElement = elements38.getLength() > 0 ? ((Element)elements38.item(0)) : null;
-                            if (configurationSetTypeElement != null)
+                            RoleInstancePowerState powerStateInstance;
+                            powerStateInstance = RoleInstancePowerState.valueOf(powerStateElement.getTextContent());
+                            roleInstanceInstance.setPowerState(powerStateInstance);
+                        }
+                        
+                        NodeList elements26 = roleInstanceListElement.getElementsByTagName("HostName");
+                        Element hostNameElement = elements26.getLength() > 0 ? ((Element) elements26.item(0)) : null;
+                        if (hostNameElement != null)
+                        {
+                            String hostNameInstance;
+                            hostNameInstance = hostNameElement.getTextContent();
+                            roleInstanceInstance.setHostName(hostNameInstance);
+                        }
+                        
+                        NodeList elements27 = roleInstanceListElement.getElementsByTagName("RemoteAccessCertificateThumbprint");
+                        Element remoteAccessCertificateThumbprintElement = elements27.getLength() > 0 ? ((Element) elements27.item(0)) : null;
+                        if (remoteAccessCertificateThumbprintElement != null)
+                        {
+                            String remoteAccessCertificateThumbprintInstance;
+                            remoteAccessCertificateThumbprintInstance = remoteAccessCertificateThumbprintElement.getTextContent();
+                            roleInstanceInstance.setRemoteAccessCertificateThumbprint(remoteAccessCertificateThumbprintInstance);
+                        }
+                    }
+                }
+                
+                NodeList elements28 = deploymentElement.getElementsByTagName("UpgradeStatus");
+                Element upgradeStatusElement = elements28.getLength() > 0 ? ((Element) elements28.item(0)) : null;
+                if (upgradeStatusElement != null)
+                {
+                    UpgradeStatus upgradeStatusInstance = new UpgradeStatus();
+                    result.setUpgradeStatus(upgradeStatusInstance);
+                    
+                    NodeList elements29 = upgradeStatusElement.getElementsByTagName("UpgradeType");
+                    Element upgradeTypeElement = elements29.getLength() > 0 ? ((Element) elements29.item(0)) : null;
+                    if (upgradeTypeElement != null)
+                    {
+                        DeploymentUpgradeType upgradeTypeInstance;
+                        upgradeTypeInstance = DeploymentUpgradeType.valueOf(upgradeTypeElement.getTextContent());
+                        upgradeStatusInstance.setUpgradeType(upgradeTypeInstance);
+                    }
+                    
+                    NodeList elements30 = upgradeStatusElement.getElementsByTagName("CurrentUpgradeDomainState");
+                    Element currentUpgradeDomainStateElement = elements30.getLength() > 0 ? ((Element) elements30.item(0)) : null;
+                    if (currentUpgradeDomainStateElement != null)
+                    {
+                        UpgradeDomainState currentUpgradeDomainStateInstance;
+                        currentUpgradeDomainStateInstance = UpgradeDomainState.valueOf(currentUpgradeDomainStateElement.getTextContent());
+                        upgradeStatusInstance.setCurrentUpgradeDomainState(currentUpgradeDomainStateInstance);
+                    }
+                    
+                    NodeList elements31 = upgradeStatusElement.getElementsByTagName("CurrentUpgradeDomain");
+                    Element currentUpgradeDomainElement = elements31.getLength() > 0 ? ((Element) elements31.item(0)) : null;
+                    if (currentUpgradeDomainElement != null)
+                    {
+                        int currentUpgradeDomainInstance;
+                        currentUpgradeDomainInstance = Integer.parseInt(currentUpgradeDomainElement.getTextContent());
+                        upgradeStatusInstance.setCurrentUpgradeDomain(currentUpgradeDomainInstance);
+                    }
+                }
+                
+                NodeList elements32 = deploymentElement.getElementsByTagName("UpgradeDomainCount");
+                Element upgradeDomainCountElement = elements32.getLength() > 0 ? ((Element) elements32.item(0)) : null;
+                if (upgradeDomainCountElement != null)
+                {
+                    int upgradeDomainCountInstance;
+                    upgradeDomainCountInstance = Integer.parseInt(upgradeDomainCountElement.getTextContent());
+                    result.setUpgradeDomainCount(upgradeDomainCountInstance);
+                }
+                
+                NodeList elements33 = deploymentElement.getElementsByTagName("RoleList");
+                Element roleListSequenceElement = elements33.getLength() > 0 ? ((Element) elements33.item(0)) : null;
+                if (roleListSequenceElement != null)
+                {
+                    for (int i3 = 0; i3 < roleListSequenceElement.getElementsByTagName("Role").getLength(); i3 = i3 + 1)
+                    {
+                        org.w3c.dom.Element roleListElement = ((org.w3c.dom.Element) roleListSequenceElement.getElementsByTagName("Role").item(i3));
+                        Role roleInstance = new Role();
+                        result.getRoles().add(roleInstance);
+                        
+                        NodeList elements34 = roleListElement.getElementsByTagName("RoleName");
+                        Element roleNameElement2 = elements34.getLength() > 0 ? ((Element) elements34.item(0)) : null;
+                        if (roleNameElement2 != null)
+                        {
+                            String roleNameInstance2;
+                            roleNameInstance2 = roleNameElement2.getTextContent();
+                            roleInstance.setRoleName(roleNameInstance2);
+                        }
+                        
+                        NodeList elements35 = roleListElement.getElementsByTagName("OsVersion");
+                        Element osVersionElement = elements35.getLength() > 0 ? ((Element) elements35.item(0)) : null;
+                        if (osVersionElement != null)
+                        {
+                            String osVersionInstance;
+                            osVersionInstance = osVersionElement.getTextContent();
+                            roleInstance.setOSVersion(osVersionInstance);
+                        }
+                        
+                        NodeList elements36 = roleListElement.getElementsByTagName("RoleType");
+                        Element roleTypeElement = elements36.getLength() > 0 ? ((Element) elements36.item(0)) : null;
+                        if (roleTypeElement != null)
+                        {
+                            String roleTypeInstance;
+                            roleTypeInstance = roleTypeElement.getTextContent();
+                            roleInstance.setRoleType(roleTypeInstance);
+                        }
+                        
+                        NodeList elements37 = roleListElement.getElementsByTagName("ConfigurationSets");
+                        Element configurationSetsSequenceElement = elements37.getLength() > 0 ? ((Element) elements37.item(0)) : null;
+                        if (configurationSetsSequenceElement != null)
+                        {
+                            for (int i4 = 0; i4 < configurationSetsSequenceElement.getElementsByTagName("ConfigurationSet").getLength(); i4 = i4 + 1)
                             {
-                                String configurationSetTypeInstance;
-                                configurationSetTypeInstance = configurationSetTypeElement.getTextContent();
-                                configurationSetInstance.setConfigurationSetType(configurationSetTypeInstance);
-                            }
-                            
-                            NodeList elements39 = configurationSetsElement.getElementsByTagName("InputEndpoints");
-                            Element inputEndpointsSequenceElement = elements39.getLength() > 0 ? ((Element)elements39.item(0)) : null;
-                            if (inputEndpointsSequenceElement != null)
-                            {
-                                for (int i5 = 0; i5 < inputEndpointsSequenceElement.getElementsByTagName("InputEndpoint").getLength(); i5 = i5 + 1)
+                                org.w3c.dom.Element configurationSetsElement = ((org.w3c.dom.Element) configurationSetsSequenceElement.getElementsByTagName("ConfigurationSet").item(i4));
+                                ConfigurationSet configurationSetInstance = new ConfigurationSet();
+                                roleInstance.getConfigurationSets().add(configurationSetInstance);
+                                
+                                NodeList elements38 = configurationSetsElement.getElementsByTagName("ConfigurationSetType");
+                                Element configurationSetTypeElement = elements38.getLength() > 0 ? ((Element) elements38.item(0)) : null;
+                                if (configurationSetTypeElement != null)
                                 {
-                                    org.w3c.dom.Element inputEndpointsElement = ((org.w3c.dom.Element)inputEndpointsSequenceElement.getElementsByTagName("InputEndpoint").item(i5));
-                                    InputEndpoint inputEndpointInstance = new InputEndpoint();
-                                    configurationSetInstance.getInputEndpoints().add(inputEndpointInstance);
-                                    
-                                    NodeList elements40 = inputEndpointsElement.getElementsByTagName("LoadBalancedEndpointSetName");
-                                    Element loadBalancedEndpointSetNameElement = elements40.getLength() > 0 ? ((Element)elements40.item(0)) : null;
-                                    if (loadBalancedEndpointSetNameElement != null)
+                                    String configurationSetTypeInstance;
+                                    configurationSetTypeInstance = configurationSetTypeElement.getTextContent();
+                                    configurationSetInstance.setConfigurationSetType(configurationSetTypeInstance);
+                                }
+                                
+                                NodeList elements39 = configurationSetsElement.getElementsByTagName("InputEndpoints");
+                                Element inputEndpointsSequenceElement = elements39.getLength() > 0 ? ((Element) elements39.item(0)) : null;
+                                if (inputEndpointsSequenceElement != null)
+                                {
+                                    for (int i5 = 0; i5 < inputEndpointsSequenceElement.getElementsByTagName("InputEndpoint").getLength(); i5 = i5 + 1)
                                     {
-                                        String loadBalancedEndpointSetNameInstance;
-                                        loadBalancedEndpointSetNameInstance = loadBalancedEndpointSetNameElement.getTextContent();
-                                        inputEndpointInstance.setLoadBalancedEndpointSetName(loadBalancedEndpointSetNameInstance);
-                                    }
-                                    
-                                    NodeList elements41 = inputEndpointsElement.getElementsByTagName("LocalPort");
-                                    Element localPortElement2 = elements41.getLength() > 0 ? ((Element)elements41.item(0)) : null;
-                                    if (localPortElement2 != null && (localPortElement2.getTextContent() != null && localPortElement2.getTextContent().isEmpty() != true) == false)
-                                    {
-                                        int localPortInstance2;
-                                        localPortInstance2 = Integer.parseInt(localPortElement2.getTextContent());
-                                        inputEndpointInstance.setLocalPort(localPortInstance2);
-                                    }
-                                    
-                                    NodeList elements42 = inputEndpointsElement.getElementsByTagName("Name");
-                                    Element nameElement3 = elements42.getLength() > 0 ? ((Element)elements42.item(0)) : null;
-                                    if (nameElement3 != null)
-                                    {
-                                        String nameInstance3;
-                                        nameInstance3 = nameElement3.getTextContent();
-                                        inputEndpointInstance.setName(nameInstance3);
-                                    }
-                                    
-                                    NodeList elements43 = inputEndpointsElement.getElementsByTagName("Port");
-                                    Element portElement = elements43.getLength() > 0 ? ((Element)elements43.item(0)) : null;
-                                    if (portElement != null && (portElement.getTextContent() != null && portElement.getTextContent().isEmpty() != true) == false)
-                                    {
-                                        int portInstance;
-                                        portInstance = Integer.parseInt(portElement.getTextContent());
-                                        inputEndpointInstance.setPort(portInstance);
-                                    }
-                                    
-                                    NodeList elements44 = inputEndpointsElement.getElementsByTagName("LoadBalancerProbe");
-                                    Element loadBalancerProbeElement = elements44.getLength() > 0 ? ((Element)elements44.item(0)) : null;
-                                    if (loadBalancerProbeElement != null)
-                                    {
-                                        LoadBalancerProbe loadBalancerProbeInstance = new LoadBalancerProbe();
-                                        inputEndpointInstance.setLoadBalancerProbe(loadBalancerProbeInstance);
+                                        org.w3c.dom.Element inputEndpointsElement = ((org.w3c.dom.Element) inputEndpointsSequenceElement.getElementsByTagName("InputEndpoint").item(i5));
+                                        InputEndpoint inputEndpointInstance = new InputEndpoint();
+                                        configurationSetInstance.getInputEndpoints().add(inputEndpointInstance);
                                         
-                                        NodeList elements45 = loadBalancerProbeElement.getElementsByTagName("Path");
-                                        Element pathElement = elements45.getLength() > 0 ? ((Element)elements45.item(0)) : null;
-                                        if (pathElement != null)
+                                        NodeList elements40 = inputEndpointsElement.getElementsByTagName("LoadBalancedEndpointSetName");
+                                        Element loadBalancedEndpointSetNameElement = elements40.getLength() > 0 ? ((Element) elements40.item(0)) : null;
+                                        if (loadBalancedEndpointSetNameElement != null)
                                         {
-                                            String pathInstance;
-                                            pathInstance = pathElement.getTextContent();
-                                            loadBalancerProbeInstance.setPath(pathInstance);
+                                            String loadBalancedEndpointSetNameInstance;
+                                            loadBalancedEndpointSetNameInstance = loadBalancedEndpointSetNameElement.getTextContent();
+                                            inputEndpointInstance.setLoadBalancedEndpointSetName(loadBalancedEndpointSetNameInstance);
                                         }
                                         
-                                        NodeList elements46 = loadBalancerProbeElement.getElementsByTagName("Port");
-                                        Element portElement2 = elements46.getLength() > 0 ? ((Element)elements46.item(0)) : null;
-                                        if (portElement2 != null)
+                                        NodeList elements41 = inputEndpointsElement.getElementsByTagName("LocalPort");
+                                        Element localPortElement2 = elements41.getLength() > 0 ? ((Element) elements41.item(0)) : null;
+                                        if (localPortElement2 != null && (localPortElement2.getTextContent() != null && localPortElement2.getTextContent().isEmpty() != true) == false)
                                         {
-                                            int portInstance2;
-                                            portInstance2 = Integer.parseInt(portElement2.getTextContent());
-                                            loadBalancerProbeInstance.setPort(portInstance2);
+                                            int localPortInstance2;
+                                            localPortInstance2 = Integer.parseInt(localPortElement2.getTextContent());
+                                            inputEndpointInstance.setLocalPort(localPortInstance2);
                                         }
                                         
-                                        NodeList elements47 = loadBalancerProbeElement.getElementsByTagName("Protocol");
-                                        Element protocolElement2 = elements47.getLength() > 0 ? ((Element)elements47.item(0)) : null;
-                                        if (protocolElement2 != null)
+                                        NodeList elements42 = inputEndpointsElement.getElementsByTagName("Name");
+                                        Element nameElement3 = elements42.getLength() > 0 ? ((Element) elements42.item(0)) : null;
+                                        if (nameElement3 != null)
                                         {
-                                            LoadBalancerProbeTransportProtocol protocolInstance2;
-                                            protocolInstance2 = com.microsoft.windowsazure.management.compute.ComputeManagementClientImpl.parseLoadBalancerProbeTransportProtocol(protocolElement2.getTextContent());
-                                            loadBalancerProbeInstance.setProtocol(protocolInstance2);
+                                            String nameInstance3;
+                                            nameInstance3 = nameElement3.getTextContent();
+                                            inputEndpointInstance.setName(nameInstance3);
                                         }
                                         
-                                        NodeList elements48 = loadBalancerProbeElement.getElementsByTagName("IntervalInSeconds");
-                                        Element intervalInSecondsElement = elements48.getLength() > 0 ? ((Element)elements48.item(0)) : null;
-                                        if (intervalInSecondsElement != null && (intervalInSecondsElement.getTextContent() != null && intervalInSecondsElement.getTextContent().isEmpty() != true) == false)
+                                        NodeList elements43 = inputEndpointsElement.getElementsByTagName("Port");
+                                        Element portElement = elements43.getLength() > 0 ? ((Element) elements43.item(0)) : null;
+                                        if (portElement != null && (portElement.getTextContent() != null && portElement.getTextContent().isEmpty() != true) == false)
                                         {
-                                            int intervalInSecondsInstance;
-                                            intervalInSecondsInstance = Integer.parseInt(intervalInSecondsElement.getTextContent());
-                                            loadBalancerProbeInstance.setIntervalInSeconds(intervalInSecondsInstance);
+                                            int portInstance;
+                                            portInstance = Integer.parseInt(portElement.getTextContent());
+                                            inputEndpointInstance.setPort(portInstance);
                                         }
                                         
-                                        NodeList elements49 = loadBalancerProbeElement.getElementsByTagName("TimeoutInSeconds");
-                                        Element timeoutInSecondsElement = elements49.getLength() > 0 ? ((Element)elements49.item(0)) : null;
-                                        if (timeoutInSecondsElement != null && (timeoutInSecondsElement.getTextContent() != null && timeoutInSecondsElement.getTextContent().isEmpty() != true) == false)
+                                        NodeList elements44 = inputEndpointsElement.getElementsByTagName("LoadBalancerProbe");
+                                        Element loadBalancerProbeElement = elements44.getLength() > 0 ? ((Element) elements44.item(0)) : null;
+                                        if (loadBalancerProbeElement != null)
                                         {
-                                            int timeoutInSecondsInstance;
-                                            timeoutInSecondsInstance = Integer.parseInt(timeoutInSecondsElement.getTextContent());
-                                            loadBalancerProbeInstance.setTimeoutInSeconds(timeoutInSecondsInstance);
-                                        }
-                                    }
-                                    
-                                    NodeList elements50 = inputEndpointsElement.getElementsByTagName("Protocol");
-                                    Element protocolElement3 = elements50.getLength() > 0 ? ((Element)elements50.item(0)) : null;
-                                    if (protocolElement3 != null)
-                                    {
-                                        String protocolInstance3;
-                                        protocolInstance3 = protocolElement3.getTextContent();
-                                        inputEndpointInstance.setProtocol(protocolInstance3);
-                                    }
-                                    
-                                    NodeList elements51 = inputEndpointsElement.getElementsByTagName("Vip");
-                                    Element vipElement2 = elements51.getLength() > 0 ? ((Element)elements51.item(0)) : null;
-                                    if (vipElement2 != null)
-                                    {
-                                        InetAddress vipInstance2;
-                                        vipInstance2 = InetAddress.getByName(vipElement2.getTextContent());
-                                        inputEndpointInstance.setVirtualIPAddress(vipInstance2);
-                                    }
-                                    
-                                    NodeList elements52 = inputEndpointsElement.getElementsByTagName("EnableDirectServerReturn");
-                                    Element enableDirectServerReturnElement = elements52.getLength() > 0 ? ((Element)elements52.item(0)) : null;
-                                    if (enableDirectServerReturnElement != null && (enableDirectServerReturnElement.getTextContent() != null && enableDirectServerReturnElement.getTextContent().isEmpty() != true) == false)
-                                    {
-                                        boolean enableDirectServerReturnInstance;
-                                        enableDirectServerReturnInstance = Boolean.parseBoolean(enableDirectServerReturnElement.getTextContent());
-                                        inputEndpointInstance.setEnableDirectServerReturn(enableDirectServerReturnInstance);
-                                    }
-                                    
-                                    NodeList elements53 = inputEndpointsElement.getElementsByTagName("EndpointAcl");
-                                    Element endpointAclElement = elements53.getLength() > 0 ? ((Element)elements53.item(0)) : null;
-                                    if (endpointAclElement != null)
-                                    {
-                                        EndpointAcl endpointAclInstance = new EndpointAcl();
-                                        inputEndpointInstance.setEndpointAcl(endpointAclInstance);
-                                        
-                                        NodeList elements54 = endpointAclElement.getElementsByTagName("Rules");
-                                        Element rulesSequenceElement = elements54.getLength() > 0 ? ((Element)elements54.item(0)) : null;
-                                        if (rulesSequenceElement != null)
-                                        {
-                                            for (int i6 = 0; i6 < rulesSequenceElement.getElementsByTagName("Rule").getLength(); i6 = i6 + 1)
+                                            LoadBalancerProbe loadBalancerProbeInstance = new LoadBalancerProbe();
+                                            inputEndpointInstance.setLoadBalancerProbe(loadBalancerProbeInstance);
+                                            
+                                            NodeList elements45 = loadBalancerProbeElement.getElementsByTagName("Path");
+                                            Element pathElement = elements45.getLength() > 0 ? ((Element) elements45.item(0)) : null;
+                                            if (pathElement != null)
                                             {
-                                                org.w3c.dom.Element rulesElement = ((org.w3c.dom.Element)rulesSequenceElement.getElementsByTagName("Rule").item(i6));
-                                                AccessControlListRule ruleInstance = new AccessControlListRule();
-                                                endpointAclInstance.getRules().add(ruleInstance);
-                                                
-                                                NodeList elements55 = rulesElement.getElementsByTagName("Order");
-                                                Element orderElement = elements55.getLength() > 0 ? ((Element)elements55.item(0)) : null;
-                                                if (orderElement != null && (orderElement.getTextContent() != null && orderElement.getTextContent().isEmpty() != true) == false)
+                                                String pathInstance;
+                                                pathInstance = pathElement.getTextContent();
+                                                loadBalancerProbeInstance.setPath(pathInstance);
+                                            }
+                                            
+                                            NodeList elements46 = loadBalancerProbeElement.getElementsByTagName("Port");
+                                            Element portElement2 = elements46.getLength() > 0 ? ((Element) elements46.item(0)) : null;
+                                            if (portElement2 != null)
+                                            {
+                                                int portInstance2;
+                                                portInstance2 = Integer.parseInt(portElement2.getTextContent());
+                                                loadBalancerProbeInstance.setPort(portInstance2);
+                                            }
+                                            
+                                            NodeList elements47 = loadBalancerProbeElement.getElementsByTagName("Protocol");
+                                            Element protocolElement2 = elements47.getLength() > 0 ? ((Element) elements47.item(0)) : null;
+                                            if (protocolElement2 != null)
+                                            {
+                                                LoadBalancerProbeTransportProtocol protocolInstance2;
+                                                protocolInstance2 = com.microsoft.windowsazure.management.compute.ComputeManagementClientImpl.parseLoadBalancerProbeTransportProtocol(protocolElement2.getTextContent());
+                                                loadBalancerProbeInstance.setProtocol(protocolInstance2);
+                                            }
+                                            
+                                            NodeList elements48 = loadBalancerProbeElement.getElementsByTagName("IntervalInSeconds");
+                                            Element intervalInSecondsElement = elements48.getLength() > 0 ? ((Element) elements48.item(0)) : null;
+                                            if (intervalInSecondsElement != null && (intervalInSecondsElement.getTextContent() != null && intervalInSecondsElement.getTextContent().isEmpty() != true) == false)
+                                            {
+                                                int intervalInSecondsInstance;
+                                                intervalInSecondsInstance = Integer.parseInt(intervalInSecondsElement.getTextContent());
+                                                loadBalancerProbeInstance.setIntervalInSeconds(intervalInSecondsInstance);
+                                            }
+                                            
+                                            NodeList elements49 = loadBalancerProbeElement.getElementsByTagName("TimeoutInSeconds");
+                                            Element timeoutInSecondsElement = elements49.getLength() > 0 ? ((Element) elements49.item(0)) : null;
+                                            if (timeoutInSecondsElement != null && (timeoutInSecondsElement.getTextContent() != null && timeoutInSecondsElement.getTextContent().isEmpty() != true) == false)
+                                            {
+                                                int timeoutInSecondsInstance;
+                                                timeoutInSecondsInstance = Integer.parseInt(timeoutInSecondsElement.getTextContent());
+                                                loadBalancerProbeInstance.setTimeoutInSeconds(timeoutInSecondsInstance);
+                                            }
+                                        }
+                                        
+                                        NodeList elements50 = inputEndpointsElement.getElementsByTagName("Protocol");
+                                        Element protocolElement3 = elements50.getLength() > 0 ? ((Element) elements50.item(0)) : null;
+                                        if (protocolElement3 != null)
+                                        {
+                                            String protocolInstance3;
+                                            protocolInstance3 = protocolElement3.getTextContent();
+                                            inputEndpointInstance.setProtocol(protocolInstance3);
+                                        }
+                                        
+                                        NodeList elements51 = inputEndpointsElement.getElementsByTagName("Vip");
+                                        Element vipElement2 = elements51.getLength() > 0 ? ((Element) elements51.item(0)) : null;
+                                        if (vipElement2 != null)
+                                        {
+                                            InetAddress vipInstance2;
+                                            vipInstance2 = InetAddress.getByName(vipElement2.getTextContent());
+                                            inputEndpointInstance.setVirtualIPAddress(vipInstance2);
+                                        }
+                                        
+                                        NodeList elements52 = inputEndpointsElement.getElementsByTagName("EnableDirectServerReturn");
+                                        Element enableDirectServerReturnElement = elements52.getLength() > 0 ? ((Element) elements52.item(0)) : null;
+                                        if (enableDirectServerReturnElement != null && (enableDirectServerReturnElement.getTextContent() != null && enableDirectServerReturnElement.getTextContent().isEmpty() != true) == false)
+                                        {
+                                            boolean enableDirectServerReturnInstance;
+                                            enableDirectServerReturnInstance = Boolean.parseBoolean(enableDirectServerReturnElement.getTextContent());
+                                            inputEndpointInstance.setEnableDirectServerReturn(enableDirectServerReturnInstance);
+                                        }
+                                        
+                                        NodeList elements53 = inputEndpointsElement.getElementsByTagName("EndpointAcl");
+                                        Element endpointAclElement = elements53.getLength() > 0 ? ((Element) elements53.item(0)) : null;
+                                        if (endpointAclElement != null)
+                                        {
+                                            EndpointAcl endpointAclInstance = new EndpointAcl();
+                                            inputEndpointInstance.setEndpointAcl(endpointAclInstance);
+                                            
+                                            NodeList elements54 = endpointAclElement.getElementsByTagName("Rules");
+                                            Element rulesSequenceElement = elements54.getLength() > 0 ? ((Element) elements54.item(0)) : null;
+                                            if (rulesSequenceElement != null)
+                                            {
+                                                for (int i6 = 0; i6 < rulesSequenceElement.getElementsByTagName("Rule").getLength(); i6 = i6 + 1)
                                                 {
-                                                    int orderInstance;
-                                                    orderInstance = Integer.parseInt(orderElement.getTextContent());
-                                                    ruleInstance.setOrder(orderInstance);
-                                                }
-                                                
-                                                NodeList elements56 = rulesElement.getElementsByTagName("Action");
-                                                Element actionElement = elements56.getLength() > 0 ? ((Element)elements56.item(0)) : null;
-                                                if (actionElement != null)
-                                                {
-                                                    String actionInstance;
-                                                    actionInstance = actionElement.getTextContent();
-                                                    ruleInstance.setAction(actionInstance);
-                                                }
-                                                
-                                                NodeList elements57 = rulesElement.getElementsByTagName("RemoteSubnet");
-                                                Element remoteSubnetElement = elements57.getLength() > 0 ? ((Element)elements57.item(0)) : null;
-                                                if (remoteSubnetElement != null)
-                                                {
-                                                    String remoteSubnetInstance;
-                                                    remoteSubnetInstance = remoteSubnetElement.getTextContent();
-                                                    ruleInstance.setRemoteSubnet(remoteSubnetInstance);
-                                                }
-                                                
-                                                NodeList elements58 = rulesElement.getElementsByTagName("Description");
-                                                Element descriptionElement = elements58.getLength() > 0 ? ((Element)elements58.item(0)) : null;
-                                                if (descriptionElement != null)
-                                                {
-                                                    String descriptionInstance;
-                                                    descriptionInstance = descriptionElement.getTextContent();
-                                                    ruleInstance.setDescription(descriptionInstance);
+                                                    org.w3c.dom.Element rulesElement = ((org.w3c.dom.Element) rulesSequenceElement.getElementsByTagName("Rule").item(i6));
+                                                    AccessControlListRule ruleInstance = new AccessControlListRule();
+                                                    endpointAclInstance.getRules().add(ruleInstance);
+                                                    
+                                                    NodeList elements55 = rulesElement.getElementsByTagName("Order");
+                                                    Element orderElement = elements55.getLength() > 0 ? ((Element) elements55.item(0)) : null;
+                                                    if (orderElement != null && (orderElement.getTextContent() != null && orderElement.getTextContent().isEmpty() != true) == false)
+                                                    {
+                                                        int orderInstance;
+                                                        orderInstance = Integer.parseInt(orderElement.getTextContent());
+                                                        ruleInstance.setOrder(orderInstance);
+                                                    }
+                                                    
+                                                    NodeList elements56 = rulesElement.getElementsByTagName("Action");
+                                                    Element actionElement = elements56.getLength() > 0 ? ((Element) elements56.item(0)) : null;
+                                                    if (actionElement != null)
+                                                    {
+                                                        String actionInstance;
+                                                        actionInstance = actionElement.getTextContent();
+                                                        ruleInstance.setAction(actionInstance);
+                                                    }
+                                                    
+                                                    NodeList elements57 = rulesElement.getElementsByTagName("RemoteSubnet");
+                                                    Element remoteSubnetElement = elements57.getLength() > 0 ? ((Element) elements57.item(0)) : null;
+                                                    if (remoteSubnetElement != null)
+                                                    {
+                                                        String remoteSubnetInstance;
+                                                        remoteSubnetInstance = remoteSubnetElement.getTextContent();
+                                                        ruleInstance.setRemoteSubnet(remoteSubnetInstance);
+                                                    }
+                                                    
+                                                    NodeList elements58 = rulesElement.getElementsByTagName("Description");
+                                                    Element descriptionElement = elements58.getLength() > 0 ? ((Element) elements58.item(0)) : null;
+                                                    if (descriptionElement != null)
+                                                    {
+                                                        String descriptionInstance;
+                                                        descriptionInstance = descriptionElement.getTextContent();
+                                                        ruleInstance.setDescription(descriptionInstance);
+                                                    }
                                                 }
                                             }
                                         }
                                     }
                                 }
-                            }
-                            
-                            NodeList elements59 = configurationSetsElement.getElementsByTagName("SubnetNames");
-                            Element subnetNamesSequenceElement = elements59.getLength() > 0 ? ((Element)elements59.item(0)) : null;
-                            if (subnetNamesSequenceElement != null)
-                            {
-                                for (int i7 = 0; i7 < subnetNamesSequenceElement.getElementsByTagName("SubnetName").getLength(); i7 = i7 + 1)
-                                {
-                                    org.w3c.dom.Element subnetNamesElement = ((org.w3c.dom.Element)subnetNamesSequenceElement.getElementsByTagName("SubnetName").item(i7));
-                                    configurationSetInstance.getSubnetNames().add(subnetNamesElement.getTextContent());
-                                }
-                            }
-                            
-                            NodeList elements60 = configurationSetsElement.getElementsByTagName("ComputerName");
-                            Element computerNameElement = elements60.getLength() > 0 ? ((Element)elements60.item(0)) : null;
-                            if (computerNameElement != null)
-                            {
-                                String computerNameInstance;
-                                computerNameInstance = computerNameElement.getTextContent();
-                                configurationSetInstance.setComputerName(computerNameInstance);
-                            }
-                            
-                            NodeList elements61 = configurationSetsElement.getElementsByTagName("AdminPassword");
-                            Element adminPasswordElement = elements61.getLength() > 0 ? ((Element)elements61.item(0)) : null;
-                            if (adminPasswordElement != null)
-                            {
-                                String adminPasswordInstance;
-                                adminPasswordInstance = adminPasswordElement.getTextContent();
-                                configurationSetInstance.setAdminPassword(adminPasswordInstance);
-                            }
-                            
-                            NodeList elements62 = configurationSetsElement.getElementsByTagName("ResetPasswordOnFirstLogon");
-                            Element resetPasswordOnFirstLogonElement = elements62.getLength() > 0 ? ((Element)elements62.item(0)) : null;
-                            if (resetPasswordOnFirstLogonElement != null && (resetPasswordOnFirstLogonElement.getTextContent() != null && resetPasswordOnFirstLogonElement.getTextContent().isEmpty() != true) == false)
-                            {
-                                boolean resetPasswordOnFirstLogonInstance;
-                                resetPasswordOnFirstLogonInstance = Boolean.parseBoolean(resetPasswordOnFirstLogonElement.getTextContent());
-                                configurationSetInstance.setResetPasswordOnFirstLogon(resetPasswordOnFirstLogonInstance);
-                            }
-                            
-                            NodeList elements63 = configurationSetsElement.getElementsByTagName("EnableAutomaticUpdates");
-                            Element enableAutomaticUpdatesElement = elements63.getLength() > 0 ? ((Element)elements63.item(0)) : null;
-                            if (enableAutomaticUpdatesElement != null && (enableAutomaticUpdatesElement.getTextContent() != null && enableAutomaticUpdatesElement.getTextContent().isEmpty() != true) == false)
-                            {
-                                boolean enableAutomaticUpdatesInstance;
-                                enableAutomaticUpdatesInstance = Boolean.parseBoolean(enableAutomaticUpdatesElement.getTextContent());
-                                configurationSetInstance.setEnableAutomaticUpdates(enableAutomaticUpdatesInstance);
-                            }
-                            
-                            NodeList elements64 = configurationSetsElement.getElementsByTagName("TimeZone");
-                            Element timeZoneElement = elements64.getLength() > 0 ? ((Element)elements64.item(0)) : null;
-                            if (timeZoneElement != null)
-                            {
-                                String timeZoneInstance;
-                                timeZoneInstance = timeZoneElement.getTextContent();
-                                configurationSetInstance.setTimeZone(timeZoneInstance);
-                            }
-                            
-                            NodeList elements65 = configurationSetsElement.getElementsByTagName("DomainJoin");
-                            Element domainJoinElement = elements65.getLength() > 0 ? ((Element)elements65.item(0)) : null;
-                            if (domainJoinElement != null)
-                            {
-                                DomainJoinSettings domainJoinInstance = new DomainJoinSettings();
-                                configurationSetInstance.setDomainJoin(domainJoinInstance);
                                 
-                                NodeList elements66 = domainJoinElement.getElementsByTagName("Credentials");
-                                Element credentialsElement = elements66.getLength() > 0 ? ((Element)elements66.item(0)) : null;
-                                if (credentialsElement != null)
+                                NodeList elements59 = configurationSetsElement.getElementsByTagName("SubnetNames");
+                                Element subnetNamesSequenceElement = elements59.getLength() > 0 ? ((Element) elements59.item(0)) : null;
+                                if (subnetNamesSequenceElement != null)
                                 {
-                                    DomainJoinCredentials credentialsInstance = new DomainJoinCredentials();
-                                    domainJoinInstance.setCredentials(credentialsInstance);
-                                    
-                                    NodeList elements67 = credentialsElement.getElementsByTagName("Domain");
-                                    Element domainElement = elements67.getLength() > 0 ? ((Element)elements67.item(0)) : null;
-                                    if (domainElement != null)
+                                    for (int i7 = 0; i7 < subnetNamesSequenceElement.getElementsByTagName("SubnetName").getLength(); i7 = i7 + 1)
                                     {
-                                        String domainInstance;
-                                        domainInstance = domainElement.getTextContent();
-                                        credentialsInstance.setDomain(domainInstance);
-                                    }
-                                    
-                                    NodeList elements68 = credentialsElement.getElementsByTagName("Username");
-                                    Element usernameElement = elements68.getLength() > 0 ? ((Element)elements68.item(0)) : null;
-                                    if (usernameElement != null)
-                                    {
-                                        String usernameInstance;
-                                        usernameInstance = usernameElement.getTextContent();
-                                        credentialsInstance.setUserName(usernameInstance);
-                                    }
-                                    
-                                    NodeList elements69 = credentialsElement.getElementsByTagName("Password");
-                                    Element passwordElement = elements69.getLength() > 0 ? ((Element)elements69.item(0)) : null;
-                                    if (passwordElement != null)
-                                    {
-                                        String passwordInstance;
-                                        passwordInstance = passwordElement.getTextContent();
-                                        credentialsInstance.setPassword(passwordInstance);
+                                        org.w3c.dom.Element subnetNamesElement = ((org.w3c.dom.Element) subnetNamesSequenceElement.getElementsByTagName("SubnetName").item(i7));
+                                        configurationSetInstance.getSubnetNames().add(subnetNamesElement.getTextContent());
                                     }
                                 }
                                 
-                                NodeList elements70 = domainJoinElement.getElementsByTagName("JoinDomain");
-                                Element joinDomainElement = elements70.getLength() > 0 ? ((Element)elements70.item(0)) : null;
-                                if (joinDomainElement != null)
+                                NodeList elements60 = configurationSetsElement.getElementsByTagName("StaticVirtualNetworkIPAddress");
+                                Element staticVirtualNetworkIPAddressElement = elements60.getLength() > 0 ? ((Element) elements60.item(0)) : null;
+                                if (staticVirtualNetworkIPAddressElement != null)
                                 {
-                                    String joinDomainInstance;
-                                    joinDomainInstance = joinDomainElement.getTextContent();
-                                    domainJoinInstance.setDomainToJoin(joinDomainInstance);
+                                    String staticVirtualNetworkIPAddressInstance;
+                                    staticVirtualNetworkIPAddressInstance = staticVirtualNetworkIPAddressElement.getTextContent();
+                                    configurationSetInstance.setStaticVirtualNetworkIPAddress(staticVirtualNetworkIPAddressInstance);
                                 }
                                 
-                                NodeList elements71 = domainJoinElement.getElementsByTagName("MachineObjectOU");
-                                Element machineObjectOUElement = elements71.getLength() > 0 ? ((Element)elements71.item(0)) : null;
-                                if (machineObjectOUElement != null)
+                                NodeList elements61 = configurationSetsElement.getElementsByTagName("ComputerName");
+                                Element computerNameElement = elements61.getLength() > 0 ? ((Element) elements61.item(0)) : null;
+                                if (computerNameElement != null)
                                 {
-                                    String machineObjectOUInstance;
-                                    machineObjectOUInstance = machineObjectOUElement.getTextContent();
-                                    domainJoinInstance.setLdapMachineObjectOU(machineObjectOUInstance);
+                                    String computerNameInstance;
+                                    computerNameInstance = computerNameElement.getTextContent();
+                                    configurationSetInstance.setComputerName(computerNameInstance);
                                 }
                                 
-                                NodeList elements72 = domainJoinElement.getElementsByTagName("Provisioning");
-                                Element provisioningElement = elements72.getLength() > 0 ? ((Element)elements72.item(0)) : null;
-                                if (provisioningElement != null)
+                                NodeList elements62 = configurationSetsElement.getElementsByTagName("AdminPassword");
+                                Element adminPasswordElement = elements62.getLength() > 0 ? ((Element) elements62.item(0)) : null;
+                                if (adminPasswordElement != null)
                                 {
-                                    DomainJoinProvisioning provisioningInstance = new DomainJoinProvisioning();
-                                    domainJoinInstance.setProvisioning(provisioningInstance);
-                                    
-                                    NodeList elements73 = provisioningElement.getElementsByTagName("AccountData");
-                                    Element accountDataElement = elements73.getLength() > 0 ? ((Element)elements73.item(0)) : null;
-                                    if (accountDataElement != null)
-                                    {
-                                        String accountDataInstance;
-                                        accountDataInstance = accountDataElement.getTextContent();
-                                        provisioningInstance.setAccountData(accountDataInstance);
-                                    }
+                                    String adminPasswordInstance;
+                                    adminPasswordInstance = adminPasswordElement.getTextContent();
+                                    configurationSetInstance.setAdminPassword(adminPasswordInstance);
                                 }
-                            }
-                            
-                            NodeList elements74 = configurationSetsElement.getElementsByTagName("StoredCertificateSettings");
-                            Element storedCertificateSettingsSequenceElement = elements74.getLength() > 0 ? ((Element)elements74.item(0)) : null;
-                            if (storedCertificateSettingsSequenceElement != null)
-                            {
-                                for (int i8 = 0; i8 < storedCertificateSettingsSequenceElement.getElementsByTagName("CertificateSetting").getLength(); i8 = i8 + 1)
-                                {
-                                    org.w3c.dom.Element storedCertificateSettingsElement = ((org.w3c.dom.Element)storedCertificateSettingsSequenceElement.getElementsByTagName("CertificateSetting").item(i8));
-                                    StoredCertificateSettings certificateSettingInstance = new StoredCertificateSettings();
-                                    configurationSetInstance.getStoredCertificateSettings().add(certificateSettingInstance);
-                                    
-                                    NodeList elements75 = storedCertificateSettingsElement.getElementsByTagName("StoreLocation");
-                                    Element storeLocationElement = elements75.getLength() > 0 ? ((Element)elements75.item(0)) : null;
-                                    if (storeLocationElement != null)
-                                    {
-                                    }
-                                    
-                                    NodeList elements76 = storedCertificateSettingsElement.getElementsByTagName("StoreName");
-                                    Element storeNameElement = elements76.getLength() > 0 ? ((Element)elements76.item(0)) : null;
-                                    if (storeNameElement != null)
-                                    {
-                                        String storeNameInstance;
-                                        storeNameInstance = storeNameElement.getTextContent();
-                                        certificateSettingInstance.setStoreName(storeNameInstance);
-                                    }
-                                    
-                                    NodeList elements77 = storedCertificateSettingsElement.getElementsByTagName("Thumbprint");
-                                    Element thumbprintElement = elements77.getLength() > 0 ? ((Element)elements77.item(0)) : null;
-                                    if (thumbprintElement != null)
-                                    {
-                                        String thumbprintInstance;
-                                        thumbprintInstance = thumbprintElement.getTextContent();
-                                        certificateSettingInstance.setThumbprint(thumbprintInstance);
-                                    }
-                                }
-                            }
-                            
-                            NodeList elements78 = configurationSetsElement.getElementsByTagName("WinRM");
-                            Element winRMElement = elements78.getLength() > 0 ? ((Element)elements78.item(0)) : null;
-                            if (winRMElement != null)
-                            {
-                                WindowsRemoteManagementSettings winRMInstance = new WindowsRemoteManagementSettings();
-                                configurationSetInstance.setWindowsRemoteManagement(winRMInstance);
                                 
-                                NodeList elements79 = winRMElement.getElementsByTagName("Listeners");
-                                Element listenersSequenceElement = elements79.getLength() > 0 ? ((Element)elements79.item(0)) : null;
-                                if (listenersSequenceElement != null)
+                                NodeList elements63 = configurationSetsElement.getElementsByTagName("ResetPasswordOnFirstLogon");
+                                Element resetPasswordOnFirstLogonElement = elements63.getLength() > 0 ? ((Element) elements63.item(0)) : null;
+                                if (resetPasswordOnFirstLogonElement != null && (resetPasswordOnFirstLogonElement.getTextContent() != null && resetPasswordOnFirstLogonElement.getTextContent().isEmpty() != true) == false)
                                 {
-                                    for (int i9 = 0; i9 < listenersSequenceElement.getElementsByTagName("Listener").getLength(); i9 = i9 + 1)
+                                    boolean resetPasswordOnFirstLogonInstance;
+                                    resetPasswordOnFirstLogonInstance = Boolean.parseBoolean(resetPasswordOnFirstLogonElement.getTextContent());
+                                    configurationSetInstance.setResetPasswordOnFirstLogon(resetPasswordOnFirstLogonInstance);
+                                }
+                                
+                                NodeList elements64 = configurationSetsElement.getElementsByTagName("EnableAutomaticUpdates");
+                                Element enableAutomaticUpdatesElement = elements64.getLength() > 0 ? ((Element) elements64.item(0)) : null;
+                                if (enableAutomaticUpdatesElement != null && (enableAutomaticUpdatesElement.getTextContent() != null && enableAutomaticUpdatesElement.getTextContent().isEmpty() != true) == false)
+                                {
+                                    boolean enableAutomaticUpdatesInstance;
+                                    enableAutomaticUpdatesInstance = Boolean.parseBoolean(enableAutomaticUpdatesElement.getTextContent());
+                                    configurationSetInstance.setEnableAutomaticUpdates(enableAutomaticUpdatesInstance);
+                                }
+                                
+                                NodeList elements65 = configurationSetsElement.getElementsByTagName("TimeZone");
+                                Element timeZoneElement = elements65.getLength() > 0 ? ((Element) elements65.item(0)) : null;
+                                if (timeZoneElement != null)
+                                {
+                                    String timeZoneInstance;
+                                    timeZoneInstance = timeZoneElement.getTextContent();
+                                    configurationSetInstance.setTimeZone(timeZoneInstance);
+                                }
+                                
+                                NodeList elements66 = configurationSetsElement.getElementsByTagName("DomainJoin");
+                                Element domainJoinElement = elements66.getLength() > 0 ? ((Element) elements66.item(0)) : null;
+                                if (domainJoinElement != null)
+                                {
+                                    DomainJoinSettings domainJoinInstance = new DomainJoinSettings();
+                                    configurationSetInstance.setDomainJoin(domainJoinInstance);
+                                    
+                                    NodeList elements67 = domainJoinElement.getElementsByTagName("Credentials");
+                                    Element credentialsElement = elements67.getLength() > 0 ? ((Element) elements67.item(0)) : null;
+                                    if (credentialsElement != null)
                                     {
-                                        org.w3c.dom.Element listenersElement = ((org.w3c.dom.Element)listenersSequenceElement.getElementsByTagName("Listener").item(i9));
-                                        WindowsRemoteManagementListener listenerInstance = new WindowsRemoteManagementListener();
-                                        winRMInstance.getListeners().add(listenerInstance);
+                                        DomainJoinCredentials credentialsInstance = new DomainJoinCredentials();
+                                        domainJoinInstance.setCredentials(credentialsInstance);
                                         
-                                        NodeList elements80 = listenersElement.getElementsByTagName("Protocol");
-                                        Element protocolElement4 = elements80.getLength() > 0 ? ((Element)elements80.item(0)) : null;
-                                        if (protocolElement4 != null)
+                                        NodeList elements68 = credentialsElement.getElementsByTagName("Domain");
+                                        Element domainElement = elements68.getLength() > 0 ? ((Element) elements68.item(0)) : null;
+                                        if (domainElement != null)
                                         {
-                                            VirtualMachineWindowsRemoteManagementListenerType protocolInstance4;
-                                            protocolInstance4 = VirtualMachineWindowsRemoteManagementListenerType.valueOf(protocolElement4.getTextContent());
-                                            listenerInstance.setListenerType(protocolInstance4);
+                                            String domainInstance;
+                                            domainInstance = domainElement.getTextContent();
+                                            credentialsInstance.setDomain(domainInstance);
                                         }
                                         
-                                        NodeList elements81 = listenersElement.getElementsByTagName("CertificateThumbprint");
-                                        Element certificateThumbprintElement = elements81.getLength() > 0 ? ((Element)elements81.item(0)) : null;
-                                        if (certificateThumbprintElement != null)
+                                        NodeList elements69 = credentialsElement.getElementsByTagName("Username");
+                                        Element usernameElement = elements69.getLength() > 0 ? ((Element) elements69.item(0)) : null;
+                                        if (usernameElement != null)
                                         {
-                                            String certificateThumbprintInstance;
-                                            certificateThumbprintInstance = certificateThumbprintElement.getTextContent();
-                                            listenerInstance.setCertificateThumbprint(certificateThumbprintInstance);
+                                            String usernameInstance;
+                                            usernameInstance = usernameElement.getTextContent();
+                                            credentialsInstance.setUserName(usernameInstance);
+                                        }
+                                        
+                                        NodeList elements70 = credentialsElement.getElementsByTagName("Password");
+                                        Element passwordElement = elements70.getLength() > 0 ? ((Element) elements70.item(0)) : null;
+                                        if (passwordElement != null)
+                                        {
+                                            String passwordInstance;
+                                            passwordInstance = passwordElement.getTextContent();
+                                            credentialsInstance.setPassword(passwordInstance);
                                         }
                                     }
-                                }
-                            }
-                            
-                            NodeList elements82 = configurationSetsElement.getElementsByTagName("AdminUsername");
-                            Element adminUsernameElement = elements82.getLength() > 0 ? ((Element)elements82.item(0)) : null;
-                            if (adminUsernameElement != null)
-                            {
-                                String adminUsernameInstance;
-                                adminUsernameInstance = adminUsernameElement.getTextContent();
-                                configurationSetInstance.setAdminUserName(adminUsernameInstance);
-                            }
-                            
-                            NodeList elements83 = configurationSetsElement.getElementsByTagName("HostName");
-                            Element hostNameElement2 = elements83.getLength() > 0 ? ((Element)elements83.item(0)) : null;
-                            if (hostNameElement2 != null)
-                            {
-                                String hostNameInstance2;
-                                hostNameInstance2 = hostNameElement2.getTextContent();
-                                configurationSetInstance.setHostName(hostNameInstance2);
-                            }
-                            
-                            NodeList elements84 = configurationSetsElement.getElementsByTagName("UserName");
-                            Element userNameElement = elements84.getLength() > 0 ? ((Element)elements84.item(0)) : null;
-                            if (userNameElement != null)
-                            {
-                                String userNameInstance;
-                                userNameInstance = userNameElement.getTextContent();
-                                configurationSetInstance.setUserName(userNameInstance);
-                            }
-                            
-                            NodeList elements85 = configurationSetsElement.getElementsByTagName("UserPassword");
-                            Element userPasswordElement = elements85.getLength() > 0 ? ((Element)elements85.item(0)) : null;
-                            if (userPasswordElement != null)
-                            {
-                                String userPasswordInstance;
-                                userPasswordInstance = userPasswordElement.getTextContent();
-                                configurationSetInstance.setUserPassword(userPasswordInstance);
-                            }
-                            
-                            NodeList elements86 = configurationSetsElement.getElementsByTagName("DisableSshPasswordAuthentication");
-                            Element disableSshPasswordAuthenticationElement = elements86.getLength() > 0 ? ((Element)elements86.item(0)) : null;
-                            if (disableSshPasswordAuthenticationElement != null && (disableSshPasswordAuthenticationElement.getTextContent() != null && disableSshPasswordAuthenticationElement.getTextContent().isEmpty() != true) == false)
-                            {
-                                boolean disableSshPasswordAuthenticationInstance;
-                                disableSshPasswordAuthenticationInstance = Boolean.parseBoolean(disableSshPasswordAuthenticationElement.getTextContent());
-                                configurationSetInstance.setDisableSshPasswordAuthentication(disableSshPasswordAuthenticationInstance);
-                            }
-                            
-                            NodeList elements87 = configurationSetsElement.getElementsByTagName("SSH");
-                            Element sSHElement = elements87.getLength() > 0 ? ((Element)elements87.item(0)) : null;
-                            if (sSHElement != null)
-                            {
-                                SshSettings sSHInstance = new SshSettings();
-                                configurationSetInstance.setSshSettings(sSHInstance);
-                                
-                                NodeList elements88 = sSHElement.getElementsByTagName("PublicKeys");
-                                Element publicKeysSequenceElement = elements88.getLength() > 0 ? ((Element)elements88.item(0)) : null;
-                                if (publicKeysSequenceElement != null)
-                                {
-                                    for (int i10 = 0; i10 < publicKeysSequenceElement.getElementsByTagName("PublicKey").getLength(); i10 = i10 + 1)
+                                    
+                                    NodeList elements71 = domainJoinElement.getElementsByTagName("JoinDomain");
+                                    Element joinDomainElement = elements71.getLength() > 0 ? ((Element) elements71.item(0)) : null;
+                                    if (joinDomainElement != null)
                                     {
-                                        org.w3c.dom.Element publicKeysElement = ((org.w3c.dom.Element)publicKeysSequenceElement.getElementsByTagName("PublicKey").item(i10));
-                                        SshSettingPublicKey publicKeyInstance = new SshSettingPublicKey();
-                                        sSHInstance.getPublicKeys().add(publicKeyInstance);
+                                        String joinDomainInstance;
+                                        joinDomainInstance = joinDomainElement.getTextContent();
+                                        domainJoinInstance.setDomainToJoin(joinDomainInstance);
+                                    }
+                                    
+                                    NodeList elements72 = domainJoinElement.getElementsByTagName("MachineObjectOU");
+                                    Element machineObjectOUElement = elements72.getLength() > 0 ? ((Element) elements72.item(0)) : null;
+                                    if (machineObjectOUElement != null)
+                                    {
+                                        String machineObjectOUInstance;
+                                        machineObjectOUInstance = machineObjectOUElement.getTextContent();
+                                        domainJoinInstance.setLdapMachineObjectOU(machineObjectOUInstance);
+                                    }
+                                    
+                                    NodeList elements73 = domainJoinElement.getElementsByTagName("Provisioning");
+                                    Element provisioningElement = elements73.getLength() > 0 ? ((Element) elements73.item(0)) : null;
+                                    if (provisioningElement != null)
+                                    {
+                                        DomainJoinProvisioning provisioningInstance = new DomainJoinProvisioning();
+                                        domainJoinInstance.setProvisioning(provisioningInstance);
                                         
-                                        NodeList elements89 = publicKeysElement.getElementsByTagName("Fingerprint");
-                                        Element fingerprintElement = elements89.getLength() > 0 ? ((Element)elements89.item(0)) : null;
-                                        if (fingerprintElement != null)
+                                        NodeList elements74 = provisioningElement.getElementsByTagName("AccountData");
+                                        Element accountDataElement = elements74.getLength() > 0 ? ((Element) elements74.item(0)) : null;
+                                        if (accountDataElement != null)
                                         {
-                                            String fingerprintInstance;
-                                            fingerprintInstance = fingerprintElement.getTextContent();
-                                            publicKeyInstance.setFingerprint(fingerprintInstance);
-                                        }
-                                        
-                                        NodeList elements90 = publicKeysElement.getElementsByTagName("Path");
-                                        Element pathElement2 = elements90.getLength() > 0 ? ((Element)elements90.item(0)) : null;
-                                        if (pathElement2 != null)
-                                        {
-                                            String pathInstance2;
-                                            pathInstance2 = pathElement2.getTextContent();
-                                            publicKeyInstance.setPath(pathInstance2);
+                                            String accountDataInstance;
+                                            accountDataInstance = accountDataElement.getTextContent();
+                                            provisioningInstance.setAccountData(accountDataInstance);
                                         }
                                     }
                                 }
                                 
-                                NodeList elements91 = sSHElement.getElementsByTagName("KeyPairs");
-                                Element keyPairsSequenceElement = elements91.getLength() > 0 ? ((Element)elements91.item(0)) : null;
-                                if (keyPairsSequenceElement != null)
+                                NodeList elements75 = configurationSetsElement.getElementsByTagName("StoredCertificateSettings");
+                                Element storedCertificateSettingsSequenceElement = elements75.getLength() > 0 ? ((Element) elements75.item(0)) : null;
+                                if (storedCertificateSettingsSequenceElement != null)
                                 {
-                                    for (int i11 = 0; i11 < keyPairsSequenceElement.getElementsByTagName("KeyPair").getLength(); i11 = i11 + 1)
+                                    for (int i8 = 0; i8 < storedCertificateSettingsSequenceElement.getElementsByTagName("CertificateSetting").getLength(); i8 = i8 + 1)
                                     {
-                                        org.w3c.dom.Element keyPairsElement = ((org.w3c.dom.Element)keyPairsSequenceElement.getElementsByTagName("KeyPair").item(i11));
-                                        SshSettingKeyPair keyPairInstance = new SshSettingKeyPair();
-                                        sSHInstance.getKeyPairs().add(keyPairInstance);
+                                        org.w3c.dom.Element storedCertificateSettingsElement = ((org.w3c.dom.Element) storedCertificateSettingsSequenceElement.getElementsByTagName("CertificateSetting").item(i8));
+                                        StoredCertificateSettings certificateSettingInstance = new StoredCertificateSettings();
+                                        configurationSetInstance.getStoredCertificateSettings().add(certificateSettingInstance);
                                         
-                                        NodeList elements92 = keyPairsElement.getElementsByTagName("Fingerprint");
-                                        Element fingerprintElement2 = elements92.getLength() > 0 ? ((Element)elements92.item(0)) : null;
-                                        if (fingerprintElement2 != null)
+                                        NodeList elements76 = storedCertificateSettingsElement.getElementsByTagName("StoreLocation");
+                                        Element storeLocationElement = elements76.getLength() > 0 ? ((Element) elements76.item(0)) : null;
+                                        if (storeLocationElement != null)
                                         {
-                                            String fingerprintInstance2;
-                                            fingerprintInstance2 = fingerprintElement2.getTextContent();
-                                            keyPairInstance.setFingerprint(fingerprintInstance2);
                                         }
                                         
-                                        NodeList elements93 = keyPairsElement.getElementsByTagName("Path");
-                                        Element pathElement3 = elements93.getLength() > 0 ? ((Element)elements93.item(0)) : null;
-                                        if (pathElement3 != null)
+                                        NodeList elements77 = storedCertificateSettingsElement.getElementsByTagName("StoreName");
+                                        Element storeNameElement = elements77.getLength() > 0 ? ((Element) elements77.item(0)) : null;
+                                        if (storeNameElement != null)
                                         {
-                                            String pathInstance3;
-                                            pathInstance3 = pathElement3.getTextContent();
-                                            keyPairInstance.setPath(pathInstance3);
+                                            String storeNameInstance;
+                                            storeNameInstance = storeNameElement.getTextContent();
+                                            certificateSettingInstance.setStoreName(storeNameInstance);
+                                        }
+                                        
+                                        NodeList elements78 = storedCertificateSettingsElement.getElementsByTagName("Thumbprint");
+                                        Element thumbprintElement = elements78.getLength() > 0 ? ((Element) elements78.item(0)) : null;
+                                        if (thumbprintElement != null)
+                                        {
+                                            String thumbprintInstance;
+                                            thumbprintInstance = thumbprintElement.getTextContent();
+                                            certificateSettingInstance.setThumbprint(thumbprintInstance);
+                                        }
+                                    }
+                                }
+                                
+                                NodeList elements79 = configurationSetsElement.getElementsByTagName("WinRM");
+                                Element winRMElement = elements79.getLength() > 0 ? ((Element) elements79.item(0)) : null;
+                                if (winRMElement != null)
+                                {
+                                    WindowsRemoteManagementSettings winRMInstance = new WindowsRemoteManagementSettings();
+                                    configurationSetInstance.setWindowsRemoteManagement(winRMInstance);
+                                    
+                                    NodeList elements80 = winRMElement.getElementsByTagName("Listeners");
+                                    Element listenersSequenceElement = elements80.getLength() > 0 ? ((Element) elements80.item(0)) : null;
+                                    if (listenersSequenceElement != null)
+                                    {
+                                        for (int i9 = 0; i9 < listenersSequenceElement.getElementsByTagName("Listener").getLength(); i9 = i9 + 1)
+                                        {
+                                            org.w3c.dom.Element listenersElement = ((org.w3c.dom.Element) listenersSequenceElement.getElementsByTagName("Listener").item(i9));
+                                            WindowsRemoteManagementListener listenerInstance = new WindowsRemoteManagementListener();
+                                            winRMInstance.getListeners().add(listenerInstance);
+                                            
+                                            NodeList elements81 = listenersElement.getElementsByTagName("Protocol");
+                                            Element protocolElement4 = elements81.getLength() > 0 ? ((Element) elements81.item(0)) : null;
+                                            if (protocolElement4 != null)
+                                            {
+                                                VirtualMachineWindowsRemoteManagementListenerType protocolInstance4;
+                                                protocolInstance4 = VirtualMachineWindowsRemoteManagementListenerType.valueOf(protocolElement4.getTextContent());
+                                                listenerInstance.setListenerType(protocolInstance4);
+                                            }
+                                            
+                                            NodeList elements82 = listenersElement.getElementsByTagName("CertificateThumbprint");
+                                            Element certificateThumbprintElement = elements82.getLength() > 0 ? ((Element) elements82.item(0)) : null;
+                                            if (certificateThumbprintElement != null)
+                                            {
+                                                String certificateThumbprintInstance;
+                                                certificateThumbprintInstance = certificateThumbprintElement.getTextContent();
+                                                listenerInstance.setCertificateThumbprint(certificateThumbprintInstance);
+                                            }
+                                        }
+                                    }
+                                }
+                                
+                                NodeList elements83 = configurationSetsElement.getElementsByTagName("AdminUsername");
+                                Element adminUsernameElement = elements83.getLength() > 0 ? ((Element) elements83.item(0)) : null;
+                                if (adminUsernameElement != null)
+                                {
+                                    String adminUsernameInstance;
+                                    adminUsernameInstance = adminUsernameElement.getTextContent();
+                                    configurationSetInstance.setAdminUserName(adminUsernameInstance);
+                                }
+                                
+                                NodeList elements84 = configurationSetsElement.getElementsByTagName("HostName");
+                                Element hostNameElement2 = elements84.getLength() > 0 ? ((Element) elements84.item(0)) : null;
+                                if (hostNameElement2 != null)
+                                {
+                                    String hostNameInstance2;
+                                    hostNameInstance2 = hostNameElement2.getTextContent();
+                                    configurationSetInstance.setHostName(hostNameInstance2);
+                                }
+                                
+                                NodeList elements85 = configurationSetsElement.getElementsByTagName("UserName");
+                                Element userNameElement = elements85.getLength() > 0 ? ((Element) elements85.item(0)) : null;
+                                if (userNameElement != null)
+                                {
+                                    String userNameInstance;
+                                    userNameInstance = userNameElement.getTextContent();
+                                    configurationSetInstance.setUserName(userNameInstance);
+                                }
+                                
+                                NodeList elements86 = configurationSetsElement.getElementsByTagName("UserPassword");
+                                Element userPasswordElement = elements86.getLength() > 0 ? ((Element) elements86.item(0)) : null;
+                                if (userPasswordElement != null)
+                                {
+                                    String userPasswordInstance;
+                                    userPasswordInstance = userPasswordElement.getTextContent();
+                                    configurationSetInstance.setUserPassword(userPasswordInstance);
+                                }
+                                
+                                NodeList elements87 = configurationSetsElement.getElementsByTagName("DisableSshPasswordAuthentication");
+                                Element disableSshPasswordAuthenticationElement = elements87.getLength() > 0 ? ((Element) elements87.item(0)) : null;
+                                if (disableSshPasswordAuthenticationElement != null && (disableSshPasswordAuthenticationElement.getTextContent() != null && disableSshPasswordAuthenticationElement.getTextContent().isEmpty() != true) == false)
+                                {
+                                    boolean disableSshPasswordAuthenticationInstance;
+                                    disableSshPasswordAuthenticationInstance = Boolean.parseBoolean(disableSshPasswordAuthenticationElement.getTextContent());
+                                    configurationSetInstance.setDisableSshPasswordAuthentication(disableSshPasswordAuthenticationInstance);
+                                }
+                                
+                                NodeList elements88 = configurationSetsElement.getElementsByTagName("SSH");
+                                Element sSHElement = elements88.getLength() > 0 ? ((Element) elements88.item(0)) : null;
+                                if (sSHElement != null)
+                                {
+                                    SshSettings sSHInstance = new SshSettings();
+                                    configurationSetInstance.setSshSettings(sSHInstance);
+                                    
+                                    NodeList elements89 = sSHElement.getElementsByTagName("PublicKeys");
+                                    Element publicKeysSequenceElement = elements89.getLength() > 0 ? ((Element) elements89.item(0)) : null;
+                                    if (publicKeysSequenceElement != null)
+                                    {
+                                        for (int i10 = 0; i10 < publicKeysSequenceElement.getElementsByTagName("PublicKey").getLength(); i10 = i10 + 1)
+                                        {
+                                            org.w3c.dom.Element publicKeysElement = ((org.w3c.dom.Element) publicKeysSequenceElement.getElementsByTagName("PublicKey").item(i10));
+                                            SshSettingPublicKey publicKeyInstance = new SshSettingPublicKey();
+                                            sSHInstance.getPublicKeys().add(publicKeyInstance);
+                                            
+                                            NodeList elements90 = publicKeysElement.getElementsByTagName("Fingerprint");
+                                            Element fingerprintElement = elements90.getLength() > 0 ? ((Element) elements90.item(0)) : null;
+                                            if (fingerprintElement != null)
+                                            {
+                                                String fingerprintInstance;
+                                                fingerprintInstance = fingerprintElement.getTextContent();
+                                                publicKeyInstance.setFingerprint(fingerprintInstance);
+                                            }
+                                            
+                                            NodeList elements91 = publicKeysElement.getElementsByTagName("Path");
+                                            Element pathElement2 = elements91.getLength() > 0 ? ((Element) elements91.item(0)) : null;
+                                            if (pathElement2 != null)
+                                            {
+                                                String pathInstance2;
+                                                pathInstance2 = pathElement2.getTextContent();
+                                                publicKeyInstance.setPath(pathInstance2);
+                                            }
+                                        }
+                                    }
+                                    
+                                    NodeList elements92 = sSHElement.getElementsByTagName("KeyPairs");
+                                    Element keyPairsSequenceElement = elements92.getLength() > 0 ? ((Element) elements92.item(0)) : null;
+                                    if (keyPairsSequenceElement != null)
+                                    {
+                                        for (int i11 = 0; i11 < keyPairsSequenceElement.getElementsByTagName("KeyPair").getLength(); i11 = i11 + 1)
+                                        {
+                                            org.w3c.dom.Element keyPairsElement = ((org.w3c.dom.Element) keyPairsSequenceElement.getElementsByTagName("KeyPair").item(i11));
+                                            SshSettingKeyPair keyPairInstance = new SshSettingKeyPair();
+                                            sSHInstance.getKeyPairs().add(keyPairInstance);
+                                            
+                                            NodeList elements93 = keyPairsElement.getElementsByTagName("Fingerprint");
+                                            Element fingerprintElement2 = elements93.getLength() > 0 ? ((Element) elements93.item(0)) : null;
+                                            if (fingerprintElement2 != null)
+                                            {
+                                                String fingerprintInstance2;
+                                                fingerprintInstance2 = fingerprintElement2.getTextContent();
+                                                keyPairInstance.setFingerprint(fingerprintInstance2);
+                                            }
+                                            
+                                            NodeList elements94 = keyPairsElement.getElementsByTagName("Path");
+                                            Element pathElement3 = elements94.getLength() > 0 ? ((Element) elements94.item(0)) : null;
+                                            if (pathElement3 != null)
+                                            {
+                                                String pathInstance3;
+                                                pathInstance3 = pathElement3.getTextContent();
+                                                keyPairInstance.setPath(pathInstance3);
+                                            }
                                         }
                                     }
                                 }
                             }
                         }
-                    }
-                    
-                    NodeList elements94 = roleListElement.getElementsByTagName("AvailabilitySetName");
-                    Element availabilitySetNameElement = elements94.getLength() > 0 ? ((Element)elements94.item(0)) : null;
-                    if (availabilitySetNameElement != null)
-                    {
-                        String availabilitySetNameInstance;
-                        availabilitySetNameInstance = availabilitySetNameElement.getTextContent();
-                        roleInstance.setAvailabilitySetName(availabilitySetNameInstance);
-                    }
-                    
-                    NodeList elements95 = roleListElement.getElementsByTagName("DataVirtualHardDisks");
-                    Element dataVirtualHardDisksSequenceElement = elements95.getLength() > 0 ? ((Element)elements95.item(0)) : null;
-                    if (dataVirtualHardDisksSequenceElement != null)
-                    {
-                        for (int i12 = 0; i12 < dataVirtualHardDisksSequenceElement.getElementsByTagName("DataVirtualHardDisk").getLength(); i12 = i12 + 1)
+                        
+                        NodeList elements95 = roleListElement.getElementsByTagName("AvailabilitySetName");
+                        Element availabilitySetNameElement = elements95.getLength() > 0 ? ((Element) elements95.item(0)) : null;
+                        if (availabilitySetNameElement != null)
                         {
-                            org.w3c.dom.Element dataVirtualHardDisksElement = ((org.w3c.dom.Element)dataVirtualHardDisksSequenceElement.getElementsByTagName("DataVirtualHardDisk").item(i12));
-                            DataVirtualHardDisk dataVirtualHardDiskInstance = new DataVirtualHardDisk();
-                            roleInstance.getDataVirtualHardDisks().add(dataVirtualHardDiskInstance);
-                            
-                            NodeList elements96 = dataVirtualHardDisksElement.getElementsByTagName("HostCaching");
-                            Element hostCachingElement = elements96.getLength() > 0 ? ((Element)elements96.item(0)) : null;
-                            if (hostCachingElement != null && (hostCachingElement.getTextContent() != null && hostCachingElement.getTextContent().isEmpty() != true) == false)
+                            String availabilitySetNameInstance;
+                            availabilitySetNameInstance = availabilitySetNameElement.getTextContent();
+                            roleInstance.setAvailabilitySetName(availabilitySetNameInstance);
+                        }
+                        
+                        NodeList elements96 = roleListElement.getElementsByTagName("DataVirtualHardDisks");
+                        Element dataVirtualHardDisksSequenceElement = elements96.getLength() > 0 ? ((Element) elements96.item(0)) : null;
+                        if (dataVirtualHardDisksSequenceElement != null)
+                        {
+                            for (int i12 = 0; i12 < dataVirtualHardDisksSequenceElement.getElementsByTagName("DataVirtualHardDisk").getLength(); i12 = i12 + 1)
                             {
-                                VirtualHardDiskHostCaching hostCachingInstance;
-                                hostCachingInstance = VirtualHardDiskHostCaching.valueOf(hostCachingElement.getTextContent());
-                                dataVirtualHardDiskInstance.setHostCaching(hostCachingInstance);
-                            }
-                            
-                            NodeList elements97 = dataVirtualHardDisksElement.getElementsByTagName("DiskLabel");
-                            Element diskLabelElement = elements97.getLength() > 0 ? ((Element)elements97.item(0)) : null;
-                            if (diskLabelElement != null)
-                            {
-                                String diskLabelInstance;
-                                diskLabelInstance = diskLabelElement.getTextContent();
-                                dataVirtualHardDiskInstance.setDiskLabel(diskLabelInstance);
-                            }
-                            
-                            NodeList elements98 = dataVirtualHardDisksElement.getElementsByTagName("DiskName");
-                            Element diskNameElement = elements98.getLength() > 0 ? ((Element)elements98.item(0)) : null;
-                            if (diskNameElement != null)
-                            {
-                                String diskNameInstance;
-                                diskNameInstance = diskNameElement.getTextContent();
-                                dataVirtualHardDiskInstance.setDiskName(diskNameInstance);
-                            }
-                            
-                            NodeList elements99 = dataVirtualHardDisksElement.getElementsByTagName("Lun");
-                            Element lunElement = elements99.getLength() > 0 ? ((Element)elements99.item(0)) : null;
-                            if (lunElement != null && (lunElement.getTextContent() != null && lunElement.getTextContent().isEmpty() != true) == false)
-                            {
-                                int lunInstance;
-                                lunInstance = Integer.parseInt(lunElement.getTextContent());
-                                dataVirtualHardDiskInstance.setLogicalUnitNumber(lunInstance);
-                            }
-                            
-                            NodeList elements100 = dataVirtualHardDisksElement.getElementsByTagName("LogicalDiskSizeInGB");
-                            Element logicalDiskSizeInGBElement = elements100.getLength() > 0 ? ((Element)elements100.item(0)) : null;
-                            if (logicalDiskSizeInGBElement != null)
-                            {
-                                int logicalDiskSizeInGBInstance;
-                                logicalDiskSizeInGBInstance = Integer.parseInt(logicalDiskSizeInGBElement.getTextContent());
-                                dataVirtualHardDiskInstance.setLogicalDiskSizeInGB(logicalDiskSizeInGBInstance);
-                            }
-                            
-                            NodeList elements101 = dataVirtualHardDisksElement.getElementsByTagName("MediaLink");
-                            Element mediaLinkElement = elements101.getLength() > 0 ? ((Element)elements101.item(0)) : null;
-                            if (mediaLinkElement != null)
-                            {
-                                URI mediaLinkInstance;
-                                mediaLinkInstance = new URI(mediaLinkElement.getTextContent());
-                                dataVirtualHardDiskInstance.setMediaLink(mediaLinkInstance);
-                            }
-                        }
-                    }
-                    
-                    NodeList elements102 = roleListElement.getElementsByTagName("Label");
-                    Element labelElement2 = elements102.getLength() > 0 ? ((Element)elements102.item(0)) : null;
-                    if (labelElement2 != null)
-                    {
-                        String labelInstance2;
-                        labelInstance2 = labelElement2.getTextContent();
-                        roleInstance.setLabel(labelInstance2);
-                    }
-                    
-                    NodeList elements103 = roleListElement.getElementsByTagName("OSVirtualHardDisk");
-                    Element oSVirtualHardDiskElement = elements103.getLength() > 0 ? ((Element)elements103.item(0)) : null;
-                    if (oSVirtualHardDiskElement != null)
-                    {
-                        OSVirtualHardDisk oSVirtualHardDiskInstance = new OSVirtualHardDisk();
-                        roleInstance.setOSVirtualHardDisk(oSVirtualHardDiskInstance);
-                        
-                        NodeList elements104 = oSVirtualHardDiskElement.getElementsByTagName("HostCaching");
-                        Element hostCachingElement2 = elements104.getLength() > 0 ? ((Element)elements104.item(0)) : null;
-                        if (hostCachingElement2 != null && (hostCachingElement2.getTextContent() != null && hostCachingElement2.getTextContent().isEmpty() != true) == false)
-                        {
-                            VirtualHardDiskHostCaching hostCachingInstance2;
-                            hostCachingInstance2 = VirtualHardDiskHostCaching.valueOf(hostCachingElement2.getTextContent());
-                            oSVirtualHardDiskInstance.setHostCaching(hostCachingInstance2);
-                        }
-                        
-                        NodeList elements105 = oSVirtualHardDiskElement.getElementsByTagName("DiskLabel");
-                        Element diskLabelElement2 = elements105.getLength() > 0 ? ((Element)elements105.item(0)) : null;
-                        if (diskLabelElement2 != null)
-                        {
-                            String diskLabelInstance2;
-                            diskLabelInstance2 = diskLabelElement2.getTextContent();
-                            oSVirtualHardDiskInstance.setDiskLabel(diskLabelInstance2);
-                        }
-                        
-                        NodeList elements106 = oSVirtualHardDiskElement.getElementsByTagName("DiskName");
-                        Element diskNameElement2 = elements106.getLength() > 0 ? ((Element)elements106.item(0)) : null;
-                        if (diskNameElement2 != null)
-                        {
-                            String diskNameInstance2;
-                            diskNameInstance2 = diskNameElement2.getTextContent();
-                            oSVirtualHardDiskInstance.setDiskName(diskNameInstance2);
-                        }
-                        
-                        NodeList elements107 = oSVirtualHardDiskElement.getElementsByTagName("MediaLink");
-                        Element mediaLinkElement2 = elements107.getLength() > 0 ? ((Element)elements107.item(0)) : null;
-                        if (mediaLinkElement2 != null)
-                        {
-                            URI mediaLinkInstance2;
-                            mediaLinkInstance2 = new URI(mediaLinkElement2.getTextContent());
-                            oSVirtualHardDiskInstance.setMediaLink(mediaLinkInstance2);
-                        }
-                        
-                        NodeList elements108 = oSVirtualHardDiskElement.getElementsByTagName("SourceImageName");
-                        Element sourceImageNameElement = elements108.getLength() > 0 ? ((Element)elements108.item(0)) : null;
-                        if (sourceImageNameElement != null)
-                        {
-                            String sourceImageNameInstance;
-                            sourceImageNameInstance = sourceImageNameElement.getTextContent();
-                            oSVirtualHardDiskInstance.setSourceImageName(sourceImageNameInstance);
-                        }
-                        
-                        NodeList elements109 = oSVirtualHardDiskElement.getElementsByTagName("OS");
-                        Element osElement = elements109.getLength() > 0 ? ((Element)elements109.item(0)) : null;
-                        if (osElement != null)
-                        {
-                            String osInstance;
-                            osInstance = osElement.getTextContent();
-                            oSVirtualHardDiskInstance.setOperatingSystem(osInstance);
-                        }
-                    }
-                    
-                    NodeList elements110 = roleListElement.getElementsByTagName("RoleSize");
-                    Element roleSizeElement = elements110.getLength() > 0 ? ((Element)elements110.item(0)) : null;
-                    if (roleSizeElement != null && (roleSizeElement.getTextContent() != null && roleSizeElement.getTextContent().isEmpty() != true) == false)
-                    {
-                        VirtualMachineRoleSize roleSizeInstance;
-                        roleSizeInstance = VirtualMachineRoleSize.valueOf(roleSizeElement.getTextContent());
-                        roleInstance.setRoleSize(roleSizeInstance);
-                    }
-                    
-                    NodeList elements111 = roleListElement.getElementsByTagName("DefaultWinRmCertificateThumbprint");
-                    Element defaultWinRmCertificateThumbprintElement = elements111.getLength() > 0 ? ((Element)elements111.item(0)) : null;
-                    if (defaultWinRmCertificateThumbprintElement != null)
-                    {
-                        String defaultWinRmCertificateThumbprintInstance;
-                        defaultWinRmCertificateThumbprintInstance = defaultWinRmCertificateThumbprintElement.getTextContent();
-                        roleInstance.setDefaultWinRmCertificateThumbprint(defaultWinRmCertificateThumbprintInstance);
-                    }
-                }
-            }
-            
-            NodeList elements112 = deploymentElement.getElementsByTagName("SdkVersion");
-            Element sdkVersionElement = elements112.getLength() > 0 ? ((Element)elements112.item(0)) : null;
-            if (sdkVersionElement != null)
-            {
-                String sdkVersionInstance;
-                sdkVersionInstance = sdkVersionElement.getTextContent();
-                result.setSdkVersion(sdkVersionInstance);
-            }
-            
-            NodeList elements113 = deploymentElement.getElementsByTagName("Locked");
-            Element lockedElement = elements113.getLength() > 0 ? ((Element)elements113.item(0)) : null;
-            if (lockedElement != null)
-            {
-                boolean lockedInstance;
-                lockedInstance = Boolean.parseBoolean(lockedElement.getTextContent());
-                result.setLocked(lockedInstance);
-            }
-            
-            NodeList elements114 = deploymentElement.getElementsByTagName("RollbackAllowed");
-            Element rollbackAllowedElement = elements114.getLength() > 0 ? ((Element)elements114.item(0)) : null;
-            if (rollbackAllowedElement != null)
-            {
-                String rollbackAllowedInstance;
-                rollbackAllowedInstance = rollbackAllowedElement.getTextContent();
-                result.setRollbackAllowed(rollbackAllowedInstance);
-            }
-            
-            NodeList elements115 = deploymentElement.getElementsByTagName("CreatedTime");
-            Element createdTimeElement = elements115.getLength() > 0 ? ((Element)elements115.item(0)) : null;
-            if (createdTimeElement != null)
-            {
-                Calendar createdTimeInstance;
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(simpleDateFormat.parse(createdTimeElement.getTextContent()));
-                createdTimeInstance = calendar;
-                result.setCreatedTime(createdTimeInstance);
-            }
-            
-            NodeList elements116 = deploymentElement.getElementsByTagName("LastModifiedTime");
-            Element lastModifiedTimeElement = elements116.getLength() > 0 ? ((Element)elements116.item(0)) : null;
-            if (lastModifiedTimeElement != null)
-            {
-                Calendar lastModifiedTimeInstance;
-                SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                Calendar calendar2 = Calendar.getInstance();
-                calendar2.setTime(simpleDateFormat2.parse(lastModifiedTimeElement.getTextContent()));
-                lastModifiedTimeInstance = calendar2;
-                result.setLastModifiedTime(lastModifiedTimeInstance);
-            }
-            
-            NodeList elements117 = deploymentElement.getElementsByTagName("VirtualNetworkName");
-            Element virtualNetworkNameElement = elements117.getLength() > 0 ? ((Element)elements117.item(0)) : null;
-            if (virtualNetworkNameElement != null)
-            {
-                String virtualNetworkNameInstance;
-                virtualNetworkNameInstance = virtualNetworkNameElement.getTextContent();
-                result.setVirtualNetworkName(virtualNetworkNameInstance);
-            }
-            
-            NodeList elements118 = deploymentElement.getElementsByTagName("ExtendedProperties");
-            Element extendedPropertiesSequenceElement = elements118.getLength() > 0 ? ((Element)elements118.item(0)) : null;
-            if (extendedPropertiesSequenceElement != null)
-            {
-                for (int i13 = 0; i13 < extendedPropertiesSequenceElement.getElementsByTagName("ExtendedProperty").getLength(); i13 = i13 + 1)
-                {
-                    org.w3c.dom.Element extendedPropertiesElement = ((org.w3c.dom.Element)extendedPropertiesSequenceElement.getElementsByTagName("ExtendedProperty").item(i13));
-                    NodeList elements119 = extendedPropertiesElement.getElementsByTagName("Name");
-                    String extendedPropertiesKey = elements119.getLength() > 0 ? ((org.w3c.dom.Element)elements119.item(0)).getTextContent() : null;
-                    NodeList elements120 = extendedPropertiesElement.getElementsByTagName("Value");
-                    String extendedPropertiesValue = elements120.getLength() > 0 ? ((org.w3c.dom.Element)elements120.item(0)).getTextContent() : null;
-                    result.getExtendedProperties().put(extendedPropertiesKey, extendedPropertiesValue);
-                }
-            }
-            
-            NodeList elements121 = deploymentElement.getElementsByTagName("PersistentVMDowntime");
-            Element persistentVMDowntimeElement = elements121.getLength() > 0 ? ((Element)elements121.item(0)) : null;
-            if (persistentVMDowntimeElement != null)
-            {
-                PersistentVMDowntime persistentVMDowntimeInstance = new PersistentVMDowntime();
-                result.setPersistentVMDowntime(persistentVMDowntimeInstance);
-                
-                NodeList elements122 = persistentVMDowntimeElement.getElementsByTagName("StartTime");
-                Element startTimeElement = elements122.getLength() > 0 ? ((Element)elements122.item(0)) : null;
-                if (startTimeElement != null)
-                {
-                    Calendar startTimeInstance;
-                    SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                    Calendar calendar3 = Calendar.getInstance();
-                    calendar3.setTime(simpleDateFormat3.parse(startTimeElement.getTextContent()));
-                    startTimeInstance = calendar3;
-                    persistentVMDowntimeInstance.setStartTime(startTimeInstance);
-                }
-                
-                NodeList elements123 = persistentVMDowntimeElement.getElementsByTagName("EndTime");
-                Element endTimeElement = elements123.getLength() > 0 ? ((Element)elements123.item(0)) : null;
-                if (endTimeElement != null)
-                {
-                    Calendar endTimeInstance;
-                    SimpleDateFormat simpleDateFormat4 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                    Calendar calendar4 = Calendar.getInstance();
-                    calendar4.setTime(simpleDateFormat4.parse(endTimeElement.getTextContent()));
-                    endTimeInstance = calendar4;
-                    persistentVMDowntimeInstance.setEndTime(endTimeInstance);
-                }
-                
-                NodeList elements124 = persistentVMDowntimeElement.getElementsByTagName("Status");
-                Element statusElement2 = elements124.getLength() > 0 ? ((Element)elements124.item(0)) : null;
-                if (statusElement2 != null)
-                {
-                    String statusInstance2;
-                    statusInstance2 = statusElement2.getTextContent();
-                    persistentVMDowntimeInstance.setStatus(statusInstance2);
-                }
-            }
-            
-            NodeList elements125 = deploymentElement.getElementsByTagName("VirtualIPs");
-            Element virtualIPsSequenceElement = elements125.getLength() > 0 ? ((Element)elements125.item(0)) : null;
-            if (virtualIPsSequenceElement != null)
-            {
-                for (int i14 = 0; i14 < virtualIPsSequenceElement.getElementsByTagName("VirtualIP").getLength(); i14 = i14 + 1)
-                {
-                    org.w3c.dom.Element virtualIPsElement = ((org.w3c.dom.Element)virtualIPsSequenceElement.getElementsByTagName("VirtualIP").item(i14));
-                    VirtualIPAddress virtualIPInstance = new VirtualIPAddress();
-                    result.getVirtualIPAddresses().add(virtualIPInstance);
-                    
-                    NodeList elements126 = virtualIPsElement.getElementsByTagName("Address");
-                    Element addressElement = elements126.getLength() > 0 ? ((Element)elements126.item(0)) : null;
-                    if (addressElement != null)
-                    {
-                        InetAddress addressInstance;
-                        addressInstance = InetAddress.getByName(addressElement.getTextContent());
-                        virtualIPInstance.setAddress(addressInstance);
-                    }
-                    
-                    NodeList elements127 = virtualIPsElement.getElementsByTagName("Name");
-                    Element nameElement4 = elements127.getLength() > 0 ? ((Element)elements127.item(0)) : null;
-                    if (nameElement4 != null)
-                    {
-                        String nameInstance4;
-                        nameInstance4 = nameElement4.getTextContent();
-                        virtualIPInstance.setName(nameInstance4);
-                    }
-                    
-                    NodeList elements128 = virtualIPsElement.getElementsByTagName("IsDnsProgrammed");
-                    Element isDnsProgrammedElement = elements128.getLength() > 0 ? ((Element)elements128.item(0)) : null;
-                    if (isDnsProgrammedElement != null && (isDnsProgrammedElement.getTextContent() != null && isDnsProgrammedElement.getTextContent().isEmpty() != true) == false)
-                    {
-                        boolean isDnsProgrammedInstance;
-                        isDnsProgrammedInstance = Boolean.parseBoolean(isDnsProgrammedElement.getTextContent());
-                        virtualIPInstance.setIsDnsProgrammed(isDnsProgrammedInstance);
-                    }
-                }
-            }
-            
-            NodeList elements129 = deploymentElement.getElementsByTagName("ReservedIPName");
-            Element reservedIPNameElement = elements129.getLength() > 0 ? ((Element)elements129.item(0)) : null;
-            if (reservedIPNameElement != null)
-            {
-                String reservedIPNameInstance;
-                reservedIPNameInstance = reservedIPNameElement.getTextContent();
-                result.setReservedIPName(reservedIPNameInstance);
-            }
-            
-            NodeList elements130 = deploymentElement.getElementsByTagName("Dns");
-            Element dnsElement = elements130.getLength() > 0 ? ((Element)elements130.item(0)) : null;
-            if (dnsElement != null)
-            {
-                DnsSettings dnsInstance = new DnsSettings();
-                result.setDnsSettings(dnsInstance);
-                
-                NodeList elements131 = dnsElement.getElementsByTagName("DnsServers");
-                Element dnsServersSequenceElement = elements131.getLength() > 0 ? ((Element)elements131.item(0)) : null;
-                if (dnsServersSequenceElement != null)
-                {
-                    for (int i15 = 0; i15 < dnsServersSequenceElement.getElementsByTagName("DnsServer").getLength(); i15 = i15 + 1)
-                    {
-                        org.w3c.dom.Element dnsServersElement = ((org.w3c.dom.Element)dnsServersSequenceElement.getElementsByTagName("DnsServer").item(i15));
-                        DnsServer dnsServerInstance = new DnsServer();
-                        dnsInstance.getDnsServers().add(dnsServerInstance);
-                        
-                        NodeList elements132 = dnsServersElement.getElementsByTagName("Name");
-                        Element nameElement5 = elements132.getLength() > 0 ? ((Element)elements132.item(0)) : null;
-                        if (nameElement5 != null)
-                        {
-                            String nameInstance5;
-                            nameInstance5 = nameElement5.getTextContent();
-                            dnsServerInstance.setName(nameInstance5);
-                        }
-                        
-                        NodeList elements133 = dnsServersElement.getElementsByTagName("Address");
-                        Element addressElement2 = elements133.getLength() > 0 ? ((Element)elements133.item(0)) : null;
-                        if (addressElement2 != null)
-                        {
-                            InetAddress addressInstance2;
-                            addressInstance2 = InetAddress.getByName(addressElement2.getTextContent());
-                            dnsServerInstance.setAddress(addressInstance2);
-                        }
-                    }
-                }
-            }
-            
-            NodeList elements134 = deploymentElement.getElementsByTagName("ExtensionConfiguration");
-            Element extensionConfigurationElement = elements134.getLength() > 0 ? ((Element)elements134.item(0)) : null;
-            if (extensionConfigurationElement != null)
-            {
-                ExtensionConfiguration extensionConfigurationInstance = new ExtensionConfiguration();
-                result.setExtensionConfiguration(extensionConfigurationInstance);
-                
-                NodeList elements135 = extensionConfigurationElement.getElementsByTagName("AllRoles");
-                Element allRolesSequenceElement = elements135.getLength() > 0 ? ((Element)elements135.item(0)) : null;
-                if (allRolesSequenceElement != null)
-                {
-                    for (int i16 = 0; i16 < allRolesSequenceElement.getElementsByTagName("Extension").getLength(); i16 = i16 + 1)
-                    {
-                        org.w3c.dom.Element allRolesElement = ((org.w3c.dom.Element)allRolesSequenceElement.getElementsByTagName("Extension").item(i16));
-                        ExtensionConfiguration.Extension extensionInstance = new ExtensionConfiguration.Extension();
-                        extensionConfigurationInstance.getAllRoles().add(extensionInstance);
-                        
-                        NodeList elements136 = allRolesElement.getElementsByTagName("Id");
-                        Element idElement = elements136.getLength() > 0 ? ((Element)elements136.item(0)) : null;
-                        if (idElement != null)
-                        {
-                            String idInstance;
-                            idInstance = idElement.getTextContent();
-                            extensionInstance.setId(idInstance);
-                        }
-                    }
-                }
-                
-                NodeList elements137 = extensionConfigurationElement.getElementsByTagName("NamedRoles");
-                Element namedRolesSequenceElement = elements137.getLength() > 0 ? ((Element)elements137.item(0)) : null;
-                if (namedRolesSequenceElement != null)
-                {
-                    for (int i17 = 0; i17 < namedRolesSequenceElement.getElementsByTagName("Role").getLength(); i17 = i17 + 1)
-                    {
-                        org.w3c.dom.Element namedRolesElement = ((org.w3c.dom.Element)namedRolesSequenceElement.getElementsByTagName("Role").item(i17));
-                        ExtensionConfiguration.NamedRole roleInstance2 = new ExtensionConfiguration.NamedRole();
-                        extensionConfigurationInstance.getNamedRoles().add(roleInstance2);
-                        
-                        NodeList elements138 = namedRolesElement.getElementsByTagName("RoleName");
-                        Element roleNameElement3 = elements138.getLength() > 0 ? ((Element)elements138.item(0)) : null;
-                        if (roleNameElement3 != null)
-                        {
-                            String roleNameInstance3;
-                            roleNameInstance3 = roleNameElement3.getTextContent();
-                            roleInstance2.setRoleName(roleNameInstance3);
-                        }
-                        
-                        NodeList elements139 = namedRolesElement.getElementsByTagName("Extensions");
-                        Element extensionsSequenceElement = elements139.getLength() > 0 ? ((Element)elements139.item(0)) : null;
-                        if (extensionsSequenceElement != null)
-                        {
-                            for (int i18 = 0; i18 < extensionsSequenceElement.getElementsByTagName("Extension").getLength(); i18 = i18 + 1)
-                            {
-                                org.w3c.dom.Element extensionsElement = ((org.w3c.dom.Element)extensionsSequenceElement.getElementsByTagName("Extension").item(i18));
-                                ExtensionConfiguration.Extension extensionInstance2 = new ExtensionConfiguration.Extension();
-                                roleInstance2.getExtensions().add(extensionInstance2);
+                                org.w3c.dom.Element dataVirtualHardDisksElement = ((org.w3c.dom.Element) dataVirtualHardDisksSequenceElement.getElementsByTagName("DataVirtualHardDisk").item(i12));
+                                DataVirtualHardDisk dataVirtualHardDiskInstance = new DataVirtualHardDisk();
+                                roleInstance.getDataVirtualHardDisks().add(dataVirtualHardDiskInstance);
                                 
-                                NodeList elements140 = extensionsElement.getElementsByTagName("Id");
-                                Element idElement2 = elements140.getLength() > 0 ? ((Element)elements140.item(0)) : null;
-                                if (idElement2 != null)
+                                NodeList elements97 = dataVirtualHardDisksElement.getElementsByTagName("HostCaching");
+                                Element hostCachingElement = elements97.getLength() > 0 ? ((Element) elements97.item(0)) : null;
+                                if (hostCachingElement != null && (hostCachingElement.getTextContent() != null && hostCachingElement.getTextContent().isEmpty() != true) == false)
                                 {
-                                    String idInstance2;
-                                    idInstance2 = idElement2.getTextContent();
-                                    extensionInstance2.setId(idInstance2);
+                                    VirtualHardDiskHostCaching hostCachingInstance;
+                                    hostCachingInstance = VirtualHardDiskHostCaching.valueOf(hostCachingElement.getTextContent());
+                                    dataVirtualHardDiskInstance.setHostCaching(hostCachingInstance);
+                                }
+                                
+                                NodeList elements98 = dataVirtualHardDisksElement.getElementsByTagName("DiskLabel");
+                                Element diskLabelElement = elements98.getLength() > 0 ? ((Element) elements98.item(0)) : null;
+                                if (diskLabelElement != null)
+                                {
+                                    String diskLabelInstance;
+                                    diskLabelInstance = diskLabelElement.getTextContent();
+                                    dataVirtualHardDiskInstance.setDiskLabel(diskLabelInstance);
+                                }
+                                
+                                NodeList elements99 = dataVirtualHardDisksElement.getElementsByTagName("DiskName");
+                                Element diskNameElement = elements99.getLength() > 0 ? ((Element) elements99.item(0)) : null;
+                                if (diskNameElement != null)
+                                {
+                                    String diskNameInstance;
+                                    diskNameInstance = diskNameElement.getTextContent();
+                                    dataVirtualHardDiskInstance.setDiskName(diskNameInstance);
+                                }
+                                
+                                NodeList elements100 = dataVirtualHardDisksElement.getElementsByTagName("Lun");
+                                Element lunElement = elements100.getLength() > 0 ? ((Element) elements100.item(0)) : null;
+                                if (lunElement != null && (lunElement.getTextContent() != null && lunElement.getTextContent().isEmpty() != true) == false)
+                                {
+                                    int lunInstance;
+                                    lunInstance = Integer.parseInt(lunElement.getTextContent());
+                                    dataVirtualHardDiskInstance.setLogicalUnitNumber(lunInstance);
+                                }
+                                
+                                NodeList elements101 = dataVirtualHardDisksElement.getElementsByTagName("LogicalDiskSizeInGB");
+                                Element logicalDiskSizeInGBElement = elements101.getLength() > 0 ? ((Element) elements101.item(0)) : null;
+                                if (logicalDiskSizeInGBElement != null)
+                                {
+                                    int logicalDiskSizeInGBInstance;
+                                    logicalDiskSizeInGBInstance = Integer.parseInt(logicalDiskSizeInGBElement.getTextContent());
+                                    dataVirtualHardDiskInstance.setLogicalDiskSizeInGB(logicalDiskSizeInGBInstance);
+                                }
+                                
+                                NodeList elements102 = dataVirtualHardDisksElement.getElementsByTagName("MediaLink");
+                                Element mediaLinkElement = elements102.getLength() > 0 ? ((Element) elements102.item(0)) : null;
+                                if (mediaLinkElement != null)
+                                {
+                                    URI mediaLinkInstance;
+                                    mediaLinkInstance = new URI(mediaLinkElement.getTextContent());
+                                    dataVirtualHardDiskInstance.setMediaLink(mediaLinkInstance);
+                                }
+                            }
+                        }
+                        
+                        NodeList elements103 = roleListElement.getElementsByTagName("Label");
+                        Element labelElement2 = elements103.getLength() > 0 ? ((Element) elements103.item(0)) : null;
+                        if (labelElement2 != null)
+                        {
+                            String labelInstance2;
+                            labelInstance2 = labelElement2.getTextContent();
+                            roleInstance.setLabel(labelInstance2);
+                        }
+                        
+                        NodeList elements104 = roleListElement.getElementsByTagName("OSVirtualHardDisk");
+                        Element oSVirtualHardDiskElement = elements104.getLength() > 0 ? ((Element) elements104.item(0)) : null;
+                        if (oSVirtualHardDiskElement != null)
+                        {
+                            OSVirtualHardDisk oSVirtualHardDiskInstance = new OSVirtualHardDisk();
+                            roleInstance.setOSVirtualHardDisk(oSVirtualHardDiskInstance);
+                            
+                            NodeList elements105 = oSVirtualHardDiskElement.getElementsByTagName("HostCaching");
+                            Element hostCachingElement2 = elements105.getLength() > 0 ? ((Element) elements105.item(0)) : null;
+                            if (hostCachingElement2 != null && (hostCachingElement2.getTextContent() != null && hostCachingElement2.getTextContent().isEmpty() != true) == false)
+                            {
+                                VirtualHardDiskHostCaching hostCachingInstance2;
+                                hostCachingInstance2 = VirtualHardDiskHostCaching.valueOf(hostCachingElement2.getTextContent());
+                                oSVirtualHardDiskInstance.setHostCaching(hostCachingInstance2);
+                            }
+                            
+                            NodeList elements106 = oSVirtualHardDiskElement.getElementsByTagName("DiskLabel");
+                            Element diskLabelElement2 = elements106.getLength() > 0 ? ((Element) elements106.item(0)) : null;
+                            if (diskLabelElement2 != null)
+                            {
+                                String diskLabelInstance2;
+                                diskLabelInstance2 = diskLabelElement2.getTextContent();
+                                oSVirtualHardDiskInstance.setDiskLabel(diskLabelInstance2);
+                            }
+                            
+                            NodeList elements107 = oSVirtualHardDiskElement.getElementsByTagName("DiskName");
+                            Element diskNameElement2 = elements107.getLength() > 0 ? ((Element) elements107.item(0)) : null;
+                            if (diskNameElement2 != null)
+                            {
+                                String diskNameInstance2;
+                                diskNameInstance2 = diskNameElement2.getTextContent();
+                                oSVirtualHardDiskInstance.setDiskName(diskNameInstance2);
+                            }
+                            
+                            NodeList elements108 = oSVirtualHardDiskElement.getElementsByTagName("MediaLink");
+                            Element mediaLinkElement2 = elements108.getLength() > 0 ? ((Element) elements108.item(0)) : null;
+                            if (mediaLinkElement2 != null)
+                            {
+                                URI mediaLinkInstance2;
+                                mediaLinkInstance2 = new URI(mediaLinkElement2.getTextContent());
+                                oSVirtualHardDiskInstance.setMediaLink(mediaLinkInstance2);
+                            }
+                            
+                            NodeList elements109 = oSVirtualHardDiskElement.getElementsByTagName("SourceImageName");
+                            Element sourceImageNameElement = elements109.getLength() > 0 ? ((Element) elements109.item(0)) : null;
+                            if (sourceImageNameElement != null)
+                            {
+                                String sourceImageNameInstance;
+                                sourceImageNameInstance = sourceImageNameElement.getTextContent();
+                                oSVirtualHardDiskInstance.setSourceImageName(sourceImageNameInstance);
+                            }
+                            
+                            NodeList elements110 = oSVirtualHardDiskElement.getElementsByTagName("OS");
+                            Element osElement = elements110.getLength() > 0 ? ((Element) elements110.item(0)) : null;
+                            if (osElement != null)
+                            {
+                                String osInstance;
+                                osInstance = osElement.getTextContent();
+                                oSVirtualHardDiskInstance.setOperatingSystem(osInstance);
+                            }
+                        }
+                        
+                        NodeList elements111 = roleListElement.getElementsByTagName("RoleSize");
+                        Element roleSizeElement = elements111.getLength() > 0 ? ((Element) elements111.item(0)) : null;
+                        if (roleSizeElement != null)
+                        {
+                            String roleSizeInstance;
+                            roleSizeInstance = roleSizeElement.getTextContent();
+                            roleInstance.setRoleSize(roleSizeInstance);
+                        }
+                        
+                        NodeList elements112 = roleListElement.getElementsByTagName("DefaultWinRmCertificateThumbprint");
+                        Element defaultWinRmCertificateThumbprintElement = elements112.getLength() > 0 ? ((Element) elements112.item(0)) : null;
+                        if (defaultWinRmCertificateThumbprintElement != null)
+                        {
+                            String defaultWinRmCertificateThumbprintInstance;
+                            defaultWinRmCertificateThumbprintInstance = defaultWinRmCertificateThumbprintElement.getTextContent();
+                            roleInstance.setDefaultWinRmCertificateThumbprint(defaultWinRmCertificateThumbprintInstance);
+                        }
+                    }
+                }
+                
+                NodeList elements113 = deploymentElement.getElementsByTagName("SdkVersion");
+                Element sdkVersionElement = elements113.getLength() > 0 ? ((Element) elements113.item(0)) : null;
+                if (sdkVersionElement != null)
+                {
+                    String sdkVersionInstance;
+                    sdkVersionInstance = sdkVersionElement.getTextContent();
+                    result.setSdkVersion(sdkVersionInstance);
+                }
+                
+                NodeList elements114 = deploymentElement.getElementsByTagName("Locked");
+                Element lockedElement = elements114.getLength() > 0 ? ((Element) elements114.item(0)) : null;
+                if (lockedElement != null)
+                {
+                    boolean lockedInstance;
+                    lockedInstance = Boolean.parseBoolean(lockedElement.getTextContent());
+                    result.setLocked(lockedInstance);
+                }
+                
+                NodeList elements115 = deploymentElement.getElementsByTagName("RollbackAllowed");
+                Element rollbackAllowedElement = elements115.getLength() > 0 ? ((Element) elements115.item(0)) : null;
+                if (rollbackAllowedElement != null)
+                {
+                    String rollbackAllowedInstance;
+                    rollbackAllowedInstance = rollbackAllowedElement.getTextContent();
+                    result.setRollbackAllowed(rollbackAllowedInstance);
+                }
+                
+                NodeList elements116 = deploymentElement.getElementsByTagName("CreatedTime");
+                Element createdTimeElement = elements116.getLength() > 0 ? ((Element) elements116.item(0)) : null;
+                if (createdTimeElement != null)
+                {
+                    Calendar createdTimeInstance;
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(simpleDateFormat.parse(createdTimeElement.getTextContent()));
+                    createdTimeInstance = calendar;
+                    result.setCreatedTime(createdTimeInstance);
+                }
+                
+                NodeList elements117 = deploymentElement.getElementsByTagName("LastModifiedTime");
+                Element lastModifiedTimeElement = elements117.getLength() > 0 ? ((Element) elements117.item(0)) : null;
+                if (lastModifiedTimeElement != null)
+                {
+                    Calendar lastModifiedTimeInstance;
+                    SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                    Calendar calendar2 = Calendar.getInstance();
+                    calendar2.setTime(simpleDateFormat2.parse(lastModifiedTimeElement.getTextContent()));
+                    lastModifiedTimeInstance = calendar2;
+                    result.setLastModifiedTime(lastModifiedTimeInstance);
+                }
+                
+                NodeList elements118 = deploymentElement.getElementsByTagName("VirtualNetworkName");
+                Element virtualNetworkNameElement = elements118.getLength() > 0 ? ((Element) elements118.item(0)) : null;
+                if (virtualNetworkNameElement != null)
+                {
+                    String virtualNetworkNameInstance;
+                    virtualNetworkNameInstance = virtualNetworkNameElement.getTextContent();
+                    result.setVirtualNetworkName(virtualNetworkNameInstance);
+                }
+                
+                NodeList elements119 = deploymentElement.getElementsByTagName("ExtendedProperties");
+                Element extendedPropertiesSequenceElement = elements119.getLength() > 0 ? ((Element) elements119.item(0)) : null;
+                if (extendedPropertiesSequenceElement != null)
+                {
+                    for (int i13 = 0; i13 < extendedPropertiesSequenceElement.getElementsByTagName("ExtendedProperty").getLength(); i13 = i13 + 1)
+                    {
+                        org.w3c.dom.Element extendedPropertiesElement = ((org.w3c.dom.Element) extendedPropertiesSequenceElement.getElementsByTagName("ExtendedProperty").item(i13));
+                        NodeList elements120 = extendedPropertiesElement.getElementsByTagName("Name");
+                        String extendedPropertiesKey = elements120.getLength() > 0 ? ((org.w3c.dom.Element) elements120.item(0)).getTextContent() : null;
+                        NodeList elements121 = extendedPropertiesElement.getElementsByTagName("Value");
+                        String extendedPropertiesValue = elements121.getLength() > 0 ? ((org.w3c.dom.Element) elements121.item(0)).getTextContent() : null;
+                        result.getExtendedProperties().put(extendedPropertiesKey, extendedPropertiesValue);
+                    }
+                }
+                
+                NodeList elements122 = deploymentElement.getElementsByTagName("PersistentVMDowntime");
+                Element persistentVMDowntimeElement = elements122.getLength() > 0 ? ((Element) elements122.item(0)) : null;
+                if (persistentVMDowntimeElement != null)
+                {
+                    PersistentVMDowntime persistentVMDowntimeInstance = new PersistentVMDowntime();
+                    result.setPersistentVMDowntime(persistentVMDowntimeInstance);
+                    
+                    NodeList elements123 = persistentVMDowntimeElement.getElementsByTagName("StartTime");
+                    Element startTimeElement = elements123.getLength() > 0 ? ((Element) elements123.item(0)) : null;
+                    if (startTimeElement != null)
+                    {
+                        Calendar startTimeInstance;
+                        SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                        Calendar calendar3 = Calendar.getInstance();
+                        calendar3.setTime(simpleDateFormat3.parse(startTimeElement.getTextContent()));
+                        startTimeInstance = calendar3;
+                        persistentVMDowntimeInstance.setStartTime(startTimeInstance);
+                    }
+                    
+                    NodeList elements124 = persistentVMDowntimeElement.getElementsByTagName("EndTime");
+                    Element endTimeElement = elements124.getLength() > 0 ? ((Element) elements124.item(0)) : null;
+                    if (endTimeElement != null)
+                    {
+                        Calendar endTimeInstance;
+                        SimpleDateFormat simpleDateFormat4 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                        Calendar calendar4 = Calendar.getInstance();
+                        calendar4.setTime(simpleDateFormat4.parse(endTimeElement.getTextContent()));
+                        endTimeInstance = calendar4;
+                        persistentVMDowntimeInstance.setEndTime(endTimeInstance);
+                    }
+                    
+                    NodeList elements125 = persistentVMDowntimeElement.getElementsByTagName("Status");
+                    Element statusElement2 = elements125.getLength() > 0 ? ((Element) elements125.item(0)) : null;
+                    if (statusElement2 != null)
+                    {
+                        String statusInstance2;
+                        statusInstance2 = statusElement2.getTextContent();
+                        persistentVMDowntimeInstance.setStatus(statusInstance2);
+                    }
+                }
+                
+                NodeList elements126 = deploymentElement.getElementsByTagName("VirtualIPs");
+                Element virtualIPsSequenceElement = elements126.getLength() > 0 ? ((Element) elements126.item(0)) : null;
+                if (virtualIPsSequenceElement != null)
+                {
+                    for (int i14 = 0; i14 < virtualIPsSequenceElement.getElementsByTagName("VirtualIP").getLength(); i14 = i14 + 1)
+                    {
+                        org.w3c.dom.Element virtualIPsElement = ((org.w3c.dom.Element) virtualIPsSequenceElement.getElementsByTagName("VirtualIP").item(i14));
+                        VirtualIPAddress virtualIPInstance = new VirtualIPAddress();
+                        result.getVirtualIPAddresses().add(virtualIPInstance);
+                        
+                        NodeList elements127 = virtualIPsElement.getElementsByTagName("Address");
+                        Element addressElement = elements127.getLength() > 0 ? ((Element) elements127.item(0)) : null;
+                        if (addressElement != null)
+                        {
+                            InetAddress addressInstance;
+                            addressInstance = InetAddress.getByName(addressElement.getTextContent());
+                            virtualIPInstance.setAddress(addressInstance);
+                        }
+                        
+                        NodeList elements128 = virtualIPsElement.getElementsByTagName("Name");
+                        Element nameElement4 = elements128.getLength() > 0 ? ((Element) elements128.item(0)) : null;
+                        if (nameElement4 != null)
+                        {
+                            String nameInstance4;
+                            nameInstance4 = nameElement4.getTextContent();
+                            virtualIPInstance.setName(nameInstance4);
+                        }
+                        
+                        NodeList elements129 = virtualIPsElement.getElementsByTagName("IsDnsProgrammed");
+                        Element isDnsProgrammedElement = elements129.getLength() > 0 ? ((Element) elements129.item(0)) : null;
+                        if (isDnsProgrammedElement != null && (isDnsProgrammedElement.getTextContent() != null && isDnsProgrammedElement.getTextContent().isEmpty() != true) == false)
+                        {
+                            boolean isDnsProgrammedInstance;
+                            isDnsProgrammedInstance = Boolean.parseBoolean(isDnsProgrammedElement.getTextContent());
+                            virtualIPInstance.setIsDnsProgrammed(isDnsProgrammedInstance);
+                        }
+                    }
+                }
+                
+                NodeList elements130 = deploymentElement.getElementsByTagName("ReservedIPName");
+                Element reservedIPNameElement = elements130.getLength() > 0 ? ((Element) elements130.item(0)) : null;
+                if (reservedIPNameElement != null)
+                {
+                    String reservedIPNameInstance;
+                    reservedIPNameInstance = reservedIPNameElement.getTextContent();
+                    result.setReservedIPName(reservedIPNameInstance);
+                }
+                
+                NodeList elements131 = deploymentElement.getElementsByTagName("Dns");
+                Element dnsElement = elements131.getLength() > 0 ? ((Element) elements131.item(0)) : null;
+                if (dnsElement != null)
+                {
+                    DnsSettings dnsInstance = new DnsSettings();
+                    result.setDnsSettings(dnsInstance);
+                    
+                    NodeList elements132 = dnsElement.getElementsByTagName("DnsServers");
+                    Element dnsServersSequenceElement = elements132.getLength() > 0 ? ((Element) elements132.item(0)) : null;
+                    if (dnsServersSequenceElement != null)
+                    {
+                        for (int i15 = 0; i15 < dnsServersSequenceElement.getElementsByTagName("DnsServer").getLength(); i15 = i15 + 1)
+                        {
+                            org.w3c.dom.Element dnsServersElement = ((org.w3c.dom.Element) dnsServersSequenceElement.getElementsByTagName("DnsServer").item(i15));
+                            DnsServer dnsServerInstance = new DnsServer();
+                            dnsInstance.getDnsServers().add(dnsServerInstance);
+                            
+                            NodeList elements133 = dnsServersElement.getElementsByTagName("Name");
+                            Element nameElement5 = elements133.getLength() > 0 ? ((Element) elements133.item(0)) : null;
+                            if (nameElement5 != null)
+                            {
+                                String nameInstance5;
+                                nameInstance5 = nameElement5.getTextContent();
+                                dnsServerInstance.setName(nameInstance5);
+                            }
+                            
+                            NodeList elements134 = dnsServersElement.getElementsByTagName("Address");
+                            Element addressElement2 = elements134.getLength() > 0 ? ((Element) elements134.item(0)) : null;
+                            if (addressElement2 != null)
+                            {
+                                InetAddress addressInstance2;
+                                addressInstance2 = InetAddress.getByName(addressElement2.getTextContent());
+                                dnsServerInstance.setAddress(addressInstance2);
+                            }
+                        }
+                    }
+                }
+                
+                NodeList elements135 = deploymentElement.getElementsByTagName("ExtensionConfiguration");
+                Element extensionConfigurationElement = elements135.getLength() > 0 ? ((Element) elements135.item(0)) : null;
+                if (extensionConfigurationElement != null)
+                {
+                    ExtensionConfiguration extensionConfigurationInstance = new ExtensionConfiguration();
+                    result.setExtensionConfiguration(extensionConfigurationInstance);
+                    
+                    NodeList elements136 = extensionConfigurationElement.getElementsByTagName("AllRoles");
+                    Element allRolesSequenceElement = elements136.getLength() > 0 ? ((Element) elements136.item(0)) : null;
+                    if (allRolesSequenceElement != null)
+                    {
+                        for (int i16 = 0; i16 < allRolesSequenceElement.getElementsByTagName("Extension").getLength(); i16 = i16 + 1)
+                        {
+                            org.w3c.dom.Element allRolesElement = ((org.w3c.dom.Element) allRolesSequenceElement.getElementsByTagName("Extension").item(i16));
+                            ExtensionConfiguration.Extension extensionInstance = new ExtensionConfiguration.Extension();
+                            extensionConfigurationInstance.getAllRoles().add(extensionInstance);
+                            
+                            NodeList elements137 = allRolesElement.getElementsByTagName("Id");
+                            Element idElement = elements137.getLength() > 0 ? ((Element) elements137.item(0)) : null;
+                            if (idElement != null)
+                            {
+                                String idInstance;
+                                idInstance = idElement.getTextContent();
+                                extensionInstance.setId(idInstance);
+                            }
+                        }
+                    }
+                    
+                    NodeList elements138 = extensionConfigurationElement.getElementsByTagName("NamedRoles");
+                    Element namedRolesSequenceElement = elements138.getLength() > 0 ? ((Element) elements138.item(0)) : null;
+                    if (namedRolesSequenceElement != null)
+                    {
+                        for (int i17 = 0; i17 < namedRolesSequenceElement.getElementsByTagName("Role").getLength(); i17 = i17 + 1)
+                        {
+                            org.w3c.dom.Element namedRolesElement = ((org.w3c.dom.Element) namedRolesSequenceElement.getElementsByTagName("Role").item(i17));
+                            ExtensionConfiguration.NamedRole roleInstance2 = new ExtensionConfiguration.NamedRole();
+                            extensionConfigurationInstance.getNamedRoles().add(roleInstance2);
+                            
+                            NodeList elements139 = namedRolesElement.getElementsByTagName("RoleName");
+                            Element roleNameElement3 = elements139.getLength() > 0 ? ((Element) elements139.item(0)) : null;
+                            if (roleNameElement3 != null)
+                            {
+                                String roleNameInstance3;
+                                roleNameInstance3 = roleNameElement3.getTextContent();
+                                roleInstance2.setRoleName(roleNameInstance3);
+                            }
+                            
+                            NodeList elements140 = namedRolesElement.getElementsByTagName("Extensions");
+                            Element extensionsSequenceElement = elements140.getLength() > 0 ? ((Element) elements140.item(0)) : null;
+                            if (extensionsSequenceElement != null)
+                            {
+                                for (int i18 = 0; i18 < extensionsSequenceElement.getElementsByTagName("Extension").getLength(); i18 = i18 + 1)
+                                {
+                                    org.w3c.dom.Element extensionsElement = ((org.w3c.dom.Element) extensionsSequenceElement.getElementsByTagName("Extension").item(i18));
+                                    ExtensionConfiguration.Extension extensionInstance2 = new ExtensionConfiguration.Extension();
+                                    roleInstance2.getExtensions().add(extensionInstance2);
+                                    
+                                    NodeList elements141 = extensionsElement.getElementsByTagName("Id");
+                                    Element idElement2 = elements141.getLength() > 0 ? ((Element) elements141.item(0)) : null;
+                                    if (idElement2 != null)
+                                    {
+                                        String idInstance2;
+                                        idInstance2 = idElement2.getTextContent();
+                                        extensionInstance2.setId(idInstance2);
+                                    }
                                 }
                             }
                         }
                     }
                 }
             }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -6567,6 +7086,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * @param serviceName The name of the cloud service.
     * @param deploymentName The name of your deployment.
     * @param parameters Parameters supplied to the Get Package operation.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -6605,11 +7128,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "/package?containerUri=" + parameters.getContainerUri() + " +";
-        if (parameters.getOverwriteExisting() != null)
-        {
-            url = url + "&overwriteExisting=" + URLEncoder.encode(Boolean.toString(parameters.getOverwriteExisting()).toLowerCase());
-        }
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "/package?containerUri=" + parameters.getContainerUri() + " +&overwriteExisting=" + parameters.isOverwriteExisting();
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -6619,40 +7138,50 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        OperationResponse result = null;
-        result = new OperationResponse();
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -6700,6 +7229,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * @param serviceName The name of the cloud service.
     * @param deploymentSlot The deployment slot.
     * @param parameters Parameters supplied to the Get Package operation.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -6734,11 +7267,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deploymentslots/" + deploymentSlot + "/package?containerUri=" + parameters.getContainerUri() + " +";
-        if (parameters.getOverwriteExisting() != null)
-        {
-            url = url + "&overwriteExisting=" + URLEncoder.encode(Boolean.toString(parameters.getOverwriteExisting()).toLowerCase());
-        }
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deploymentslots/" + deploymentSlot + "/package?containerUri=" + parameters.getContainerUri() + " +&overwriteExisting=" + parameters.isOverwriteExisting();
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -6748,40 +7277,50 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        OperationResponse result = null;
-        result = new OperationResponse();
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -6832,6 +7371,18 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * @param serviceName The name of the cloud service.
     * @param deploymentName The name of your deployment.
     * @param roleInstanceName The name of your role instance.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -6881,14 +7432,26 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;
@@ -6950,6 +7513,18 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * @param serviceName The name of the cloud service.
     * @param deploymentSlot The deployment slot.
     * @param roleInstanceName The name of your role instance.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -6999,14 +7574,26 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;
@@ -7068,6 +7655,18 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * @param serviceName The name of the cloud service.
     * @param deploymentName The name of your deployment.
     * @param roleInstanceName The name of your role instance.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -7117,14 +7716,26 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;
@@ -7186,6 +7797,18 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * @param serviceName The name of the cloud service.
     * @param deploymentSlot The deployment slot.
     * @param roleInstanceName The name of your role instance.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -7235,14 +7858,26 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;
@@ -7303,11 +7938,21 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * @param deploymentName The name of your deployment.
     * @param parameters Parameters supplied to the Rollback Update Or Upgrade
     * operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
     @Override
-    public OperationResponse rollbackUpdateOrUpgradeByDeploymentName(String serviceName, String deploymentName, DeploymentRollbackUpdateOrUpgradeParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException
+    public OperationResponse rollbackUpdateOrUpgradeByDeploymentName(String serviceName, String deploymentName, DeploymentRollbackUpdateOrUpgradeParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
     {
         // Validate
         if (serviceName == null)
@@ -7361,7 +8006,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         rollbackUpdateOrUpgradeElement.appendChild(modeElement);
         
         Element forceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Force");
-        forceElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.getForce()).toLowerCase()));
+        forceElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.isForce()).toLowerCase()));
         rollbackUpdateOrUpgradeElement.appendChild(forceElement);
         
         DOMSource domSource = new DOMSource(requestDoc);
@@ -7377,40 +8022,50 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        OperationResponse result = null;
-        result = new OperationResponse();
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -7460,11 +8115,21 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * @param deploymentSlot The deployment slot.
     * @param parameters Parameters supplied to the Rollback Update Or Upgrade
     * operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
     @Override
-    public OperationResponse rollbackUpdateOrUpgradeByDeploymentSlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentRollbackUpdateOrUpgradeParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException
+    public OperationResponse rollbackUpdateOrUpgradeByDeploymentSlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentRollbackUpdateOrUpgradeParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
     {
         // Validate
         if (serviceName == null)
@@ -7514,7 +8179,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         rollbackUpdateOrUpgradeElement.appendChild(modeElement);
         
         Element forceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Force");
-        forceElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.getForce()).toLowerCase()));
+        forceElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.isForce()).toLowerCase()));
         rollbackUpdateOrUpgradeElement.appendChild(forceElement);
         
         DOMSource domSource = new DOMSource(requestDoc);
@@ -7530,40 +8195,50 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        OperationResponse result = null;
-        result = new OperationResponse();
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -7614,6 +8289,18 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     *
     * @param serviceName The cloud service to swap deployments for.
     * @param parameters Parameters supplied to the Swap Deployment operation.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -7662,14 +8349,26 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;
@@ -7735,6 +8434,18 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * @param deploymentName The name of your deployment.
     * @param parameters Parameters supplied to the Update Deployment Status
     * operation.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -7784,14 +8495,26 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;
@@ -7857,6 +8580,18 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * @param deploymentSlot The deployment slot.
     * @param parameters Parameters supplied to the Update Deployment Status
     * operation.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -7906,14 +8641,26 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;
@@ -8017,6 +8764,18 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * @param serviceName The cloud service to upgrade.
     * @param deploymentName The deployment to upgrade.
     * @param parameters Parameters supplied to the Upgrade Deployment operation.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -8066,14 +8825,26 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;
@@ -8177,6 +8948,18 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * @param serviceName The cloud service to upgrade.
     * @param deploymentSlot The slot to upgrade.
     * @param parameters Parameters supplied to the Upgrade Deployment operation.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -8226,14 +9009,26 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;
@@ -8337,6 +9132,18 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * @param deploymentName The name of your deployment.
     * @param parameters Parameters supplied to the Walk Upgrade Domain
     * operation.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -8386,14 +9193,26 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;
@@ -8497,6 +9316,18 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * @param deploymentSlot The deployment slot.
     * @param parameters Parameters supplied to the Walk Upgrade Domain
     * operation.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -8546,14 +9377,26 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;

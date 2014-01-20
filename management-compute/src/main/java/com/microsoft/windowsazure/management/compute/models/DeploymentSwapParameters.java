@@ -32,31 +32,39 @@ public class DeploymentSwapParameters
     
     /**
     * The optional  name of the production deployment.
+    * @return The ProductionDeployment value.
     */
-    public String getProductionDeployment() { return this.productionDeployment; }
+    public String getProductionDeployment()
+    {
+        return this.productionDeployment;
+    }
     
     /**
     * The optional  name of the production deployment.
+    * @param productionDeploymentValue The ProductionDeployment value.
     */
-    public void setProductionDeployment(String productionDeployment) { this.productionDeployment = productionDeployment; }
+    public void setProductionDeployment(final String productionDeploymentValue)
+    {
+        this.productionDeployment = productionDeploymentValue;
+    }
     
     private String sourceDeployment;
     
     /**
     * Required. The name of the source deployment.
+    * @return The SourceDeployment value.
     */
-    public String getSourceDeployment() { return this.sourceDeployment; }
+    public String getSourceDeployment()
+    {
+        return this.sourceDeployment;
+    }
     
     /**
     * Required. The name of the source deployment.
+    * @param sourceDeploymentValue The SourceDeployment value.
     */
-    public void setSourceDeployment(String sourceDeployment) { this.sourceDeployment = sourceDeployment; }
-    
-    /**
-    * Initializes a new instance of the DeploymentSwapParameters class.
-    *
-    */
-    public DeploymentSwapParameters()
+    public void setSourceDeployment(final String sourceDeploymentValue)
     {
+        this.sourceDeployment = sourceDeploymentValue;
     }
 }

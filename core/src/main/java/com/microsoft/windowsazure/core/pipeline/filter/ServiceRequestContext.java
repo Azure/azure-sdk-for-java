@@ -17,26 +17,27 @@ package com.microsoft.windowsazure.core.pipeline.filter;
 
 import java.net.URI;
 
-public interface ServiceRequestContext {
-    public String getMethod();
+public interface ServiceRequestContext
+{
+    String getMethod();
 
-    public void setMethod(String method);
+    void setMethod(String method);
 
-    public URI getURI();
+    URI getURI();
 
-    public void setURI(URI uri);
+    void setURI(URI uri);
 
-    public String getHeader(String name);
-    
-    public void setHeader(String name, String value);
+    String getHeader(String name);
 
-    public void removeHeader(String name);
-    
-    public Object getEntity();
+    void setHeader(String name, String value);
 
-    public void setEntity(Object entity);
+    void removeHeader(String name);
 
-    public Object getProperty(String name);
+    Object getEntity();
 
-    public void setProperty(String name, Object value);
+    void setEntity(Object entity);
+
+    Object getProperty(String name);
+
+    void setProperty(String name, Object value);
 }

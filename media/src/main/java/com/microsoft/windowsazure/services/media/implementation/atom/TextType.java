@@ -20,7 +20,6 @@
 // Generated on: 2012.09.17 at 02:31:28 PM PDT 
 //
 
-
 package com.microsoft.windowsazure.services.media.implementation.atom;
 
 import java.util.ArrayList;
@@ -39,15 +38,17 @@ import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import javax.xml.namespace.QName;
 
-
 /**
  * 
- *                 The Atom text construct is defined in section 3.1 of the format spec.
- *             
+ * The Atom text construct is defined in section 3.1 of the format spec.
  * 
- * <p>Java class for textType complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * Java class for textType complex type.
+ * 
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="textType">
@@ -75,10 +76,9 @@ import javax.xml.namespace.QName;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "textType", propOrder = {
-    "content"
-})
-public class TextType {
+@XmlType(name = "textType", propOrder = { "content" })
+public class TextType
+{
 
     @XmlMixed
     @XmlAnyElement(lax = true)
@@ -98,31 +98,33 @@ public class TextType {
 
     /**
      * 
-     *                 The Atom text construct is defined in section 3.1 of the format spec.
-     *             Gets the value of the content property.
+     * The Atom text construct is defined in section 3.1 of the format spec.
+     * Gets the value of the content property.
      * 
      * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the content property.
+     * This accessor method returns a reference to the live list, not a
+     * snapshot. Therefore any modification you make to the returned list will
+     * be present inside the JAXB object. This is why there is not a
+     * <CODE>set</CODE> method for the content property.
      * 
      * <p>
      * For example, to add a new item, do as follows:
+     * 
      * <pre>
-     *    getContent().add(newItem);
+     * getContent().add(newItem);
      * </pre>
      * 
      * 
      * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link Object }
+     * Objects of the following type(s) are allowed in the list {@link Object }
      * {@link String }
      * 
      * 
      */
-    public List<Object> getContent() {
-        if (content == null) {
+    public List<Object> getContent()
+    {
+        if (content == null)
+        {
             content = new ArrayList<Object>();
         }
         return this.content;
@@ -131,12 +133,11 @@ public class TextType {
     /**
      * Gets the value of the type property.
      * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     * @return possible object is {@link String }
+     * 
      */
-    public String getType() {
+    public String getType()
+    {
         return type;
     }
 
@@ -144,23 +145,22 @@ public class TextType {
      * Sets the value of the type property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *            allowed object is {@link String }
+     * 
      */
-    public void setType(String value) {
+    public void setType(String value)
+    {
         this.type = value;
     }
 
     /**
      * Gets the value of the base property.
      * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     * @return possible object is {@link String }
+     * 
      */
-    public String getBase() {
+    public String getBase()
+    {
         return base;
     }
 
@@ -168,23 +168,22 @@ public class TextType {
      * Sets the value of the base property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *            allowed object is {@link String }
+     * 
      */
-    public void setBase(String value) {
+    public void setBase(String value)
+    {
         this.base = value;
     }
 
     /**
      * Gets the value of the lang property.
      * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     * @return possible object is {@link String }
+     * 
      */
-    public String getLang() {
+    public String getLang()
+    {
         return lang;
     }
 
@@ -192,29 +191,30 @@ public class TextType {
      * Sets the value of the lang property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *            allowed object is {@link String }
+     * 
      */
-    public void setLang(String value) {
+    public void setLang(String value)
+    {
         this.lang = value;
     }
 
     /**
-     * Gets a map that contains attributes that aren't bound to any typed property on this class.
+     * Gets a map that contains attributes that aren't bound to any typed
+     * property on this class.
      * 
      * <p>
-     * the map is keyed by the name of the attribute and 
-     * the value is the string value of the attribute.
+     * the map is keyed by the name of the attribute and the value is the string
+     * value of the attribute.
      * 
-     * the map returned by this method is live, and you can add new attribute
-     * by updating the map directly. Because of this design, there's no setter.
+     * the map returned by this method is live, and you can add new attribute by
+     * updating the map directly. Because of this design, there's no setter.
      * 
      * 
-     * @return
-     *     always non-null
+     * @return always non-null
      */
-    public Map<QName, String> getOtherAttributes() {
+    public Map<QName, String> getOtherAttributes()
+    {
         return otherAttributes;
     }
 

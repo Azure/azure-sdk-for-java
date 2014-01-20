@@ -38,12 +38,18 @@ public class JobGetHistoryResponse extends OperationResponse implements Iterable
     /**
     * The job history entries.
     */
-    public ArrayList<JobGetHistoryResponse.JobHistoryEntry> getJobHistory() { return this.jobHistory; }
+    public ArrayList<JobGetHistoryResponse.JobHistoryEntry> getJobHistory()
+    {
+        return this.jobHistory;
+    }
     
     /**
     * The job history entries.
     */
-    public void setJobHistory(ArrayList<JobGetHistoryResponse.JobHistoryEntry> jobHistory) { this.jobHistory = jobHistory; }
+    public void setJobHistory(ArrayList<JobGetHistoryResponse.JobHistoryEntry> jobHistory)
+    {
+        this.jobHistory = jobHistory;
+    }
     
     /**
     * Initializes a new instance of the JobGetHistoryResponse class.
@@ -51,6 +57,7 @@ public class JobGetHistoryResponse extends OperationResponse implements Iterable
     */
     public JobGetHistoryResponse()
     {
+        super();
         this.jobHistory = new ArrayList<JobGetHistoryResponse.JobHistoryEntry>();
     }
     
@@ -73,139 +80,197 @@ public class JobGetHistoryResponse extends OperationResponse implements Iterable
         /**
         * The action of this execution, MainAction or ErrorAction.
         */
-        public JobHistoryActionName getActionName() { return this.actionName; }
+        public JobHistoryActionName getActionName()
+        {
+            return this.actionName;
+        }
         
         /**
         * The action of this execution, MainAction or ErrorAction.
         */
-        public void setActionName(JobHistoryActionName actionName) { this.actionName = actionName; }
+        public void setActionName(JobHistoryActionName actionName)
+        {
+            this.actionName = actionName;
+        }
         
         private Calendar endTime;
         
         /**
         * The time the execution attempt concluded.
         */
-        public Calendar getEndTime() { return this.endTime; }
+        public Calendar getEndTime()
+        {
+            return this.endTime;
+        }
         
         /**
         * The time the execution attempt concluded.
         */
-        public void setEndTime(Calendar endTime) { this.endTime = endTime; }
+        public void setEndTime(Calendar endTime)
+        {
+            this.endTime = endTime;
+        }
         
         private String id;
         
         /**
         * The job id that this history entry is for.
         */
-        public String getId() { return this.id; }
+        public String getId()
+        {
+            return this.id;
+        }
         
         /**
         * The job id that this history entry is for.
         */
-        public void setId(String id) { this.id = id; }
+        public void setId(String id)
+        {
+            this.id = id;
+        }
         
         private String message;
         
         /**
         * A description of the result of the execution attempt.
         */
-        public String getMessage() { return this.message; }
+        public String getMessage()
+        {
+            return this.message;
+        }
         
         /**
         * A description of the result of the execution attempt.
         */
-        public void setMessage(String message) { this.message = message; }
+        public void setMessage(String message)
+        {
+            this.message = message;
+        }
         
         private int recordNumber;
         
         /**
         * The zero-based index of the history entry.
         */
-        public int getRecordNumber() { return this.recordNumber; }
+        public int getRecordNumber()
+        {
+            return this.recordNumber;
+        }
         
         /**
         * The zero-based index of the history entry.
         */
-        public void setRecordNumber(int recordNumber) { this.recordNumber = recordNumber; }
+        public void setRecordNumber(int recordNumber)
+        {
+            this.recordNumber = recordNumber;
+        }
         
         private int repeatCount;
         
         /**
         * The occurrence count of this execution.
         */
-        public int getRepeatCount() { return this.repeatCount; }
+        public int getRepeatCount()
+        {
+            return this.repeatCount;
+        }
         
         /**
         * The occurrence count of this execution.
         */
-        public void setRepeatCount(int repeatCount) { this.repeatCount = repeatCount; }
+        public void setRepeatCount(int repeatCount)
+        {
+            this.repeatCount = repeatCount;
+        }
         
         private int retryCount;
         
         /**
         * The retry count of this occurrence.
         */
-        public int getRetryCount() { return this.retryCount; }
+        public int getRetryCount()
+        {
+            return this.retryCount;
+        }
         
         /**
         * The retry count of this occurrence.
         */
-        public void setRetryCount(int retryCount) { this.retryCount = retryCount; }
+        public void setRetryCount(int retryCount)
+        {
+            this.retryCount = retryCount;
+        }
         
         private Calendar startTime;
         
         /**
         * The time the execution attempt began.
         */
-        public Calendar getStartTime() { return this.startTime; }
+        public Calendar getStartTime()
+        {
+            return this.startTime;
+        }
         
         /**
         * The time the execution attempt began.
         */
-        public void setStartTime(Calendar startTime) { this.startTime = startTime; }
+        public void setStartTime(Calendar startTime)
+        {
+            this.startTime = startTime;
+        }
         
         private JobState state;
         
         /**
         * The state of the job: enabled, disabled, faulted, or completed.
         */
-        public JobState getState() { return this.state; }
+        public JobState getState()
+        {
+            return this.state;
+        }
         
         /**
         * The state of the job: enabled, disabled, faulted, or completed.
         */
-        public void setState(JobState state) { this.state = state; }
+        public void setState(JobState state)
+        {
+            this.state = state;
+        }
         
         private JobHistoryStatus status;
         
         /**
         * The status of this execution attempt, completed or failed.
         */
-        public JobHistoryStatus getStatus() { return this.status; }
+        public JobHistoryStatus getStatus()
+        {
+            return this.status;
+        }
         
         /**
         * The status of this execution attempt, completed or failed.
         */
-        public void setStatus(JobHistoryStatus status) { this.status = status; }
+        public void setStatus(JobHistoryStatus status)
+        {
+            this.status = status;
+        }
         
         private Calendar timestamp;
         
         /**
         * The time the execution attempt began.
         */
-        public Calendar getTimestamp() { return this.timestamp; }
+        public Calendar getTimestamp()
+        {
+            return this.timestamp;
+        }
         
         /**
         * The time the execution attempt began.
         */
-        public void setTimestamp(Calendar timestamp) { this.timestamp = timestamp; }
-        
-        /**
-        * Initializes a new instance of the JobHistoryEntry class.
-        *
-        */
-        public JobHistoryEntry()
+        public void setTimestamp(Calendar timestamp)
         {
+            this.timestamp = timestamp;
         }
     }
 }

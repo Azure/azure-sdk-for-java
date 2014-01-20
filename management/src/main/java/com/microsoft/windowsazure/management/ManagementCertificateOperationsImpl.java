@@ -34,7 +34,6 @@ import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -46,13 +45,13 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -86,8 +85,12 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
     /**
     * Gets a reference to the
     * microsoft.windowsazure.management.ManagementClientImpl.
+    * @return The Client value.
     */
-    public ManagementClientImpl getClient() { return this.client; }
+    public ManagementClientImpl getClient()
+    {
+        return this.client;
+    }
     
     /**
     * The Add Management Certificate operation adds a certificate to the list
@@ -124,11 +127,21 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
     *
     * @param parameters Parameters supplied to the Create Management
     * Certificate operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
     @Override
-    public OperationResponse create(ManagementCertificateCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException
+    public OperationResponse create(ManagementCertificateCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
     {
         // Validate
         if (parameters == null)
@@ -200,40 +213,50 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        OperationResponse result = null;
-        result = new OperationResponse();
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -269,6 +292,10 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
     * for more information)
     *
     * @param thumbprint the thumbprint value of the certificate to delete.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -303,40 +330,50 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200 && statusCode != 404)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK && statusCode != HttpStatus.SC_NOT_FOUND)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        OperationResponse result = null;
-        result = new OperationResponse();
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -375,6 +412,18 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
     *
     * @param thumbprint The thumbprint value of the certificate to retrieve
     * information about.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return The Get Management Certificate operation response.
     */
     @Override
@@ -408,90 +457,100 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
-        }
-        
-        // Create Result
-        ManagementCertificateGetResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new ManagementCertificateGetResponse();
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document responseDoc = documentBuilder.parse(responseContent);
-        
-        NodeList elements = responseDoc.getElementsByTagName("SubscriptionCertificate");
-        Element subscriptionCertificateElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
-        if (subscriptionCertificateElement != null)
-        {
-            NodeList elements2 = subscriptionCertificateElement.getElementsByTagName("SubscriptionCertificatePublicKey");
-            Element subscriptionCertificatePublicKeyElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
-            if (subscriptionCertificatePublicKeyElement != null)
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
             {
-                byte[] subscriptionCertificatePublicKeyInstance;
-                subscriptionCertificatePublicKeyInstance = subscriptionCertificatePublicKeyElement.getTextContent() != null ? Base64.decodeBase64(subscriptionCertificatePublicKeyElement.getTextContent().getBytes()) : null;
-                result.setPublicKey(subscriptionCertificatePublicKeyInstance);
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
             }
             
-            NodeList elements3 = subscriptionCertificateElement.getElementsByTagName("SubscriptionCertificateThumbprint");
-            Element subscriptionCertificateThumbprintElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
-            if (subscriptionCertificateThumbprintElement != null)
+            // Create Result
+            ManagementCertificateGetResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new ManagementCertificateGetResponse();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document responseDoc = documentBuilder.parse(responseContent);
+            
+            NodeList elements = responseDoc.getElementsByTagName("SubscriptionCertificate");
+            Element subscriptionCertificateElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            if (subscriptionCertificateElement != null)
             {
-                String subscriptionCertificateThumbprintInstance;
-                subscriptionCertificateThumbprintInstance = subscriptionCertificateThumbprintElement.getTextContent();
-                result.setThumbprint(subscriptionCertificateThumbprintInstance);
+                NodeList elements2 = subscriptionCertificateElement.getElementsByTagName("SubscriptionCertificatePublicKey");
+                Element subscriptionCertificatePublicKeyElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                if (subscriptionCertificatePublicKeyElement != null)
+                {
+                    byte[] subscriptionCertificatePublicKeyInstance;
+                    subscriptionCertificatePublicKeyInstance = subscriptionCertificatePublicKeyElement.getTextContent() != null ? Base64.decodeBase64(subscriptionCertificatePublicKeyElement.getTextContent().getBytes()) : null;
+                    result.setPublicKey(subscriptionCertificatePublicKeyInstance);
+                }
+                
+                NodeList elements3 = subscriptionCertificateElement.getElementsByTagName("SubscriptionCertificateThumbprint");
+                Element subscriptionCertificateThumbprintElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                if (subscriptionCertificateThumbprintElement != null)
+                {
+                    String subscriptionCertificateThumbprintInstance;
+                    subscriptionCertificateThumbprintInstance = subscriptionCertificateThumbprintElement.getTextContent();
+                    result.setThumbprint(subscriptionCertificateThumbprintInstance);
+                }
+                
+                NodeList elements4 = subscriptionCertificateElement.getElementsByTagName("SubscriptionCertificateData");
+                Element subscriptionCertificateDataElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                if (subscriptionCertificateDataElement != null)
+                {
+                    byte[] subscriptionCertificateDataInstance;
+                    subscriptionCertificateDataInstance = subscriptionCertificateDataElement.getTextContent() != null ? Base64.decodeBase64(subscriptionCertificateDataElement.getTextContent().getBytes()) : null;
+                    result.setData(subscriptionCertificateDataInstance);
+                }
+                
+                NodeList elements5 = subscriptionCertificateElement.getElementsByTagName("Created");
+                Element createdElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                if (createdElement != null)
+                {
+                    Calendar createdInstance;
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(simpleDateFormat.parse(createdElement.getTextContent()));
+                    createdInstance = calendar;
+                    result.setCreated(createdInstance);
+                }
             }
             
-            NodeList elements4 = subscriptionCertificateElement.getElementsByTagName("SubscriptionCertificateData");
-            Element subscriptionCertificateDataElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
-            if (subscriptionCertificateDataElement != null)
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
             {
-                byte[] subscriptionCertificateDataInstance;
-                subscriptionCertificateDataInstance = subscriptionCertificateDataElement.getTextContent() != null ? Base64.decodeBase64(subscriptionCertificateDataElement.getTextContent().getBytes()) : null;
-                result.setData(subscriptionCertificateDataInstance);
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            NodeList elements5 = subscriptionCertificateElement.getElementsByTagName("Created");
-            Element createdElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
-            if (createdElement != null)
+            if (shouldTrace)
             {
-                Calendar createdInstance;
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(simpleDateFormat.parse(createdElement.getTextContent()));
-                createdInstance = calendar;
-                result.setCreated(createdInstance);
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
             }
         }
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-        {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
-        }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -526,6 +585,16 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154105.aspx for
     * more information)
     *
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return The List Management Certificates operation response.
     */
     @Override
@@ -554,96 +623,106 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
-        }
-        
-        // Create Result
-        ManagementCertificateListResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new ManagementCertificateListResponse();
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document responseDoc = documentBuilder.parse(responseContent);
-        
-        NodeList elements = responseDoc.getElementsByTagName("SubscriptionCertificates");
-        Element subscriptionCertificatesSequenceElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
-        if (subscriptionCertificatesSequenceElement != null)
-        {
-            for (int i1 = 0; i1 < subscriptionCertificatesSequenceElement.getElementsByTagName("SubscriptionCertificate").getLength(); i1 = i1 + 1)
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
             {
-                org.w3c.dom.Element subscriptionCertificatesElement = ((org.w3c.dom.Element)subscriptionCertificatesSequenceElement.getElementsByTagName("SubscriptionCertificate").item(i1));
-                ManagementCertificateListResponse.SubscriptionCertificate subscriptionCertificateInstance = new ManagementCertificateListResponse.SubscriptionCertificate();
-                result.getSubscriptionCertificates().add(subscriptionCertificateInstance);
-                
-                NodeList elements2 = subscriptionCertificatesElement.getElementsByTagName("SubscriptionCertificatePublicKey");
-                Element subscriptionCertificatePublicKeyElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
-                if (subscriptionCertificatePublicKeyElement != null)
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
                 {
-                    byte[] subscriptionCertificatePublicKeyInstance;
-                    subscriptionCertificatePublicKeyInstance = subscriptionCertificatePublicKeyElement.getTextContent() != null ? Base64.decodeBase64(subscriptionCertificatePublicKeyElement.getTextContent().getBytes()) : null;
-                    subscriptionCertificateInstance.setPublicKey(subscriptionCertificatePublicKeyInstance);
+                    CloudTracing.error(invocationId, ex);
                 }
-                
-                NodeList elements3 = subscriptionCertificatesElement.getElementsByTagName("SubscriptionCertificateThumbprint");
-                Element subscriptionCertificateThumbprintElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
-                if (subscriptionCertificateThumbprintElement != null)
+                throw ex;
+            }
+            
+            // Create Result
+            ManagementCertificateListResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new ManagementCertificateListResponse();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document responseDoc = documentBuilder.parse(responseContent);
+            
+            NodeList elements = responseDoc.getElementsByTagName("SubscriptionCertificates");
+            Element subscriptionCertificatesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            if (subscriptionCertificatesSequenceElement != null)
+            {
+                for (int i1 = 0; i1 < subscriptionCertificatesSequenceElement.getElementsByTagName("SubscriptionCertificate").getLength(); i1 = i1 + 1)
                 {
-                    String subscriptionCertificateThumbprintInstance;
-                    subscriptionCertificateThumbprintInstance = subscriptionCertificateThumbprintElement.getTextContent();
-                    subscriptionCertificateInstance.setThumbprint(subscriptionCertificateThumbprintInstance);
-                }
-                
-                NodeList elements4 = subscriptionCertificatesElement.getElementsByTagName("SubscriptionCertificateData");
-                Element subscriptionCertificateDataElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
-                if (subscriptionCertificateDataElement != null)
-                {
-                    byte[] subscriptionCertificateDataInstance;
-                    subscriptionCertificateDataInstance = subscriptionCertificateDataElement.getTextContent() != null ? Base64.decodeBase64(subscriptionCertificateDataElement.getTextContent().getBytes()) : null;
-                    subscriptionCertificateInstance.setData(subscriptionCertificateDataInstance);
-                }
-                
-                NodeList elements5 = subscriptionCertificatesElement.getElementsByTagName("Created");
-                Element createdElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
-                if (createdElement != null)
-                {
-                    Calendar createdInstance;
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(simpleDateFormat.parse(createdElement.getTextContent()));
-                    createdInstance = calendar;
-                    subscriptionCertificateInstance.setCreated(createdInstance);
+                    org.w3c.dom.Element subscriptionCertificatesElement = ((org.w3c.dom.Element) subscriptionCertificatesSequenceElement.getElementsByTagName("SubscriptionCertificate").item(i1));
+                    ManagementCertificateListResponse.SubscriptionCertificate subscriptionCertificateInstance = new ManagementCertificateListResponse.SubscriptionCertificate();
+                    result.getSubscriptionCertificates().add(subscriptionCertificateInstance);
+                    
+                    NodeList elements2 = subscriptionCertificatesElement.getElementsByTagName("SubscriptionCertificatePublicKey");
+                    Element subscriptionCertificatePublicKeyElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                    if (subscriptionCertificatePublicKeyElement != null)
+                    {
+                        byte[] subscriptionCertificatePublicKeyInstance;
+                        subscriptionCertificatePublicKeyInstance = subscriptionCertificatePublicKeyElement.getTextContent() != null ? Base64.decodeBase64(subscriptionCertificatePublicKeyElement.getTextContent().getBytes()) : null;
+                        subscriptionCertificateInstance.setPublicKey(subscriptionCertificatePublicKeyInstance);
+                    }
+                    
+                    NodeList elements3 = subscriptionCertificatesElement.getElementsByTagName("SubscriptionCertificateThumbprint");
+                    Element subscriptionCertificateThumbprintElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                    if (subscriptionCertificateThumbprintElement != null)
+                    {
+                        String subscriptionCertificateThumbprintInstance;
+                        subscriptionCertificateThumbprintInstance = subscriptionCertificateThumbprintElement.getTextContent();
+                        subscriptionCertificateInstance.setThumbprint(subscriptionCertificateThumbprintInstance);
+                    }
+                    
+                    NodeList elements4 = subscriptionCertificatesElement.getElementsByTagName("SubscriptionCertificateData");
+                    Element subscriptionCertificateDataElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                    if (subscriptionCertificateDataElement != null)
+                    {
+                        byte[] subscriptionCertificateDataInstance;
+                        subscriptionCertificateDataInstance = subscriptionCertificateDataElement.getTextContent() != null ? Base64.decodeBase64(subscriptionCertificateDataElement.getTextContent().getBytes()) : null;
+                        subscriptionCertificateInstance.setData(subscriptionCertificateDataInstance);
+                    }
+                    
+                    NodeList elements5 = subscriptionCertificatesElement.getElementsByTagName("Created");
+                    Element createdElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                    if (createdElement != null)
+                    {
+                        Calendar createdInstance;
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.setTime(simpleDateFormat.parse(createdElement.getTextContent()));
+                        createdInstance = calendar;
+                        subscriptionCertificateInstance.setCreated(createdInstance);
+                    }
                 }
             }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
 }

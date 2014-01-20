@@ -32,13 +32,21 @@ public class ServiceBusQueue
     
     /**
     * The time the queue was last accessed.
+    * @return The AccessedAt value.
     */
-    public Calendar getAccessedAt() { return this.accessedAt; }
+    public Calendar getAccessedAt()
+    {
+        return this.accessedAt;
+    }
     
     /**
     * The time the queue was last accessed.
+    * @param accessedAtValue The AccessedAt value.
     */
-    public void setAccessedAt(Calendar accessedAt) { this.accessedAt = accessedAt; }
+    public void setAccessedAt(final Calendar accessedAtValue)
+    {
+        this.accessedAt = accessedAtValue;
+    }
     
     private ArrayList<ServiceBusSharedAccessAuthorizationRule> authorizationRules;
     
@@ -46,51 +54,83 @@ public class ServiceBusQueue
     * Gets the authorization rules for the description.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
     * more information)
+    * @return The AuthorizationRules value.
     */
-    public ArrayList<ServiceBusSharedAccessAuthorizationRule> getAuthorizationRules() { return this.authorizationRules; }
+    public ArrayList<ServiceBusSharedAccessAuthorizationRule> getAuthorizationRules()
+    {
+        return this.authorizationRules;
+    }
     
     /**
     * Gets the authorization rules for the description.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
     * more information)
+    * @param authorizationRulesValue The AuthorizationRules value.
     */
-    public void setAuthorizationRules(ArrayList<ServiceBusSharedAccessAuthorizationRule> authorizationRules) { this.authorizationRules = authorizationRules; }
+    public void setAuthorizationRules(final ArrayList<ServiceBusSharedAccessAuthorizationRule> authorizationRulesValue)
+    {
+        this.authorizationRules = authorizationRulesValue;
+    }
     
     private String autoDeleteOnIdle;
     
     /**
     * Implemented.
+    * @return The AutoDeleteOnIdle value.
     */
-    public String getAutoDeleteOnIdle() { return this.autoDeleteOnIdle; }
+    public String getAutoDeleteOnIdle()
+    {
+        return this.autoDeleteOnIdle;
+    }
     
     /**
     * Implemented.
+    * @param autoDeleteOnIdleValue The AutoDeleteOnIdle value.
     */
-    public void setAutoDeleteOnIdle(String autoDeleteOnIdle) { this.autoDeleteOnIdle = autoDeleteOnIdle; }
+    public void setAutoDeleteOnIdle(final String autoDeleteOnIdleValue)
+    {
+        this.autoDeleteOnIdle = autoDeleteOnIdleValue;
+    }
     
     private CountDetails countDetails;
     
     /**
     * Current queue statistics.
+    * @return The CountDetails value.
     */
-    public CountDetails getCountDetails() { return this.countDetails; }
+    public CountDetails getCountDetails()
+    {
+        return this.countDetails;
+    }
     
     /**
     * Current queue statistics.
+    * @param countDetailsValue The CountDetails value.
     */
-    public void setCountDetails(CountDetails countDetails) { this.countDetails = countDetails; }
+    public void setCountDetails(final CountDetails countDetailsValue)
+    {
+        this.countDetails = countDetailsValue;
+    }
     
     private Calendar createdAt;
     
     /**
     * The time the queue was created at.
+    * @return The CreatedAt value.
     */
-    public Calendar getCreatedAt() { return this.createdAt; }
+    public Calendar getCreatedAt()
+    {
+        return this.createdAt;
+    }
     
     /**
     * The time the queue was created at.
+    * @param createdAtValue The CreatedAt value.
     */
-    public void setCreatedAt(Calendar createdAt) { this.createdAt = createdAt; }
+    public void setCreatedAt(final Calendar createdAtValue)
+    {
+        this.createdAt = createdAtValue;
+    }
     
     private boolean deadLetteringOnMessageExpiration;
     
@@ -102,8 +142,12 @@ public class ServiceBusQueue
     * only at queue creation time.* Default: false  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
     * more information)
+    * @return The DeadLetteringOnMessageExpiration value.
     */
-    public boolean getDeadLetteringOnMessageExpiration() { return this.deadLetteringOnMessageExpiration; }
+    public boolean isDeadLetteringOnMessageExpiration()
+    {
+        return this.deadLetteringOnMessageExpiration;
+    }
     
     /**
     * This field controls how the Service Bus handles a message whose TTL has
@@ -113,8 +157,13 @@ public class ServiceBusQueue
     * only at queue creation time.* Default: false  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
     * more information)
+    * @param deadLetteringOnMessageExpirationValue The
+    * DeadLetteringOnMessageExpiration value.
     */
-    public void setDeadLetteringOnMessageExpiration(boolean deadLetteringOnMessageExpiration) { this.deadLetteringOnMessageExpiration = deadLetteringOnMessageExpiration; }
+    public void setDeadLetteringOnMessageExpiration(final boolean deadLetteringOnMessageExpirationValue)
+    {
+        this.deadLetteringOnMessageExpiration = deadLetteringOnMessageExpirationValue;
+    }
     
     private String defaultMessageTimeToLive;
     
@@ -128,8 +177,12 @@ public class ServiceBusQueue
     * TimeSpan.MaxValue  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
     * more information)
+    * @return The DefaultMessageTimeToLive value.
     */
-    public String getDefaultMessageTimeToLive() { return this.defaultMessageTimeToLive; }
+    public String getDefaultMessageTimeToLive()
+    {
+        return this.defaultMessageTimeToLive;
+    }
     
     /**
     * Depending on whether DeadLettering is enabled, a message is automatically
@@ -141,8 +194,12 @@ public class ServiceBusQueue
     * TimeSpan.MaxValue  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
     * more information)
+    * @param defaultMessageTimeToLiveValue The DefaultMessageTimeToLive value.
     */
-    public void setDefaultMessageTimeToLive(String defaultMessageTimeToLive) { this.defaultMessageTimeToLive = defaultMessageTimeToLive; }
+    public void setDefaultMessageTimeToLive(final String defaultMessageTimeToLiveValue)
+    {
+        this.defaultMessageTimeToLive = defaultMessageTimeToLiveValue;
+    }
     
     private String duplicateDetectionHistoryTimeWindow;
     
@@ -151,16 +208,25 @@ public class ServiceBusQueue
     * duplication:* Range: 1 second - 7 days* Default: 10 minutes  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
     * more information)
+    * @return The DuplicateDetectionHistoryTimeWindow value.
     */
-    public String getDuplicateDetectionHistoryTimeWindow() { return this.duplicateDetectionHistoryTimeWindow; }
+    public String getDuplicateDetectionHistoryTimeWindow()
+    {
+        return this.duplicateDetectionHistoryTimeWindow;
+    }
     
     /**
     * Specifies the time span during which the Service Bus detects message
     * duplication:* Range: 1 second - 7 days* Default: 10 minutes  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
     * more information)
+    * @param duplicateDetectionHistoryTimeWindowValue The
+    * DuplicateDetectionHistoryTimeWindow value.
     */
-    public void setDuplicateDetectionHistoryTimeWindow(String duplicateDetectionHistoryTimeWindow) { this.duplicateDetectionHistoryTimeWindow = duplicateDetectionHistoryTimeWindow; }
+    public void setDuplicateDetectionHistoryTimeWindow(final String duplicateDetectionHistoryTimeWindowValue)
+    {
+        this.duplicateDetectionHistoryTimeWindow = duplicateDetectionHistoryTimeWindowValue;
+    }
     
     private boolean enableBatchedOperations;
     
@@ -172,8 +238,12 @@ public class ServiceBusQueue
     * this feature.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
     * more information)
+    * @return The EnableBatchedOperations value.
     */
-    public boolean getEnableBatchedOperations() { return this.enableBatchedOperations; }
+    public boolean isEnableBatchedOperations()
+    {
+        return this.enableBatchedOperations;
+    }
     
     /**
     * Enables or disables service side batching behavior when performing
@@ -183,20 +253,32 @@ public class ServiceBusQueue
     * this feature.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
     * more information)
+    * @param enableBatchedOperationsValue The EnableBatchedOperations value.
     */
-    public void setEnableBatchedOperations(boolean enableBatchedOperations) { this.enableBatchedOperations = enableBatchedOperations; }
+    public void setEnableBatchedOperations(final boolean enableBatchedOperationsValue)
+    {
+        this.enableBatchedOperations = enableBatchedOperationsValue;
+    }
     
     private String entityAvailabilityStatus;
     
     /**
     * The current availability status of the queue.
+    * @return The EntityAvailabilityStatus value.
     */
-    public String getEntityAvailabilityStatus() { return this.entityAvailabilityStatus; }
+    public String getEntityAvailabilityStatus()
+    {
+        return this.entityAvailabilityStatus;
+    }
     
     /**
     * The current availability status of the queue.
+    * @param entityAvailabilityStatusValue The EntityAvailabilityStatus value.
     */
-    public void setEntityAvailabilityStatus(String entityAvailabilityStatus) { this.entityAvailabilityStatus = entityAvailabilityStatus; }
+    public void setEntityAvailabilityStatus(final String entityAvailabilityStatusValue)
+    {
+        this.entityAvailabilityStatus = entityAvailabilityStatusValue;
+    }
     
     private boolean isAnonymousAccessible;
     
@@ -204,15 +286,23 @@ public class ServiceBusQueue
     * Gets whether anonymous access is allowed.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
     * more information)
+    * @return The IsAnonymousAccessible value.
     */
-    public boolean getIsAnonymousAccessible() { return this.isAnonymousAccessible; }
+    public boolean isAnonymousAccessible()
+    {
+        return this.isAnonymousAccessible;
+    }
     
     /**
     * Gets whether anonymous access is allowed.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
     * more information)
+    * @param isAnonymousAccessibleValue The IsAnonymousAccessible value.
     */
-    public void setIsAnonymousAccessible(boolean isAnonymousAccessible) { this.isAnonymousAccessible = isAnonymousAccessible; }
+    public void setIsAnonymousAccessible(final boolean isAnonymousAccessibleValue)
+    {
+        this.isAnonymousAccessible = isAnonymousAccessibleValue;
+    }
     
     private String lockDuration;
     
@@ -224,8 +314,12 @@ public class ServiceBusQueue
     * message is not locked* Default: 30 seconds  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
     * more information)
+    * @return The LockDuration value.
     */
-    public String getLockDuration() { return this.lockDuration; }
+    public String getLockDuration()
+    {
+        return this.lockDuration;
+    }
     
     /**
     * Determines the amount of time in seconds in which a message should be
@@ -235,8 +329,12 @@ public class ServiceBusQueue
     * message is not locked* Default: 30 seconds  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
     * more information)
+    * @param lockDurationValue The LockDuration value.
     */
-    public void setLockDuration(String lockDuration) { this.lockDuration = lockDuration; }
+    public void setLockDuration(final String lockDurationValue)
+    {
+        this.lockDuration = lockDurationValue;
+    }
     
     private int maxDeliveryCount;
     
@@ -245,16 +343,24 @@ public class ServiceBusQueue
     * dead lettered or discarded.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
     * more information)
+    * @return The MaxDeliveryCount value.
     */
-    public int getMaxDeliveryCount() { return this.maxDeliveryCount; }
+    public int getMaxDeliveryCount()
+    {
+        return this.maxDeliveryCount;
+    }
     
     /**
     * The maximum number of times a message SB will try to deliver before being
     * dead lettered or discarded.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
     * more information)
+    * @param maxDeliveryCountValue The MaxDeliveryCount value.
     */
-    public void setMaxDeliveryCount(int maxDeliveryCount) { this.maxDeliveryCount = maxDeliveryCount; }
+    public void setMaxDeliveryCount(final int maxDeliveryCountValue)
+    {
+        this.maxDeliveryCount = maxDeliveryCountValue;
+    }
     
     private int maxSizeInMegabytes;
     
@@ -266,8 +372,12 @@ public class ServiceBusQueue
     * 5120) * Default: 1*1024 (valid values are 1024, 2048, 3072, 4096, 5120)
     * (see http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx
     * for more information)
+    * @return The MaxSizeInMegabytes value.
     */
-    public int getMaxSizeInMegabytes() { return this.maxSizeInMegabytes; }
+    public int getMaxSizeInMegabytes()
+    {
+        return this.maxSizeInMegabytes;
+    }
     
     /**
     * Specifies the maximum queue size in megabytes. Any attempt to enqueue a
@@ -277,8 +387,12 @@ public class ServiceBusQueue
     * 5120) * Default: 1*1024 (valid values are 1024, 2048, 3072, 4096, 5120)
     * (see http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx
     * for more information)
+    * @param maxSizeInMegabytesValue The MaxSizeInMegabytes value.
     */
-    public void setMaxSizeInMegabytes(int maxSizeInMegabytes) { this.maxSizeInMegabytes = maxSizeInMegabytes; }
+    public void setMaxSizeInMegabytes(final int maxSizeInMegabytesValue)
+    {
+        this.maxSizeInMegabytes = maxSizeInMegabytesValue;
+    }
     
     private int messageCount;
     
@@ -286,27 +400,43 @@ public class ServiceBusQueue
     * Displays the number of messages currently in the queue.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
     * more information)
+    * @return The MessageCount value.
     */
-    public int getMessageCount() { return this.messageCount; }
+    public int getMessageCount()
+    {
+        return this.messageCount;
+    }
     
     /**
     * Displays the number of messages currently in the queue.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
     * more information)
+    * @param messageCountValue The MessageCount value.
     */
-    public void setMessageCount(int messageCount) { this.messageCount = messageCount; }
+    public void setMessageCount(final int messageCountValue)
+    {
+        this.messageCount = messageCountValue;
+    }
     
     private String name;
     
     /**
     * The name of the queue.
+    * @return The Name value.
     */
-    public String getName() { return this.name; }
+    public String getName()
+    {
+        return this.name;
+    }
     
     /**
     * The name of the queue.
+    * @param nameValue The Name value.
     */
-    public void setName(String name) { this.name = name; }
+    public void setName(final String nameValue)
+    {
+        this.name = nameValue;
+    }
     
     private boolean requiresDuplicateDetection;
     
@@ -314,15 +444,24 @@ public class ServiceBusQueue
     * Settable only at queue creation time.* Default for durable queue: false
     * (see http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx
     * for more information)
+    * @return The RequiresDuplicateDetection value.
     */
-    public boolean getRequiresDuplicateDetection() { return this.requiresDuplicateDetection; }
+    public boolean isRequiresDuplicateDetection()
+    {
+        return this.requiresDuplicateDetection;
+    }
     
     /**
     * Settable only at queue creation time.* Default for durable queue: false
     * (see http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx
     * for more information)
+    * @param requiresDuplicateDetectionValue The RequiresDuplicateDetection
+    * value.
     */
-    public void setRequiresDuplicateDetection(boolean requiresDuplicateDetection) { this.requiresDuplicateDetection = requiresDuplicateDetection; }
+    public void setRequiresDuplicateDetection(final boolean requiresDuplicateDetectionValue)
+    {
+        this.requiresDuplicateDetection = requiresDuplicateDetectionValue;
+    }
     
     private boolean requiresSession;
     
@@ -332,8 +471,12 @@ public class ServiceBusQueue
     * queues are not supported through REST.* Default for durable queue: false
     * (see http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx
     * for more information)
+    * @return The RequiresSession value.
     */
-    public boolean getRequiresSession() { return this.requiresSession; }
+    public boolean isRequiresSession()
+    {
+        return this.requiresSession;
+    }
     
     /**
     * Settable only at queue creation time. If set to true, the queue will be
@@ -341,8 +484,12 @@ public class ServiceBusQueue
     * queues are not supported through REST.* Default for durable queue: false
     * (see http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx
     * for more information)
+    * @param requiresSessionValue The RequiresSession value.
     */
-    public void setRequiresSession(boolean requiresSession) { this.requiresSession = requiresSession; }
+    public void setRequiresSession(final boolean requiresSessionValue)
+    {
+        this.requiresSession = requiresSessionValue;
+    }
     
     private int sizeInBytes;
     
@@ -351,16 +498,24 @@ public class ServiceBusQueue
     * toward the queue’s quota.* Range: 0 -MaxTopicSizeinMegaBytes  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
     * more information)
+    * @return The SizeInBytes value.
     */
-    public int getSizeInBytes() { return this.sizeInBytes; }
+    public int getSizeInBytes()
+    {
+        return this.sizeInBytes;
+    }
     
     /**
     * Reflects the actual bytes that messages in the queue currently occupy
     * toward the queue’s quota.* Range: 0 -MaxTopicSizeinMegaBytes  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
     * more information)
+    * @param sizeInBytesValue The SizeInBytes value.
     */
-    public void setSizeInBytes(int sizeInBytes) { this.sizeInBytes = sizeInBytes; }
+    public void setSizeInBytes(final int sizeInBytesValue)
+    {
+        this.sizeInBytes = sizeInBytesValue;
+    }
     
     private String status;
     
@@ -369,16 +524,24 @@ public class ServiceBusQueue
     * a queue is disabled, that queue cannot send or receive messages.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
     * more information)
+    * @return The Status value.
     */
-    public String getStatus() { return this.status; }
+    public String getStatus()
+    {
+        return this.status;
+    }
     
     /**
     * Gets or sets the current status of the queue (enabled or disabled). When
     * a queue is disabled, that queue cannot send or receive messages.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
     * more information)
+    * @param statusValue The Status value.
     */
-    public void setStatus(String status) { this.status = status; }
+    public void setStatus(final String statusValue)
+    {
+        this.status = statusValue;
+    }
     
     private boolean supportOrdering;
     
@@ -386,27 +549,43 @@ public class ServiceBusQueue
     * Gets or sets whether the queue supports ordering.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
     * more information)
+    * @return The SupportOrdering value.
     */
-    public boolean getSupportOrdering() { return this.supportOrdering; }
+    public boolean isSupportOrdering()
+    {
+        return this.supportOrdering;
+    }
     
     /**
     * Gets or sets whether the queue supports ordering.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
     * more information)
+    * @param supportOrderingValue The SupportOrdering value.
     */
-    public void setSupportOrdering(boolean supportOrdering) { this.supportOrdering = supportOrdering; }
+    public void setSupportOrdering(final boolean supportOrderingValue)
+    {
+        this.supportOrdering = supportOrderingValue;
+    }
     
     private Calendar updatedAt;
     
     /**
     * The time the queue was last updated.
+    * @return The UpdatedAt value.
     */
-    public Calendar getUpdatedAt() { return this.updatedAt; }
+    public Calendar getUpdatedAt()
+    {
+        return this.updatedAt;
+    }
     
     /**
     * The time the queue was last updated.
+    * @param updatedAtValue The UpdatedAt value.
     */
-    public void setUpdatedAt(Calendar updatedAt) { this.updatedAt = updatedAt; }
+    public void setUpdatedAt(final Calendar updatedAtValue)
+    {
+        this.updatedAt = updatedAtValue;
+    }
     
     /**
     * Initializes a new instance of the ServiceBusQueue class.

@@ -33,66 +33,88 @@ public class JobAction
     /**
     * Error Action for the job.
     */
-    public JobErrorAction getErrorAction() { return this.errorAction; }
+    public JobErrorAction getErrorAction()
+    {
+        return this.errorAction;
+    }
     
     /**
     * Error Action for the job.
     */
-    public void setErrorAction(JobErrorAction errorAction) { this.errorAction = errorAction; }
+    public void setErrorAction(JobErrorAction errorAction)
+    {
+        this.errorAction = errorAction;
+    }
     
     private JobQueueMessage queueMessage;
     
     /**
     * Queue and message for a queue message action type.
     */
-    public JobQueueMessage getQueueMessage() { return this.queueMessage; }
+    public JobQueueMessage getQueueMessage()
+    {
+        return this.queueMessage;
+    }
     
     /**
     * Queue and message for a queue message action type.
     */
-    public void setQueueMessage(JobQueueMessage queueMessage) { this.queueMessage = queueMessage; }
+    public void setQueueMessage(JobQueueMessage queueMessage)
+    {
+        this.queueMessage = queueMessage;
+    }
     
     private JobHttpRequest request;
     
     /**
     * Request for a http or https action type.
     */
-    public JobHttpRequest getRequest() { return this.request; }
+    public JobHttpRequest getRequest()
+    {
+        return this.request;
+    }
     
     /**
     * Request for a http or https action type.
     */
-    public void setRequest(JobHttpRequest request) { this.request = request; }
+    public void setRequest(JobHttpRequest request)
+    {
+        this.request = request;
+    }
     
     private RetryPolicy retryPolicy;
     
     /**
     * Retry Policy for the job action.
     */
-    public RetryPolicy getRetryPolicy() { return this.retryPolicy; }
+    public RetryPolicy getRetryPolicy()
+    {
+        return this.retryPolicy;
+    }
     
     /**
     * Retry Policy for the job action.
     */
-    public void setRetryPolicy(RetryPolicy retryPolicy) { this.retryPolicy = retryPolicy; }
+    public void setRetryPolicy(RetryPolicy retryPolicy)
+    {
+        this.retryPolicy = retryPolicy;
+    }
     
     private JobActionType type;
     
     /**
     * Type of action. Can be one of http, https, storageQueue.
     */
-    public JobActionType getType() { return this.type; }
+    public JobActionType getType()
+    {
+        return this.type;
+    }
     
     /**
     * Type of action. Can be one of http, https, storageQueue.
     */
-    public void setType(JobActionType type) { this.type = type; }
-    
-    /**
-    * Initializes a new instance of the JobAction class.
-    *
-    */
-    public JobAction()
+    public void setType(JobActionType type)
     {
+        this.type = type;
     }
 }

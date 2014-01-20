@@ -34,20 +34,19 @@ public class JobCollectionCheckNameAvailabilityResponse extends OperationRespons
     
     /**
     * Whether the name is available.
+    * @return The IsAvailable value.
     */
-    public boolean getIsAvailable() { return this.isAvailable; }
+    public boolean isAvailable()
+    {
+        return this.isAvailable;
+    }
     
     /**
     * Whether the name is available.
+    * @param isAvailableValue The IsAvailable value.
     */
-    public void setIsAvailable(boolean isAvailable) { this.isAvailable = isAvailable; }
-    
-    /**
-    * Initializes a new instance of the
-    * JobCollectionCheckNameAvailabilityResponse class.
-    *
-    */
-    public JobCollectionCheckNameAvailabilityResponse()
+    public void setIsAvailable(final boolean isAvailableValue)
     {
+        this.isAvailable = isAvailableValue;
     }
 }

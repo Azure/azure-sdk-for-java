@@ -33,34 +33,42 @@ public class AffinityGroupUpdateParameters
     /**
     * Optional. A description for the affinity group. The description can be up
     * to 1024 characters in length.
+    * @return The Description value.
     */
-    public String getDescription() { return this.description; }
+    public String getDescription()
+    {
+        return this.description;
+    }
     
     /**
     * Optional. A description for the affinity group. The description can be up
     * to 1024 characters in length.
+    * @param descriptionValue The Description value.
     */
-    public void setDescription(String description) { this.description = description; }
+    public void setDescription(final String descriptionValue)
+    {
+        this.description = descriptionValue;
+    }
     
     private String label;
     
     /**
     * Required. A name for the affinity specified as a base-64 encoded string.
     * The label can be up to 100 characters in length.
+    * @return The Label value.
     */
-    public String getLabel() { return this.label; }
+    public String getLabel()
+    {
+        return this.label;
+    }
     
     /**
     * Required. A name for the affinity specified as a base-64 encoded string.
     * The label can be up to 100 characters in length.
+    * @param labelValue The Label value.
     */
-    public void setLabel(String label) { this.label = label; }
-    
-    /**
-    * Initializes a new instance of the AffinityGroupUpdateParameters class.
-    *
-    */
-    public AffinityGroupUpdateParameters()
+    public void setLabel(final String labelValue)
     {
+        this.label = labelValue;
     }
 }

@@ -32,19 +32,19 @@ public class NetworkSetConfigurationParameters
     
     /**
     * The network configuration for this subscription.
+    * @return The Configuration value.
     */
-    public String getConfiguration() { return this.configuration; }
+    public String getConfiguration()
+    {
+        return this.configuration;
+    }
     
     /**
     * The network configuration for this subscription.
+    * @param configurationValue The Configuration value.
     */
-    public void setConfiguration(String configuration) { this.configuration = configuration; }
-    
-    /**
-    * Initializes a new instance of the NetworkSetConfigurationParameters class.
-    *
-    */
-    public NetworkSetConfigurationParameters()
+    public void setConfiguration(final String configurationValue)
     {
+        this.configuration = configurationValue;
     }
 }

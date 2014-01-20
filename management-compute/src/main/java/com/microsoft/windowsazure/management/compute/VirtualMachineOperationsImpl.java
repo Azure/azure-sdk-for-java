@@ -53,7 +53,6 @@ import com.microsoft.windowsazure.management.compute.models.VirtualMachineCreate
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineCreateParameters;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineGetRemoteDesktopFileResponse;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineGetResponse;
-import com.microsoft.windowsazure.management.compute.models.VirtualMachineRoleSize;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineRoleType;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineShutdownParameters;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineShutdownRolesParameters;
@@ -68,11 +67,9 @@ import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URLEncoder;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
@@ -82,13 +79,13 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
@@ -121,8 +118,690 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     /**
     * Gets a reference to the
     * microsoft.windowsazure.management.compute.ComputeManagementClientImpl.
+    * @return The Client value.
     */
-    public ComputeManagementClientImpl getClient() { return this.client; }
+    public ComputeManagementClientImpl getClient()
+    {
+        return this.client;
+    }
+    
+    /**
+    * The Capture Role operation creates a copy of the operating system virtual
+    * hard disk (VHD) that is deployed in the virtual machine, saves the VHD
+    * copy in the same storage location as the operating system VHD, and
+    * registers the copy as an image in your image gallery. From the captured
+    * image, you can create additional customized virtual machines. For more
+    * information about images and disks, see Manage Disks and Images. For
+    * more information about capturing images, see How to Capture an Image of
+    * a Virtual Machine Running Windows Server 2008 R2 or How to Capture an
+    * Image of a Virtual Machine Running Linux.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157201.aspx for
+    * more information)
+    *
+    * @param serviceName The name of your service.
+    * @param deploymentName The name of your deployment.
+    * @param virtualMachineName The name of the virtual machine to restart.
+    * @param parameters Parameters supplied to the Capture Virtual Machine
+    * operation.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public Future<OperationResponse> beginCapturingAsync(final String serviceName, final String deploymentName, final String virtualMachineName, final VirtualMachineCaptureParameters parameters)
+    {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception
+            {
+                return beginCapturing(serviceName, deploymentName, virtualMachineName, parameters);
+            }
+         });
+    }
+    
+    /**
+    * The Capture Role operation creates a copy of the operating system virtual
+    * hard disk (VHD) that is deployed in the virtual machine, saves the VHD
+    * copy in the same storage location as the operating system VHD, and
+    * registers the copy as an image in your image gallery. From the captured
+    * image, you can create additional customized virtual machines. For more
+    * information about images and disks, see Manage Disks and Images. For
+    * more information about capturing images, see How to Capture an Image of
+    * a Virtual Machine Running Windows Server 2008 R2 or How to Capture an
+    * Image of a Virtual Machine Running Linux.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157201.aspx for
+    * more information)
+    *
+    * @param serviceName The name of your service.
+    * @param deploymentName The name of your deployment.
+    * @param virtualMachineName The name of the virtual machine to restart.
+    * @param parameters Parameters supplied to the Capture Virtual Machine
+    * operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public OperationResponse beginCapturing(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineCaptureParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
+    {
+        // Validate
+        if (serviceName == null)
+        {
+            throw new NullPointerException("serviceName");
+        }
+        if (deploymentName == null)
+        {
+            throw new NullPointerException("deploymentName");
+        }
+        if (virtualMachineName == null)
+        {
+            throw new NullPointerException("virtualMachineName");
+        }
+        if (parameters == null)
+        {
+            throw new NullPointerException("parameters");
+        }
+        if (parameters.getProvisioningConfiguration() != null)
+        {
+            if (parameters.getProvisioningConfiguration().getDomainJoin() != null)
+            {
+                if (parameters.getProvisioningConfiguration().getDomainJoin().getCredentials() != null)
+                {
+                    if (parameters.getProvisioningConfiguration().getDomainJoin().getCredentials().getPassword() == null)
+                    {
+                        throw new NullPointerException("parameters.ProvisioningConfiguration.DomainJoin.Credentials.Password");
+                    }
+                    if (parameters.getProvisioningConfiguration().getDomainJoin().getCredentials().getUserName() == null)
+                    {
+                        throw new NullPointerException("parameters.ProvisioningConfiguration.DomainJoin.Credentials.UserName");
+                    }
+                }
+            }
+            if (parameters.getProvisioningConfiguration().getHostName() != null && parameters.getProvisioningConfiguration().getHostName().length() < 1)
+            {
+                throw new IllegalArgumentException("parameters.ProvisioningConfiguration.HostName");
+            }
+            if (parameters.getProvisioningConfiguration().getHostName() != null && parameters.getProvisioningConfiguration().getHostName().length() > 64)
+            {
+                throw new IllegalArgumentException("parameters.ProvisioningConfiguration.HostName");
+            }
+            if (parameters.getProvisioningConfiguration().getSshSettings() != null)
+            {
+                if (parameters.getProvisioningConfiguration().getSshSettings().getKeyPairs() != null)
+                {
+                    for (SshSettingKeyPair keyPairsParameterItem : parameters.getProvisioningConfiguration().getSshSettings().getKeyPairs())
+                    {
+                        if (keyPairsParameterItem.getFingerprint() == null)
+                        {
+                            throw new NullPointerException("parameters.ProvisioningConfiguration.SshSettings.KeyPairs.Fingerprint");
+                        }
+                        if (keyPairsParameterItem.getPath() == null)
+                        {
+                            throw new NullPointerException("parameters.ProvisioningConfiguration.SshSettings.KeyPairs.Path");
+                        }
+                    }
+                }
+                if (parameters.getProvisioningConfiguration().getSshSettings().getPublicKeys() != null)
+                {
+                    for (SshSettingPublicKey publicKeysParameterItem : parameters.getProvisioningConfiguration().getSshSettings().getPublicKeys())
+                    {
+                        if (publicKeysParameterItem.getFingerprint() == null)
+                        {
+                            throw new NullPointerException("parameters.ProvisioningConfiguration.SshSettings.PublicKeys.Fingerprint");
+                        }
+                        if (publicKeysParameterItem.getPath() == null)
+                        {
+                            throw new NullPointerException("parameters.ProvisioningConfiguration.SshSettings.PublicKeys.Path");
+                        }
+                    }
+                }
+            }
+            if (parameters.getProvisioningConfiguration().getStoredCertificateSettings() != null)
+            {
+                for (StoredCertificateSettings storedCertificateSettingsParameterItem : parameters.getProvisioningConfiguration().getStoredCertificateSettings())
+                {
+                    if (storedCertificateSettingsParameterItem.getStoreName() == null)
+                    {
+                        throw new NullPointerException("parameters.ProvisioningConfiguration.StoredCertificateSettings.StoreName");
+                    }
+                    if (storedCertificateSettingsParameterItem.getThumbprint() == null)
+                    {
+                        throw new NullPointerException("parameters.ProvisioningConfiguration.StoredCertificateSettings.Thumbprint");
+                    }
+                }
+            }
+            if (parameters.getProvisioningConfiguration().getUserName() != null && parameters.getProvisioningConfiguration().getUserName().length() < 1)
+            {
+                throw new IllegalArgumentException("parameters.ProvisioningConfiguration.UserName");
+            }
+            if (parameters.getProvisioningConfiguration().getUserName() != null && parameters.getProvisioningConfiguration().getUserName().length() > 32)
+            {
+                throw new IllegalArgumentException("parameters.ProvisioningConfiguration.UserName");
+            }
+            if (parameters.getProvisioningConfiguration().getUserPassword() != null && parameters.getProvisioningConfiguration().getUserPassword().length() < 6 && (parameters.getProvisioningConfiguration().isDisableSshPasswordAuthentication() == false || parameters.getProvisioningConfiguration().getUserPassword().length() != 0))
+            {
+                throw new IllegalArgumentException("parameters.ProvisioningConfiguration.UserPassword");
+            }
+            if (parameters.getProvisioningConfiguration().getUserPassword() != null && parameters.getProvisioningConfiguration().getUserPassword().length() > 72)
+            {
+                throw new IllegalArgumentException("parameters.ProvisioningConfiguration.UserPassword");
+            }
+        }
+        if (parameters.getTargetImageLabel() == null)
+        {
+            throw new NullPointerException("parameters.TargetImageLabel");
+        }
+        if (parameters.getTargetImageName() == null)
+        {
+            throw new NullPointerException("parameters.TargetImageName");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace)
+        {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("serviceName", serviceName);
+            tracingParameters.put("deploymentName", deploymentName);
+            tracingParameters.put("virtualMachineName", virtualMachineName);
+            tracingParameters.put("parameters", parameters);
+            CloudTracing.enter(invocationId, this, "beginCapturingAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "/roleinstances/" + virtualMachineName + "/Operations";
+        
+        // Create HTTP transport objects
+        HttpPost httpRequest = new HttpPost(url);
+        
+        // Set Headers
+        httpRequest.setHeader("Content-Type", "application/xml");
+        httpRequest.setHeader("x-ms-version", "2013-11-01");
+        
+        // Serialize Request
+        String requestContent = null;
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        Document requestDoc = documentBuilder.newDocument();
+        
+        Element captureRoleOperationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CaptureRoleOperation");
+        requestDoc.appendChild(captureRoleOperationElement);
+        
+        Element operationTypeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "OperationType");
+        operationTypeElement.appendChild(requestDoc.createTextNode("CaptureRoleOperation"));
+        captureRoleOperationElement.appendChild(operationTypeElement);
+        
+        Element postCaptureActionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PostCaptureAction");
+        postCaptureActionElement.appendChild(requestDoc.createTextNode(parameters.getPostCaptureAction().toString()));
+        captureRoleOperationElement.appendChild(postCaptureActionElement);
+        
+        if (parameters.getProvisioningConfiguration() != null)
+        {
+            Element provisioningConfigurationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ProvisioningConfiguration");
+            captureRoleOperationElement.appendChild(provisioningConfigurationElement);
+            
+            if (parameters.getProvisioningConfiguration().getConfigurationSetType() != null)
+            {
+                Element configurationSetTypeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ConfigurationSetType");
+                configurationSetTypeElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getConfigurationSetType()));
+                provisioningConfigurationElement.appendChild(configurationSetTypeElement);
+            }
+            
+            if (parameters.getProvisioningConfiguration().getInputEndpoints() != null)
+            {
+                Element inputEndpointsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "InputEndpoints");
+                for (InputEndpoint inputEndpointsItem : parameters.getProvisioningConfiguration().getInputEndpoints())
+                {
+                    Element inputEndpointElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "InputEndpoint");
+                    inputEndpointsSequenceElement.appendChild(inputEndpointElement);
+                    
+                    if (inputEndpointsItem.getLoadBalancedEndpointSetName() != null)
+                    {
+                        Element loadBalancedEndpointSetNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LoadBalancedEndpointSetName");
+                        loadBalancedEndpointSetNameElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLoadBalancedEndpointSetName()));
+                        inputEndpointElement.appendChild(loadBalancedEndpointSetNameElement);
+                    }
+                    
+                    if (inputEndpointsItem.getLocalPort() != null)
+                    {
+                        Element localPortElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LocalPort");
+                        localPortElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLocalPort())));
+                        inputEndpointElement.appendChild(localPortElement);
+                    }
+                    
+                    if (inputEndpointsItem.getName() != null)
+                    {
+                        Element nameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                        nameElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getName()));
+                        inputEndpointElement.appendChild(nameElement);
+                    }
+                    
+                    if (inputEndpointsItem.getPort() != null)
+                    {
+                        Element portElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Port");
+                        portElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getPort())));
+                        inputEndpointElement.appendChild(portElement);
+                    }
+                    
+                    if (inputEndpointsItem.getLoadBalancerProbe() != null)
+                    {
+                        Element loadBalancerProbeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LoadBalancerProbe");
+                        inputEndpointElement.appendChild(loadBalancerProbeElement);
+                        
+                        if (inputEndpointsItem.getLoadBalancerProbe().getPath() != null)
+                        {
+                            Element pathElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Path");
+                            pathElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLoadBalancerProbe().getPath()));
+                            loadBalancerProbeElement.appendChild(pathElement);
+                        }
+                        
+                        Element portElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Port");
+                        portElement2.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLoadBalancerProbe().getPort())));
+                        loadBalancerProbeElement.appendChild(portElement2);
+                        
+                        Element protocolElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Protocol");
+                        protocolElement.appendChild(requestDoc.createTextNode(ComputeManagementClientImpl.loadBalancerProbeTransportProtocolToString(inputEndpointsItem.getLoadBalancerProbe().getProtocol())));
+                        loadBalancerProbeElement.appendChild(protocolElement);
+                        
+                        if (inputEndpointsItem.getLoadBalancerProbe().getIntervalInSeconds() != null)
+                        {
+                            Element intervalInSecondsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IntervalInSeconds");
+                            intervalInSecondsElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLoadBalancerProbe().getIntervalInSeconds())));
+                            loadBalancerProbeElement.appendChild(intervalInSecondsElement);
+                        }
+                        
+                        if (inputEndpointsItem.getLoadBalancerProbe().getTimeoutInSeconds() != null)
+                        {
+                            Element timeoutInSecondsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "TimeoutInSeconds");
+                            timeoutInSecondsElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLoadBalancerProbe().getTimeoutInSeconds())));
+                            loadBalancerProbeElement.appendChild(timeoutInSecondsElement);
+                        }
+                    }
+                    
+                    if (inputEndpointsItem.getProtocol() != null)
+                    {
+                        Element protocolElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Protocol");
+                        protocolElement2.appendChild(requestDoc.createTextNode(inputEndpointsItem.getProtocol()));
+                        inputEndpointElement.appendChild(protocolElement2);
+                    }
+                    
+                    if (inputEndpointsItem.getVirtualIPAddress() != null)
+                    {
+                        Element vipElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Vip");
+                        vipElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getVirtualIPAddress().toString()));
+                        inputEndpointElement.appendChild(vipElement);
+                    }
+                    
+                    if (inputEndpointsItem.isEnableDirectServerReturn() != null)
+                    {
+                        Element enableDirectServerReturnElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EnableDirectServerReturn");
+                        enableDirectServerReturnElement.appendChild(requestDoc.createTextNode(Boolean.toString(inputEndpointsItem.isEnableDirectServerReturn()).toLowerCase()));
+                        inputEndpointElement.appendChild(enableDirectServerReturnElement);
+                    }
+                    
+                    if (inputEndpointsItem.getEndpointAcl() != null)
+                    {
+                        Element endpointAclElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EndpointAcl");
+                        inputEndpointElement.appendChild(endpointAclElement);
+                        
+                        if (inputEndpointsItem.getEndpointAcl().getRules() != null)
+                        {
+                            Element rulesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Rules");
+                            for (AccessControlListRule rulesItem : inputEndpointsItem.getEndpointAcl().getRules())
+                            {
+                                Element ruleElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Rule");
+                                rulesSequenceElement.appendChild(ruleElement);
+                                
+                                if (rulesItem.getOrder() != null)
+                                {
+                                    Element orderElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Order");
+                                    orderElement.appendChild(requestDoc.createTextNode(Integer.toString(rulesItem.getOrder())));
+                                    ruleElement.appendChild(orderElement);
+                                }
+                                
+                                if (rulesItem.getAction() != null)
+                                {
+                                    Element actionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Action");
+                                    actionElement.appendChild(requestDoc.createTextNode(rulesItem.getAction()));
+                                    ruleElement.appendChild(actionElement);
+                                }
+                                
+                                if (rulesItem.getRemoteSubnet() != null)
+                                {
+                                    Element remoteSubnetElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RemoteSubnet");
+                                    remoteSubnetElement.appendChild(requestDoc.createTextNode(rulesItem.getRemoteSubnet()));
+                                    ruleElement.appendChild(remoteSubnetElement);
+                                }
+                                
+                                if (rulesItem.getDescription() != null)
+                                {
+                                    Element descriptionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Description");
+                                    descriptionElement.appendChild(requestDoc.createTextNode(rulesItem.getDescription()));
+                                    ruleElement.appendChild(descriptionElement);
+                                }
+                            }
+                            endpointAclElement.appendChild(rulesSequenceElement);
+                        }
+                    }
+                }
+                provisioningConfigurationElement.appendChild(inputEndpointsSequenceElement);
+            }
+            
+            if (parameters.getProvisioningConfiguration().getSubnetNames() != null)
+            {
+                Element subnetNamesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SubnetNames");
+                for (String subnetNamesItem : parameters.getProvisioningConfiguration().getSubnetNames())
+                {
+                    Element subnetNamesItemElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SubnetName");
+                    subnetNamesItemElement.appendChild(requestDoc.createTextNode(subnetNamesItem));
+                    subnetNamesSequenceElement.appendChild(subnetNamesItemElement);
+                }
+                provisioningConfigurationElement.appendChild(subnetNamesSequenceElement);
+            }
+            
+            if (parameters.getProvisioningConfiguration().getStaticVirtualNetworkIPAddress() != null)
+            {
+                Element staticVirtualNetworkIPAddressElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StaticVirtualNetworkIPAddress");
+                staticVirtualNetworkIPAddressElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getStaticVirtualNetworkIPAddress()));
+                provisioningConfigurationElement.appendChild(staticVirtualNetworkIPAddressElement);
+            }
+            
+            if (parameters.getProvisioningConfiguration().getComputerName() != null)
+            {
+                Element computerNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ComputerName");
+                computerNameElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getComputerName()));
+                provisioningConfigurationElement.appendChild(computerNameElement);
+            }
+            
+            if (parameters.getProvisioningConfiguration().getAdminPassword() != null)
+            {
+                Element adminPasswordElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminPassword");
+                adminPasswordElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getAdminPassword()));
+                provisioningConfigurationElement.appendChild(adminPasswordElement);
+            }
+            
+            if (parameters.getProvisioningConfiguration().isResetPasswordOnFirstLogon() != null)
+            {
+                Element resetPasswordOnFirstLogonElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResetPasswordOnFirstLogon");
+                resetPasswordOnFirstLogonElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.getProvisioningConfiguration().isResetPasswordOnFirstLogon()).toLowerCase()));
+                provisioningConfigurationElement.appendChild(resetPasswordOnFirstLogonElement);
+            }
+            
+            if (parameters.getProvisioningConfiguration().isEnableAutomaticUpdates() != null)
+            {
+                Element enableAutomaticUpdatesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EnableAutomaticUpdates");
+                enableAutomaticUpdatesElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.getProvisioningConfiguration().isEnableAutomaticUpdates()).toLowerCase()));
+                provisioningConfigurationElement.appendChild(enableAutomaticUpdatesElement);
+            }
+            
+            if (parameters.getProvisioningConfiguration().getTimeZone() != null)
+            {
+                Element timeZoneElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "TimeZone");
+                timeZoneElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getTimeZone()));
+                provisioningConfigurationElement.appendChild(timeZoneElement);
+            }
+            
+            if (parameters.getProvisioningConfiguration().getDomainJoin() != null)
+            {
+                Element domainJoinElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DomainJoin");
+                provisioningConfigurationElement.appendChild(domainJoinElement);
+                
+                if (parameters.getProvisioningConfiguration().getDomainJoin().getCredentials() != null)
+                {
+                    Element credentialsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Credentials");
+                    domainJoinElement.appendChild(credentialsElement);
+                    
+                    if (parameters.getProvisioningConfiguration().getDomainJoin().getCredentials().getDomain() != null)
+                    {
+                        Element domainElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Domain");
+                        domainElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getDomainJoin().getCredentials().getDomain()));
+                        credentialsElement.appendChild(domainElement);
+                    }
+                    
+                    Element usernameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Username");
+                    usernameElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getDomainJoin().getCredentials().getUserName()));
+                    credentialsElement.appendChild(usernameElement);
+                    
+                    Element passwordElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Password");
+                    passwordElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getDomainJoin().getCredentials().getPassword()));
+                    credentialsElement.appendChild(passwordElement);
+                }
+                
+                if (parameters.getProvisioningConfiguration().getDomainJoin().getDomainToJoin() != null)
+                {
+                    Element joinDomainElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "JoinDomain");
+                    joinDomainElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getDomainJoin().getDomainToJoin()));
+                    domainJoinElement.appendChild(joinDomainElement);
+                }
+                
+                if (parameters.getProvisioningConfiguration().getDomainJoin().getLdapMachineObjectOU() != null)
+                {
+                    Element machineObjectOUElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "MachineObjectOU");
+                    machineObjectOUElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getDomainJoin().getLdapMachineObjectOU()));
+                    domainJoinElement.appendChild(machineObjectOUElement);
+                }
+                
+                if (parameters.getProvisioningConfiguration().getDomainJoin().getProvisioning() != null)
+                {
+                    Element provisioningElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Provisioning");
+                    domainJoinElement.appendChild(provisioningElement);
+                    
+                    if (parameters.getProvisioningConfiguration().getDomainJoin().getProvisioning().getAccountData() != null)
+                    {
+                        Element accountDataElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AccountData");
+                        accountDataElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getDomainJoin().getProvisioning().getAccountData()));
+                        provisioningElement.appendChild(accountDataElement);
+                    }
+                }
+            }
+            
+            if (parameters.getProvisioningConfiguration().getStoredCertificateSettings() != null)
+            {
+                Element storedCertificateSettingsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StoredCertificateSettings");
+                for (StoredCertificateSettings storedCertificateSettingsItem : parameters.getProvisioningConfiguration().getStoredCertificateSettings())
+                {
+                    Element certificateSettingElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CertificateSetting");
+                    storedCertificateSettingsSequenceElement.appendChild(certificateSettingElement);
+                    
+                    Element storeLocationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StoreLocation");
+                    storeLocationElement.appendChild(requestDoc.createTextNode("LocalMachine"));
+                    certificateSettingElement.appendChild(storeLocationElement);
+                    
+                    Element storeNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StoreName");
+                    storeNameElement.appendChild(requestDoc.createTextNode(storedCertificateSettingsItem.getStoreName()));
+                    certificateSettingElement.appendChild(storeNameElement);
+                    
+                    Element thumbprintElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Thumbprint");
+                    thumbprintElement.appendChild(requestDoc.createTextNode(storedCertificateSettingsItem.getThumbprint()));
+                    certificateSettingElement.appendChild(thumbprintElement);
+                }
+                provisioningConfigurationElement.appendChild(storedCertificateSettingsSequenceElement);
+            }
+            
+            if (parameters.getProvisioningConfiguration().getWindowsRemoteManagement() != null)
+            {
+                Element winRMElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "WinRM");
+                provisioningConfigurationElement.appendChild(winRMElement);
+                
+                if (parameters.getProvisioningConfiguration().getWindowsRemoteManagement().getListeners() != null)
+                {
+                    Element listenersSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Listeners");
+                    for (WindowsRemoteManagementListener listenersItem : parameters.getProvisioningConfiguration().getWindowsRemoteManagement().getListeners())
+                    {
+                        Element listenerElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Listener");
+                        listenersSequenceElement.appendChild(listenerElement);
+                        
+                        if (listenersItem.getCertificateThumbprint() != null)
+                        {
+                            Element certificateThumbprintElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CertificateThumbprint");
+                            certificateThumbprintElement.appendChild(requestDoc.createTextNode(listenersItem.getCertificateThumbprint()));
+                            listenerElement.appendChild(certificateThumbprintElement);
+                        }
+                        
+                        Element protocolElement3 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Protocol");
+                        protocolElement3.appendChild(requestDoc.createTextNode(listenersItem.getListenerType().toString()));
+                        listenerElement.appendChild(protocolElement3);
+                    }
+                    winRMElement.appendChild(listenersSequenceElement);
+                }
+            }
+            
+            if (parameters.getProvisioningConfiguration().getAdminUserName() != null)
+            {
+                Element adminUsernameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminUsername");
+                adminUsernameElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getAdminUserName()));
+                provisioningConfigurationElement.appendChild(adminUsernameElement);
+            }
+            
+            if (parameters.getProvisioningConfiguration().getHostName() != null)
+            {
+                Element hostNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "HostName");
+                hostNameElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getHostName()));
+                provisioningConfigurationElement.appendChild(hostNameElement);
+            }
+            
+            if (parameters.getProvisioningConfiguration().getUserName() != null)
+            {
+                Element userNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "UserName");
+                userNameElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getUserName()));
+                provisioningConfigurationElement.appendChild(userNameElement);
+            }
+            
+            if (parameters.getProvisioningConfiguration().getUserPassword() != null)
+            {
+                Element userPasswordElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "UserPassword");
+                userPasswordElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getUserPassword()));
+                provisioningConfigurationElement.appendChild(userPasswordElement);
+            }
+            
+            if (parameters.getProvisioningConfiguration().isDisableSshPasswordAuthentication() != null)
+            {
+                Element disableSshPasswordAuthenticationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DisableSshPasswordAuthentication");
+                disableSshPasswordAuthenticationElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.getProvisioningConfiguration().isDisableSshPasswordAuthentication()).toLowerCase()));
+                provisioningConfigurationElement.appendChild(disableSshPasswordAuthenticationElement);
+            }
+            
+            if (parameters.getProvisioningConfiguration().getSshSettings() != null)
+            {
+                Element sSHElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SSH");
+                provisioningConfigurationElement.appendChild(sSHElement);
+                
+                if (parameters.getProvisioningConfiguration().getSshSettings().getPublicKeys() != null)
+                {
+                    Element publicKeysSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PublicKeys");
+                    for (SshSettingPublicKey publicKeysItem : parameters.getProvisioningConfiguration().getSshSettings().getPublicKeys())
+                    {
+                        Element publicKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PublicKey");
+                        publicKeysSequenceElement.appendChild(publicKeyElement);
+                        
+                        Element fingerprintElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Fingerprint");
+                        fingerprintElement.appendChild(requestDoc.createTextNode(publicKeysItem.getFingerprint()));
+                        publicKeyElement.appendChild(fingerprintElement);
+                        
+                        Element pathElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Path");
+                        pathElement2.appendChild(requestDoc.createTextNode(publicKeysItem.getPath()));
+                        publicKeyElement.appendChild(pathElement2);
+                    }
+                    sSHElement.appendChild(publicKeysSequenceElement);
+                }
+                
+                if (parameters.getProvisioningConfiguration().getSshSettings().getKeyPairs() != null)
+                {
+                    Element keyPairsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "KeyPairs");
+                    for (SshSettingKeyPair keyPairsItem : parameters.getProvisioningConfiguration().getSshSettings().getKeyPairs())
+                    {
+                        Element keyPairElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "KeyPair");
+                        keyPairsSequenceElement.appendChild(keyPairElement);
+                        
+                        Element fingerprintElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Fingerprint");
+                        fingerprintElement2.appendChild(requestDoc.createTextNode(keyPairsItem.getFingerprint()));
+                        keyPairElement.appendChild(fingerprintElement2);
+                        
+                        Element pathElement3 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Path");
+                        pathElement3.appendChild(requestDoc.createTextNode(keyPairsItem.getPath()));
+                        keyPairElement.appendChild(pathElement3);
+                    }
+                    sSHElement.appendChild(keyPairsSequenceElement);
+                }
+            }
+        }
+        
+        Element targetImageLabelElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "TargetImageLabel");
+        targetImageLabelElement.appendChild(requestDoc.createTextNode(parameters.getTargetImageLabel()));
+        captureRoleOperationElement.appendChild(targetImageLabelElement);
+        
+        Element targetImageNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "TargetImageName");
+        targetImageNameElement.appendChild(requestDoc.createTextNode(parameters.getTargetImageName()));
+        captureRoleOperationElement.appendChild(targetImageNameElement);
+        
+        DOMSource domSource = new DOMSource(requestDoc);
+        StringWriter stringWriter = new StringWriter();
+        StreamResult streamResult = new StreamResult(stringWriter);
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        transformer.transform(domSource, streamResult);
+        requestContent = stringWriter.toString();
+        StringEntity entity = new StringEntity(requestContent);
+        httpRequest.setEntity(entity);
+        httpRequest.setHeader("Content-Type", "application/xml");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try
+        {
+            if (shouldTrace)
+            {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
     
     /**
     * The Add Role operation adds a virtual machine to an existing deployment.
@@ -177,11 +856,21 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * @param deploymentName The name of your deployment.
     * @param parameters Parameters supplied to the Create Virtual Machine
     * operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
     @Override
-    public OperationResponse beginCreating(String serviceName, String deploymentName, VirtualMachineCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException
+    public OperationResponse beginCreating(String serviceName, String deploymentName, VirtualMachineCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
     {
         // Validate
         if (serviceName == null)
@@ -196,81 +885,93 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         {
             throw new NullPointerException("parameters");
         }
-        for (ConfigurationSet configurationSetsParameterItem : parameters.getConfigurationSets())
+        if (parameters.getConfigurationSets() != null)
         {
-            if (configurationSetsParameterItem.getDomainJoin() != null)
+            for (ConfigurationSet configurationSetsParameterItem : parameters.getConfigurationSets())
             {
-                if (configurationSetsParameterItem.getDomainJoin().getCredentials() != null)
+                if (configurationSetsParameterItem.getDomainJoin() != null)
                 {
-                    if (configurationSetsParameterItem.getDomainJoin().getCredentials().getPassword() == null)
+                    if (configurationSetsParameterItem.getDomainJoin().getCredentials() != null)
                     {
-                        throw new NullPointerException("parameters.ConfigurationSets.DomainJoin.Credentials.Password");
-                    }
-                    if (configurationSetsParameterItem.getDomainJoin().getCredentials().getUserName() == null)
-                    {
-                        throw new NullPointerException("parameters.ConfigurationSets.DomainJoin.Credentials.UserName");
+                        if (configurationSetsParameterItem.getDomainJoin().getCredentials().getPassword() == null)
+                        {
+                            throw new NullPointerException("parameters.ConfigurationSets.DomainJoin.Credentials.Password");
+                        }
+                        if (configurationSetsParameterItem.getDomainJoin().getCredentials().getUserName() == null)
+                        {
+                            throw new NullPointerException("parameters.ConfigurationSets.DomainJoin.Credentials.UserName");
+                        }
                     }
                 }
-            }
-            if (configurationSetsParameterItem.getHostName() != null && configurationSetsParameterItem.getHostName().length() < 1)
-            {
-                throw new IllegalArgumentException("parameters.ConfigurationSets.HostName");
-            }
-            if (configurationSetsParameterItem.getHostName() != null && configurationSetsParameterItem.getHostName().length() > 64)
-            {
-                throw new IllegalArgumentException("parameters.ConfigurationSets.HostName");
-            }
-            if (configurationSetsParameterItem.getSshSettings() != null)
-            {
-                for (SshSettingKeyPair keyPairsParameterItem : configurationSetsParameterItem.getSshSettings().getKeyPairs())
+                if (configurationSetsParameterItem.getHostName() != null && configurationSetsParameterItem.getHostName().length() < 1)
                 {
-                    if (keyPairsParameterItem.getFingerprint() == null)
+                    throw new IllegalArgumentException("parameters.ConfigurationSets.HostName");
+                }
+                if (configurationSetsParameterItem.getHostName() != null && configurationSetsParameterItem.getHostName().length() > 64)
+                {
+                    throw new IllegalArgumentException("parameters.ConfigurationSets.HostName");
+                }
+                if (configurationSetsParameterItem.getSshSettings() != null)
+                {
+                    if (configurationSetsParameterItem.getSshSettings().getKeyPairs() != null)
                     {
-                        throw new NullPointerException("parameters.ConfigurationSets.SshSettings.KeyPairs.Fingerprint");
+                        for (SshSettingKeyPair keyPairsParameterItem : configurationSetsParameterItem.getSshSettings().getKeyPairs())
+                        {
+                            if (keyPairsParameterItem.getFingerprint() == null)
+                            {
+                                throw new NullPointerException("parameters.ConfigurationSets.SshSettings.KeyPairs.Fingerprint");
+                            }
+                            if (keyPairsParameterItem.getPath() == null)
+                            {
+                                throw new NullPointerException("parameters.ConfigurationSets.SshSettings.KeyPairs.Path");
+                            }
+                        }
                     }
-                    if (keyPairsParameterItem.getPath() == null)
+                    if (configurationSetsParameterItem.getSshSettings().getPublicKeys() != null)
                     {
-                        throw new NullPointerException("parameters.ConfigurationSets.SshSettings.KeyPairs.Path");
+                        for (SshSettingPublicKey publicKeysParameterItem : configurationSetsParameterItem.getSshSettings().getPublicKeys())
+                        {
+                            if (publicKeysParameterItem.getFingerprint() == null)
+                            {
+                                throw new NullPointerException("parameters.ConfigurationSets.SshSettings.PublicKeys.Fingerprint");
+                            }
+                            if (publicKeysParameterItem.getPath() == null)
+                            {
+                                throw new NullPointerException("parameters.ConfigurationSets.SshSettings.PublicKeys.Path");
+                            }
+                        }
                     }
                 }
-                for (SshSettingPublicKey publicKeysParameterItem : configurationSetsParameterItem.getSshSettings().getPublicKeys())
+                if (configurationSetsParameterItem.getStoredCertificateSettings() != null)
                 {
-                    if (publicKeysParameterItem.getFingerprint() == null)
+                    for (StoredCertificateSettings storedCertificateSettingsParameterItem : configurationSetsParameterItem.getStoredCertificateSettings())
                     {
-                        throw new NullPointerException("parameters.ConfigurationSets.SshSettings.PublicKeys.Fingerprint");
+                        if (storedCertificateSettingsParameterItem.getStoreName() == null)
+                        {
+                            throw new NullPointerException("parameters.ConfigurationSets.StoredCertificateSettings.StoreName");
+                        }
+                        if (storedCertificateSettingsParameterItem.getThumbprint() == null)
+                        {
+                            throw new NullPointerException("parameters.ConfigurationSets.StoredCertificateSettings.Thumbprint");
+                        }
                     }
-                    if (publicKeysParameterItem.getPath() == null)
-                    {
-                        throw new NullPointerException("parameters.ConfigurationSets.SshSettings.PublicKeys.Path");
-                    }
                 }
-            }
-            for (StoredCertificateSettings storedCertificateSettingsParameterItem : configurationSetsParameterItem.getStoredCertificateSettings())
-            {
-                if (storedCertificateSettingsParameterItem.getStoreName() == null)
+                if (configurationSetsParameterItem.getUserName() != null && configurationSetsParameterItem.getUserName().length() < 1)
                 {
-                    throw new NullPointerException("parameters.ConfigurationSets.StoredCertificateSettings.StoreName");
+                    throw new IllegalArgumentException("parameters.ConfigurationSets.UserName");
                 }
-                if (storedCertificateSettingsParameterItem.getThumbprint() == null)
+                if (configurationSetsParameterItem.getUserName() != null && configurationSetsParameterItem.getUserName().length() > 32)
                 {
-                    throw new NullPointerException("parameters.ConfigurationSets.StoredCertificateSettings.Thumbprint");
+                    throw new IllegalArgumentException("parameters.ConfigurationSets.UserName");
                 }
-            }
-            if (configurationSetsParameterItem.getUserName() != null && configurationSetsParameterItem.getUserName().length() < 1)
-            {
-                throw new IllegalArgumentException("parameters.ConfigurationSets.UserName");
-            }
-            if (configurationSetsParameterItem.getUserName() != null && configurationSetsParameterItem.getUserName().length() > 32)
-            {
-                throw new IllegalArgumentException("parameters.ConfigurationSets.UserName");
-            }
-            if (configurationSetsParameterItem.getUserPassword() != null && configurationSetsParameterItem.getUserPassword().length() < 6 && (configurationSetsParameterItem.getDisableSshPasswordAuthentication() == false || configurationSetsParameterItem.getUserPassword().length() != 0))
-            {
-                throw new IllegalArgumentException("parameters.ConfigurationSets.UserPassword");
-            }
-            if (configurationSetsParameterItem.getUserPassword() != null && configurationSetsParameterItem.getUserPassword().length() > 72)
-            {
-                throw new IllegalArgumentException("parameters.ConfigurationSets.UserPassword");
+                if (configurationSetsParameterItem.getUserPassword() != null && configurationSetsParameterItem.getUserPassword().length() < 6 && (configurationSetsParameterItem.isDisableSshPasswordAuthentication() == false || configurationSetsParameterItem.getUserPassword().length() != 0))
+                {
+                    throw new IllegalArgumentException("parameters.ConfigurationSets.UserPassword");
+                }
+                if (configurationSetsParameterItem.getUserPassword() != null && configurationSetsParameterItem.getUserPassword().length() > 72)
+                {
+                    throw new IllegalArgumentException("parameters.ConfigurationSets.UserPassword");
+                }
             }
         }
         if (parameters.getRoleName() == null)
@@ -418,10 +1119,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             inputEndpointElement.appendChild(vipElement);
                         }
                         
-                        if (inputEndpointsItem.getEnableDirectServerReturn() != null)
+                        if (inputEndpointsItem.isEnableDirectServerReturn() != null)
                         {
                             Element enableDirectServerReturnElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EnableDirectServerReturn");
-                            enableDirectServerReturnElement.appendChild(requestDoc.createTextNode(Boolean.toString(inputEndpointsItem.getEnableDirectServerReturn()).toLowerCase()));
+                            enableDirectServerReturnElement.appendChild(requestDoc.createTextNode(Boolean.toString(inputEndpointsItem.isEnableDirectServerReturn()).toLowerCase()));
                             inputEndpointElement.appendChild(enableDirectServerReturnElement);
                         }
                         
@@ -485,6 +1186,13 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     configurationSetElement.appendChild(subnetNamesSequenceElement);
                 }
                 
+                if (configurationSetsItem.getStaticVirtualNetworkIPAddress() != null)
+                {
+                    Element staticVirtualNetworkIPAddressElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StaticVirtualNetworkIPAddress");
+                    staticVirtualNetworkIPAddressElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getStaticVirtualNetworkIPAddress()));
+                    configurationSetElement.appendChild(staticVirtualNetworkIPAddressElement);
+                }
+                
                 if (configurationSetsItem.getComputerName() != null)
                 {
                     Element computerNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ComputerName");
@@ -499,17 +1207,17 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     configurationSetElement.appendChild(adminPasswordElement);
                 }
                 
-                if (configurationSetsItem.getResetPasswordOnFirstLogon() != null)
+                if (configurationSetsItem.isResetPasswordOnFirstLogon() != null)
                 {
                     Element resetPasswordOnFirstLogonElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResetPasswordOnFirstLogon");
-                    resetPasswordOnFirstLogonElement.appendChild(requestDoc.createTextNode(Boolean.toString(configurationSetsItem.getResetPasswordOnFirstLogon()).toLowerCase()));
+                    resetPasswordOnFirstLogonElement.appendChild(requestDoc.createTextNode(Boolean.toString(configurationSetsItem.isResetPasswordOnFirstLogon()).toLowerCase()));
                     configurationSetElement.appendChild(resetPasswordOnFirstLogonElement);
                 }
                 
-                if (configurationSetsItem.getEnableAutomaticUpdates() != null)
+                if (configurationSetsItem.isEnableAutomaticUpdates() != null)
                 {
                     Element enableAutomaticUpdatesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EnableAutomaticUpdates");
-                    enableAutomaticUpdatesElement.appendChild(requestDoc.createTextNode(Boolean.toString(configurationSetsItem.getEnableAutomaticUpdates()).toLowerCase()));
+                    enableAutomaticUpdatesElement.appendChild(requestDoc.createTextNode(Boolean.toString(configurationSetsItem.isEnableAutomaticUpdates()).toLowerCase()));
                     configurationSetElement.appendChild(enableAutomaticUpdatesElement);
                 }
                 
@@ -610,16 +1318,16 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             Element listenerElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Listener");
                             listenersSequenceElement.appendChild(listenerElement);
                             
-                            Element protocolElement3 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Protocol");
-                            protocolElement3.appendChild(requestDoc.createTextNode(listenersItem.getListenerType().toString()));
-                            listenerElement.appendChild(protocolElement3);
-                            
                             if (listenersItem.getCertificateThumbprint() != null)
                             {
                                 Element certificateThumbprintElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CertificateThumbprint");
                                 certificateThumbprintElement.appendChild(requestDoc.createTextNode(listenersItem.getCertificateThumbprint()));
                                 listenerElement.appendChild(certificateThumbprintElement);
                             }
+                            
+                            Element protocolElement3 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Protocol");
+                            protocolElement3.appendChild(requestDoc.createTextNode(listenersItem.getListenerType().toString()));
+                            listenerElement.appendChild(protocolElement3);
                         }
                         winRMElement.appendChild(listenersSequenceElement);
                     }
@@ -653,10 +1361,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     configurationSetElement.appendChild(userPasswordElement);
                 }
                 
-                if (configurationSetsItem.getDisableSshPasswordAuthentication() != null)
+                if (configurationSetsItem.isDisableSshPasswordAuthentication() != null)
                 {
                     Element disableSshPasswordAuthenticationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DisableSshPasswordAuthentication");
-                    disableSshPasswordAuthenticationElement.appendChild(requestDoc.createTextNode(Boolean.toString(configurationSetsItem.getDisableSshPasswordAuthentication()).toLowerCase()));
+                    disableSshPasswordAuthenticationElement.appendChild(requestDoc.createTextNode(Boolean.toString(configurationSetsItem.isDisableSshPasswordAuthentication()).toLowerCase()));
                     configurationSetElement.appendChild(disableSshPasswordAuthenticationElement);
                 }
                 
@@ -815,7 +1523,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         if (parameters.getRoleSize() != null)
         {
             Element roleSizeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RoleSize");
-            roleSizeElement.appendChild(requestDoc.createTextNode(parameters.getRoleSize().toString()));
+            roleSizeElement.appendChild(requestDoc.createTextNode(parameters.getRoleSize()));
             persistentVMRoleElement.appendChild(roleSizeElement);
         }
         
@@ -832,40 +1540,50 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        OperationResponse result = null;
-        result = new OperationResponse();
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -911,11 +1629,21 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * @param serviceName The name of your service.
     * @param parameters Parameters supplied to the Create Virtual Machine
     * Deployment operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
     @Override
-    public OperationResponse beginCreatingDeployment(String serviceName, VirtualMachineCreateDeploymentParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException
+    public OperationResponse beginCreatingDeployment(String serviceName, VirtualMachineCreateDeploymentParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
     {
         // Validate
         if (serviceName == null)
@@ -942,83 +1670,98 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         {
             throw new NullPointerException("parameters.Roles");
         }
-        for (Role rolesParameterItem : parameters.getRoles())
+        if (parameters.getRoles() != null)
         {
-            for (ConfigurationSet configurationSetsParameterItem : rolesParameterItem.getConfigurationSets())
+            for (Role rolesParameterItem : parameters.getRoles())
             {
-                if (configurationSetsParameterItem.getDomainJoin() != null)
+                if (rolesParameterItem.getConfigurationSets() != null)
                 {
-                    if (configurationSetsParameterItem.getDomainJoin().getCredentials() != null)
+                    for (ConfigurationSet configurationSetsParameterItem : rolesParameterItem.getConfigurationSets())
                     {
-                        if (configurationSetsParameterItem.getDomainJoin().getCredentials().getPassword() == null)
+                        if (configurationSetsParameterItem.getDomainJoin() != null)
                         {
-                            throw new NullPointerException("parameters.Roles.ConfigurationSets.DomainJoin.Credentials.Password");
+                            if (configurationSetsParameterItem.getDomainJoin().getCredentials() != null)
+                            {
+                                if (configurationSetsParameterItem.getDomainJoin().getCredentials().getPassword() == null)
+                                {
+                                    throw new NullPointerException("parameters.Roles.ConfigurationSets.DomainJoin.Credentials.Password");
+                                }
+                                if (configurationSetsParameterItem.getDomainJoin().getCredentials().getUserName() == null)
+                                {
+                                    throw new NullPointerException("parameters.Roles.ConfigurationSets.DomainJoin.Credentials.UserName");
+                                }
+                            }
                         }
-                        if (configurationSetsParameterItem.getDomainJoin().getCredentials().getUserName() == null)
+                        if (configurationSetsParameterItem.getHostName() != null && configurationSetsParameterItem.getHostName().length() < 1)
                         {
-                            throw new NullPointerException("parameters.Roles.ConfigurationSets.DomainJoin.Credentials.UserName");
+                            throw new IllegalArgumentException("parameters.Roles.ConfigurationSets.HostName");
+                        }
+                        if (configurationSetsParameterItem.getHostName() != null && configurationSetsParameterItem.getHostName().length() > 64)
+                        {
+                            throw new IllegalArgumentException("parameters.Roles.ConfigurationSets.HostName");
+                        }
+                        if (configurationSetsParameterItem.getSshSettings() != null)
+                        {
+                            if (configurationSetsParameterItem.getSshSettings().getKeyPairs() != null)
+                            {
+                                for (SshSettingKeyPair keyPairsParameterItem : configurationSetsParameterItem.getSshSettings().getKeyPairs())
+                                {
+                                    if (keyPairsParameterItem.getFingerprint() == null)
+                                    {
+                                        throw new NullPointerException("parameters.Roles.ConfigurationSets.SshSettings.KeyPairs.Fingerprint");
+                                    }
+                                    if (keyPairsParameterItem.getPath() == null)
+                                    {
+                                        throw new NullPointerException("parameters.Roles.ConfigurationSets.SshSettings.KeyPairs.Path");
+                                    }
+                                }
+                            }
+                            if (configurationSetsParameterItem.getSshSettings().getPublicKeys() != null)
+                            {
+                                for (SshSettingPublicKey publicKeysParameterItem : configurationSetsParameterItem.getSshSettings().getPublicKeys())
+                                {
+                                    if (publicKeysParameterItem.getFingerprint() == null)
+                                    {
+                                        throw new NullPointerException("parameters.Roles.ConfigurationSets.SshSettings.PublicKeys.Fingerprint");
+                                    }
+                                    if (publicKeysParameterItem.getPath() == null)
+                                    {
+                                        throw new NullPointerException("parameters.Roles.ConfigurationSets.SshSettings.PublicKeys.Path");
+                                    }
+                                }
+                            }
+                        }
+                        if (configurationSetsParameterItem.getStoredCertificateSettings() != null)
+                        {
+                            for (StoredCertificateSettings storedCertificateSettingsParameterItem : configurationSetsParameterItem.getStoredCertificateSettings())
+                            {
+                                if (storedCertificateSettingsParameterItem.getStoreName() == null)
+                                {
+                                    throw new NullPointerException("parameters.Roles.ConfigurationSets.StoredCertificateSettings.StoreName");
+                                }
+                                if (storedCertificateSettingsParameterItem.getThumbprint() == null)
+                                {
+                                    throw new NullPointerException("parameters.Roles.ConfigurationSets.StoredCertificateSettings.Thumbprint");
+                                }
+                            }
+                        }
+                        if (configurationSetsParameterItem.getUserName() != null && configurationSetsParameterItem.getUserName().length() < 1)
+                        {
+                            throw new IllegalArgumentException("parameters.Roles.ConfigurationSets.UserName");
+                        }
+                        if (configurationSetsParameterItem.getUserName() != null && configurationSetsParameterItem.getUserName().length() > 32)
+                        {
+                            throw new IllegalArgumentException("parameters.Roles.ConfigurationSets.UserName");
+                        }
+                        if (configurationSetsParameterItem.getUserPassword() != null && configurationSetsParameterItem.getUserPassword().length() < 6 && (configurationSetsParameterItem.isDisableSshPasswordAuthentication() == false || configurationSetsParameterItem.getUserPassword().length() != 0))
+                        {
+                            throw new IllegalArgumentException("parameters.Roles.ConfigurationSets.UserPassword");
+                        }
+                        if (configurationSetsParameterItem.getUserPassword() != null && configurationSetsParameterItem.getUserPassword().length() > 72)
+                        {
+                            throw new IllegalArgumentException("parameters.Roles.ConfigurationSets.UserPassword");
                         }
                     }
-                }
-                if (configurationSetsParameterItem.getHostName() != null && configurationSetsParameterItem.getHostName().length() < 1)
-                {
-                    throw new IllegalArgumentException("parameters.Roles.ConfigurationSets.HostName");
-                }
-                if (configurationSetsParameterItem.getHostName() != null && configurationSetsParameterItem.getHostName().length() > 64)
-                {
-                    throw new IllegalArgumentException("parameters.Roles.ConfigurationSets.HostName");
-                }
-                if (configurationSetsParameterItem.getSshSettings() != null)
-                {
-                    for (SshSettingKeyPair keyPairsParameterItem : configurationSetsParameterItem.getSshSettings().getKeyPairs())
-                    {
-                        if (keyPairsParameterItem.getFingerprint() == null)
-                        {
-                            throw new NullPointerException("parameters.Roles.ConfigurationSets.SshSettings.KeyPairs.Fingerprint");
-                        }
-                        if (keyPairsParameterItem.getPath() == null)
-                        {
-                            throw new NullPointerException("parameters.Roles.ConfigurationSets.SshSettings.KeyPairs.Path");
-                        }
-                    }
-                    for (SshSettingPublicKey publicKeysParameterItem : configurationSetsParameterItem.getSshSettings().getPublicKeys())
-                    {
-                        if (publicKeysParameterItem.getFingerprint() == null)
-                        {
-                            throw new NullPointerException("parameters.Roles.ConfigurationSets.SshSettings.PublicKeys.Fingerprint");
-                        }
-                        if (publicKeysParameterItem.getPath() == null)
-                        {
-                            throw new NullPointerException("parameters.Roles.ConfigurationSets.SshSettings.PublicKeys.Path");
-                        }
-                    }
-                }
-                for (StoredCertificateSettings storedCertificateSettingsParameterItem : configurationSetsParameterItem.getStoredCertificateSettings())
-                {
-                    if (storedCertificateSettingsParameterItem.getStoreName() == null)
-                    {
-                        throw new NullPointerException("parameters.Roles.ConfigurationSets.StoredCertificateSettings.StoreName");
-                    }
-                    if (storedCertificateSettingsParameterItem.getThumbprint() == null)
-                    {
-                        throw new NullPointerException("parameters.Roles.ConfigurationSets.StoredCertificateSettings.Thumbprint");
-                    }
-                }
-                if (configurationSetsParameterItem.getUserName() != null && configurationSetsParameterItem.getUserName().length() < 1)
-                {
-                    throw new IllegalArgumentException("parameters.Roles.ConfigurationSets.UserName");
-                }
-                if (configurationSetsParameterItem.getUserName() != null && configurationSetsParameterItem.getUserName().length() > 32)
-                {
-                    throw new IllegalArgumentException("parameters.Roles.ConfigurationSets.UserName");
-                }
-                if (configurationSetsParameterItem.getUserPassword() != null && configurationSetsParameterItem.getUserPassword().length() < 6 && (configurationSetsParameterItem.getDisableSshPasswordAuthentication() == false || configurationSetsParameterItem.getUserPassword().length() != 0))
-                {
-                    throw new IllegalArgumentException("parameters.Roles.ConfigurationSets.UserPassword");
-                }
-                if (configurationSetsParameterItem.getUserPassword() != null && configurationSetsParameterItem.getUserPassword().length() > 72)
-                {
-                    throw new IllegalArgumentException("parameters.Roles.ConfigurationSets.UserPassword");
                 }
             }
         }
@@ -1193,10 +1936,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                 inputEndpointElement.appendChild(vipElement);
                             }
                             
-                            if (inputEndpointsItem.getEnableDirectServerReturn() != null)
+                            if (inputEndpointsItem.isEnableDirectServerReturn() != null)
                             {
                                 Element enableDirectServerReturnElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EnableDirectServerReturn");
-                                enableDirectServerReturnElement.appendChild(requestDoc.createTextNode(Boolean.toString(inputEndpointsItem.getEnableDirectServerReturn()).toLowerCase()));
+                                enableDirectServerReturnElement.appendChild(requestDoc.createTextNode(Boolean.toString(inputEndpointsItem.isEnableDirectServerReturn()).toLowerCase()));
                                 inputEndpointElement.appendChild(enableDirectServerReturnElement);
                             }
                             
@@ -1260,6 +2003,13 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         configurationSetElement.appendChild(subnetNamesSequenceElement);
                     }
                     
+                    if (configurationSetsItem.getStaticVirtualNetworkIPAddress() != null)
+                    {
+                        Element staticVirtualNetworkIPAddressElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StaticVirtualNetworkIPAddress");
+                        staticVirtualNetworkIPAddressElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getStaticVirtualNetworkIPAddress()));
+                        configurationSetElement.appendChild(staticVirtualNetworkIPAddressElement);
+                    }
+                    
                     if (configurationSetsItem.getComputerName() != null)
                     {
                         Element computerNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ComputerName");
@@ -1274,17 +2024,17 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         configurationSetElement.appendChild(adminPasswordElement);
                     }
                     
-                    if (configurationSetsItem.getResetPasswordOnFirstLogon() != null)
+                    if (configurationSetsItem.isResetPasswordOnFirstLogon() != null)
                     {
                         Element resetPasswordOnFirstLogonElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResetPasswordOnFirstLogon");
-                        resetPasswordOnFirstLogonElement.appendChild(requestDoc.createTextNode(Boolean.toString(configurationSetsItem.getResetPasswordOnFirstLogon()).toLowerCase()));
+                        resetPasswordOnFirstLogonElement.appendChild(requestDoc.createTextNode(Boolean.toString(configurationSetsItem.isResetPasswordOnFirstLogon()).toLowerCase()));
                         configurationSetElement.appendChild(resetPasswordOnFirstLogonElement);
                     }
                     
-                    if (configurationSetsItem.getEnableAutomaticUpdates() != null)
+                    if (configurationSetsItem.isEnableAutomaticUpdates() != null)
                     {
                         Element enableAutomaticUpdatesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EnableAutomaticUpdates");
-                        enableAutomaticUpdatesElement.appendChild(requestDoc.createTextNode(Boolean.toString(configurationSetsItem.getEnableAutomaticUpdates()).toLowerCase()));
+                        enableAutomaticUpdatesElement.appendChild(requestDoc.createTextNode(Boolean.toString(configurationSetsItem.isEnableAutomaticUpdates()).toLowerCase()));
                         configurationSetElement.appendChild(enableAutomaticUpdatesElement);
                     }
                     
@@ -1385,16 +2135,16 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                 Element listenerElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Listener");
                                 listenersSequenceElement.appendChild(listenerElement);
                                 
-                                Element protocolElement3 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Protocol");
-                                protocolElement3.appendChild(requestDoc.createTextNode(listenersItem.getListenerType().toString()));
-                                listenerElement.appendChild(protocolElement3);
-                                
                                 if (listenersItem.getCertificateThumbprint() != null)
                                 {
                                     Element certificateThumbprintElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CertificateThumbprint");
                                     certificateThumbprintElement.appendChild(requestDoc.createTextNode(listenersItem.getCertificateThumbprint()));
                                     listenerElement.appendChild(certificateThumbprintElement);
                                 }
+                                
+                                Element protocolElement3 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Protocol");
+                                protocolElement3.appendChild(requestDoc.createTextNode(listenersItem.getListenerType().toString()));
+                                listenerElement.appendChild(protocolElement3);
                             }
                             winRMElement.appendChild(listenersSequenceElement);
                         }
@@ -1428,10 +2178,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         configurationSetElement.appendChild(userPasswordElement);
                     }
                     
-                    if (configurationSetsItem.getDisableSshPasswordAuthentication() != null)
+                    if (configurationSetsItem.isDisableSshPasswordAuthentication() != null)
                     {
                         Element disableSshPasswordAuthenticationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DisableSshPasswordAuthentication");
-                        disableSshPasswordAuthenticationElement.appendChild(requestDoc.createTextNode(Boolean.toString(configurationSetsItem.getDisableSshPasswordAuthentication()).toLowerCase()));
+                        disableSshPasswordAuthenticationElement.appendChild(requestDoc.createTextNode(Boolean.toString(configurationSetsItem.isDisableSshPasswordAuthentication()).toLowerCase()));
                         configurationSetElement.appendChild(disableSshPasswordAuthenticationElement);
                     }
                     
@@ -1597,7 +2347,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             if (roleListItem.getRoleSize() != null)
             {
                 Element roleSizeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RoleSize");
-                roleSizeElement.appendChild(requestDoc.createTextNode(roleListItem.getRoleSize().toString()));
+                roleSizeElement.appendChild(requestDoc.createTextNode(roleListItem.getRoleSize()));
                 roleElement.appendChild(roleSizeElement);
             }
             
@@ -1668,40 +2418,50 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        OperationResponse result = null;
-        result = new OperationResponse();
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -1739,6 +2499,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * @param virtualMachineName The name of the virtual machine to delete.
     * @param deleteFromStorage Optional. Specifies that the source blob(s) for
     * the virtual machine should also be deleted from storage.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -1774,11 +2538,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "/roles/" + virtualMachineName + "?";
-        if (deleteFromStorage == true)
-        {
-            url = url + "&comp=" + URLEncoder.encode("media");
-        }
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "/roles/" + virtualMachineName + "?comp=" + deleteFromStorage;
         
         // Create HTTP transport objects
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
@@ -1788,40 +2548,50 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        OperationResponse result = null;
-        result = new OperationResponse();
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -1855,11 +2625,15 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * @param serviceName The name of your service.
     * @param deploymentName The name of your deployment.
     * @param virtualMachineName The name of the virtual machine to restart.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
     @Override
-    public OperationResponse beginRestarting(String serviceName, String deploymentName, String virtualMachineName) throws UnsupportedEncodingException, IOException, ServiceException
+    public OperationResponse beginRestarting(String serviceName, String deploymentName, String virtualMachineName) throws IOException, ServiceException
     {
         // Validate
         if (serviceName == null)
@@ -1907,40 +2681,50 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        OperationResponse result = null;
-        result = new OperationResponse();
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -1976,11 +2760,21 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * @param deploymentName The name of your deployment.
     * @param virtualMachineName The name of the virtual machine to shutdown.
     * @param parameters The parameters for the shutdown vm operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
     @Override
-    public OperationResponse beginShutdown(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineShutdownParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException
+    public OperationResponse beginShutdown(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineShutdownParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
     {
         // Validate
         if (serviceName == null)
@@ -2054,40 +2848,50 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        OperationResponse result = null;
-        result = new OperationResponse();
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -2119,11 +2923,21 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * @param deploymentName The name of your deployment.
     * @param parameters The set of virtual machine roles to shutdown and their
     * post shutdown state.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
     @Override
-    public OperationResponse beginShuttingDownRoles(String serviceName, String deploymentName, VirtualMachineShutdownRolesParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException
+    public OperationResponse beginShuttingDownRoles(String serviceName, String deploymentName, VirtualMachineShutdownRolesParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
     {
         // Validate
         if (serviceName == null)
@@ -2207,40 +3021,50 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        OperationResponse result = null;
-        result = new OperationResponse();
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -2274,11 +3098,15 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * @param serviceName The name of your service.
     * @param deploymentName The name of your deployment.
     * @param virtualMachineName The name of the virtual machine to start.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
     @Override
-    public OperationResponse beginStarting(String serviceName, String deploymentName, String virtualMachineName) throws UnsupportedEncodingException, IOException, ServiceException
+    public OperationResponse beginStarting(String serviceName, String deploymentName, String virtualMachineName) throws IOException, ServiceException
     {
         // Validate
         if (serviceName == null)
@@ -2326,40 +3154,50 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        OperationResponse result = null;
-        result = new OperationResponse();
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -2389,11 +3227,21 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * @param serviceName The name of your service.
     * @param deploymentName The name of your deployment.
     * @param parameters The set of virtual machine roles to start.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
     @Override
-    public OperationResponse beginStartingRoles(String serviceName, String deploymentName, VirtualMachineStartRolesParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException
+    public OperationResponse beginStartingRoles(String serviceName, String deploymentName, VirtualMachineStartRolesParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
     {
         // Validate
         if (serviceName == null)
@@ -2470,40 +3318,50 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        OperationResponse result = null;
-        result = new OperationResponse();
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -2543,11 +3401,21 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * @param virtualMachineName The name of your virtual machine.
     * @param parameters Parameters supplied to the Update Virtual Machine
     * operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
     @Override
-    public OperationResponse beginUpdating(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException
+    public OperationResponse beginUpdating(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
     {
         // Validate
         if (serviceName == null)
@@ -2566,81 +3434,93 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         {
             throw new NullPointerException("parameters");
         }
-        for (ConfigurationSet configurationSetsParameterItem : parameters.getConfigurationSets())
+        if (parameters.getConfigurationSets() != null)
         {
-            if (configurationSetsParameterItem.getDomainJoin() != null)
+            for (ConfigurationSet configurationSetsParameterItem : parameters.getConfigurationSets())
             {
-                if (configurationSetsParameterItem.getDomainJoin().getCredentials() != null)
+                if (configurationSetsParameterItem.getDomainJoin() != null)
                 {
-                    if (configurationSetsParameterItem.getDomainJoin().getCredentials().getPassword() == null)
+                    if (configurationSetsParameterItem.getDomainJoin().getCredentials() != null)
                     {
-                        throw new NullPointerException("parameters.ConfigurationSets.DomainJoin.Credentials.Password");
-                    }
-                    if (configurationSetsParameterItem.getDomainJoin().getCredentials().getUserName() == null)
-                    {
-                        throw new NullPointerException("parameters.ConfigurationSets.DomainJoin.Credentials.UserName");
+                        if (configurationSetsParameterItem.getDomainJoin().getCredentials().getPassword() == null)
+                        {
+                            throw new NullPointerException("parameters.ConfigurationSets.DomainJoin.Credentials.Password");
+                        }
+                        if (configurationSetsParameterItem.getDomainJoin().getCredentials().getUserName() == null)
+                        {
+                            throw new NullPointerException("parameters.ConfigurationSets.DomainJoin.Credentials.UserName");
+                        }
                     }
                 }
-            }
-            if (configurationSetsParameterItem.getHostName() != null && configurationSetsParameterItem.getHostName().length() < 1)
-            {
-                throw new IllegalArgumentException("parameters.ConfigurationSets.HostName");
-            }
-            if (configurationSetsParameterItem.getHostName() != null && configurationSetsParameterItem.getHostName().length() > 64)
-            {
-                throw new IllegalArgumentException("parameters.ConfigurationSets.HostName");
-            }
-            if (configurationSetsParameterItem.getSshSettings() != null)
-            {
-                for (SshSettingKeyPair keyPairsParameterItem : configurationSetsParameterItem.getSshSettings().getKeyPairs())
+                if (configurationSetsParameterItem.getHostName() != null && configurationSetsParameterItem.getHostName().length() < 1)
                 {
-                    if (keyPairsParameterItem.getFingerprint() == null)
+                    throw new IllegalArgumentException("parameters.ConfigurationSets.HostName");
+                }
+                if (configurationSetsParameterItem.getHostName() != null && configurationSetsParameterItem.getHostName().length() > 64)
+                {
+                    throw new IllegalArgumentException("parameters.ConfigurationSets.HostName");
+                }
+                if (configurationSetsParameterItem.getSshSettings() != null)
+                {
+                    if (configurationSetsParameterItem.getSshSettings().getKeyPairs() != null)
                     {
-                        throw new NullPointerException("parameters.ConfigurationSets.SshSettings.KeyPairs.Fingerprint");
+                        for (SshSettingKeyPair keyPairsParameterItem : configurationSetsParameterItem.getSshSettings().getKeyPairs())
+                        {
+                            if (keyPairsParameterItem.getFingerprint() == null)
+                            {
+                                throw new NullPointerException("parameters.ConfigurationSets.SshSettings.KeyPairs.Fingerprint");
+                            }
+                            if (keyPairsParameterItem.getPath() == null)
+                            {
+                                throw new NullPointerException("parameters.ConfigurationSets.SshSettings.KeyPairs.Path");
+                            }
+                        }
                     }
-                    if (keyPairsParameterItem.getPath() == null)
+                    if (configurationSetsParameterItem.getSshSettings().getPublicKeys() != null)
                     {
-                        throw new NullPointerException("parameters.ConfigurationSets.SshSettings.KeyPairs.Path");
+                        for (SshSettingPublicKey publicKeysParameterItem : configurationSetsParameterItem.getSshSettings().getPublicKeys())
+                        {
+                            if (publicKeysParameterItem.getFingerprint() == null)
+                            {
+                                throw new NullPointerException("parameters.ConfigurationSets.SshSettings.PublicKeys.Fingerprint");
+                            }
+                            if (publicKeysParameterItem.getPath() == null)
+                            {
+                                throw new NullPointerException("parameters.ConfigurationSets.SshSettings.PublicKeys.Path");
+                            }
+                        }
                     }
                 }
-                for (SshSettingPublicKey publicKeysParameterItem : configurationSetsParameterItem.getSshSettings().getPublicKeys())
+                if (configurationSetsParameterItem.getStoredCertificateSettings() != null)
                 {
-                    if (publicKeysParameterItem.getFingerprint() == null)
+                    for (StoredCertificateSettings storedCertificateSettingsParameterItem : configurationSetsParameterItem.getStoredCertificateSettings())
                     {
-                        throw new NullPointerException("parameters.ConfigurationSets.SshSettings.PublicKeys.Fingerprint");
+                        if (storedCertificateSettingsParameterItem.getStoreName() == null)
+                        {
+                            throw new NullPointerException("parameters.ConfigurationSets.StoredCertificateSettings.StoreName");
+                        }
+                        if (storedCertificateSettingsParameterItem.getThumbprint() == null)
+                        {
+                            throw new NullPointerException("parameters.ConfigurationSets.StoredCertificateSettings.Thumbprint");
+                        }
                     }
-                    if (publicKeysParameterItem.getPath() == null)
-                    {
-                        throw new NullPointerException("parameters.ConfigurationSets.SshSettings.PublicKeys.Path");
-                    }
                 }
-            }
-            for (StoredCertificateSettings storedCertificateSettingsParameterItem : configurationSetsParameterItem.getStoredCertificateSettings())
-            {
-                if (storedCertificateSettingsParameterItem.getStoreName() == null)
+                if (configurationSetsParameterItem.getUserName() != null && configurationSetsParameterItem.getUserName().length() < 1)
                 {
-                    throw new NullPointerException("parameters.ConfigurationSets.StoredCertificateSettings.StoreName");
+                    throw new IllegalArgumentException("parameters.ConfigurationSets.UserName");
                 }
-                if (storedCertificateSettingsParameterItem.getThumbprint() == null)
+                if (configurationSetsParameterItem.getUserName() != null && configurationSetsParameterItem.getUserName().length() > 32)
                 {
-                    throw new NullPointerException("parameters.ConfigurationSets.StoredCertificateSettings.Thumbprint");
+                    throw new IllegalArgumentException("parameters.ConfigurationSets.UserName");
                 }
-            }
-            if (configurationSetsParameterItem.getUserName() != null && configurationSetsParameterItem.getUserName().length() < 1)
-            {
-                throw new IllegalArgumentException("parameters.ConfigurationSets.UserName");
-            }
-            if (configurationSetsParameterItem.getUserName() != null && configurationSetsParameterItem.getUserName().length() > 32)
-            {
-                throw new IllegalArgumentException("parameters.ConfigurationSets.UserName");
-            }
-            if (configurationSetsParameterItem.getUserPassword() != null && configurationSetsParameterItem.getUserPassword().length() < 6 && (configurationSetsParameterItem.getDisableSshPasswordAuthentication() == false || configurationSetsParameterItem.getUserPassword().length() != 0))
-            {
-                throw new IllegalArgumentException("parameters.ConfigurationSets.UserPassword");
-            }
-            if (configurationSetsParameterItem.getUserPassword() != null && configurationSetsParameterItem.getUserPassword().length() > 72)
-            {
-                throw new IllegalArgumentException("parameters.ConfigurationSets.UserPassword");
+                if (configurationSetsParameterItem.getUserPassword() != null && configurationSetsParameterItem.getUserPassword().length() < 6 && (configurationSetsParameterItem.isDisableSshPasswordAuthentication() == false || configurationSetsParameterItem.getUserPassword().length() != 0))
+                {
+                    throw new IllegalArgumentException("parameters.ConfigurationSets.UserPassword");
+                }
+                if (configurationSetsParameterItem.getUserPassword() != null && configurationSetsParameterItem.getUserPassword().length() > 72)
+                {
+                    throw new IllegalArgumentException("parameters.ConfigurationSets.UserPassword");
+                }
             }
         }
         if (parameters.getOSVirtualHardDisk() == null)
@@ -2793,10 +3673,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             inputEndpointElement.appendChild(vipElement);
                         }
                         
-                        if (inputEndpointsItem.getEnableDirectServerReturn() != null)
+                        if (inputEndpointsItem.isEnableDirectServerReturn() != null)
                         {
                             Element enableDirectServerReturnElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EnableDirectServerReturn");
-                            enableDirectServerReturnElement.appendChild(requestDoc.createTextNode(Boolean.toString(inputEndpointsItem.getEnableDirectServerReturn()).toLowerCase()));
+                            enableDirectServerReturnElement.appendChild(requestDoc.createTextNode(Boolean.toString(inputEndpointsItem.isEnableDirectServerReturn()).toLowerCase()));
                             inputEndpointElement.appendChild(enableDirectServerReturnElement);
                         }
                         
@@ -2860,6 +3740,13 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     configurationSetElement.appendChild(subnetNamesSequenceElement);
                 }
                 
+                if (configurationSetsItem.getStaticVirtualNetworkIPAddress() != null)
+                {
+                    Element staticVirtualNetworkIPAddressElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StaticVirtualNetworkIPAddress");
+                    staticVirtualNetworkIPAddressElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getStaticVirtualNetworkIPAddress()));
+                    configurationSetElement.appendChild(staticVirtualNetworkIPAddressElement);
+                }
+                
                 if (configurationSetsItem.getComputerName() != null)
                 {
                     Element computerNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ComputerName");
@@ -2874,17 +3761,17 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     configurationSetElement.appendChild(adminPasswordElement);
                 }
                 
-                if (configurationSetsItem.getResetPasswordOnFirstLogon() != null)
+                if (configurationSetsItem.isResetPasswordOnFirstLogon() != null)
                 {
                     Element resetPasswordOnFirstLogonElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResetPasswordOnFirstLogon");
-                    resetPasswordOnFirstLogonElement.appendChild(requestDoc.createTextNode(Boolean.toString(configurationSetsItem.getResetPasswordOnFirstLogon()).toLowerCase()));
+                    resetPasswordOnFirstLogonElement.appendChild(requestDoc.createTextNode(Boolean.toString(configurationSetsItem.isResetPasswordOnFirstLogon()).toLowerCase()));
                     configurationSetElement.appendChild(resetPasswordOnFirstLogonElement);
                 }
                 
-                if (configurationSetsItem.getEnableAutomaticUpdates() != null)
+                if (configurationSetsItem.isEnableAutomaticUpdates() != null)
                 {
                     Element enableAutomaticUpdatesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EnableAutomaticUpdates");
-                    enableAutomaticUpdatesElement.appendChild(requestDoc.createTextNode(Boolean.toString(configurationSetsItem.getEnableAutomaticUpdates()).toLowerCase()));
+                    enableAutomaticUpdatesElement.appendChild(requestDoc.createTextNode(Boolean.toString(configurationSetsItem.isEnableAutomaticUpdates()).toLowerCase()));
                     configurationSetElement.appendChild(enableAutomaticUpdatesElement);
                 }
                 
@@ -2985,16 +3872,16 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             Element listenerElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Listener");
                             listenersSequenceElement.appendChild(listenerElement);
                             
-                            Element protocolElement3 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Protocol");
-                            protocolElement3.appendChild(requestDoc.createTextNode(listenersItem.getListenerType().toString()));
-                            listenerElement.appendChild(protocolElement3);
-                            
                             if (listenersItem.getCertificateThumbprint() != null)
                             {
                                 Element certificateThumbprintElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CertificateThumbprint");
                                 certificateThumbprintElement.appendChild(requestDoc.createTextNode(listenersItem.getCertificateThumbprint()));
                                 listenerElement.appendChild(certificateThumbprintElement);
                             }
+                            
+                            Element protocolElement3 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Protocol");
+                            protocolElement3.appendChild(requestDoc.createTextNode(listenersItem.getListenerType().toString()));
+                            listenerElement.appendChild(protocolElement3);
                         }
                         winRMElement.appendChild(listenersSequenceElement);
                     }
@@ -3028,10 +3915,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     configurationSetElement.appendChild(userPasswordElement);
                 }
                 
-                if (configurationSetsItem.getDisableSshPasswordAuthentication() != null)
+                if (configurationSetsItem.isDisableSshPasswordAuthentication() != null)
                 {
                     Element disableSshPasswordAuthenticationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DisableSshPasswordAuthentication");
-                    disableSshPasswordAuthenticationElement.appendChild(requestDoc.createTextNode(Boolean.toString(configurationSetsItem.getDisableSshPasswordAuthentication()).toLowerCase()));
+                    disableSshPasswordAuthenticationElement.appendChild(requestDoc.createTextNode(Boolean.toString(configurationSetsItem.isDisableSshPasswordAuthentication()).toLowerCase()));
                     configurationSetElement.appendChild(disableSshPasswordAuthenticationElement);
                 }
                 
@@ -3187,7 +4074,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         if (parameters.getRoleSize() != null)
         {
             Element roleSizeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RoleSize");
-            roleSizeElement.appendChild(requestDoc.createTextNode(parameters.getRoleSize().toString()));
+            roleSizeElement.appendChild(requestDoc.createTextNode(parameters.getRoleSize()));
             persistentVMRoleElement.appendChild(roleSizeElement);
         }
         
@@ -3204,40 +4091,50 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        OperationResponse result = null;
-        result = new OperationResponse();
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -3275,11 +4172,21 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * @param deploymentName The name of your deployment.
     * @param parameters Parameters supplied to the Update Load Balanced
     * Endpoint Set operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
     @Override
-    public OperationResponse beginUpdatingLoadBalancedEndpointSet(String serviceName, String deploymentName, VirtualMachineUpdateLoadBalancedSetParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException
+    public OperationResponse beginUpdatingLoadBalancedEndpointSet(String serviceName, String deploymentName, VirtualMachineUpdateLoadBalancedSetParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
     {
         // Validate
         if (serviceName == null)
@@ -3294,11 +4201,14 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         {
             throw new NullPointerException("parameters");
         }
-        for (VirtualMachineUpdateLoadBalancedSetParameters.InputEndpoint loadBalancedEndpointsParameterItem : parameters.getLoadBalancedEndpoints())
+        if (parameters.getLoadBalancedEndpoints() != null)
         {
-            if (loadBalancedEndpointsParameterItem.getLoadBalancedEndpointSetName() == null)
+            for (VirtualMachineUpdateLoadBalancedSetParameters.InputEndpoint loadBalancedEndpointsParameterItem : parameters.getLoadBalancedEndpoints())
             {
-                throw new NullPointerException("parameters.LoadBalancedEndpoints.LoadBalancedEndpointSetName");
+                if (loadBalancedEndpointsParameterItem.getLoadBalancedEndpointSetName() == null)
+                {
+                    throw new NullPointerException("parameters.LoadBalancedEndpoints.LoadBalancedEndpointSetName");
+                }
             }
         }
         
@@ -3415,10 +4325,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     inputEndpointElement.appendChild(vipElement);
                 }
                 
-                if (loadBalancedEndpointsItem.getEnableDirectServerReturn() != null)
+                if (loadBalancedEndpointsItem.isEnableDirectServerReturn() != null)
                 {
                     Element enableDirectServerReturnElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EnableDirectServerReturn");
-                    enableDirectServerReturnElement.appendChild(requestDoc.createTextNode(Boolean.toString(loadBalancedEndpointsItem.getEnableDirectServerReturn()).toLowerCase()));
+                    enableDirectServerReturnElement.appendChild(requestDoc.createTextNode(Boolean.toString(loadBalancedEndpointsItem.isEnableDirectServerReturn()).toLowerCase()));
                     inputEndpointElement.appendChild(enableDirectServerReturnElement);
                 }
                 
@@ -3479,40 +4389,50 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        OperationResponse result = null;
-        result = new OperationResponse();
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -3533,15 +4453,22 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * @param virtualMachineName The name of the virtual machine to restart.
     * @param parameters Parameters supplied to the Capture Virtual Machine
     * operation.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
     */
     @Override
-    public Future<OperationResponse> captureAsync(final String serviceName, final String deploymentName, final String virtualMachineName, final VirtualMachineCaptureParameters parameters)
+    public Future<ComputeOperationStatusResponse> captureAsync(final String serviceName, final String deploymentName, final String virtualMachineName, final VirtualMachineCaptureParameters parameters)
     {
-        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
             @Override
-            public OperationResponse call() throws Exception
+            public ComputeOperationStatusResponse call() throws Exception
             {
                 return capture(serviceName, deploymentName, virtualMachineName, parameters);
             }
@@ -3566,116 +4493,32 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * @param virtualMachineName The name of the virtual machine to restart.
     * @param parameters Parameters supplied to the Capture Virtual Machine
     * operation.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
     */
     @Override
-    public OperationResponse capture(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineCaptureParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException
+    public ComputeOperationStatusResponse capture(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineCaptureParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException
     {
-        // Validate
-        if (serviceName == null)
-        {
-            throw new NullPointerException("serviceName");
-        }
-        if (deploymentName == null)
-        {
-            throw new NullPointerException("deploymentName");
-        }
-        if (virtualMachineName == null)
-        {
-            throw new NullPointerException("virtualMachineName");
-        }
-        if (parameters == null)
-        {
-            throw new NullPointerException("parameters");
-        }
-        if (parameters.getProvisioningConfiguration() != null)
-        {
-            if (parameters.getProvisioningConfiguration().getDomainJoin() != null)
-            {
-                if (parameters.getProvisioningConfiguration().getDomainJoin().getCredentials() != null)
-                {
-                    if (parameters.getProvisioningConfiguration().getDomainJoin().getCredentials().getPassword() == null)
-                    {
-                        throw new NullPointerException("parameters.ProvisioningConfiguration.DomainJoin.Credentials.Password");
-                    }
-                    if (parameters.getProvisioningConfiguration().getDomainJoin().getCredentials().getUserName() == null)
-                    {
-                        throw new NullPointerException("parameters.ProvisioningConfiguration.DomainJoin.Credentials.UserName");
-                    }
-                }
-            }
-            if (parameters.getProvisioningConfiguration().getHostName() != null && parameters.getProvisioningConfiguration().getHostName().length() < 1)
-            {
-                throw new IllegalArgumentException("parameters.ProvisioningConfiguration.HostName");
-            }
-            if (parameters.getProvisioningConfiguration().getHostName() != null && parameters.getProvisioningConfiguration().getHostName().length() > 64)
-            {
-                throw new IllegalArgumentException("parameters.ProvisioningConfiguration.HostName");
-            }
-            if (parameters.getProvisioningConfiguration().getSshSettings() != null)
-            {
-                for (SshSettingKeyPair keyPairsParameterItem : parameters.getProvisioningConfiguration().getSshSettings().getKeyPairs())
-                {
-                    if (keyPairsParameterItem.getFingerprint() == null)
-                    {
-                        throw new NullPointerException("parameters.ProvisioningConfiguration.SshSettings.KeyPairs.Fingerprint");
-                    }
-                    if (keyPairsParameterItem.getPath() == null)
-                    {
-                        throw new NullPointerException("parameters.ProvisioningConfiguration.SshSettings.KeyPairs.Path");
-                    }
-                }
-                for (SshSettingPublicKey publicKeysParameterItem : parameters.getProvisioningConfiguration().getSshSettings().getPublicKeys())
-                {
-                    if (publicKeysParameterItem.getFingerprint() == null)
-                    {
-                        throw new NullPointerException("parameters.ProvisioningConfiguration.SshSettings.PublicKeys.Fingerprint");
-                    }
-                    if (publicKeysParameterItem.getPath() == null)
-                    {
-                        throw new NullPointerException("parameters.ProvisioningConfiguration.SshSettings.PublicKeys.Path");
-                    }
-                }
-            }
-            for (StoredCertificateSettings storedCertificateSettingsParameterItem : parameters.getProvisioningConfiguration().getStoredCertificateSettings())
-            {
-                if (storedCertificateSettingsParameterItem.getStoreName() == null)
-                {
-                    throw new NullPointerException("parameters.ProvisioningConfiguration.StoredCertificateSettings.StoreName");
-                }
-                if (storedCertificateSettingsParameterItem.getThumbprint() == null)
-                {
-                    throw new NullPointerException("parameters.ProvisioningConfiguration.StoredCertificateSettings.Thumbprint");
-                }
-            }
-            if (parameters.getProvisioningConfiguration().getUserName() != null && parameters.getProvisioningConfiguration().getUserName().length() < 1)
-            {
-                throw new IllegalArgumentException("parameters.ProvisioningConfiguration.UserName");
-            }
-            if (parameters.getProvisioningConfiguration().getUserName() != null && parameters.getProvisioningConfiguration().getUserName().length() > 32)
-            {
-                throw new IllegalArgumentException("parameters.ProvisioningConfiguration.UserName");
-            }
-            if (parameters.getProvisioningConfiguration().getUserPassword() != null && parameters.getProvisioningConfiguration().getUserPassword().length() < 6 && (parameters.getProvisioningConfiguration().getDisableSshPasswordAuthentication() == false || parameters.getProvisioningConfiguration().getUserPassword().length() != 0))
-            {
-                throw new IllegalArgumentException("parameters.ProvisioningConfiguration.UserPassword");
-            }
-            if (parameters.getProvisioningConfiguration().getUserPassword() != null && parameters.getProvisioningConfiguration().getUserPassword().length() > 72)
-            {
-                throw new IllegalArgumentException("parameters.ProvisioningConfiguration.UserPassword");
-            }
-        }
-        if (parameters.getTargetImageLabel() == null)
-        {
-            throw new NullPointerException("parameters.TargetImageLabel");
-        }
-        if (parameters.getTargetImageName() == null)
-        {
-            throw new NullPointerException("parameters.TargetImageName");
-        }
-        
-        // Tracing
+        ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
         if (shouldTrace)
@@ -3688,473 +4531,61 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             tracingParameters.put("parameters", parameters);
             CloudTracing.enter(invocationId, this, "captureAsync", tracingParameters);
         }
-        
-        // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "/roleinstances/" + virtualMachineName + "/Operations";
-        
-        // Create HTTP transport objects
-        HttpPost httpRequest = new HttpPost(url);
-        
-        // Set Headers
-        httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2013-11-01");
-        
-        // Serialize Request
-        String requestContent = null;
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document requestDoc = documentBuilder.newDocument();
-        
-        Element captureRoleOperationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CaptureRoleOperation");
-        requestDoc.appendChild(captureRoleOperationElement);
-        
-        Element operationTypeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "OperationType");
-        operationTypeElement.appendChild(requestDoc.createTextNode("CaptureRoleOperation"));
-        captureRoleOperationElement.appendChild(operationTypeElement);
-        
-        Element postCaptureActionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PostCaptureAction");
-        postCaptureActionElement.appendChild(requestDoc.createTextNode(parameters.getPostCaptureAction().toString()));
-        captureRoleOperationElement.appendChild(postCaptureActionElement);
-        
-        if (parameters.getProvisioningConfiguration() != null)
+        try
         {
-            Element provisioningConfigurationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ProvisioningConfiguration");
-            captureRoleOperationElement.appendChild(provisioningConfigurationElement);
-            
-            if (parameters.getProvisioningConfiguration().getConfigurationSetType() != null)
-            {
-                Element configurationSetTypeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ConfigurationSetType");
-                configurationSetTypeElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getConfigurationSetType()));
-                provisioningConfigurationElement.appendChild(configurationSetTypeElement);
-            }
-            
-            if (parameters.getProvisioningConfiguration().getInputEndpoints() != null)
-            {
-                Element inputEndpointsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "InputEndpoints");
-                for (InputEndpoint inputEndpointsItem : parameters.getProvisioningConfiguration().getInputEndpoints())
-                {
-                    Element inputEndpointElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "InputEndpoint");
-                    inputEndpointsSequenceElement.appendChild(inputEndpointElement);
-                    
-                    if (inputEndpointsItem.getLoadBalancedEndpointSetName() != null)
-                    {
-                        Element loadBalancedEndpointSetNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LoadBalancedEndpointSetName");
-                        loadBalancedEndpointSetNameElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLoadBalancedEndpointSetName()));
-                        inputEndpointElement.appendChild(loadBalancedEndpointSetNameElement);
-                    }
-                    
-                    if (inputEndpointsItem.getLocalPort() != null)
-                    {
-                        Element localPortElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LocalPort");
-                        localPortElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLocalPort())));
-                        inputEndpointElement.appendChild(localPortElement);
-                    }
-                    
-                    if (inputEndpointsItem.getName() != null)
-                    {
-                        Element nameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
-                        nameElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getName()));
-                        inputEndpointElement.appendChild(nameElement);
-                    }
-                    
-                    if (inputEndpointsItem.getPort() != null)
-                    {
-                        Element portElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Port");
-                        portElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getPort())));
-                        inputEndpointElement.appendChild(portElement);
-                    }
-                    
-                    if (inputEndpointsItem.getLoadBalancerProbe() != null)
-                    {
-                        Element loadBalancerProbeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LoadBalancerProbe");
-                        inputEndpointElement.appendChild(loadBalancerProbeElement);
-                        
-                        if (inputEndpointsItem.getLoadBalancerProbe().getPath() != null)
-                        {
-                            Element pathElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Path");
-                            pathElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLoadBalancerProbe().getPath()));
-                            loadBalancerProbeElement.appendChild(pathElement);
-                        }
-                        
-                        Element portElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Port");
-                        portElement2.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLoadBalancerProbe().getPort())));
-                        loadBalancerProbeElement.appendChild(portElement2);
-                        
-                        Element protocolElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Protocol");
-                        protocolElement.appendChild(requestDoc.createTextNode(ComputeManagementClientImpl.loadBalancerProbeTransportProtocolToString(inputEndpointsItem.getLoadBalancerProbe().getProtocol())));
-                        loadBalancerProbeElement.appendChild(protocolElement);
-                        
-                        if (inputEndpointsItem.getLoadBalancerProbe().getIntervalInSeconds() != null)
-                        {
-                            Element intervalInSecondsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IntervalInSeconds");
-                            intervalInSecondsElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLoadBalancerProbe().getIntervalInSeconds())));
-                            loadBalancerProbeElement.appendChild(intervalInSecondsElement);
-                        }
-                        
-                        if (inputEndpointsItem.getLoadBalancerProbe().getTimeoutInSeconds() != null)
-                        {
-                            Element timeoutInSecondsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "TimeoutInSeconds");
-                            timeoutInSecondsElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLoadBalancerProbe().getTimeoutInSeconds())));
-                            loadBalancerProbeElement.appendChild(timeoutInSecondsElement);
-                        }
-                    }
-                    
-                    if (inputEndpointsItem.getProtocol() != null)
-                    {
-                        Element protocolElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Protocol");
-                        protocolElement2.appendChild(requestDoc.createTextNode(inputEndpointsItem.getProtocol()));
-                        inputEndpointElement.appendChild(protocolElement2);
-                    }
-                    
-                    if (inputEndpointsItem.getVirtualIPAddress() != null)
-                    {
-                        Element vipElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Vip");
-                        vipElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getVirtualIPAddress().toString()));
-                        inputEndpointElement.appendChild(vipElement);
-                    }
-                    
-                    if (inputEndpointsItem.getEnableDirectServerReturn() != null)
-                    {
-                        Element enableDirectServerReturnElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EnableDirectServerReturn");
-                        enableDirectServerReturnElement.appendChild(requestDoc.createTextNode(Boolean.toString(inputEndpointsItem.getEnableDirectServerReturn()).toLowerCase()));
-                        inputEndpointElement.appendChild(enableDirectServerReturnElement);
-                    }
-                    
-                    if (inputEndpointsItem.getEndpointAcl() != null)
-                    {
-                        Element endpointAclElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EndpointAcl");
-                        inputEndpointElement.appendChild(endpointAclElement);
-                        
-                        if (inputEndpointsItem.getEndpointAcl().getRules() != null)
-                        {
-                            Element rulesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Rules");
-                            for (AccessControlListRule rulesItem : inputEndpointsItem.getEndpointAcl().getRules())
-                            {
-                                Element ruleElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Rule");
-                                rulesSequenceElement.appendChild(ruleElement);
-                                
-                                if (rulesItem.getOrder() != null)
-                                {
-                                    Element orderElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Order");
-                                    orderElement.appendChild(requestDoc.createTextNode(Integer.toString(rulesItem.getOrder())));
-                                    ruleElement.appendChild(orderElement);
-                                }
-                                
-                                if (rulesItem.getAction() != null)
-                                {
-                                    Element actionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Action");
-                                    actionElement.appendChild(requestDoc.createTextNode(rulesItem.getAction()));
-                                    ruleElement.appendChild(actionElement);
-                                }
-                                
-                                if (rulesItem.getRemoteSubnet() != null)
-                                {
-                                    Element remoteSubnetElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RemoteSubnet");
-                                    remoteSubnetElement.appendChild(requestDoc.createTextNode(rulesItem.getRemoteSubnet()));
-                                    ruleElement.appendChild(remoteSubnetElement);
-                                }
-                                
-                                if (rulesItem.getDescription() != null)
-                                {
-                                    Element descriptionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Description");
-                                    descriptionElement.appendChild(requestDoc.createTextNode(rulesItem.getDescription()));
-                                    ruleElement.appendChild(descriptionElement);
-                                }
-                            }
-                            endpointAclElement.appendChild(rulesSequenceElement);
-                        }
-                    }
-                }
-                provisioningConfigurationElement.appendChild(inputEndpointsSequenceElement);
-            }
-            
-            if (parameters.getProvisioningConfiguration().getSubnetNames() != null)
-            {
-                Element subnetNamesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SubnetNames");
-                for (String subnetNamesItem : parameters.getProvisioningConfiguration().getSubnetNames())
-                {
-                    Element subnetNamesItemElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SubnetName");
-                    subnetNamesItemElement.appendChild(requestDoc.createTextNode(subnetNamesItem));
-                    subnetNamesSequenceElement.appendChild(subnetNamesItemElement);
-                }
-                provisioningConfigurationElement.appendChild(subnetNamesSequenceElement);
-            }
-            
-            if (parameters.getProvisioningConfiguration().getComputerName() != null)
-            {
-                Element computerNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ComputerName");
-                computerNameElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getComputerName()));
-                provisioningConfigurationElement.appendChild(computerNameElement);
-            }
-            
-            if (parameters.getProvisioningConfiguration().getAdminPassword() != null)
-            {
-                Element adminPasswordElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminPassword");
-                adminPasswordElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getAdminPassword()));
-                provisioningConfigurationElement.appendChild(adminPasswordElement);
-            }
-            
-            if (parameters.getProvisioningConfiguration().getResetPasswordOnFirstLogon() != null)
-            {
-                Element resetPasswordOnFirstLogonElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResetPasswordOnFirstLogon");
-                resetPasswordOnFirstLogonElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.getProvisioningConfiguration().getResetPasswordOnFirstLogon()).toLowerCase()));
-                provisioningConfigurationElement.appendChild(resetPasswordOnFirstLogonElement);
-            }
-            
-            if (parameters.getProvisioningConfiguration().getEnableAutomaticUpdates() != null)
-            {
-                Element enableAutomaticUpdatesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EnableAutomaticUpdates");
-                enableAutomaticUpdatesElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.getProvisioningConfiguration().getEnableAutomaticUpdates()).toLowerCase()));
-                provisioningConfigurationElement.appendChild(enableAutomaticUpdatesElement);
-            }
-            
-            if (parameters.getProvisioningConfiguration().getTimeZone() != null)
-            {
-                Element timeZoneElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "TimeZone");
-                timeZoneElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getTimeZone()));
-                provisioningConfigurationElement.appendChild(timeZoneElement);
-            }
-            
-            if (parameters.getProvisioningConfiguration().getDomainJoin() != null)
-            {
-                Element domainJoinElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DomainJoin");
-                provisioningConfigurationElement.appendChild(domainJoinElement);
-                
-                if (parameters.getProvisioningConfiguration().getDomainJoin().getCredentials() != null)
-                {
-                    Element credentialsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Credentials");
-                    domainJoinElement.appendChild(credentialsElement);
-                    
-                    if (parameters.getProvisioningConfiguration().getDomainJoin().getCredentials().getDomain() != null)
-                    {
-                        Element domainElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Domain");
-                        domainElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getDomainJoin().getCredentials().getDomain()));
-                        credentialsElement.appendChild(domainElement);
-                    }
-                    
-                    Element usernameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Username");
-                    usernameElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getDomainJoin().getCredentials().getUserName()));
-                    credentialsElement.appendChild(usernameElement);
-                    
-                    Element passwordElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Password");
-                    passwordElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getDomainJoin().getCredentials().getPassword()));
-                    credentialsElement.appendChild(passwordElement);
-                }
-                
-                if (parameters.getProvisioningConfiguration().getDomainJoin().getDomainToJoin() != null)
-                {
-                    Element joinDomainElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "JoinDomain");
-                    joinDomainElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getDomainJoin().getDomainToJoin()));
-                    domainJoinElement.appendChild(joinDomainElement);
-                }
-                
-                if (parameters.getProvisioningConfiguration().getDomainJoin().getLdapMachineObjectOU() != null)
-                {
-                    Element machineObjectOUElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "MachineObjectOU");
-                    machineObjectOUElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getDomainJoin().getLdapMachineObjectOU()));
-                    domainJoinElement.appendChild(machineObjectOUElement);
-                }
-                
-                if (parameters.getProvisioningConfiguration().getDomainJoin().getProvisioning() != null)
-                {
-                    Element provisioningElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Provisioning");
-                    domainJoinElement.appendChild(provisioningElement);
-                    
-                    if (parameters.getProvisioningConfiguration().getDomainJoin().getProvisioning().getAccountData() != null)
-                    {
-                        Element accountDataElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AccountData");
-                        accountDataElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getDomainJoin().getProvisioning().getAccountData()));
-                        provisioningElement.appendChild(accountDataElement);
-                    }
-                }
-            }
-            
-            if (parameters.getProvisioningConfiguration().getStoredCertificateSettings() != null)
-            {
-                Element storedCertificateSettingsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StoredCertificateSettings");
-                for (StoredCertificateSettings storedCertificateSettingsItem : parameters.getProvisioningConfiguration().getStoredCertificateSettings())
-                {
-                    Element certificateSettingElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CertificateSetting");
-                    storedCertificateSettingsSequenceElement.appendChild(certificateSettingElement);
-                    
-                    Element storeLocationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StoreLocation");
-                    storeLocationElement.appendChild(requestDoc.createTextNode("LocalMachine"));
-                    certificateSettingElement.appendChild(storeLocationElement);
-                    
-                    Element storeNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StoreName");
-                    storeNameElement.appendChild(requestDoc.createTextNode(storedCertificateSettingsItem.getStoreName()));
-                    certificateSettingElement.appendChild(storeNameElement);
-                    
-                    Element thumbprintElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Thumbprint");
-                    thumbprintElement.appendChild(requestDoc.createTextNode(storedCertificateSettingsItem.getThumbprint()));
-                    certificateSettingElement.appendChild(thumbprintElement);
-                }
-                provisioningConfigurationElement.appendChild(storedCertificateSettingsSequenceElement);
-            }
-            
-            if (parameters.getProvisioningConfiguration().getWindowsRemoteManagement() != null)
-            {
-                Element winRMElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "WinRM");
-                provisioningConfigurationElement.appendChild(winRMElement);
-                
-                if (parameters.getProvisioningConfiguration().getWindowsRemoteManagement().getListeners() != null)
-                {
-                    Element listenersSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Listeners");
-                    for (WindowsRemoteManagementListener listenersItem : parameters.getProvisioningConfiguration().getWindowsRemoteManagement().getListeners())
-                    {
-                        Element listenerElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Listener");
-                        listenersSequenceElement.appendChild(listenerElement);
-                        
-                        Element protocolElement3 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Protocol");
-                        protocolElement3.appendChild(requestDoc.createTextNode(listenersItem.getListenerType().toString()));
-                        listenerElement.appendChild(protocolElement3);
-                        
-                        if (listenersItem.getCertificateThumbprint() != null)
-                        {
-                            Element certificateThumbprintElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CertificateThumbprint");
-                            certificateThumbprintElement.appendChild(requestDoc.createTextNode(listenersItem.getCertificateThumbprint()));
-                            listenerElement.appendChild(certificateThumbprintElement);
-                        }
-                    }
-                    winRMElement.appendChild(listenersSequenceElement);
-                }
-            }
-            
-            if (parameters.getProvisioningConfiguration().getAdminUserName() != null)
-            {
-                Element adminUsernameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminUsername");
-                adminUsernameElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getAdminUserName()));
-                provisioningConfigurationElement.appendChild(adminUsernameElement);
-            }
-            
-            if (parameters.getProvisioningConfiguration().getHostName() != null)
-            {
-                Element hostNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "HostName");
-                hostNameElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getHostName()));
-                provisioningConfigurationElement.appendChild(hostNameElement);
-            }
-            
-            if (parameters.getProvisioningConfiguration().getUserName() != null)
-            {
-                Element userNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "UserName");
-                userNameElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getUserName()));
-                provisioningConfigurationElement.appendChild(userNameElement);
-            }
-            
-            if (parameters.getProvisioningConfiguration().getUserPassword() != null)
-            {
-                Element userPasswordElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "UserPassword");
-                userPasswordElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getUserPassword()));
-                provisioningConfigurationElement.appendChild(userPasswordElement);
-            }
-            
-            if (parameters.getProvisioningConfiguration().getDisableSshPasswordAuthentication() != null)
-            {
-                Element disableSshPasswordAuthenticationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DisableSshPasswordAuthentication");
-                disableSshPasswordAuthenticationElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.getProvisioningConfiguration().getDisableSshPasswordAuthentication()).toLowerCase()));
-                provisioningConfigurationElement.appendChild(disableSshPasswordAuthenticationElement);
-            }
-            
-            if (parameters.getProvisioningConfiguration().getSshSettings() != null)
-            {
-                Element sSHElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SSH");
-                provisioningConfigurationElement.appendChild(sSHElement);
-                
-                if (parameters.getProvisioningConfiguration().getSshSettings().getPublicKeys() != null)
-                {
-                    Element publicKeysSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PublicKeys");
-                    for (SshSettingPublicKey publicKeysItem : parameters.getProvisioningConfiguration().getSshSettings().getPublicKeys())
-                    {
-                        Element publicKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PublicKey");
-                        publicKeysSequenceElement.appendChild(publicKeyElement);
-                        
-                        Element fingerprintElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Fingerprint");
-                        fingerprintElement.appendChild(requestDoc.createTextNode(publicKeysItem.getFingerprint()));
-                        publicKeyElement.appendChild(fingerprintElement);
-                        
-                        Element pathElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Path");
-                        pathElement2.appendChild(requestDoc.createTextNode(publicKeysItem.getPath()));
-                        publicKeyElement.appendChild(pathElement2);
-                    }
-                    sSHElement.appendChild(publicKeysSequenceElement);
-                }
-                
-                if (parameters.getProvisioningConfiguration().getSshSettings().getKeyPairs() != null)
-                {
-                    Element keyPairsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "KeyPairs");
-                    for (SshSettingKeyPair keyPairsItem : parameters.getProvisioningConfiguration().getSshSettings().getKeyPairs())
-                    {
-                        Element keyPairElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "KeyPair");
-                        keyPairsSequenceElement.appendChild(keyPairElement);
-                        
-                        Element fingerprintElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Fingerprint");
-                        fingerprintElement2.appendChild(requestDoc.createTextNode(keyPairsItem.getFingerprint()));
-                        keyPairElement.appendChild(fingerprintElement2);
-                        
-                        Element pathElement3 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Path");
-                        pathElement3.appendChild(requestDoc.createTextNode(keyPairsItem.getPath()));
-                        keyPairElement.appendChild(pathElement3);
-                    }
-                    sSHElement.appendChild(keyPairsSequenceElement);
-                }
-            }
-        }
-        
-        Element targetImageLabelElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "TargetImageLabel");
-        targetImageLabelElement.appendChild(requestDoc.createTextNode(parameters.getTargetImageLabel()));
-        captureRoleOperationElement.appendChild(targetImageLabelElement);
-        
-        Element targetImageNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "TargetImageName");
-        targetImageNameElement.appendChild(requestDoc.createTextNode(parameters.getTargetImageName()));
-        captureRoleOperationElement.appendChild(targetImageNameElement);
-        
-        DOMSource domSource = new DOMSource(requestDoc);
-        StringWriter stringWriter = new StringWriter();
-        StreamResult streamResult = new StreamResult(stringWriter);
-        TransformerFactory transformerFactory = TransformerFactory.newInstance();
-        Transformer transformer = transformerFactory.newTransformer();
-        transformer.transform(domSource, streamResult);
-        requestContent = stringWriter.toString();
-        StringEntity entity = new StringEntity(requestContent);
-        httpRequest.setEntity(entity);
-        httpRequest.setHeader("Content-Type", "application/xml");
-        
-        // Send Request
-        HttpResponse httpResponse = null;
-        if (shouldTrace)
-        {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 201)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
-            throw ex;
+            
+            OperationResponse response = client2.getVirtualMachinesOperations().beginCapturingAsync(serviceName, deploymentName, virtualMachineName, parameters).get();
+            ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
+            int delayInSeconds = 30;
+            while ((result.getStatus() != OperationStatus.InProgress) == false)
+            {
+                Thread.sleep(delayInSeconds * 1000);
+                result = client2.getOperationStatusAsync(response.getRequestId()).get();
+                delayInSeconds = 30;
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            
+            if (result.getStatus() != OperationStatus.Succeeded)
+            {
+                if (result.getError() != null)
+                {
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
+            }
+            
+            return result;
         }
-        
-        // Create Result
-        OperationResponse result = null;
-        result = new OperationResponse();
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (this.getClient() != null && shouldTrace)
+            {
+                this.getClient().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -4217,6 +4648,29 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * @param deploymentName The name of your deployment.
     * @param parameters Parameters supplied to the Create Virtual Machine
     * operation.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -4228,7 +4682,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse create(String serviceName, String deploymentName, VirtualMachineCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, ServiceException, URISyntaxException, ParseException
+    public ComputeOperationStatusResponse create(String serviceName, String deploymentName, VirtualMachineCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, ServiceException, URISyntaxException, ParseException
     {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
@@ -4266,14 +4720,26 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;
@@ -4337,6 +4803,18 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * @param serviceName The name of your service.
     * @param parameters Parameters supplied to the Create Virtual Machine
     * Deployment operation.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -4385,14 +4863,26 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;
@@ -4448,6 +4938,20 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * @param virtualMachineName The name of the virtual machine to delete.
     * @param deleteFromStorage Optional. Specifies that the source blob(s) for
     * the virtual machine should also be deleted from storage.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -4498,14 +5002,26 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;
@@ -4551,6 +5067,18 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * @param serviceName The name of your service.
     * @param deploymentName The name of your deployment.
     * @param virtualMachineName The name of the virtual machine.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return The Get Virtual Machine operation response.
     */
     @Override
@@ -4594,759 +5122,778 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
-        }
-        
-        // Create Result
-        VirtualMachineGetResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new VirtualMachineGetResponse();
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document responseDoc = documentBuilder.parse(responseContent);
-        
-        NodeList elements = responseDoc.getElementsByTagName("PersistentVMRole");
-        Element persistentVMRoleElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
-        if (persistentVMRoleElement != null)
-        {
-            NodeList elements2 = persistentVMRoleElement.getElementsByTagName("RoleName");
-            Element roleNameElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
-            if (roleNameElement != null)
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
             {
-                String roleNameInstance;
-                roleNameInstance = roleNameElement.getTextContent();
-                result.setRoleName(roleNameInstance);
+                CloudTracing.receiveResponse(invocationId, httpResponse);
             }
-            
-            NodeList elements3 = persistentVMRoleElement.getElementsByTagName("OsVersion");
-            Element osVersionElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
-            if (osVersionElement != null)
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
             {
-                String osVersionInstance;
-                osVersionInstance = osVersionElement.getTextContent();
-                result.setOsVersion(osVersionInstance);
-            }
-            
-            NodeList elements4 = persistentVMRoleElement.getElementsByTagName("RoleType");
-            Element roleTypeElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
-            if (roleTypeElement != null)
-            {
-                VirtualMachineRoleType roleTypeInstance;
-                roleTypeInstance = VirtualMachineRoleType.valueOf(roleTypeElement.getTextContent());
-                result.setRoleType(roleTypeInstance);
-            }
-            
-            NodeList elements5 = persistentVMRoleElement.getElementsByTagName("AvailabilitySetName");
-            Element availabilitySetNameElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
-            if (availabilitySetNameElement != null)
-            {
-                String availabilitySetNameInstance;
-                availabilitySetNameInstance = availabilitySetNameElement.getTextContent();
-                result.setAvailabilitySetName(availabilitySetNameInstance);
-            }
-            
-            NodeList elements6 = persistentVMRoleElement.getElementsByTagName("RoleSize");
-            Element roleSizeElement = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
-            if (roleSizeElement != null)
-            {
-                VirtualMachineRoleSize roleSizeInstance;
-                roleSizeInstance = VirtualMachineRoleSize.valueOf(roleSizeElement.getTextContent());
-                result.setRoleSize(roleSizeInstance);
-            }
-            
-            NodeList elements7 = persistentVMRoleElement.getElementsByTagName("DefaultWinRmCertificateThumbprint");
-            Element defaultWinRmCertificateThumbprintElement = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
-            if (defaultWinRmCertificateThumbprintElement != null)
-            {
-                String defaultWinRmCertificateThumbprintInstance;
-                defaultWinRmCertificateThumbprintInstance = defaultWinRmCertificateThumbprintElement.getTextContent();
-                result.setDefaultWinRmCertificateThumbprint(defaultWinRmCertificateThumbprintInstance);
-            }
-            
-            NodeList elements8 = persistentVMRoleElement.getElementsByTagName("ConfigurationSets");
-            Element configurationSetsSequenceElement = elements8.getLength() > 0 ? ((Element)elements8.item(0)) : null;
-            if (configurationSetsSequenceElement != null)
-            {
-                for (int i1 = 0; i1 < configurationSetsSequenceElement.getElementsByTagName("ConfigurationSet").getLength(); i1 = i1 + 1)
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
                 {
-                    org.w3c.dom.Element configurationSetsElement = ((org.w3c.dom.Element)configurationSetsSequenceElement.getElementsByTagName("ConfigurationSet").item(i1));
-                    ConfigurationSet configurationSetInstance = new ConfigurationSet();
-                    result.getConfigurationSets().add(configurationSetInstance);
-                    
-                    NodeList elements9 = configurationSetsElement.getElementsByTagName("ConfigurationSetType");
-                    Element configurationSetTypeElement = elements9.getLength() > 0 ? ((Element)elements9.item(0)) : null;
-                    if (configurationSetTypeElement != null)
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            VirtualMachineGetResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new VirtualMachineGetResponse();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document responseDoc = documentBuilder.parse(responseContent);
+            
+            NodeList elements = responseDoc.getElementsByTagName("PersistentVMRole");
+            Element persistentVMRoleElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            if (persistentVMRoleElement != null)
+            {
+                NodeList elements2 = persistentVMRoleElement.getElementsByTagName("RoleName");
+                Element roleNameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                if (roleNameElement != null)
+                {
+                    String roleNameInstance;
+                    roleNameInstance = roleNameElement.getTextContent();
+                    result.setRoleName(roleNameInstance);
+                }
+                
+                NodeList elements3 = persistentVMRoleElement.getElementsByTagName("OsVersion");
+                Element osVersionElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                if (osVersionElement != null)
+                {
+                    String osVersionInstance;
+                    osVersionInstance = osVersionElement.getTextContent();
+                    result.setOsVersion(osVersionInstance);
+                }
+                
+                NodeList elements4 = persistentVMRoleElement.getElementsByTagName("RoleType");
+                Element roleTypeElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                if (roleTypeElement != null)
+                {
+                    VirtualMachineRoleType roleTypeInstance;
+                    roleTypeInstance = VirtualMachineRoleType.valueOf(roleTypeElement.getTextContent());
+                    result.setRoleType(roleTypeInstance);
+                }
+                
+                NodeList elements5 = persistentVMRoleElement.getElementsByTagName("AvailabilitySetName");
+                Element availabilitySetNameElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                if (availabilitySetNameElement != null)
+                {
+                    String availabilitySetNameInstance;
+                    availabilitySetNameInstance = availabilitySetNameElement.getTextContent();
+                    result.setAvailabilitySetName(availabilitySetNameInstance);
+                }
+                
+                NodeList elements6 = persistentVMRoleElement.getElementsByTagName("RoleSize");
+                Element roleSizeElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                if (roleSizeElement != null)
+                {
+                    String roleSizeInstance;
+                    roleSizeInstance = roleSizeElement.getTextContent();
+                    result.setRoleSize(roleSizeInstance);
+                }
+                
+                NodeList elements7 = persistentVMRoleElement.getElementsByTagName("DefaultWinRmCertificateThumbprint");
+                Element defaultWinRmCertificateThumbprintElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
+                if (defaultWinRmCertificateThumbprintElement != null)
+                {
+                    String defaultWinRmCertificateThumbprintInstance;
+                    defaultWinRmCertificateThumbprintInstance = defaultWinRmCertificateThumbprintElement.getTextContent();
+                    result.setDefaultWinRmCertificateThumbprint(defaultWinRmCertificateThumbprintInstance);
+                }
+                
+                NodeList elements8 = persistentVMRoleElement.getElementsByTagName("ConfigurationSets");
+                Element configurationSetsSequenceElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
+                if (configurationSetsSequenceElement != null)
+                {
+                    for (int i1 = 0; i1 < configurationSetsSequenceElement.getElementsByTagName("ConfigurationSet").getLength(); i1 = i1 + 1)
                     {
-                        String configurationSetTypeInstance;
-                        configurationSetTypeInstance = configurationSetTypeElement.getTextContent();
-                        configurationSetInstance.setConfigurationSetType(configurationSetTypeInstance);
-                    }
-                    
-                    NodeList elements10 = configurationSetsElement.getElementsByTagName("InputEndpoints");
-                    Element inputEndpointsSequenceElement = elements10.getLength() > 0 ? ((Element)elements10.item(0)) : null;
-                    if (inputEndpointsSequenceElement != null)
-                    {
-                        for (int i2 = 0; i2 < inputEndpointsSequenceElement.getElementsByTagName("InputEndpoint").getLength(); i2 = i2 + 1)
+                        org.w3c.dom.Element configurationSetsElement = ((org.w3c.dom.Element) configurationSetsSequenceElement.getElementsByTagName("ConfigurationSet").item(i1));
+                        ConfigurationSet configurationSetInstance = new ConfigurationSet();
+                        result.getConfigurationSets().add(configurationSetInstance);
+                        
+                        NodeList elements9 = configurationSetsElement.getElementsByTagName("ConfigurationSetType");
+                        Element configurationSetTypeElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
+                        if (configurationSetTypeElement != null)
                         {
-                            org.w3c.dom.Element inputEndpointsElement = ((org.w3c.dom.Element)inputEndpointsSequenceElement.getElementsByTagName("InputEndpoint").item(i2));
-                            InputEndpoint inputEndpointInstance = new InputEndpoint();
-                            configurationSetInstance.getInputEndpoints().add(inputEndpointInstance);
-                            
-                            NodeList elements11 = inputEndpointsElement.getElementsByTagName("LoadBalancedEndpointSetName");
-                            Element loadBalancedEndpointSetNameElement = elements11.getLength() > 0 ? ((Element)elements11.item(0)) : null;
-                            if (loadBalancedEndpointSetNameElement != null)
+                            String configurationSetTypeInstance;
+                            configurationSetTypeInstance = configurationSetTypeElement.getTextContent();
+                            configurationSetInstance.setConfigurationSetType(configurationSetTypeInstance);
+                        }
+                        
+                        NodeList elements10 = configurationSetsElement.getElementsByTagName("InputEndpoints");
+                        Element inputEndpointsSequenceElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
+                        if (inputEndpointsSequenceElement != null)
+                        {
+                            for (int i2 = 0; i2 < inputEndpointsSequenceElement.getElementsByTagName("InputEndpoint").getLength(); i2 = i2 + 1)
                             {
-                                String loadBalancedEndpointSetNameInstance;
-                                loadBalancedEndpointSetNameInstance = loadBalancedEndpointSetNameElement.getTextContent();
-                                inputEndpointInstance.setLoadBalancedEndpointSetName(loadBalancedEndpointSetNameInstance);
-                            }
-                            
-                            NodeList elements12 = inputEndpointsElement.getElementsByTagName("LocalPort");
-                            Element localPortElement = elements12.getLength() > 0 ? ((Element)elements12.item(0)) : null;
-                            if (localPortElement != null && (localPortElement.getTextContent() != null && localPortElement.getTextContent().isEmpty() != true) == false)
-                            {
-                                int localPortInstance;
-                                localPortInstance = Integer.parseInt(localPortElement.getTextContent());
-                                inputEndpointInstance.setLocalPort(localPortInstance);
-                            }
-                            
-                            NodeList elements13 = inputEndpointsElement.getElementsByTagName("Name");
-                            Element nameElement = elements13.getLength() > 0 ? ((Element)elements13.item(0)) : null;
-                            if (nameElement != null)
-                            {
-                                String nameInstance;
-                                nameInstance = nameElement.getTextContent();
-                                inputEndpointInstance.setName(nameInstance);
-                            }
-                            
-                            NodeList elements14 = inputEndpointsElement.getElementsByTagName("Port");
-                            Element portElement = elements14.getLength() > 0 ? ((Element)elements14.item(0)) : null;
-                            if (portElement != null && (portElement.getTextContent() != null && portElement.getTextContent().isEmpty() != true) == false)
-                            {
-                                int portInstance;
-                                portInstance = Integer.parseInt(portElement.getTextContent());
-                                inputEndpointInstance.setPort(portInstance);
-                            }
-                            
-                            NodeList elements15 = inputEndpointsElement.getElementsByTagName("LoadBalancerProbe");
-                            Element loadBalancerProbeElement = elements15.getLength() > 0 ? ((Element)elements15.item(0)) : null;
-                            if (loadBalancerProbeElement != null)
-                            {
-                                LoadBalancerProbe loadBalancerProbeInstance = new LoadBalancerProbe();
-                                inputEndpointInstance.setLoadBalancerProbe(loadBalancerProbeInstance);
+                                org.w3c.dom.Element inputEndpointsElement = ((org.w3c.dom.Element) inputEndpointsSequenceElement.getElementsByTagName("InputEndpoint").item(i2));
+                                InputEndpoint inputEndpointInstance = new InputEndpoint();
+                                configurationSetInstance.getInputEndpoints().add(inputEndpointInstance);
                                 
-                                NodeList elements16 = loadBalancerProbeElement.getElementsByTagName("Path");
-                                Element pathElement = elements16.getLength() > 0 ? ((Element)elements16.item(0)) : null;
-                                if (pathElement != null)
+                                NodeList elements11 = inputEndpointsElement.getElementsByTagName("LoadBalancedEndpointSetName");
+                                Element loadBalancedEndpointSetNameElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
+                                if (loadBalancedEndpointSetNameElement != null)
                                 {
-                                    String pathInstance;
-                                    pathInstance = pathElement.getTextContent();
-                                    loadBalancerProbeInstance.setPath(pathInstance);
+                                    String loadBalancedEndpointSetNameInstance;
+                                    loadBalancedEndpointSetNameInstance = loadBalancedEndpointSetNameElement.getTextContent();
+                                    inputEndpointInstance.setLoadBalancedEndpointSetName(loadBalancedEndpointSetNameInstance);
                                 }
                                 
-                                NodeList elements17 = loadBalancerProbeElement.getElementsByTagName("Port");
-                                Element portElement2 = elements17.getLength() > 0 ? ((Element)elements17.item(0)) : null;
-                                if (portElement2 != null)
+                                NodeList elements12 = inputEndpointsElement.getElementsByTagName("LocalPort");
+                                Element localPortElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
+                                if (localPortElement != null && (localPortElement.getTextContent() != null && localPortElement.getTextContent().isEmpty() != true) == false)
                                 {
-                                    int portInstance2;
-                                    portInstance2 = Integer.parseInt(portElement2.getTextContent());
-                                    loadBalancerProbeInstance.setPort(portInstance2);
+                                    int localPortInstance;
+                                    localPortInstance = Integer.parseInt(localPortElement.getTextContent());
+                                    inputEndpointInstance.setLocalPort(localPortInstance);
                                 }
                                 
-                                NodeList elements18 = loadBalancerProbeElement.getElementsByTagName("Protocol");
-                                Element protocolElement = elements18.getLength() > 0 ? ((Element)elements18.item(0)) : null;
-                                if (protocolElement != null)
+                                NodeList elements13 = inputEndpointsElement.getElementsByTagName("Name");
+                                Element nameElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
+                                if (nameElement != null)
                                 {
-                                    LoadBalancerProbeTransportProtocol protocolInstance;
-                                    protocolInstance = ComputeManagementClientImpl.parseLoadBalancerProbeTransportProtocol(protocolElement.getTextContent());
-                                    loadBalancerProbeInstance.setProtocol(protocolInstance);
+                                    String nameInstance;
+                                    nameInstance = nameElement.getTextContent();
+                                    inputEndpointInstance.setName(nameInstance);
                                 }
                                 
-                                NodeList elements19 = loadBalancerProbeElement.getElementsByTagName("IntervalInSeconds");
-                                Element intervalInSecondsElement = elements19.getLength() > 0 ? ((Element)elements19.item(0)) : null;
-                                if (intervalInSecondsElement != null && (intervalInSecondsElement.getTextContent() != null && intervalInSecondsElement.getTextContent().isEmpty() != true) == false)
+                                NodeList elements14 = inputEndpointsElement.getElementsByTagName("Port");
+                                Element portElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
+                                if (portElement != null && (portElement.getTextContent() != null && portElement.getTextContent().isEmpty() != true) == false)
                                 {
-                                    int intervalInSecondsInstance;
-                                    intervalInSecondsInstance = Integer.parseInt(intervalInSecondsElement.getTextContent());
-                                    loadBalancerProbeInstance.setIntervalInSeconds(intervalInSecondsInstance);
+                                    int portInstance;
+                                    portInstance = Integer.parseInt(portElement.getTextContent());
+                                    inputEndpointInstance.setPort(portInstance);
                                 }
                                 
-                                NodeList elements20 = loadBalancerProbeElement.getElementsByTagName("TimeoutInSeconds");
-                                Element timeoutInSecondsElement = elements20.getLength() > 0 ? ((Element)elements20.item(0)) : null;
-                                if (timeoutInSecondsElement != null && (timeoutInSecondsElement.getTextContent() != null && timeoutInSecondsElement.getTextContent().isEmpty() != true) == false)
+                                NodeList elements15 = inputEndpointsElement.getElementsByTagName("LoadBalancerProbe");
+                                Element loadBalancerProbeElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
+                                if (loadBalancerProbeElement != null)
                                 {
-                                    int timeoutInSecondsInstance;
-                                    timeoutInSecondsInstance = Integer.parseInt(timeoutInSecondsElement.getTextContent());
-                                    loadBalancerProbeInstance.setTimeoutInSeconds(timeoutInSecondsInstance);
-                                }
-                            }
-                            
-                            NodeList elements21 = inputEndpointsElement.getElementsByTagName("Protocol");
-                            Element protocolElement2 = elements21.getLength() > 0 ? ((Element)elements21.item(0)) : null;
-                            if (protocolElement2 != null)
-                            {
-                                String protocolInstance2;
-                                protocolInstance2 = protocolElement2.getTextContent();
-                                inputEndpointInstance.setProtocol(protocolInstance2);
-                            }
-                            
-                            NodeList elements22 = inputEndpointsElement.getElementsByTagName("Vip");
-                            Element vipElement = elements22.getLength() > 0 ? ((Element)elements22.item(0)) : null;
-                            if (vipElement != null)
-                            {
-                                InetAddress vipInstance;
-                                vipInstance = InetAddress.getByName(vipElement.getTextContent());
-                                inputEndpointInstance.setVirtualIPAddress(vipInstance);
-                            }
-                            
-                            NodeList elements23 = inputEndpointsElement.getElementsByTagName("EnableDirectServerReturn");
-                            Element enableDirectServerReturnElement = elements23.getLength() > 0 ? ((Element)elements23.item(0)) : null;
-                            if (enableDirectServerReturnElement != null && (enableDirectServerReturnElement.getTextContent() != null && enableDirectServerReturnElement.getTextContent().isEmpty() != true) == false)
-                            {
-                                boolean enableDirectServerReturnInstance;
-                                enableDirectServerReturnInstance = Boolean.parseBoolean(enableDirectServerReturnElement.getTextContent());
-                                inputEndpointInstance.setEnableDirectServerReturn(enableDirectServerReturnInstance);
-                            }
-                            
-                            NodeList elements24 = inputEndpointsElement.getElementsByTagName("EndpointAcl");
-                            Element endpointAclElement = elements24.getLength() > 0 ? ((Element)elements24.item(0)) : null;
-                            if (endpointAclElement != null)
-                            {
-                                EndpointAcl endpointAclInstance = new EndpointAcl();
-                                inputEndpointInstance.setEndpointAcl(endpointAclInstance);
-                                
-                                NodeList elements25 = endpointAclElement.getElementsByTagName("Rules");
-                                Element rulesSequenceElement = elements25.getLength() > 0 ? ((Element)elements25.item(0)) : null;
-                                if (rulesSequenceElement != null)
-                                {
-                                    for (int i3 = 0; i3 < rulesSequenceElement.getElementsByTagName("Rule").getLength(); i3 = i3 + 1)
+                                    LoadBalancerProbe loadBalancerProbeInstance = new LoadBalancerProbe();
+                                    inputEndpointInstance.setLoadBalancerProbe(loadBalancerProbeInstance);
+                                    
+                                    NodeList elements16 = loadBalancerProbeElement.getElementsByTagName("Path");
+                                    Element pathElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
+                                    if (pathElement != null)
                                     {
-                                        org.w3c.dom.Element rulesElement = ((org.w3c.dom.Element)rulesSequenceElement.getElementsByTagName("Rule").item(i3));
-                                        AccessControlListRule ruleInstance = new AccessControlListRule();
-                                        endpointAclInstance.getRules().add(ruleInstance);
-                                        
-                                        NodeList elements26 = rulesElement.getElementsByTagName("Order");
-                                        Element orderElement = elements26.getLength() > 0 ? ((Element)elements26.item(0)) : null;
-                                        if (orderElement != null && (orderElement.getTextContent() != null && orderElement.getTextContent().isEmpty() != true) == false)
+                                        String pathInstance;
+                                        pathInstance = pathElement.getTextContent();
+                                        loadBalancerProbeInstance.setPath(pathInstance);
+                                    }
+                                    
+                                    NodeList elements17 = loadBalancerProbeElement.getElementsByTagName("Port");
+                                    Element portElement2 = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
+                                    if (portElement2 != null)
+                                    {
+                                        int portInstance2;
+                                        portInstance2 = Integer.parseInt(portElement2.getTextContent());
+                                        loadBalancerProbeInstance.setPort(portInstance2);
+                                    }
+                                    
+                                    NodeList elements18 = loadBalancerProbeElement.getElementsByTagName("Protocol");
+                                    Element protocolElement = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
+                                    if (protocolElement != null)
+                                    {
+                                        LoadBalancerProbeTransportProtocol protocolInstance;
+                                        protocolInstance = ComputeManagementClientImpl.parseLoadBalancerProbeTransportProtocol(protocolElement.getTextContent());
+                                        loadBalancerProbeInstance.setProtocol(protocolInstance);
+                                    }
+                                    
+                                    NodeList elements19 = loadBalancerProbeElement.getElementsByTagName("IntervalInSeconds");
+                                    Element intervalInSecondsElement = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
+                                    if (intervalInSecondsElement != null && (intervalInSecondsElement.getTextContent() != null && intervalInSecondsElement.getTextContent().isEmpty() != true) == false)
+                                    {
+                                        int intervalInSecondsInstance;
+                                        intervalInSecondsInstance = Integer.parseInt(intervalInSecondsElement.getTextContent());
+                                        loadBalancerProbeInstance.setIntervalInSeconds(intervalInSecondsInstance);
+                                    }
+                                    
+                                    NodeList elements20 = loadBalancerProbeElement.getElementsByTagName("TimeoutInSeconds");
+                                    Element timeoutInSecondsElement = elements20.getLength() > 0 ? ((Element) elements20.item(0)) : null;
+                                    if (timeoutInSecondsElement != null && (timeoutInSecondsElement.getTextContent() != null && timeoutInSecondsElement.getTextContent().isEmpty() != true) == false)
+                                    {
+                                        int timeoutInSecondsInstance;
+                                        timeoutInSecondsInstance = Integer.parseInt(timeoutInSecondsElement.getTextContent());
+                                        loadBalancerProbeInstance.setTimeoutInSeconds(timeoutInSecondsInstance);
+                                    }
+                                }
+                                
+                                NodeList elements21 = inputEndpointsElement.getElementsByTagName("Protocol");
+                                Element protocolElement2 = elements21.getLength() > 0 ? ((Element) elements21.item(0)) : null;
+                                if (protocolElement2 != null)
+                                {
+                                    String protocolInstance2;
+                                    protocolInstance2 = protocolElement2.getTextContent();
+                                    inputEndpointInstance.setProtocol(protocolInstance2);
+                                }
+                                
+                                NodeList elements22 = inputEndpointsElement.getElementsByTagName("Vip");
+                                Element vipElement = elements22.getLength() > 0 ? ((Element) elements22.item(0)) : null;
+                                if (vipElement != null)
+                                {
+                                    InetAddress vipInstance;
+                                    vipInstance = InetAddress.getByName(vipElement.getTextContent());
+                                    inputEndpointInstance.setVirtualIPAddress(vipInstance);
+                                }
+                                
+                                NodeList elements23 = inputEndpointsElement.getElementsByTagName("EnableDirectServerReturn");
+                                Element enableDirectServerReturnElement = elements23.getLength() > 0 ? ((Element) elements23.item(0)) : null;
+                                if (enableDirectServerReturnElement != null && (enableDirectServerReturnElement.getTextContent() != null && enableDirectServerReturnElement.getTextContent().isEmpty() != true) == false)
+                                {
+                                    boolean enableDirectServerReturnInstance;
+                                    enableDirectServerReturnInstance = Boolean.parseBoolean(enableDirectServerReturnElement.getTextContent());
+                                    inputEndpointInstance.setEnableDirectServerReturn(enableDirectServerReturnInstance);
+                                }
+                                
+                                NodeList elements24 = inputEndpointsElement.getElementsByTagName("EndpointAcl");
+                                Element endpointAclElement = elements24.getLength() > 0 ? ((Element) elements24.item(0)) : null;
+                                if (endpointAclElement != null)
+                                {
+                                    EndpointAcl endpointAclInstance = new EndpointAcl();
+                                    inputEndpointInstance.setEndpointAcl(endpointAclInstance);
+                                    
+                                    NodeList elements25 = endpointAclElement.getElementsByTagName("Rules");
+                                    Element rulesSequenceElement = elements25.getLength() > 0 ? ((Element) elements25.item(0)) : null;
+                                    if (rulesSequenceElement != null)
+                                    {
+                                        for (int i3 = 0; i3 < rulesSequenceElement.getElementsByTagName("Rule").getLength(); i3 = i3 + 1)
                                         {
-                                            int orderInstance;
-                                            orderInstance = Integer.parseInt(orderElement.getTextContent());
-                                            ruleInstance.setOrder(orderInstance);
-                                        }
-                                        
-                                        NodeList elements27 = rulesElement.getElementsByTagName("Action");
-                                        Element actionElement = elements27.getLength() > 0 ? ((Element)elements27.item(0)) : null;
-                                        if (actionElement != null)
-                                        {
-                                            String actionInstance;
-                                            actionInstance = actionElement.getTextContent();
-                                            ruleInstance.setAction(actionInstance);
-                                        }
-                                        
-                                        NodeList elements28 = rulesElement.getElementsByTagName("RemoteSubnet");
-                                        Element remoteSubnetElement = elements28.getLength() > 0 ? ((Element)elements28.item(0)) : null;
-                                        if (remoteSubnetElement != null)
-                                        {
-                                            String remoteSubnetInstance;
-                                            remoteSubnetInstance = remoteSubnetElement.getTextContent();
-                                            ruleInstance.setRemoteSubnet(remoteSubnetInstance);
-                                        }
-                                        
-                                        NodeList elements29 = rulesElement.getElementsByTagName("Description");
-                                        Element descriptionElement = elements29.getLength() > 0 ? ((Element)elements29.item(0)) : null;
-                                        if (descriptionElement != null)
-                                        {
-                                            String descriptionInstance;
-                                            descriptionInstance = descriptionElement.getTextContent();
-                                            ruleInstance.setDescription(descriptionInstance);
+                                            org.w3c.dom.Element rulesElement = ((org.w3c.dom.Element) rulesSequenceElement.getElementsByTagName("Rule").item(i3));
+                                            AccessControlListRule ruleInstance = new AccessControlListRule();
+                                            endpointAclInstance.getRules().add(ruleInstance);
+                                            
+                                            NodeList elements26 = rulesElement.getElementsByTagName("Order");
+                                            Element orderElement = elements26.getLength() > 0 ? ((Element) elements26.item(0)) : null;
+                                            if (orderElement != null && (orderElement.getTextContent() != null && orderElement.getTextContent().isEmpty() != true) == false)
+                                            {
+                                                int orderInstance;
+                                                orderInstance = Integer.parseInt(orderElement.getTextContent());
+                                                ruleInstance.setOrder(orderInstance);
+                                            }
+                                            
+                                            NodeList elements27 = rulesElement.getElementsByTagName("Action");
+                                            Element actionElement = elements27.getLength() > 0 ? ((Element) elements27.item(0)) : null;
+                                            if (actionElement != null)
+                                            {
+                                                String actionInstance;
+                                                actionInstance = actionElement.getTextContent();
+                                                ruleInstance.setAction(actionInstance);
+                                            }
+                                            
+                                            NodeList elements28 = rulesElement.getElementsByTagName("RemoteSubnet");
+                                            Element remoteSubnetElement = elements28.getLength() > 0 ? ((Element) elements28.item(0)) : null;
+                                            if (remoteSubnetElement != null)
+                                            {
+                                                String remoteSubnetInstance;
+                                                remoteSubnetInstance = remoteSubnetElement.getTextContent();
+                                                ruleInstance.setRemoteSubnet(remoteSubnetInstance);
+                                            }
+                                            
+                                            NodeList elements29 = rulesElement.getElementsByTagName("Description");
+                                            Element descriptionElement = elements29.getLength() > 0 ? ((Element) elements29.item(0)) : null;
+                                            if (descriptionElement != null)
+                                            {
+                                                String descriptionInstance;
+                                                descriptionInstance = descriptionElement.getTextContent();
+                                                ruleInstance.setDescription(descriptionInstance);
+                                            }
                                         }
                                     }
                                 }
                             }
                         }
-                    }
-                    
-                    NodeList elements30 = configurationSetsElement.getElementsByTagName("SubnetNames");
-                    Element subnetNamesSequenceElement = elements30.getLength() > 0 ? ((Element)elements30.item(0)) : null;
-                    if (subnetNamesSequenceElement != null)
-                    {
-                        for (int i4 = 0; i4 < subnetNamesSequenceElement.getElementsByTagName("SubnetName").getLength(); i4 = i4 + 1)
-                        {
-                            org.w3c.dom.Element subnetNamesElement = ((org.w3c.dom.Element)subnetNamesSequenceElement.getElementsByTagName("SubnetName").item(i4));
-                            configurationSetInstance.getSubnetNames().add(subnetNamesElement.getTextContent());
-                        }
-                    }
-                    
-                    NodeList elements31 = configurationSetsElement.getElementsByTagName("ComputerName");
-                    Element computerNameElement = elements31.getLength() > 0 ? ((Element)elements31.item(0)) : null;
-                    if (computerNameElement != null)
-                    {
-                        String computerNameInstance;
-                        computerNameInstance = computerNameElement.getTextContent();
-                        configurationSetInstance.setComputerName(computerNameInstance);
-                    }
-                    
-                    NodeList elements32 = configurationSetsElement.getElementsByTagName("AdminPassword");
-                    Element adminPasswordElement = elements32.getLength() > 0 ? ((Element)elements32.item(0)) : null;
-                    if (adminPasswordElement != null)
-                    {
-                        String adminPasswordInstance;
-                        adminPasswordInstance = adminPasswordElement.getTextContent();
-                        configurationSetInstance.setAdminPassword(adminPasswordInstance);
-                    }
-                    
-                    NodeList elements33 = configurationSetsElement.getElementsByTagName("ResetPasswordOnFirstLogon");
-                    Element resetPasswordOnFirstLogonElement = elements33.getLength() > 0 ? ((Element)elements33.item(0)) : null;
-                    if (resetPasswordOnFirstLogonElement != null && (resetPasswordOnFirstLogonElement.getTextContent() != null && resetPasswordOnFirstLogonElement.getTextContent().isEmpty() != true) == false)
-                    {
-                        boolean resetPasswordOnFirstLogonInstance;
-                        resetPasswordOnFirstLogonInstance = Boolean.parseBoolean(resetPasswordOnFirstLogonElement.getTextContent());
-                        configurationSetInstance.setResetPasswordOnFirstLogon(resetPasswordOnFirstLogonInstance);
-                    }
-                    
-                    NodeList elements34 = configurationSetsElement.getElementsByTagName("EnableAutomaticUpdates");
-                    Element enableAutomaticUpdatesElement = elements34.getLength() > 0 ? ((Element)elements34.item(0)) : null;
-                    if (enableAutomaticUpdatesElement != null && (enableAutomaticUpdatesElement.getTextContent() != null && enableAutomaticUpdatesElement.getTextContent().isEmpty() != true) == false)
-                    {
-                        boolean enableAutomaticUpdatesInstance;
-                        enableAutomaticUpdatesInstance = Boolean.parseBoolean(enableAutomaticUpdatesElement.getTextContent());
-                        configurationSetInstance.setEnableAutomaticUpdates(enableAutomaticUpdatesInstance);
-                    }
-                    
-                    NodeList elements35 = configurationSetsElement.getElementsByTagName("TimeZone");
-                    Element timeZoneElement = elements35.getLength() > 0 ? ((Element)elements35.item(0)) : null;
-                    if (timeZoneElement != null)
-                    {
-                        String timeZoneInstance;
-                        timeZoneInstance = timeZoneElement.getTextContent();
-                        configurationSetInstance.setTimeZone(timeZoneInstance);
-                    }
-                    
-                    NodeList elements36 = configurationSetsElement.getElementsByTagName("DomainJoin");
-                    Element domainJoinElement = elements36.getLength() > 0 ? ((Element)elements36.item(0)) : null;
-                    if (domainJoinElement != null)
-                    {
-                        DomainJoinSettings domainJoinInstance = new DomainJoinSettings();
-                        configurationSetInstance.setDomainJoin(domainJoinInstance);
                         
-                        NodeList elements37 = domainJoinElement.getElementsByTagName("Credentials");
-                        Element credentialsElement = elements37.getLength() > 0 ? ((Element)elements37.item(0)) : null;
-                        if (credentialsElement != null)
+                        NodeList elements30 = configurationSetsElement.getElementsByTagName("SubnetNames");
+                        Element subnetNamesSequenceElement = elements30.getLength() > 0 ? ((Element) elements30.item(0)) : null;
+                        if (subnetNamesSequenceElement != null)
                         {
-                            DomainJoinCredentials credentialsInstance = new DomainJoinCredentials();
-                            domainJoinInstance.setCredentials(credentialsInstance);
-                            
-                            NodeList elements38 = credentialsElement.getElementsByTagName("Domain");
-                            Element domainElement = elements38.getLength() > 0 ? ((Element)elements38.item(0)) : null;
-                            if (domainElement != null)
+                            for (int i4 = 0; i4 < subnetNamesSequenceElement.getElementsByTagName("SubnetName").getLength(); i4 = i4 + 1)
                             {
-                                String domainInstance;
-                                domainInstance = domainElement.getTextContent();
-                                credentialsInstance.setDomain(domainInstance);
-                            }
-                            
-                            NodeList elements39 = credentialsElement.getElementsByTagName("Username");
-                            Element usernameElement = elements39.getLength() > 0 ? ((Element)elements39.item(0)) : null;
-                            if (usernameElement != null)
-                            {
-                                String usernameInstance;
-                                usernameInstance = usernameElement.getTextContent();
-                                credentialsInstance.setUserName(usernameInstance);
-                            }
-                            
-                            NodeList elements40 = credentialsElement.getElementsByTagName("Password");
-                            Element passwordElement = elements40.getLength() > 0 ? ((Element)elements40.item(0)) : null;
-                            if (passwordElement != null)
-                            {
-                                String passwordInstance;
-                                passwordInstance = passwordElement.getTextContent();
-                                credentialsInstance.setPassword(passwordInstance);
+                                org.w3c.dom.Element subnetNamesElement = ((org.w3c.dom.Element) subnetNamesSequenceElement.getElementsByTagName("SubnetName").item(i4));
+                                configurationSetInstance.getSubnetNames().add(subnetNamesElement.getTextContent());
                             }
                         }
                         
-                        NodeList elements41 = domainJoinElement.getElementsByTagName("JoinDomain");
-                        Element joinDomainElement = elements41.getLength() > 0 ? ((Element)elements41.item(0)) : null;
-                        if (joinDomainElement != null)
+                        NodeList elements31 = configurationSetsElement.getElementsByTagName("StaticVirtualNetworkIPAddress");
+                        Element staticVirtualNetworkIPAddressElement = elements31.getLength() > 0 ? ((Element) elements31.item(0)) : null;
+                        if (staticVirtualNetworkIPAddressElement != null)
                         {
-                            String joinDomainInstance;
-                            joinDomainInstance = joinDomainElement.getTextContent();
-                            domainJoinInstance.setDomainToJoin(joinDomainInstance);
+                            String staticVirtualNetworkIPAddressInstance;
+                            staticVirtualNetworkIPAddressInstance = staticVirtualNetworkIPAddressElement.getTextContent();
+                            configurationSetInstance.setStaticVirtualNetworkIPAddress(staticVirtualNetworkIPAddressInstance);
                         }
                         
-                        NodeList elements42 = domainJoinElement.getElementsByTagName("MachineObjectOU");
-                        Element machineObjectOUElement = elements42.getLength() > 0 ? ((Element)elements42.item(0)) : null;
-                        if (machineObjectOUElement != null)
+                        NodeList elements32 = configurationSetsElement.getElementsByTagName("ComputerName");
+                        Element computerNameElement = elements32.getLength() > 0 ? ((Element) elements32.item(0)) : null;
+                        if (computerNameElement != null)
                         {
-                            String machineObjectOUInstance;
-                            machineObjectOUInstance = machineObjectOUElement.getTextContent();
-                            domainJoinInstance.setLdapMachineObjectOU(machineObjectOUInstance);
+                            String computerNameInstance;
+                            computerNameInstance = computerNameElement.getTextContent();
+                            configurationSetInstance.setComputerName(computerNameInstance);
                         }
                         
-                        NodeList elements43 = domainJoinElement.getElementsByTagName("Provisioning");
-                        Element provisioningElement = elements43.getLength() > 0 ? ((Element)elements43.item(0)) : null;
-                        if (provisioningElement != null)
+                        NodeList elements33 = configurationSetsElement.getElementsByTagName("AdminPassword");
+                        Element adminPasswordElement = elements33.getLength() > 0 ? ((Element) elements33.item(0)) : null;
+                        if (adminPasswordElement != null)
                         {
-                            DomainJoinProvisioning provisioningInstance = new DomainJoinProvisioning();
-                            domainJoinInstance.setProvisioning(provisioningInstance);
-                            
-                            NodeList elements44 = provisioningElement.getElementsByTagName("AccountData");
-                            Element accountDataElement = elements44.getLength() > 0 ? ((Element)elements44.item(0)) : null;
-                            if (accountDataElement != null)
-                            {
-                                String accountDataInstance;
-                                accountDataInstance = accountDataElement.getTextContent();
-                                provisioningInstance.setAccountData(accountDataInstance);
-                            }
+                            String adminPasswordInstance;
+                            adminPasswordInstance = adminPasswordElement.getTextContent();
+                            configurationSetInstance.setAdminPassword(adminPasswordInstance);
                         }
-                    }
-                    
-                    NodeList elements45 = configurationSetsElement.getElementsByTagName("StoredCertificateSettings");
-                    Element storedCertificateSettingsSequenceElement = elements45.getLength() > 0 ? ((Element)elements45.item(0)) : null;
-                    if (storedCertificateSettingsSequenceElement != null)
-                    {
-                        for (int i5 = 0; i5 < storedCertificateSettingsSequenceElement.getElementsByTagName("CertificateSetting").getLength(); i5 = i5 + 1)
-                        {
-                            org.w3c.dom.Element storedCertificateSettingsElement = ((org.w3c.dom.Element)storedCertificateSettingsSequenceElement.getElementsByTagName("CertificateSetting").item(i5));
-                            StoredCertificateSettings certificateSettingInstance = new StoredCertificateSettings();
-                            configurationSetInstance.getStoredCertificateSettings().add(certificateSettingInstance);
-                            
-                            NodeList elements46 = storedCertificateSettingsElement.getElementsByTagName("StoreLocation");
-                            Element storeLocationElement = elements46.getLength() > 0 ? ((Element)elements46.item(0)) : null;
-                            if (storeLocationElement != null)
-                            {
-                            }
-                            
-                            NodeList elements47 = storedCertificateSettingsElement.getElementsByTagName("StoreName");
-                            Element storeNameElement = elements47.getLength() > 0 ? ((Element)elements47.item(0)) : null;
-                            if (storeNameElement != null)
-                            {
-                                String storeNameInstance;
-                                storeNameInstance = storeNameElement.getTextContent();
-                                certificateSettingInstance.setStoreName(storeNameInstance);
-                            }
-                            
-                            NodeList elements48 = storedCertificateSettingsElement.getElementsByTagName("Thumbprint");
-                            Element thumbprintElement = elements48.getLength() > 0 ? ((Element)elements48.item(0)) : null;
-                            if (thumbprintElement != null)
-                            {
-                                String thumbprintInstance;
-                                thumbprintInstance = thumbprintElement.getTextContent();
-                                certificateSettingInstance.setThumbprint(thumbprintInstance);
-                            }
-                        }
-                    }
-                    
-                    NodeList elements49 = configurationSetsElement.getElementsByTagName("WinRM");
-                    Element winRMElement = elements49.getLength() > 0 ? ((Element)elements49.item(0)) : null;
-                    if (winRMElement != null)
-                    {
-                        WindowsRemoteManagementSettings winRMInstance = new WindowsRemoteManagementSettings();
-                        configurationSetInstance.setWindowsRemoteManagement(winRMInstance);
                         
-                        NodeList elements50 = winRMElement.getElementsByTagName("Listeners");
-                        Element listenersSequenceElement = elements50.getLength() > 0 ? ((Element)elements50.item(0)) : null;
-                        if (listenersSequenceElement != null)
+                        NodeList elements34 = configurationSetsElement.getElementsByTagName("ResetPasswordOnFirstLogon");
+                        Element resetPasswordOnFirstLogonElement = elements34.getLength() > 0 ? ((Element) elements34.item(0)) : null;
+                        if (resetPasswordOnFirstLogonElement != null && (resetPasswordOnFirstLogonElement.getTextContent() != null && resetPasswordOnFirstLogonElement.getTextContent().isEmpty() != true) == false)
                         {
-                            for (int i6 = 0; i6 < listenersSequenceElement.getElementsByTagName("Listener").getLength(); i6 = i6 + 1)
+                            boolean resetPasswordOnFirstLogonInstance;
+                            resetPasswordOnFirstLogonInstance = Boolean.parseBoolean(resetPasswordOnFirstLogonElement.getTextContent());
+                            configurationSetInstance.setResetPasswordOnFirstLogon(resetPasswordOnFirstLogonInstance);
+                        }
+                        
+                        NodeList elements35 = configurationSetsElement.getElementsByTagName("EnableAutomaticUpdates");
+                        Element enableAutomaticUpdatesElement = elements35.getLength() > 0 ? ((Element) elements35.item(0)) : null;
+                        if (enableAutomaticUpdatesElement != null && (enableAutomaticUpdatesElement.getTextContent() != null && enableAutomaticUpdatesElement.getTextContent().isEmpty() != true) == false)
+                        {
+                            boolean enableAutomaticUpdatesInstance;
+                            enableAutomaticUpdatesInstance = Boolean.parseBoolean(enableAutomaticUpdatesElement.getTextContent());
+                            configurationSetInstance.setEnableAutomaticUpdates(enableAutomaticUpdatesInstance);
+                        }
+                        
+                        NodeList elements36 = configurationSetsElement.getElementsByTagName("TimeZone");
+                        Element timeZoneElement = elements36.getLength() > 0 ? ((Element) elements36.item(0)) : null;
+                        if (timeZoneElement != null)
+                        {
+                            String timeZoneInstance;
+                            timeZoneInstance = timeZoneElement.getTextContent();
+                            configurationSetInstance.setTimeZone(timeZoneInstance);
+                        }
+                        
+                        NodeList elements37 = configurationSetsElement.getElementsByTagName("DomainJoin");
+                        Element domainJoinElement = elements37.getLength() > 0 ? ((Element) elements37.item(0)) : null;
+                        if (domainJoinElement != null)
+                        {
+                            DomainJoinSettings domainJoinInstance = new DomainJoinSettings();
+                            configurationSetInstance.setDomainJoin(domainJoinInstance);
+                            
+                            NodeList elements38 = domainJoinElement.getElementsByTagName("Credentials");
+                            Element credentialsElement = elements38.getLength() > 0 ? ((Element) elements38.item(0)) : null;
+                            if (credentialsElement != null)
                             {
-                                org.w3c.dom.Element listenersElement = ((org.w3c.dom.Element)listenersSequenceElement.getElementsByTagName("Listener").item(i6));
-                                WindowsRemoteManagementListener listenerInstance = new WindowsRemoteManagementListener();
-                                winRMInstance.getListeners().add(listenerInstance);
+                                DomainJoinCredentials credentialsInstance = new DomainJoinCredentials();
+                                domainJoinInstance.setCredentials(credentialsInstance);
                                 
-                                NodeList elements51 = listenersElement.getElementsByTagName("Protocol");
-                                Element protocolElement3 = elements51.getLength() > 0 ? ((Element)elements51.item(0)) : null;
-                                if (protocolElement3 != null)
+                                NodeList elements39 = credentialsElement.getElementsByTagName("Domain");
+                                Element domainElement = elements39.getLength() > 0 ? ((Element) elements39.item(0)) : null;
+                                if (domainElement != null)
                                 {
-                                    VirtualMachineWindowsRemoteManagementListenerType protocolInstance3;
-                                    protocolInstance3 = VirtualMachineWindowsRemoteManagementListenerType.valueOf(protocolElement3.getTextContent());
-                                    listenerInstance.setListenerType(protocolInstance3);
+                                    String domainInstance;
+                                    domainInstance = domainElement.getTextContent();
+                                    credentialsInstance.setDomain(domainInstance);
                                 }
                                 
-                                NodeList elements52 = listenersElement.getElementsByTagName("CertificateThumbprint");
-                                Element certificateThumbprintElement = elements52.getLength() > 0 ? ((Element)elements52.item(0)) : null;
-                                if (certificateThumbprintElement != null)
+                                NodeList elements40 = credentialsElement.getElementsByTagName("Username");
+                                Element usernameElement = elements40.getLength() > 0 ? ((Element) elements40.item(0)) : null;
+                                if (usernameElement != null)
                                 {
-                                    String certificateThumbprintInstance;
-                                    certificateThumbprintInstance = certificateThumbprintElement.getTextContent();
-                                    listenerInstance.setCertificateThumbprint(certificateThumbprintInstance);
+                                    String usernameInstance;
+                                    usernameInstance = usernameElement.getTextContent();
+                                    credentialsInstance.setUserName(usernameInstance);
+                                }
+                                
+                                NodeList elements41 = credentialsElement.getElementsByTagName("Password");
+                                Element passwordElement = elements41.getLength() > 0 ? ((Element) elements41.item(0)) : null;
+                                if (passwordElement != null)
+                                {
+                                    String passwordInstance;
+                                    passwordInstance = passwordElement.getTextContent();
+                                    credentialsInstance.setPassword(passwordInstance);
                                 }
                             }
-                        }
-                    }
-                    
-                    NodeList elements53 = configurationSetsElement.getElementsByTagName("AdminUsername");
-                    Element adminUsernameElement = elements53.getLength() > 0 ? ((Element)elements53.item(0)) : null;
-                    if (adminUsernameElement != null)
-                    {
-                        String adminUsernameInstance;
-                        adminUsernameInstance = adminUsernameElement.getTextContent();
-                        configurationSetInstance.setAdminUserName(adminUsernameInstance);
-                    }
-                    
-                    NodeList elements54 = configurationSetsElement.getElementsByTagName("HostName");
-                    Element hostNameElement = elements54.getLength() > 0 ? ((Element)elements54.item(0)) : null;
-                    if (hostNameElement != null)
-                    {
-                        String hostNameInstance;
-                        hostNameInstance = hostNameElement.getTextContent();
-                        configurationSetInstance.setHostName(hostNameInstance);
-                    }
-                    
-                    NodeList elements55 = configurationSetsElement.getElementsByTagName("UserName");
-                    Element userNameElement = elements55.getLength() > 0 ? ((Element)elements55.item(0)) : null;
-                    if (userNameElement != null)
-                    {
-                        String userNameInstance;
-                        userNameInstance = userNameElement.getTextContent();
-                        configurationSetInstance.setUserName(userNameInstance);
-                    }
-                    
-                    NodeList elements56 = configurationSetsElement.getElementsByTagName("UserPassword");
-                    Element userPasswordElement = elements56.getLength() > 0 ? ((Element)elements56.item(0)) : null;
-                    if (userPasswordElement != null)
-                    {
-                        String userPasswordInstance;
-                        userPasswordInstance = userPasswordElement.getTextContent();
-                        configurationSetInstance.setUserPassword(userPasswordInstance);
-                    }
-                    
-                    NodeList elements57 = configurationSetsElement.getElementsByTagName("DisableSshPasswordAuthentication");
-                    Element disableSshPasswordAuthenticationElement = elements57.getLength() > 0 ? ((Element)elements57.item(0)) : null;
-                    if (disableSshPasswordAuthenticationElement != null && (disableSshPasswordAuthenticationElement.getTextContent() != null && disableSshPasswordAuthenticationElement.getTextContent().isEmpty() != true) == false)
-                    {
-                        boolean disableSshPasswordAuthenticationInstance;
-                        disableSshPasswordAuthenticationInstance = Boolean.parseBoolean(disableSshPasswordAuthenticationElement.getTextContent());
-                        configurationSetInstance.setDisableSshPasswordAuthentication(disableSshPasswordAuthenticationInstance);
-                    }
-                    
-                    NodeList elements58 = configurationSetsElement.getElementsByTagName("SSH");
-                    Element sSHElement = elements58.getLength() > 0 ? ((Element)elements58.item(0)) : null;
-                    if (sSHElement != null)
-                    {
-                        SshSettings sSHInstance = new SshSettings();
-                        configurationSetInstance.setSshSettings(sSHInstance);
-                        
-                        NodeList elements59 = sSHElement.getElementsByTagName("PublicKeys");
-                        Element publicKeysSequenceElement = elements59.getLength() > 0 ? ((Element)elements59.item(0)) : null;
-                        if (publicKeysSequenceElement != null)
-                        {
-                            for (int i7 = 0; i7 < publicKeysSequenceElement.getElementsByTagName("PublicKey").getLength(); i7 = i7 + 1)
+                            
+                            NodeList elements42 = domainJoinElement.getElementsByTagName("JoinDomain");
+                            Element joinDomainElement = elements42.getLength() > 0 ? ((Element) elements42.item(0)) : null;
+                            if (joinDomainElement != null)
                             {
-                                org.w3c.dom.Element publicKeysElement = ((org.w3c.dom.Element)publicKeysSequenceElement.getElementsByTagName("PublicKey").item(i7));
-                                SshSettingPublicKey publicKeyInstance = new SshSettingPublicKey();
-                                sSHInstance.getPublicKeys().add(publicKeyInstance);
+                                String joinDomainInstance;
+                                joinDomainInstance = joinDomainElement.getTextContent();
+                                domainJoinInstance.setDomainToJoin(joinDomainInstance);
+                            }
+                            
+                            NodeList elements43 = domainJoinElement.getElementsByTagName("MachineObjectOU");
+                            Element machineObjectOUElement = elements43.getLength() > 0 ? ((Element) elements43.item(0)) : null;
+                            if (machineObjectOUElement != null)
+                            {
+                                String machineObjectOUInstance;
+                                machineObjectOUInstance = machineObjectOUElement.getTextContent();
+                                domainJoinInstance.setLdapMachineObjectOU(machineObjectOUInstance);
+                            }
+                            
+                            NodeList elements44 = domainJoinElement.getElementsByTagName("Provisioning");
+                            Element provisioningElement = elements44.getLength() > 0 ? ((Element) elements44.item(0)) : null;
+                            if (provisioningElement != null)
+                            {
+                                DomainJoinProvisioning provisioningInstance = new DomainJoinProvisioning();
+                                domainJoinInstance.setProvisioning(provisioningInstance);
                                 
-                                NodeList elements60 = publicKeysElement.getElementsByTagName("Fingerprint");
-                                Element fingerprintElement = elements60.getLength() > 0 ? ((Element)elements60.item(0)) : null;
-                                if (fingerprintElement != null)
+                                NodeList elements45 = provisioningElement.getElementsByTagName("AccountData");
+                                Element accountDataElement = elements45.getLength() > 0 ? ((Element) elements45.item(0)) : null;
+                                if (accountDataElement != null)
                                 {
-                                    String fingerprintInstance;
-                                    fingerprintInstance = fingerprintElement.getTextContent();
-                                    publicKeyInstance.setFingerprint(fingerprintInstance);
-                                }
-                                
-                                NodeList elements61 = publicKeysElement.getElementsByTagName("Path");
-                                Element pathElement2 = elements61.getLength() > 0 ? ((Element)elements61.item(0)) : null;
-                                if (pathElement2 != null)
-                                {
-                                    String pathInstance2;
-                                    pathInstance2 = pathElement2.getTextContent();
-                                    publicKeyInstance.setPath(pathInstance2);
+                                    String accountDataInstance;
+                                    accountDataInstance = accountDataElement.getTextContent();
+                                    provisioningInstance.setAccountData(accountDataInstance);
                                 }
                             }
                         }
                         
-                        NodeList elements62 = sSHElement.getElementsByTagName("KeyPairs");
-                        Element keyPairsSequenceElement = elements62.getLength() > 0 ? ((Element)elements62.item(0)) : null;
-                        if (keyPairsSequenceElement != null)
+                        NodeList elements46 = configurationSetsElement.getElementsByTagName("StoredCertificateSettings");
+                        Element storedCertificateSettingsSequenceElement = elements46.getLength() > 0 ? ((Element) elements46.item(0)) : null;
+                        if (storedCertificateSettingsSequenceElement != null)
                         {
-                            for (int i8 = 0; i8 < keyPairsSequenceElement.getElementsByTagName("KeyPair").getLength(); i8 = i8 + 1)
+                            for (int i5 = 0; i5 < storedCertificateSettingsSequenceElement.getElementsByTagName("CertificateSetting").getLength(); i5 = i5 + 1)
                             {
-                                org.w3c.dom.Element keyPairsElement = ((org.w3c.dom.Element)keyPairsSequenceElement.getElementsByTagName("KeyPair").item(i8));
-                                SshSettingKeyPair keyPairInstance = new SshSettingKeyPair();
-                                sSHInstance.getKeyPairs().add(keyPairInstance);
+                                org.w3c.dom.Element storedCertificateSettingsElement = ((org.w3c.dom.Element) storedCertificateSettingsSequenceElement.getElementsByTagName("CertificateSetting").item(i5));
+                                StoredCertificateSettings certificateSettingInstance = new StoredCertificateSettings();
+                                configurationSetInstance.getStoredCertificateSettings().add(certificateSettingInstance);
                                 
-                                NodeList elements63 = keyPairsElement.getElementsByTagName("Fingerprint");
-                                Element fingerprintElement2 = elements63.getLength() > 0 ? ((Element)elements63.item(0)) : null;
-                                if (fingerprintElement2 != null)
+                                NodeList elements47 = storedCertificateSettingsElement.getElementsByTagName("StoreLocation");
+                                Element storeLocationElement = elements47.getLength() > 0 ? ((Element) elements47.item(0)) : null;
+                                if (storeLocationElement != null)
                                 {
-                                    String fingerprintInstance2;
-                                    fingerprintInstance2 = fingerprintElement2.getTextContent();
-                                    keyPairInstance.setFingerprint(fingerprintInstance2);
                                 }
                                 
-                                NodeList elements64 = keyPairsElement.getElementsByTagName("Path");
-                                Element pathElement3 = elements64.getLength() > 0 ? ((Element)elements64.item(0)) : null;
-                                if (pathElement3 != null)
+                                NodeList elements48 = storedCertificateSettingsElement.getElementsByTagName("StoreName");
+                                Element storeNameElement = elements48.getLength() > 0 ? ((Element) elements48.item(0)) : null;
+                                if (storeNameElement != null)
                                 {
-                                    String pathInstance3;
-                                    pathInstance3 = pathElement3.getTextContent();
-                                    keyPairInstance.setPath(pathInstance3);
+                                    String storeNameInstance;
+                                    storeNameInstance = storeNameElement.getTextContent();
+                                    certificateSettingInstance.setStoreName(storeNameInstance);
+                                }
+                                
+                                NodeList elements49 = storedCertificateSettingsElement.getElementsByTagName("Thumbprint");
+                                Element thumbprintElement = elements49.getLength() > 0 ? ((Element) elements49.item(0)) : null;
+                                if (thumbprintElement != null)
+                                {
+                                    String thumbprintInstance;
+                                    thumbprintInstance = thumbprintElement.getTextContent();
+                                    certificateSettingInstance.setThumbprint(thumbprintInstance);
                                 }
                             }
                         }
+                        
+                        NodeList elements50 = configurationSetsElement.getElementsByTagName("WinRM");
+                        Element winRMElement = elements50.getLength() > 0 ? ((Element) elements50.item(0)) : null;
+                        if (winRMElement != null)
+                        {
+                            WindowsRemoteManagementSettings winRMInstance = new WindowsRemoteManagementSettings();
+                            configurationSetInstance.setWindowsRemoteManagement(winRMInstance);
+                            
+                            NodeList elements51 = winRMElement.getElementsByTagName("Listeners");
+                            Element listenersSequenceElement = elements51.getLength() > 0 ? ((Element) elements51.item(0)) : null;
+                            if (listenersSequenceElement != null)
+                            {
+                                for (int i6 = 0; i6 < listenersSequenceElement.getElementsByTagName("Listener").getLength(); i6 = i6 + 1)
+                                {
+                                    org.w3c.dom.Element listenersElement = ((org.w3c.dom.Element) listenersSequenceElement.getElementsByTagName("Listener").item(i6));
+                                    WindowsRemoteManagementListener listenerInstance = new WindowsRemoteManagementListener();
+                                    winRMInstance.getListeners().add(listenerInstance);
+                                    
+                                    NodeList elements52 = listenersElement.getElementsByTagName("Protocol");
+                                    Element protocolElement3 = elements52.getLength() > 0 ? ((Element) elements52.item(0)) : null;
+                                    if (protocolElement3 != null)
+                                    {
+                                        VirtualMachineWindowsRemoteManagementListenerType protocolInstance3;
+                                        protocolInstance3 = VirtualMachineWindowsRemoteManagementListenerType.valueOf(protocolElement3.getTextContent());
+                                        listenerInstance.setListenerType(protocolInstance3);
+                                    }
+                                    
+                                    NodeList elements53 = listenersElement.getElementsByTagName("CertificateThumbprint");
+                                    Element certificateThumbprintElement = elements53.getLength() > 0 ? ((Element) elements53.item(0)) : null;
+                                    if (certificateThumbprintElement != null)
+                                    {
+                                        String certificateThumbprintInstance;
+                                        certificateThumbprintInstance = certificateThumbprintElement.getTextContent();
+                                        listenerInstance.setCertificateThumbprint(certificateThumbprintInstance);
+                                    }
+                                }
+                            }
+                        }
+                        
+                        NodeList elements54 = configurationSetsElement.getElementsByTagName("AdminUsername");
+                        Element adminUsernameElement = elements54.getLength() > 0 ? ((Element) elements54.item(0)) : null;
+                        if (adminUsernameElement != null)
+                        {
+                            String adminUsernameInstance;
+                            adminUsernameInstance = adminUsernameElement.getTextContent();
+                            configurationSetInstance.setAdminUserName(adminUsernameInstance);
+                        }
+                        
+                        NodeList elements55 = configurationSetsElement.getElementsByTagName("HostName");
+                        Element hostNameElement = elements55.getLength() > 0 ? ((Element) elements55.item(0)) : null;
+                        if (hostNameElement != null)
+                        {
+                            String hostNameInstance;
+                            hostNameInstance = hostNameElement.getTextContent();
+                            configurationSetInstance.setHostName(hostNameInstance);
+                        }
+                        
+                        NodeList elements56 = configurationSetsElement.getElementsByTagName("UserName");
+                        Element userNameElement = elements56.getLength() > 0 ? ((Element) elements56.item(0)) : null;
+                        if (userNameElement != null)
+                        {
+                            String userNameInstance;
+                            userNameInstance = userNameElement.getTextContent();
+                            configurationSetInstance.setUserName(userNameInstance);
+                        }
+                        
+                        NodeList elements57 = configurationSetsElement.getElementsByTagName("UserPassword");
+                        Element userPasswordElement = elements57.getLength() > 0 ? ((Element) elements57.item(0)) : null;
+                        if (userPasswordElement != null)
+                        {
+                            String userPasswordInstance;
+                            userPasswordInstance = userPasswordElement.getTextContent();
+                            configurationSetInstance.setUserPassword(userPasswordInstance);
+                        }
+                        
+                        NodeList elements58 = configurationSetsElement.getElementsByTagName("DisableSshPasswordAuthentication");
+                        Element disableSshPasswordAuthenticationElement = elements58.getLength() > 0 ? ((Element) elements58.item(0)) : null;
+                        if (disableSshPasswordAuthenticationElement != null && (disableSshPasswordAuthenticationElement.getTextContent() != null && disableSshPasswordAuthenticationElement.getTextContent().isEmpty() != true) == false)
+                        {
+                            boolean disableSshPasswordAuthenticationInstance;
+                            disableSshPasswordAuthenticationInstance = Boolean.parseBoolean(disableSshPasswordAuthenticationElement.getTextContent());
+                            configurationSetInstance.setDisableSshPasswordAuthentication(disableSshPasswordAuthenticationInstance);
+                        }
+                        
+                        NodeList elements59 = configurationSetsElement.getElementsByTagName("SSH");
+                        Element sSHElement = elements59.getLength() > 0 ? ((Element) elements59.item(0)) : null;
+                        if (sSHElement != null)
+                        {
+                            SshSettings sSHInstance = new SshSettings();
+                            configurationSetInstance.setSshSettings(sSHInstance);
+                            
+                            NodeList elements60 = sSHElement.getElementsByTagName("PublicKeys");
+                            Element publicKeysSequenceElement = elements60.getLength() > 0 ? ((Element) elements60.item(0)) : null;
+                            if (publicKeysSequenceElement != null)
+                            {
+                                for (int i7 = 0; i7 < publicKeysSequenceElement.getElementsByTagName("PublicKey").getLength(); i7 = i7 + 1)
+                                {
+                                    org.w3c.dom.Element publicKeysElement = ((org.w3c.dom.Element) publicKeysSequenceElement.getElementsByTagName("PublicKey").item(i7));
+                                    SshSettingPublicKey publicKeyInstance = new SshSettingPublicKey();
+                                    sSHInstance.getPublicKeys().add(publicKeyInstance);
+                                    
+                                    NodeList elements61 = publicKeysElement.getElementsByTagName("Fingerprint");
+                                    Element fingerprintElement = elements61.getLength() > 0 ? ((Element) elements61.item(0)) : null;
+                                    if (fingerprintElement != null)
+                                    {
+                                        String fingerprintInstance;
+                                        fingerprintInstance = fingerprintElement.getTextContent();
+                                        publicKeyInstance.setFingerprint(fingerprintInstance);
+                                    }
+                                    
+                                    NodeList elements62 = publicKeysElement.getElementsByTagName("Path");
+                                    Element pathElement2 = elements62.getLength() > 0 ? ((Element) elements62.item(0)) : null;
+                                    if (pathElement2 != null)
+                                    {
+                                        String pathInstance2;
+                                        pathInstance2 = pathElement2.getTextContent();
+                                        publicKeyInstance.setPath(pathInstance2);
+                                    }
+                                }
+                            }
+                            
+                            NodeList elements63 = sSHElement.getElementsByTagName("KeyPairs");
+                            Element keyPairsSequenceElement = elements63.getLength() > 0 ? ((Element) elements63.item(0)) : null;
+                            if (keyPairsSequenceElement != null)
+                            {
+                                for (int i8 = 0; i8 < keyPairsSequenceElement.getElementsByTagName("KeyPair").getLength(); i8 = i8 + 1)
+                                {
+                                    org.w3c.dom.Element keyPairsElement = ((org.w3c.dom.Element) keyPairsSequenceElement.getElementsByTagName("KeyPair").item(i8));
+                                    SshSettingKeyPair keyPairInstance = new SshSettingKeyPair();
+                                    sSHInstance.getKeyPairs().add(keyPairInstance);
+                                    
+                                    NodeList elements64 = keyPairsElement.getElementsByTagName("Fingerprint");
+                                    Element fingerprintElement2 = elements64.getLength() > 0 ? ((Element) elements64.item(0)) : null;
+                                    if (fingerprintElement2 != null)
+                                    {
+                                        String fingerprintInstance2;
+                                        fingerprintInstance2 = fingerprintElement2.getTextContent();
+                                        keyPairInstance.setFingerprint(fingerprintInstance2);
+                                    }
+                                    
+                                    NodeList elements65 = keyPairsElement.getElementsByTagName("Path");
+                                    Element pathElement3 = elements65.getLength() > 0 ? ((Element) elements65.item(0)) : null;
+                                    if (pathElement3 != null)
+                                    {
+                                        String pathInstance3;
+                                        pathInstance3 = pathElement3.getTextContent();
+                                        keyPairInstance.setPath(pathInstance3);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                NodeList elements66 = persistentVMRoleElement.getElementsByTagName("DataVirtualHardDisks");
+                Element dataVirtualHardDisksSequenceElement = elements66.getLength() > 0 ? ((Element) elements66.item(0)) : null;
+                if (dataVirtualHardDisksSequenceElement != null)
+                {
+                    for (int i9 = 0; i9 < dataVirtualHardDisksSequenceElement.getElementsByTagName("DataVirtualHardDisk").getLength(); i9 = i9 + 1)
+                    {
+                        org.w3c.dom.Element dataVirtualHardDisksElement = ((org.w3c.dom.Element) dataVirtualHardDisksSequenceElement.getElementsByTagName("DataVirtualHardDisk").item(i9));
+                        DataVirtualHardDisk dataVirtualHardDiskInstance = new DataVirtualHardDisk();
+                        result.getDataVirtualHardDisks().add(dataVirtualHardDiskInstance);
+                        
+                        NodeList elements67 = dataVirtualHardDisksElement.getElementsByTagName("HostCaching");
+                        Element hostCachingElement = elements67.getLength() > 0 ? ((Element) elements67.item(0)) : null;
+                        if (hostCachingElement != null && (hostCachingElement.getTextContent() != null && hostCachingElement.getTextContent().isEmpty() != true) == false)
+                        {
+                            VirtualHardDiskHostCaching hostCachingInstance;
+                            hostCachingInstance = VirtualHardDiskHostCaching.valueOf(hostCachingElement.getTextContent());
+                            dataVirtualHardDiskInstance.setHostCaching(hostCachingInstance);
+                        }
+                        
+                        NodeList elements68 = dataVirtualHardDisksElement.getElementsByTagName("DiskLabel");
+                        Element diskLabelElement = elements68.getLength() > 0 ? ((Element) elements68.item(0)) : null;
+                        if (diskLabelElement != null)
+                        {
+                            String diskLabelInstance;
+                            diskLabelInstance = diskLabelElement.getTextContent();
+                            dataVirtualHardDiskInstance.setDiskLabel(diskLabelInstance);
+                        }
+                        
+                        NodeList elements69 = dataVirtualHardDisksElement.getElementsByTagName("DiskName");
+                        Element diskNameElement = elements69.getLength() > 0 ? ((Element) elements69.item(0)) : null;
+                        if (diskNameElement != null)
+                        {
+                            String diskNameInstance;
+                            diskNameInstance = diskNameElement.getTextContent();
+                            dataVirtualHardDiskInstance.setDiskName(diskNameInstance);
+                        }
+                        
+                        NodeList elements70 = dataVirtualHardDisksElement.getElementsByTagName("Lun");
+                        Element lunElement = elements70.getLength() > 0 ? ((Element) elements70.item(0)) : null;
+                        if (lunElement != null && (lunElement.getTextContent() != null && lunElement.getTextContent().isEmpty() != true) == false)
+                        {
+                            int lunInstance;
+                            lunInstance = Integer.parseInt(lunElement.getTextContent());
+                            dataVirtualHardDiskInstance.setLogicalUnitNumber(lunInstance);
+                        }
+                        
+                        NodeList elements71 = dataVirtualHardDisksElement.getElementsByTagName("LogicalDiskSizeInGB");
+                        Element logicalDiskSizeInGBElement = elements71.getLength() > 0 ? ((Element) elements71.item(0)) : null;
+                        if (logicalDiskSizeInGBElement != null)
+                        {
+                            int logicalDiskSizeInGBInstance;
+                            logicalDiskSizeInGBInstance = Integer.parseInt(logicalDiskSizeInGBElement.getTextContent());
+                            dataVirtualHardDiskInstance.setLogicalDiskSizeInGB(logicalDiskSizeInGBInstance);
+                        }
+                        
+                        NodeList elements72 = dataVirtualHardDisksElement.getElementsByTagName("MediaLink");
+                        Element mediaLinkElement = elements72.getLength() > 0 ? ((Element) elements72.item(0)) : null;
+                        if (mediaLinkElement != null)
+                        {
+                            URI mediaLinkInstance;
+                            mediaLinkInstance = new URI(mediaLinkElement.getTextContent());
+                            dataVirtualHardDiskInstance.setMediaLink(mediaLinkInstance);
+                        }
+                    }
+                }
+                
+                NodeList elements73 = persistentVMRoleElement.getElementsByTagName("OSVirtualHardDisk");
+                Element oSVirtualHardDiskElement = elements73.getLength() > 0 ? ((Element) elements73.item(0)) : null;
+                if (oSVirtualHardDiskElement != null)
+                {
+                    OSVirtualHardDisk oSVirtualHardDiskInstance = new OSVirtualHardDisk();
+                    result.setOSVirtualHardDisk(oSVirtualHardDiskInstance);
+                    
+                    NodeList elements74 = oSVirtualHardDiskElement.getElementsByTagName("HostCaching");
+                    Element hostCachingElement2 = elements74.getLength() > 0 ? ((Element) elements74.item(0)) : null;
+                    if (hostCachingElement2 != null && (hostCachingElement2.getTextContent() != null && hostCachingElement2.getTextContent().isEmpty() != true) == false)
+                    {
+                        VirtualHardDiskHostCaching hostCachingInstance2;
+                        hostCachingInstance2 = VirtualHardDiskHostCaching.valueOf(hostCachingElement2.getTextContent());
+                        oSVirtualHardDiskInstance.setHostCaching(hostCachingInstance2);
+                    }
+                    
+                    NodeList elements75 = oSVirtualHardDiskElement.getElementsByTagName("DiskLabel");
+                    Element diskLabelElement2 = elements75.getLength() > 0 ? ((Element) elements75.item(0)) : null;
+                    if (diskLabelElement2 != null)
+                    {
+                        String diskLabelInstance2;
+                        diskLabelInstance2 = diskLabelElement2.getTextContent();
+                        oSVirtualHardDiskInstance.setDiskLabel(diskLabelInstance2);
+                    }
+                    
+                    NodeList elements76 = oSVirtualHardDiskElement.getElementsByTagName("DiskName");
+                    Element diskNameElement2 = elements76.getLength() > 0 ? ((Element) elements76.item(0)) : null;
+                    if (diskNameElement2 != null)
+                    {
+                        String diskNameInstance2;
+                        diskNameInstance2 = diskNameElement2.getTextContent();
+                        oSVirtualHardDiskInstance.setDiskName(diskNameInstance2);
+                    }
+                    
+                    NodeList elements77 = oSVirtualHardDiskElement.getElementsByTagName("MediaLink");
+                    Element mediaLinkElement2 = elements77.getLength() > 0 ? ((Element) elements77.item(0)) : null;
+                    if (mediaLinkElement2 != null)
+                    {
+                        URI mediaLinkInstance2;
+                        mediaLinkInstance2 = new URI(mediaLinkElement2.getTextContent());
+                        oSVirtualHardDiskInstance.setMediaLink(mediaLinkInstance2);
+                    }
+                    
+                    NodeList elements78 = oSVirtualHardDiskElement.getElementsByTagName("SourceImageName");
+                    Element sourceImageNameElement = elements78.getLength() > 0 ? ((Element) elements78.item(0)) : null;
+                    if (sourceImageNameElement != null)
+                    {
+                        String sourceImageNameInstance;
+                        sourceImageNameInstance = sourceImageNameElement.getTextContent();
+                        oSVirtualHardDiskInstance.setSourceImageName(sourceImageNameInstance);
+                    }
+                    
+                    NodeList elements79 = oSVirtualHardDiskElement.getElementsByTagName("OS");
+                    Element osElement = elements79.getLength() > 0 ? ((Element) elements79.item(0)) : null;
+                    if (osElement != null)
+                    {
+                        String osInstance;
+                        osInstance = osElement.getTextContent();
+                        oSVirtualHardDiskInstance.setOperatingSystem(osInstance);
                     }
                 }
             }
             
-            NodeList elements65 = persistentVMRoleElement.getElementsByTagName("DataVirtualHardDisks");
-            Element dataVirtualHardDisksSequenceElement = elements65.getLength() > 0 ? ((Element)elements65.item(0)) : null;
-            if (dataVirtualHardDisksSequenceElement != null)
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
             {
-                for (int i9 = 0; i9 < dataVirtualHardDisksSequenceElement.getElementsByTagName("DataVirtualHardDisk").getLength(); i9 = i9 + 1)
-                {
-                    org.w3c.dom.Element dataVirtualHardDisksElement = ((org.w3c.dom.Element)dataVirtualHardDisksSequenceElement.getElementsByTagName("DataVirtualHardDisk").item(i9));
-                    DataVirtualHardDisk dataVirtualHardDiskInstance = new DataVirtualHardDisk();
-                    result.getDataVirtualHardDisks().add(dataVirtualHardDiskInstance);
-                    
-                    NodeList elements66 = dataVirtualHardDisksElement.getElementsByTagName("HostCaching");
-                    Element hostCachingElement = elements66.getLength() > 0 ? ((Element)elements66.item(0)) : null;
-                    if (hostCachingElement != null && (hostCachingElement.getTextContent() != null && hostCachingElement.getTextContent().isEmpty() != true) == false)
-                    {
-                        VirtualHardDiskHostCaching hostCachingInstance;
-                        hostCachingInstance = VirtualHardDiskHostCaching.valueOf(hostCachingElement.getTextContent());
-                        dataVirtualHardDiskInstance.setHostCaching(hostCachingInstance);
-                    }
-                    
-                    NodeList elements67 = dataVirtualHardDisksElement.getElementsByTagName("DiskLabel");
-                    Element diskLabelElement = elements67.getLength() > 0 ? ((Element)elements67.item(0)) : null;
-                    if (diskLabelElement != null)
-                    {
-                        String diskLabelInstance;
-                        diskLabelInstance = diskLabelElement.getTextContent();
-                        dataVirtualHardDiskInstance.setDiskLabel(diskLabelInstance);
-                    }
-                    
-                    NodeList elements68 = dataVirtualHardDisksElement.getElementsByTagName("DiskName");
-                    Element diskNameElement = elements68.getLength() > 0 ? ((Element)elements68.item(0)) : null;
-                    if (diskNameElement != null)
-                    {
-                        String diskNameInstance;
-                        diskNameInstance = diskNameElement.getTextContent();
-                        dataVirtualHardDiskInstance.setDiskName(diskNameInstance);
-                    }
-                    
-                    NodeList elements69 = dataVirtualHardDisksElement.getElementsByTagName("Lun");
-                    Element lunElement = elements69.getLength() > 0 ? ((Element)elements69.item(0)) : null;
-                    if (lunElement != null && (lunElement.getTextContent() != null && lunElement.getTextContent().isEmpty() != true) == false)
-                    {
-                        int lunInstance;
-                        lunInstance = Integer.parseInt(lunElement.getTextContent());
-                        dataVirtualHardDiskInstance.setLogicalUnitNumber(lunInstance);
-                    }
-                    
-                    NodeList elements70 = dataVirtualHardDisksElement.getElementsByTagName("LogicalDiskSizeInGB");
-                    Element logicalDiskSizeInGBElement = elements70.getLength() > 0 ? ((Element)elements70.item(0)) : null;
-                    if (logicalDiskSizeInGBElement != null)
-                    {
-                        int logicalDiskSizeInGBInstance;
-                        logicalDiskSizeInGBInstance = Integer.parseInt(logicalDiskSizeInGBElement.getTextContent());
-                        dataVirtualHardDiskInstance.setLogicalDiskSizeInGB(logicalDiskSizeInGBInstance);
-                    }
-                    
-                    NodeList elements71 = dataVirtualHardDisksElement.getElementsByTagName("MediaLink");
-                    Element mediaLinkElement = elements71.getLength() > 0 ? ((Element)elements71.item(0)) : null;
-                    if (mediaLinkElement != null)
-                    {
-                        URI mediaLinkInstance;
-                        mediaLinkInstance = new URI(mediaLinkElement.getTextContent());
-                        dataVirtualHardDiskInstance.setMediaLink(mediaLinkInstance);
-                    }
-                }
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            NodeList elements72 = persistentVMRoleElement.getElementsByTagName("OSVirtualHardDisk");
-            Element oSVirtualHardDiskElement = elements72.getLength() > 0 ? ((Element)elements72.item(0)) : null;
-            if (oSVirtualHardDiskElement != null)
+            if (shouldTrace)
             {
-                OSVirtualHardDisk oSVirtualHardDiskInstance = new OSVirtualHardDisk();
-                result.setOSVirtualHardDisk(oSVirtualHardDiskInstance);
-                
-                NodeList elements73 = oSVirtualHardDiskElement.getElementsByTagName("HostCaching");
-                Element hostCachingElement2 = elements73.getLength() > 0 ? ((Element)elements73.item(0)) : null;
-                if (hostCachingElement2 != null && (hostCachingElement2.getTextContent() != null && hostCachingElement2.getTextContent().isEmpty() != true) == false)
-                {
-                    VirtualHardDiskHostCaching hostCachingInstance2;
-                    hostCachingInstance2 = VirtualHardDiskHostCaching.valueOf(hostCachingElement2.getTextContent());
-                    oSVirtualHardDiskInstance.setHostCaching(hostCachingInstance2);
-                }
-                
-                NodeList elements74 = oSVirtualHardDiskElement.getElementsByTagName("DiskLabel");
-                Element diskLabelElement2 = elements74.getLength() > 0 ? ((Element)elements74.item(0)) : null;
-                if (diskLabelElement2 != null)
-                {
-                    String diskLabelInstance2;
-                    diskLabelInstance2 = diskLabelElement2.getTextContent();
-                    oSVirtualHardDiskInstance.setDiskLabel(diskLabelInstance2);
-                }
-                
-                NodeList elements75 = oSVirtualHardDiskElement.getElementsByTagName("DiskName");
-                Element diskNameElement2 = elements75.getLength() > 0 ? ((Element)elements75.item(0)) : null;
-                if (diskNameElement2 != null)
-                {
-                    String diskNameInstance2;
-                    diskNameInstance2 = diskNameElement2.getTextContent();
-                    oSVirtualHardDiskInstance.setDiskName(diskNameInstance2);
-                }
-                
-                NodeList elements76 = oSVirtualHardDiskElement.getElementsByTagName("MediaLink");
-                Element mediaLinkElement2 = elements76.getLength() > 0 ? ((Element)elements76.item(0)) : null;
-                if (mediaLinkElement2 != null)
-                {
-                    URI mediaLinkInstance2;
-                    mediaLinkInstance2 = new URI(mediaLinkElement2.getTextContent());
-                    oSVirtualHardDiskInstance.setMediaLink(mediaLinkInstance2);
-                }
-                
-                NodeList elements77 = oSVirtualHardDiskElement.getElementsByTagName("SourceImageName");
-                Element sourceImageNameElement = elements77.getLength() > 0 ? ((Element)elements77.item(0)) : null;
-                if (sourceImageNameElement != null)
-                {
-                    String sourceImageNameInstance;
-                    sourceImageNameInstance = sourceImageNameElement.getTextContent();
-                    oSVirtualHardDiskInstance.setSourceImageName(sourceImageNameInstance);
-                }
-                
-                NodeList elements78 = oSVirtualHardDiskElement.getElementsByTagName("OS");
-                Element osElement = elements78.getLength() > 0 ? ((Element)elements78.item(0)) : null;
-                if (osElement != null)
-                {
-                    String osInstance;
-                    osInstance = osElement.getTextContent();
-                    oSVirtualHardDiskInstance.setOperatingSystem(osInstance);
-                }
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
             }
         }
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-        {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
-        }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -5381,6 +5928,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * @param serviceName The name of your service.
     * @param deploymentName The name of your deployment.
     * @param virtualMachineName The name of the virtual machine.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return The Download RDP file operation response.
     */
     @Override
@@ -5424,44 +5975,54 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            VirtualMachineGetRemoteDesktopFileResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new VirtualMachineGetRemoteDesktopFileResponse();
+            result.setRemoteDesktopFile(StreamUtils.toString(responseContent).getBytes("UTF-8"));
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        VirtualMachineGetRemoteDesktopFileResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new VirtualMachineGetRemoteDesktopFileResponse();
-        result.setRemoteDesktopFile(StreamUtils.toString(responseContent).getBytes("UTF-8"));
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -5502,6 +6063,18 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * @param serviceName The name of your service.
     * @param deploymentName The name of your deployment.
     * @param virtualMachineName The name of the virtual machine to restart.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -5551,14 +6124,26 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;
@@ -5612,6 +6197,18 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * @param deploymentName The name of your deployment.
     * @param virtualMachineName The name of the virtual machine to shutdown.
     * @param parameters The parameters for the shutdown vm operation.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -5662,14 +6259,26 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;
@@ -5719,6 +6328,18 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * @param deploymentName The name of your deployment.
     * @param parameters The set of virtual machine roles to shutdown and their
     * post shutdown state.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -5768,14 +6389,26 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;
@@ -5827,6 +6460,18 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * @param serviceName The name of your service.
     * @param deploymentName The name of your deployment.
     * @param virtualMachineName The name of the virtual machine to start.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -5876,14 +6521,26 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;
@@ -5931,6 +6588,18 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * @param serviceName The name of your service.
     * @param deploymentName The name of your deployment.
     * @param parameters The set of virtual machine roles to start.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -5980,14 +6649,26 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;
@@ -6045,6 +6726,30 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * @param virtualMachineName The name of your virtual machine.
     * @param parameters Parameters supplied to the Update Virtual Machine
     * operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -6056,7 +6761,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse update(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException, URISyntaxException, ParseException, InterruptedException, ExecutionException, ServiceException
+    public ComputeOperationStatusResponse update(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException, ParseException, InterruptedException, ExecutionException, ServiceException
     {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
@@ -6095,14 +6800,26 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;
@@ -6158,6 +6875,18 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * @param deploymentName The name of your deployment.
     * @param parameters Parameters supplied to the Update Load Balanced
     * Endpoint Set operation.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -6207,14 +6936,26 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             
             if (result.getStatus() != OperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;

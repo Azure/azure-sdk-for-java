@@ -36,15 +36,23 @@ public class GatewayConnectDisconnectOrTestParameters
     * Required if operation is set to Test; otherwise not used. Specifies the
     * IP address of the target local network site with which the gateway will
     * test connectivity.
+    * @return The IPAddress value.
     */
-    public InetAddress getIPAddress() { return this.iPAddress; }
+    public InetAddress getIPAddress()
+    {
+        return this.iPAddress;
+    }
     
     /**
     * Required if operation is set to Test; otherwise not used. Specifies the
     * IP address of the target local network site with which the gateway will
     * test connectivity.
+    * @param iPAddressValue The IPAddress value.
     */
-    public void setIPAddress(InetAddress iPAddress) { this.iPAddress = iPAddress; }
+    public void setIPAddress(final InetAddress iPAddressValue)
+    {
+        this.iPAddress = iPAddressValue;
+    }
     
     private GatewayConnectionUpdateOperation operation;
     
@@ -53,23 +61,22 @@ public class GatewayConnectDisconnectOrTestParameters
     * set to Connect, Disconnect or Test to connect to a local network,
     * disconnect from a local network, or test the gateway’s connection to a
     * local network site.
+    * @return The Operation value.
     */
-    public GatewayConnectionUpdateOperation getOperation() { return this.operation; }
+    public GatewayConnectionUpdateOperation getOperation()
+    {
+        return this.operation;
+    }
     
     /**
     * Required. Specifies the operation to perform on the connection. Can be
     * set to Connect, Disconnect or Test to connect to a local network,
     * disconnect from a local network, or test the gateway’s connection to a
     * local network site.
+    * @param operationValue The Operation value.
     */
-    public void setOperation(GatewayConnectionUpdateOperation operation) { this.operation = operation; }
-    
-    /**
-    * Initializes a new instance of the
-    * GatewayConnectDisconnectOrTestParameters class.
-    *
-    */
-    public GatewayConnectDisconnectOrTestParameters()
+    public void setOperation(final GatewayConnectionUpdateOperation operationValue)
     {
+        this.operation = operationValue;
     }
 }

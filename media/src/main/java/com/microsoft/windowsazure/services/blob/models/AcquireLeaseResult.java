@@ -17,42 +17,49 @@ package com.microsoft.windowsazure.services.blob.models;
 import com.microsoft.windowsazure.services.blob.BlobContract;
 
 /**
- * A wrapper class for the response returned from a Blob Service REST API Lease Blob operation. This is returned by
- * calls to implementations of {@link BlobContract#acquireLease(String, String)},
+ * A wrapper class for the response returned from a Blob Service REST API Lease
+ * Blob operation. This is returned by calls to implementations of
+ * {@link BlobContract#acquireLease(String, String)},
  * {@link BlobContract#acquireLease(String, String, AcquireLeaseOptions)},
- * {@link BlobContract#renewLease(String, String, String, BlobServiceOptions)}, and
- * {@link BlobContract#renewLease(String, String, String)}.
+ * {@link BlobContract#renewLease(String, String, String, BlobServiceOptions)},
+ * and {@link BlobContract#renewLease(String, String, String)}.
  * <p>
- * See the <a href="http://msdn.microsoft.com/en-us/library/windowsazure/ee691972.aspx">Lease Blob</a> documentation on
- * MSDN for details of the underlying Blob Service REST API operation.
+ * See the <a
+ * href="http://msdn.microsoft.com/en-us/library/windowsazure/ee691972.aspx"
+ * >Lease Blob</a> documentation on MSDN for details of the underlying Blob
+ * Service REST API operation.
  */
-public class AcquireLeaseResult {
+public class AcquireLeaseResult
+{
     private String leaseId;
 
     /**
      * Gets the lease ID of the blob.
      * <p>
-     * This value is used when updating or deleting a blob with an active lease, and when renewing or releasing the
-     * lease.
+     * This value is used when updating or deleting a blob with an active lease,
+     * and when renewing or releasing the lease.
      * 
-     * @return
-     *         A {@link String} containing the server-assigned lease ID for the blob.
+     * @return A {@link String} containing the server-assigned lease ID for the
+     *         blob.
      */
-    public String getLeaseId() {
+    public String getLeaseId()
+    {
         return leaseId;
     }
 
     /**
-     * Reserved for internal use. Sets the lease ID of the blob from the <strong>x-ms-lease-id</strong> header of the
-     * response.
+     * Reserved for internal use. Sets the lease ID of the blob from the
+     * <strong>x-ms-lease-id</strong> header of the response.
      * <p>
-     * This method is invoked by the API to set the value from the Blob Service REST API operation response returned by
-     * the server.
+     * This method is invoked by the API to set the value from the Blob Service
+     * REST API operation response returned by the server.
      * 
      * @param leaseId
-     *            A {@link String} containing the server-assigned lease ID for the blob.
+     *            A {@link String} containing the server-assigned lease ID for
+     *            the blob.
      */
-    public void setLeaseId(String leaseId) {
+    public void setLeaseId(String leaseId)
+    {
         this.leaseId = leaseId;
     }
 }

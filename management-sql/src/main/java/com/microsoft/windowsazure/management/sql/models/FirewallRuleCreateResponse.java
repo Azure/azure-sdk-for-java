@@ -35,67 +35,99 @@ public class FirewallRuleCreateResponse extends OperationResponse
     
     /**
     * Gets or sets the ending IP address applied to this rule.
+    * @return The EndIPAddress value.
     */
-    public InetAddress getEndIPAddress() { return this.endIPAddress; }
+    public InetAddress getEndIPAddress()
+    {
+        return this.endIPAddress;
+    }
     
     /**
     * Gets or sets the ending IP address applied to this rule.
+    * @param endIPAddressValue The EndIPAddress value.
     */
-    public void setEndIPAddress(InetAddress endIPAddress) { this.endIPAddress = endIPAddress; }
+    public void setEndIPAddress(final InetAddress endIPAddressValue)
+    {
+        this.endIPAddress = endIPAddressValue;
+    }
     
     private String name;
     
     /**
     * Gets or sets the name of the Firewall Rule.
+    * @return The Name value.
     */
-    public String getName() { return this.name; }
+    public String getName()
+    {
+        return this.name;
+    }
     
     /**
     * Gets or sets the name of the Firewall Rule.
+    * @param nameValue The Name value.
     */
-    public void setName(String name) { this.name = name; }
+    public void setName(final String nameValue)
+    {
+        this.name = nameValue;
+    }
     
     private InetAddress startIPAddress;
     
     /**
     * Gets or sets the beginning IP address applied to this rule.
+    * @return The StartIPAddress value.
     */
-    public InetAddress getStartIPAddress() { return this.startIPAddress; }
+    public InetAddress getStartIPAddress()
+    {
+        return this.startIPAddress;
+    }
     
     /**
     * Gets or sets the beginning IP address applied to this rule.
+    * @param startIPAddressValue The StartIPAddress value.
     */
-    public void setStartIPAddress(InetAddress startIPAddress) { this.startIPAddress = startIPAddress; }
+    public void setStartIPAddress(final InetAddress startIPAddressValue)
+    {
+        this.startIPAddress = startIPAddressValue;
+    }
     
     private String state;
     
     /**
     * Gets or sets the state of the rule.
+    * @return The State value.
     */
-    public String getState() { return this.state; }
+    public String getState()
+    {
+        return this.state;
+    }
     
     /**
     * Gets or sets the state of the rule.
+    * @param stateValue The State value.
     */
-    public void setState(String state) { this.state = state; }
+    public void setState(final String stateValue)
+    {
+        this.state = stateValue;
+    }
     
     private String type;
     
     /**
     * Gets or sets the type of resource.
+    * @return The Type value.
     */
-    public String getType() { return this.type; }
+    public String getType()
+    {
+        return this.type;
+    }
     
     /**
     * Gets or sets the type of resource.
+    * @param typeValue The Type value.
     */
-    public void setType(String type) { this.type = type; }
-    
-    /**
-    * Initializes a new instance of the FirewallRuleCreateResponse class.
-    *
-    */
-    public FirewallRuleCreateResponse()
+    public void setType(final String typeValue)
     {
+        this.type = typeValue;
     }
 }

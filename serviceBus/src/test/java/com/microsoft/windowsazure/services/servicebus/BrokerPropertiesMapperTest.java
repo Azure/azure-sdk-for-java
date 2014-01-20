@@ -27,21 +27,31 @@ import org.junit.Test;
 import com.microsoft.windowsazure.services.servicebus.implementation.BrokerProperties;
 import com.microsoft.windowsazure.services.servicebus.implementation.BrokerPropertiesMapper;
 
-public class BrokerPropertiesMapperTest {
+public class BrokerPropertiesMapperTest
+{
 
-    private final String testBrokerPropertiesString = "{" + "\"CorrelationId\": \"corid\","
-            + "\"SessionId\": \"sesid\"," + "\"DeliveryCount\": 5,"
-            + "\"LockedUntilUtc\": \" Fri, 14 Oct 2011 12:34:56 GMT\"," + "\"LockToken\": \"loctok\","
-            + "\"MessageId\": \"mesid\"," + "\"Label\": \"lab\"," + "\"ReplyTo\": \"repto\","
-            + "\"SequenceNumber\": 7," + "\"TimeToLive\": 8.123," + "\"To\": \"to\","
+    private final String testBrokerPropertiesString = "{"
+            + "\"CorrelationId\": \"corid\","
+            + "\"SessionId\": \"sesid\","
+            + "\"DeliveryCount\": 5,"
+            + "\"LockedUntilUtc\": \" Fri, 14 Oct 2011 12:34:56 GMT\","
+            + "\"LockToken\": \"loctok\","
+            + "\"MessageId\": \"mesid\","
+            + "\"Label\": \"lab\","
+            + "\"ReplyTo\": \"repto\","
+            + "\"SequenceNumber\": 7,"
+            + "\"TimeToLive\": 8.123,"
+            + "\"To\": \"to\","
             + "\"ScheduledEnqueueTimeUtc\": \" Sun, 06 Nov 1994 08:49:37 GMT\","
-            + "\"ReplyToSessionId\": \"reptosesid\"," + "\"MessageLocation\": \"mesloc\","
+            + "\"ReplyToSessionId\": \"reptosesid\","
+            + "\"MessageLocation\": \"mesloc\","
             + "\"LockLocation\": \"locloc\"" + "}";
 
     private static Date schedTimeUtc, lockedUntilUtc;
 
     @BeforeClass
-    public static void setup() {
+    public static void setup()
+    {
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
         calendar.set(1994, 10, 6, 8, 49, 37);
         schedTimeUtc = calendar.getTime();
@@ -53,12 +63,14 @@ public class BrokerPropertiesMapperTest {
     }
 
     @Test
-    public void jsonStringMapsToBrokerPropertiesObject() {
-        // Arrange 
+    public void jsonStringMapsToBrokerPropertiesObject()
+    {
+        // Arrange
         BrokerPropertiesMapper mapper = new BrokerPropertiesMapper();
 
         // Act
-        BrokerProperties properties = mapper.fromString("{\"DeliveryCount\":5,\"MessageId\":\"something\"}");
+        BrokerProperties properties = mapper
+                .fromString("{\"DeliveryCount\":5,\"MessageId\":\"something\"}");
 
         // Assert
         assertNotNull(properties);
@@ -67,8 +79,9 @@ public class BrokerPropertiesMapperTest {
     }
 
     @Test
-    public void nonDefaultPropertiesMapToJsonString() {
-        // Arrange 
+    public void nonDefaultPropertiesMapToJsonString()
+    {
+        // Arrange
         BrokerPropertiesMapper mapper = new BrokerPropertiesMapper();
 
         // Act
@@ -83,18 +96,22 @@ public class BrokerPropertiesMapperTest {
     }
 
     @Test
-    public void deserializingAllPossibleValues() {
-        // Arrange 
+    public void deserializingAllPossibleValues()
+    {
+        // Arrange
         BrokerPropertiesMapper mapper = new BrokerPropertiesMapper();
 
         // Act
-        BrokerProperties properties = mapper.fromString(testBrokerPropertiesString);
+        BrokerProperties properties = mapper
+                .fromString(testBrokerPropertiesString);
 
         // Assert
         assertNotNull(properties);
 
-        long lockedUntilDelta = properties.getLockedUntilUtc().getTime() - lockedUntilUtc.getTime();
-        long schedTimeDelta = properties.getScheduledEnqueueTimeUtc().getTime() - schedTimeUtc.getTime();
+        long lockedUntilDelta = properties.getLockedUntilUtc().getTime()
+                - lockedUntilUtc.getTime();
+        long schedTimeDelta = properties.getScheduledEnqueueTimeUtc().getTime()
+                - schedTimeUtc.getTime();
 
         assertEquals("corid", properties.getCorrelationId());
         assertEquals("sesid", properties.getSessionId());
@@ -114,8 +131,9 @@ public class BrokerPropertiesMapperTest {
     }
 
     @Test
-    public void missingDatesDeserializeAsNull() {
-        // Arrange 
+    public void missingDatesDeserializeAsNull()
+    {
+        // Arrange
         BrokerPropertiesMapper mapper = new BrokerPropertiesMapper();
 
         // Act
@@ -127,51 +145,60 @@ public class BrokerPropertiesMapperTest {
     }
 
     @Test
-    public void deserializeDateInKrKrLocaleCorrectly() {
-        // Arrange 
+    public void deserializeDateInKrKrLocaleCorrectly()
+    {
+        // Arrange
         BrokerPropertiesMapper mapper = new BrokerPropertiesMapper();
         Locale defaultLocale = Locale.getDefault();
         Locale.setDefault(Locale.KOREA);
 
-        // Act 
-        BrokerProperties brokerProperties = mapper.fromString(testBrokerPropertiesString);
+        // Act
+        BrokerProperties brokerProperties = mapper
+                .fromString(testBrokerPropertiesString);
         Locale.setDefault(defaultLocale);
 
         // Assert
-        long lockedUntilDelta = brokerProperties.getLockedUntilUtc().getTime() - lockedUntilUtc.getTime();
+        long lockedUntilDelta = brokerProperties.getLockedUntilUtc().getTime()
+                - lockedUntilUtc.getTime();
         assertTrue(Math.abs(lockedUntilDelta) < 2000);
     }
 
     @Test
-    public void deserializeDateInEnUsLocaleCorrectly() {
-        // Arrange 
+    public void deserializeDateInEnUsLocaleCorrectly()
+    {
+        // Arrange
         BrokerPropertiesMapper mapper = new BrokerPropertiesMapper();
         Locale defaultLocale = Locale.getDefault();
         Locale.setDefault(Locale.US);
 
-        // Act 
-        BrokerProperties brokerProperties = mapper.fromString(testBrokerPropertiesString);
+        // Act
+        BrokerProperties brokerProperties = mapper
+                .fromString(testBrokerPropertiesString);
         Locale.setDefault(defaultLocale);
 
         // Assert
-        long lockedUntilDelta = brokerProperties.getLockedUntilUtc().getTime() - lockedUntilUtc.getTime();
+        long lockedUntilDelta = brokerProperties.getLockedUntilUtc().getTime()
+                - lockedUntilUtc.getTime();
         assertTrue(Math.abs(lockedUntilDelta) < 2000);
 
     }
 
     @Test
-    public void deserializeDateInZhCnLocaleCorrectly() {
-        // Arrange 
+    public void deserializeDateInZhCnLocaleCorrectly()
+    {
+        // Arrange
         BrokerPropertiesMapper mapper = new BrokerPropertiesMapper();
         Locale defaultLocale = Locale.getDefault();
         Locale.setDefault(Locale.CHINA);
 
-        // Act 
-        BrokerProperties brokerProperties = mapper.fromString(testBrokerPropertiesString);
+        // Act
+        BrokerProperties brokerProperties = mapper
+                .fromString(testBrokerPropertiesString);
         Locale.setDefault(defaultLocale);
 
         // Assert
-        long lockedUntilDelta = brokerProperties.getLockedUntilUtc().getTime() - lockedUntilUtc.getTime();
+        long lockedUntilDelta = brokerProperties.getLockedUntilUtc().getTime()
+                - lockedUntilUtc.getTime();
         assertTrue(Math.abs(lockedUntilDelta) < 2000);
     }
 }

@@ -22,12 +22,13 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
 /**
- * This type maps the XML returned in the odata ATOM serialization
- * for Asset entities.
+ * This type maps the XML returned in the odata ATOM serialization for Asset
+ * entities.
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ProgramType implements MediaServiceDTO {
+public class ProgramType implements MediaServiceDTO
+{
 
     /** The id. */
     @XmlElement(name = "Id", namespace = Constants.ODATA_DATA_NS)
@@ -78,7 +79,8 @@ public class ProgramType implements MediaServiceDTO {
      * 
      * @return the id
      */
-    public String getId() {
+    public String getId()
+    {
         return this.id;
     }
 
@@ -89,7 +91,8 @@ public class ProgramType implements MediaServiceDTO {
      *            the id
      * @return the channel type
      */
-    public ProgramType setId(String id) {
+    public ProgramType setId(String id)
+    {
         this.id = id;
         return this;
     }
@@ -99,7 +102,8 @@ public class ProgramType implements MediaServiceDTO {
      * 
      * @return the name
      */
-    public String getName() {
+    public String getName()
+    {
         return name;
     }
 
@@ -110,7 +114,8 @@ public class ProgramType implements MediaServiceDTO {
      *            the name to set
      * @return the channel type
      */
-    public ProgramType setName(String name) {
+    public ProgramType setName(String name)
+    {
         this.name = name;
         return this;
     }
@@ -120,7 +125,8 @@ public class ProgramType implements MediaServiceDTO {
      * 
      * @return the description
      */
-    public String getDescription() {
+    public String getDescription()
+    {
         return description;
     }
 
@@ -131,7 +137,8 @@ public class ProgramType implements MediaServiceDTO {
      *            the description
      * @return the channel type
      */
-    public ProgramType setDescription(String description) {
+    public ProgramType setDescription(String description)
+    {
         this.description = description;
         return this;
     }
@@ -141,7 +148,8 @@ public class ProgramType implements MediaServiceDTO {
      * 
      * @return the created
      */
-    public Date getCreated() {
+    public Date getCreated()
+    {
         return created;
     }
 
@@ -152,7 +160,8 @@ public class ProgramType implements MediaServiceDTO {
      *            the created
      * @return the channel type
      */
-    public ProgramType setCreated(Date created) {
+    public ProgramType setCreated(Date created)
+    {
         this.created = created;
         return this;
     }
@@ -162,7 +171,8 @@ public class ProgramType implements MediaServiceDTO {
      * 
      * @return the lastModified
      */
-    public Date getLastModified() {
+    public Date getLastModified()
+    {
         return lastModified;
     }
 
@@ -173,7 +183,8 @@ public class ProgramType implements MediaServiceDTO {
      *            the last modified
      * @return the channel type
      */
-    public ProgramType setLastModified(Date lastModified) {
+    public ProgramType setLastModified(Date lastModified)
+    {
         this.lastModified = lastModified;
         return this;
     }
@@ -185,7 +196,8 @@ public class ProgramType implements MediaServiceDTO {
      *            the state
      * @return the channel type
      */
-    public ProgramType setState(String state) {
+    public ProgramType setState(String state)
+    {
         this.state = state;
         return this;
     }
@@ -195,7 +207,8 @@ public class ProgramType implements MediaServiceDTO {
      * 
      * @return the state
      */
-    public String getState() {
+    public String getState()
+    {
         return this.state;
     }
 
@@ -204,7 +217,8 @@ public class ProgramType implements MediaServiceDTO {
      * 
      * @return the channel id
      */
-    public String getChannelId() {
+    public String getChannelId()
+    {
         return this.channelId;
     }
 
@@ -213,7 +227,8 @@ public class ProgramType implements MediaServiceDTO {
      * 
      * @return the asset id
      */
-    public String getAssetId() {
+    public String getAssetId()
+    {
         return this.assetId;
     }
 
@@ -222,7 +237,8 @@ public class ProgramType implements MediaServiceDTO {
      * 
      * @return the dvr window length seconds
      */
-    public int getDvrWindowLengthSeconds() {
+    public int getDvrWindowLengthSeconds()
+    {
         return this.dvrWindowLengthSeconds;
     }
 
@@ -231,7 +247,8 @@ public class ProgramType implements MediaServiceDTO {
      * 
      * @return the estimated duration seconds
      */
-    public int getEstimatedDurationSeconds() {
+    public int getEstimatedDurationSeconds()
+    {
         return this.estimatedDurationSeconds;
     }
 
@@ -240,7 +257,8 @@ public class ProgramType implements MediaServiceDTO {
      * 
      * @return true, if is enable archive
      */
-    public boolean isEnableArchive() {
+    public boolean isEnableArchive()
+    {
         return this.enableArchive;
     }
 
@@ -250,7 +268,8 @@ public class ProgramType implements MediaServiceDTO {
      * @param enableArchive
      *            the new enable archive
      */
-    public void setEnableArchive(boolean enableArchive) {
+    public void setEnableArchive(boolean enableArchive)
+    {
         this.enableArchive = enableArchive;
     }
 
@@ -260,7 +279,8 @@ public class ProgramType implements MediaServiceDTO {
      * @param assetId
      *            the new asset id
      */
-    public void setAssetId(String assetId) {
+    public void setAssetId(String assetId)
+    {
         this.assetId = assetId;
     }
 
@@ -270,7 +290,8 @@ public class ProgramType implements MediaServiceDTO {
      * @param channelId
      *            the new channel id
      */
-    public void setChannelId(String channelId) {
+    public void setChannelId(String channelId)
+    {
         this.channelId = channelId;
     }
 
@@ -280,7 +301,8 @@ public class ProgramType implements MediaServiceDTO {
      * @param estimatedDurationSeconds
      *            the new estimated duration seconds
      */
-    public void setEstimatedDurationSeconds(int estimatedDurationSeconds) {
+    public void setEstimatedDurationSeconds(int estimatedDurationSeconds)
+    {
         this.estimatedDurationSeconds = estimatedDurationSeconds;
     }
 
@@ -290,7 +312,8 @@ public class ProgramType implements MediaServiceDTO {
      * @param dvrWindowLengthSeconds
      *            the new dvr window length seconds
      */
-    public void setDvrWindowLengthSeconds(int dvrWindowLengthSeconds) {
+    public void setDvrWindowLengthSeconds(int dvrWindowLengthSeconds)
+    {
         this.dvrWindowLengthSeconds = dvrWindowLengthSeconds;
     }
 }

@@ -32,45 +32,61 @@ public class RuleMetricDataSource extends RuleDataSource
     
     /**
     * Metric name.
+    * @return The MetricName value.
     */
-    public String getMetricName() { return this.metricName; }
+    public String getMetricName()
+    {
+        return this.metricName;
+    }
     
     /**
     * Metric name.
+    * @param metricNameValue The MetricName value.
     */
-    public void setMetricName(String metricName) { this.metricName = metricName; }
+    public void setMetricName(final String metricNameValue)
+    {
+        this.metricName = metricNameValue;
+    }
     
     private String metricNamespace;
     
     /**
     * Metric namespace. When creating a rule on endpoint monitoring metrics,
     * WindowsAzure.Availability namespace is required.
+    * @return The MetricNamespace value.
     */
-    public String getMetricNamespace() { return this.metricNamespace; }
+    public String getMetricNamespace()
+    {
+        return this.metricNamespace;
+    }
     
     /**
     * Metric namespace. When creating a rule on endpoint monitoring metrics,
     * WindowsAzure.Availability namespace is required.
+    * @param metricNamespaceValue The MetricNamespace value.
     */
-    public void setMetricNamespace(String metricNamespace) { this.metricNamespace = metricNamespace; }
+    public void setMetricNamespace(final String metricNamespaceValue)
+    {
+        this.metricNamespace = metricNamespaceValue;
+    }
     
     private String resourceId;
     
     /**
     * Metric resource id.
+    * @return The ResourceId value.
     */
-    public String getResourceId() { return this.resourceId; }
+    public String getResourceId()
+    {
+        return this.resourceId;
+    }
     
     /**
     * Metric resource id.
+    * @param resourceIdValue The ResourceId value.
     */
-    public void setResourceId(String resourceId) { this.resourceId = resourceId; }
-    
-    /**
-    * Initializes a new instance of the RuleMetricDataSource class.
-    *
-    */
-    public RuleMetricDataSource()
+    public void setResourceId(final String resourceIdValue)
     {
+        this.resourceId = resourceIdValue;
     }
 }

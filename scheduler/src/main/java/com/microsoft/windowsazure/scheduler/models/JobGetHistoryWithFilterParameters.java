@@ -34,19 +34,17 @@ public class JobGetHistoryWithFilterParameters extends JobGetHistoryParameters
     * Filter the job history to have it only return job execution attempts
     * having a particular Status, 'completed' or 'failed'.
     */
-    public JobHistoryStatus getStatus() { return this.status; }
+    public JobHistoryStatus getStatus()
+    {
+        return this.status;
+    }
     
     /**
     * Filter the job history to have it only return job execution attempts
     * having a particular Status, 'completed' or 'failed'.
     */
-    public void setStatus(JobHistoryStatus status) { this.status = status; }
-    
-    /**
-    * Initializes a new instance of the JobGetHistoryWithFilterParameters class.
-    *
-    */
-    public JobGetHistoryWithFilterParameters()
+    public void setStatus(JobHistoryStatus status)
     {
+        this.status = status;
     }
 }

@@ -35,42 +35,52 @@ public class JobCreateParameters
     /**
     * Action to invoke for the job.
     */
-    public JobAction getAction() { return this.action; }
+    public JobAction getAction()
+    {
+        return this.action;
+    }
     
     /**
     * Action to invoke for the job.
     */
-    public void setAction(JobAction action) { this.action = action; }
+    public void setAction(JobAction action)
+    {
+        this.action = action;
+    }
     
     private JobRecurrence recurrence;
     
     /**
     * Recurrence schedule for the job.
     */
-    public JobRecurrence getRecurrence() { return this.recurrence; }
+    public JobRecurrence getRecurrence()
+    {
+        return this.recurrence;
+    }
     
     /**
     * Recurrence schedule for the job.
     */
-    public void setRecurrence(JobRecurrence recurrence) { this.recurrence = recurrence; }
+    public void setRecurrence(JobRecurrence recurrence)
+    {
+        this.recurrence = recurrence;
+    }
     
     private Calendar startTime;
     
     /**
     * Start time for the job.  Defined as ISO-8601.
     */
-    public Calendar getStartTime() { return this.startTime; }
+    public Calendar getStartTime()
+    {
+        return this.startTime;
+    }
     
     /**
     * Start time for the job.  Defined as ISO-8601.
     */
-    public void setStartTime(Calendar startTime) { this.startTime = startTime; }
-    
-    /**
-    * Initializes a new instance of the JobCreateParameters class.
-    *
-    */
-    public JobCreateParameters()
+    public void setStartTime(Calendar startTime)
     {
+        this.startTime = startTime;
     }
 }

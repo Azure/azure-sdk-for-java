@@ -35,25 +35,41 @@ public class GatewayListSupportedDevicesResponse extends OperationResponse
     
     /**
     * The set of supported vendors.
+    * @return The Vendors value.
     */
-    public ArrayList<GatewayListSupportedDevicesResponse.Vendor> getVendors() { return this.vendors; }
+    public ArrayList<GatewayListSupportedDevicesResponse.Vendor> getVendors()
+    {
+        return this.vendors;
+    }
     
     /**
     * The set of supported vendors.
+    * @param vendorsValue The Vendors value.
     */
-    public void setVendors(ArrayList<GatewayListSupportedDevicesResponse.Vendor> vendors) { this.vendors = vendors; }
+    public void setVendors(final ArrayList<GatewayListSupportedDevicesResponse.Vendor> vendorsValue)
+    {
+        this.vendors = vendorsValue;
+    }
     
     private String version;
     
     /**
     * The version for this device configuration list.
+    * @return The Version value.
     */
-    public String getVersion() { return this.version; }
+    public String getVersion()
+    {
+        return this.version;
+    }
     
     /**
     * The version for this device configuration list.
+    * @param versionValue The Version value.
     */
-    public void setVersion(String version) { this.version = version; }
+    public void setVersion(final String versionValue)
+    {
+        this.version = versionValue;
+    }
     
     /**
     * Initializes a new instance of the GatewayListSupportedDevicesResponse
@@ -62,6 +78,7 @@ public class GatewayListSupportedDevicesResponse extends OperationResponse
     */
     public GatewayListSupportedDevicesResponse()
     {
+        super();
         this.vendors = new ArrayList<GatewayListSupportedDevicesResponse.Vendor>();
     }
     
@@ -71,20 +88,20 @@ public class GatewayListSupportedDevicesResponse extends OperationResponse
         
         /**
         * The name of the os family.
+        * @return The Name value.
         */
-        public String getName() { return this.name; }
+        public String getName()
+        {
+            return this.name;
+        }
         
         /**
         * The name of the os family.
+        * @param nameValue The Name value.
         */
-        public void setName(String name) { this.name = name; }
-        
-        /**
-        * Initializes a new instance of the OSFamily class.
-        *
-        */
-        public OSFamily()
+        public void setName(final String nameValue)
         {
+            this.name = nameValue;
         }
     }
     
@@ -97,25 +114,41 @@ public class GatewayListSupportedDevicesResponse extends OperationResponse
         
         /**
         * The platform name.
+        * @return The Name value.
         */
-        public String getName() { return this.name; }
+        public String getName()
+        {
+            return this.name;
+        }
         
         /**
         * The platform name.
+        * @param nameValue The Name value.
         */
-        public void setName(String name) { this.name = name; }
+        public void setName(final String nameValue)
+        {
+            this.name = nameValue;
+        }
         
         private ArrayList<GatewayListSupportedDevicesResponse.OSFamily> oSFamilies;
         
         /**
         * The supported OS Families for this platform.
+        * @return The OSFamilies value.
         */
-        public ArrayList<GatewayListSupportedDevicesResponse.OSFamily> getOSFamilies() { return this.oSFamilies; }
+        public ArrayList<GatewayListSupportedDevicesResponse.OSFamily> getOSFamilies()
+        {
+            return this.oSFamilies;
+        }
         
         /**
         * The supported OS Families for this platform.
+        * @param oSFamiliesValue The OSFamilies value.
         */
-        public void setOSFamilies(ArrayList<GatewayListSupportedDevicesResponse.OSFamily> oSFamilies) { this.oSFamilies = oSFamilies; }
+        public void setOSFamilies(final ArrayList<GatewayListSupportedDevicesResponse.OSFamily> oSFamiliesValue)
+        {
+            this.oSFamilies = oSFamiliesValue;
+        }
         
         /**
         * Initializes a new instance of the Platform class.
@@ -136,25 +169,41 @@ public class GatewayListSupportedDevicesResponse extends OperationResponse
         
         /**
         * The vendor name.
+        * @return The Name value.
         */
-        public String getName() { return this.name; }
+        public String getName()
+        {
+            return this.name;
+        }
         
         /**
         * The vendor name.
+        * @param nameValue The Name value.
         */
-        public void setName(String name) { this.name = name; }
+        public void setName(final String nameValue)
+        {
+            this.name = nameValue;
+        }
         
         private ArrayList<GatewayListSupportedDevicesResponse.Platform> platforms;
         
         /**
         * The supported platforms for the vendor.
+        * @return The Platforms value.
         */
-        public ArrayList<GatewayListSupportedDevicesResponse.Platform> getPlatforms() { return this.platforms; }
+        public ArrayList<GatewayListSupportedDevicesResponse.Platform> getPlatforms()
+        {
+            return this.platforms;
+        }
         
         /**
         * The supported platforms for the vendor.
+        * @param platformsValue The Platforms value.
         */
-        public void setPlatforms(ArrayList<GatewayListSupportedDevicesResponse.Platform> platforms) { this.platforms = platforms; }
+        public void setPlatforms(final ArrayList<GatewayListSupportedDevicesResponse.Platform> platformsValue)
+        {
+            this.platforms = platformsValue;
+        }
         
         /**
         * Initializes a new instance of the Vendor class.

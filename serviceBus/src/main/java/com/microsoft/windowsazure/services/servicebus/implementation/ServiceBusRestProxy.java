@@ -68,7 +68,8 @@ import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.WebResource.Builder;
 import com.sun.jersey.api.client.filter.ClientFilter;
 
-public class ServiceBusRestProxy implements ServiceBusContract {
+public class ServiceBusRestProxy implements ServiceBusContract
+{
 
     private Client channel;
     private final String uri;
@@ -79,8 +80,11 @@ public class ServiceBusRestProxy implements ServiceBusContract {
     ClientFilter[] filters;
 
     @Inject
-    public ServiceBusRestProxy(Client channel, WrapFilter authFilter, UserAgentFilter userAgentFilter,
-            ServiceBusConnectionSettings connectionSettings, BrokerPropertiesMapper mapper) {
+    public ServiceBusRestProxy(Client channel, WrapFilter authFilter,
+            UserAgentFilter userAgentFilter,
+            ServiceBusConnectionSettings connectionSettings,
+            BrokerPropertiesMapper mapper)
+    {
 
         this.channel = channel;
         this.filters = new ClientFilter[0];
@@ -91,7 +95,9 @@ public class ServiceBusRestProxy implements ServiceBusContract {
         channel.addFilter(new ClientFilterRequestAdapter(userAgentFilter));
     }
 
-    public ServiceBusRestProxy(Client channel, ClientFilter[] filters, String uri, BrokerPropertiesMapper mapper) {
+    public ServiceBusRestProxy(Client channel, ClientFilter[] filters,
+            String uri, BrokerPropertiesMapper mapper)
+    {
         this.channel = channel;
         this.filters = filters;
         this.uri = uri;
@@ -100,174 +106,225 @@ public class ServiceBusRestProxy implements ServiceBusContract {
     }
 
     @Override
-    public ServiceBusContract withFilter(ServiceFilter filter) {
+    public ServiceBusContract withFilter(ServiceFilter filter)
+    {
         ClientFilter[] newFilters = Arrays.copyOf(filters, filters.length + 1);
         newFilters[filters.length] = new ClientFilterAdapter(filter);
         return new ServiceBusRestProxy(channel, newFilters, uri, mapper);
     }
 
     @Override
-    public ServiceBusContract withRequestFilterFirst(ServiceRequestFilter serviceRequestFilter) {
+    public ServiceBusContract withRequestFilterFirst(
+            ServiceRequestFilter serviceRequestFilter)
+    {
         ClientFilter[] currentFilters = filters;
         ClientFilter[] newFilters = new ClientFilter[currentFilters.length + 1];
-        System.arraycopy(currentFilters, 0, newFilters, 1, currentFilters.length);
+        System.arraycopy(currentFilters, 0, newFilters, 1,
+                currentFilters.length);
         newFilters[0] = new ClientFilterRequestAdapter(serviceRequestFilter);
         return new ServiceBusRestProxy(channel, newFilters, uri, mapper);
     }
 
     @Override
-    public ServiceBusContract withRequestFilterLast(ServiceRequestFilter serviceRequestFilter) {
+    public ServiceBusContract withRequestFilterLast(
+            ServiceRequestFilter serviceRequestFilter)
+    {
         ClientFilter[] currentFilters = filters;
-        ClientFilter[] newFilters = Arrays.copyOf(currentFilters, currentFilters.length + 1);
-        newFilters[currentFilters.length] = new ClientFilterRequestAdapter(serviceRequestFilter);
+        ClientFilter[] newFilters = Arrays.copyOf(currentFilters,
+                currentFilters.length + 1);
+        newFilters[currentFilters.length] = new ClientFilterRequestAdapter(
+                serviceRequestFilter);
         return new ServiceBusRestProxy(channel, newFilters, uri, mapper);
     }
-    
+
     @Override
-    public ServiceBusContract withResponseFilterFirst(ServiceResponseFilter serviceResponseFilter) { 
+    public ServiceBusContract withResponseFilterFirst(
+            ServiceResponseFilter serviceResponseFilter)
+    {
         ClientFilter[] currentFilters = filters;
         ClientFilter[] newFilters = new ClientFilter[currentFilters.length + 1];
-        System.arraycopy(currentFilters, 0, newFilters, 1, currentFilters.length);
+        System.arraycopy(currentFilters, 0, newFilters, 1,
+                currentFilters.length);
         newFilters[0] = new ClientFilterResponseAdapter(serviceResponseFilter);
         return new ServiceBusRestProxy(channel, newFilters, uri, mapper);
     }
-    
+
     @Override
-    public ServiceBusContract withResponseFilterLast(ServiceResponseFilter serviceResponseFilter) {
+    public ServiceBusContract withResponseFilterLast(
+            ServiceResponseFilter serviceResponseFilter)
+    {
         ClientFilter[] currentFilters = filters;
-        ClientFilter[] newFilters = Arrays.copyOf(currentFilters, currentFilters.length + 1);
-        newFilters[currentFilters.length] = new ClientFilterResponseAdapter(serviceResponseFilter);
+        ClientFilter[] newFilters = Arrays.copyOf(currentFilters,
+                currentFilters.length + 1);
+        newFilters[currentFilters.length] = new ClientFilterResponseAdapter(
+                serviceResponseFilter);
         return new ServiceBusRestProxy(channel, newFilters, uri, mapper);
     }
-    
-    public Client getChannel() {
+
+    public Client getChannel()
+    {
         return channel;
     }
 
-    public void setChannel(Client channel) {
+    public void setChannel(Client channel)
+    {
         this.channel = channel;
     }
 
-    private WebResource getResource() {
-        WebResource resource = getChannel().resource(uri).queryParam("api-version", "2012-08");
-        for (ClientFilter filter : filters) {
+    private WebResource getResource()
+    {
+        WebResource resource = getChannel().resource(uri).queryParam(
+                "api-version", "2012-08");
+        for (ClientFilter filter : filters)
+        {
             resource.addFilter(filter);
         }
         return resource;
     }
 
     @Override
-    public void sendMessage(String path, BrokeredMessage message) {
-        Builder request = getResource().path(path).path("messages").getRequestBuilder();
+    public void sendMessage(String path, BrokeredMessage message)
+    {
+        Builder request = getResource().path(path).path("messages")
+                .getRequestBuilder();
 
         if (message.getContentType() != null)
             request = request.type(message.getContentType());
 
         if (message.getBrokerProperties() != null)
-            request = request.header("BrokerProperties", mapper.toString(message.getBrokerProperties()));
+            request = request.header("BrokerProperties",
+                    mapper.toString(message.getBrokerProperties()));
 
-        for (java.util.Map.Entry<String, Object> entry : message.getProperties().entrySet()) {
-            request.header(entry.getKey(), customPropertiesMapper.toString(entry.getValue()));
+        for (java.util.Map.Entry<String, Object> entry : message
+                .getProperties().entrySet())
+        {
+            request.header(entry.getKey(),
+                    customPropertiesMapper.toString(entry.getValue()));
         }
 
         request.post(message.getBody());
     }
 
     @Override
-    public void sendQueueMessage(String path, BrokeredMessage message) throws ServiceException {
+    public void sendQueueMessage(String path, BrokeredMessage message)
+            throws ServiceException
+    {
         sendMessage(path, message);
     }
 
     @Override
-    public ReceiveQueueMessageResult receiveQueueMessage(String queueName) throws ServiceException {
+    public ReceiveQueueMessageResult receiveQueueMessage(String queueName)
+            throws ServiceException
+    {
         return receiveQueueMessage(queueName, ReceiveMessageOptions.DEFAULT);
     }
 
     @Override
-    public ReceiveQueueMessageResult receiveQueueMessage(String queuePath, ReceiveMessageOptions options)
-            throws ServiceException {
+    public ReceiveQueueMessageResult receiveQueueMessage(String queuePath,
+            ReceiveMessageOptions options) throws ServiceException
+    {
 
-        WebResource resource = getResource().path(queuePath).path("messages").path("head");
+        WebResource resource = getResource().path(queuePath).path("messages")
+                .path("head");
 
         BrokeredMessage message = receiveMessage(options, resource);
         return new ReceiveQueueMessageResult(message);
     }
 
     @Override
-    public ReceiveMessageResult receiveMessage(String path) throws ServiceException {
+    public ReceiveMessageResult receiveMessage(String path)
+            throws ServiceException
+    {
         return receiveMessage(path, ReceiveMessageOptions.DEFAULT);
     }
 
     @Override
-    public ReceiveMessageResult receiveMessage(String path, ReceiveMessageOptions options) throws ServiceException {
+    public ReceiveMessageResult receiveMessage(String path,
+            ReceiveMessageOptions options) throws ServiceException
+    {
 
-        WebResource resource = getResource().path(path).path("messages").path("head");
+        WebResource resource = getResource().path(path).path("messages")
+                .path("head");
 
         BrokeredMessage message = receiveMessage(options, resource);
         return new ReceiveMessageResult(message);
     }
 
-    private BrokeredMessage receiveMessage(ReceiveMessageOptions options, WebResource resource) {
-        if (options.getTimeout() != null) {
-            resource = resource.queryParam("timeout", Integer.toString(options.getTimeout()));
+    private BrokeredMessage receiveMessage(ReceiveMessageOptions options,
+            WebResource resource)
+    {
+        if (options.getTimeout() != null)
+        {
+            resource = resource.queryParam("timeout",
+                    Integer.toString(options.getTimeout()));
         }
 
         ClientResponse clientResult;
-        if (options.isReceiveAndDelete()) {
+        if (options.isReceiveAndDelete())
+        {
             clientResult = resource.delete(ClientResponse.class);
-        }
-        else if (options.isPeekLock()) {
+        } else if (options.isPeekLock())
+        {
             clientResult = resource.post(ClientResponse.class, "");
-        }
-        else {
+        } else
+        {
             throw new RuntimeException("Unknown ReceiveMode");
         }
 
-        if (clientResult.getStatus() == 204) {
+        if (clientResult.getStatus() == 204)
+        {
             return null;
         }
 
         BrokerProperties brokerProperties;
-        if (clientResult.getHeaders().containsKey("BrokerProperties")) {
-            brokerProperties = mapper.fromString(clientResult.getHeaders().getFirst("BrokerProperties"));
-        }
-        else {
+        if (clientResult.getHeaders().containsKey("BrokerProperties"))
+        {
+            brokerProperties = mapper.fromString(clientResult.getHeaders()
+                    .getFirst("BrokerProperties"));
+        } else
+        {
             brokerProperties = new BrokerProperties();
         }
 
         String location = clientResult.getHeaders().getFirst("Location");
-        if (location != null) {
+        if (location != null)
+        {
             brokerProperties.setLockLocation(location);
         }
 
         BrokeredMessage message = new BrokeredMessage(brokerProperties);
 
         MediaType contentType = clientResult.getType();
-        if (contentType != null) {
+        if (contentType != null)
+        {
             message.setContentType(contentType.toString());
         }
 
         Date date = clientResult.getResponseDate();
-        if (date != null) {
+        if (date != null)
+        {
             message.setDate(date);
         }
 
         InputStream body = clientResult.getEntityInputStream();
-        if (body != null) {
+        if (body != null)
+        {
             message.setBody(body);
         }
 
-        for (String key : clientResult.getHeaders().keySet()) {
+        for (String key : clientResult.getHeaders().keySet())
+        {
             Object value = clientResult.getHeaders().getFirst(key);
-            try {
+            try
+            {
                 value = customPropertiesMapper.fromString(value.toString());
                 message.setProperty(key, value);
-            }
-            catch (ParseException e) {
-                //log.warn("Unable to parse custom header", e);
-            }
-            catch (NumberFormatException e) {
-                //log.warn("Unable to parse custom header", e);
+            } catch (ParseException e)
+            {
+                // log.warn("Unable to parse custom header", e);
+            } catch (NumberFormatException e)
+            {
+                // log.warn("Unable to parse custom header", e);
             }
         }
 
@@ -275,61 +332,83 @@ public class ServiceBusRestProxy implements ServiceBusContract {
     }
 
     @Override
-    public void sendTopicMessage(String topicName, BrokeredMessage message) throws ServiceException {
+    public void sendTopicMessage(String topicName, BrokeredMessage message)
+            throws ServiceException
+    {
         sendMessage(topicName, message);
     }
 
     @Override
-    public ReceiveSubscriptionMessageResult receiveSubscriptionMessage(String topicName, String subscriptionName)
-            throws ServiceException {
-        return receiveSubscriptionMessage(topicName, subscriptionName, ReceiveMessageOptions.DEFAULT);
+    public ReceiveSubscriptionMessageResult receiveSubscriptionMessage(
+            String topicName, String subscriptionName) throws ServiceException
+    {
+        return receiveSubscriptionMessage(topicName, subscriptionName,
+                ReceiveMessageOptions.DEFAULT);
     }
 
     @Override
-    public ReceiveSubscriptionMessageResult receiveSubscriptionMessage(String topicName, String subscriptionName,
-            ReceiveMessageOptions options) throws ServiceException {
-        WebResource resource = getResource().path(topicName).path("subscriptions").path(subscriptionName)
-                .path("messages").path("head");
+    public ReceiveSubscriptionMessageResult receiveSubscriptionMessage(
+            String topicName, String subscriptionName,
+            ReceiveMessageOptions options) throws ServiceException
+    {
+        WebResource resource = getResource().path(topicName)
+                .path("subscriptions").path(subscriptionName).path("messages")
+                .path("head");
 
         BrokeredMessage message = receiveMessage(options, resource);
         return new ReceiveSubscriptionMessageResult(message);
     }
 
     @Override
-    public void unlockMessage(BrokeredMessage message) throws ServiceException {
+    public void unlockMessage(BrokeredMessage message) throws ServiceException
+    {
         getChannel().resource(message.getLockLocation()).put("");
     }
 
     @Override
-    public void deleteMessage(BrokeredMessage message) throws ServiceException {
+    public void deleteMessage(BrokeredMessage message) throws ServiceException
+    {
         getChannel().resource(message.getLockLocation()).delete();
     }
 
     @Override
-    public CreateQueueResult createQueue(QueueInfo queueInfo) throws ServiceException {
-        Builder webResourceBuilder = getResource().path(queueInfo.getPath()).type(
-                "application/atom+xml;type=entry;charset=utf-8");
-        if ((queueInfo.getForwardTo() != null) && !queueInfo.getForwardTo().isEmpty()) {
-            webResourceBuilder.header("ServiceBusSupplementaryAuthorization", queueInfo.getForwardTo());
+    public CreateQueueResult createQueue(QueueInfo queueInfo)
+            throws ServiceException
+    {
+        Builder webResourceBuilder = getResource().path(queueInfo.getPath())
+                .type("application/atom+xml;type=entry;charset=utf-8");
+        if ((queueInfo.getForwardTo() != null)
+                && !queueInfo.getForwardTo().isEmpty())
+        {
+            webResourceBuilder.header("ServiceBusSupplementaryAuthorization",
+                    queueInfo.getForwardTo());
         }
-        return new CreateQueueResult(webResourceBuilder.put(QueueInfo.class, queueInfo));
+        return new CreateQueueResult(webResourceBuilder.put(QueueInfo.class,
+                queueInfo));
     }
 
     @Override
-    public void deleteQueue(String queuePath) throws ServiceException {
+    public void deleteQueue(String queuePath) throws ServiceException
+    {
         getResource().path(queuePath).delete();
     }
 
     @Override
-    public GetQueueResult getQueue(String queuePath) throws ServiceException {
-        return new GetQueueResult(getResource().path(queuePath).get(QueueInfo.class));
+    public GetQueueResult getQueue(String queuePath) throws ServiceException
+    {
+        return new GetQueueResult(getResource().path(queuePath).get(
+                QueueInfo.class));
     }
 
     @Override
-    public ListQueuesResult listQueues(ListQueuesOptions options) throws ServiceException {
-        Feed feed = listOptions(options, getResource().path("$Resources/Queues")).get(Feed.class);
+    public ListQueuesResult listQueues(ListQueuesOptions options)
+            throws ServiceException
+    {
+        Feed feed = listOptions(options,
+                getResource().path("$Resources/Queues")).get(Feed.class);
         ArrayList<QueueInfo> queues = new ArrayList<QueueInfo>();
-        for (Entry entry : feed.getEntries()) {
+        for (Entry entry : feed.getEntries())
+        {
             queues.add(new QueueInfo(entry));
         }
         ListQueuesResult result = new ListQueuesResult();
@@ -338,49 +417,69 @@ public class ServiceBusRestProxy implements ServiceBusContract {
     }
 
     @Override
-    public QueueInfo updateQueue(QueueInfo queueInfo) throws ServiceException {
+    public QueueInfo updateQueue(QueueInfo queueInfo) throws ServiceException
+    {
         Builder webResourceBuilder = getResource().path(queueInfo.getPath())
-                .type("application/atom+xml;type=entry;charset=utf-8").header("If-Match", "*");
-        if ((queueInfo.getForwardTo() != null) && !queueInfo.getForwardTo().isEmpty()) {
-            webResourceBuilder.header("ServiceBusSupplementaryAuthorization", queueInfo.getForwardTo());
+                .type("application/atom+xml;type=entry;charset=utf-8")
+                .header("If-Match", "*");
+        if ((queueInfo.getForwardTo() != null)
+                && !queueInfo.getForwardTo().isEmpty())
+        {
+            webResourceBuilder.header("ServiceBusSupplementaryAuthorization",
+                    queueInfo.getForwardTo());
         }
         return webResourceBuilder.put(QueueInfo.class, queueInfo);
     }
 
-    private WebResource listOptions(AbstractListOptions<?> options, WebResource path) {
-        if (options.getTop() != null) {
+    private WebResource listOptions(AbstractListOptions<?> options,
+            WebResource path)
+    {
+        if (options.getTop() != null)
+        {
             path = path.queryParam("$top", options.getTop().toString());
         }
-        if (options.getSkip() != null) {
+        if (options.getSkip() != null)
+        {
             path = path.queryParam("$skip", options.getSkip().toString());
         }
-        if (options.getFilter() != null) {
+        if (options.getFilter() != null)
+        {
             path = path.queryParam("$filter", options.getFilter());
         }
         return path;
     }
 
     @Override
-    public CreateTopicResult createTopic(TopicInfo entry) throws ServiceException {
+    public CreateTopicResult createTopic(TopicInfo entry)
+            throws ServiceException
+    {
         return new CreateTopicResult(getResource().path(entry.getPath())
-                .type("application/atom+xml;type=entry;charset=utf-8").put(TopicInfo.class, entry));
+                .type("application/atom+xml;type=entry;charset=utf-8")
+                .put(TopicInfo.class, entry));
     }
 
     @Override
-    public void deleteTopic(String TopicPath) throws ServiceException {
+    public void deleteTopic(String TopicPath) throws ServiceException
+    {
         getResource().path(TopicPath).delete();
     }
 
     @Override
-    public GetTopicResult getTopic(String TopicPath) throws ServiceException {
-        return new GetTopicResult(getResource().path(TopicPath).get(TopicInfo.class));
+    public GetTopicResult getTopic(String TopicPath) throws ServiceException
+    {
+        return new GetTopicResult(getResource().path(TopicPath).get(
+                TopicInfo.class));
     }
 
     @Override
-    public ListTopicsResult listTopics(ListTopicsOptions options) throws ServiceException {
-        Feed feed = listOptions(options, getResource().path("$Resources/Topics")).get(Feed.class);
+    public ListTopicsResult listTopics(ListTopicsOptions options)
+            throws ServiceException
+    {
+        Feed feed = listOptions(options,
+                getResource().path("$Resources/Topics")).get(Feed.class);
         ArrayList<TopicInfo> Topics = new ArrayList<TopicInfo>();
-        for (Entry entry : feed.getEntries()) {
+        for (Entry entry : feed.getEntries())
+        {
             Topics.add(new TopicInfo(entry));
         }
         ListTopicsResult result = new ListTopicsResult();
@@ -389,38 +488,57 @@ public class ServiceBusRestProxy implements ServiceBusContract {
     }
 
     @Override
-    public TopicInfo updateTopic(TopicInfo topicInfo) throws ServiceException {
-        return getResource().path(topicInfo.getPath()).type("application/atom+xml;type=entry;charset=utf-8")
+    public TopicInfo updateTopic(TopicInfo topicInfo) throws ServiceException
+    {
+        return getResource().path(topicInfo.getPath())
+                .type("application/atom+xml;type=entry;charset=utf-8")
                 .header("If-Match", "*").put(TopicInfo.class, topicInfo);
     }
 
     @Override
-    public CreateSubscriptionResult createSubscription(String topicPath, SubscriptionInfo subscriptionInfo) {
-        Builder webResourceBuilder = getResource().path(topicPath).path("subscriptions")
-                .path(subscriptionInfo.getName()).type("application/atom+xml;type=entry;charset=utf-8");
-        if ((subscriptionInfo.getForwardTo() != null) && (!subscriptionInfo.getForwardTo().isEmpty())) {
-            webResourceBuilder.header("ServiceBusSupplementaryAuthorization", subscriptionInfo.getForwardTo());
+    public CreateSubscriptionResult createSubscription(String topicPath,
+            SubscriptionInfo subscriptionInfo)
+    {
+        Builder webResourceBuilder = getResource().path(topicPath)
+                .path("subscriptions").path(subscriptionInfo.getName())
+                .type("application/atom+xml;type=entry;charset=utf-8");
+        if ((subscriptionInfo.getForwardTo() != null)
+                && (!subscriptionInfo.getForwardTo().isEmpty()))
+        {
+            webResourceBuilder.header("ServiceBusSupplementaryAuthorization",
+                    subscriptionInfo.getForwardTo());
 
         }
-        return new CreateSubscriptionResult(webResourceBuilder.put(SubscriptionInfo.class, subscriptionInfo));
+        return new CreateSubscriptionResult(webResourceBuilder.put(
+                SubscriptionInfo.class, subscriptionInfo));
     }
 
     @Override
-    public void deleteSubscription(String topicPath, String subscriptionName) {
-        getResource().path(topicPath).path("subscriptions").path(subscriptionName).delete();
+    public void deleteSubscription(String topicPath, String subscriptionName)
+    {
+        getResource().path(topicPath).path("subscriptions")
+                .path(subscriptionName).delete();
     }
 
     @Override
-    public GetSubscriptionResult getSubscription(String topicPath, String subscriptionName) {
-        return new GetSubscriptionResult(getResource().path(topicPath).path("subscriptions").path(subscriptionName)
+    public GetSubscriptionResult getSubscription(String topicPath,
+            String subscriptionName)
+    {
+        return new GetSubscriptionResult(getResource().path(topicPath)
+                .path("subscriptions").path(subscriptionName)
                 .get(SubscriptionInfo.class));
     }
 
     @Override
-    public ListSubscriptionsResult listSubscriptions(String topicPath, ListSubscriptionsOptions options) {
-        Feed feed = listOptions(options, getResource().path(topicPath).path("subscriptions")).get(Feed.class);
+    public ListSubscriptionsResult listSubscriptions(String topicPath,
+            ListSubscriptionsOptions options)
+    {
+        Feed feed = listOptions(options,
+                getResource().path(topicPath).path("subscriptions")).get(
+                Feed.class);
         ArrayList<SubscriptionInfo> list = new ArrayList<SubscriptionInfo>();
-        for (Entry entry : feed.getEntries()) {
+        for (Entry entry : feed.getEntries())
+        {
             list.add(new SubscriptionInfo(entry));
         }
         ListSubscriptionsResult result = new ListSubscriptionsResult();
@@ -429,43 +547,61 @@ public class ServiceBusRestProxy implements ServiceBusContract {
     }
 
     @Override
-    public SubscriptionInfo updateSubscription(String topicName, SubscriptionInfo subscriptionInfo)
-            throws ServiceException {
-        Builder webResourceBuilder = getResource().path(topicName).path("subscriptions")
-                .path(subscriptionInfo.getName()).type("application/atom+xml;type=entry;charset=utf-8")
+    public SubscriptionInfo updateSubscription(String topicName,
+            SubscriptionInfo subscriptionInfo) throws ServiceException
+    {
+        Builder webResourceBuilder = getResource().path(topicName)
+                .path("subscriptions").path(subscriptionInfo.getName())
+                .type("application/atom+xml;type=entry;charset=utf-8")
                 .header("If-Match", "*");
-        if ((subscriptionInfo.getForwardTo() != null) && !subscriptionInfo.getForwardTo().isEmpty()) {
-            webResourceBuilder.header("ServiceBusSupplementaryAuthorization", subscriptionInfo.getForwardTo());
+        if ((subscriptionInfo.getForwardTo() != null)
+                && !subscriptionInfo.getForwardTo().isEmpty())
+        {
+            webResourceBuilder.header("ServiceBusSupplementaryAuthorization",
+                    subscriptionInfo.getForwardTo());
         }
         return webResourceBuilder.put(SubscriptionInfo.class, subscriptionInfo);
     }
 
     @Override
-    public CreateRuleResult createRule(String topicPath, String subscriptionName, RuleInfo rule) {
-        return new CreateRuleResult(getResource().path(topicPath).path("subscriptions").path(subscriptionName)
-                .path("rules").path(rule.getName()).type("application/atom+xml;type=entry;charset=utf-8")
+    public CreateRuleResult createRule(String topicPath,
+            String subscriptionName, RuleInfo rule)
+    {
+        return new CreateRuleResult(getResource().path(topicPath)
+                .path("subscriptions").path(subscriptionName).path("rules")
+                .path(rule.getName())
+                .type("application/atom+xml;type=entry;charset=utf-8")
                 .put(RuleInfo.class, rule));
     }
 
     @Override
-    public void deleteRule(String topicPath, String subscriptionName, String ruleName) {
-        getResource().path(topicPath).path("subscriptions").path(subscriptionName).path("rules").path(ruleName)
-                .delete();
+    public void deleteRule(String topicPath, String subscriptionName,
+            String ruleName)
+    {
+        getResource().path(topicPath).path("subscriptions")
+                .path(subscriptionName).path("rules").path(ruleName).delete();
     }
 
     @Override
-    public GetRuleResult getRule(String topicPath, String subscriptionName, String ruleName) {
-        return new GetRuleResult(getResource().path(topicPath).path("subscriptions").path(subscriptionName)
-                .path("rules").path(ruleName).get(RuleInfo.class));
+    public GetRuleResult getRule(String topicPath, String subscriptionName,
+            String ruleName)
+    {
+        return new GetRuleResult(getResource().path(topicPath)
+                .path("subscriptions").path(subscriptionName).path("rules")
+                .path(ruleName).get(RuleInfo.class));
     }
 
     @Override
-    public ListRulesResult listRules(String topicPath, String subscriptionName, ListRulesOptions options) {
-        Feed feed = listOptions(options,
-                getResource().path(topicPath).path("subscriptions").path(subscriptionName).path("rules")).get(
-                Feed.class);
+    public ListRulesResult listRules(String topicPath, String subscriptionName,
+            ListRulesOptions options)
+    {
+        Feed feed = listOptions(
+                options,
+                getResource().path(topicPath).path("subscriptions")
+                        .path(subscriptionName).path("rules")).get(Feed.class);
         ArrayList<RuleInfo> list = new ArrayList<RuleInfo>();
-        for (Entry entry : feed.getEntries()) {
+        for (Entry entry : feed.getEntries())
+        {
             list.add(new RuleInfo(entry));
         }
         ListRulesResult result = new ListRulesResult();
@@ -474,37 +610,49 @@ public class ServiceBusRestProxy implements ServiceBusContract {
     }
 
     @Override
-    public ListQueuesResult listQueues() throws ServiceException {
+    public ListQueuesResult listQueues() throws ServiceException
+    {
         return listQueues(ListQueuesOptions.DEFAULT);
     }
 
     @Override
-    public ListTopicsResult listTopics() throws ServiceException {
+    public ListTopicsResult listTopics() throws ServiceException
+    {
         return listTopics(ListTopicsOptions.DEFAULT);
     }
 
     @Override
-    public ListSubscriptionsResult listSubscriptions(String topicName) throws ServiceException {
+    public ListSubscriptionsResult listSubscriptions(String topicName)
+            throws ServiceException
+    {
         return listSubscriptions(topicName, ListSubscriptionsOptions.DEFAULT);
     }
 
     @Override
-    public ListRulesResult listRules(String topicName, String subscriptionName) throws ServiceException {
+    public ListRulesResult listRules(String topicName, String subscriptionName)
+            throws ServiceException
+    {
         return listRules(topicName, subscriptionName, ListRulesOptions.DEFAULT);
     }
 
     @Override
-    public void renewQueueLock(String queueName, String messageId, String lockToken) throws ServiceException {
-        ClientResponse clientResponse = getResource().path(queueName).path("messages").path(messageId).path(lockToken)
+    public void renewQueueLock(String queueName, String messageId,
+            String lockToken) throws ServiceException
+    {
+        ClientResponse clientResponse = getResource().path(queueName)
+                .path("messages").path(messageId).path(lockToken)
                 .post(ClientResponse.class, "");
         PipelineHelpers.ThrowIfNotSuccess(clientResponse);
     }
 
     @Override
-    public void renewSubscriptionLock(String topicName, String subscriptionName, String messageId, String lockToken)
-            throws ServiceException {
-        ClientResponse clientResponse = getResource().path(topicName).path("Subscriptions").path(subscriptionName)
-                .path("messages").path(messageId).path(lockToken).post(ClientResponse.class, "");
+    public void renewSubscriptionLock(String topicName,
+            String subscriptionName, String messageId, String lockToken)
+            throws ServiceException
+    {
+        ClientResponse clientResponse = getResource().path(topicName)
+                .path("Subscriptions").path(subscriptionName).path("messages")
+                .path(messageId).path(lockToken).post(ClientResponse.class, "");
         PipelineHelpers.ThrowIfNotSuccess(clientResponse);
     }
 

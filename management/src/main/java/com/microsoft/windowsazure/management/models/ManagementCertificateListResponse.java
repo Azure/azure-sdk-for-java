@@ -37,13 +37,21 @@ public class ManagementCertificateListResponse extends OperationResponse impleme
     
     /**
     * The management certificates that are valid for your subscription.
+    * @return The SubscriptionCertificates value.
     */
-    public ArrayList<ManagementCertificateListResponse.SubscriptionCertificate> getSubscriptionCertificates() { return this.subscriptionCertificates; }
+    public ArrayList<ManagementCertificateListResponse.SubscriptionCertificate> getSubscriptionCertificates()
+    {
+        return this.subscriptionCertificates;
+    }
     
     /**
     * The management certificates that are valid for your subscription.
+    * @param subscriptionCertificatesValue The SubscriptionCertificates value.
     */
-    public void setSubscriptionCertificates(ArrayList<ManagementCertificateListResponse.SubscriptionCertificate> subscriptionCertificates) { this.subscriptionCertificates = subscriptionCertificates; }
+    public void setSubscriptionCertificates(final ArrayList<ManagementCertificateListResponse.SubscriptionCertificate> subscriptionCertificatesValue)
+    {
+        this.subscriptionCertificates = subscriptionCertificatesValue;
+    }
     
     /**
     * Initializes a new instance of the ManagementCertificateListResponse class.
@@ -51,6 +59,7 @@ public class ManagementCertificateListResponse extends OperationResponse impleme
     */
     public ManagementCertificateListResponse()
     {
+        super();
         this.subscriptionCertificates = new ArrayList<ManagementCertificateListResponse.SubscriptionCertificate>();
     }
     
@@ -72,60 +81,84 @@ public class ManagementCertificateListResponse extends OperationResponse impleme
         
         /**
         * The time that the management certificate was created, in UTC.
+        * @return The Created value.
         */
-        public Calendar getCreated() { return this.created; }
+        public Calendar getCreated()
+        {
+            return this.created;
+        }
         
         /**
         * The time that the management certificate was created, in UTC.
+        * @param createdValue The Created value.
         */
-        public void setCreated(Calendar created) { this.created = created; }
+        public void setCreated(final Calendar createdValue)
+        {
+            this.created = createdValue;
+        }
         
         private byte[] data;
         
         /**
         * A base64 representation of the data contained in the management
         * certificate, in .cer format.
+        * @return The Data value.
         */
-        public byte[] getData() { return this.data; }
+        public byte[] getData()
+        {
+            return this.data;
+        }
         
         /**
         * A base64 representation of the data contained in the management
         * certificate, in .cer format.
+        * @param dataValue The Data value.
         */
-        public void setData(byte[] data) { this.data = data; }
+        public void setData(final byte[] dataValue)
+        {
+            this.data = dataValue;
+        }
         
         private byte[] publicKey;
         
         /**
         * A base64 representation of the management certificate public key.
+        * @return The PublicKey value.
         */
-        public byte[] getPublicKey() { return this.publicKey; }
+        public byte[] getPublicKey()
+        {
+            return this.publicKey;
+        }
         
         /**
         * A base64 representation of the management certificate public key.
+        * @param publicKeyValue The PublicKey value.
         */
-        public void setPublicKey(byte[] publicKey) { this.publicKey = publicKey; }
+        public void setPublicKey(final byte[] publicKeyValue)
+        {
+            this.publicKey = publicKeyValue;
+        }
         
         private String thumbprint;
         
         /**
         * The X509 certificate thumb print property of the management
         * certificate. This thumb print uniquely identifies the certificate.
+        * @return The Thumbprint value.
         */
-        public String getThumbprint() { return this.thumbprint; }
+        public String getThumbprint()
+        {
+            return this.thumbprint;
+        }
         
         /**
         * The X509 certificate thumb print property of the management
         * certificate. This thumb print uniquely identifies the certificate.
+        * @param thumbprintValue The Thumbprint value.
         */
-        public void setThumbprint(String thumbprint) { this.thumbprint = thumbprint; }
-        
-        /**
-        * Initializes a new instance of the SubscriptionCertificate class.
-        *
-        */
-        public SubscriptionCertificate()
+        public void setThumbprint(final String thumbprintValue)
         {
+            this.thumbprint = thumbprintValue;
         }
     }
 }

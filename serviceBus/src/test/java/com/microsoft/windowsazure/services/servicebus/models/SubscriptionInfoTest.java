@@ -28,27 +28,32 @@ import com.microsoft.windowsazure.services.servicebus.implementation.EntityAvail
 import com.microsoft.windowsazure.services.servicebus.implementation.EntityStatus;
 import com.microsoft.windowsazure.services.servicebus.implementation.RuleDescription;
 
-public class SubscriptionInfoTest {
+public class SubscriptionInfoTest
+{
 
-    private Duration createDuration(int milliSeconds) {
+    private Duration createDuration(int milliSeconds)
+    {
         DatatypeFactory datatypeFactory;
-        try {
+        try
+        {
             datatypeFactory = DatatypeFactory.newInstance();
-        }
-        catch (DatatypeConfigurationException e) {
+        } catch (DatatypeConfigurationException e)
+        {
             throw new RuntimeException(e);
         }
         return datatypeFactory.newDuration(milliSeconds);
     }
 
     @Test
-    public void testGetSetLockDuration() {
+    public void testGetSetLockDuration()
+    {
         // Arrange
         Duration expectedLockDuration = createDuration(100);
         SubscriptionInfo SubscriptionInfo = new SubscriptionInfo();
 
-        // Act 
-        Duration actualLockDuration = SubscriptionInfo.setLockDuration(expectedLockDuration).getLockDuration();
+        // Act
+        Duration actualLockDuration = SubscriptionInfo.setLockDuration(
+                expectedLockDuration).getLockDuration();
 
         // Assert
         assertEquals(expectedLockDuration, actualLockDuration);
@@ -56,190 +61,222 @@ public class SubscriptionInfoTest {
     }
 
     @Test
-    public void testGetSetRequiresSession() {
+    public void testGetSetRequiresSession()
+    {
         // Arrange
         Boolean expectedRequiresSession = true;
         SubscriptionInfo SubscriptionInfo = new SubscriptionInfo();
 
-        // Act 
-        Boolean actualRequiresSession = SubscriptionInfo.setRequiresSession(expectedRequiresSession)
-                .isRequiresSession();
+        // Act
+        Boolean actualRequiresSession = SubscriptionInfo.setRequiresSession(
+                expectedRequiresSession).isRequiresSession();
 
         // Assert
         assertEquals(expectedRequiresSession, actualRequiresSession);
     }
 
     @Test
-    public void testGetSetDefaultMessageTimeToLive() {
+    public void testGetSetDefaultMessageTimeToLive()
+    {
         // Arrange
         Duration expectedDefaultMessageTimeToLive = createDuration(100);
         SubscriptionInfo SubscriptionInfo = new SubscriptionInfo();
 
-        // Act 
-        Duration actualDefaultMessageTimeToLive = SubscriptionInfo.setDefaultMessageTimeToLive(
-                expectedDefaultMessageTimeToLive).getDefaultMessageTimeToLive();
+        // Act
+        Duration actualDefaultMessageTimeToLive = SubscriptionInfo
+                .setDefaultMessageTimeToLive(expectedDefaultMessageTimeToLive)
+                .getDefaultMessageTimeToLive();
 
         // Assert
-        assertEquals(expectedDefaultMessageTimeToLive, actualDefaultMessageTimeToLive);
+        assertEquals(expectedDefaultMessageTimeToLive,
+                actualDefaultMessageTimeToLive);
     }
 
     @Test
-    public void testGetSetDeadLetteringOnMessageExpiration() {
+    public void testGetSetDeadLetteringOnMessageExpiration()
+    {
         // Arrange
         Boolean expectedDeadLetteringOnMessageExpiration = true;
         SubscriptionInfo SubscriptionInfo = new SubscriptionInfo();
 
-        // Act 
-        Boolean actualDeadLetteringOnMessageExpiration = SubscriptionInfo.setDeadLetteringOnMessageExpiration(
-                expectedDeadLetteringOnMessageExpiration).isDeadLetteringOnMessageExpiration();
+        // Act
+        Boolean actualDeadLetteringOnMessageExpiration = SubscriptionInfo
+                .setDeadLetteringOnMessageExpiration(
+                        expectedDeadLetteringOnMessageExpiration)
+                .isDeadLetteringOnMessageExpiration();
 
         // Assert
-        assertEquals(expectedDeadLetteringOnMessageExpiration, actualDeadLetteringOnMessageExpiration);
+        assertEquals(expectedDeadLetteringOnMessageExpiration,
+                actualDeadLetteringOnMessageExpiration);
     }
 
     @Test
-    public void testGetSetDeadLetteringOnFilterEvaluationExceptions() {
+    public void testGetSetDeadLetteringOnFilterEvaluationExceptions()
+    {
         // Arrange
         Boolean expectedDeadLetteringOnFilterEvaluationExceptions = true;
         SubscriptionInfo SubscriptionInfo = new SubscriptionInfo();
 
-        // Act 
+        // Act
         Boolean actualDeadLetteringOnFilterEvaluationExceptions = SubscriptionInfo
-                .setDeadLetteringOnFilterEvaluationExceptions(expectedDeadLetteringOnFilterEvaluationExceptions)
+                .setDeadLetteringOnFilterEvaluationExceptions(
+                        expectedDeadLetteringOnFilterEvaluationExceptions)
                 .isDeadLetteringOnFilterEvaluationExceptions();
 
         // Assert
-        assertEquals(expectedDeadLetteringOnFilterEvaluationExceptions, actualDeadLetteringOnFilterEvaluationExceptions);
+        assertEquals(expectedDeadLetteringOnFilterEvaluationExceptions,
+                actualDeadLetteringOnFilterEvaluationExceptions);
     }
 
     @Test
-    public void testGetSetDefaultRuleDescription() {
+    public void testGetSetDefaultRuleDescription()
+    {
         // Arrange
         RuleDescription expectedDefaultRuleDescription = new RuleDescription();
         SubscriptionInfo SubscriptionInfo = new SubscriptionInfo();
 
-        // Act 
-        RuleDescription actualDefaultRuleDescription = SubscriptionInfo.setDefaultRuleDescription(
-                expectedDefaultRuleDescription).getDefaultRuleDescription();
+        // Act
+        RuleDescription actualDefaultRuleDescription = SubscriptionInfo
+                .setDefaultRuleDescription(expectedDefaultRuleDescription)
+                .getDefaultRuleDescription();
 
         // Assert
-        assertEquals(expectedDefaultRuleDescription, actualDefaultRuleDescription);
+        assertEquals(expectedDefaultRuleDescription,
+                actualDefaultRuleDescription);
     }
 
     @Test
-    public void testGetSetMessageCount() {
+    public void testGetSetMessageCount()
+    {
         // Arrange
         Long expectedMessageCount = 1024L;
         SubscriptionInfo SubscriptionInfo = new SubscriptionInfo();
 
-        // Act 
-        Long actualMessageCount = SubscriptionInfo.setMessageCount(expectedMessageCount).getMessageCount();
+        // Act
+        Long actualMessageCount = SubscriptionInfo.setMessageCount(
+                expectedMessageCount).getMessageCount();
 
         // Assert
         assertEquals(expectedMessageCount, actualMessageCount);
     }
 
     @Test
-    public void testGetSetMaxDeliveryCount() {
+    public void testGetSetMaxDeliveryCount()
+    {
         // Arrange
         Integer expectedMaxDeliveryCount = 1024;
         SubscriptionInfo SubscriptionInfo = new SubscriptionInfo();
 
-        // Act 
-        Integer actualMaxDeliveryCount = SubscriptionInfo.setMaxDeliveryCount(expectedMaxDeliveryCount)
-                .getMaxDeliveryCount();
+        // Act
+        Integer actualMaxDeliveryCount = SubscriptionInfo.setMaxDeliveryCount(
+                expectedMaxDeliveryCount).getMaxDeliveryCount();
 
         // Assert
         assertEquals(expectedMaxDeliveryCount, actualMaxDeliveryCount);
     }
 
     @Test
-    public void testGetSetEnableBatchedOperations() {
+    public void testGetSetEnableBatchedOperations()
+    {
         // Arrange
         Boolean expectedEnableBatchedOperations = true;
         SubscriptionInfo SubscriptionInfo = new SubscriptionInfo();
 
-        // Act 
-        Boolean actualEnableBatchedOperations = SubscriptionInfo.setEnableBatchedOperations(
-                expectedEnableBatchedOperations).isEnableBatchedOperations();
+        // Act
+        Boolean actualEnableBatchedOperations = SubscriptionInfo
+                .setEnableBatchedOperations(expectedEnableBatchedOperations)
+                .isEnableBatchedOperations();
 
         // Assert
-        assertEquals(expectedEnableBatchedOperations, actualEnableBatchedOperations);
+        assertEquals(expectedEnableBatchedOperations,
+                actualEnableBatchedOperations);
     }
 
     @Test
-    public void testGetSetStatus() {
+    public void testGetSetStatus()
+    {
         // Arrange
         EntityStatus expectedEntityStatus = EntityStatus.ACTIVE;
         SubscriptionInfo SubscriptionInfo = new SubscriptionInfo();
 
-        // Act 
-        EntityStatus actualEntityStatus = SubscriptionInfo.setStatus(expectedEntityStatus).getStatus();
+        // Act
+        EntityStatus actualEntityStatus = SubscriptionInfo.setStatus(
+                expectedEntityStatus).getStatus();
 
         // Assert
         assertEquals(expectedEntityStatus, actualEntityStatus);
     }
 
     @Test
-    public void testGetSetCreatedAt() {
+    public void testGetSetCreatedAt()
+    {
         // Arrange
         Calendar expectedCreatedAt = Calendar.getInstance();
         SubscriptionInfo SubscriptionInfo = new SubscriptionInfo();
 
-        // Act 
-        Calendar actualCreatedAt = SubscriptionInfo.setCreatedAt(expectedCreatedAt).getCreatedAt();
+        // Act
+        Calendar actualCreatedAt = SubscriptionInfo.setCreatedAt(
+                expectedCreatedAt).getCreatedAt();
 
         // Assert
         assertEquals(expectedCreatedAt, actualCreatedAt);
     }
 
     @Test
-    public void testGetSetUpdatedAt() {
+    public void testGetSetUpdatedAt()
+    {
         // Arrange
         Calendar expectedUpdatedAt = Calendar.getInstance();
         SubscriptionInfo SubscriptionInfo = new SubscriptionInfo();
 
-        // Act 
-        Calendar actualUpdatedAt = SubscriptionInfo.setUpdatedAt(expectedUpdatedAt).getUpdatedAt();
+        // Act
+        Calendar actualUpdatedAt = SubscriptionInfo.setUpdatedAt(
+                expectedUpdatedAt).getUpdatedAt();
 
         // Assert
         assertEquals(expectedUpdatedAt, actualUpdatedAt);
     }
 
     @Test
-    public void testGetSetAccessedAt() {
+    public void testGetSetAccessedAt()
+    {
         // Arrange
         Calendar expectedAccessedAt = Calendar.getInstance();
         SubscriptionInfo SubscriptionInfo = new SubscriptionInfo();
 
-        // Act 
-        Calendar actualAccessedAt = SubscriptionInfo.setAccessedAt(expectedAccessedAt).getAccessedAt();
+        // Act
+        Calendar actualAccessedAt = SubscriptionInfo.setAccessedAt(
+                expectedAccessedAt).getAccessedAt();
 
         // Assert
         assertEquals(expectedAccessedAt, actualAccessedAt);
     }
 
     @Test
-    public void testGetSetUserMetadata() {
+    public void testGetSetUserMetadata()
+    {
         // Arrange
         String expectedUserMetadata = "expectedUserMetaData";
         SubscriptionInfo SubscriptionInfo = new SubscriptionInfo();
 
-        // Act 
-        String actualUserMetadata = SubscriptionInfo.setUserMetadata(expectedUserMetadata).getUserMetadata();
+        // Act
+        String actualUserMetadata = SubscriptionInfo.setUserMetadata(
+                expectedUserMetadata).getUserMetadata();
 
         // Assert
         assertEquals(expectedUserMetadata, actualUserMetadata);
     }
 
     @Test
-    public void testGetSetAutoDeleteOnIdle() {
+    public void testGetSetAutoDeleteOnIdle()
+    {
         // Arrange
         Duration expectedIsAutoDeleteOnIdle = createDuration(100);
         SubscriptionInfo SubscriptionInfo = new SubscriptionInfo();
 
-        // Act 
-        Duration actualIsAutoDeleteOnIdle = SubscriptionInfo.setAutoDeleteOnIdle(expectedIsAutoDeleteOnIdle)
+        // Act
+        Duration actualIsAutoDeleteOnIdle = SubscriptionInfo
+                .setAutoDeleteOnIdle(expectedIsAutoDeleteOnIdle)
                 .getAutoDeleteOnIdle();
 
         // Assert
@@ -247,17 +284,20 @@ public class SubscriptionInfoTest {
     }
 
     @Test
-    public void testGetSetEntityAvailabilityStatus() {
+    public void testGetSetEntityAvailabilityStatus()
+    {
         // Arrange
         EntityAvailabilityStatus expectedEntityAvailabilityStatus = EntityAvailabilityStatus.AVAILABLE;
         SubscriptionInfo SubscriptionInfo = new SubscriptionInfo();
 
-        // Act 
-        EntityAvailabilityStatus actualEntityAvailabilityStatus = SubscriptionInfo.setEntityAvailabilityStatus(
-                expectedEntityAvailabilityStatus).getEntityAvailabilityStatus();
+        // Act
+        EntityAvailabilityStatus actualEntityAvailabilityStatus = SubscriptionInfo
+                .setEntityAvailabilityStatus(expectedEntityAvailabilityStatus)
+                .getEntityAvailabilityStatus();
 
         // Assert
-        assertEquals(expectedEntityAvailabilityStatus, actualEntityAvailabilityStatus);
+        assertEquals(expectedEntityAvailabilityStatus,
+                actualEntityAvailabilityStatus);
     }
 
 }

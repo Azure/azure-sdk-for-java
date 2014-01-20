@@ -43,23 +43,38 @@ public class SchedulerClientImpl extends ServiceClient<SchedulerClient> implemen
 {
     private URI baseUri;
     
-    public URI getBaseUri() { return this.baseUri; }
+    public URI getBaseUri()
+    {
+        return this.baseUri;
+    }
     
     private String cloudServiceName;
     
-    public String getCloudServiceName() { return this.cloudServiceName; }
+    public String getCloudServiceName()
+    {
+        return this.cloudServiceName;
+    }
     
     private SubscriptionCloudCredentials credentials;
     
-    public SubscriptionCloudCredentials getCredentials() { return this.credentials; }
+    public SubscriptionCloudCredentials getCredentials()
+    {
+        return this.credentials;
+    }
     
     private String jobCollectionName;
     
-    public String getJobCollectionName() { return this.jobCollectionName; }
+    public String getJobCollectionName()
+    {
+        return this.jobCollectionName;
+    }
     
     private JobOperations jobs;
     
-    public JobOperations getJobsOperations() { return this.jobs; }
+    public JobOperations getJobsOperations()
+    {
+        return this.jobs;
+    }
     
     /**
     * Initializes a new instance of the SchedulerClientImpl class.

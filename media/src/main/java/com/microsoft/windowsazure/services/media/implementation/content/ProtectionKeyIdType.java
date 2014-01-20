@@ -21,29 +21,31 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlValue;
 
 /**
- * This type maps the XML returned in the odata ATOM serialization
- * for Asset entities.
+ * This type maps the XML returned in the odata ATOM serialization for Asset
+ * entities.
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "GetProtectionKeyId", namespace = Constants.ODATA_DATA_NS)
-public class ProtectionKeyIdType implements MediaServiceDTO {
+public class ProtectionKeyIdType implements MediaServiceDTO
+{
     @XmlValue
     String protectionKeyId;
 
     /**
      * @return the protection key id
      */
-    public String getProtectionKeyId() {
+    public String getProtectionKeyId()
+    {
         return protectionKeyId;
     }
 
     /**
      * @param protection
-     *            key id
-     *            the protection key id to set
+     *            key id the protection key id to set
      */
-    public void setProtectionKeyId(String protectionKeyId) {
+    public void setProtectionKeyId(String protectionKeyId)
+    {
         this.protectionKeyId = protectionKeyId;
     }
 

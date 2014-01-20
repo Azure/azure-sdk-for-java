@@ -34,223 +34,353 @@ public class SubscriptionGetResponse extends OperationResponse
     
     /**
     * The live ID of the account administrator.
+    * @return The AccountAdminLiveEmailId value.
     */
-    public String getAccountAdminLiveEmailId() { return this.accountAdminLiveEmailId; }
+    public String getAccountAdminLiveEmailId()
+    {
+        return this.accountAdminLiveEmailId;
+    }
     
     /**
     * The live ID of the account administrator.
+    * @param accountAdminLiveEmailIdValue The AccountAdminLiveEmailId value.
     */
-    public void setAccountAdminLiveEmailId(String accountAdminLiveEmailId) { this.accountAdminLiveEmailId = accountAdminLiveEmailId; }
+    public void setAccountAdminLiveEmailId(final String accountAdminLiveEmailIdValue)
+    {
+        this.accountAdminLiveEmailId = accountAdminLiveEmailIdValue;
+    }
     
     private int currentCoreCount;
     
     /**
     * The number of currently allocated cores.
+    * @return The CurrentCoreCount value.
     */
-    public int getCurrentCoreCount() { return this.currentCoreCount; }
+    public int getCurrentCoreCount()
+    {
+        return this.currentCoreCount;
+    }
     
     /**
     * The number of currently allocated cores.
+    * @param currentCoreCountValue The CurrentCoreCount value.
     */
-    public void setCurrentCoreCount(int currentCoreCount) { this.currentCoreCount = currentCoreCount; }
+    public void setCurrentCoreCount(final int currentCoreCountValue)
+    {
+        this.currentCoreCount = currentCoreCountValue;
+    }
     
     private int currentDnsServers;
     
     /**
     * The current number of DNS servers allocated on this subscription.
+    * @return The CurrentDnsServers value.
     */
-    public int getCurrentDnsServers() { return this.currentDnsServers; }
+    public int getCurrentDnsServers()
+    {
+        return this.currentDnsServers;
+    }
     
     /**
     * The current number of DNS servers allocated on this subscription.
+    * @param currentDnsServersValue The CurrentDnsServers value.
     */
-    public void setCurrentDnsServers(int currentDnsServers) { this.currentDnsServers = currentDnsServers; }
+    public void setCurrentDnsServers(final int currentDnsServersValue)
+    {
+        this.currentDnsServers = currentDnsServersValue;
+    }
     
     private int currentHostedServices;
     
     /**
     * The number of currently allocated cloud services.
+    * @return The CurrentHostedServices value.
     */
-    public int getCurrentHostedServices() { return this.currentHostedServices; }
+    public int getCurrentHostedServices()
+    {
+        return this.currentHostedServices;
+    }
     
     /**
     * The number of currently allocated cloud services.
+    * @param currentHostedServicesValue The CurrentHostedServices value.
     */
-    public void setCurrentHostedServices(int currentHostedServices) { this.currentHostedServices = currentHostedServices; }
+    public void setCurrentHostedServices(final int currentHostedServicesValue)
+    {
+        this.currentHostedServices = currentHostedServicesValue;
+    }
     
     private int currentLocalNetworkSites;
     
     /**
     * The current number of local virtual network sites that are allocated on
     * this subscription.
+    * @return The CurrentLocalNetworkSites value.
     */
-    public int getCurrentLocalNetworkSites() { return this.currentLocalNetworkSites; }
+    public int getCurrentLocalNetworkSites()
+    {
+        return this.currentLocalNetworkSites;
+    }
     
     /**
     * The current number of local virtual network sites that are allocated on
     * this subscription.
+    * @param currentLocalNetworkSitesValue The CurrentLocalNetworkSites value.
     */
-    public void setCurrentLocalNetworkSites(int currentLocalNetworkSites) { this.currentLocalNetworkSites = currentLocalNetworkSites; }
+    public void setCurrentLocalNetworkSites(final int currentLocalNetworkSitesValue)
+    {
+        this.currentLocalNetworkSites = currentLocalNetworkSitesValue;
+    }
     
     private int currentStorageAccounts;
     
     /**
     * The number of currently allocated storage accounts.
+    * @return The CurrentStorageAccounts value.
     */
-    public int getCurrentStorageAccounts() { return this.currentStorageAccounts; }
+    public int getCurrentStorageAccounts()
+    {
+        return this.currentStorageAccounts;
+    }
     
     /**
     * The number of currently allocated storage accounts.
+    * @param currentStorageAccountsValue The CurrentStorageAccounts value.
     */
-    public void setCurrentStorageAccounts(int currentStorageAccounts) { this.currentStorageAccounts = currentStorageAccounts; }
+    public void setCurrentStorageAccounts(final int currentStorageAccountsValue)
+    {
+        this.currentStorageAccounts = currentStorageAccountsValue;
+    }
     
     private int currentVirtualNetworkSites;
     
     /**
     * The number of currently allocated virtual network sites.
+    * @return The CurrentVirtualNetworkSites value.
     */
-    public int getCurrentVirtualNetworkSites() { return this.currentVirtualNetworkSites; }
+    public int getCurrentVirtualNetworkSites()
+    {
+        return this.currentVirtualNetworkSites;
+    }
     
     /**
     * The number of currently allocated virtual network sites.
+    * @param currentVirtualNetworkSitesValue The CurrentVirtualNetworkSites
+    * value.
     */
-    public void setCurrentVirtualNetworkSites(int currentVirtualNetworkSites) { this.currentVirtualNetworkSites = currentVirtualNetworkSites; }
+    public void setCurrentVirtualNetworkSites(final int currentVirtualNetworkSitesValue)
+    {
+        this.currentVirtualNetworkSites = currentVirtualNetworkSitesValue;
+    }
     
     private int maximumCoreCount;
     
     /**
     * The maximum number of cores that can be allocated on this subscription.
+    * @return The MaximumCoreCount value.
     */
-    public int getMaximumCoreCount() { return this.maximumCoreCount; }
+    public int getMaximumCoreCount()
+    {
+        return this.maximumCoreCount;
+    }
     
     /**
     * The maximum number of cores that can be allocated on this subscription.
+    * @param maximumCoreCountValue The MaximumCoreCount value.
     */
-    public void setMaximumCoreCount(int maximumCoreCount) { this.maximumCoreCount = maximumCoreCount; }
+    public void setMaximumCoreCount(final int maximumCoreCountValue)
+    {
+        this.maximumCoreCount = maximumCoreCountValue;
+    }
     
     private int maximumDnsServers;
     
     /**
     * The maximum number of DNS servers that can be allocated on this
     * subscription.
+    * @return The MaximumDnsServers value.
     */
-    public int getMaximumDnsServers() { return this.maximumDnsServers; }
+    public int getMaximumDnsServers()
+    {
+        return this.maximumDnsServers;
+    }
     
     /**
     * The maximum number of DNS servers that can be allocated on this
     * subscription.
+    * @param maximumDnsServersValue The MaximumDnsServers value.
     */
-    public void setMaximumDnsServers(int maximumDnsServers) { this.maximumDnsServers = maximumDnsServers; }
+    public void setMaximumDnsServers(final int maximumDnsServersValue)
+    {
+        this.maximumDnsServers = maximumDnsServersValue;
+    }
     
     private int maximumHostedServices;
     
     /**
     * The maximum number of cloud services that can be allocated on this
     * subscription.
+    * @return The MaximumHostedServices value.
     */
-    public int getMaximumHostedServices() { return this.maximumHostedServices; }
+    public int getMaximumHostedServices()
+    {
+        return this.maximumHostedServices;
+    }
     
     /**
     * The maximum number of cloud services that can be allocated on this
     * subscription.
+    * @param maximumHostedServicesValue The MaximumHostedServices value.
     */
-    public void setMaximumHostedServices(int maximumHostedServices) { this.maximumHostedServices = maximumHostedServices; }
+    public void setMaximumHostedServices(final int maximumHostedServicesValue)
+    {
+        this.maximumHostedServices = maximumHostedServicesValue;
+    }
     
     private int maximumLocalNetworkSites;
     
     /**
     * The maximum number of local virtual network sites that can be allocated
     * on this subscription.
+    * @return The MaximumLocalNetworkSites value.
     */
-    public int getMaximumLocalNetworkSites() { return this.maximumLocalNetworkSites; }
+    public int getMaximumLocalNetworkSites()
+    {
+        return this.maximumLocalNetworkSites;
+    }
     
     /**
     * The maximum number of local virtual network sites that can be allocated
     * on this subscription.
+    * @param maximumLocalNetworkSitesValue The MaximumLocalNetworkSites value.
     */
-    public void setMaximumLocalNetworkSites(int maximumLocalNetworkSites) { this.maximumLocalNetworkSites = maximumLocalNetworkSites; }
+    public void setMaximumLocalNetworkSites(final int maximumLocalNetworkSitesValue)
+    {
+        this.maximumLocalNetworkSites = maximumLocalNetworkSitesValue;
+    }
     
     private int maximumStorageAccounts;
     
     /**
     * The maximum number of storage accounts that can be allocated on this
     * subscription.
+    * @return The MaximumStorageAccounts value.
     */
-    public int getMaximumStorageAccounts() { return this.maximumStorageAccounts; }
+    public int getMaximumStorageAccounts()
+    {
+        return this.maximumStorageAccounts;
+    }
     
     /**
     * The maximum number of storage accounts that can be allocated on this
     * subscription.
+    * @param maximumStorageAccountsValue The MaximumStorageAccounts value.
     */
-    public void setMaximumStorageAccounts(int maximumStorageAccounts) { this.maximumStorageAccounts = maximumStorageAccounts; }
+    public void setMaximumStorageAccounts(final int maximumStorageAccountsValue)
+    {
+        this.maximumStorageAccounts = maximumStorageAccountsValue;
+    }
     
     private int maximumVirtualNetworkSites;
     
     /**
     * The maximum number of virtual network sites that can be allocated on this
     * subscription.
+    * @return The MaximumVirtualNetworkSites value.
     */
-    public int getMaximumVirtualNetworkSites() { return this.maximumVirtualNetworkSites; }
+    public int getMaximumVirtualNetworkSites()
+    {
+        return this.maximumVirtualNetworkSites;
+    }
     
     /**
     * The maximum number of virtual network sites that can be allocated on this
     * subscription.
+    * @param maximumVirtualNetworkSitesValue The MaximumVirtualNetworkSites
+    * value.
     */
-    public void setMaximumVirtualNetworkSites(int maximumVirtualNetworkSites) { this.maximumVirtualNetworkSites = maximumVirtualNetworkSites; }
+    public void setMaximumVirtualNetworkSites(final int maximumVirtualNetworkSitesValue)
+    {
+        this.maximumVirtualNetworkSites = maximumVirtualNetworkSitesValue;
+    }
     
     private String serviceAdminLiveEmailId;
     
     /**
     * The live ID of the subscription administrator.
+    * @return The ServiceAdminLiveEmailId value.
     */
-    public String getServiceAdminLiveEmailId() { return this.serviceAdminLiveEmailId; }
+    public String getServiceAdminLiveEmailId()
+    {
+        return this.serviceAdminLiveEmailId;
+    }
     
     /**
     * The live ID of the subscription administrator.
+    * @param serviceAdminLiveEmailIdValue The ServiceAdminLiveEmailId value.
     */
-    public void setServiceAdminLiveEmailId(String serviceAdminLiveEmailId) { this.serviceAdminLiveEmailId = serviceAdminLiveEmailId; }
+    public void setServiceAdminLiveEmailId(final String serviceAdminLiveEmailIdValue)
+    {
+        this.serviceAdminLiveEmailId = serviceAdminLiveEmailIdValue;
+    }
     
     private String subscriptionID;
     
     /**
     * The subscription ID that the operation was called on.
+    * @return The SubscriptionID value.
     */
-    public String getSubscriptionID() { return this.subscriptionID; }
+    public String getSubscriptionID()
+    {
+        return this.subscriptionID;
+    }
     
     /**
     * The subscription ID that the operation was called on.
+    * @param subscriptionIDValue The SubscriptionID value.
     */
-    public void setSubscriptionID(String subscriptionID) { this.subscriptionID = subscriptionID; }
+    public void setSubscriptionID(final String subscriptionIDValue)
+    {
+        this.subscriptionID = subscriptionIDValue;
+    }
     
     private String subscriptionName;
     
     /**
     * The user-supplied name of the subscription.
+    * @return The SubscriptionName value.
     */
-    public String getSubscriptionName() { return this.subscriptionName; }
+    public String getSubscriptionName()
+    {
+        return this.subscriptionName;
+    }
     
     /**
     * The user-supplied name of the subscription.
+    * @param subscriptionNameValue The SubscriptionName value.
     */
-    public void setSubscriptionName(String subscriptionName) { this.subscriptionName = subscriptionName; }
+    public void setSubscriptionName(final String subscriptionNameValue)
+    {
+        this.subscriptionName = subscriptionNameValue;
+    }
     
     private SubscriptionStatus subscriptionStatus;
     
     /**
     * The subscription status.
+    * @return The SubscriptionStatus value.
     */
-    public SubscriptionStatus getSubscriptionStatus() { return this.subscriptionStatus; }
+    public SubscriptionStatus getSubscriptionStatus()
+    {
+        return this.subscriptionStatus;
+    }
     
     /**
     * The subscription status.
+    * @param subscriptionStatusValue The SubscriptionStatus value.
     */
-    public void setSubscriptionStatus(SubscriptionStatus subscriptionStatus) { this.subscriptionStatus = subscriptionStatus; }
-    
-    /**
-    * Initializes a new instance of the SubscriptionGetResponse class.
-    *
-    */
-    public SubscriptionGetResponse()
+    public void setSubscriptionStatus(final SubscriptionStatus subscriptionStatusValue)
     {
+        this.subscriptionStatus = subscriptionStatusValue;
     }
 }

@@ -36,8 +36,12 @@ public class WindowsRemoteManagementListener
     * thumbprint of the service certificate that is used to provision the
     * WinRM HTTPS listener. If this value is not specified, a self-signed
     * certificate is generated and used for the virtual machine.
+    * @return The CertificateThumbprint value.
     */
-    public String getCertificateThumbprint() { return this.certificateThumbprint; }
+    public String getCertificateThumbprint()
+    {
+        return this.certificateThumbprint;
+    }
     
     /**
     * Optional. Specifies the certificate thumbprint for the secure connection.
@@ -45,28 +49,32 @@ public class WindowsRemoteManagementListener
     * thumbprint of the service certificate that is used to provision the
     * WinRM HTTPS listener. If this value is not specified, a self-signed
     * certificate is generated and used for the virtual machine.
+    * @param certificateThumbprintValue The CertificateThumbprint value.
     */
-    public void setCertificateThumbprint(String certificateThumbprint) { this.certificateThumbprint = certificateThumbprint; }
+    public void setCertificateThumbprint(final String certificateThumbprintValue)
+    {
+        this.certificateThumbprint = certificateThumbprintValue;
+    }
     
     private VirtualMachineWindowsRemoteManagementListenerType listenerType;
     
     /**
     * Specifies the type of listener. This value can be Http or Https. The
     * value is case sensitive.
+    * @return The ListenerType value.
     */
-    public VirtualMachineWindowsRemoteManagementListenerType getListenerType() { return this.listenerType; }
+    public VirtualMachineWindowsRemoteManagementListenerType getListenerType()
+    {
+        return this.listenerType;
+    }
     
     /**
     * Specifies the type of listener. This value can be Http or Https. The
     * value is case sensitive.
+    * @param listenerTypeValue The ListenerType value.
     */
-    public void setListenerType(VirtualMachineWindowsRemoteManagementListenerType listenerType) { this.listenerType = listenerType; }
-    
-    /**
-    * Initializes a new instance of the WindowsRemoteManagementListener class.
-    *
-    */
-    public WindowsRemoteManagementListener()
+    public void setListenerType(final VirtualMachineWindowsRemoteManagementListenerType listenerTypeValue)
     {
+        this.listenerType = listenerTypeValue;
     }
 }

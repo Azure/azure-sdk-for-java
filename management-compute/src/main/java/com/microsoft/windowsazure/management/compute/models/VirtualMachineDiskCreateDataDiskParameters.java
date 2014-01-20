@@ -37,16 +37,24 @@ public class VirtualMachineDiskCreateDataDiskParameters
     * disk, either by directly referencing a media using the MediaLink element
     * or specifying the target disk size, you can use the DiskLabel element to
     * customize the name property of the target data disk.
+    * @return The DiskLabel value.
     */
-    public String getDiskLabel() { return this.diskLabel; }
+    public String getDiskLabel()
+    {
+        return this.diskLabel;
+    }
     
     /**
     * Optional. Specifies the description of the data disk. When you attach a
     * disk, either by directly referencing a media using the MediaLink element
     * or specifying the target disk size, you can use the DiskLabel element to
     * customize the name property of the target data disk.
+    * @param diskLabelValue The DiskLabel value.
     */
-    public void setDiskLabel(String diskLabel) { this.diskLabel = diskLabel; }
+    public void setDiskLabel(final String diskLabelValue)
+    {
+        this.diskLabel = diskLabelValue;
+    }
     
     private String diskName;
     
@@ -54,15 +62,23 @@ public class VirtualMachineDiskCreateDataDiskParameters
     * Optional. Specifies the name of the disk. Windows Azure uses the
     * specified disk to create the data disk for the machine and populates
     * this field with the disk name.
+    * @return The DiskName value.
     */
-    public String getDiskName() { return this.diskName; }
+    public String getDiskName()
+    {
+        return this.diskName;
+    }
     
     /**
     * Optional. Specifies the name of the disk. Windows Azure uses the
     * specified disk to create the data disk for the machine and populates
     * this field with the disk name.
+    * @param diskNameValue The DiskName value.
     */
-    public void setDiskName(String diskName) { this.diskName = diskName; }
+    public void setDiskName(final String diskNameValue)
+    {
+        this.diskName = diskNameValue;
+    }
     
     private VirtualHardDiskHostCaching hostCaching;
     
@@ -71,16 +87,24 @@ public class VirtualMachineDiskCreateDataDiskParameters
     * read/write efficiency. The default vault is ReadOnly. Possible values
     * are: None, ReadOnly, ReadWrite.  Warning: Setting this property impacts
     * the consistency of the disk.
+    * @return The HostCaching value.
     */
-    public VirtualHardDiskHostCaching getHostCaching() { return this.hostCaching; }
+    public VirtualHardDiskHostCaching getHostCaching()
+    {
+        return this.hostCaching;
+    }
     
     /**
     * Required. Specifies the platform caching behavior of data disk blob for
     * read/write efficiency. The default vault is ReadOnly. Possible values
     * are: None, ReadOnly, ReadWrite.  Warning: Setting this property impacts
     * the consistency of the disk.
+    * @param hostCachingValue The HostCaching value.
     */
-    public void setHostCaching(VirtualHardDiskHostCaching hostCaching) { this.hostCaching = hostCaching; }
+    public void setHostCaching(final VirtualHardDiskHostCaching hostCachingValue)
+    {
+        this.hostCaching = hostCachingValue;
+    }
     
     private double logicalDiskSizeInGB;
     
@@ -90,8 +114,12 @@ public class VirtualMachineDiskCreateDataDiskParameters
     * role call by specifying the value for this property.  Windows Azure
     * creates the empty disk based on size preference and attaches the newly
     * created disk to the Role.
+    * @return The LogicalDiskSizeInGB value.
     */
-    public double getLogicalDiskSizeInGB() { return this.logicalDiskSizeInGB; }
+    public double getLogicalDiskSizeInGB()
+    {
+        return this.logicalDiskSizeInGB;
+    }
     
     /**
     * Optional. Specifies the size, in GB, of an empty disk to be attached to
@@ -99,8 +127,12 @@ public class VirtualMachineDiskCreateDataDiskParameters
     * role call by specifying the value for this property.  Windows Azure
     * creates the empty disk based on size preference and attaches the newly
     * created disk to the Role.
+    * @param logicalDiskSizeInGBValue The LogicalDiskSizeInGB value.
     */
-    public void setLogicalDiskSizeInGB(double logicalDiskSizeInGB) { this.logicalDiskSizeInGB = logicalDiskSizeInGB; }
+    public void setLogicalDiskSizeInGB(final double logicalDiskSizeInGBValue)
+    {
+        this.logicalDiskSizeInGB = logicalDiskSizeInGBValue;
+    }
     
     private Integer logicalUnitNumber;
     
@@ -108,15 +140,23 @@ public class VirtualMachineDiskCreateDataDiskParameters
     * Optional. Specifies the Logical Unit Number (LUN) for the disk. The LUN
     * specifies the slot in which the data drive appears when mounted for
     * usage by the virtual machine.  Valid LUN values are 0 through 15.
+    * @return The LogicalUnitNumber value.
     */
-    public Integer getLogicalUnitNumber() { return this.logicalUnitNumber; }
+    public Integer getLogicalUnitNumber()
+    {
+        return this.logicalUnitNumber;
+    }
     
     /**
     * Optional. Specifies the Logical Unit Number (LUN) for the disk. The LUN
     * specifies the slot in which the data drive appears when mounted for
     * usage by the virtual machine.  Valid LUN values are 0 through 15.
+    * @param logicalUnitNumberValue The LogicalUnitNumber value.
     */
-    public void setLogicalUnitNumber(Integer logicalUnitNumber) { this.logicalUnitNumber = logicalUnitNumber; }
+    public void setLogicalUnitNumber(final Integer logicalUnitNumberValue)
+    {
+        this.logicalUnitNumber = logicalUnitNumberValue;
+    }
     
     private URI mediaLinkUri;
     
@@ -126,8 +166,12 @@ public class VirtualMachineDiskCreateDataDiskParameters
     * to the storage account in the subscription specified by the
     * SubscriptionId value in the operation call. Example:
     * http://example.blob.core.windows.net/disks/mydisk.vhd
+    * @return The MediaLinkUri value.
     */
-    public URI getMediaLinkUri() { return this.mediaLinkUri; }
+    public URI getMediaLinkUri()
+    {
+        return this.mediaLinkUri;
+    }
     
     /**
     * Required. Specifies the location of the blob in Windows Azure blob store
@@ -135,29 +179,32 @@ public class VirtualMachineDiskCreateDataDiskParameters
     * to the storage account in the subscription specified by the
     * SubscriptionId value in the operation call. Example:
     * http://example.blob.core.windows.net/disks/mydisk.vhd
+    * @param mediaLinkUriValue The MediaLinkUri value.
     */
-    public void setMediaLinkUri(URI mediaLinkUri) { this.mediaLinkUri = mediaLinkUri; }
+    public void setMediaLinkUri(final URI mediaLinkUriValue)
+    {
+        this.mediaLinkUri = mediaLinkUriValue;
+    }
     
     private URI sourceMediaLinkUri;
     
     /**
     * Optional. Specifies the location of a blob in account storage which is
     * mounted as a data disk when the virtual machine is created.
+    * @return The SourceMediaLinkUri value.
     */
-    public URI getSourceMediaLinkUri() { return this.sourceMediaLinkUri; }
+    public URI getSourceMediaLinkUri()
+    {
+        return this.sourceMediaLinkUri;
+    }
     
     /**
     * Optional. Specifies the location of a blob in account storage which is
     * mounted as a data disk when the virtual machine is created.
+    * @param sourceMediaLinkUriValue The SourceMediaLinkUri value.
     */
-    public void setSourceMediaLinkUri(URI sourceMediaLinkUri) { this.sourceMediaLinkUri = sourceMediaLinkUri; }
-    
-    /**
-    * Initializes a new instance of the
-    * VirtualMachineDiskCreateDataDiskParameters class.
-    *
-    */
-    public VirtualMachineDiskCreateDataDiskParameters()
+    public void setSourceMediaLinkUri(final URI sourceMediaLinkUriValue)
     {
+        this.sourceMediaLinkUri = sourceMediaLinkUriValue;
     }
 }

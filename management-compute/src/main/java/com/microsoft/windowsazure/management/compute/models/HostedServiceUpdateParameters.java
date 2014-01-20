@@ -36,15 +36,23 @@ public class HostedServiceUpdateParameters
     * Optional. A description for the cloud service. The description may be up
     * to 1024 characters in length. You must specify a value for either Label
     * or Description, or for both.
+    * @return The Description value.
     */
-    public String getDescription() { return this.description; }
+    public String getDescription()
+    {
+        return this.description;
+    }
     
     /**
     * Optional. A description for the cloud service. The description may be up
     * to 1024 characters in length. You must specify a value for either Label
     * or Description, or for both.
+    * @param descriptionValue The Description value.
     */
-    public void setDescription(String description) { this.description = description; }
+    public void setDescription(final String descriptionValue)
+    {
+        this.description = descriptionValue;
+    }
     
     private HashMap<String, String> extendedProperties;
     
@@ -59,8 +67,12 @@ public class HostedServiceUpdateParameters
     * extended property owned by the same service, will result in a status
     * code 400 (Bad Request) error.  Each extended property value has a
     * maximum length of 255 characters.
+    * @return The ExtendedProperties value.
     */
-    public HashMap<String, String> getExtendedProperties() { return this.extendedProperties; }
+    public HashMap<String, String> getExtendedProperties()
+    {
+        return this.extendedProperties;
+    }
     
     /**
     * Optional. Represents the name of an extended cloud service property. Each
@@ -73,8 +85,12 @@ public class HostedServiceUpdateParameters
     * extended property owned by the same service, will result in a status
     * code 400 (Bad Request) error.  Each extended property value has a
     * maximum length of 255 characters.
+    * @param extendedPropertiesValue The ExtendedProperties value.
     */
-    public void setExtendedProperties(HashMap<String, String> extendedProperties) { this.extendedProperties = extendedProperties; }
+    public void setExtendedProperties(final HashMap<String, String> extendedPropertiesValue)
+    {
+        this.extendedProperties = extendedPropertiesValue;
+    }
     
     private String label;
     
@@ -84,8 +100,12 @@ public class HostedServiceUpdateParameters
     * Description, or for both. It is recommended that the label be unique
     * within the subscription. The name can be used identify the service for
     * your tracking purposes.
+    * @return The Label value.
     */
-    public String getLabel() { return this.label; }
+    public String getLabel()
+    {
+        return this.label;
+    }
     
     /**
     * Optional. A name for the cloud service. The name may be up to 100
@@ -93,8 +113,12 @@ public class HostedServiceUpdateParameters
     * Description, or for both. It is recommended that the label be unique
     * within the subscription. The name can be used identify the service for
     * your tracking purposes.
+    * @param labelValue The Label value.
     */
-    public void setLabel(String label) { this.label = label; }
+    public void setLabel(final String labelValue)
+    {
+        this.label = labelValue;
+    }
     
     /**
     * Initializes a new instance of the HostedServiceUpdateParameters class.

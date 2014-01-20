@@ -32,31 +32,39 @@ public class ServiceBusLocation
     
     /**
     * The region code.
+    * @return The Code value.
     */
-    public String getCode() { return this.code; }
+    public String getCode()
+    {
+        return this.code;
+    }
     
     /**
     * The region code.
+    * @param codeValue The Code value.
     */
-    public void setCode(String code) { this.code = code; }
+    public void setCode(final String codeValue)
+    {
+        this.code = codeValue;
+    }
     
     private String fullName;
     
     /**
     * The fulle name of the region.
+    * @return The FullName value.
     */
-    public String getFullName() { return this.fullName; }
+    public String getFullName()
+    {
+        return this.fullName;
+    }
     
     /**
     * The fulle name of the region.
+    * @param fullNameValue The FullName value.
     */
-    public void setFullName(String fullName) { this.fullName = fullName; }
-    
-    /**
-    * Initializes a new instance of the ServiceBusLocation class.
-    *
-    */
-    public ServiceBusLocation()
+    public void setFullName(final String fullNameValue)
     {
+        this.fullName = fullNameValue;
     }
 }

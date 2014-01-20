@@ -32,32 +32,39 @@ public class StorageAccountRegenerateKeysParameters
     
     /**
     * Specifies which key to regenerate.
+    * @return The KeyType value.
     */
-    public StorageKeyType getKeyType() { return this.keyType; }
+    public StorageKeyType getKeyType()
+    {
+        return this.keyType;
+    }
     
     /**
     * Specifies which key to regenerate.
+    * @param keyTypeValue The KeyType value.
     */
-    public void setKeyType(StorageKeyType keyType) { this.keyType = keyType; }
+    public void setKeyType(final StorageKeyType keyTypeValue)
+    {
+        this.keyType = keyTypeValue;
+    }
     
     private String serviceName;
     
     /**
     * The name of the desired storage account.
+    * @return The ServiceName value.
     */
-    public String getServiceName() { return this.serviceName; }
+    public String getServiceName()
+    {
+        return this.serviceName;
+    }
     
     /**
     * The name of the desired storage account.
+    * @param serviceNameValue The ServiceName value.
     */
-    public void setServiceName(String serviceName) { this.serviceName = serviceName; }
-    
-    /**
-    * Initializes a new instance of the StorageAccountRegenerateKeysParameters
-    * class.
-    *
-    */
-    public StorageAccountRegenerateKeysParameters()
+    public void setServiceName(final String serviceNameValue)
     {
+        this.serviceName = serviceNameValue;
     }
 }

@@ -32,31 +32,39 @@ public class ScaleRule
     
     /**
     * The metrics that are used to determine when a scaling action occurs.
+    * @return The MetricTrigger value.
     */
-    public MetricTrigger getMetricTrigger() { return this.metricTrigger; }
+    public MetricTrigger getMetricTrigger()
+    {
+        return this.metricTrigger;
+    }
     
     /**
     * The metrics that are used to determine when a scaling action occurs.
+    * @param metricTriggerValue The MetricTrigger value.
     */
-    public void setMetricTrigger(MetricTrigger metricTrigger) { this.metricTrigger = metricTrigger; }
+    public void setMetricTrigger(final MetricTrigger metricTriggerValue)
+    {
+        this.metricTrigger = metricTriggerValue;
+    }
     
     private ScaleAction scaleAction;
     
     /**
     * The parameters for the scaling action.
+    * @return The ScaleAction value.
     */
-    public ScaleAction getScaleAction() { return this.scaleAction; }
+    public ScaleAction getScaleAction()
+    {
+        return this.scaleAction;
+    }
     
     /**
     * The parameters for the scaling action.
+    * @param scaleActionValue The ScaleAction value.
     */
-    public void setScaleAction(ScaleAction scaleAction) { this.scaleAction = scaleAction; }
-    
-    /**
-    * Initializes a new instance of the ScaleRule class.
-    *
-    */
-    public ScaleRule()
+    public void setScaleAction(final ScaleAction scaleActionValue)
     {
+        this.scaleAction = scaleActionValue;
     }
 }

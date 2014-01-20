@@ -35,42 +35,52 @@ public class RetryPolicy
     /**
     * Number of times a retry should be attempted.
     */
-    public Integer getRetryCount() { return this.retryCount; }
+    public Integer getRetryCount()
+    {
+        return this.retryCount;
+    }
     
     /**
     * Number of times a retry should be attempted.
     */
-    public void setRetryCount(Integer retryCount) { this.retryCount = retryCount; }
+    public void setRetryCount(Integer retryCount)
+    {
+        this.retryCount = retryCount;
+    }
     
     private Duration retryInterval;
     
     /**
     * The interval between retries.
     */
-    public Duration getRetryInterval() { return this.retryInterval; }
+    public Duration getRetryInterval()
+    {
+        return this.retryInterval;
+    }
     
     /**
     * The interval between retries.
     */
-    public void setRetryInterval(Duration retryInterval) { this.retryInterval = retryInterval; }
+    public void setRetryInterval(Duration retryInterval)
+    {
+        this.retryInterval = retryInterval;
+    }
     
     private RetryType retryType;
     
     /**
     * The Retry Type of the Retry Policy. Can be either  Fixed or None.
     */
-    public RetryType getRetryType() { return this.retryType; }
+    public RetryType getRetryType()
+    {
+        return this.retryType;
+    }
     
     /**
     * The Retry Type of the Retry Policy. Can be either  Fixed or None.
     */
-    public void setRetryType(RetryType retryType) { this.retryType = retryType; }
-    
-    /**
-    * Initializes a new instance of the RetryPolicy class.
-    *
-    */
-    public RetryPolicy()
+    public void setRetryType(RetryType retryType)
     {
+        this.retryType = retryType;
     }
 }

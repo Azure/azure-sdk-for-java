@@ -17,7 +17,8 @@ package com.microsoft.windowsazure.services.blob.client;
 /**
  * Represents a range of pages in a page blob.
  */
-public final class PageRange {
+public final class PageRange
+{
     /**
      * Represents the ending offset of the page range.
      */
@@ -36,7 +37,8 @@ public final class PageRange {
      * @param end
      *            The ending offset.
      */
-    public PageRange(final long start, final long end) {
+    public PageRange(final long start, final long end)
+    {
         this.setStartOffset(start);
         this.setEndOffset(end);
     }
@@ -44,14 +46,16 @@ public final class PageRange {
     /**
      * @return the endOffset
      */
-    public long getEndOffset() {
+    public long getEndOffset()
+    {
         return this.endOffset;
     }
 
     /**
      * @return the startOffset
      */
-    public long getStartOffset() {
+    public long getStartOffset()
+    {
         return this.startOffset;
     }
 
@@ -59,7 +63,8 @@ public final class PageRange {
      * @param endOffset
      *            the endOffset to set
      */
-    public void setEndOffset(final long endOffset) {
+    public void setEndOffset(final long endOffset)
+    {
         this.endOffset = endOffset;
     }
 
@@ -67,17 +72,21 @@ public final class PageRange {
      * @param startOffset
      *            the startOffset to set
      */
-    public void setStartOffset(final long startOffset) {
+    public void setStartOffset(final long startOffset)
+    {
         this.startOffset = startOffset;
     }
 
     /**
      * Returns the content of the page range as a string.
      * 
-     * @return A <code>String</code> that represents the contents of the page range.
+     * @return A <code>String</code> that represents the contents of the page
+     *         range.
      */
     @Override
-    public String toString() {
-        return String.format("bytes=%d-%d", this.getStartOffset(), this.getEndOffset());
+    public String toString()
+    {
+        return String.format("bytes=%d-%d", this.getStartOffset(),
+                this.getEndOffset());
     }
 }

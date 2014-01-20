@@ -34,32 +34,39 @@ public class CheckNamespaceAvailabilityResponse extends OperationResponse
     
     /**
     * Whether or not the namespace is available.
+    * @return The IsAvailable value.
     */
-    public boolean getIsAvailable() { return this.isAvailable; }
+    public boolean isAvailable()
+    {
+        return this.isAvailable;
+    }
     
     /**
     * Whether or not the namespace is available.
+    * @param isAvailableValue The IsAvailable value.
     */
-    public void setIsAvailable(boolean isAvailable) { this.isAvailable = isAvailable; }
+    public void setIsAvailable(final boolean isAvailableValue)
+    {
+        this.isAvailable = isAvailableValue;
+    }
     
     private String reasonDetails;
     
     /**
     * The reason the namespace is unavailable.
+    * @return The ReasonDetails value.
     */
-    public String getReasonDetails() { return this.reasonDetails; }
+    public String getReasonDetails()
+    {
+        return this.reasonDetails;
+    }
     
     /**
     * The reason the namespace is unavailable.
+    * @param reasonDetailsValue The ReasonDetails value.
     */
-    public void setReasonDetails(String reasonDetails) { this.reasonDetails = reasonDetails; }
-    
-    /**
-    * Initializes a new instance of the CheckNamespaceAvailabilityResponse
-    * class.
-    *
-    */
-    public CheckNamespaceAvailabilityResponse()
+    public void setReasonDetails(final String reasonDetailsValue)
     {
+        this.reasonDetails = reasonDetailsValue;
     }
 }

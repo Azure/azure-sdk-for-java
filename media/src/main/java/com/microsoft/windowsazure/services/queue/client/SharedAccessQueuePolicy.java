@@ -20,18 +20,20 @@ import java.util.EnumSet;
 import com.microsoft.windowsazure.services.core.storage.Constants;
 
 /**
- * Represents a shared access policy, which specifies the start time, expiry time, and permissions for a shared access
- * signature.
+ * Represents a shared access policy, which specifies the start time, expiry
+ * time, and permissions for a shared access signature.
  */
-public final class SharedAccessQueuePolicy {
+public final class SharedAccessQueuePolicy
+{
 
     /**
      * Assigns shared access permissions using the specified permissions string.
      * 
      * @param value
-     *            A <code>String</code> that represents the shared access permissions. The string must contain one or
-     *            more of the following values. Note that they must be lower case, and the order that they are specified
-     *            must be in the order of "rwdl".
+     *            A <code>String</code> that represents the shared access
+     *            permissions. The string must contain one or more of the
+     *            following values. Note that they must be lower case, and the
+     *            order that they are specified must be in the order of "rwdl".
      *            <ul>
      *            <li><code>d</code>: Delete access.</li>
      *            <li><code>l</code>: List access.</li>
@@ -39,29 +41,35 @@ public final class SharedAccessQueuePolicy {
      *            <li><code>w</code>: Write access.</li>
      *            </ul>
      * 
-     * @return A <code>java.util.EnumSet</code> object that contains {@link SharedAccessQueuePermissions} values that
-     *         represents the set of shared access permissions.
+     * @return A <code>java.util.EnumSet</code> object that contains
+     *         {@link SharedAccessQueuePermissions} values that represents the
+     *         set of shared access permissions.
      */
-    public static EnumSet<SharedAccessQueuePermissions> permissionsFromString(final String value) {
+    public static EnumSet<SharedAccessQueuePermissions> permissionsFromString(
+            final String value)
+    {
         final char[] chars = value.toCharArray();
-        final EnumSet<SharedAccessQueuePermissions> retSet = EnumSet.noneOf(SharedAccessQueuePermissions.class);
+        final EnumSet<SharedAccessQueuePermissions> retSet = EnumSet
+                .noneOf(SharedAccessQueuePermissions.class);
 
-        for (final char c : chars) {
-            switch (c) {
-                case 'r':
-                    retSet.add(SharedAccessQueuePermissions.READ);
-                    break;
-                case 'a':
-                    retSet.add(SharedAccessQueuePermissions.ADD);
-                    break;
-                case 'u':
-                    retSet.add(SharedAccessQueuePermissions.UPDATE);
-                    break;
-                case 'p':
-                    retSet.add(SharedAccessQueuePermissions.PROCESSMESSAGES);
-                    break;
-                default:
-                    throw new IllegalArgumentException("value");
+        for (final char c : chars)
+        {
+            switch (c)
+            {
+            case 'r':
+                retSet.add(SharedAccessQueuePermissions.READ);
+                break;
+            case 'a':
+                retSet.add(SharedAccessQueuePermissions.ADD);
+                break;
+            case 'u':
+                retSet.add(SharedAccessQueuePermissions.UPDATE);
+                break;
+            case 'p':
+                retSet.add(SharedAccessQueuePermissions.PROCESSMESSAGES);
+                break;
+            default:
+                throw new IllegalArgumentException("value");
             }
         }
 
@@ -69,35 +77,45 @@ public final class SharedAccessQueuePolicy {
     }
 
     /**
-     * Converts the permissions specified for the shared access policy to a string.
+     * Converts the permissions specified for the shared access policy to a
+     * string.
      * 
      * @param permissions
-     *            A {@link SharedAccessQueuePermissions} object that represents the shared access permissions.
+     *            A {@link SharedAccessQueuePermissions} object that represents
+     *            the shared access permissions.
      * 
-     * @return A <code>String</code> that represents the shared access permissions in the "rwdl" format, which is
-     *         described at {@link SharedAccessQueuePolicy#permissionsFromString(String)}.
+     * @return A <code>String</code> that represents the shared access
+     *         permissions in the "rwdl" format, which is described at
+     *         {@link SharedAccessQueuePolicy#permissionsFromString(String)}.
      */
-    public static String permissionsToString(final EnumSet<SharedAccessQueuePermissions> permissions) {
-        if (permissions == null) {
+    public static String permissionsToString(
+            final EnumSet<SharedAccessQueuePermissions> permissions)
+    {
+        if (permissions == null)
+        {
             return Constants.EMPTY_STRING;
         }
 
         // The service supports a fixed order => rwdl
         final StringBuilder builder = new StringBuilder();
 
-        if (permissions.contains(SharedAccessQueuePermissions.READ)) {
+        if (permissions.contains(SharedAccessQueuePermissions.READ))
+        {
             builder.append("r");
         }
 
-        if (permissions.contains(SharedAccessQueuePermissions.ADD)) {
+        if (permissions.contains(SharedAccessQueuePermissions.ADD))
+        {
             builder.append("a");
         }
 
-        if (permissions.contains(SharedAccessQueuePermissions.UPDATE)) {
+        if (permissions.contains(SharedAccessQueuePermissions.UPDATE))
+        {
             builder.append("u");
         }
 
-        if (permissions.contains(SharedAccessQueuePermissions.PROCESSMESSAGES)) {
+        if (permissions.contains(SharedAccessQueuePermissions.PROCESSMESSAGES))
+        {
             builder.append("p");
         }
 
@@ -105,83 +123,105 @@ public final class SharedAccessQueuePolicy {
     }
 
     /**
-     * The permissions for a shared access signature associated with this shared access policy.
+     * The permissions for a shared access signature associated with this shared
+     * access policy.
      */
     private EnumSet<SharedAccessQueuePermissions> permissions;
 
     /**
-     * The expiry time for a shared access signature associated with this shared access policy.
+     * The expiry time for a shared access signature associated with this shared
+     * access policy.
      */
     private Date sharedAccessExpiryTime;
 
     /**
-     * The start time for a shared access signature associated with this shared access policy.
+     * The start time for a shared access signature associated with this shared
+     * access policy.
      */
     private Date sharedAccessStartTime;
 
     /**
      * Creates an instance of the <code>SharedAccessQueuePolicy</code> class.
      * */
-    public SharedAccessQueuePolicy() {
+    public SharedAccessQueuePolicy()
+    {
         // Empty Default Ctor
     }
 
     /**
-     * Gets the permissions for a shared access signature associated with this shared access policy.
+     * Gets the permissions for a shared access signature associated with this
+     * shared access policy.
      * 
-     * @return A <code>java.util.EnumSet</code> object that contains {@link SharedAccessQueuePermissions} values that
-     *         represents the set of shared access permissions.
+     * @return A <code>java.util.EnumSet</code> object that contains
+     *         {@link SharedAccessQueuePermissions} values that represents the
+     *         set of shared access permissions.
      */
-    public EnumSet<SharedAccessQueuePermissions> getPermissions() {
+    public EnumSet<SharedAccessQueuePermissions> getPermissions()
+    {
         return this.permissions;
     }
 
     /**
-     * Gets the expiry time for a shared access signature associated with this shared access policy.
+     * Gets the expiry time for a shared access signature associated with this
+     * shared access policy.
      * 
-     * @return A <code>Date</code> object that contains the shared access signature expiry time.
+     * @return A <code>Date</code> object that contains the shared access
+     *         signature expiry time.
      */
-    public Date getSharedAccessExpiryTime() {
+    public Date getSharedAccessExpiryTime()
+    {
         return this.sharedAccessExpiryTime;
     }
 
     /**
-     * Gets the start time for a shared access signature associated with this shared access policy.
+     * Gets the start time for a shared access signature associated with this
+     * shared access policy.
      * 
-     * @return A <code>Date</code> object that contains the shared access signature start time.
+     * @return A <code>Date</code> object that contains the shared access
+     *         signature start time.
      */
-    public Date getSharedAccessStartTime() {
+    public Date getSharedAccessStartTime()
+    {
         return this.sharedAccessStartTime;
     }
 
     /**
-     * Sets the permissions for a shared access signature associated with this shared access policy.
+     * Sets the permissions for a shared access signature associated with this
+     * shared access policy.
      * 
      * @param permissions
-     *            The permissions, represented by a <code>java.util.EnumSet</code> object that contains
-     *            {@link SharedAccessQueuePermissions} values, to set for the shared access signature.
+     *            The permissions, represented by a
+     *            <code>java.util.EnumSet</code> object that contains
+     *            {@link SharedAccessQueuePermissions} values, to set for the
+     *            shared access signature.
      */
-    public void setPermissions(final EnumSet<SharedAccessQueuePermissions> permissions) {
+    public void setPermissions(
+            final EnumSet<SharedAccessQueuePermissions> permissions)
+    {
         this.permissions = permissions;
     }
 
     /**
-     * Sets the expiry time for a shared access signature associated with this shared access policy.
+     * Sets the expiry time for a shared access signature associated with this
+     * shared access policy.
      * 
      * @param sharedAccessExpiryTime
      *            The expiry time to set for the shared access signature.
      */
-    public void setSharedAccessExpiryTime(final Date sharedAccessExpiryTime) {
+    public void setSharedAccessExpiryTime(final Date sharedAccessExpiryTime)
+    {
         this.sharedAccessExpiryTime = sharedAccessExpiryTime;
     }
 
     /**
-     * Sets the start time for a shared access signature associated with this shared access policy.
+     * Sets the start time for a shared access signature associated with this
+     * shared access policy.
      * 
      * @param sharedAccessStartTime
      *            The start time to set for the shared access signature.
      */
-    public void setSharedAccessStartTime(final Date sharedAccessStartTime) {
+    public void setSharedAccessStartTime(final Date sharedAccessStartTime)
+    {
         this.sharedAccessStartTime = sharedAccessStartTime;
     }
 }

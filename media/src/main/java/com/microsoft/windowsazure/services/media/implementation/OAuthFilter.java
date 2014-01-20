@@ -26,36 +26,46 @@ import com.sun.jersey.api.client.ClientResponse;
  * The Jersey filter for OAuth.
  * 
  */
-public class OAuthFilter extends IdempotentClientFilter {
+public class OAuthFilter extends IdempotentClientFilter
+{
     private final OAuthTokenManager oAuthTokenManager;
 
     /**
-     * Creates an <code>OAuthFilter</code> object with specified <code>OAuthTokenManager</code> instance.
+     * Creates an <code>OAuthFilter</code> object with specified
+     * <code>OAuthTokenManager</code> instance.
      * 
      * @param oAuthTokenManager
      */
-    public OAuthFilter(OAuthTokenManager oAuthTokenManager) {
+    public OAuthFilter(OAuthTokenManager oAuthTokenManager)
+    {
         this.oAuthTokenManager = oAuthTokenManager;
     }
 
-    /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.core.IdempotentClientFilter#doHandle(com.sun.jersey.api.client.ClientRequest)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.microsoft.windowsazure.services.core.IdempotentClientFilter#doHandle
+     * (com.sun.jersey.api.client.ClientRequest)
      */@Override
-    public ClientResponse doHandle(ClientRequest clientRequest) {
+    public ClientResponse doHandle(ClientRequest clientRequest)
+    {
         String accessToken;
-        try {
+        try
+        {
             accessToken = oAuthTokenManager.getAccessToken();
-        }
-        catch (ServiceException e) {
+        } catch (ServiceException e)
+        {
             // must wrap exception because of base class signature
             throw new ClientHandlerException(e);
-        }
-        catch (URISyntaxException e) {
+        } catch (URISyntaxException e)
+        {
             // must wrap exception because of base class signature
             throw new ClientHandlerException(e);
         }
 
-        clientRequest.getHeaders().add("Authorization", "Bearer " + accessToken);
+        clientRequest.getHeaders()
+                .add("Authorization", "Bearer " + accessToken);
 
         return this.getNext().handle(clientRequest);
     }

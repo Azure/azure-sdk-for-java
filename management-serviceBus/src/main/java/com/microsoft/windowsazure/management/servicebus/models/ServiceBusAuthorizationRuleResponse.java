@@ -34,20 +34,19 @@ public class ServiceBusAuthorizationRuleResponse extends OperationResponse
     
     /**
     * The requested authorization rule.
+    * @return The AuthorizationRule value.
     */
-    public ServiceBusSharedAccessAuthorizationRule getAuthorizationRule() { return this.authorizationRule; }
+    public ServiceBusSharedAccessAuthorizationRule getAuthorizationRule()
+    {
+        return this.authorizationRule;
+    }
     
     /**
     * The requested authorization rule.
+    * @param authorizationRuleValue The AuthorizationRule value.
     */
-    public void setAuthorizationRule(ServiceBusSharedAccessAuthorizationRule authorizationRule) { this.authorizationRule = authorizationRule; }
-    
-    /**
-    * Initializes a new instance of the ServiceBusAuthorizationRuleResponse
-    * class.
-    *
-    */
-    public ServiceBusAuthorizationRuleResponse()
+    public void setAuthorizationRule(final ServiceBusSharedAccessAuthorizationRule authorizationRuleValue)
     {
+        this.authorizationRule = authorizationRuleValue;
     }
 }

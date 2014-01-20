@@ -37,12 +37,18 @@ public class JobCollectionJobsUpdateStateResponse extends OperationResponse impl
     /**
     * The jobs.
     */
-    public ArrayList<Job> getJobs() { return this.jobs; }
+    public ArrayList<Job> getJobs()
+    {
+        return this.jobs;
+    }
     
     /**
     * The jobs.
     */
-    public void setJobs(ArrayList<Job> jobs) { this.jobs = jobs; }
+    public void setJobs(ArrayList<Job> jobs)
+    {
+        this.jobs = jobs;
+    }
     
     /**
     * Initializes a new instance of the JobCollectionJobsUpdateStateResponse
@@ -51,6 +57,7 @@ public class JobCollectionJobsUpdateStateResponse extends OperationResponse impl
     */
     public JobCollectionJobsUpdateStateResponse()
     {
+        super();
         this.jobs = new ArrayList<Job>();
     }
     

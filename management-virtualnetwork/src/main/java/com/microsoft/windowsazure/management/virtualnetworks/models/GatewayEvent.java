@@ -34,55 +34,79 @@ public class GatewayEvent
     
     /**
     * Additional data associated with this event.
+    * @return The Data value.
     */
-    public String getData() { return this.data; }
+    public String getData()
+    {
+        return this.data;
+    }
     
     /**
     * Additional data associated with this event.
+    * @param dataValue The Data value.
     */
-    public void setData(String data) { this.data = data; }
+    public void setData(final String dataValue)
+    {
+        this.data = dataValue;
+    }
     
     private String id;
     
     /**
     * The event ID.
+    * @return The Id value.
     */
-    public String getId() { return this.id; }
+    public String getId()
+    {
+        return this.id;
+    }
     
     /**
     * The event ID.
+    * @param idValue The Id value.
     */
-    public void setId(String id) { this.id = id; }
+    public void setId(final String idValue)
+    {
+        this.id = idValue;
+    }
     
     private String message;
     
     /**
     * The event message.
+    * @return The Message value.
     */
-    public String getMessage() { return this.message; }
+    public String getMessage()
+    {
+        return this.message;
+    }
     
     /**
     * The event message.
+    * @param messageValue The Message value.
     */
-    public void setMessage(String message) { this.message = message; }
+    public void setMessage(final String messageValue)
+    {
+        this.message = messageValue;
+    }
     
     private Calendar timestamp;
     
     /**
     * The date and time when the event occurred.
+    * @return The Timestamp value.
     */
-    public Calendar getTimestamp() { return this.timestamp; }
+    public Calendar getTimestamp()
+    {
+        return this.timestamp;
+    }
     
     /**
     * The date and time when the event occurred.
+    * @param timestampValue The Timestamp value.
     */
-    public void setTimestamp(Calendar timestamp) { this.timestamp = timestamp; }
-    
-    /**
-    * Initializes a new instance of the GatewayEvent class.
-    *
-    */
-    public GatewayEvent()
+    public void setTimestamp(final Calendar timestampValue)
     {
+        this.timestamp = timestampValue;
     }
 }

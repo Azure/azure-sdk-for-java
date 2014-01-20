@@ -35,20 +35,20 @@ public class GatewayGetSharedKeyResponse extends OperationResponse
     /**
     * Contains the shared key used by the gateway to authenticate connections
     * to sites on a virtual network.
+    * @return The SharedKey value.
     */
-    public String getSharedKey() { return this.sharedKey; }
+    public String getSharedKey()
+    {
+        return this.sharedKey;
+    }
     
     /**
     * Contains the shared key used by the gateway to authenticate connections
     * to sites on a virtual network.
+    * @param sharedKeyValue The SharedKey value.
     */
-    public void setSharedKey(String sharedKey) { this.sharedKey = sharedKey; }
-    
-    /**
-    * Initializes a new instance of the GatewayGetSharedKeyResponse class.
-    *
-    */
-    public GatewayGetSharedKeyResponse()
+    public void setSharedKey(final String sharedKeyValue)
     {
+        this.sharedKey = sharedKeyValue;
     }
 }

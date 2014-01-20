@@ -36,9 +36,21 @@ public class StorageServiceListResponse extends OperationResponse implements Ite
 {
     private ArrayList<StorageServiceListResponse.StorageService> storageServices;
     
-    public ArrayList<StorageServiceListResponse.StorageService> getStorageServices() { return this.storageServices; }
+    /**
+    * @return The StorageServices value.
+    */
+    public ArrayList<StorageServiceListResponse.StorageService> getStorageServices()
+    {
+        return this.storageServices;
+    }
     
-    public void setStorageServices(ArrayList<StorageServiceListResponse.StorageService> storageServices) { this.storageServices = storageServices; }
+    /**
+    * @param storageServicesValue The StorageServices value.
+    */
+    public void setStorageServices(final ArrayList<StorageServiceListResponse.StorageService> storageServicesValue)
+    {
+        this.storageServices = storageServicesValue;
+    }
     
     /**
     * Initializes a new instance of the StorageServiceListResponse class.
@@ -46,6 +58,7 @@ public class StorageServiceListResponse extends OperationResponse implements Ite
     */
     public StorageServiceListResponse()
     {
+        super();
         this.storageServices = new ArrayList<StorageServiceListResponse.StorageService>();
     }
     
@@ -77,8 +90,12 @@ public class StorageServiceListResponse extends OperationResponse implements Ite
         * property owned by the same storage account, will result in a status
         * code 400 (Bad Request) error.  Each extended property value has a
         * maximum length of 255 characters.
+        * @return The ExtendedProperties value.
         */
-        public HashMap<String, String> getExtendedProperties() { return this.extendedProperties; }
+        public HashMap<String, String> getExtendedProperties()
+        {
+            return this.extendedProperties;
+        }
         
         /**
         * Optional. Represents the name of an extended storage account
@@ -92,20 +109,32 @@ public class StorageServiceListResponse extends OperationResponse implements Ite
         * property owned by the same storage account, will result in a status
         * code 400 (Bad Request) error.  Each extended property value has a
         * maximum length of 255 characters.
+        * @param extendedPropertiesValue The ExtendedProperties value.
         */
-        public void setExtendedProperties(HashMap<String, String> extendedProperties) { this.extendedProperties = extendedProperties; }
+        public void setExtendedProperties(final HashMap<String, String> extendedPropertiesValue)
+        {
+            this.extendedProperties = extendedPropertiesValue;
+        }
         
         private StorageServiceProperties properties;
         
         /**
         * Details about the storage account.
+        * @return The Properties value.
         */
-        public StorageServiceProperties getProperties() { return this.properties; }
+        public StorageServiceProperties getProperties()
+        {
+            return this.properties;
+        }
         
         /**
         * Details about the storage account.
+        * @param propertiesValue The Properties value.
         */
-        public void setProperties(StorageServiceProperties properties) { this.properties = properties; }
+        public void setProperties(final StorageServiceProperties propertiesValue)
+        {
+            this.properties = propertiesValue;
+        }
         
         private String serviceName;
         
@@ -115,8 +144,12 @@ public class StorageServiceListResponse extends OperationResponse implements Ite
         * account.  For example, if the service name is MyStorageAccount you
         * could access the blob containers by calling:
         * http://MyStorageAccount.blob.core.windows.net/mycontainer/
+        * @return The ServiceName value.
         */
-        public String getServiceName() { return this.serviceName; }
+        public String getServiceName()
+        {
+            return this.serviceName;
+        }
         
         /**
         * The name of the storage account. This name is the DNS prefix name and
@@ -124,22 +157,34 @@ public class StorageServiceListResponse extends OperationResponse implements Ite
         * account.  For example, if the service name is MyStorageAccount you
         * could access the blob containers by calling:
         * http://MyStorageAccount.blob.core.windows.net/mycontainer/
+        * @param serviceNameValue The ServiceName value.
         */
-        public void setServiceName(String serviceName) { this.serviceName = serviceName; }
+        public void setServiceName(final String serviceNameValue)
+        {
+            this.serviceName = serviceNameValue;
+        }
         
         private URI uri;
         
         /**
         * The Service Management API request URI used to perform Get Storage
         * Account Properties requests against the storage account.
+        * @return The Uri value.
         */
-        public URI getUri() { return this.uri; }
+        public URI getUri()
+        {
+            return this.uri;
+        }
         
         /**
         * The Service Management API request URI used to perform Get Storage
         * Account Properties requests against the storage account.
+        * @param uriValue The Uri value.
         */
-        public void setUri(URI uri) { this.uri = uri; }
+        public void setUri(final URI uriValue)
+        {
+            this.uri = uriValue;
+        }
         
         /**
         * Initializes a new instance of the StorageService class.

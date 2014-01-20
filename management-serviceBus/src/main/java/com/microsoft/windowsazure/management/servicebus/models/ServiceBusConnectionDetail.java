@@ -34,49 +34,81 @@ public class ServiceBusConnectionDetail
     
     /**
     * The type of authorization for the connection to the entity.
+    * @return The AuthorizationType value.
     */
-    public String getAuthorizationType() { return this.authorizationType; }
+    public String getAuthorizationType()
+    {
+        return this.authorizationType;
+    }
     
     /**
     * The type of authorization for the connection to the entity.
+    * @param authorizationTypeValue The AuthorizationType value.
     */
-    public void setAuthorizationType(String authorizationType) { this.authorizationType = authorizationType; }
+    public void setAuthorizationType(final String authorizationTypeValue)
+    {
+        this.authorizationType = authorizationTypeValue;
+    }
     
     private String connectionString;
     
     /**
     * The connection string to the entity.
+    * @return The ConnectionString value.
     */
-    public String getConnectionString() { return this.connectionString; }
+    public String getConnectionString()
+    {
+        return this.connectionString;
+    }
     
     /**
     * The connection string to the entity.
+    * @param connectionStringValue The ConnectionString value.
     */
-    public void setConnectionString(String connectionString) { this.connectionString = connectionString; }
+    public void setConnectionString(final String connectionStringValue)
+    {
+        this.connectionString = connectionStringValue;
+    }
     
     private String keyName;
     
     /**
     * The name of the key used in the connection.
+    * @return The KeyName value.
     */
-    public String getKeyName() { return this.keyName; }
+    public String getKeyName()
+    {
+        return this.keyName;
+    }
     
     /**
     * The name of the key used in the connection.
+    * @param keyNameValue The KeyName value.
     */
-    public void setKeyName(String keyName) { this.keyName = keyName; }
+    public void setKeyName(final String keyNameValue)
+    {
+        this.keyName = keyNameValue;
+    }
     
     private ArrayList<AccessRight> rights;
     
     /**
     * The rights connections to the entity via the connection string will have.
+    * @return The Rights value.
     */
-    public ArrayList<AccessRight> getRights() { return this.rights; }
+    public ArrayList<AccessRight> getRights()
+    {
+        return this.rights;
+    }
     
     /**
     * The rights connections to the entity via the connection string will have.
+    * @param rightsValue The Rights value.
     */
-    public void setRights(ArrayList<AccessRight> rights) { this.rights = rights; }
+    public void setRights(final ArrayList<AccessRight> rightsValue)
+    {
+        this.rights = rightsValue;
+    }
     
     /**
     * Initializes a new instance of the ServiceBusConnectionDetail class.

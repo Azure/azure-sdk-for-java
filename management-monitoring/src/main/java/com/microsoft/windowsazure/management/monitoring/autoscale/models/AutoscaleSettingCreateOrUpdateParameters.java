@@ -32,20 +32,19 @@ public class AutoscaleSettingCreateOrUpdateParameters
     
     /**
     * The setting to create or update.
+    * @return The Setting value.
     */
-    public AutoscaleSetting getSetting() { return this.setting; }
+    public AutoscaleSetting getSetting()
+    {
+        return this.setting;
+    }
     
     /**
     * The setting to create or update.
+    * @param settingValue The Setting value.
     */
-    public void setSetting(AutoscaleSetting setting) { this.setting = setting; }
-    
-    /**
-    * Initializes a new instance of the
-    * AutoscaleSettingCreateOrUpdateParameters class.
-    *
-    */
-    public AutoscaleSettingCreateOrUpdateParameters()
+    public void setSetting(final AutoscaleSetting settingValue)
     {
+        this.setting = settingValue;
     }
 }

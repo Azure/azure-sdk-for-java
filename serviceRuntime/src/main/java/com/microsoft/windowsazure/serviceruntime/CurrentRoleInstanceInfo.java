@@ -19,7 +19,6 @@
 // Generated on: 2011.11.14 at 04:34:45 PM PST 
 //
 
-
 package com.microsoft.windowsazure.serviceruntime;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -28,11 +27,13 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for CurrentRoleInstanceInfo complex type.
+ * <p>
+ * Java class for CurrentRoleInstanceInfo complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="CurrentRoleInstanceInfo">
@@ -58,7 +59,8 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "CurrentRoleInstanceInfo", propOrder = {
 
 })
-class CurrentRoleInstanceInfo {
+class CurrentRoleInstanceInfo
+{
 
     @XmlElement(name = "ConfigurationSettings")
     protected ConfigurationSettingsInfo configurationSettings;
@@ -78,12 +80,11 @@ class CurrentRoleInstanceInfo {
     /**
      * Gets the value of the configurationSettings property.
      * 
-     * @return
-     *     possible object is
-     *     {@link ConfigurationSettingsInfo }
-     *     
+     * @return possible object is {@link ConfigurationSettingsInfo }
+     * 
      */
-    public ConfigurationSettingsInfo getConfigurationSettings() {
+    public ConfigurationSettingsInfo getConfigurationSettings()
+    {
         return configurationSettings;
     }
 
@@ -91,23 +92,22 @@ class CurrentRoleInstanceInfo {
      * Sets the value of the configurationSettings property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link ConfigurationSettingsInfo }
-     *     
+     *            allowed object is {@link ConfigurationSettingsInfo }
+     * 
      */
-    public void setConfigurationSettings(ConfigurationSettingsInfo value) {
+    public void setConfigurationSettings(ConfigurationSettingsInfo value)
+    {
         this.configurationSettings = value;
     }
 
     /**
      * Gets the value of the localResources property.
      * 
-     * @return
-     *     possible object is
-     *     {@link LocalResourcesInfo }
-     *     
+     * @return possible object is {@link LocalResourcesInfo }
+     * 
      */
-    public LocalResourcesInfo getLocalResources() {
+    public LocalResourcesInfo getLocalResources()
+    {
         return localResources;
     }
 
@@ -115,23 +115,22 @@ class CurrentRoleInstanceInfo {
      * Sets the value of the localResources property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link LocalResourcesInfo }
-     *     
+     *            allowed object is {@link LocalResourcesInfo }
+     * 
      */
-    public void setLocalResources(LocalResourcesInfo value) {
+    public void setLocalResources(LocalResourcesInfo value)
+    {
         this.localResources = value;
     }
 
     /**
      * Gets the value of the endpoints property.
      * 
-     * @return
-     *     possible object is
-     *     {@link EndpointsInfo }
-     *     
+     * @return possible object is {@link EndpointsInfo }
+     * 
      */
-    public EndpointsInfo getEndpoints() {
+    public EndpointsInfo getEndpoints()
+    {
         return endpoints;
     }
 
@@ -139,23 +138,22 @@ class CurrentRoleInstanceInfo {
      * Sets the value of the endpoints property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link EndpointsInfo }
-     *     
+     *            allowed object is {@link EndpointsInfo }
+     * 
      */
-    public void setEndpoints(EndpointsInfo value) {
+    public void setEndpoints(EndpointsInfo value)
+    {
         this.endpoints = value;
     }
 
     /**
      * Gets the value of the id property.
      * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     * @return possible object is {@link String }
+     * 
      */
-    public String getId() {
+    public String getId()
+    {
         return id;
     }
 
@@ -163,23 +161,22 @@ class CurrentRoleInstanceInfo {
      * Sets the value of the id property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *            allowed object is {@link String }
+     * 
      */
-    public void setId(String value) {
+    public void setId(String value)
+    {
         this.id = value;
     }
 
     /**
      * Gets the value of the roleName property.
      * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     * @return possible object is {@link String }
+     * 
      */
-    public String getRoleName() {
+    public String getRoleName()
+    {
         return roleName;
     }
 
@@ -187,11 +184,11 @@ class CurrentRoleInstanceInfo {
      * Sets the value of the roleName property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *            allowed object is {@link String }
+     * 
      */
-    public void setRoleName(String value) {
+    public void setRoleName(String value)
+    {
         this.roleName = value;
     }
 
@@ -199,7 +196,8 @@ class CurrentRoleInstanceInfo {
      * Gets the value of the faultDomain property.
      * 
      */
-    public int getFaultDomain() {
+    public int getFaultDomain()
+    {
         return faultDomain;
     }
 
@@ -207,7 +205,8 @@ class CurrentRoleInstanceInfo {
      * Sets the value of the faultDomain property.
      * 
      */
-    public void setFaultDomain(int value) {
+    public void setFaultDomain(int value)
+    {
         this.faultDomain = value;
     }
 
@@ -215,7 +214,8 @@ class CurrentRoleInstanceInfo {
      * Gets the value of the updateDomain property.
      * 
      */
-    public int getUpdateDomain() {
+    public int getUpdateDomain()
+    {
         return updateDomain;
     }
 
@@ -223,7 +223,8 @@ class CurrentRoleInstanceInfo {
      * Sets the value of the updateDomain property.
      * 
      */
-    public void setUpdateDomain(int value) {
+    public void setUpdateDomain(int value)
+    {
         this.updateDomain = value;
     }
 

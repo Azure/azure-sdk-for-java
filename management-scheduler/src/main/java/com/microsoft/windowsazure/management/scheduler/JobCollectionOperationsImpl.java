@@ -46,7 +46,6 @@ import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -55,13 +54,13 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
@@ -87,8 +86,12 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
     /**
     * Gets a reference to the
     * microsoft.windowsazure.management.scheduler.SchedulerManagementClientImpl.
+    * @return The Client value.
     */
-    public SchedulerManagementClientImpl getClient() { return this.client; }
+    public SchedulerManagementClientImpl getClient()
+    {
+        return this.client;
+    }
     
     /**
     * Create a job collection.
@@ -120,10 +123,20 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
     * @param jobCollectionName The name of the job collection to create.
     * @param parameters Parameters supplied to the Create Job Collection
     * operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return The Create Job Collection operation response.
     */
     @Override
-    public JobCollectionCreateResponse beginCreating(String cloudServiceName, String jobCollectionName, JobCollectionCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException
+    public JobCollectionCreateResponse beginCreating(String cloudServiceName, String jobCollectionName, JobCollectionCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
     {
         // Validate
         if (cloudServiceName == null)
@@ -246,44 +259,54 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            JobCollectionCreateResponse result = null;
+            result = new JobCollectionCreateResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("ETag").length > 0)
+            {
+                result.setETag(httpResponse.getFirstHeader("ETag").getValue());
+            }
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        JobCollectionCreateResponse result = null;
-        result = new JobCollectionCreateResponse();
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("ETag").length > 0)
+        finally
         {
-            result.setETag(httpResponse.getFirstHeader("ETag").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-        {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
-        }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -311,6 +334,10 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
     *
     * @param cloudServiceName The name of the cloud service.
     * @param jobCollectionName The name of the job collection to delete.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -350,40 +377,50 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        OperationResponse result = null;
-        result = new OperationResponse();
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -416,10 +453,20 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
     * @param jobCollectionName The name of the job collection to update.
     * @param parameters Parameters supplied to the Update Job Collection
     * operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return The Update Job Collection operation response.
     */
     @Override
-    public JobCollectionUpdateResponse beginUpdating(String cloudServiceName, String jobCollectionName, JobCollectionUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException
+    public JobCollectionUpdateResponse beginUpdating(String cloudServiceName, String jobCollectionName, JobCollectionUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
     {
         // Validate
         if (cloudServiceName == null)
@@ -550,44 +597,54 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            JobCollectionUpdateResponse result = null;
+            result = new JobCollectionUpdateResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("ETag").length > 0)
+            {
+                result.setETag(httpResponse.getFirstHeader("ETag").getValue());
+            }
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        JobCollectionUpdateResponse result = null;
-        result = new JobCollectionUpdateResponse();
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("ETag").length > 0)
+        finally
         {
-            result.setETag(httpResponse.getFirstHeader("ETag").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-        {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
-        }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -620,6 +677,14 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
     * @param jobCollectionName A name for the JobCollection. The name must be
     * unique as scoped within the CloudService.  The name can be up to 100
     * characters in length.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
     * @return The Check Name Availability operation response.
     */
     @Override
@@ -662,60 +727,70 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
-        }
-        
-        // Create Result
-        JobCollectionCheckNameAvailabilityResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new JobCollectionCheckNameAvailabilityResponse();
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document responseDoc = documentBuilder.parse(responseContent);
-        
-        NodeList elements = responseDoc.getElementsByTagName("ResourceNameAvailabilityResponse");
-        Element resourceNameAvailabilityResponseElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
-        if (resourceNameAvailabilityResponseElement != null)
-        {
-            NodeList elements2 = resourceNameAvailabilityResponseElement.getElementsByTagName("IsAvailable");
-            Element isAvailableElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
-            if (isAvailableElement != null)
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
             {
-                boolean isAvailableInstance;
-                isAvailableInstance = Boolean.parseBoolean(isAvailableElement.getTextContent());
-                result.setIsAvailable(isAvailableInstance);
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            JobCollectionCheckNameAvailabilityResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new JobCollectionCheckNameAvailabilityResponse();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document responseDoc = documentBuilder.parse(responseContent);
+            
+            NodeList elements = responseDoc.getElementsByTagName("ResourceNameAvailabilityResponse");
+            Element resourceNameAvailabilityResponseElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            if (resourceNameAvailabilityResponseElement != null)
+            {
+                NodeList elements2 = resourceNameAvailabilityResponseElement.getElementsByTagName("IsAvailable");
+                Element isAvailableElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                if (isAvailableElement != null)
+                {
+                    boolean isAvailableInstance;
+                    isAvailableInstance = Boolean.parseBoolean(isAvailableElement.getTextContent());
+                    result.setIsAvailable(isAvailableInstance);
+                }
+            }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
             }
         }
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-        {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
-        }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -756,6 +831,18 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
     * @param jobCollectionName The name of the job collection to create.
     * @param parameters Parameters supplied to the Create Job Collection
     * operation.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -805,14 +892,26 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
             
             if (result.getStatus() != SchedulerOperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             result.setETag(response.getETag());
@@ -859,6 +958,18 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
     *
     * @param cloudServiceName The name of the cloud service.
     * @param jobCollectionName The name of the job collection to delete.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -907,14 +1018,26 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
             
             if (result.getStatus() != SchedulerOperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             return result;
@@ -952,6 +1075,14 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
     *
     * @param cloudServiceName Name of the cloud service.
     * @param jobCollectionName Name of the job collection.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
     * @return The Get Job Collection operation response.
     */
     @Override
@@ -990,226 +1121,236 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
-        }
-        
-        // Create Result
-        JobCollectionGetResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new JobCollectionGetResponse();
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document responseDoc = documentBuilder.parse(responseContent);
-        
-        NodeList elements = responseDoc.getElementsByTagName("Resource");
-        Element resourceElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
-        if (resourceElement != null)
-        {
-            NodeList elements2 = resourceElement.getElementsByTagName("Name");
-            Element nameElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
-            if (nameElement != null)
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
             {
-                String nameInstance;
-                nameInstance = nameElement.getTextContent();
-                result.setName(nameInstance);
+                CloudTracing.receiveResponse(invocationId, httpResponse);
             }
-            
-            NodeList elements3 = resourceElement.getElementsByTagName("ETag");
-            Element eTagElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
-            if (eTagElement != null)
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
             {
-                String eTagInstance;
-                eTagInstance = eTagElement.getTextContent();
-                result.setETag(eTagInstance);
-            }
-            
-            NodeList elements4 = resourceElement.getElementsByTagName("State");
-            Element stateElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
-            if (stateElement != null)
-            {
-                JobCollectionState stateInstance;
-                stateInstance = JobCollectionState.valueOf(stateElement.getTextContent());
-                result.setState(stateInstance);
-            }
-            
-            NodeList elements5 = resourceElement.getElementsByTagName("SchemaVersion");
-            Element schemaVersionElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
-            if (schemaVersionElement != null)
-            {
-                String schemaVersionInstance;
-                schemaVersionInstance = schemaVersionElement.getTextContent();
-                result.setSchemaVersion(schemaVersionInstance);
-            }
-            
-            NodeList elements6 = resourceElement.getElementsByTagName("Plan");
-            Element planElement = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
-            if (planElement != null)
-            {
-                String planInstance;
-                planInstance = planElement.getTextContent();
-                result.setPlan(planInstance);
-            }
-            
-            NodeList elements7 = resourceElement.getElementsByTagName("PromotionCode");
-            Element promotionCodeElement = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
-            if (promotionCodeElement != null)
-            {
-                String promotionCodeInstance;
-                promotionCodeInstance = promotionCodeElement.getTextContent();
-                result.setPromotionCode(promotionCodeInstance);
-            }
-            
-            NodeList elements8 = resourceElement.getElementsByTagName("IntrinsicSettings");
-            Element intrinsicSettingsElement = elements8.getLength() > 0 ? ((Element)elements8.item(0)) : null;
-            if (intrinsicSettingsElement != null)
-            {
-                JobCollectionIntrinsicSettings intrinsicSettingsInstance = new JobCollectionIntrinsicSettings();
-                result.setIntrinsicSettings(intrinsicSettingsInstance);
-                
-                NodeList elements9 = intrinsicSettingsElement.getElementsByTagName("Plan");
-                Element planElement2 = elements9.getLength() > 0 ? ((Element)elements9.item(0)) : null;
-                if (planElement2 != null)
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
                 {
-                    JobCollectionPlan planInstance2;
-                    planInstance2 = JobCollectionPlan.valueOf(planElement2.getTextContent());
-                    intrinsicSettingsInstance.setPlan(planInstance2);
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            JobCollectionGetResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new JobCollectionGetResponse();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document responseDoc = documentBuilder.parse(responseContent);
+            
+            NodeList elements = responseDoc.getElementsByTagName("Resource");
+            Element resourceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            if (resourceElement != null)
+            {
+                NodeList elements2 = resourceElement.getElementsByTagName("Name");
+                Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                if (nameElement != null)
+                {
+                    String nameInstance;
+                    nameInstance = nameElement.getTextContent();
+                    result.setName(nameInstance);
                 }
                 
-                NodeList elements10 = intrinsicSettingsElement.getElementsByTagName("Quota");
-                Element quotaElement = elements10.getLength() > 0 ? ((Element)elements10.item(0)) : null;
-                if (quotaElement != null)
+                NodeList elements3 = resourceElement.getElementsByTagName("ETag");
+                Element eTagElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                if (eTagElement != null)
                 {
-                    JobCollectionQuota quotaInstance = new JobCollectionQuota();
-                    intrinsicSettingsInstance.setQuota(quotaInstance);
+                    String eTagInstance;
+                    eTagInstance = eTagElement.getTextContent();
+                    result.setETag(eTagInstance);
+                }
+                
+                NodeList elements4 = resourceElement.getElementsByTagName("State");
+                Element stateElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                if (stateElement != null)
+                {
+                    JobCollectionState stateInstance;
+                    stateInstance = JobCollectionState.valueOf(stateElement.getTextContent());
+                    result.setState(stateInstance);
+                }
+                
+                NodeList elements5 = resourceElement.getElementsByTagName("SchemaVersion");
+                Element schemaVersionElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                if (schemaVersionElement != null)
+                {
+                    String schemaVersionInstance;
+                    schemaVersionInstance = schemaVersionElement.getTextContent();
+                    result.setSchemaVersion(schemaVersionInstance);
+                }
+                
+                NodeList elements6 = resourceElement.getElementsByTagName("Plan");
+                Element planElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                if (planElement != null)
+                {
+                    String planInstance;
+                    planInstance = planElement.getTextContent();
+                    result.setPlan(planInstance);
+                }
+                
+                NodeList elements7 = resourceElement.getElementsByTagName("PromotionCode");
+                Element promotionCodeElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
+                if (promotionCodeElement != null)
+                {
+                    String promotionCodeInstance;
+                    promotionCodeInstance = promotionCodeElement.getTextContent();
+                    result.setPromotionCode(promotionCodeInstance);
+                }
+                
+                NodeList elements8 = resourceElement.getElementsByTagName("IntrinsicSettings");
+                Element intrinsicSettingsElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
+                if (intrinsicSettingsElement != null)
+                {
+                    JobCollectionIntrinsicSettings intrinsicSettingsInstance = new JobCollectionIntrinsicSettings();
+                    result.setIntrinsicSettings(intrinsicSettingsInstance);
                     
-                    NodeList elements11 = quotaElement.getElementsByTagName("MaxJobCount");
-                    Element maxJobCountElement = elements11.getLength() > 0 ? ((Element)elements11.item(0)) : null;
-                    if (maxJobCountElement != null && (maxJobCountElement.getTextContent() != null && maxJobCountElement.getTextContent().isEmpty() != true) == false)
+                    NodeList elements9 = intrinsicSettingsElement.getElementsByTagName("Plan");
+                    Element planElement2 = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
+                    if (planElement2 != null)
                     {
-                        int maxJobCountInstance;
-                        maxJobCountInstance = Integer.parseInt(maxJobCountElement.getTextContent());
-                        quotaInstance.setMaxJobCount(maxJobCountInstance);
+                        JobCollectionPlan planInstance2;
+                        planInstance2 = JobCollectionPlan.valueOf(planElement2.getTextContent());
+                        intrinsicSettingsInstance.setPlan(planInstance2);
                     }
                     
-                    NodeList elements12 = quotaElement.getElementsByTagName("MaxJobOccurrence");
-                    Element maxJobOccurrenceElement = elements12.getLength() > 0 ? ((Element)elements12.item(0)) : null;
-                    if (maxJobOccurrenceElement != null && (maxJobOccurrenceElement.getTextContent() != null && maxJobOccurrenceElement.getTextContent().isEmpty() != true) == false)
+                    NodeList elements10 = intrinsicSettingsElement.getElementsByTagName("Quota");
+                    Element quotaElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
+                    if (quotaElement != null)
                     {
-                        int maxJobOccurrenceInstance;
-                        maxJobOccurrenceInstance = Integer.parseInt(maxJobOccurrenceElement.getTextContent());
-                        quotaInstance.setMaxJobOccurrence(maxJobOccurrenceInstance);
-                    }
-                    
-                    NodeList elements13 = quotaElement.getElementsByTagName("MaxRecurrence");
-                    Element maxRecurrenceElement = elements13.getLength() > 0 ? ((Element)elements13.item(0)) : null;
-                    if (maxRecurrenceElement != null)
-                    {
-                        JobCollectionMaxRecurrence maxRecurrenceInstance = new JobCollectionMaxRecurrence();
-                        quotaInstance.setMaxRecurrence(maxRecurrenceInstance);
+                        JobCollectionQuota quotaInstance = new JobCollectionQuota();
+                        intrinsicSettingsInstance.setQuota(quotaInstance);
                         
-                        NodeList elements14 = maxRecurrenceElement.getElementsByTagName("Frequency");
-                        Element frequencyElement = elements14.getLength() > 0 ? ((Element)elements14.item(0)) : null;
-                        if (frequencyElement != null)
+                        NodeList elements11 = quotaElement.getElementsByTagName("MaxJobCount");
+                        Element maxJobCountElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
+                        if (maxJobCountElement != null && (maxJobCountElement.getTextContent() != null && maxJobCountElement.getTextContent().isEmpty() != true) == false)
                         {
-                            JobCollectionRecurrenceFrequency frequencyInstance;
-                            frequencyInstance = JobCollectionRecurrenceFrequency.valueOf(frequencyElement.getTextContent());
-                            maxRecurrenceInstance.setFrequency(frequencyInstance);
+                            int maxJobCountInstance;
+                            maxJobCountInstance = Integer.parseInt(maxJobCountElement.getTextContent());
+                            quotaInstance.setMaxJobCount(maxJobCountInstance);
                         }
                         
-                        NodeList elements15 = maxRecurrenceElement.getElementsByTagName("Interval");
-                        Element intervalElement = elements15.getLength() > 0 ? ((Element)elements15.item(0)) : null;
-                        if (intervalElement != null)
+                        NodeList elements12 = quotaElement.getElementsByTagName("MaxJobOccurrence");
+                        Element maxJobOccurrenceElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
+                        if (maxJobOccurrenceElement != null && (maxJobOccurrenceElement.getTextContent() != null && maxJobOccurrenceElement.getTextContent().isEmpty() != true) == false)
                         {
-                            int intervalInstance;
-                            intervalInstance = Integer.parseInt(intervalElement.getTextContent());
-                            maxRecurrenceInstance.setInterval(intervalInstance);
+                            int maxJobOccurrenceInstance;
+                            maxJobOccurrenceInstance = Integer.parseInt(maxJobOccurrenceElement.getTextContent());
+                            quotaInstance.setMaxJobOccurrence(maxJobOccurrenceInstance);
+                        }
+                        
+                        NodeList elements13 = quotaElement.getElementsByTagName("MaxRecurrence");
+                        Element maxRecurrenceElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
+                        if (maxRecurrenceElement != null)
+                        {
+                            JobCollectionMaxRecurrence maxRecurrenceInstance = new JobCollectionMaxRecurrence();
+                            quotaInstance.setMaxRecurrence(maxRecurrenceInstance);
+                            
+                            NodeList elements14 = maxRecurrenceElement.getElementsByTagName("Frequency");
+                            Element frequencyElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
+                            if (frequencyElement != null)
+                            {
+                                JobCollectionRecurrenceFrequency frequencyInstance;
+                                frequencyInstance = JobCollectionRecurrenceFrequency.valueOf(frequencyElement.getTextContent());
+                                maxRecurrenceInstance.setFrequency(frequencyInstance);
+                            }
+                            
+                            NodeList elements15 = maxRecurrenceElement.getElementsByTagName("Interval");
+                            Element intervalElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
+                            if (intervalElement != null)
+                            {
+                                int intervalInstance;
+                                intervalInstance = Integer.parseInt(intervalElement.getTextContent());
+                                maxRecurrenceInstance.setInterval(intervalInstance);
+                            }
                         }
                     }
                 }
-            }
-            
-            NodeList elements16 = resourceElement.getElementsByTagName("Label");
-            Element labelElement = elements16.getLength() > 0 ? ((Element)elements16.item(0)) : null;
-            if (labelElement != null)
-            {
-                String labelInstance;
-                labelInstance = labelElement.getTextContent() != null ? new String(Base64.decodeBase64(labelElement.getTextContent().getBytes())) : null;
-                result.setLabel(labelInstance);
-            }
-            
-            NodeList elements17 = resourceElement.getElementsByTagName("OperationStatus");
-            Element operationStatusElement = elements17.getLength() > 0 ? ((Element)elements17.item(0)) : null;
-            if (operationStatusElement != null)
-            {
-                JobCollectionGetResponse.OperationStatus operationStatusInstance = new JobCollectionGetResponse.OperationStatus();
-                result.setLastOperationStatus(operationStatusInstance);
                 
-                NodeList elements18 = operationStatusElement.getElementsByTagName("Error");
-                Element errorElement = elements18.getLength() > 0 ? ((Element)elements18.item(0)) : null;
-                if (errorElement != null)
+                NodeList elements16 = resourceElement.getElementsByTagName("Label");
+                Element labelElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
+                if (labelElement != null)
                 {
-                    JobCollectionGetResponse.OperationStatusResponseDetails errorInstance = new JobCollectionGetResponse.OperationStatusResponseDetails();
-                    operationStatusInstance.setResponseDetails(errorInstance);
-                    
-                    NodeList elements19 = errorElement.getElementsByTagName("HttpCode");
-                    Element httpCodeElement = elements19.getLength() > 0 ? ((Element)elements19.item(0)) : null;
-                    if (httpCodeElement != null)
-                    {
-                        Integer httpCodeInstance;
-                        httpCodeInstance = Integer.valueOf(httpCodeElement.getTextContent());
-                        errorInstance.setStatusCode(httpCodeInstance);
-                    }
-                    
-                    NodeList elements20 = errorElement.getElementsByTagName("Message");
-                    Element messageElement = elements20.getLength() > 0 ? ((Element)elements20.item(0)) : null;
-                    if (messageElement != null)
-                    {
-                        String messageInstance;
-                        messageInstance = messageElement.getTextContent();
-                        errorInstance.setMessage(messageInstance);
-                    }
+                    String labelInstance;
+                    labelInstance = labelElement.getTextContent() != null ? new String(Base64.decodeBase64(labelElement.getTextContent().getBytes())) : null;
+                    result.setLabel(labelInstance);
                 }
                 
-                NodeList elements21 = operationStatusElement.getElementsByTagName("Result");
-                Element resultElement = elements21.getLength() > 0 ? ((Element)elements21.item(0)) : null;
-                if (resultElement != null)
+                NodeList elements17 = resourceElement.getElementsByTagName("OperationStatus");
+                Element operationStatusElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
+                if (operationStatusElement != null)
                 {
-                    SchedulerOperationStatus resultInstance;
-                    resultInstance = SchedulerOperationStatus.valueOf(resultElement.getTextContent());
-                    operationStatusInstance.setStatus(resultInstance);
+                    JobCollectionGetResponse.OperationStatus operationStatusInstance = new JobCollectionGetResponse.OperationStatus();
+                    result.setLastOperationStatus(operationStatusInstance);
+                    
+                    NodeList elements18 = operationStatusElement.getElementsByTagName("Error");
+                    Element errorElement = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
+                    if (errorElement != null)
+                    {
+                        JobCollectionGetResponse.OperationStatusResponseDetails errorInstance = new JobCollectionGetResponse.OperationStatusResponseDetails();
+                        operationStatusInstance.setResponseDetails(errorInstance);
+                        
+                        NodeList elements19 = errorElement.getElementsByTagName("HttpCode");
+                        Element httpCodeElement = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
+                        if (httpCodeElement != null)
+                        {
+                            Integer httpCodeInstance;
+                            httpCodeInstance = Integer.valueOf(httpCodeElement.getTextContent());
+                            errorInstance.setStatusCode(httpCodeInstance);
+                        }
+                        
+                        NodeList elements20 = errorElement.getElementsByTagName("Message");
+                        Element messageElement = elements20.getLength() > 0 ? ((Element) elements20.item(0)) : null;
+                        if (messageElement != null)
+                        {
+                            String messageInstance;
+                            messageInstance = messageElement.getTextContent();
+                            errorInstance.setMessage(messageInstance);
+                        }
+                    }
+                    
+                    NodeList elements21 = operationStatusElement.getElementsByTagName("Result");
+                    Element resultElement = elements21.getLength() > 0 ? ((Element) elements21.item(0)) : null;
+                    if (resultElement != null)
+                    {
+                        SchedulerOperationStatus resultInstance;
+                        resultInstance = SchedulerOperationStatus.valueOf(resultElement.getTextContent());
+                        operationStatusInstance.setStatus(resultInstance);
+                    }
                 }
             }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -1250,6 +1391,18 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
     * @param jobCollectionName The name of the job collection to update.
     * @param parameters Parameters supplied to the Update Job Collection
     * operation.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -1299,14 +1452,26 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
             
             if (result.getStatus() != SchedulerOperationStatus.Succeeded)
             {
-                ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
-                ex.setErrorCode(result.getError().getCode());
-                ex.setErrorMessage(result.getError().getMessage());
-                if (shouldTrace)
+                if (result.getError() != null)
                 {
-                    CloudTracing.error(invocationId, ex);
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
                 }
-                throw ex;
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
             }
             
             result.setETag(response.getETag());

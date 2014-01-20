@@ -19,7 +19,8 @@ package com.microsoft.windowsazure.services.queue.client;
  * Specifies which details to include when listing the queues in this storage
  * account.
  */
-public enum QueueListingDetails {
+public enum QueueListingDetails
+{
     /**
      * Specifies including all available details.
      */
@@ -46,7 +47,8 @@ public enum QueueListingDetails {
      * @param val
      *            The value being assigned.
      */
-    QueueListingDetails(final int val) {
+    QueueListingDetails(final int val)
+    {
         this.value = val;
     }
 }

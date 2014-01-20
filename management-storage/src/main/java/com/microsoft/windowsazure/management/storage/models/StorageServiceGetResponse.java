@@ -39,15 +39,23 @@ public class StorageServiceGetResponse extends OperationResponse
     * Indicates if the storage account is able to perform virtual machine
     * related operations. If so, this element returns a string containing
     * PersistentVMRole. Otherwise, this element will not be present.
+    * @return The Capabilities value.
     */
-    public ArrayList<String> getCapabilities() { return this.capabilities; }
+    public ArrayList<String> getCapabilities()
+    {
+        return this.capabilities;
+    }
     
     /**
     * Indicates if the storage account is able to perform virtual machine
     * related operations. If so, this element returns a string containing
     * PersistentVMRole. Otherwise, this element will not be present.
+    * @param capabilitiesValue The Capabilities value.
     */
-    public void setCapabilities(ArrayList<String> capabilities) { this.capabilities = capabilities; }
+    public void setCapabilities(final ArrayList<String> capabilitiesValue)
+    {
+        this.capabilities = capabilitiesValue;
+    }
     
     private HashMap<String, String> extendedProperties;
     
@@ -62,8 +70,12 @@ public class StorageServiceGetResponse extends OperationResponse
     * to that of another extended property owned by the same storage account,
     * will result in a status code 400 (Bad Request) error.  Each extended
     * property value has a maximum length of 255 characters.
+    * @return The ExtendedProperties value.
     */
-    public HashMap<String, String> getExtendedProperties() { return this.extendedProperties; }
+    public HashMap<String, String> getExtendedProperties()
+    {
+        return this.extendedProperties;
+    }
     
     /**
     * Optional. Represents the name of an extended storage account property.
@@ -76,20 +88,32 @@ public class StorageServiceGetResponse extends OperationResponse
     * to that of another extended property owned by the same storage account,
     * will result in a status code 400 (Bad Request) error.  Each extended
     * property value has a maximum length of 255 characters.
+    * @param extendedPropertiesValue The ExtendedProperties value.
     */
-    public void setExtendedProperties(HashMap<String, String> extendedProperties) { this.extendedProperties = extendedProperties; }
+    public void setExtendedProperties(final HashMap<String, String> extendedPropertiesValue)
+    {
+        this.extendedProperties = extendedPropertiesValue;
+    }
     
     private StorageServiceProperties properties;
     
     /**
     * Details about the storage account.
+    * @return The Properties value.
     */
-    public StorageServiceProperties getProperties() { return this.properties; }
+    public StorageServiceProperties getProperties()
+    {
+        return this.properties;
+    }
     
     /**
     * Details about the storage account.
+    * @param propertiesValue The Properties value.
     */
-    public void setProperties(StorageServiceProperties properties) { this.properties = properties; }
+    public void setProperties(final StorageServiceProperties propertiesValue)
+    {
+        this.properties = propertiesValue;
+    }
     
     private String serviceName;
     
@@ -99,8 +123,12 @@ public class StorageServiceGetResponse extends OperationResponse
     * example, if the service name is MyStorageAccount you could access the
     * blob containers by calling:
     * http://MyStorageAccount.blob.core.windows.net/mycontainer/
+    * @return The ServiceName value.
     */
-    public String getServiceName() { return this.serviceName; }
+    public String getServiceName()
+    {
+        return this.serviceName;
+    }
     
     /**
     * The name of the storage account. This name is the DNS prefix name and can
@@ -108,22 +136,34 @@ public class StorageServiceGetResponse extends OperationResponse
     * example, if the service name is MyStorageAccount you could access the
     * blob containers by calling:
     * http://MyStorageAccount.blob.core.windows.net/mycontainer/
+    * @param serviceNameValue The ServiceName value.
     */
-    public void setServiceName(String serviceName) { this.serviceName = serviceName; }
+    public void setServiceName(final String serviceNameValue)
+    {
+        this.serviceName = serviceNameValue;
+    }
     
     private URI uri;
     
     /**
     * The Service Management API request URI used to perform Get Storage
     * Account Properties requests against the storage account.
+    * @return The Uri value.
     */
-    public URI getUri() { return this.uri; }
+    public URI getUri()
+    {
+        return this.uri;
+    }
     
     /**
     * The Service Management API request URI used to perform Get Storage
     * Account Properties requests against the storage account.
+    * @param uriValue The Uri value.
     */
-    public void setUri(URI uri) { this.uri = uri; }
+    public void setUri(final URI uriValue)
+    {
+        this.uri = uriValue;
+    }
     
     /**
     * Initializes a new instance of the StorageServiceGetResponse class.
@@ -131,6 +171,7 @@ public class StorageServiceGetResponse extends OperationResponse
     */
     public StorageServiceGetResponse()
     {
+        super();
         this.capabilities = new ArrayList<String>();
         this.extendedProperties = new HashMap<String, String>();
     }

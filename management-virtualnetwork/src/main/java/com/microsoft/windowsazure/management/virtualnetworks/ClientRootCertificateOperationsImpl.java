@@ -34,7 +34,6 @@ import com.microsoft.windowsazure.management.virtualnetworks.models.GatewayOpera
 import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -46,6 +45,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -72,8 +72,12 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Vi
     /**
     * Gets a reference to the
     * microsoft.windowsazure.management.virtualnetworks.VirtualNetworkManagementClientImpl.
+    * @return The Client value.
     */
-    public VirtualNetworkManagementClientImpl getClient() { return this.client; }
+    public VirtualNetworkManagementClientImpl getClient()
+    {
+        return this.client;
+    }
     
     /**
     * The Upload Client Root Certificate operation is used to upload a new
@@ -110,11 +114,29 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Vi
     * gateway.
     * @param parameters Parameters supplied to the Upload client certificate
     * Virtual Network Gateway operation.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
     * @return A standard storage response including an HTTP status code and
     * request ID.
     */
     @Override
-    public GatewayOperationResponse create(String virtualNetworkName, ClientRootCertificateCreateParameters parameters) throws UnsupportedEncodingException, IOException, ServiceException, ParserConfigurationException, SAXException, InterruptedException, ExecutionException, ServiceException
+    public GatewayOperationResponse create(String virtualNetworkName, ClientRootCertificateCreateParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException, InterruptedException, ExecutionException, ServiceException
     {
         // Validate
         if (virtualNetworkName == null)
@@ -161,60 +183,70 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Vi
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 202)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
-        }
-        
-        // Create Result
-        GatewayOperationResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new GatewayOperationResponse();
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document responseDoc = documentBuilder.parse(responseContent);
-        
-        NodeList elements = responseDoc.getElementsByTagName("GatewayOperationAsyncResponse");
-        Element gatewayOperationAsyncResponseElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
-        if (gatewayOperationAsyncResponseElement != null)
-        {
-            NodeList elements2 = gatewayOperationAsyncResponseElement.getElementsByTagName("ID");
-            Element idElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
-            if (idElement != null)
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
             {
-                String idInstance;
-                idInstance = idElement.getTextContent();
-                result.setOperationId(idInstance);
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            GatewayOperationResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new GatewayOperationResponse();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document responseDoc = documentBuilder.parse(responseContent);
+            
+            NodeList elements = responseDoc.getElementsByTagName("GatewayOperationAsyncResponse");
+            Element gatewayOperationAsyncResponseElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            if (gatewayOperationAsyncResponseElement != null)
+            {
+                NodeList elements2 = gatewayOperationAsyncResponseElement.getElementsByTagName("ID");
+                Element idElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                if (idElement != null)
+                {
+                    String idInstance;
+                    idInstance = idElement.getTextContent();
+                    result.setOperationId(idInstance);
+                }
+            }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
             }
         }
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-        {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
-        }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -250,6 +282,24 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Vi
     * @param virtualNetworkName The name of the virtual network for this
     * gateway.
     * @param certificateThumbprint The X509 certificate thumbprint.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
     * @return A standard storage response including an HTTP status code and
     * request ID.
     */
@@ -290,60 +340,70 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Vi
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
-        }
-        
-        // Create Result
-        GatewayOperationResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new GatewayOperationResponse();
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document responseDoc = documentBuilder.parse(responseContent);
-        
-        NodeList elements = responseDoc.getElementsByTagName("GatewayOperationAsyncResponse");
-        Element gatewayOperationAsyncResponseElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
-        if (gatewayOperationAsyncResponseElement != null)
-        {
-            NodeList elements2 = gatewayOperationAsyncResponseElement.getElementsByTagName("ID");
-            Element idElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
-            if (idElement != null)
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
             {
-                String idInstance;
-                idInstance = idElement.getTextContent();
-                result.setOperationId(idInstance);
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            GatewayOperationResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new GatewayOperationResponse();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document responseDoc = documentBuilder.parse(responseContent);
+            
+            NodeList elements = responseDoc.getElementsByTagName("GatewayOperationAsyncResponse");
+            Element gatewayOperationAsyncResponseElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            if (gatewayOperationAsyncResponseElement != null)
+            {
+                NodeList elements2 = gatewayOperationAsyncResponseElement.getElementsByTagName("ID");
+                Element idElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                if (idElement != null)
+                {
+                    String idInstance;
+                    idInstance = idElement.getTextContent();
+                    result.setOperationId(idInstance);
+                }
+            }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
             }
         }
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-        {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
-        }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -381,6 +441,16 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Vi
     * @param virtualNetworkName The name of the virtual network for this
     * gateway.
     * @param certificateThumbprint The X509 certificate thumbprint.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return A standard storage response including an HTTP status code and
     * request ID.
     */
@@ -420,44 +490,54 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Vi
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            ClientRootCertificateGetResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new ClientRootCertificateGetResponse();
+            result.setCertificate(StreamUtils.toString(responseContent));
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        ClientRootCertificateGetResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new ClientRootCertificateGetResponse();
-        result.setCertificate(StreamUtils.toString(responseContent));
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -492,6 +572,16 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Vi
     *
     * @param virtualNetworkName The name of the virtual network for this
     * gateway.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return The response to the list client root certificates request.
     */
     @Override
@@ -526,87 +616,97 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Vi
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
-        }
-        
-        // Create Result
-        ClientRootCertificateListResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new ClientRootCertificateListResponse();
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document responseDoc = documentBuilder.parse(responseContent);
-        
-        NodeList elements = responseDoc.getElementsByTagName("ClientRootCertificates");
-        Element clientRootCertificatesSequenceElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
-        if (clientRootCertificatesSequenceElement != null)
-        {
-            for (int i1 = 0; i1 < clientRootCertificatesSequenceElement.getElementsByTagName("ClientRootCertificate").getLength(); i1 = i1 + 1)
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
             {
-                org.w3c.dom.Element clientRootCertificatesElement = ((org.w3c.dom.Element)clientRootCertificatesSequenceElement.getElementsByTagName("ClientRootCertificate").item(i1));
-                ClientRootCertificateListResponse.ClientRootCertificate clientRootCertificateInstance = new ClientRootCertificateListResponse.ClientRootCertificate();
-                result.getClientRootCertificates().add(clientRootCertificateInstance);
-                
-                NodeList elements2 = clientRootCertificatesElement.getElementsByTagName("ExpirationTime");
-                Element expirationTimeElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
-                if (expirationTimeElement != null)
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
                 {
-                    Calendar expirationTimeInstance;
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(simpleDateFormat.parse(expirationTimeElement.getTextContent()));
-                    expirationTimeInstance = calendar;
-                    clientRootCertificateInstance.setExpirationTime(expirationTimeInstance);
+                    CloudTracing.error(invocationId, ex);
                 }
-                
-                NodeList elements3 = clientRootCertificatesElement.getElementsByTagName("Subject");
-                Element subjectElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
-                if (subjectElement != null)
+                throw ex;
+            }
+            
+            // Create Result
+            ClientRootCertificateListResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new ClientRootCertificateListResponse();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document responseDoc = documentBuilder.parse(responseContent);
+            
+            NodeList elements = responseDoc.getElementsByTagName("ClientRootCertificates");
+            Element clientRootCertificatesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            if (clientRootCertificatesSequenceElement != null)
+            {
+                for (int i1 = 0; i1 < clientRootCertificatesSequenceElement.getElementsByTagName("ClientRootCertificate").getLength(); i1 = i1 + 1)
                 {
-                    String subjectInstance;
-                    subjectInstance = subjectElement.getTextContent();
-                    clientRootCertificateInstance.setSubject(subjectInstance);
-                }
-                
-                NodeList elements4 = clientRootCertificatesElement.getElementsByTagName("Thumbprint");
-                Element thumbprintElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
-                if (thumbprintElement != null)
-                {
-                    String thumbprintInstance;
-                    thumbprintInstance = thumbprintElement.getTextContent();
-                    clientRootCertificateInstance.setThumbprint(thumbprintInstance);
+                    org.w3c.dom.Element clientRootCertificatesElement = ((org.w3c.dom.Element) clientRootCertificatesSequenceElement.getElementsByTagName("ClientRootCertificate").item(i1));
+                    ClientRootCertificateListResponse.ClientRootCertificate clientRootCertificateInstance = new ClientRootCertificateListResponse.ClientRootCertificate();
+                    result.getClientRootCertificates().add(clientRootCertificateInstance);
+                    
+                    NodeList elements2 = clientRootCertificatesElement.getElementsByTagName("ExpirationTime");
+                    Element expirationTimeElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                    if (expirationTimeElement != null)
+                    {
+                        Calendar expirationTimeInstance;
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.setTime(simpleDateFormat.parse(expirationTimeElement.getTextContent()));
+                        expirationTimeInstance = calendar;
+                        clientRootCertificateInstance.setExpirationTime(expirationTimeInstance);
+                    }
+                    
+                    NodeList elements3 = clientRootCertificatesElement.getElementsByTagName("Subject");
+                    Element subjectElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                    if (subjectElement != null)
+                    {
+                        String subjectInstance;
+                        subjectInstance = subjectElement.getTextContent();
+                        clientRootCertificateInstance.setSubject(subjectInstance);
+                    }
+                    
+                    NodeList elements4 = clientRootCertificatesElement.getElementsByTagName("Thumbprint");
+                    Element thumbprintElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                    if (thumbprintElement != null)
+                    {
+                        String thumbprintInstance;
+                        thumbprintInstance = thumbprintElement.getTextContent();
+                        clientRootCertificateInstance.setThumbprint(thumbprintInstance);
+                    }
                 }
             }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
 }

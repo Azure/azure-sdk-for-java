@@ -28,43 +28,50 @@ import com.microsoft.windowsazure.services.media.models.LinkInfo;
 import com.microsoft.windowsazure.services.media.models.ListResult;
 
 /**
- * Class wrapping deserialized OData entities. Allows easy
- * access to entry and content types.
+ * Class wrapping deserialized OData entities. Allows easy access to entry and
+ * content types.
  * 
  */
-public abstract class ODataEntity<T> {
+public abstract class ODataEntity<T>
+{
 
     private final EntryType entry;
     private final T content;
 
-    protected ODataEntity(EntryType entry, T content) {
+    protected ODataEntity(EntryType entry, T content)
+    {
         this.entry = entry;
         this.content = content;
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    protected ODataEntity(T content) {
+    protected ODataEntity(T content)
+    {
         this.content = content;
 
         ContentType contentElement = new ContentType();
         contentElement.getContent().add(
-                new JAXBElement(Constants.ODATA_PROPERTIES_ELEMENT_NAME, content.getClass(), content));
+                new JAXBElement(Constants.ODATA_PROPERTIES_ELEMENT_NAME,
+                        content.getClass(), content));
         entry = new EntryType();
         entry.getEntryChildren().add(
-                new JAXBElement(Constants.ATOM_CONTENT_ELEMENT_NAME, ContentType.class, contentElement));
+                new JAXBElement(Constants.ATOM_CONTENT_ELEMENT_NAME,
+                        ContentType.class, contentElement));
     }
 
     /**
      * @return the entry
      */
-    protected EntryType getEntry() {
+    protected EntryType getEntry()
+    {
         return entry;
     }
 
     /**
      * @return the content
      */
-    protected T getContent() {
+    protected T getContent()
+    {
         return content;
     }
 
@@ -75,7 +82,8 @@ public abstract class ODataEntity<T> {
      *            Rel of link to check for
      * @return True if link is found, false if not.
      */
-    public boolean hasLink(String rel) {
+    public boolean hasLink(String rel)
+    {
         return getLink(rel) != null;
     }
 
@@ -86,11 +94,14 @@ public abstract class ODataEntity<T> {
      *            rel of link to retrieve
      * @return The link if found, null if not.
      */
-    public <U extends ODataEntity<?>> LinkInfo<U> getLink(String rel) {
-        for (Object child : entry.getEntryChildren()) {
+    public <U extends ODataEntity<?>> LinkInfo<U> getLink(String rel)
+    {
+        for (Object child : entry.getEntryChildren())
+        {
 
             LinkType link = linkFromChild(child);
-            if (link != null && link.getRel().equals(rel)) {
+            if (link != null && link.getRel().equals(rel))
+            {
                 return new LinkInfo<U>(link);
             }
         }
@@ -104,20 +115,28 @@ public abstract class ODataEntity<T> {
      *            name of the OData relationship
      * @return the link if found, null if not.
      */
-    public <U extends ODataEntity<?>> LinkInfo<U> getRelationLink(String relationName) {
-        return this.<U> getLink(Constants.ODATA_DATA_NS + "/related/" + relationName);
+    public <U extends ODataEntity<?>> LinkInfo<U> getRelationLink(
+            String relationName)
+    {
+        return this.<U> getLink(Constants.ODATA_DATA_NS + "/related/"
+                + relationName);
     }
 
     @SuppressWarnings("rawtypes")
-    private static LinkType linkFromChild(Object child) {
-        if (child instanceof JAXBElement) {
+    private static LinkType linkFromChild(Object child)
+    {
+        if (child instanceof JAXBElement)
+        {
             return linkFromElement((JAXBElement) child);
         }
         return null;
     }
 
-    private static LinkType linkFromElement(@SuppressWarnings("rawtypes") JAXBElement element) {
-        if (element.getDeclaredType() == LinkType.class) {
+    private static LinkType linkFromElement(
+            @SuppressWarnings("rawtypes") JAXBElement element)
+    {
+        if (element.getDeclaredType() == LinkType.class)
+        {
             return (LinkType) element.getValue();
         }
         return null;
@@ -130,7 +149,8 @@ public abstract class ODataEntity<T> {
      *            Type to check
      * @return true if derived from ODataEntity
      */
-    public static boolean isODataEntityType(Class<?> type) {
+    public static boolean isODataEntityType(Class<?> type)
+    {
         return ODataEntity.class.isAssignableFrom(type);
     }
 
@@ -143,14 +163,18 @@ public abstract class ODataEntity<T> {
      *            Generic type
      * @return true if it's List&lt;OEntity> or derive from.
      */
-    public static boolean isODataEntityCollectionType(Class<?> type, Type genericType) {
-        if (ListResult.class != type) {
+    public static boolean isODataEntityCollectionType(Class<?> type,
+            Type genericType)
+    {
+        if (ListResult.class != type)
+        {
             return false;
         }
 
         ParameterizedType pt = (ParameterizedType) genericType;
 
-        if (pt.getActualTypeArguments().length != 1) {
+        if (pt.getActualTypeArguments().length != 1)
+        {
             return false;
         }
 
@@ -160,16 +184,18 @@ public abstract class ODataEntity<T> {
     }
 
     /**
-     * Reflection helper to pull out the type parameter for
-     * a List<T>, where T is a ODataEntity<?> derived type.
+     * Reflection helper to pull out the type parameter for a List<T>, where T
+     * is a ODataEntity<?> derived type.
      * 
      * @param genericType
      *            type object for collection
      * @return The class object for the type parameter.
      */
-    public static Class<?> getCollectedType(Type genericType) {
+    public static Class<?> getCollectedType(Type genericType)
+    {
         ParameterizedType pt = (ParameterizedType) genericType;
-        if (pt.getActualTypeArguments().length != 1) {
+        if (pt.getActualTypeArguments().length != 1)
+        {
             throw new IllegalArgumentException("genericType");
         }
         return (Class<?>) pt.getActualTypeArguments()[0];

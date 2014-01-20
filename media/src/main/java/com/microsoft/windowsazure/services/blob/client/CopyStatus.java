@@ -21,7 +21,8 @@ import com.microsoft.windowsazure.services.core.storage.utils.Utility;
 /**
  * Represents the status of a copy blob operation.
  */
-public enum CopyStatus {
+public enum CopyStatus
+{
     /**
      * The copy status is not specified.
      */
@@ -60,26 +61,28 @@ public enum CopyStatus {
      * 
      * @return A <code>CopyStatus</code> value that represents the copy status.
      */
-    public static CopyStatus parse(final String typeString) {
-        if (Utility.isNullOrEmpty(typeString)) {
+    public static CopyStatus parse(final String typeString)
+    {
+        if (Utility.isNullOrEmpty(typeString))
+        {
             return UNSPECIFIED;
-        }
-        else if ("invalid".equals(typeString.toLowerCase(Locale.US))) {
+        } else if ("invalid".equals(typeString.toLowerCase(Locale.US)))
+        {
             return INVALID;
-        }
-        else if ("pending".equals(typeString.toLowerCase(Locale.US))) {
+        } else if ("pending".equals(typeString.toLowerCase(Locale.US)))
+        {
             return PENDING;
-        }
-        else if ("success".equals(typeString.toLowerCase(Locale.US))) {
+        } else if ("success".equals(typeString.toLowerCase(Locale.US)))
+        {
             return SUCCESS;
-        }
-        else if ("aborted".equals(typeString.toLowerCase(Locale.US))) {
+        } else if ("aborted".equals(typeString.toLowerCase(Locale.US)))
+        {
             return ABORTED;
-        }
-        else if ("failed".equals(typeString.toLowerCase(Locale.US))) {
+        } else if ("failed".equals(typeString.toLowerCase(Locale.US)))
+        {
             return FAILED;
-        }
-        else {
+        } else
+        {
             return UNSPECIFIED;
         }
     }

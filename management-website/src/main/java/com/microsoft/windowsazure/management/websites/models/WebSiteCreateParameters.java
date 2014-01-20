@@ -37,16 +37,24 @@ public class WebSiteCreateParameters
     * Dedicated for the Standard offering. The default value is Shared. If you
     * set ComputeMode to Dedicated, you must specify a value for the
     * ServerFarm element.
+    * @return The ComputeMode value.
     */
-    public WebSiteComputeMode getComputeMode() { return this.computeMode; }
+    public WebSiteComputeMode getComputeMode()
+    {
+        return this.computeMode;
+    }
     
     /**
     * This value should be Shared for the Free or Paid Shared offerings, or
     * Dedicated for the Standard offering. The default value is Shared. If you
     * set ComputeMode to Dedicated, you must specify a value for the
     * ServerFarm element.
+    * @param computeModeValue The ComputeMode value.
     */
-    public void setComputeMode(WebSiteComputeMode computeMode) { this.computeMode = computeMode; }
+    public void setComputeMode(final WebSiteComputeMode computeModeValue)
+    {
+        this.computeMode = computeModeValue;
+    }
     
     private ArrayList<String> hostNames;
     
@@ -55,44 +63,68 @@ public class WebSiteCreateParameters
     * can be specified in the azurewebsites.net domain. The hostname should
     * match the name of the website. Custom domains can only be specified for
     * Shared or Standard websites.
+    * @return The HostNames value.
     */
-    public ArrayList<String> getHostNames() { return this.hostNames; }
+    public ArrayList<String> getHostNames()
+    {
+        return this.hostNames;
+    }
     
     /**
     * Required. The fully qualified domain name for website. Only one hostname
     * can be specified in the azurewebsites.net domain. The hostname should
     * match the name of the website. Custom domains can only be specified for
     * Shared or Standard websites.
+    * @param hostNamesValue The HostNames value.
     */
-    public void setHostNames(ArrayList<String> hostNames) { this.hostNames = hostNames; }
+    public void setHostNames(final ArrayList<String> hostNamesValue)
+    {
+        this.hostNames = hostNamesValue;
+    }
     
     private String name;
     
     /**
     * Required. The name of the website. This should match the hostname in the
     * default domain.
+    * @return The Name value.
     */
-    public String getName() { return this.name; }
+    public String getName()
+    {
+        return this.name;
+    }
     
     /**
     * Required. The name of the website. This should match the hostname in the
     * default domain.
+    * @param nameValue The Name value.
     */
-    public void setName(String name) { this.name = name; }
+    public void setName(final String nameValue)
+    {
+        this.name = nameValue;
+    }
     
     private String serverFarm;
     
     /**
     * The name of the Server Farm associated with this website. This is a
     * required value for Standard mode.
+    * @return The ServerFarm value.
     */
-    public String getServerFarm() { return this.serverFarm; }
+    public String getServerFarm()
+    {
+        return this.serverFarm;
+    }
     
     /**
     * The name of the Server Farm associated with this website. This is a
     * required value for Standard mode.
+    * @param serverFarmValue The ServerFarm value.
     */
-    public void setServerFarm(String serverFarm) { this.serverFarm = serverFarm; }
+    public void setServerFarm(final String serverFarmValue)
+    {
+        this.serverFarm = serverFarmValue;
+    }
     
     private WebSiteMode siteMode;
     
@@ -101,40 +133,64 @@ public class WebSiteCreateParameters
     * offering. The default value is Limited. Note: Standard mode does not use
     * the SiteMode setting; it uses the ComputeMode setting. For more
     * information, see Upgrade or Downgrade a Web Site.
+    * @return The SiteMode value.
     */
-    public WebSiteMode getSiteMode() { return this.siteMode; }
+    public WebSiteMode getSiteMode()
+    {
+        return this.siteMode;
+    }
     
     /**
     * This value is limited for the Free offering Basic for the Paid Shared
     * offering. The default value is Limited. Note: Standard mode does not use
     * the SiteMode setting; it uses the ComputeMode setting. For more
     * information, see Upgrade or Downgrade a Web Site.
+    * @param siteModeValue The SiteMode value.
     */
-    public void setSiteMode(WebSiteMode siteMode) { this.siteMode = siteMode; }
+    public void setSiteMode(final WebSiteMode siteModeValue)
+    {
+        this.siteMode = siteModeValue;
+    }
     
     private WebSiteCreateParameters.WebSpaceDetails webSpace;
     
     /**
     * Information about the web space to create.
+    * @return The WebSpace value.
     */
-    public WebSiteCreateParameters.WebSpaceDetails getWebSpace() { return this.webSpace; }
+    public WebSiteCreateParameters.WebSpaceDetails getWebSpace()
+    {
+        return this.webSpace;
+    }
     
     /**
     * Information about the web space to create.
+    * @param webSpaceValue The WebSpace value.
     */
-    public void setWebSpace(WebSiteCreateParameters.WebSpaceDetails webSpace) { this.webSpace = webSpace; }
+    public void setWebSpace(final WebSiteCreateParameters.WebSpaceDetails webSpaceValue)
+    {
+        this.webSpace = webSpaceValue;
+    }
     
     private String webSpaceName;
     
     /**
     * The name of the webspace.
+    * @return The WebSpaceName value.
     */
-    public String getWebSpaceName() { return this.webSpaceName; }
+    public String getWebSpaceName()
+    {
+        return this.webSpaceName;
+    }
     
     /**
     * The name of the webspace.
+    * @param webSpaceNameValue The WebSpaceName value.
     */
-    public void setWebSpaceName(String webSpaceName) { this.webSpaceName = webSpaceName; }
+    public void setWebSpaceName(final String webSpaceNameValue)
+    {
+        this.webSpaceName = webSpaceNameValue;
+    }
     
     /**
     * Initializes a new instance of the WebSiteCreateParameters class.
@@ -155,45 +211,61 @@ public class WebSiteCreateParameters
         /**
         * Required. The geographical region of the webspace that will be
         * created.
+        * @return The GeoRegion value.
         */
-        public String getGeoRegion() { return this.geoRegion; }
+        public String getGeoRegion()
+        {
+            return this.geoRegion;
+        }
         
         /**
         * Required. The geographical region of the webspace that will be
         * created.
+        * @param geoRegionValue The GeoRegion value.
         */
-        public void setGeoRegion(String geoRegion) { this.geoRegion = geoRegion; }
+        public void setGeoRegion(final String geoRegionValue)
+        {
+            this.geoRegion = geoRegionValue;
+        }
         
         private String name;
         
         /**
         * Required. The name of the webspace.
+        * @return The Name value.
         */
-        public String getName() { return this.name; }
+        public String getName()
+        {
+            return this.name;
+        }
         
         /**
         * Required. The name of the webspace.
+        * @param nameValue The Name value.
         */
-        public void setName(String name) { this.name = name; }
+        public void setName(final String nameValue)
+        {
+            this.name = nameValue;
+        }
         
         private String plan;
         
         /**
         * Required. This value must be VirtualDedicatedPlan.
+        * @return The Plan value.
         */
-        public String getPlan() { return this.plan; }
+        public String getPlan()
+        {
+            return this.plan;
+        }
         
         /**
         * Required. This value must be VirtualDedicatedPlan.
+        * @param planValue The Plan value.
         */
-        public void setPlan(String plan) { this.plan = plan; }
-        
-        /**
-        * Initializes a new instance of the WebSpaceDetails class.
-        *
-        */
-        public WebSpaceDetails()
+        public void setPlan(final String planValue)
         {
+            this.plan = planValue;
         }
     }
 }

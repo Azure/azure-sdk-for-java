@@ -38,13 +38,21 @@ public class DatabaseOperationListResponse extends OperationResponse implements 
     
     /**
     * Gets or sets the list of database operations' response.
+    * @return The DatabaseOperations value.
     */
-    public ArrayList<DatabaseOperationListResponse.DatabaseOperation> getDatabaseOperations() { return this.databaseOperations; }
+    public ArrayList<DatabaseOperationListResponse.DatabaseOperation> getDatabaseOperations()
+    {
+        return this.databaseOperations;
+    }
     
     /**
     * Gets or sets the list of database operations' response.
+    * @param databaseOperationsValue The DatabaseOperations value.
     */
-    public void setDatabaseOperations(ArrayList<DatabaseOperationListResponse.DatabaseOperation> databaseOperations) { this.databaseOperations = databaseOperations; }
+    public void setDatabaseOperations(final ArrayList<DatabaseOperationListResponse.DatabaseOperation> databaseOperationsValue)
+    {
+        this.databaseOperations = databaseOperationsValue;
+    }
     
     /**
     * Initializes a new instance of the DatabaseOperationListResponse class.
@@ -52,6 +60,7 @@ public class DatabaseOperationListResponse extends OperationResponse implements 
     */
     public DatabaseOperationListResponse()
     {
+        super();
         this.databaseOperations = new ArrayList<DatabaseOperationListResponse.DatabaseOperation>();
     }
     
@@ -74,211 +83,331 @@ public class DatabaseOperationListResponse extends OperationResponse implements 
         /**
         * Gets or sets the name of the SQL Database on which the operation is
         * performed.
+        * @return The DatabaseName value.
         */
-        public String getDatabaseName() { return this.databaseName; }
+        public String getDatabaseName()
+        {
+            return this.databaseName;
+        }
         
         /**
         * Gets or sets the name of the SQL Database on which the operation is
         * performed.
+        * @param databaseNameValue The DatabaseName value.
         */
-        public void setDatabaseName(String databaseName) { this.databaseName = databaseName; }
+        public void setDatabaseName(final String databaseNameValue)
+        {
+            this.databaseName = databaseNameValue;
+        }
         
         private String error;
         
         /**
         * Gets or sets the description of the error that occurred during a
         * failed operation.
+        * @return The Error value.
         */
-        public String getError() { return this.error; }
+        public String getError()
+        {
+            return this.error;
+        }
         
         /**
         * Gets or sets the description of the error that occurred during a
         * failed operation.
+        * @param errorValue The Error value.
         */
-        public void setError(String error) { this.error = error; }
+        public void setError(final String errorValue)
+        {
+            this.error = errorValue;
+        }
         
         private int errorCode;
         
         /**
         * Gets or sets the code indicating the error that occurred during a
         * failed operation.
+        * @return The ErrorCode value.
         */
-        public int getErrorCode() { return this.errorCode; }
+        public int getErrorCode()
+        {
+            return this.errorCode;
+        }
         
         /**
         * Gets or sets the code indicating the error that occurred during a
         * failed operation.
+        * @param errorCodeValue The ErrorCode value.
         */
-        public void setErrorCode(int errorCode) { this.errorCode = errorCode; }
+        public void setErrorCode(final int errorCodeValue)
+        {
+            this.errorCode = errorCodeValue;
+        }
         
         private int errorSeverity;
         
         /**
         * Gets or sets the severity level of the error that occurred during a
         * failed operation.
+        * @return The ErrorSeverity value.
         */
-        public int getErrorSeverity() { return this.errorSeverity; }
+        public int getErrorSeverity()
+        {
+            return this.errorSeverity;
+        }
         
         /**
         * Gets or sets the severity level of the error that occurred during a
         * failed operation.
+        * @param errorSeverityValue The ErrorSeverity value.
         */
-        public void setErrorSeverity(int errorSeverity) { this.errorSeverity = errorSeverity; }
+        public void setErrorSeverity(final int errorSeverityValue)
+        {
+            this.errorSeverity = errorSeverityValue;
+        }
         
         private int errorState;
         
         /**
         * Gets or sets the error state.
+        * @return The ErrorState value.
         */
-        public int getErrorState() { return this.errorState; }
+        public int getErrorState()
+        {
+            return this.errorState;
+        }
         
         /**
         * Gets or sets the error state.
+        * @param errorStateValue The ErrorState value.
         */
-        public void setErrorState(int errorState) { this.errorState = errorState; }
+        public void setErrorState(final int errorStateValue)
+        {
+            this.errorState = errorStateValue;
+        }
         
         private String id;
         
         /**
         * Gets or sets unique identifier of the operation..
+        * @return The Id value.
         */
-        public String getId() { return this.id; }
+        public String getId()
+        {
+            return this.id;
+        }
         
         /**
         * Gets or sets unique identifier of the operation..
+        * @param idValue The Id value.
         */
-        public void setId(String id) { this.id = id; }
+        public void setId(final String idValue)
+        {
+            this.id = idValue;
+        }
         
         private Calendar lastModifyTime;
         
         /**
         * Gets or sets the timestamp when the record was last modified for a
         * long running operation.
+        * @return The LastModifyTime value.
         */
-        public Calendar getLastModifyTime() { return this.lastModifyTime; }
+        public Calendar getLastModifyTime()
+        {
+            return this.lastModifyTime;
+        }
         
         /**
         * Gets or sets the timestamp when the record was last modified for a
         * long running operation.
+        * @param lastModifyTimeValue The LastModifyTime value.
         */
-        public void setLastModifyTime(Calendar lastModifyTime) { this.lastModifyTime = lastModifyTime; }
+        public void setLastModifyTime(final Calendar lastModifyTimeValue)
+        {
+            this.lastModifyTime = lastModifyTimeValue;
+        }
         
         private String name;
         
         /**
         * Gets or sets the name of the operation.
+        * @return The Name value.
         */
-        public String getName() { return this.name; }
+        public String getName()
+        {
+            return this.name;
+        }
         
         /**
         * Gets or sets the name of the operation.
+        * @param nameValue The Name value.
         */
-        public void setName(String name) { this.name = name; }
+        public void setName(final String nameValue)
+        {
+            this.name = nameValue;
+        }
         
         private String parentLink;
         
         /**
         * Gets or sets the ParentLink of the operation.
+        * @return The ParentLink value.
         */
-        public String getParentLink() { return this.parentLink; }
+        public String getParentLink()
+        {
+            return this.parentLink;
+        }
         
         /**
         * Gets or sets the ParentLink of the operation.
+        * @param parentLinkValue The ParentLink value.
         */
-        public void setParentLink(String parentLink) { this.parentLink = parentLink; }
+        public void setParentLink(final String parentLinkValue)
+        {
+            this.parentLink = parentLinkValue;
+        }
         
         private int percentComplete;
         
         /**
         * Gets or sets the percentage of operation that has completed.
+        * @return The PercentComplete value.
         */
-        public int getPercentComplete() { return this.percentComplete; }
+        public int getPercentComplete()
+        {
+            return this.percentComplete;
+        }
         
         /**
         * Gets or sets the percentage of operation that has completed.
+        * @param percentCompleteValue The PercentComplete value.
         */
-        public void setPercentComplete(int percentComplete) { this.percentComplete = percentComplete; }
+        public void setPercentComplete(final int percentCompleteValue)
+        {
+            this.percentComplete = percentCompleteValue;
+        }
         
         private String selfLink;
         
         /**
         * Gets or sets the SelfLink of the operation.
+        * @return The SelfLink value.
         */
-        public String getSelfLink() { return this.selfLink; }
+        public String getSelfLink()
+        {
+            return this.selfLink;
+        }
         
         /**
         * Gets or sets the SelfLink of the operation.
+        * @param selfLinkValue The SelfLink value.
         */
-        public void setSelfLink(String selfLink) { this.selfLink = selfLink; }
+        public void setSelfLink(final String selfLinkValue)
+        {
+            this.selfLink = selfLinkValue;
+        }
         
         private String sessionActivityId;
         
         /**
         * Gets or sets session scoped ID of the operation.
+        * @return The SessionActivityId value.
         */
-        public String getSessionActivityId() { return this.sessionActivityId; }
+        public String getSessionActivityId()
+        {
+            return this.sessionActivityId;
+        }
         
         /**
         * Gets or sets session scoped ID of the operation.
+        * @param sessionActivityIdValue The SessionActivityId value.
         */
-        public void setSessionActivityId(String sessionActivityId) { this.sessionActivityId = sessionActivityId; }
+        public void setSessionActivityId(final String sessionActivityIdValue)
+        {
+            this.sessionActivityId = sessionActivityIdValue;
+        }
         
         private Calendar startTime;
         
         /**
         * Gets or sets the timestamp when the operation started.
+        * @return The StartTime value.
         */
-        public Calendar getStartTime() { return this.startTime; }
+        public Calendar getStartTime()
+        {
+            return this.startTime;
+        }
         
         /**
         * Gets or sets the timestamp when the operation started.
+        * @param startTimeValue The StartTime value.
         */
-        public void setStartTime(Calendar startTime) { this.startTime = startTime; }
+        public void setStartTime(final Calendar startTimeValue)
+        {
+            this.startTime = startTimeValue;
+        }
         
         private String state;
         
         /**
         * Gets or sets the state of the operation.
+        * @return The State value.
         */
-        public String getState() { return this.state; }
+        public String getState()
+        {
+            return this.state;
+        }
         
         /**
         * Gets or sets the state of the operation.
+        * @param stateValue The State value.
         */
-        public void setState(String state) { this.state = state; }
+        public void setState(final String stateValue)
+        {
+            this.state = stateValue;
+        }
         
         private int stateId;
         
         /**
         * Gets or sets current state of the long running operation in numeric
         * format.
+        * @return The StateId value.
         */
-        public int getStateId() { return this.stateId; }
+        public int getStateId()
+        {
+            return this.stateId;
+        }
         
         /**
         * Gets or sets current state of the long running operation in numeric
         * format.
+        * @param stateIdValue The StateId value.
         */
-        public void setStateId(int stateId) { this.stateId = stateId; }
+        public void setStateId(final int stateIdValue)
+        {
+            this.stateId = stateIdValue;
+        }
         
         private String type;
         
         /**
         * Gets or sets the type of resource.
+        * @return The Type value.
         */
-        public String getType() { return this.type; }
+        public String getType()
+        {
+            return this.type;
+        }
         
         /**
         * Gets or sets the type of resource.
+        * @param typeValue The Type value.
         */
-        public void setType(String type) { this.type = type; }
-        
-        /**
-        * Initializes a new instance of the DatabaseOperation class.
-        *
-        */
-        public DatabaseOperation()
+        public void setType(final String typeValue)
         {
+            this.type = typeValue;
         }
     }
 }

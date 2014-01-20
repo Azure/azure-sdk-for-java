@@ -34,133 +34,214 @@ public class Role
     
     /**
     * The name of the role.
+    * @return The AvailabilitySetName value.
     */
-    public String getAvailabilitySetName() { return this.availabilitySetName; }
+    public String getAvailabilitySetName()
+    {
+        return this.availabilitySetName;
+    }
     
     /**
     * The name of the role.
+    * @param availabilitySetNameValue The AvailabilitySetName value.
     */
-    public void setAvailabilitySetName(String availabilitySetName) { this.availabilitySetName = availabilitySetName; }
+    public void setAvailabilitySetName(final String availabilitySetNameValue)
+    {
+        this.availabilitySetName = availabilitySetNameValue;
+    }
     
     private ArrayList<ConfigurationSet> configurationSets;
     
     /**
     * A collection of values that represents system or application
     * configuration settings.
+    * @return The ConfigurationSets value.
     */
-    public ArrayList<ConfigurationSet> getConfigurationSets() { return this.configurationSets; }
+    public ArrayList<ConfigurationSet> getConfigurationSets()
+    {
+        return this.configurationSets;
+    }
     
     /**
     * A collection of values that represents system or application
     * configuration settings.
+    * @param configurationSetsValue The ConfigurationSets value.
     */
-    public void setConfigurationSets(ArrayList<ConfigurationSet> configurationSets) { this.configurationSets = configurationSets; }
+    public void setConfigurationSets(final ArrayList<ConfigurationSet> configurationSetsValue)
+    {
+        this.configurationSets = configurationSetsValue;
+    }
     
     private ArrayList<DataVirtualHardDisk> dataVirtualHardDisks;
     
     /**
     * Contains the parameters Windows Azure uses to create a data disk for a
     * virtual machine.
+    * @return The DataVirtualHardDisks value.
     */
-    public ArrayList<DataVirtualHardDisk> getDataVirtualHardDisks() { return this.dataVirtualHardDisks; }
+    public ArrayList<DataVirtualHardDisk> getDataVirtualHardDisks()
+    {
+        return this.dataVirtualHardDisks;
+    }
     
     /**
     * Contains the parameters Windows Azure uses to create a data disk for a
     * virtual machine.
+    * @param dataVirtualHardDisksValue The DataVirtualHardDisks value.
     */
-    public void setDataVirtualHardDisks(ArrayList<DataVirtualHardDisk> dataVirtualHardDisks) { this.dataVirtualHardDisks = dataVirtualHardDisks; }
+    public void setDataVirtualHardDisks(final ArrayList<DataVirtualHardDisk> dataVirtualHardDisksValue)
+    {
+        this.dataVirtualHardDisks = dataVirtualHardDisksValue;
+    }
     
     private String defaultWinRmCertificateThumbprint;
     
     /**
     * The read-only thumbprint of the certificate that is used with the HTTPS
     * listener for WinRM.
+    * @return The DefaultWinRmCertificateThumbprint value.
     */
-    public String getDefaultWinRmCertificateThumbprint() { return this.defaultWinRmCertificateThumbprint; }
+    public String getDefaultWinRmCertificateThumbprint()
+    {
+        return this.defaultWinRmCertificateThumbprint;
+    }
     
     /**
     * The read-only thumbprint of the certificate that is used with the HTTPS
     * listener for WinRM.
+    * @param defaultWinRmCertificateThumbprintValue The
+    * DefaultWinRmCertificateThumbprint value.
     */
-    public void setDefaultWinRmCertificateThumbprint(String defaultWinRmCertificateThumbprint) { this.defaultWinRmCertificateThumbprint = defaultWinRmCertificateThumbprint; }
+    public void setDefaultWinRmCertificateThumbprint(final String defaultWinRmCertificateThumbprintValue)
+    {
+        this.defaultWinRmCertificateThumbprint = defaultWinRmCertificateThumbprintValue;
+    }
     
     private String label;
     
     /**
     * The friendly name for the role.
+    * @return The Label value.
     */
-    public String getLabel() { return this.label; }
+    public String getLabel()
+    {
+        return this.label;
+    }
     
     /**
     * The friendly name for the role.
+    * @param labelValue The Label value.
     */
-    public void setLabel(String label) { this.label = label; }
+    public void setLabel(final String labelValue)
+    {
+        this.label = labelValue;
+    }
     
     private String oSVersion;
     
     /**
     * The version of the operating system on which the role instances are
     * running.
+    * @return The OSVersion value.
     */
-    public String getOSVersion() { return this.oSVersion; }
+    public String getOSVersion()
+    {
+        return this.oSVersion;
+    }
     
     /**
     * The version of the operating system on which the role instances are
     * running.
+    * @param oSVersionValue The OSVersion value.
     */
-    public void setOSVersion(String oSVersion) { this.oSVersion = oSVersion; }
+    public void setOSVersion(final String oSVersionValue)
+    {
+        this.oSVersion = oSVersionValue;
+    }
     
     private OSVirtualHardDisk oSVirtualHardDisk;
     
     /**
     * Contains the parameters Windows Azure uses to create the operating system
     * disk for the virtual machine.
+    * @return The OSVirtualHardDisk value.
     */
-    public OSVirtualHardDisk getOSVirtualHardDisk() { return this.oSVirtualHardDisk; }
+    public OSVirtualHardDisk getOSVirtualHardDisk()
+    {
+        return this.oSVirtualHardDisk;
+    }
     
     /**
     * Contains the parameters Windows Azure uses to create the operating system
     * disk for the virtual machine.
+    * @param oSVirtualHardDiskValue The OSVirtualHardDisk value.
     */
-    public void setOSVirtualHardDisk(OSVirtualHardDisk oSVirtualHardDisk) { this.oSVirtualHardDisk = oSVirtualHardDisk; }
+    public void setOSVirtualHardDisk(final OSVirtualHardDisk oSVirtualHardDiskValue)
+    {
+        this.oSVirtualHardDisk = oSVirtualHardDiskValue;
+    }
     
     private String roleName;
     
     /**
     * The name of the role.
+    * @return The RoleName value.
     */
-    public String getRoleName() { return this.roleName; }
+    public String getRoleName()
+    {
+        return this.roleName;
+    }
     
     /**
     * The name of the role.
+    * @param roleNameValue The RoleName value.
     */
-    public void setRoleName(String roleName) { this.roleName = roleName; }
+    public void setRoleName(final String roleNameValue)
+    {
+        this.roleName = roleNameValue;
+    }
     
-    private VirtualMachineRoleSize roleSize;
+    private String roleSize;
     
     /**
     * The size of the role instance.
+    * @return The RoleSize value.
     */
-    public VirtualMachineRoleSize getRoleSize() { return this.roleSize; }
+    public String getRoleSize()
+    {
+        return this.roleSize;
+    }
     
     /**
     * The size of the role instance.
+    * @param roleSizeValue The RoleSize value.
     */
-    public void setRoleSize(VirtualMachineRoleSize roleSize) { this.roleSize = roleSize; }
+    public void setRoleSize(final String roleSizeValue)
+    {
+        this.roleSize = roleSizeValue;
+    }
     
     private String roleType;
     
     /**
     * Specifies the type of the role. This element is only listed for Virtual
     * Machine deployments and by default is PersistentVMRole.
+    * @return The RoleType value.
     */
-    public String getRoleType() { return this.roleType; }
+    public String getRoleType()
+    {
+        return this.roleType;
+    }
     
     /**
     * Specifies the type of the role. This element is only listed for Virtual
     * Machine deployments and by default is PersistentVMRole.
+    * @param roleTypeValue The RoleType value.
     */
-    public void setRoleType(String roleType) { this.roleType = roleType; }
+    public void setRoleType(final String roleTypeValue)
+    {
+        this.roleType = roleTypeValue;
+    }
     
     /**
     * Initializes a new instance of the Role class.

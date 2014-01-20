@@ -21,7 +21,8 @@ import java.util.Date;
  * A class representing active token.
  * 
  */
-public class ActiveToken {
+public class ActiveToken
+{
 
     private Date expiresUtc;
     private String accessToken;
@@ -31,7 +32,8 @@ public class ActiveToken {
      * 
      * @return The token expiration time in UTC.
      */
-    public Date getExpiresUtc() {
+    public Date getExpiresUtc()
+    {
         return expiresUtc;
     }
 
@@ -40,7 +42,8 @@ public class ActiveToken {
      * 
      * @param expiresUtc
      */
-    public void setExpiresUtc(Date expiresUtc) {
+    public void setExpiresUtc(Date expiresUtc)
+    {
         this.expiresUtc = expiresUtc;
     }
 
@@ -49,7 +52,8 @@ public class ActiveToken {
      * 
      * @return String
      */
-    public String getAccessToken() {
+    public String getAccessToken()
+    {
         return this.accessToken;
     }
 
@@ -58,7 +62,8 @@ public class ActiveToken {
      * 
      * @param accessToken
      */
-    public void setAccessToken(String accessToken) {
+    public void setAccessToken(String accessToken)
+    {
         this.accessToken = accessToken;
     }
 }

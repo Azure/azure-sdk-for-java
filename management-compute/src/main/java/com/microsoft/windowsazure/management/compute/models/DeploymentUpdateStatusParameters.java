@@ -32,19 +32,19 @@ public class DeploymentUpdateStatusParameters
     
     /**
     * Required. The new status of the deployment.
+    * @return The Status value.
     */
-    public UpdatedDeploymentStatus getStatus() { return this.status; }
+    public UpdatedDeploymentStatus getStatus()
+    {
+        return this.status;
+    }
     
     /**
     * Required. The new status of the deployment.
+    * @param statusValue The Status value.
     */
-    public void setStatus(UpdatedDeploymentStatus status) { this.status = status; }
-    
-    /**
-    * Initializes a new instance of the DeploymentUpdateStatusParameters class.
-    *
-    */
-    public DeploymentUpdateStatusParameters()
+    public void setStatus(final UpdatedDeploymentStatus statusValue)
     {
+        this.status = statusValue;
     }
 }

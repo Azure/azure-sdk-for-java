@@ -34,19 +34,19 @@ public class WebSpacesGetDnsSuffixResponse extends OperationResponse
     
     /**
     * The DNS Suffix used for the web space.
+    * @return The DnsSuffix value.
     */
-    public String getDnsSuffix() { return this.dnsSuffix; }
+    public String getDnsSuffix()
+    {
+        return this.dnsSuffix;
+    }
     
     /**
     * The DNS Suffix used for the web space.
+    * @param dnsSuffixValue The DnsSuffix value.
     */
-    public void setDnsSuffix(String dnsSuffix) { this.dnsSuffix = dnsSuffix; }
-    
-    /**
-    * Initializes a new instance of the WebSpacesGetDnsSuffixResponse class.
-    *
-    */
-    public WebSpacesGetDnsSuffixResponse()
+    public void setDnsSuffix(final String dnsSuffixValue)
     {
+        this.dnsSuffix = dnsSuffixValue;
     }
 }

@@ -33,14 +33,22 @@ public class SshSettingPublicKey
     /**
     * Required. Specifies the SHA1 fingerprint of an X509 certificate
     * associated with the hosted service that includes the SSH public key.
+    * @return The Fingerprint value.
     */
-    public String getFingerprint() { return this.fingerprint; }
+    public String getFingerprint()
+    {
+        return this.fingerprint;
+    }
     
     /**
     * Required. Specifies the SHA1 fingerprint of an X509 certificate
     * associated with the hosted service that includes the SSH public key.
+    * @param fingerprintValue The Fingerprint value.
     */
-    public void setFingerprint(String fingerprint) { this.fingerprint = fingerprint; }
+    public void setFingerprint(final String fingerprintValue)
+    {
+        this.fingerprint = fingerprintValue;
+    }
     
     private String path;
     
@@ -49,22 +57,22 @@ public class SshSettingPublicKey
     * which stores the SSH public key. If the file already exists, the
     * specified key is appended to the file.
     * Example:/home/user/.ssh/authorized_keys
+    * @return The Path value.
     */
-    public String getPath() { return this.path; }
+    public String getPath()
+    {
+        return this.path;
+    }
     
     /**
     * Required. Specifies the full path of a file, on the virtual machine,
     * which stores the SSH public key. If the file already exists, the
     * specified key is appended to the file.
     * Example:/home/user/.ssh/authorized_keys
+    * @param pathValue The Path value.
     */
-    public void setPath(String path) { this.path = path; }
-    
-    /**
-    * Initializes a new instance of the SshSettingPublicKey class.
-    *
-    */
-    public SshSettingPublicKey()
+    public void setPath(final String pathValue)
     {
+        this.path = pathValue;
     }
 }

@@ -37,13 +37,21 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
     
     /**
     * Contains one or more publish profiles.
+    * @return The PublishProfiles value.
     */
-    public ArrayList<WebSiteGetPublishProfileResponse.PublishProfile> getPublishProfiles() { return this.publishProfiles; }
+    public ArrayList<WebSiteGetPublishProfileResponse.PublishProfile> getPublishProfiles()
+    {
+        return this.publishProfiles;
+    }
     
     /**
     * Contains one or more publish profiles.
+    * @param publishProfilesValue The PublishProfiles value.
     */
-    public void setPublishProfiles(ArrayList<WebSiteGetPublishProfileResponse.PublishProfile> publishProfiles) { this.publishProfiles = publishProfiles; }
+    public void setPublishProfiles(final ArrayList<WebSiteGetPublishProfileResponse.PublishProfile> publishProfilesValue)
+    {
+        this.publishProfiles = publishProfilesValue;
+    }
     
     /**
     * Initializes a new instance of the WebSiteGetPublishProfileResponse class.
@@ -51,6 +59,7 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
     */
     public WebSiteGetPublishProfileResponse()
     {
+        super();
         this.publishProfiles = new ArrayList<WebSiteGetPublishProfileResponse.PublishProfile>();
     }
     
@@ -73,52 +82,80 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         
         /**
         * Contains a database connection string.
+        * @return The ConnectionString value.
         */
-        public String getConnectionString() { return this.connectionString; }
+        public String getConnectionString()
+        {
+            return this.connectionString;
+        }
         
         /**
         * Contains a database connection string.
+        * @param connectionStringValue The ConnectionString value.
         */
-        public void setConnectionString(String connectionString) { this.connectionString = connectionString; }
+        public void setConnectionString(final String connectionStringValue)
+        {
+            this.connectionString = connectionStringValue;
+        }
         
         private String name;
         
         /**
         * Contains the friendly name of the connection string.
+        * @return The Name value.
         */
-        public String getName() { return this.name; }
+        public String getName()
+        {
+            return this.name;
+        }
         
         /**
         * Contains the friendly name of the connection string.
+        * @param nameValue The Name value.
         */
-        public void setName(String name) { this.name = name; }
+        public void setName(final String nameValue)
+        {
+            this.name = nameValue;
+        }
         
         private String providerName;
         
         /**
         * Contains the type of database provider (for example, "SQL" or
         * "MySQL").
+        * @return The ProviderName value.
         */
-        public String getProviderName() { return this.providerName; }
+        public String getProviderName()
+        {
+            return this.providerName;
+        }
         
         /**
         * Contains the type of database provider (for example, "SQL" or
         * "MySQL").
+        * @param providerNameValue The ProviderName value.
         */
-        public void setProviderName(String providerName) { this.providerName = providerName; }
+        public void setProviderName(final String providerNameValue)
+        {
+            this.providerName = providerNameValue;
+        }
         
         private String type;
         
-        public String getType() { return this.type; }
-        
-        public void setType(String type) { this.type = type; }
+        /**
+        * @return The Type value.
+        */
+        public String getType()
+        {
+            return this.type;
+        }
         
         /**
-        * Initializes a new instance of the Database class.
-        *
+        * @param typeValue The Type value.
         */
-        public Database()
+        public void setType(final String typeValue)
         {
+            this.type = typeValue;
         }
     }
     
@@ -131,167 +168,272 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         
         /**
         * The URL of the control panel for the web site.
+        * @return The ControlPanelUri value.
         */
-        public URI getControlPanelUri() { return this.controlPanelUri; }
+        public URI getControlPanelUri()
+        {
+            return this.controlPanelUri;
+        }
         
         /**
         * The URL of the control panel for the web site.
+        * @param controlPanelUriValue The ControlPanelUri value.
         */
-        public void setControlPanelUri(URI controlPanelUri) { this.controlPanelUri = controlPanelUri; }
+        public void setControlPanelUri(final URI controlPanelUriValue)
+        {
+            this.controlPanelUri = controlPanelUriValue;
+        }
         
         private ArrayList<WebSiteGetPublishProfileResponse.Database> databases;
         
         /**
         * Contains connection information for the databases used by the web
         * site application.
+        * @return The Databases value.
         */
-        public ArrayList<WebSiteGetPublishProfileResponse.Database> getDatabases() { return this.databases; }
+        public ArrayList<WebSiteGetPublishProfileResponse.Database> getDatabases()
+        {
+            return this.databases;
+        }
         
         /**
         * Contains connection information for the databases used by the web
         * site application.
+        * @param databasesValue The Databases value.
         */
-        public void setDatabases(ArrayList<WebSiteGetPublishProfileResponse.Database> databases) { this.databases = databases; }
+        public void setDatabases(final ArrayList<WebSiteGetPublishProfileResponse.Database> databasesValue)
+        {
+            this.databases = databasesValue;
+        }
         
         private URI destinationAppUri;
         
         /**
         * The URL of the website that will be published to.
+        * @return The DestinationAppUri value.
         */
-        public URI getDestinationAppUri() { return this.destinationAppUri; }
+        public URI getDestinationAppUri()
+        {
+            return this.destinationAppUri;
+        }
         
         /**
         * The URL of the website that will be published to.
+        * @param destinationAppUriValue The DestinationAppUri value.
         */
-        public void setDestinationAppUri(URI destinationAppUri) { this.destinationAppUri = destinationAppUri; }
+        public void setDestinationAppUri(final URI destinationAppUriValue)
+        {
+            this.destinationAppUri = destinationAppUriValue;
+        }
         
         private boolean ftpPassiveMode;
         
         /**
         * True or False depending on whether FTP passive mode is being used.
         * This attribute applies only if publishMethod is set to FTP.
+        * @return The FtpPassiveMode value.
         */
-        public boolean getFtpPassiveMode() { return this.ftpPassiveMode; }
+        public boolean isFtpPassiveMode()
+        {
+            return this.ftpPassiveMode;
+        }
         
         /**
         * True or False depending on whether FTP passive mode is being used.
         * This attribute applies only if publishMethod is set to FTP.
+        * @param ftpPassiveModeValue The FtpPassiveMode value.
         */
-        public void setFtpPassiveMode(boolean ftpPassiveMode) { this.ftpPassiveMode = ftpPassiveMode; }
+        public void setFtpPassiveMode(final boolean ftpPassiveModeValue)
+        {
+            this.ftpPassiveMode = ftpPassiveModeValue;
+        }
         
         private URI hostingProviderForumUri;
         
         /**
         * The URL of the forum of the hosting provider.
+        * @return The HostingProviderForumUri value.
         */
-        public URI getHostingProviderForumUri() { return this.hostingProviderForumUri; }
+        public URI getHostingProviderForumUri()
+        {
+            return this.hostingProviderForumUri;
+        }
         
         /**
         * The URL of the forum of the hosting provider.
+        * @param hostingProviderForumUriValue The HostingProviderForumUri value.
         */
-        public void setHostingProviderForumUri(URI hostingProviderForumUri) { this.hostingProviderForumUri = hostingProviderForumUri; }
+        public void setHostingProviderForumUri(final URI hostingProviderForumUriValue)
+        {
+            this.hostingProviderForumUri = hostingProviderForumUriValue;
+        }
         
         private String mSDeploySite;
         
         /**
         * The name of the site that will be published to. This attribute
         * applies only if publishMethod is set to MSDeploy.
+        * @return The MSDeploySite value.
         */
-        public String getMSDeploySite() { return this.mSDeploySite; }
+        public String getMSDeploySite()
+        {
+            return this.mSDeploySite;
+        }
         
         /**
         * The name of the site that will be published to. This attribute
         * applies only if publishMethod is set to MSDeploy.
+        * @param mSDeploySiteValue The MSDeploySite value.
         */
-        public void setMSDeploySite(String mSDeploySite) { this.mSDeploySite = mSDeploySite; }
+        public void setMSDeploySite(final String mSDeploySiteValue)
+        {
+            this.mSDeploySite = mSDeploySiteValue;
+        }
         
         private String mySqlConnectionString;
         
         /**
         * The MySQL database connection string for the web site application, if
         * the web site connects to a MySQL database.
+        * @return The MySqlConnectionString value.
         */
-        public String getMySqlConnectionString() { return this.mySqlConnectionString; }
+        public String getMySqlConnectionString()
+        {
+            return this.mySqlConnectionString;
+        }
         
         /**
         * The MySQL database connection string for the web site application, if
         * the web site connects to a MySQL database.
+        * @param mySqlConnectionStringValue The MySqlConnectionString value.
         */
-        public void setMySqlConnectionString(String mySqlConnectionString) { this.mySqlConnectionString = mySqlConnectionString; }
+        public void setMySqlConnectionString(final String mySqlConnectionStringValue)
+        {
+            this.mySqlConnectionString = mySqlConnectionStringValue;
+        }
         
         private String profileName;
         
         /**
         * The unique name of the publish profile.
+        * @return The ProfileName value.
         */
-        public String getProfileName() { return this.profileName; }
+        public String getProfileName()
+        {
+            return this.profileName;
+        }
         
         /**
         * The unique name of the publish profile.
+        * @param profileNameValue The ProfileName value.
         */
-        public void setProfileName(String profileName) { this.profileName = profileName; }
+        public void setProfileName(final String profileNameValue)
+        {
+            this.profileName = profileNameValue;
+        }
         
         private String publishMethod;
         
         /**
         * The publish method, such as MSDeploy or FTP.
+        * @return The PublishMethod value.
         */
-        public String getPublishMethod() { return this.publishMethod; }
+        public String getPublishMethod()
+        {
+            return this.publishMethod;
+        }
         
         /**
         * The publish method, such as MSDeploy or FTP.
+        * @param publishMethodValue The PublishMethod value.
         */
-        public void setPublishMethod(String publishMethod) { this.publishMethod = publishMethod; }
+        public void setPublishMethod(final String publishMethodValue)
+        {
+            this.publishMethod = publishMethodValue;
+        }
         
         private String publishUrl;
         
         /**
         * The URL to which content will be uploaded.
+        * @return The PublishUrl value.
         */
-        public String getPublishUrl() { return this.publishUrl; }
+        public String getPublishUrl()
+        {
+            return this.publishUrl;
+        }
         
         /**
         * The URL to which content will be uploaded.
+        * @param publishUrlValue The PublishUrl value.
         */
-        public void setPublishUrl(String publishUrl) { this.publishUrl = publishUrl; }
+        public void setPublishUrl(final String publishUrlValue)
+        {
+            this.publishUrl = publishUrlValue;
+        }
         
         private String sqlServerConnectionString;
         
         /**
         * The SQL Server database connection string for the web site
         * application, if the web site connects to a SQL Server database.
+        * @return The SqlServerConnectionString value.
         */
-        public String getSqlServerConnectionString() { return this.sqlServerConnectionString; }
+        public String getSqlServerConnectionString()
+        {
+            return this.sqlServerConnectionString;
+        }
         
         /**
         * The SQL Server database connection string for the web site
         * application, if the web site connects to a SQL Server database.
+        * @param sqlServerConnectionStringValue The SqlServerConnectionString
+        * value.
         */
-        public void setSqlServerConnectionString(String sqlServerConnectionString) { this.sqlServerConnectionString = sqlServerConnectionString; }
+        public void setSqlServerConnectionString(final String sqlServerConnectionStringValue)
+        {
+            this.sqlServerConnectionString = sqlServerConnectionStringValue;
+        }
         
         private String userName;
         
         /**
         * The name for the identity that will be used for publishing.
+        * @return The UserName value.
         */
-        public String getUserName() { return this.userName; }
+        public String getUserName()
+        {
+            return this.userName;
+        }
         
         /**
         * The name for the identity that will be used for publishing.
+        * @param userNameValue The UserName value.
         */
-        public void setUserName(String userName) { this.userName = userName; }
+        public void setUserName(final String userNameValue)
+        {
+            this.userName = userNameValue;
+        }
         
         private String userPassword;
         
         /**
         * Hash value of the password that will be used for publishing.
+        * @return The UserPassword value.
         */
-        public String getUserPassword() { return this.userPassword; }
+        public String getUserPassword()
+        {
+            return this.userPassword;
+        }
         
         /**
         * Hash value of the password that will be used for publishing.
+        * @param userPasswordValue The UserPassword value.
         */
-        public void setUserPassword(String userPassword) { this.userPassword = userPassword; }
+        public void setUserPassword(final String userPasswordValue)
+        {
+            this.userPassword = userPasswordValue;
+        }
         
         /**
         * Initializes a new instance of the PublishProfile class.

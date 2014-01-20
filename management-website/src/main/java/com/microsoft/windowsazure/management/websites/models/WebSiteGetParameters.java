@@ -34,13 +34,21 @@ public class WebSiteGetParameters
     
     /**
     * Specifies a list of the names of any addtional parameters to return.
+    * @return The PropertiesToInclude value.
     */
-    public ArrayList<String> getPropertiesToInclude() { return this.propertiesToInclude; }
+    public ArrayList<String> getPropertiesToInclude()
+    {
+        return this.propertiesToInclude;
+    }
     
     /**
     * Specifies a list of the names of any addtional parameters to return.
+    * @param propertiesToIncludeValue The PropertiesToInclude value.
     */
-    public void setPropertiesToInclude(ArrayList<String> propertiesToInclude) { this.propertiesToInclude = propertiesToInclude; }
+    public void setPropertiesToInclude(final ArrayList<String> propertiesToIncludeValue)
+    {
+        this.propertiesToInclude = propertiesToIncludeValue;
+    }
     
     /**
     * Initializes a new instance of the WebSiteGetParameters class.

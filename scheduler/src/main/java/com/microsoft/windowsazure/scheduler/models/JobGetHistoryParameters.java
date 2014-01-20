@@ -34,13 +34,19 @@ public class JobGetHistoryParameters
     * Specify the (0-based) index of the history list from which to begin
     * requesting entries.
     */
-    public int getSkip() { return this.skip; }
+    public int getSkip()
+    {
+        return this.skip;
+    }
     
     /**
     * Specify the (0-based) index of the history list from which to begin
     * requesting entries.
     */
-    public void setSkip(int skip) { this.skip = skip; }
+    public void setSkip(int skip)
+    {
+        this.skip = skip;
+    }
     
     private int top;
     
@@ -48,19 +54,17 @@ public class JobGetHistoryParameters
     * Specify the number of history entries to request, in the of range
     * [1..100].
     */
-    public int getTop() { return this.top; }
+    public int getTop()
+    {
+        return this.top;
+    }
     
     /**
     * Specify the number of history entries to request, in the of range
     * [1..100].
     */
-    public void setTop(int top) { this.top = top; }
-    
-    /**
-    * Initializes a new instance of the JobGetHistoryParameters class.
-    *
-    */
-    public JobGetHistoryParameters()
+    public void setTop(int top)
     {
+        this.top = top;
     }
 }

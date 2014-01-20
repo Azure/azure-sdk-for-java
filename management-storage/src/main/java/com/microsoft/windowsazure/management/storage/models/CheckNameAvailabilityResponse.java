@@ -35,32 +35,40 @@ public class CheckNameAvailabilityResponse extends OperationResponse
     /**
     * The result of the availability request.  True if the name is available,
     * false otherwise
+    * @return The IsAvailable value.
     */
-    public boolean getIsAvailable() { return this.isAvailable; }
+    public boolean isAvailable()
+    {
+        return this.isAvailable;
+    }
     
     /**
     * The result of the availability request.  True if the name is available,
     * false otherwise
+    * @param isAvailableValue The IsAvailable value.
     */
-    public void setIsAvailable(boolean isAvailable) { this.isAvailable = isAvailable; }
+    public void setIsAvailable(final boolean isAvailableValue)
+    {
+        this.isAvailable = isAvailableValue;
+    }
     
     private String reason;
     
     /**
     * The reason for unavailability, if the requested name is unavailable
+    * @return The Reason value.
     */
-    public String getReason() { return this.reason; }
+    public String getReason()
+    {
+        return this.reason;
+    }
     
     /**
     * The reason for unavailability, if the requested name is unavailable
+    * @param reasonValue The Reason value.
     */
-    public void setReason(String reason) { this.reason = reason; }
-    
-    /**
-    * Initializes a new instance of the CheckNameAvailabilityResponse class.
-    *
-    */
-    public CheckNameAvailabilityResponse()
+    public void setReason(final String reasonValue)
     {
+        this.reason = reasonValue;
     }
 }

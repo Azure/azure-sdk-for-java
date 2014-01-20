@@ -34,19 +34,19 @@ public class JobCollectionUpdateResponse extends OperationResponse
     
     /**
     * New ETag of the updated Job Collection.
+    * @return The ETag value.
     */
-    public String getETag() { return this.eTag; }
+    public String getETag()
+    {
+        return this.eTag;
+    }
     
     /**
     * New ETag of the updated Job Collection.
+    * @param eTagValue The ETag value.
     */
-    public void setETag(String eTag) { this.eTag = eTag; }
-    
-    /**
-    * Initializes a new instance of the JobCollectionUpdateResponse class.
-    *
-    */
-    public JobCollectionUpdateResponse()
+    public void setETag(final String eTagValue)
     {
+        this.eTag = eTagValue;
     }
 }

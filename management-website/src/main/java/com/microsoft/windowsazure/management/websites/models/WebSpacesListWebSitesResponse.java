@@ -36,13 +36,21 @@ public class WebSpacesListWebSitesResponse extends OperationResponse implements 
     
     /**
     * The websites associated with the specified web space.
+    * @return The WebSites value.
     */
-    public ArrayList<WebSite> getWebSites() { return this.webSites; }
+    public ArrayList<WebSite> getWebSites()
+    {
+        return this.webSites;
+    }
     
     /**
     * The websites associated with the specified web space.
+    * @param webSitesValue The WebSites value.
     */
-    public void setWebSites(ArrayList<WebSite> webSites) { this.webSites = webSites; }
+    public void setWebSites(final ArrayList<WebSite> webSitesValue)
+    {
+        this.webSites = webSitesValue;
+    }
     
     /**
     * Initializes a new instance of the WebSpacesListWebSitesResponse class.
@@ -50,6 +58,7 @@ public class WebSpacesListWebSitesResponse extends OperationResponse implements 
     */
     public WebSpacesListWebSitesResponse()
     {
+        super();
         this.webSites = new ArrayList<WebSite>();
     }
     

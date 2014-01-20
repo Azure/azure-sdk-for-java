@@ -32,20 +32,19 @@ public class GatewayGenerateVpnClientPackageParameters
     
     /**
     * The client processor architecture.
+    * @return The ProcessorArchitecture value.
     */
-    public GatewayProcessorArchitecture getProcessorArchitecture() { return this.processorArchitecture; }
+    public GatewayProcessorArchitecture getProcessorArchitecture()
+    {
+        return this.processorArchitecture;
+    }
     
     /**
     * The client processor architecture.
+    * @param processorArchitectureValue The ProcessorArchitecture value.
     */
-    public void setProcessorArchitecture(GatewayProcessorArchitecture processorArchitecture) { this.processorArchitecture = processorArchitecture; }
-    
-    /**
-    * Initializes a new instance of the
-    * GatewayGenerateVpnClientPackageParameters class.
-    *
-    */
-    public GatewayGenerateVpnClientPackageParameters()
+    public void setProcessorArchitecture(final GatewayProcessorArchitecture processorArchitectureValue)
     {
+        this.processorArchitecture = processorArchitectureValue;
     }
 }

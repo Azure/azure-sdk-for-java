@@ -37,34 +37,42 @@ public class StoredCertificateSettings
     /**
     * Required. Specifies the name of the certificate store from which retrieve
     * certificate.  For example, “My”.
+    * @return The StoreName value.
     */
-    public String getStoreName() { return this.storeName; }
+    public String getStoreName()
+    {
+        return this.storeName;
+    }
     
     /**
     * Required. Specifies the name of the certificate store from which retrieve
     * certificate.  For example, “My”.
+    * @param storeNameValue The StoreName value.
     */
-    public void setStoreName(String storeName) { this.storeName = storeName; }
+    public void setStoreName(final String storeNameValue)
+    {
+        this.storeName = storeNameValue;
+    }
     
     private String thumbprint;
     
     /**
     * Required. Specifies the thumbprint of the certificate to be provisioned.
     * The thumbprint must specify an existing service certificate.
+    * @return The Thumbprint value.
     */
-    public String getThumbprint() { return this.thumbprint; }
+    public String getThumbprint()
+    {
+        return this.thumbprint;
+    }
     
     /**
     * Required. Specifies the thumbprint of the certificate to be provisioned.
     * The thumbprint must specify an existing service certificate.
+    * @param thumbprintValue The Thumbprint value.
     */
-    public void setThumbprint(String thumbprint) { this.thumbprint = thumbprint; }
-    
-    /**
-    * Initializes a new instance of the StoredCertificateSettings class.
-    *
-    */
-    public StoredCertificateSettings()
+    public void setThumbprint(final String thumbprintValue)
     {
+        this.thumbprint = thumbprintValue;
     }
 }

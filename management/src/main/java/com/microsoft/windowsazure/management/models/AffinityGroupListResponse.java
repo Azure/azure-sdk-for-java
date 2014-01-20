@@ -36,13 +36,21 @@ public class AffinityGroupListResponse extends OperationResponse implements Iter
     
     /**
     * The affinity groups associated with the specified subscription.
+    * @return The AffinityGroups value.
     */
-    public ArrayList<AffinityGroupListResponse.AffinityGroup> getAffinityGroups() { return this.affinityGroups; }
+    public ArrayList<AffinityGroupListResponse.AffinityGroup> getAffinityGroups()
+    {
+        return this.affinityGroups;
+    }
     
     /**
     * The affinity groups associated with the specified subscription.
+    * @param affinityGroupsValue The AffinityGroups value.
     */
-    public void setAffinityGroups(ArrayList<AffinityGroupListResponse.AffinityGroup> affinityGroups) { this.affinityGroups = affinityGroups; }
+    public void setAffinityGroups(final ArrayList<AffinityGroupListResponse.AffinityGroup> affinityGroupsValue)
+    {
+        this.affinityGroups = affinityGroupsValue;
+    }
     
     /**
     * Initializes a new instance of the AffinityGroupListResponse class.
@@ -50,6 +58,7 @@ public class AffinityGroupListResponse extends OperationResponse implements Iter
     */
     public AffinityGroupListResponse()
     {
+        super();
         this.affinityGroups = new ArrayList<AffinityGroupListResponse.AffinityGroup>();
     }
     
@@ -74,68 +83,108 @@ public class AffinityGroupListResponse extends OperationResponse implements Iter
         * related operations. If so, the string PersistentVMRole will be
         * returned by this element. Otherwise, this element will not be
         * present.
+        * @return The Capabilities value.
         */
-        public ArrayList<String> getCapabilities() { return this.capabilities; }
+        public ArrayList<String> getCapabilities()
+        {
+            return this.capabilities;
+        }
         
         /**
         * Indicates if the affinity group is able to perform virtual machine
         * related operations. If so, the string PersistentVMRole will be
         * returned by this element. Otherwise, this element will not be
         * present.
+        * @param capabilitiesValue The Capabilities value.
         */
-        public void setCapabilities(ArrayList<String> capabilities) { this.capabilities = capabilities; }
+        public void setCapabilities(final ArrayList<String> capabilitiesValue)
+        {
+            this.capabilities = capabilitiesValue;
+        }
         
         private String description;
         
         /**
         * The user supplied description of this affinity group.
+        * @return The Description value.
         */
-        public String getDescription() { return this.description; }
+        public String getDescription()
+        {
+            return this.description;
+        }
         
         /**
         * The user supplied description of this affinity group.
+        * @param descriptionValue The Description value.
         */
-        public void setDescription(String description) { this.description = description; }
+        public void setDescription(final String descriptionValue)
+        {
+            this.description = descriptionValue;
+        }
         
         private String label;
         
         /**
         * The user supplied label of the affinity group returned as a base-64
         * encoded string.
+        * @return The Label value.
         */
-        public String getLabel() { return this.label; }
+        public String getLabel()
+        {
+            return this.label;
+        }
         
         /**
         * The user supplied label of the affinity group returned as a base-64
         * encoded string.
+        * @param labelValue The Label value.
         */
-        public void setLabel(String label) { this.label = label; }
+        public void setLabel(final String labelValue)
+        {
+            this.label = labelValue;
+        }
         
         private String location;
         
         /**
         * The user specified data center that this affinity groups is located
         * in.
+        * @return The Location value.
         */
-        public String getLocation() { return this.location; }
+        public String getLocation()
+        {
+            return this.location;
+        }
         
         /**
         * The user specified data center that this affinity groups is located
         * in.
+        * @param locationValue The Location value.
         */
-        public void setLocation(String location) { this.location = location; }
+        public void setLocation(final String locationValue)
+        {
+            this.location = locationValue;
+        }
         
         private String name;
         
         /**
         * The user supplied name of the affinity group.
+        * @return The Name value.
         */
-        public String getName() { return this.name; }
+        public String getName()
+        {
+            return this.name;
+        }
         
         /**
         * The user supplied name of the affinity group.
+        * @param nameValue The Name value.
         */
-        public void setName(String name) { this.name = name; }
+        public void setName(final String nameValue)
+        {
+            this.name = nameValue;
+        }
         
         /**
         * Initializes a new instance of the AffinityGroup class.

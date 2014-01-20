@@ -26,57 +26,74 @@ import org.junit.Test;
 /**
  *
  */
-public class Protocol1RuntimeGoalStateClientTests {
+public class Protocol1RuntimeGoalStateClientTests
+{
     private final List<GoalState> goalStates = new LinkedList<GoalState>();
 
     @Test
-    public void addGoalStateChangedListenerAddsListener() {
-        Protocol1RuntimeCurrentStateClient currentStateClient = new Protocol1RuntimeCurrentStateClient(null, null);
+    public void addGoalStateChangedListenerAddsListener()
+    {
+        Protocol1RuntimeCurrentStateClient currentStateClient = new Protocol1RuntimeCurrentStateClient(
+                null, null);
 
         GoalStateDeserializer goalStateDeserializer = new ChunkedGoalStateDeserializer();
 
-        RoleEnvironmentDataDeserializer roleEnvironmentDeserializer = new RoleEnvironmentDataDeserializer() {
+        RoleEnvironmentDataDeserializer roleEnvironmentDeserializer = new RoleEnvironmentDataDeserializer()
+        {
             @Override
-            public RoleEnvironmentData deserialize(InputStream stream) {
+            public RoleEnvironmentData deserialize(InputStream stream)
+            {
                 return null;
             }
         };
 
-        InputChannel inputChannel = new MockInputChannel(new String[] {
-                "<?xml version=\"1.0\" encoding=\"utf-8\"?>" + "<GoalState>" + "<Incarnation>1</Incarnation>"
-                        + "<ExpectedState>Started</ExpectedState>"
-                        + "<RoleEnvironmentPath>envpath</RoleEnvironmentPath>"
-                        + "<CurrentStateEndpoint>statepath</CurrentStateEndpoint>"
-                        + "<Deadline>2011-03-08T03:27:44.0Z</Deadline>" + "</GoalState>",
-                "<?xml version=\"1.0\" encoding=\"utf-8\"?>" + "<GoalState>" + "<Incarnation>2</Incarnation>"
-                        + "<ExpectedState>Started</ExpectedState>"
-                        + "<RoleEnvironmentPath>envpath</RoleEnvironmentPath>"
-                        + "<CurrentStateEndpoint>statepath</CurrentStateEndpoint>"
-                        + "<Deadline>2011-03-08T03:27:44.0Z</Deadline>" + "</GoalState>" });
+        InputChannel inputChannel = new MockInputChannel(
+                new String[] {
+                        "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+                                + "<GoalState>"
+                                + "<Incarnation>1</Incarnation>"
+                                + "<ExpectedState>Started</ExpectedState>"
+                                + "<RoleEnvironmentPath>envpath</RoleEnvironmentPath>"
+                                + "<CurrentStateEndpoint>statepath</CurrentStateEndpoint>"
+                                + "<Deadline>2011-03-08T03:27:44.0Z</Deadline>"
+                                + "</GoalState>",
+                        "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+                                + "<GoalState>"
+                                + "<Incarnation>2</Incarnation>"
+                                + "<ExpectedState>Started</ExpectedState>"
+                                + "<RoleEnvironmentPath>envpath</RoleEnvironmentPath>"
+                                + "<CurrentStateEndpoint>statepath</CurrentStateEndpoint>"
+                                + "<Deadline>2011-03-08T03:27:44.0Z</Deadline>"
+                                + "</GoalState>" });
 
-        Protocol1RuntimeGoalStateClient client = new Protocol1RuntimeGoalStateClient(currentStateClient,
-                goalStateDeserializer, roleEnvironmentDeserializer, inputChannel);
+        Protocol1RuntimeGoalStateClient client = new Protocol1RuntimeGoalStateClient(
+                currentStateClient, goalStateDeserializer,
+                roleEnvironmentDeserializer, inputChannel);
 
-        client.addGoalStateChangedListener(new GoalStateChangedListener() {
+        client.addGoalStateChangedListener(new GoalStateChangedListener()
+        {
             @Override
-            public void goalStateChanged(GoalState newGoalState) {
+            public void goalStateChanged(GoalState newGoalState)
+            {
                 goalStates.add(newGoalState);
             }
         });
 
         goalStates.clear();
 
-        try {
+        try
+        {
             client.getCurrentGoalState();
-        }
-        catch (InterruptedException e) {
+        } catch (InterruptedException e)
+        {
             e.printStackTrace();
         }
 
-        try {
+        try
+        {
             Thread.sleep(200);
-        }
-        catch (InterruptedException e) {
+        } catch (InterruptedException e)
+        {
             e.printStackTrace();
         }
 
@@ -85,25 +102,31 @@ public class Protocol1RuntimeGoalStateClientTests {
     }
 
     @Test
-    public void goalStateClientRestartsThread() {
-        Protocol1RuntimeCurrentStateClient currentStateClient = new Protocol1RuntimeCurrentStateClient(null, null);
+    public void goalStateClientRestartsThread()
+    {
+        Protocol1RuntimeCurrentStateClient currentStateClient = new Protocol1RuntimeCurrentStateClient(
+                null, null);
 
-        GoalStateDeserializer goalStateDeserializer = new GoalStateDeserializer() {
+        GoalStateDeserializer goalStateDeserializer = new GoalStateDeserializer()
+        {
             private final ChunkedGoalStateDeserializer deserializer = new ChunkedGoalStateDeserializer();
 
             @Override
-            public void initialize(InputStream inputStream) {
+            public void initialize(InputStream inputStream)
+            {
                 deserializer.initialize(inputStream);
             }
 
             @Override
-            public GoalState deserialize() {
+            public GoalState deserialize()
+            {
                 GoalState goalState = deserializer.deserialize();
 
-                try {
+                try
+                {
                     Thread.sleep(200);
-                }
-                catch (InterruptedException e) {
+                } catch (InterruptedException e)
+                {
                     e.printStackTrace();
                 }
 
@@ -113,49 +136,60 @@ public class Protocol1RuntimeGoalStateClientTests {
             }
         };
 
-        RoleEnvironmentDataDeserializer roleEnvironmentDeserializer = new RoleEnvironmentDataDeserializer() {
+        RoleEnvironmentDataDeserializer roleEnvironmentDeserializer = new RoleEnvironmentDataDeserializer()
+        {
             @Override
-            public RoleEnvironmentData deserialize(InputStream stream) {
+            public RoleEnvironmentData deserialize(InputStream stream)
+            {
                 return null;
             }
         };
 
-        InputChannel inputChannel = new MockInputChannel(new String[] { "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
-                + "<GoalState>" + "<Incarnation>1</Incarnation>" + "<ExpectedState>Started</ExpectedState>"
-                + "<RoleEnvironmentPath>envpath</RoleEnvironmentPath>"
-                + "<CurrentStateEndpoint>statepath</CurrentStateEndpoint>"
-                + "<Deadline>2011-03-08T03:27:44.0Z</Deadline>" + "</GoalState>" });
+        InputChannel inputChannel = new MockInputChannel(
+                new String[] { "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+                        + "<GoalState>"
+                        + "<Incarnation>1</Incarnation>"
+                        + "<ExpectedState>Started</ExpectedState>"
+                        + "<RoleEnvironmentPath>envpath</RoleEnvironmentPath>"
+                        + "<CurrentStateEndpoint>statepath</CurrentStateEndpoint>"
+                        + "<Deadline>2011-03-08T03:27:44.0Z</Deadline>"
+                        + "</GoalState>" });
 
-        Protocol1RuntimeGoalStateClient client = new Protocol1RuntimeGoalStateClient(currentStateClient,
-                goalStateDeserializer, roleEnvironmentDeserializer, inputChannel);
+        Protocol1RuntimeGoalStateClient client = new Protocol1RuntimeGoalStateClient(
+                currentStateClient, goalStateDeserializer,
+                roleEnvironmentDeserializer, inputChannel);
 
         goalStates.clear();
 
-        try {
+        try
+        {
             client.getCurrentGoalState();
-        }
-        catch (InterruptedException e) {
+        } catch (InterruptedException e)
+        {
             e.printStackTrace();
         }
 
-        try {
+        try
+        {
             Thread.sleep(1000);
-        }
-        catch (InterruptedException e) {
+        } catch (InterruptedException e)
+        {
             e.printStackTrace();
         }
 
-        try {
+        try
+        {
             client.getCurrentGoalState();
-        }
-        catch (InterruptedException e) {
+        } catch (InterruptedException e)
+        {
             e.printStackTrace();
         }
 
-        try {
+        try
+        {
             Thread.sleep(2000);
-        }
-        catch (InterruptedException e) {
+        } catch (InterruptedException e)
+        {
             e.printStackTrace();
         }
 
@@ -163,68 +197,93 @@ public class Protocol1RuntimeGoalStateClientTests {
     }
 
     @Test
-    public void getRoleEnvironmentDataReturnsDeserializedData() {
-        Protocol1RuntimeCurrentStateClient currentStateClient = new Protocol1RuntimeCurrentStateClient(null, null);
+    public void getRoleEnvironmentDataReturnsDeserializedData()
+    {
+        Protocol1RuntimeCurrentStateClient currentStateClient = new Protocol1RuntimeCurrentStateClient(
+                null, null);
 
         GoalStateDeserializer goalStateDeserializer = new ChunkedGoalStateDeserializer();
 
-        final RoleEnvironmentData data = new RoleEnvironmentData(null, null, null, null, null, false);
+        final RoleEnvironmentData data = new RoleEnvironmentData(null, null,
+                null, null, null, false);
 
-        RoleEnvironmentDataDeserializer roleEnvironmentDeserializer = new RoleEnvironmentDataDeserializer() {
+        RoleEnvironmentDataDeserializer roleEnvironmentDeserializer = new RoleEnvironmentDataDeserializer()
+        {
             @Override
-            public RoleEnvironmentData deserialize(InputStream stream) {
+            public RoleEnvironmentData deserialize(InputStream stream)
+            {
                 return data;
             }
         };
 
-        InputChannel inputChannel = new MockInputChannel(new String[] { "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
-                + "<GoalState>" + "<Incarnation>1</Incarnation>" + "<ExpectedState>Started</ExpectedState>"
-                + "<RoleEnvironmentPath>envpath</RoleEnvironmentPath>"
-                + "<CurrentStateEndpoint>statepath</CurrentStateEndpoint>"
-                + "<Deadline>2011-03-08T03:27:44.0Z</Deadline>" + "</GoalState>" });
+        InputChannel inputChannel = new MockInputChannel(
+                new String[] { "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+                        + "<GoalState>"
+                        + "<Incarnation>1</Incarnation>"
+                        + "<ExpectedState>Started</ExpectedState>"
+                        + "<RoleEnvironmentPath>envpath</RoleEnvironmentPath>"
+                        + "<CurrentStateEndpoint>statepath</CurrentStateEndpoint>"
+                        + "<Deadline>2011-03-08T03:27:44.0Z</Deadline>"
+                        + "</GoalState>" });
 
-        Protocol1RuntimeGoalStateClient client = new Protocol1RuntimeGoalStateClient(currentStateClient,
-                goalStateDeserializer, roleEnvironmentDeserializer, inputChannel);
+        Protocol1RuntimeGoalStateClient client = new Protocol1RuntimeGoalStateClient(
+                currentStateClient, goalStateDeserializer,
+                roleEnvironmentDeserializer, inputChannel);
 
-        try {
+        try
+        {
             assertThat(client.getRoleEnvironmentData(), is(data));
-        }
-        catch (InterruptedException e) {
+        } catch (InterruptedException e)
+        {
             e.printStackTrace();
         }
     }
 
     @Test
-    public void removeGoalStateChangedListenerRemovesListener() {
-        Protocol1RuntimeCurrentStateClient currentStateClient = new Protocol1RuntimeCurrentStateClient(null, null);
+    public void removeGoalStateChangedListenerRemovesListener()
+    {
+        Protocol1RuntimeCurrentStateClient currentStateClient = new Protocol1RuntimeCurrentStateClient(
+                null, null);
 
         GoalStateDeserializer goalStateDeserializer = new ChunkedGoalStateDeserializer();
 
-        RoleEnvironmentDataDeserializer roleEnvironmentDeserializer = new RoleEnvironmentDataDeserializer() {
+        RoleEnvironmentDataDeserializer roleEnvironmentDeserializer = new RoleEnvironmentDataDeserializer()
+        {
             @Override
-            public RoleEnvironmentData deserialize(InputStream stream) {
+            public RoleEnvironmentData deserialize(InputStream stream)
+            {
                 return null;
             }
         };
 
-        InputChannel inputChannel = new MockInputChannel(new String[] {
-                "<?xml version=\"1.0\" encoding=\"utf-8\"?>" + "<GoalState>" + "<Incarnation>1</Incarnation>"
-                        + "<ExpectedState>Started</ExpectedState>"
-                        + "<RoleEnvironmentPath>envpath</RoleEnvironmentPath>"
-                        + "<CurrentStateEndpoint>statepath</CurrentStateEndpoint>"
-                        + "<Deadline>2011-03-08T03:27:44.0Z</Deadline>" + "</GoalState>",
-                "<?xml version=\"1.0\" encoding=\"utf-8\"?>" + "<GoalState>" + "<Incarnation>2</Incarnation>"
-                        + "<ExpectedState>Started</ExpectedState>"
-                        + "<RoleEnvironmentPath>envpath</RoleEnvironmentPath>"
-                        + "<CurrentStateEndpoint>statepath</CurrentStateEndpoint>"
-                        + "<Deadline>2011-03-08T03:27:44.0Z</Deadline>" + "</GoalState>" });
+        InputChannel inputChannel = new MockInputChannel(
+                new String[] {
+                        "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+                                + "<GoalState>"
+                                + "<Incarnation>1</Incarnation>"
+                                + "<ExpectedState>Started</ExpectedState>"
+                                + "<RoleEnvironmentPath>envpath</RoleEnvironmentPath>"
+                                + "<CurrentStateEndpoint>statepath</CurrentStateEndpoint>"
+                                + "<Deadline>2011-03-08T03:27:44.0Z</Deadline>"
+                                + "</GoalState>",
+                        "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+                                + "<GoalState>"
+                                + "<Incarnation>2</Incarnation>"
+                                + "<ExpectedState>Started</ExpectedState>"
+                                + "<RoleEnvironmentPath>envpath</RoleEnvironmentPath>"
+                                + "<CurrentStateEndpoint>statepath</CurrentStateEndpoint>"
+                                + "<Deadline>2011-03-08T03:27:44.0Z</Deadline>"
+                                + "</GoalState>" });
 
-        Protocol1RuntimeGoalStateClient client = new Protocol1RuntimeGoalStateClient(currentStateClient,
-                goalStateDeserializer, roleEnvironmentDeserializer, inputChannel);
+        Protocol1RuntimeGoalStateClient client = new Protocol1RuntimeGoalStateClient(
+                currentStateClient, goalStateDeserializer,
+                roleEnvironmentDeserializer, inputChannel);
 
-        GoalStateChangedListener listener = new GoalStateChangedListener() {
+        GoalStateChangedListener listener = new GoalStateChangedListener()
+        {
             @Override
-            public void goalStateChanged(GoalState newGoalState) {
+            public void goalStateChanged(GoalState newGoalState)
+            {
                 goalStates.add(newGoalState);
             }
         };
@@ -234,17 +293,19 @@ public class Protocol1RuntimeGoalStateClientTests {
 
         goalStates.clear();
 
-        try {
+        try
+        {
             client.getCurrentGoalState();
-        }
-        catch (InterruptedException e) {
+        } catch (InterruptedException e)
+        {
             e.printStackTrace();
         }
 
-        try {
+        try
+        {
             Thread.sleep(200);
-        }
-        catch (InterruptedException e) {
+        } catch (InterruptedException e)
+        {
             e.printStackTrace();
         }
 

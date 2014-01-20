@@ -17,7 +17,8 @@ package com.microsoft.windowsazure.services.blob.client;
 /**
  * Holds the Constants used for the Queue Service.
  */
-final class BlobConstants {
+final class BlobConstants
+{
     /**
      * XML element for authentication error details.
      */
@@ -130,12 +131,14 @@ final class BlobConstants {
     public static final int DEFAULT_CONCURRENT_REQUEST_COUNT = 1;
 
     /**
-     * The default delimiter used to create a virtual directory structure of blobs.
+     * The default delimiter used to create a virtual directory structure of
+     * blobs.
      */
     public static final String DEFAULT_DELIMITER = "/";
 
     /**
-     * The default write pages size, in bytes, used by blob stream for page blobs.
+     * The default write pages size, in bytes, used by blob stream for page
+     * blobs.
      */
     public static final int DEFAULT_MINIMUM_PAGE_STREAM_WRITE_IN_BYTES = 4 * com.microsoft.windowsazure.services.core.storage.Constants.MB;
 
@@ -145,7 +148,8 @@ final class BlobConstants {
     public static final int DEFAULT_MINIMUM_READ_SIZE_IN_BYTES = 4 * com.microsoft.windowsazure.services.core.storage.Constants.MB;
 
     /**
-     * The default maximum size, in bytes, of a blob before it must be separated into blocks.
+     * The default maximum size, in bytes, of a blob before it must be separated
+     * into blocks.
      */
     public static final int DEFAULT_SINGLE_BLOB_PUT_THRESHOLD_IN_BYTES = 32 * com.microsoft.windowsazure.services.core.storage.Constants.MB;
 
@@ -165,9 +169,11 @@ final class BlobConstants {
     public static final String LATEST_ELEMENT = "Latest";
 
     /**
-     * The maximum size, in bytes, of a blob before it must be separated into blocks
+     * The maximum size, in bytes, of a blob before it must be separated into
+     * blocks
      */
-    // Note if this is updated then Constants.MAX_MARK_LENGTH needs to be as well.
+    // Note if this is updated then Constants.MAX_MARK_LENGTH needs to be as
+    // well.
     public static final int MAX_SINGLE_UPLOAD_BLOB_SIZE_IN_BYTES = 64 * com.microsoft.windowsazure.services.core.storage.Constants.MB;
 
     /**
@@ -272,7 +278,8 @@ final class BlobConstants {
     /**
      * Private Default Ctor
      */
-    private BlobConstants() {
+    private BlobConstants()
+    {
         // No op
     }
 }

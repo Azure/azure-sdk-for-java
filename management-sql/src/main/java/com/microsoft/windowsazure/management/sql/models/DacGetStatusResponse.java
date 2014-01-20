@@ -38,13 +38,21 @@ public class DacGetStatusResponse extends OperationResponse implements Iterable<
     
     /**
     * Gets or sets the list of statuses relevant to this import/export request.
+    * @return The StatusInfoList value.
     */
-    public ArrayList<DacGetStatusResponse.StatusInfo> getStatusInfoList() { return this.statusInfoList; }
+    public ArrayList<DacGetStatusResponse.StatusInfo> getStatusInfoList()
+    {
+        return this.statusInfoList;
+    }
     
     /**
     * Gets or sets the list of statuses relevant to this import/export request.
+    * @param statusInfoListValue The StatusInfoList value.
     */
-    public void setStatusInfoList(ArrayList<DacGetStatusResponse.StatusInfo> statusInfoList) { this.statusInfoList = statusInfoList; }
+    public void setStatusInfoList(final ArrayList<DacGetStatusResponse.StatusInfo> statusInfoListValue)
+    {
+        this.statusInfoList = statusInfoListValue;
+    }
     
     /**
     * Initializes a new instance of the DacGetStatusResponse class.
@@ -52,6 +60,7 @@ public class DacGetStatusResponse extends OperationResponse implements Iterable<
     */
     public DacGetStatusResponse()
     {
+        super();
         this.statusInfoList = new ArrayList<DacGetStatusResponse.StatusInfo>();
     }
     
@@ -74,127 +83,191 @@ public class DacGetStatusResponse extends OperationResponse implements Iterable<
         /**
         * Gets or sets the URI of the DAC file stored in Windows Azure Blob
         * Storage to be imported.
+        * @return The BlobUri value.
         */
-        public URI getBlobUri() { return this.blobUri; }
+        public URI getBlobUri()
+        {
+            return this.blobUri;
+        }
         
         /**
         * Gets or sets the URI of the DAC file stored in Windows Azure Blob
         * Storage to be imported.
+        * @param blobUriValue The BlobUri value.
         */
-        public void setBlobUri(URI blobUri) { this.blobUri = blobUri; }
+        public void setBlobUri(final URI blobUriValue)
+        {
+            this.blobUri = blobUriValue;
+        }
         
         private String databaseName;
         
         /**
         * Gets or sets the name of the database into which this DAC will be
         * imported.
+        * @return The DatabaseName value.
         */
-        public String getDatabaseName() { return this.databaseName; }
+        public String getDatabaseName()
+        {
+            return this.databaseName;
+        }
         
         /**
         * Gets or sets the name of the database into which this DAC will be
         * imported.
+        * @param databaseNameValue The DatabaseName value.
         */
-        public void setDatabaseName(String databaseName) { this.databaseName = databaseName; }
+        public void setDatabaseName(final String databaseNameValue)
+        {
+            this.databaseName = databaseNameValue;
+        }
         
         private String errorMessage;
         
         /**
         * Gets or sets the error message of the request if the request failed
         * in some way.
+        * @return The ErrorMessage value.
         */
-        public String getErrorMessage() { return this.errorMessage; }
+        public String getErrorMessage()
+        {
+            return this.errorMessage;
+        }
         
         /**
         * Gets or sets the error message of the request if the request failed
         * in some way.
+        * @param errorMessageValue The ErrorMessage value.
         */
-        public void setErrorMessage(String errorMessage) { this.errorMessage = errorMessage; }
+        public void setErrorMessage(final String errorMessageValue)
+        {
+            this.errorMessage = errorMessageValue;
+        }
         
         private Calendar lastModifiedTime;
         
         /**
         * Gets or sets the last time the status changed.
+        * @return The LastModifiedTime value.
         */
-        public Calendar getLastModifiedTime() { return this.lastModifiedTime; }
+        public Calendar getLastModifiedTime()
+        {
+            return this.lastModifiedTime;
+        }
         
         /**
         * Gets or sets the last time the status changed.
+        * @param lastModifiedTimeValue The LastModifiedTime value.
         */
-        public void setLastModifiedTime(Calendar lastModifiedTime) { this.lastModifiedTime = lastModifiedTime; }
+        public void setLastModifiedTime(final Calendar lastModifiedTimeValue)
+        {
+            this.lastModifiedTime = lastModifiedTimeValue;
+        }
         
         private Calendar queuedTime;
         
         /**
         * Gets or sets the time at which the import/export request was queued
         * and the process initiated.
+        * @return The QueuedTime value.
         */
-        public Calendar getQueuedTime() { return this.queuedTime; }
+        public Calendar getQueuedTime()
+        {
+            return this.queuedTime;
+        }
         
         /**
         * Gets or sets the time at which the import/export request was queued
         * and the process initiated.
+        * @param queuedTimeValue The QueuedTime value.
         */
-        public void setQueuedTime(Calendar queuedTime) { this.queuedTime = queuedTime; }
+        public void setQueuedTime(final Calendar queuedTimeValue)
+        {
+            this.queuedTime = queuedTimeValue;
+        }
         
         private String requestId;
         
         /**
         * Gets or sets the request ID of this import/export request, so that it
         * can be tracked with future calls to GetStatus.
+        * @return The RequestId value.
         */
-        public String getRequestId() { return this.requestId; }
+        public String getRequestId()
+        {
+            return this.requestId;
+        }
         
         /**
         * Gets or sets the request ID of this import/export request, so that it
         * can be tracked with future calls to GetStatus.
+        * @param requestIdValue The RequestId value.
         */
-        public void setRequestId(String requestId) { this.requestId = requestId; }
+        public void setRequestId(final String requestIdValue)
+        {
+            this.requestId = requestIdValue;
+        }
         
         private String requestType;
         
         /**
         * Gets or sets the type (Import/Export) of this request.
+        * @return The RequestType value.
         */
-        public String getRequestType() { return this.requestType; }
+        public String getRequestType()
+        {
+            return this.requestType;
+        }
         
         /**
         * Gets or sets the type (Import/Export) of this request.
+        * @param requestTypeValue The RequestType value.
         */
-        public void setRequestType(String requestType) { this.requestType = requestType; }
+        public void setRequestType(final String requestTypeValue)
+        {
+            this.requestType = requestTypeValue;
+        }
         
         private String serverName;
         
         /**
         * Gets or sets the name of the SQL database server into which this DAC
         * will be imported or from which it will be exported.
+        * @return The ServerName value.
         */
-        public String getServerName() { return this.serverName; }
+        public String getServerName()
+        {
+            return this.serverName;
+        }
         
         /**
         * Gets or sets the name of the SQL database server into which this DAC
         * will be imported or from which it will be exported.
+        * @param serverNameValue The ServerName value.
         */
-        public void setServerName(String serverName) { this.serverName = serverName; }
+        public void setServerName(final String serverNameValue)
+        {
+            this.serverName = serverNameValue;
+        }
         
         private String status;
         
         /**
         * Gets or sets the status of the import/export request.
+        * @return The Status value.
         */
-        public String getStatus() { return this.status; }
+        public String getStatus()
+        {
+            return this.status;
+        }
         
         /**
         * Gets or sets the status of the import/export request.
+        * @param statusValue The Status value.
         */
-        public void setStatus(String status) { this.status = status; }
-        
-        /**
-        * Initializes a new instance of the StatusInfo class.
-        *
-        */
-        public StatusInfo()
+        public void setStatus(final String statusValue)
         {
+            this.status = statusValue;
         }
     }
 }

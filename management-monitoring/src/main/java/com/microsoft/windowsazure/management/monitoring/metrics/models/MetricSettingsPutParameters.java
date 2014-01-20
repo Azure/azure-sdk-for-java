@@ -32,19 +32,19 @@ public class MetricSettingsPutParameters
     
     /**
     * Required. The metric setting.
+    * @return The MetricSetting value.
     */
-    public MetricSetting getMetricSetting() { return this.metricSetting; }
+    public MetricSetting getMetricSetting()
+    {
+        return this.metricSetting;
+    }
     
     /**
     * Required. The metric setting.
+    * @param metricSettingValue The MetricSetting value.
     */
-    public void setMetricSetting(MetricSetting metricSetting) { this.metricSetting = metricSetting; }
-    
-    /**
-    * Initializes a new instance of the MetricSettingsPutParameters class.
-    *
-    */
-    public MetricSettingsPutParameters()
+    public void setMetricSetting(final MetricSetting metricSettingValue)
     {
+        this.metricSetting = metricSettingValue;
     }
 }

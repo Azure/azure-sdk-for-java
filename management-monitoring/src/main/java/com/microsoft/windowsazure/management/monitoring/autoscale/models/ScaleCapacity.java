@@ -32,43 +32,59 @@ public class ScaleCapacity
     
     /**
     * The default number of instances that are available for the scaling action.
+    * @return The Default value.
     */
-    public String getDefault() { return this.defaultValue; }
+    public String getDefault()
+    {
+        return this.defaultValue;
+    }
     
     /**
     * The default number of instances that are available for the scaling action.
+    * @param defaultValue The Default value.
     */
-    public void setDefault(String defaultValue) { this.defaultValue = defaultValue; }
+    public void setDefault(final String defaultValue)
+    {
+        this.defaultValue = defaultValue;
+    }
     
     private String maximum;
     
     /**
     * The maximum number of instances that are available for the scaling action.
+    * @return The Maximum value.
     */
-    public String getMaximum() { return this.maximum; }
+    public String getMaximum()
+    {
+        return this.maximum;
+    }
     
     /**
     * The maximum number of instances that are available for the scaling action.
+    * @param maximumValue The Maximum value.
     */
-    public void setMaximum(String maximum) { this.maximum = maximum; }
+    public void setMaximum(final String maximumValue)
+    {
+        this.maximum = maximumValue;
+    }
     
     private String minimum;
     
     /**
     * The minimum number of instances that are available for the scaling action.
+    * @return The Minimum value.
     */
-    public String getMinimum() { return this.minimum; }
+    public String getMinimum()
+    {
+        return this.minimum;
+    }
     
     /**
     * The minimum number of instances that are available for the scaling action.
+    * @param minimumValue The Minimum value.
     */
-    public void setMinimum(String minimum) { this.minimum = minimum; }
-    
-    /**
-    * Initializes a new instance of the ScaleCapacity class.
-    *
-    */
-    public ScaleCapacity()
+    public void setMinimum(final String minimumValue)
     {
+        this.minimum = minimumValue;
     }
 }

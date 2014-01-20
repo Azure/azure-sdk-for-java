@@ -21,50 +21,60 @@ import com.microsoft.windowsazure.Configuration;
  * Access service management functionality.
  * 
  */
-public class AutoscaleService {
-
-    private AutoscaleService() {
+public final class AutoscaleService
+{
+    private AutoscaleService()
+    {
         // class is not instantiated
     }
 
     /**
      * Creates an instance of the <code>AutoscaleClient</code> API.
-     * 
+     * @return An instance of the <code>AutoscaleClient</code> API.
      */
-    public static AutoscaleClient create() {
+    public static AutoscaleClient create()
+    {
         return Configuration.getInstance().create(AutoscaleClient.class);
     }
 
     /**
-     * Creates an instance of the <code>AutoscaleClient</code> API using the specified configuration.
-     * 
-     * @param config
-     *            A <code>Configuration</code> object that represents the configuration for the service management.
-     * 
+     * Creates an instance of the <code>AutoscaleClient</code> API using the
+     * specified configuration.
+     *
+     * @param config A <code>Configuration</code> object that represents the
+     * configuration for the service management.
+     * @return An instance of the <code>AutoscaleClient</code> API.
      */
-    public static AutoscaleClient create(Configuration config) {
+    public static AutoscaleClient create(final Configuration config)
+    {
         return config.create(AutoscaleClient.class);
     }
 
     /**
      * Creates an instance of the <code>AutoscaleClient</code> API.
      * 
-     * @param profile
-     *            A <code>String</code> object that representing the profile of the service management service.
-     * 
+     * @param profile A <code>String</code> object that representing the profile
+     * of the service management service.
+     * @return An instance of the <code>AutoscaleClient</code> API.
      */
-    public static AutoscaleClient create(String profile) {
-        return Configuration.getInstance().create(profile, AutoscaleClient.class);
+    public static AutoscaleClient create(final String profile)
+    {
+        return Configuration.getInstance().create(profile,
+                AutoscaleClient.class);
     }
 
     /**
-     * Creates an instance of the <code>AutoscaleClient</code> API using the specified configuration.
-     * 
-     * @param config
-     *            A <code>Configuration</code> object that represents the configuration for the service management.
-     * 
+     * Creates an instance of the <code>AutoscaleClient</code> API using the
+     * specified configuration.
+     *
+     * @param profile The profile.
+     * @param config A <code>Configuration</code> object that represents the
+     * configuration for the service management.
+     * @return An instance of the <code>AutoscaleClient</code> API.
      */
-    public static AutoscaleClient create(String profile, Configuration config) {
+    public static AutoscaleClient create(final String profile,
+            final Configuration config)
+    {
         return config.create(profile, AutoscaleClient.class);
     }
 }

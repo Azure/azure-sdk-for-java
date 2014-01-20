@@ -34,13 +34,21 @@ public class RuleCollection
     
     /**
     * Rule collection.
+    * @return The Value value.
     */
-    public ArrayList<Rule> getValue() { return this.value; }
+    public ArrayList<Rule> getValue()
+    {
+        return this.value;
+    }
     
     /**
     * Rule collection.
+    * @param valueValue The Value value.
     */
-    public void setValue(ArrayList<Rule> value) { this.value = value; }
+    public void setValue(final ArrayList<Rule> valueValue)
+    {
+        this.value = valueValue;
+    }
     
     /**
     * Initializes a new instance of the RuleCollection class.

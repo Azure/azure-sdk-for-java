@@ -20,7 +20,8 @@ package com.microsoft.windowsazure.services.core.storage;
 /**
  * Abstract class that represents a retry policy.
  */
-public abstract class RetryPolicy {
+public abstract class RetryPolicy
+{
 
     /**
      * Represents the default client backoff interval, in milliseconds.
@@ -55,42 +56,47 @@ public abstract class RetryPolicy {
     /**
      * Creates an instance of the <code>RetryPolicy</code> class.
      */
-    public RetryPolicy() {
+    public RetryPolicy()
+    {
         // Empty Default Ctor
     }
 
     /**
-     * Creates an instance of the <code>RetryPolicy</code> class using the specified delta backoff and maximum retry
-     * attempts.
+     * Creates an instance of the <code>RetryPolicy</code> class using the
+     * specified delta backoff and maximum retry attempts.
      * 
      * @param deltaBackoff
      *            The backoff interval, in milliseconds, between retries.
      * @param maxAttempts
      *            The maximum number of retry attempts.
      */
-    public RetryPolicy(final int deltaBackoff, final int maxAttempts) {
+    public RetryPolicy(final int deltaBackoff, final int maxAttempts)
+    {
         this.deltaBackoffIntervalInMs = deltaBackoff;
         this.maximumAttempts = maxAttempts;
     }
 
     /**
-     * Determines if the operation should be retried and how long to wait until the next retry.
+     * Determines if the operation should be retried and how long to wait until
+     * the next retry.
      * 
      * @param currentRetryCount
-     *            The number of retries for the given operation. A value of zero signifies this is the first error
-     *            encountered.
+     *            The number of retries for the given operation. A value of zero
+     *            signifies this is the first error encountered.
      * @param statusCode
      *            The status code for the last operation.
      * @param lastException
-     *            A <code>Exception</code> object that represents the last exception encountered.
+     *            A <code>Exception</code> object that represents the last
+     *            exception encountered.
      * @param opContext
-     *            An {@link OperationContext} object that represents the context for the current operation. This object
-     *            is used to track requests to the storage service, and to provide additional runtime information about
-     *            the operation.
+     *            An {@link OperationContext} object that represents the context
+     *            for the current operation. This object is used to track
+     *            requests to the storage service, and to provide additional
+     *            runtime information about the operation.
      * 
-     * @return A {@link RetryResult} object that indicates whether the operation should be retried and how long to
-     *         backoff.
+     * @return A {@link RetryResult} object that indicates whether the operation
+     *         should be retried and how long to backoff.
      */
-    public abstract RetryResult shouldRetry(int currentRetryCount, int statusCode, Exception lastException,
-            OperationContext opContext);
+    public abstract RetryResult shouldRetry(int currentRetryCount,
+            int statusCode, Exception lastException, OperationContext opContext);
 }

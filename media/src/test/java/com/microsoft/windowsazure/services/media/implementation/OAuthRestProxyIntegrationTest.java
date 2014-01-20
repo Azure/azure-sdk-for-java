@@ -25,18 +25,26 @@ import com.microsoft.windowsazure.services.media.IntegrationTestBase;
 import com.microsoft.windowsazure.services.media.MediaConfiguration;
 import com.sun.jersey.api.client.Client;
 
-public class OAuthRestProxyIntegrationTest extends IntegrationTestBase {
+public class OAuthRestProxyIntegrationTest extends IntegrationTestBase
+{
     @Test
-    public void serviceCanBeCalledToCreateAccessToken() throws Exception {
+    public void serviceCanBeCalledToCreateAccessToken() throws Exception
+    {
         // Arrange
-        OAuthContract oAuthContract = new OAuthRestProxy(config.create(Client.class), new UserAgentFilter());
+        OAuthContract oAuthContract = new OAuthRestProxy(
+                config.create(Client.class), new UserAgentFilter());
 
         // Act
-        URI oAuthUri = new URI((String) config.getProperty(MediaConfiguration.OAUTH_URI));
-        String clientId = (String) config.getProperty(MediaConfiguration.OAUTH_CLIENT_ID);
-        String clientSecret = (String) config.getProperty(MediaConfiguration.OAUTH_CLIENT_SECRET);
-        String scope = (String) config.getProperty(MediaConfiguration.OAUTH_SCOPE);
-        OAuthTokenResponse result = oAuthContract.getAccessToken(oAuthUri, clientId, clientSecret, scope);
+        URI oAuthUri = new URI(
+                (String) config.getProperty(MediaConfiguration.OAUTH_URI));
+        String clientId = (String) config
+                .getProperty(MediaConfiguration.OAUTH_CLIENT_ID);
+        String clientSecret = (String) config
+                .getProperty(MediaConfiguration.OAUTH_CLIENT_SECRET);
+        String scope = (String) config
+                .getProperty(MediaConfiguration.OAUTH_SCOPE);
+        OAuthTokenResponse result = oAuthContract.getAccessToken(oAuthUri,
+                clientId, clientSecret, scope);
 
         // Assert
         assertNotNull(result);

@@ -36,67 +36,89 @@ public class JobRecurrence
     * Count of occurrences that will execute. Optional. Default will recur
     * infinitely
     */
-    public Integer getCount() { return this.count; }
+    public Integer getCount()
+    {
+        return this.count;
+    }
     
     /**
     * Count of occurrences that will execute. Optional. Default will recur
     * infinitely
     */
-    public void setCount(Integer count) { this.count = count; }
+    public void setCount(Integer count)
+    {
+        this.count = count;
+    }
     
     private Calendar endTime;
     
     /**
     * Time in ISO-8601 format after which no more occurrences will execute.
     */
-    public Calendar getEndTime() { return this.endTime; }
+    public Calendar getEndTime()
+    {
+        return this.endTime;
+    }
     
     /**
     * Time in ISO-8601 format after which no more occurrences will execute.
     */
-    public void setEndTime(Calendar endTime) { this.endTime = endTime; }
+    public void setEndTime(Calendar endTime)
+    {
+        this.endTime = endTime;
+    }
     
     private JobRecurrenceFrequency frequency;
     
     /**
     * The frequency of recurrence.
     */
-    public JobRecurrenceFrequency getFrequency() { return this.frequency; }
+    public JobRecurrenceFrequency getFrequency()
+    {
+        return this.frequency;
+    }
     
     /**
     * The frequency of recurrence.
     */
-    public void setFrequency(JobRecurrenceFrequency frequency) { this.frequency = frequency; }
+    public void setFrequency(JobRecurrenceFrequency frequency)
+    {
+        this.frequency = frequency;
+    }
     
     private Integer interval;
     
     /**
     * Interval of the recurrence at the given frequency.
     */
-    public Integer getInterval() { return this.interval; }
+    public Integer getInterval()
+    {
+        return this.interval;
+    }
     
     /**
     * Interval of the recurrence at the given frequency.
     */
-    public void setInterval(Integer interval) { this.interval = interval; }
+    public void setInterval(Integer interval)
+    {
+        this.interval = interval;
+    }
     
     private JobRecurrenceSchedule schedule;
     
     /**
     * Recurrence schedule for the job.
     */
-    public JobRecurrenceSchedule getSchedule() { return this.schedule; }
+    public JobRecurrenceSchedule getSchedule()
+    {
+        return this.schedule;
+    }
     
     /**
     * Recurrence schedule for the job.
     */
-    public void setSchedule(JobRecurrenceSchedule schedule) { this.schedule = schedule; }
-    
-    /**
-    * Initializes a new instance of the JobRecurrence class.
-    *
-    */
-    public JobRecurrence()
+    public void setSchedule(JobRecurrenceSchedule schedule)
     {
+        this.schedule = schedule;
     }
 }

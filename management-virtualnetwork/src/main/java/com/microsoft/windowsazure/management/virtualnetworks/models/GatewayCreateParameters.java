@@ -32,19 +32,19 @@ public class GatewayCreateParameters
     
     /**
     * The routing type for this virtual network gateway.
+    * @return The GatewayType value.
     */
-    public GatewayType getGatewayType() { return this.gatewayType; }
+    public GatewayType getGatewayType()
+    {
+        return this.gatewayType;
+    }
     
     /**
     * The routing type for this virtual network gateway.
+    * @param gatewayTypeValue The GatewayType value.
     */
-    public void setGatewayType(GatewayType gatewayType) { this.gatewayType = gatewayType; }
-    
-    /**
-    * Initializes a new instance of the GatewayCreateParameters class.
-    *
-    */
-    public GatewayCreateParameters()
+    public void setGatewayType(final GatewayType gatewayTypeValue)
     {
+        this.gatewayType = gatewayTypeValue;
     }
 }

@@ -37,51 +37,83 @@ public class ServiceBusNamespace
     * ACS endpoint you can use to obtain access tokens.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
     * more information)
+    * @return The AcsManagementEndpoint value.
     */
-    public URI getAcsManagementEndpoint() { return this.acsManagementEndpoint; }
+    public URI getAcsManagementEndpoint()
+    {
+        return this.acsManagementEndpoint;
+    }
     
     /**
     * ACS endpoint you can use to obtain access tokens.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
     * more information)
+    * @param acsManagementEndpointValue The AcsManagementEndpoint value.
     */
-    public void setAcsManagementEndpoint(URI acsManagementEndpoint) { this.acsManagementEndpoint = acsManagementEndpoint; }
+    public void setAcsManagementEndpoint(final URI acsManagementEndpointValue)
+    {
+        this.acsManagementEndpoint = acsManagementEndpointValue;
+    }
     
     private Calendar createdAt;
     
     /**
     * The time the namespace was created.
+    * @return The CreatedAt value.
     */
-    public Calendar getCreatedAt() { return this.createdAt; }
+    public Calendar getCreatedAt()
+    {
+        return this.createdAt;
+    }
     
     /**
     * The time the namespace was created.
+    * @param createdAtValue The CreatedAt value.
     */
-    public void setCreatedAt(Calendar createdAt) { this.createdAt = createdAt; }
+    public void setCreatedAt(final Calendar createdAtValue)
+    {
+        this.createdAt = createdAtValue;
+    }
     
     private boolean enabled;
     
     /**
     * Whether or not the namespace is currently enabled.
+    * @return The Enabled value.
     */
-    public boolean getEnabled() { return this.enabled; }
+    public boolean isEnabled()
+    {
+        return this.enabled;
+    }
     
     /**
     * Whether or not the namespace is currently enabled.
+    * @param enabledValue The Enabled value.
     */
-    public void setEnabled(boolean enabled) { this.enabled = enabled; }
+    public void setEnabled(final boolean enabledValue)
+    {
+        this.enabled = enabledValue;
+    }
     
     private String name;
     
     /**
     * The name of the namespace.
+    * @return The Name value.
     */
-    public String getName() { return this.name; }
+    public String getName()
+    {
+        return this.name;
+    }
     
     /**
     * The name of the namespace.
+    * @param nameValue The Name value.
     */
-    public void setName(String name) { this.name = name; }
+    public void setName(final String nameValue)
+    {
+        this.name = nameValue;
+    }
     
     private String region;
     
@@ -91,8 +123,12 @@ public class ServiceBusNamespace
     * EuropeEast USSoutheast AsiaNorth Central USWest USSouth Central US  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
     * more information)
+    * @return The Region value.
     */
-    public String getRegion() { return this.region; }
+    public String getRegion()
+    {
+        return this.region;
+    }
     
     /**
     * Specifies the targeted region in which the namespace should be created.
@@ -100,8 +136,12 @@ public class ServiceBusNamespace
     * EuropeEast USSoutheast AsiaNorth Central USWest USSouth Central US  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
     * more information)
+    * @param regionValue The Region value.
     */
-    public void setRegion(String region) { this.region = region; }
+    public void setRegion(final String regionValue)
+    {
+        this.region = regionValue;
+    }
     
     private URI serviceBusEndpoint;
     
@@ -109,15 +149,23 @@ public class ServiceBusNamespace
     * Endpoint you can use to perform messaging or relay operations.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
     * more information)
+    * @return The ServiceBusEndpoint value.
     */
-    public URI getServiceBusEndpoint() { return this.serviceBusEndpoint; }
+    public URI getServiceBusEndpoint()
+    {
+        return this.serviceBusEndpoint;
+    }
     
     /**
     * Endpoint you can use to perform messaging or relay operations.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
     * more information)
+    * @param serviceBusEndpointValue The ServiceBusEndpoint value.
     */
-    public void setServiceBusEndpoint(URI serviceBusEndpoint) { this.serviceBusEndpoint = serviceBusEndpoint; }
+    public void setServiceBusEndpoint(final URI serviceBusEndpointValue)
+    {
+        this.serviceBusEndpoint = serviceBusEndpointValue;
+    }
     
     private String status;
     
@@ -126,34 +174,42 @@ public class ServiceBusNamespace
     * Created/Active2 = Creating3 = Suspended4 = Deleting  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
     * more information)
+    * @return The Status value.
     */
-    public String getStatus() { return this.status; }
+    public String getStatus()
+    {
+        return this.status;
+    }
     
     /**
     * Status of the namespace. It can be any of these values:1 =
     * Created/Active2 = Creating3 = Suspended4 = Deleting  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
     * more information)
+    * @param statusValue The Status value.
     */
-    public void setStatus(String status) { this.status = status; }
+    public void setStatus(final String statusValue)
+    {
+        this.status = statusValue;
+    }
     
     private String subscriptionId;
     
     /**
     * The Id of the Azure subscription associated with the namespace.
+    * @return The SubscriptionId value.
     */
-    public String getSubscriptionId() { return this.subscriptionId; }
+    public String getSubscriptionId()
+    {
+        return this.subscriptionId;
+    }
     
     /**
     * The Id of the Azure subscription associated with the namespace.
+    * @param subscriptionIdValue The SubscriptionId value.
     */
-    public void setSubscriptionId(String subscriptionId) { this.subscriptionId = subscriptionId; }
-    
-    /**
-    * Initializes a new instance of the ServiceBusNamespace class.
-    *
-    */
-    public ServiceBusNamespace()
+    public void setSubscriptionId(final String subscriptionIdValue)
     {
+        this.subscriptionId = subscriptionIdValue;
     }
 }

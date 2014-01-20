@@ -32,19 +32,19 @@ public class RuleCreateOrUpdateParameters
     
     /**
     * The rule to create or update.
+    * @return The Rule value.
     */
-    public Rule getRule() { return this.rule; }
+    public Rule getRule()
+    {
+        return this.rule;
+    }
     
     /**
     * The rule to create or update.
+    * @param ruleValue The Rule value.
     */
-    public void setRule(Rule rule) { this.rule = rule; }
-    
-    /**
-    * Initializes a new instance of the RuleCreateOrUpdateParameters class.
-    *
-    */
-    public RuleCreateOrUpdateParameters()
+    public void setRule(final Rule ruleValue)
     {
+        this.rule = ruleValue;
     }
 }

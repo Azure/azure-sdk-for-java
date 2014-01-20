@@ -34,13 +34,21 @@ public class VirtualMachineStartRolesParameters
     
     /**
     * The set of roles to shut down.
+    * @return The Roles value.
     */
-    public ArrayList<String> getRoles() { return this.roles; }
+    public ArrayList<String> getRoles()
+    {
+        return this.roles;
+    }
     
     /**
     * The set of roles to shut down.
+    * @param rolesValue The Roles value.
     */
-    public void setRoles(ArrayList<String> roles) { this.roles = roles; }
+    public void setRoles(final ArrayList<String> rolesValue)
+    {
+        this.roles = rolesValue;
+    }
     
     /**
     * Initializes a new instance of the VirtualMachineStartRolesParameters

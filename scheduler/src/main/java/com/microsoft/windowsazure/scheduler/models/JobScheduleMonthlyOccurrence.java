@@ -34,31 +34,35 @@ public class JobScheduleMonthlyOccurrence
     * Day of the occurrence. Must be one of monday, tuesday, wednesday,
     * thursday, friday, saturday, sunday.
     */
-    public JobScheduleDay getDay() { return this.day; }
+    public JobScheduleDay getDay()
+    {
+        return this.day;
+    }
     
     /**
     * Day of the occurrence. Must be one of monday, tuesday, wednesday,
     * thursday, friday, saturday, sunday.
     */
-    public void setDay(JobScheduleDay day) { this.day = day; }
+    public void setDay(JobScheduleDay day)
+    {
+        this.day = day;
+    }
     
     private Integer occurrence;
     
     /**
     * Occurrence of the day within the month. Must be between -31 and 31.
     */
-    public Integer getOccurrence() { return this.occurrence; }
+    public Integer getOccurrence()
+    {
+        return this.occurrence;
+    }
     
     /**
     * Occurrence of the day within the month. Must be between -31 and 31.
     */
-    public void setOccurrence(Integer occurrence) { this.occurrence = occurrence; }
-    
-    /**
-    * Initializes a new instance of the JobScheduleMonthlyOccurrence class.
-    *
-    */
-    public JobScheduleMonthlyOccurrence()
+    public void setOccurrence(Integer occurrence)
     {
+        this.occurrence = occurrence;
     }
 }

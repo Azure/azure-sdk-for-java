@@ -29,27 +29,75 @@ public class RecurrentSchedule
 {
     private ArrayList<String> days;
     
-    public ArrayList<String> getDays() { return this.days; }
+    /**
+    * @return The Days value.
+    */
+    public ArrayList<String> getDays()
+    {
+        return this.days;
+    }
     
-    public void setDays(ArrayList<String> days) { this.days = days; }
+    /**
+    * @param daysValue The Days value.
+    */
+    public void setDays(final ArrayList<String> daysValue)
+    {
+        this.days = daysValue;
+    }
     
     private ArrayList<Integer> hours;
     
-    public ArrayList<Integer> getHours() { return this.hours; }
+    /**
+    * @return The Hours value.
+    */
+    public ArrayList<Integer> getHours()
+    {
+        return this.hours;
+    }
     
-    public void setHours(ArrayList<Integer> hours) { this.hours = hours; }
+    /**
+    * @param hoursValue The Hours value.
+    */
+    public void setHours(final ArrayList<Integer> hoursValue)
+    {
+        this.hours = hoursValue;
+    }
     
     private ArrayList<Integer> minutes;
     
-    public ArrayList<Integer> getMinutes() { return this.minutes; }
+    /**
+    * @return The Minutes value.
+    */
+    public ArrayList<Integer> getMinutes()
+    {
+        return this.minutes;
+    }
     
-    public void setMinutes(ArrayList<Integer> minutes) { this.minutes = minutes; }
+    /**
+    * @param minutesValue The Minutes value.
+    */
+    public void setMinutes(final ArrayList<Integer> minutesValue)
+    {
+        this.minutes = minutesValue;
+    }
     
     private String timeZone;
     
-    public String getTimeZone() { return this.timeZone; }
+    /**
+    * @return The TimeZone value.
+    */
+    public String getTimeZone()
+    {
+        return this.timeZone;
+    }
     
-    public void setTimeZone(String timeZone) { this.timeZone = timeZone; }
+    /**
+    * @param timeZoneValue The TimeZone value.
+    */
+    public void setTimeZone(final String timeZoneValue)
+    {
+        this.timeZone = timeZoneValue;
+    }
     
     /**
     * Initializes a new instance of the RecurrentSchedule class.

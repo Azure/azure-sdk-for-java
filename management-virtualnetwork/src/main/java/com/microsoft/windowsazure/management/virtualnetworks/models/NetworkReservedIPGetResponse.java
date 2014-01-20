@@ -35,119 +35,183 @@ public class NetworkReservedIPGetResponse extends OperationResponse
     
     /**
     * The IP address of the reserved IP.
+    * @return The Address value.
     */
-    public InetAddress getAddress() { return this.address; }
+    public InetAddress getAddress()
+    {
+        return this.address;
+    }
     
     /**
     * The IP address of the reserved IP.
+    * @param addressValue The Address value.
     */
-    public void setAddress(InetAddress address) { this.address = address; }
+    public void setAddress(final InetAddress addressValue)
+    {
+        this.address = addressValue;
+    }
     
     private String affinityGroup;
     
     /**
     * An affinity group, which indirectly refers to the location where the
     * virtual network exists.
+    * @return The AffinityGroup value.
     */
-    public String getAffinityGroup() { return this.affinityGroup; }
+    public String getAffinityGroup()
+    {
+        return this.affinityGroup;
+    }
     
     /**
     * An affinity group, which indirectly refers to the location where the
     * virtual network exists.
+    * @param affinityGroupValue The AffinityGroup value.
     */
-    public void setAffinityGroup(String affinityGroup) { this.affinityGroup = affinityGroup; }
+    public void setAffinityGroup(final String affinityGroupValue)
+    {
+        this.affinityGroup = affinityGroupValue;
+    }
     
     private String deploymentName;
     
     /**
     * The name of the deployment the IP belongs to, if being used.
+    * @return The DeploymentName value.
     */
-    public String getDeploymentName() { return this.deploymentName; }
+    public String getDeploymentName()
+    {
+        return this.deploymentName;
+    }
     
     /**
     * The name of the deployment the IP belongs to, if being used.
+    * @param deploymentNameValue The DeploymentName value.
     */
-    public void setDeploymentName(String deploymentName) { this.deploymentName = deploymentName; }
+    public void setDeploymentName(final String deploymentNameValue)
+    {
+        this.deploymentName = deploymentNameValue;
+    }
     
     private String id;
     
     /**
     * A unique string identifier that represents the reserved IP.
+    * @return The Id value.
     */
-    public String getId() { return this.id; }
+    public String getId()
+    {
+        return this.id;
+    }
     
     /**
     * A unique string identifier that represents the reserved IP.
+    * @param idValue The Id value.
     */
-    public void setId(String id) { this.id = id; }
+    public void setId(final String idValue)
+    {
+        this.id = idValue;
+    }
     
     private boolean inUse;
     
     /**
     * The indicator of whether the reserved IP is being used.
+    * @return The InUse value.
     */
-    public boolean getInUse() { return this.inUse; }
+    public boolean isInUse()
+    {
+        return this.inUse;
+    }
     
     /**
     * The indicator of whether the reserved IP is being used.
+    * @param inUseValue The InUse value.
     */
-    public void setInUse(boolean inUse) { this.inUse = inUse; }
+    public void setInUse(final boolean inUseValue)
+    {
+        this.inUse = inUseValue;
+    }
     
     private String label;
     
     /**
     * The friendly identifier of the site.
+    * @return The Label value.
     */
-    public String getLabel() { return this.label; }
+    public String getLabel()
+    {
+        return this.label;
+    }
     
     /**
     * The friendly identifier of the site.
+    * @param labelValue The Label value.
     */
-    public void setLabel(String label) { this.label = label; }
+    public void setLabel(final String labelValue)
+    {
+        this.label = labelValue;
+    }
     
     private String name;
     
     /**
     * Name of the reserved IP.
+    * @return The Name value.
     */
-    public String getName() { return this.name; }
+    public String getName()
+    {
+        return this.name;
+    }
     
     /**
     * Name of the reserved IP.
+    * @param nameValue The Name value.
     */
-    public void setName(String name) { this.name = name; }
+    public void setName(final String nameValue)
+    {
+        this.name = nameValue;
+    }
     
     private String serviceName;
     
     /**
     * The name of the service the IP belongs to, if being used.
+    * @return The ServiceName value.
     */
-    public String getServiceName() { return this.serviceName; }
+    public String getServiceName()
+    {
+        return this.serviceName;
+    }
     
     /**
     * The name of the service the IP belongs to, if being used.
+    * @param serviceNameValue The ServiceName value.
     */
-    public void setServiceName(String serviceName) { this.serviceName = serviceName; }
+    public void setServiceName(final String serviceNameValue)
+    {
+        this.serviceName = serviceNameValue;
+    }
     
     private String state;
     
     /**
     * Current status of the reserved IP. (Created, Creating, Updating,
     * Deleting, Unavailable)
+    * @return The State value.
     */
-    public String getState() { return this.state; }
+    public String getState()
+    {
+        return this.state;
+    }
     
     /**
     * Current status of the reserved IP. (Created, Creating, Updating,
     * Deleting, Unavailable)
+    * @param stateValue The State value.
     */
-    public void setState(String state) { this.state = state; }
-    
-    /**
-    * Initializes a new instance of the NetworkReservedIPGetResponse class.
-    *
-    */
-    public NetworkReservedIPGetResponse()
+    public void setState(final String stateValue)
     {
+        this.state = stateValue;
     }
 }

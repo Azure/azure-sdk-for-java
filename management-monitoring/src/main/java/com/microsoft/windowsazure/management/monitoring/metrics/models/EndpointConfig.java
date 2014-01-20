@@ -34,55 +34,79 @@ public class EndpointConfig
     
     /**
     * The config id for endpoint monitoring config.
+    * @return The ConfigId value.
     */
-    public String getConfigId() { return this.configId; }
+    public String getConfigId()
+    {
+        return this.configId;
+    }
     
     /**
     * The config id for endpoint monitoring config.
+    * @param configIdValue The ConfigId value.
     */
-    public void setConfigId(String configId) { this.configId = configId; }
+    public void setConfigId(final String configIdValue)
+    {
+        this.configId = configIdValue;
+    }
     
     private String location;
     
     /**
     * The location from which the endpoint is monitored.
+    * @return The Location value.
     */
-    public String getLocation() { return this.location; }
+    public String getLocation()
+    {
+        return this.location;
+    }
     
     /**
     * The location from which the endpoint is monitored.
+    * @param locationValue The Location value.
     */
-    public void setLocation(String location) { this.location = location; }
+    public void setLocation(final String locationValue)
+    {
+        this.location = locationValue;
+    }
     
     private String name;
     
     /**
     * The friendly name for the url for which endpoint monitoring is configured.
+    * @return The Name value.
     */
-    public String getName() { return this.name; }
+    public String getName()
+    {
+        return this.name;
+    }
     
     /**
     * The friendly name for the url for which endpoint monitoring is configured.
+    * @param nameValue The Name value.
     */
-    public void setName(String name) { this.name = name; }
+    public void setName(final String nameValue)
+    {
+        this.name = nameValue;
+    }
     
     private URI url;
     
     /**
     * The Url to be monitored.
+    * @return The Url value.
     */
-    public URI getUrl() { return this.url; }
+    public URI getUrl()
+    {
+        return this.url;
+    }
     
     /**
     * The Url to be monitored.
+    * @param urlValue The Url value.
     */
-    public void setUrl(URI url) { this.url = url; }
-    
-    /**
-    * Initializes a new instance of the EndpointConfig class.
-    *
-    */
-    public EndpointConfig()
+    public void setUrl(final URI urlValue)
     {
+        this.url = urlValue;
     }
 }

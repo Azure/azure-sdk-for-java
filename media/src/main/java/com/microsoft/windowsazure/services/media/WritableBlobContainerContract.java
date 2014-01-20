@@ -28,7 +28,9 @@ import com.microsoft.windowsazure.exception.ServiceException;
 /**
  * The Interface WritableBlobContainerContract.
  */
-public interface WritableBlobContainerContract extends JerseyFilterableService<WritableBlobContainerContract> {
+public interface WritableBlobContainerContract extends
+        JerseyFilterableService<WritableBlobContainerContract>
+{
 
     /**
      * Creates the block blob.
@@ -41,7 +43,8 @@ public interface WritableBlobContainerContract extends JerseyFilterableService<W
      * @throws ServiceException
      *             the service exception
      */
-    CreateBlobResult createBlockBlob(String blob, InputStream contentStream) throws ServiceException;
+    CreateBlobResult createBlockBlob(String blob, InputStream contentStream)
+            throws ServiceException;
 
     /**
      * Creates the block blob.
@@ -56,8 +59,8 @@ public interface WritableBlobContainerContract extends JerseyFilterableService<W
      * @throws ServiceException
      *             the service exception
      */
-    CreateBlobResult createBlockBlob(String blob, InputStream contentStream, CreateBlobOptions options)
-            throws ServiceException;
+    CreateBlobResult createBlockBlob(String blob, InputStream contentStream,
+            CreateBlobOptions options) throws ServiceException;
 
     /**
      * Creates the blob block.
@@ -71,7 +74,8 @@ public interface WritableBlobContainerContract extends JerseyFilterableService<W
      * @throws ServiceException
      *             the service exception
      */
-    void createBlobBlock(String blob, String blockId, InputStream contentStream) throws ServiceException;
+    void createBlobBlock(String blob, String blockId, InputStream contentStream)
+            throws ServiceException;
 
     /**
      * Creates the blob block.
@@ -87,7 +91,8 @@ public interface WritableBlobContainerContract extends JerseyFilterableService<W
      * @throws ServiceException
      *             the service exception
      */
-    void createBlobBlock(String blob, String blockId, InputStream contentStream, CreateBlobBlockOptions options)
+    void createBlobBlock(String blob, String blockId,
+            InputStream contentStream, CreateBlobBlockOptions options)
             throws ServiceException;
 
     /**
@@ -100,7 +105,8 @@ public interface WritableBlobContainerContract extends JerseyFilterableService<W
      * @throws ServiceException
      *             the service exception
      */
-    void commitBlobBlocks(String blob, BlockList blockList) throws ServiceException;
+    void commitBlobBlocks(String blob, BlockList blockList)
+            throws ServiceException;
 
     /**
      * Commit blob blocks.
@@ -114,5 +120,6 @@ public interface WritableBlobContainerContract extends JerseyFilterableService<W
      * @throws ServiceException
      *             the service exception
      */
-    void commitBlobBlocks(String blob, BlockList blockList, CommitBlobBlocksOptions options) throws ServiceException;
+    void commitBlobBlocks(String blob, BlockList blockList,
+            CommitBlobBlocksOptions options) throws ServiceException;
 }

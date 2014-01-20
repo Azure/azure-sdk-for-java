@@ -33,14 +33,22 @@ public class SshSettingKeyPair
     /**
     * Required. Specifies the SHA1 fingerprint of an X509 certificate
     * associated with the hosted service that includes the SSH keypair.
+    * @return The Fingerprint value.
     */
-    public String getFingerprint() { return this.fingerprint; }
+    public String getFingerprint()
+    {
+        return this.fingerprint;
+    }
     
     /**
     * Required. Specifies the SHA1 fingerprint of an X509 certificate
     * associated with the hosted service that includes the SSH keypair.
+    * @param fingerprintValue The Fingerprint value.
     */
-    public void setFingerprint(String fingerprint) { this.fingerprint = fingerprint; }
+    public void setFingerprint(final String fingerprintValue)
+    {
+        this.fingerprint = fingerprintValue;
+    }
     
     private String path;
     
@@ -50,8 +58,12 @@ public class SshSettingKeyPair
     * keys are written to it. The SSH public key is stored in the same
     * directory and has the same name as the private key file with .pub
     * suffix.  Example: /home/user/.ssh/id_rsa
+    * @return The Path value.
     */
-    public String getPath() { return this.path; }
+    public String getPath()
+    {
+        return this.path;
+    }
     
     /**
     * Required. Specifies the full path of a file, on the virtual machine,
@@ -59,14 +71,10 @@ public class SshSettingKeyPair
     * keys are written to it. The SSH public key is stored in the same
     * directory and has the same name as the private key file with .pub
     * suffix.  Example: /home/user/.ssh/id_rsa
+    * @param pathValue The Path value.
     */
-    public void setPath(String path) { this.path = path; }
-    
-    /**
-    * Initializes a new instance of the SshSettingKeyPair class.
-    *
-    */
-    public SshSettingKeyPair()
+    public void setPath(final String pathValue)
     {
+        this.path = pathValue;
     }
 }

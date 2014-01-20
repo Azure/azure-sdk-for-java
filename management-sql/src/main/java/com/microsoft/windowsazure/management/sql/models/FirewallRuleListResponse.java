@@ -37,13 +37,21 @@ public class FirewallRuleListResponse extends OperationResponse implements Itera
     
     /**
     * Gets or sets the firewall rules for this SQL Database Server.
+    * @return The FirewallRules value.
     */
-    public ArrayList<FirewallRuleListResponse.FirewallRule> getFirewallRules() { return this.firewallRules; }
+    public ArrayList<FirewallRuleListResponse.FirewallRule> getFirewallRules()
+    {
+        return this.firewallRules;
+    }
     
     /**
     * Gets or sets the firewall rules for this SQL Database Server.
+    * @param firewallRulesValue The FirewallRules value.
     */
-    public void setFirewallRules(ArrayList<FirewallRuleListResponse.FirewallRule> firewallRules) { this.firewallRules = firewallRules; }
+    public void setFirewallRules(final ArrayList<FirewallRuleListResponse.FirewallRule> firewallRulesValue)
+    {
+        this.firewallRules = firewallRulesValue;
+    }
     
     /**
     * Initializes a new instance of the FirewallRuleListResponse class.
@@ -51,6 +59,7 @@ public class FirewallRuleListResponse extends OperationResponse implements Itera
     */
     public FirewallRuleListResponse()
     {
+        super();
         this.firewallRules = new ArrayList<FirewallRuleListResponse.FirewallRule>();
     }
     
@@ -72,56 +81,80 @@ public class FirewallRuleListResponse extends OperationResponse implements Itera
         
         /**
         * Gets or sets the ending IP address applied to this rule.
+        * @return The EndIPAddress value.
         */
-        public InetAddress getEndIPAddress() { return this.endIPAddress; }
+        public InetAddress getEndIPAddress()
+        {
+            return this.endIPAddress;
+        }
         
         /**
         * Gets or sets the ending IP address applied to this rule.
+        * @param endIPAddressValue The EndIPAddress value.
         */
-        public void setEndIPAddress(InetAddress endIPAddress) { this.endIPAddress = endIPAddress; }
+        public void setEndIPAddress(final InetAddress endIPAddressValue)
+        {
+            this.endIPAddress = endIPAddressValue;
+        }
         
         private String name;
         
         /**
         * Gets or sets the name of the Firewall Rule.
+        * @return The Name value.
         */
-        public String getName() { return this.name; }
+        public String getName()
+        {
+            return this.name;
+        }
         
         /**
         * Gets or sets the name of the Firewall Rule.
+        * @param nameValue The Name value.
         */
-        public void setName(String name) { this.name = name; }
+        public void setName(final String nameValue)
+        {
+            this.name = nameValue;
+        }
         
         private InetAddress startIPAddress;
         
         /**
         * Gets or sets the beginning IP address applied to this rule.
+        * @return The StartIPAddress value.
         */
-        public InetAddress getStartIPAddress() { return this.startIPAddress; }
+        public InetAddress getStartIPAddress()
+        {
+            return this.startIPAddress;
+        }
         
         /**
         * Gets or sets the beginning IP address applied to this rule.
+        * @param startIPAddressValue The StartIPAddress value.
         */
-        public void setStartIPAddress(InetAddress startIPAddress) { this.startIPAddress = startIPAddress; }
+        public void setStartIPAddress(final InetAddress startIPAddressValue)
+        {
+            this.startIPAddress = startIPAddressValue;
+        }
         
         private String type;
         
         /**
         * Gets or sets the type of resource.
+        * @return The Type value.
         */
-        public String getType() { return this.type; }
+        public String getType()
+        {
+            return this.type;
+        }
         
         /**
         * Gets or sets the type of resource.
+        * @param typeValue The Type value.
         */
-        public void setType(String type) { this.type = type; }
-        
-        /**
-        * Initializes a new instance of the FirewallRule class.
-        *
-        */
-        public FirewallRule()
+        public void setType(final String typeValue)
         {
+            this.type = typeValue;
         }
     }
 }

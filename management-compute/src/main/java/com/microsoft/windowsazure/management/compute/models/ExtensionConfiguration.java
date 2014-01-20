@@ -35,28 +35,44 @@ public class ExtensionConfiguration
     /**
     * Optional. Specifies a list of extensions that are applied to all roles in
     * a deployment.
+    * @return The AllRoles value.
     */
-    public ArrayList<ExtensionConfiguration.Extension> getAllRoles() { return this.allRoles; }
+    public ArrayList<ExtensionConfiguration.Extension> getAllRoles()
+    {
+        return this.allRoles;
+    }
     
     /**
     * Optional. Specifies a list of extensions that are applied to all roles in
     * a deployment.
+    * @param allRolesValue The AllRoles value.
     */
-    public void setAllRoles(ArrayList<ExtensionConfiguration.Extension> allRoles) { this.allRoles = allRoles; }
+    public void setAllRoles(final ArrayList<ExtensionConfiguration.Extension> allRolesValue)
+    {
+        this.allRoles = allRolesValue;
+    }
     
     private ArrayList<ExtensionConfiguration.NamedRole> namedRoles;
     
     /**
     * Optional. Specifies a list of extensions that are applied to specific
     * roles in a deployment.
+    * @return The NamedRoles value.
     */
-    public ArrayList<ExtensionConfiguration.NamedRole> getNamedRoles() { return this.namedRoles; }
+    public ArrayList<ExtensionConfiguration.NamedRole> getNamedRoles()
+    {
+        return this.namedRoles;
+    }
     
     /**
     * Optional. Specifies a list of extensions that are applied to specific
     * roles in a deployment.
+    * @param namedRolesValue The NamedRoles value.
     */
-    public void setNamedRoles(ArrayList<ExtensionConfiguration.NamedRole> namedRoles) { this.namedRoles = namedRoles; }
+    public void setNamedRoles(final ArrayList<ExtensionConfiguration.NamedRole> namedRolesValue)
+    {
+        this.namedRoles = namedRolesValue;
+    }
     
     /**
     * Initializes a new instance of the ExtensionConfiguration class.
@@ -81,23 +97,23 @@ public class ExtensionConfiguration
         * when the extension is added to the cloud service. You can find the
         * Id of an extension that was added to a cloud service by using List
         * Extensions.
+        * @return The Id value.
         */
-        public String getId() { return this.id; }
+        public String getId()
+        {
+            return this.id;
+        }
         
         /**
         * Required. The identifier of the extension. The identifier is created
         * when the extension is added to the cloud service. You can find the
         * Id of an extension that was added to a cloud service by using List
         * Extensions.
+        * @param idValue The Id value.
         */
-        public void setId(String id) { this.id = id; }
-        
-        /**
-        * Initializes a new instance of the Extension class.
-        *
-        */
-        public Extension()
+        public void setId(final String idValue)
         {
+            this.id = idValue;
         }
     }
     
@@ -112,26 +128,42 @@ public class ExtensionConfiguration
         /**
         * Required. Represents an extension that is to be deployed to a role in
         * a cloud service.
+        * @return The Extensions value.
         */
-        public ArrayList<ExtensionConfiguration.Extension> getExtensions() { return this.extensions; }
+        public ArrayList<ExtensionConfiguration.Extension> getExtensions()
+        {
+            return this.extensions;
+        }
         
         /**
         * Required. Represents an extension that is to be deployed to a role in
         * a cloud service.
+        * @param extensionsValue The Extensions value.
         */
-        public void setExtensions(ArrayList<ExtensionConfiguration.Extension> extensions) { this.extensions = extensions; }
+        public void setExtensions(final ArrayList<ExtensionConfiguration.Extension> extensionsValue)
+        {
+            this.extensions = extensionsValue;
+        }
         
         private String roleName;
         
         /**
         * Required. Specifies the name of the role.
+        * @return The RoleName value.
         */
-        public String getRoleName() { return this.roleName; }
+        public String getRoleName()
+        {
+            return this.roleName;
+        }
         
         /**
         * Required. Specifies the name of the role.
+        * @param roleNameValue The RoleName value.
         */
-        public void setRoleName(String roleName) { this.roleName = roleName; }
+        public void setRoleName(final String roleNameValue)
+        {
+            this.roleName = roleNameValue;
+        }
         
         /**
         * Initializes a new instance of the NamedRole class.

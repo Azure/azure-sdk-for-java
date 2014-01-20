@@ -35,18 +35,16 @@ public class JobGetResponse extends OperationResponse
     /**
     * The job to get.
     */
-    public Job getJob() { return this.job; }
+    public Job getJob()
+    {
+        return this.job;
+    }
     
     /**
     * The job to get.
     */
-    public void setJob(Job job) { this.job = job; }
-    
-    /**
-    * Initializes a new instance of the JobGetResponse class.
-    *
-    */
-    public JobGetResponse()
+    public void setJob(Job job)
     {
+        this.job = job;
     }
 }

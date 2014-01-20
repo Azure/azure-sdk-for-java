@@ -19,7 +19,6 @@
 // Generated on: 2011.11.14 at 04:34:45 PM PST 
 //
 
-
 package com.microsoft.windowsazure.serviceruntime;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -27,11 +26,13 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for DeploymentInfo complex type.
+ * <p>
+ * Java class for DeploymentInfo complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="DeploymentInfo">
@@ -48,7 +49,8 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "DeploymentInfo")
-class DeploymentInfo {
+class DeploymentInfo
+{
 
     @XmlAttribute(required = true)
     protected String id;
@@ -58,12 +60,11 @@ class DeploymentInfo {
     /**
      * Gets the value of the id property.
      * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     * @return possible object is {@link String }
+     * 
      */
-    public String getId() {
+    public String getId()
+    {
         return id;
     }
 
@@ -71,11 +72,11 @@ class DeploymentInfo {
      * Sets the value of the id property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *            allowed object is {@link String }
+     * 
      */
-    public void setId(String value) {
+    public void setId(String value)
+    {
         this.id = value;
     }
 
@@ -83,7 +84,8 @@ class DeploymentInfo {
      * Gets the value of the emulated property.
      * 
      */
-    public boolean isEmulated() {
+    public boolean isEmulated()
+    {
         return emulated;
     }
 
@@ -91,7 +93,8 @@ class DeploymentInfo {
      * Sets the value of the emulated property.
      * 
      */
-    public void setEmulated(boolean value) {
+    public void setEmulated(boolean value)
+    {
         this.emulated = value;
     }
 

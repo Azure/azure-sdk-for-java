@@ -35,26 +35,42 @@ public class VirtualMachineCreateDeploymentParameters
     /**
     * Required. Specifies the environment in which to deploy the virtual
     * machine.  Possible values are: Staging, Production.
+    * @return The DeploymentSlot value.
     */
-    public DeploymentSlot getDeploymentSlot() { return this.deploymentSlot; }
+    public DeploymentSlot getDeploymentSlot()
+    {
+        return this.deploymentSlot;
+    }
     
     /**
     * Required. Specifies the environment in which to deploy the virtual
     * machine.  Possible values are: Staging, Production.
+    * @param deploymentSlotValue The DeploymentSlot value.
     */
-    public void setDeploymentSlot(DeploymentSlot deploymentSlot) { this.deploymentSlot = deploymentSlot; }
+    public void setDeploymentSlot(final DeploymentSlot deploymentSlotValue)
+    {
+        this.deploymentSlot = deploymentSlotValue;
+    }
     
     private DnsSettings dnsSettings;
     
     /**
     * Optional. Contains a list of DNS servers to associate with themachine.
+    * @return The DnsSettings value.
     */
-    public DnsSettings getDnsSettings() { return this.dnsSettings; }
+    public DnsSettings getDnsSettings()
+    {
+        return this.dnsSettings;
+    }
     
     /**
     * Optional. Contains a list of DNS servers to associate with themachine.
+    * @param dnsSettingsValue The DnsSettings value.
     */
-    public void setDnsSettings(DnsSettings dnsSettings) { this.dnsSettings = dnsSettings; }
+    public void setDnsSettings(final DnsSettings dnsSettingsValue)
+    {
+        this.dnsSettings = dnsSettingsValue;
+    }
     
     private String label;
     
@@ -63,30 +79,46 @@ public class VirtualMachineCreateDeploymentParameters
     * characters in length.  It is recommended that the label be unique within
     * the subscription. The name can be used identify the hosted service for
     * tracking purposes.
+    * @return The Label value.
     */
-    public String getLabel() { return this.label; }
+    public String getLabel()
+    {
+        return this.label;
+    }
     
     /**
     * Required. A name for the hosted service. The name can be up to 100
     * characters in length.  It is recommended that the label be unique within
     * the subscription. The name can be used identify the hosted service for
     * tracking purposes.
+    * @param labelValue The Label value.
     */
-    public void setLabel(String label) { this.label = label; }
+    public void setLabel(final String labelValue)
+    {
+        this.label = labelValue;
+    }
     
     private String name;
     
     /**
     * Required. A name for the deployment. The deployment name must be unique
     * among other deployments for the hosted service.
+    * @return The Name value.
     */
-    public String getName() { return this.name; }
+    public String getName()
+    {
+        return this.name;
+    }
     
     /**
     * Required. A name for the deployment. The deployment name must be unique
     * among other deployments for the hosted service.
+    * @param nameValue The Name value.
     */
-    public void setName(String name) { this.name = name; }
+    public void setName(final String nameValue)
+    {
+        this.name = nameValue;
+    }
     
     private String reservedIPName;
     
@@ -94,29 +126,45 @@ public class VirtualMachineCreateDeploymentParameters
     * Optional and Preview Only. Specifies the name of an existing reserved IP
     * to which the deployment will belong. Reserved IPs are created by calling
     * the Create Reserved IP operation.
+    * @return The ReservedIPName value.
     */
-    public String getReservedIPName() { return this.reservedIPName; }
+    public String getReservedIPName()
+    {
+        return this.reservedIPName;
+    }
     
     /**
     * Optional and Preview Only. Specifies the name of an existing reserved IP
     * to which the deployment will belong. Reserved IPs are created by calling
     * the Create Reserved IP operation.
+    * @param reservedIPNameValue The ReservedIPName value.
     */
-    public void setReservedIPName(String reservedIPName) { this.reservedIPName = reservedIPName; }
+    public void setReservedIPName(final String reservedIPNameValue)
+    {
+        this.reservedIPName = reservedIPNameValue;
+    }
     
     private ArrayList<Role> roles;
     
     /**
     * Required. Contains the provisioning details for the new virtual machine
     * deployment.
+    * @return The Roles value.
     */
-    public ArrayList<Role> getRoles() { return this.roles; }
+    public ArrayList<Role> getRoles()
+    {
+        return this.roles;
+    }
     
     /**
     * Required. Contains the provisioning details for the new virtual machine
     * deployment.
+    * @param rolesValue The Roles value.
     */
-    public void setRoles(ArrayList<Role> roles) { this.roles = roles; }
+    public void setRoles(final ArrayList<Role> rolesValue)
+    {
+        this.roles = rolesValue;
+    }
     
     private String virtualNetworkName;
     
@@ -124,15 +172,23 @@ public class VirtualMachineCreateDeploymentParameters
     * Optional. Specifies the name of an existing virtual network to which the
     * deployment will belong.  Virtual networks are created by calling the Set
     * Network Configuration operation.
+    * @return The VirtualNetworkName value.
     */
-    public String getVirtualNetworkName() { return this.virtualNetworkName; }
+    public String getVirtualNetworkName()
+    {
+        return this.virtualNetworkName;
+    }
     
     /**
     * Optional. Specifies the name of an existing virtual network to which the
     * deployment will belong.  Virtual networks are created by calling the Set
     * Network Configuration operation.
+    * @param virtualNetworkNameValue The VirtualNetworkName value.
     */
-    public void setVirtualNetworkName(String virtualNetworkName) { this.virtualNetworkName = virtualNetworkName; }
+    public void setVirtualNetworkName(final String virtualNetworkNameValue)
+    {
+        this.virtualNetworkName = virtualNetworkNameValue;
+    }
     
     /**
     * Initializes a new instance of the

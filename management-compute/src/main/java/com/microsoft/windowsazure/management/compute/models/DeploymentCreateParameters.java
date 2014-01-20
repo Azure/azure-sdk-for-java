@@ -35,13 +35,21 @@ public class DeploymentCreateParameters
     
     /**
     * Required. The service configuration file for the deployment.
+    * @return The Configuration value.
     */
-    public String getConfiguration() { return this.configuration; }
+    public String getConfiguration()
+    {
+        return this.configuration;
+    }
     
     /**
     * Required. The service configuration file for the deployment.
+    * @param configurationValue The Configuration value.
     */
-    public void setConfiguration(String configuration) { this.configuration = configuration; }
+    public void setConfiguration(final String configurationValue)
+    {
+        this.configuration = configurationValue;
+    }
     
     private HashMap<String, String> extendedProperties;
     
@@ -55,8 +63,12 @@ public class DeploymentCreateParameters
     * non-letter character, or entering a name that is identical to that of
     * another extended property owned by the same hosted service, will result
     * in a status code 400 (Bad Request) error.
+    * @return The ExtendedProperties value.
     */
-    public HashMap<String, String> getExtendedProperties() { return this.extendedProperties; }
+    public HashMap<String, String> getExtendedProperties()
+    {
+        return this.extendedProperties;
+    }
     
     /**
     * Optional. Represents the name of an extended deployment property. Each
@@ -68,8 +80,12 @@ public class DeploymentCreateParameters
     * non-letter character, or entering a name that is identical to that of
     * another extended property owned by the same hosted service, will result
     * in a status code 400 (Bad Request) error.
+    * @param extendedPropertiesValue The ExtendedProperties value.
     */
-    public void setExtendedProperties(HashMap<String, String> extendedProperties) { this.extendedProperties = extendedProperties; }
+    public void setExtendedProperties(final HashMap<String, String> extendedPropertiesValue)
+    {
+        this.extendedProperties = extendedPropertiesValue;
+    }
     
     private ExtensionConfiguration extensionConfiguration;
     
@@ -80,8 +96,12 @@ public class DeploymentCreateParameters
     * can run as extensions to the cloud service. You must add an extension to
     * the cloud service by using Add Extension before it can be added to the
     * deployment.
+    * @return The ExtensionConfiguration value.
     */
-    public ExtensionConfiguration getExtensionConfiguration() { return this.extensionConfiguration; }
+    public ExtensionConfiguration getExtensionConfiguration()
+    {
+        return this.extensionConfiguration;
+    }
     
     /**
     * Optional. Represents an extension that is added to the cloud service. In
@@ -90,8 +110,12 @@ public class DeploymentCreateParameters
     * can run as extensions to the cloud service. You must add an extension to
     * the cloud service by using Add Extension before it can be added to the
     * deployment.
+    * @param extensionConfigurationValue The ExtensionConfiguration value.
     */
-    public void setExtensionConfiguration(ExtensionConfiguration extensionConfiguration) { this.extensionConfiguration = extensionConfiguration; }
+    public void setExtensionConfiguration(final ExtensionConfiguration extensionConfigurationValue)
+    {
+        this.extensionConfiguration = extensionConfigurationValue;
+    }
     
     private String label;
     
@@ -100,30 +124,46 @@ public class DeploymentCreateParameters
     * characters in length. It is recommended that the label be unique within
     * the subscription. The name can be used identify the hosted service for
     * your tracking purposes.
+    * @return The Label value.
     */
-    public String getLabel() { return this.label; }
+    public String getLabel()
+    {
+        return this.label;
+    }
     
     /**
     * Required. A name for the hosted service. The name can be up to 100
     * characters in length. It is recommended that the label be unique within
     * the subscription. The name can be used identify the hosted service for
     * your tracking purposes.
+    * @param labelValue The Label value.
     */
-    public void setLabel(String label) { this.label = label; }
+    public void setLabel(final String labelValue)
+    {
+        this.label = labelValue;
+    }
     
     private String name;
     
     /**
     * Required. The name for the deployment. The deployment name must be unique
     * among other deployments for the cloud service.
+    * @return The Name value.
     */
-    public String getName() { return this.name; }
+    public String getName()
+    {
+        return this.name;
+    }
     
     /**
     * Required. The name for the deployment. The deployment name must be unique
     * among other deployments for the cloud service.
+    * @param nameValue The Name value.
     */
-    public void setName(String name) { this.name = name; }
+    public void setName(final String nameValue)
+    {
+        this.name = nameValue;
+    }
     
     private URI packageUri;
     
@@ -135,8 +175,12 @@ public class DeploymentCreateParameters
     * Signatures, see Delegating Access with a Shared Access Signature (REST
     * API) at
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee395415.aspx.
+    * @return The PackageUri value.
     */
-    public URI getPackageUri() { return this.packageUri; }
+    public URI getPackageUri()
+    {
+        return this.packageUri;
+    }
     
     /**
     * Required. A URL that refers to the location of the service package in the
@@ -146,8 +190,12 @@ public class DeploymentCreateParameters
     * Signatures, see Delegating Access with a Shared Access Signature (REST
     * API) at
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee395415.aspx.
+    * @param packageUriValue The PackageUri value.
     */
-    public void setPackageUri(URI packageUri) { this.packageUri = packageUri; }
+    public void setPackageUri(final URI packageUriValue)
+    {
+        this.packageUri = packageUriValue;
+    }
     
     private Boolean startDeployment;
     
@@ -159,8 +207,12 @@ public class DeploymentCreateParameters
     * Deployment Status and set the status toRunning, at which time the
     * service will be started. A deployed service still incurs charges, even
     * if it is suspended.
+    * @return The StartDeployment value.
     */
-    public Boolean getStartDeployment() { return this.startDeployment; }
+    public Boolean isStartDeployment()
+    {
+        return this.startDeployment;
+    }
     
     /**
     * Optional. Indicates whether to start the deployment immediately after it
@@ -170,8 +222,12 @@ public class DeploymentCreateParameters
     * Deployment Status and set the status toRunning, at which time the
     * service will be started. A deployed service still incurs charges, even
     * if it is suspended.
+    * @param startDeploymentValue The StartDeployment value.
     */
-    public void setStartDeployment(Boolean startDeployment) { this.startDeployment = startDeployment; }
+    public void setStartDeployment(final Boolean startDeploymentValue)
+    {
+        this.startDeployment = startDeploymentValue;
+    }
     
     private Boolean treatWarningsAsError;
     
@@ -180,16 +236,24 @@ public class DeploymentCreateParameters
     * errors. The default value is false. If set to true, the Created
     * Deployment operation fails if there are validation warnings on the
     * service package.
+    * @return The TreatWarningsAsError value.
     */
-    public Boolean getTreatWarningsAsError() { return this.treatWarningsAsError; }
+    public Boolean isTreatWarningsAsError()
+    {
+        return this.treatWarningsAsError;
+    }
     
     /**
     * Optional. Indicates whether to treat package validation warnings as
     * errors. The default value is false. If set to true, the Created
     * Deployment operation fails if there are validation warnings on the
     * service package.
+    * @param treatWarningsAsErrorValue The TreatWarningsAsError value.
     */
-    public void setTreatWarningsAsError(Boolean treatWarningsAsError) { this.treatWarningsAsError = treatWarningsAsError; }
+    public void setTreatWarningsAsError(final Boolean treatWarningsAsErrorValue)
+    {
+        this.treatWarningsAsError = treatWarningsAsErrorValue;
+    }
     
     /**
     * Initializes a new instance of the DeploymentCreateParameters class.

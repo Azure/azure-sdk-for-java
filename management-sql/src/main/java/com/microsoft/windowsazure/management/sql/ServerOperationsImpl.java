@@ -35,7 +35,6 @@ import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
@@ -44,12 +43,12 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -81,8 +80,12 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
     /**
     * Gets a reference to the
     * microsoft.windowsazure.management.sql.SqlManagementClientImpl.
+    * @return The Client value.
     */
-    public SqlManagementClientImpl getClient() { return this.client; }
+    public SqlManagementClientImpl getClient()
+    {
+        return this.client;
+    }
     
     /**
     * Sets the administrative password of a SQL Database server for a
@@ -119,11 +122,21 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
     * administrative user.
     * @param parameters Parameters for the Manage Administrator Password
     * operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
     @Override
-    public OperationResponse changeAdministratorPassword(String serverName, ServerChangeAdministratorPasswordParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException
+    public OperationResponse changeAdministratorPassword(String serverName, ServerChangeAdministratorPasswordParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
     {
         // Validate
         if (serverName == null)
@@ -185,40 +198,50 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        OperationResponse result = null;
-        result = new OperationResponse();
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -247,10 +270,22 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
     * more information)
     *
     * @param parameters Parameters supplied to the Create Server operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return The response returned from the Create Server operation.
     */
     @Override
-    public ServerCreateResponse create(ServerCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException, ParseException
+    public ServerCreateResponse create(ServerCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, ParseException
     {
         // Validate
         if (parameters == null)
@@ -325,53 +360,63 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 201)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_CREATED)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            ServerCreateResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new ServerCreateResponse();
+            DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
+            Document responseDoc = documentBuilder2.parse(responseContent);
+            
+            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/sqlazure/2010/12/", "ServerName");
+            Element serverNameElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            if (serverNameElement != null)
+            {
+                result.setServerName(serverNameElement.getTextContent());
+            }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        ServerCreateResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new ServerCreateResponse();
-        DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
-        Document responseDoc = documentBuilder2.parse(responseContent);
-        
-        NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/sqlazure/2010/12/", "ServerName");
-        Element serverNameElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
-        if (serverNameElement != null)
+        finally
         {
-            result.setServerName(serverNameElement.getTextContent());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-        {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
-        }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -401,6 +446,10 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
     * more information)
     *
     * @param serverName The name of the server to be deleted.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -435,40 +484,50 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        OperationResponse result = null;
-        result = new OperationResponse();
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -495,6 +554,16 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
     * (see http://msdn.microsoft.com/en-us/library/windowsazure/gg715269.aspx
     * for more information)
     *
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return The response structure for the Server List operation.
     */
     @Override
@@ -523,99 +592,109 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
-        }
-        
-        // Create Result
-        ServerListResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new ServerListResponse();
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document responseDoc = documentBuilder.parse(responseContent);
-        
-        NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/sqlazure/2010/12/", "Servers");
-        Element serversSequenceElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
-        if (serversSequenceElement != null)
-        {
-            for (int i1 = 0; i1 < serversSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/sqlazure/2010/12/", "Server").getLength(); i1 = i1 + 1)
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
             {
-                org.w3c.dom.Element serversElement = ((org.w3c.dom.Element)serversSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/sqlazure/2010/12/", "Server").item(i1));
-                ServerListResponse.Server serverInstance = new ServerListResponse.Server();
-                result.getServers().add(serverInstance);
-                
-                NodeList elements2 = serversElement.getElementsByTagNameNS("http://schemas.microsoft.com/sqlazure/2010/12/", "Name");
-                Element nameElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
-                if (nameElement != null)
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
                 {
-                    String nameInstance;
-                    nameInstance = nameElement.getTextContent();
-                    serverInstance.setName(nameInstance);
+                    CloudTracing.error(invocationId, ex);
                 }
-                
-                NodeList elements3 = serversElement.getElementsByTagNameNS("http://schemas.microsoft.com/sqlazure/2010/12/", "AdministratorLogin");
-                Element administratorLoginElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
-                if (administratorLoginElement != null)
+                throw ex;
+            }
+            
+            // Create Result
+            ServerListResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new ServerListResponse();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document responseDoc = documentBuilder.parse(responseContent);
+            
+            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/sqlazure/2010/12/", "Servers");
+            Element serversSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            if (serversSequenceElement != null)
+            {
+                for (int i1 = 0; i1 < serversSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/sqlazure/2010/12/", "Server").getLength(); i1 = i1 + 1)
                 {
-                    String administratorLoginInstance;
-                    administratorLoginInstance = administratorLoginElement.getTextContent();
-                    serverInstance.setAdministratorUserName(administratorLoginInstance);
-                }
-                
-                NodeList elements4 = serversElement.getElementsByTagNameNS("http://schemas.microsoft.com/sqlazure/2010/12/", "Location");
-                Element locationElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
-                if (locationElement != null)
-                {
-                    String locationInstance;
-                    locationInstance = locationElement.getTextContent();
-                    serverInstance.setLocation(locationInstance);
-                }
-                
-                NodeList elements5 = serversElement.getElementsByTagNameNS("http://schemas.microsoft.com/sqlazure/2010/12/", "Features");
-                Element featuresSequenceElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
-                if (featuresSequenceElement != null)
-                {
-                    for (int i2 = 0; i2 < featuresSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/sqlazure/2010/12/", "Feature").getLength(); i2 = i2 + 1)
+                    org.w3c.dom.Element serversElement = ((org.w3c.dom.Element) serversSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/sqlazure/2010/12/", "Server").item(i1));
+                    ServerListResponse.Server serverInstance = new ServerListResponse.Server();
+                    result.getServers().add(serverInstance);
+                    
+                    NodeList elements2 = serversElement.getElementsByTagNameNS("http://schemas.microsoft.com/sqlazure/2010/12/", "Name");
+                    Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                    if (nameElement != null)
                     {
-                        org.w3c.dom.Element featuresElement = ((org.w3c.dom.Element)featuresSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/sqlazure/2010/12/", "Feature").item(i2));
-                        NodeList elements6 = featuresElement.getElementsByTagNameNS("http://schemas.microsoft.com/sqlazure/2010/12/", "Name");
-                        String featuresKey = elements6.getLength() > 0 ? ((org.w3c.dom.Element)elements6.item(0)).getTextContent() : null;
-                        NodeList elements7 = featuresElement.getElementsByTagNameNS("http://schemas.microsoft.com/sqlazure/2010/12/", "Value");
-                        String featuresValue = elements7.getLength() > 0 ? ((org.w3c.dom.Element)elements7.item(0)).getTextContent() : null;
-                        serverInstance.getFeatures().put(featuresKey, featuresValue);
+                        String nameInstance;
+                        nameInstance = nameElement.getTextContent();
+                        serverInstance.setName(nameInstance);
+                    }
+                    
+                    NodeList elements3 = serversElement.getElementsByTagNameNS("http://schemas.microsoft.com/sqlazure/2010/12/", "AdministratorLogin");
+                    Element administratorLoginElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                    if (administratorLoginElement != null)
+                    {
+                        String administratorLoginInstance;
+                        administratorLoginInstance = administratorLoginElement.getTextContent();
+                        serverInstance.setAdministratorUserName(administratorLoginInstance);
+                    }
+                    
+                    NodeList elements4 = serversElement.getElementsByTagNameNS("http://schemas.microsoft.com/sqlazure/2010/12/", "Location");
+                    Element locationElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                    if (locationElement != null)
+                    {
+                        String locationInstance;
+                        locationInstance = locationElement.getTextContent();
+                        serverInstance.setLocation(locationInstance);
+                    }
+                    
+                    NodeList elements5 = serversElement.getElementsByTagNameNS("http://schemas.microsoft.com/sqlazure/2010/12/", "Features");
+                    Element featuresSequenceElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                    if (featuresSequenceElement != null)
+                    {
+                        for (int i2 = 0; i2 < featuresSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/sqlazure/2010/12/", "Feature").getLength(); i2 = i2 + 1)
+                        {
+                            org.w3c.dom.Element featuresElement = ((org.w3c.dom.Element) featuresSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/sqlazure/2010/12/", "Feature").item(i2));
+                            NodeList elements6 = featuresElement.getElementsByTagNameNS("http://schemas.microsoft.com/sqlazure/2010/12/", "Name");
+                            String featuresKey = elements6.getLength() > 0 ? ((org.w3c.dom.Element) elements6.item(0)).getTextContent() : null;
+                            NodeList elements7 = featuresElement.getElementsByTagNameNS("http://schemas.microsoft.com/sqlazure/2010/12/", "Value");
+                            String featuresValue = elements7.getLength() > 0 ? ((org.w3c.dom.Element) elements7.item(0)).getTextContent() : null;
+                            serverInstance.getFeatures().put(featuresKey, featuresValue);
+                        }
                     }
                 }
             }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
 }

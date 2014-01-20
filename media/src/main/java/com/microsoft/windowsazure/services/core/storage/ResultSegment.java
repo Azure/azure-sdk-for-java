@@ -17,14 +17,17 @@ package com.microsoft.windowsazure.services.core.storage;
 import java.util.ArrayList;
 
 /**
- * Represents a segment of results and contains continuation and pagination information.
+ * Represents a segment of results and contains continuation and pagination
+ * information.
  * 
  * @param <T>
  *            The type of the result that the segment contains.
  */
-public class ResultSegment<T> {
+public class ResultSegment<T>
+{
     /**
-     * Stores the continuation token used to retrieve the next segment of results.
+     * Stores the continuation token used to retrieve the next segment of
+     * results.
      */
     private final ResultContinuation continuationToken;
 
@@ -44,16 +47,21 @@ public class ResultSegment<T> {
     private final ArrayList<T> results;
 
     /**
-     * Reserved for internal use. Creates an instance of the <code>ResultSegment</code> class.
+     * Reserved for internal use. Creates an instance of the
+     * <code>ResultSegment</code> class.
      * 
      * @param results
-     *            An <code>ArrayList</code> object that represents the results for the segment.
+     *            An <code>ArrayList</code> object that represents the results
+     *            for the segment.
      * @param pageSize
      *            The number of elements in a page of results.
      * @param token
-     *            A {@link ResultContinuation} object that represents the continuation token.
+     *            A {@link ResultContinuation} object that represents the
+     *            continuation token.
      */
-    public ResultSegment(final ArrayList<T> results, final int pageSize, final ResultContinuation token) {
+    public ResultSegment(final ArrayList<T> results, final int pageSize,
+            final ResultContinuation token)
+    {
         this.results = results;
         this.length = results.size();
         this.pageSize = pageSize;
@@ -63,27 +71,34 @@ public class ResultSegment<T> {
     /**
      * Returns the continuation token for the result segment.
      * 
-     * @return A {@link ResultContinuation} object that represents the continuation token.
+     * @return A {@link ResultContinuation} object that represents the
+     *         continuation token.
      */
-    public ResultContinuation getContinuationToken() {
+    public ResultContinuation getContinuationToken()
+    {
         return this.continuationToken;
     }
 
     /**
-     * Returns a value that indicates whether there are more results available from the server.
+     * Returns a value that indicates whether there are more results available
+     * from the server.
      * 
-     * @return <code>true</code> if there are more results available from the server; otherwise, <code>false</code>.
+     * @return <code>true</code> if there are more results available from the
+     *         server; otherwise, <code>false</code>.
      */
-    public boolean getHasMoreResults() {
+    public boolean getHasMoreResults()
+    {
         return this.continuationToken != null;
     }
 
     /**
      * Returns a value that indicates whether the page has more results.
      * 
-     * @return <code>true</code> if the page has more results; otherwise, <code>false</code>.
+     * @return <code>true</code> if the page has more results; otherwise,
+     *         <code>false</code>.
      */
-    public boolean getIsPageComplete() {
+    public boolean getIsPageComplete()
+    {
         return this.length == this.pageSize;
     }
 
@@ -92,7 +107,8 @@ public class ResultSegment<T> {
      * 
      * @return The actual number of the results in the segment.
      */
-    public int getLength() {
+    public int getLength()
+    {
         return this.length;
     }
 
@@ -101,16 +117,20 @@ public class ResultSegment<T> {
      * 
      * @return The size of the requested page.
      */
-    public int getPageSize() {
+    public int getPageSize()
+    {
         return this.pageSize;
     }
 
     /**
-     * Returns the count of remaining results needed to fulfill the requested page size.
+     * Returns the count of remaining results needed to fulfill the requested
+     * page size.
      * 
-     * @return The count of remaining results needed to fulfill the requested page size.
+     * @return The count of remaining results needed to fulfill the requested
+     *         page size.
      */
-    public int getRemainingPageResults() {
+    public int getRemainingPageResults()
+    {
         return this.pageSize - this.length;
     }
 
@@ -119,7 +139,8 @@ public class ResultSegment<T> {
      * 
      * @return The results retrieved from the service.
      */
-    public ArrayList<T> getResults() {
+    public ArrayList<T> getResults()
+    {
         return this.results;
     }
 }

@@ -24,16 +24,20 @@ import javax.activation.DataSource;
 
 import org.junit.Test;
 
-public class StatusLineTest {
+public class StatusLineTest
+{
 
     @Test
-    public void testCanCreateStatus() throws Exception {
+    public void testCanCreateStatus() throws Exception
+    {
         // Arrange
         String httpResponse = "HTTP/1.1 200 OK";
         int expectedStatus = 200;
         String expectedReason = "OK";
-        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(httpResponse.getBytes());
-        DataSource dataSource = new InputStreamDataSource(byteArrayInputStream, "defaultContentType");
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(
+                httpResponse.getBytes());
+        DataSource dataSource = new InputStreamDataSource(byteArrayInputStream,
+                "defaultContentType");
 
         // Act
         StatusLine statusLine = StatusLine.create(dataSource);
@@ -44,13 +48,16 @@ public class StatusLineTest {
     }
 
     @Test
-    public void testGetSetStatus() {
-        // Arrange 
+    public void testGetSetStatus()
+    {
+        // Arrange
         String httpResponse = "HTTP/1.1 200 OK";
         int expectedStatus = 300;
         String expectedReason = "NotOK";
-        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(httpResponse.getBytes());
-        DataSource dataSource = new InputStreamDataSource(byteArrayInputStream, "defaultContentType");
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(
+                httpResponse.getBytes());
+        DataSource dataSource = new InputStreamDataSource(byteArrayInputStream,
+                "defaultContentType");
         StatusLine statusLine = StatusLine.create(dataSource);
 
         // Act
@@ -63,7 +70,8 @@ public class StatusLineTest {
     }
 
     @Test
-    public void testGetSetReason() {
+    public void testGetSetReason()
+    {
 
     }
 

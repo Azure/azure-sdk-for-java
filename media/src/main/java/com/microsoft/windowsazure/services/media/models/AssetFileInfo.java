@@ -24,13 +24,16 @@ import com.microsoft.windowsazure.services.media.implementation.content.AssetFil
 /**
  * The Class AssetFileInfo.
  */
-public class AssetFileInfo extends ODataEntity<AssetFileType> {
+public class AssetFileInfo extends ODataEntity<AssetFileType>
+{
 
-    public AssetFileInfo(EntryType entry, AssetFileType content) {
+    public AssetFileInfo(EntryType entry, AssetFileType content)
+    {
         super(entry, content);
     }
 
-    public AssetFileInfo() {
+    public AssetFileInfo()
+    {
         super(new AssetFileType());
     }
 
@@ -39,7 +42,8 @@ public class AssetFileInfo extends ODataEntity<AssetFileType> {
      * 
      * @return the id
      */
-    public String getId() {
+    public String getId()
+    {
         return this.getContent().getId();
     }
 
@@ -48,7 +52,8 @@ public class AssetFileInfo extends ODataEntity<AssetFileType> {
      * 
      * @return the name
      */
-    public String getName() {
+    public String getName()
+    {
         return this.getContent().getName();
     }
 
@@ -57,7 +62,8 @@ public class AssetFileInfo extends ODataEntity<AssetFileType> {
      * 
      * @return the content file size
      */
-    public long getContentFileSize() {
+    public long getContentFileSize()
+    {
         return this.getContent().getContentFileSize();
     }
 
@@ -66,7 +72,8 @@ public class AssetFileInfo extends ODataEntity<AssetFileType> {
      * 
      * @return the parent asset id
      */
-    public String getParentAssetId() {
+    public String getParentAssetId()
+    {
         return this.getContent().getParentAssetId();
     }
 
@@ -75,7 +82,8 @@ public class AssetFileInfo extends ODataEntity<AssetFileType> {
      * 
      * @return the encryption version
      */
-    public String getEncryptionVersion() {
+    public String getEncryptionVersion()
+    {
         return this.getContent().getEncryptionVersion();
     }
 
@@ -84,7 +92,8 @@ public class AssetFileInfo extends ODataEntity<AssetFileType> {
      * 
      * @return the encryption scheme
      */
-    public String getEncryptionScheme() {
+    public String getEncryptionScheme()
+    {
         return this.getContent().getEncryptionScheme();
     }
 
@@ -93,7 +102,8 @@ public class AssetFileInfo extends ODataEntity<AssetFileType> {
      * 
      * @return the checks if is encrypted
      */
-    public boolean getIsEncrypted() {
+    public boolean getIsEncrypted()
+    {
         return this.getContent().getIsEncrypted();
     }
 
@@ -102,7 +112,8 @@ public class AssetFileInfo extends ODataEntity<AssetFileType> {
      * 
      * @return the encryption key id
      */
-    public String getEncryptionKeyId() {
+    public String getEncryptionKeyId()
+    {
         return this.getContent().getEncryptionKeyId();
     }
 
@@ -111,7 +122,8 @@ public class AssetFileInfo extends ODataEntity<AssetFileType> {
      * 
      * @return the initialization vector
      */
-    public String getInitializationVector() {
+    public String getInitializationVector()
+    {
         return this.getContent().getInitializationVector();
     }
 
@@ -120,7 +132,8 @@ public class AssetFileInfo extends ODataEntity<AssetFileType> {
      * 
      * @return the checks if is primary
      */
-    public boolean getIsPrimary() {
+    public boolean getIsPrimary()
+    {
         return this.getContent().getIsPrimary();
     }
 
@@ -129,7 +142,8 @@ public class AssetFileInfo extends ODataEntity<AssetFileType> {
      * 
      * @return the last modified
      */
-    public Date getLastModified() {
+    public Date getLastModified()
+    {
         return this.getContent().getLastModified();
     }
 
@@ -138,7 +152,8 @@ public class AssetFileInfo extends ODataEntity<AssetFileType> {
      * 
      * @return the created
      */
-    public Date getCreated() {
+    public Date getCreated()
+    {
         return this.getContent().getCreated();
     }
 
@@ -147,7 +162,8 @@ public class AssetFileInfo extends ODataEntity<AssetFileType> {
      * 
      * @return the mime type
      */
-    public String getMimeType() {
+    public String getMimeType()
+    {
         return this.getContent().getMimeType();
     }
 
@@ -156,7 +172,8 @@ public class AssetFileInfo extends ODataEntity<AssetFileType> {
      * 
      * @return the content checksum
      */
-    public String getContentChecksum() {
+    public String getContentChecksum()
+    {
         return this.getContent().getContentChecksum();
     }
 }

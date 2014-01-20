@@ -17,7 +17,8 @@ package com.microsoft.windowsazure.services.blob.client;
 /**
  * Specifies which block lists should be searched to find a specified block.
  */
-public enum BlockSearchMode {
+public enum BlockSearchMode
+{
     /**
      * Specifies searching only the committed block list.
      */
@@ -29,8 +30,8 @@ public enum BlockSearchMode {
     UNCOMMITTED,
 
     /**
-     * Specifies searching the uncommitted block list first, and if the block is not found, then search the committed
-     * block list.
+     * Specifies searching the uncommitted block list first, and if the block is
+     * not found, then search the committed block list.
      */
     LATEST
 }

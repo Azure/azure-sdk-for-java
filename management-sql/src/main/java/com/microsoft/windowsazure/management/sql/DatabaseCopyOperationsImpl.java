@@ -35,7 +35,6 @@ import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
@@ -44,12 +43,12 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
@@ -80,8 +79,12 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
     /**
     * Gets a reference to the
     * microsoft.windowsazure.management.sql.SqlManagementClientImpl.
+    * @return The Client value.
     */
-    public SqlManagementClientImpl getClient() { return this.client; }
+    public SqlManagementClientImpl getClient()
+    {
+        return this.client;
+    }
     
     /**
     * The Create Database Copy operation starts a database copy.
@@ -114,11 +117,23 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
     * @param databaseName The name of the source database
     * @param parameters Additional parameters for the create database copy
     * operation
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
     @Override
-    public DatabaseCopyResponse create(String serverName, String databaseName, DatabaseCopyCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException, ParseException
+    public DatabaseCopyResponse create(String serverName, String databaseName, DatabaseCopyCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, ParseException
     {
         // Validate
         if (serverName == null)
@@ -190,11 +205,11 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
         }
         
         Element isContinuousElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IsContinuous");
-        isContinuousElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.getIsContinuous()).toLowerCase()));
+        isContinuousElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.isContinuous()).toLowerCase()));
         serviceResourceElement.appendChild(isContinuousElement);
         
         Element isForcedTerminateElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IsForcedTerminate");
-        isForcedTerminateElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.getIsForcedTerminate()).toLowerCase()));
+        isForcedTerminateElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.isForcedTerminate()).toLowerCase()));
         serviceResourceElement.appendChild(isForcedTerminateElement);
         
         DOMSource domSource = new DOMSource(requestDoc);
@@ -210,198 +225,208 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 201)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_CREATED)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            DatabaseCopyResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new DatabaseCopyResponse();
+            DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
+            Document responseDoc = documentBuilder2.parse(responseContent);
+            
+            NodeList elements = responseDoc.getElementsByTagName("ServiceResource");
+            Element serviceResourceElement2 = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            if (serviceResourceElement2 != null)
+            {
+                NodeList elements2 = serviceResourceElement2.getElementsByTagName("Name");
+                Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                if (nameElement != null)
+                {
+                    String nameInstance;
+                    nameInstance = nameElement.getTextContent();
+                    result.setName(nameInstance);
+                }
+                
+                NodeList elements3 = serviceResourceElement2.getElementsByTagName("State");
+                Element stateElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                if (stateElement != null)
+                {
+                    String stateInstance;
+                    stateInstance = stateElement.getTextContent();
+                    result.setState(stateInstance);
+                }
+                
+                NodeList elements4 = serviceResourceElement2.getElementsByTagName("SourceServerName");
+                Element sourceServerNameElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                if (sourceServerNameElement != null)
+                {
+                    String sourceServerNameInstance;
+                    sourceServerNameInstance = sourceServerNameElement.getTextContent();
+                    result.setSourceServerName(sourceServerNameInstance);
+                }
+                
+                NodeList elements5 = serviceResourceElement2.getElementsByTagName("SourceDatabaseName");
+                Element sourceDatabaseNameElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                if (sourceDatabaseNameElement != null)
+                {
+                    String sourceDatabaseNameInstance;
+                    sourceDatabaseNameInstance = sourceDatabaseNameElement.getTextContent();
+                    result.setSourceDatabaseName(sourceDatabaseNameInstance);
+                }
+                
+                NodeList elements6 = serviceResourceElement2.getElementsByTagName("DestinationServerName");
+                Element destinationServerNameElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                if (destinationServerNameElement != null)
+                {
+                    String destinationServerNameInstance;
+                    destinationServerNameInstance = destinationServerNameElement.getTextContent();
+                    result.setDestinationServerName(destinationServerNameInstance);
+                }
+                
+                NodeList elements7 = serviceResourceElement2.getElementsByTagName("DestinationDatabaseName");
+                Element destinationDatabaseNameElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
+                if (destinationDatabaseNameElement != null)
+                {
+                    String destinationDatabaseNameInstance;
+                    destinationDatabaseNameInstance = destinationDatabaseNameElement.getTextContent();
+                    result.setDestinationDatabaseName(destinationDatabaseNameInstance);
+                }
+                
+                NodeList elements8 = serviceResourceElement2.getElementsByTagName("MaxLagInMinutes");
+                Element maxLagInMinutesElement2 = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
+                if (maxLagInMinutesElement2 != null && (maxLagInMinutesElement2.getTextContent() != null && maxLagInMinutesElement2.getTextContent().isEmpty() != true) == false)
+                {
+                    int maxLagInMinutesInstance;
+                    maxLagInMinutesInstance = Integer.parseInt(maxLagInMinutesElement2.getTextContent());
+                    result.setMaxLagInMinutes(maxLagInMinutesInstance);
+                }
+                
+                NodeList elements9 = serviceResourceElement2.getElementsByTagName("IsContinuous");
+                Element isContinuousElement2 = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
+                if (isContinuousElement2 != null)
+                {
+                    boolean isContinuousInstance;
+                    isContinuousInstance = Boolean.parseBoolean(isContinuousElement2.getTextContent());
+                    result.setIsContinuous(isContinuousInstance);
+                }
+                
+                NodeList elements10 = serviceResourceElement2.getElementsByTagName("ReplicationState");
+                Element replicationStateElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
+                if (replicationStateElement != null)
+                {
+                    byte replicationStateInstance;
+                    replicationStateInstance = Byte.valueOf(replicationStateElement.getTextContent());
+                    result.setReplicationState(replicationStateInstance);
+                }
+                
+                NodeList elements11 = serviceResourceElement2.getElementsByTagName("ReplicationStateDescription");
+                Element replicationStateDescriptionElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
+                if (replicationStateDescriptionElement != null)
+                {
+                    String replicationStateDescriptionInstance;
+                    replicationStateDescriptionInstance = replicationStateDescriptionElement.getTextContent();
+                    result.setReplicationStateDescription(replicationStateDescriptionInstance);
+                }
+                
+                NodeList elements12 = serviceResourceElement2.getElementsByTagName("LocalDatabaseId");
+                Element localDatabaseIdElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
+                if (localDatabaseIdElement != null)
+                {
+                    int localDatabaseIdInstance;
+                    localDatabaseIdInstance = Integer.parseInt(localDatabaseIdElement.getTextContent());
+                    result.setLocalDatabaseId(localDatabaseIdInstance);
+                }
+                
+                NodeList elements13 = serviceResourceElement2.getElementsByTagName("IsLocalDatabaseReplicationTarget");
+                Element isLocalDatabaseReplicationTargetElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
+                if (isLocalDatabaseReplicationTargetElement != null)
+                {
+                    boolean isLocalDatabaseReplicationTargetInstance;
+                    isLocalDatabaseReplicationTargetInstance = Boolean.parseBoolean(isLocalDatabaseReplicationTargetElement.getTextContent());
+                    result.setIsLocalDatabaseReplicationTarget(isLocalDatabaseReplicationTargetInstance);
+                }
+                
+                NodeList elements14 = serviceResourceElement2.getElementsByTagName("IsInterlinkConnected");
+                Element isInterlinkConnectedElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
+                if (isInterlinkConnectedElement != null)
+                {
+                    boolean isInterlinkConnectedInstance;
+                    isInterlinkConnectedInstance = Boolean.parseBoolean(isInterlinkConnectedElement.getTextContent());
+                    result.setIsInterlinkConnected(isInterlinkConnectedInstance);
+                }
+                
+                NodeList elements15 = serviceResourceElement2.getElementsByTagName("TextStartDate");
+                Element textStartDateElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
+                if (textStartDateElement != null)
+                {
+                }
+                
+                NodeList elements16 = serviceResourceElement2.getElementsByTagName("TextModifyDate");
+                Element textModifyDateElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
+                if (textModifyDateElement != null)
+                {
+                }
+                
+                NodeList elements17 = serviceResourceElement2.getElementsByTagName("PercentComplete");
+                Element percentCompleteElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
+                if (percentCompleteElement != null && (percentCompleteElement.getTextContent() != null && percentCompleteElement.getTextContent().isEmpty() != true) == false)
+                {
+                    float percentCompleteInstance;
+                    percentCompleteInstance = Float.parseFloat(percentCompleteElement.getTextContent());
+                    result.setPercentComplete(percentCompleteInstance);
+                }
+                
+                NodeList elements18 = serviceResourceElement2.getElementsByTagName("IsForcedTerminate");
+                Element isForcedTerminateElement2 = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
+                if (isForcedTerminateElement2 != null && (isForcedTerminateElement2.getTextContent() != null && isForcedTerminateElement2.getTextContent().isEmpty() != true) == false)
+                {
+                    boolean isForcedTerminateInstance;
+                    isForcedTerminateInstance = Boolean.parseBoolean(isForcedTerminateElement2.getTextContent());
+                    result.setIsForcedTerminate(isForcedTerminateInstance);
+                }
+            }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        DatabaseCopyResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new DatabaseCopyResponse();
-        DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
-        Document responseDoc = documentBuilder2.parse(responseContent);
-        
-        NodeList elements = responseDoc.getElementsByTagName("ServiceResource");
-        Element serviceResourceElement2 = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
-        if (serviceResourceElement2 != null)
+        finally
         {
-            NodeList elements2 = serviceResourceElement2.getElementsByTagName("Name");
-            Element nameElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
-            if (nameElement != null)
+            if (httpResponse != null && httpResponse.getEntity() != null)
             {
-                String nameInstance;
-                nameInstance = nameElement.getTextContent();
-                result.setName(nameInstance);
-            }
-            
-            NodeList elements3 = serviceResourceElement2.getElementsByTagName("State");
-            Element stateElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
-            if (stateElement != null)
-            {
-                String stateInstance;
-                stateInstance = stateElement.getTextContent();
-                result.setState(stateInstance);
-            }
-            
-            NodeList elements4 = serviceResourceElement2.getElementsByTagName("SourceServerName");
-            Element sourceServerNameElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
-            if (sourceServerNameElement != null)
-            {
-                String sourceServerNameInstance;
-                sourceServerNameInstance = sourceServerNameElement.getTextContent();
-                result.setSourceServerName(sourceServerNameInstance);
-            }
-            
-            NodeList elements5 = serviceResourceElement2.getElementsByTagName("SourceDatabaseName");
-            Element sourceDatabaseNameElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
-            if (sourceDatabaseNameElement != null)
-            {
-                String sourceDatabaseNameInstance;
-                sourceDatabaseNameInstance = sourceDatabaseNameElement.getTextContent();
-                result.setSourceDatabaseName(sourceDatabaseNameInstance);
-            }
-            
-            NodeList elements6 = serviceResourceElement2.getElementsByTagName("DestinationServerName");
-            Element destinationServerNameElement = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
-            if (destinationServerNameElement != null)
-            {
-                String destinationServerNameInstance;
-                destinationServerNameInstance = destinationServerNameElement.getTextContent();
-                result.setDestinationServerName(destinationServerNameInstance);
-            }
-            
-            NodeList elements7 = serviceResourceElement2.getElementsByTagName("DestinationDatabaseName");
-            Element destinationDatabaseNameElement = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
-            if (destinationDatabaseNameElement != null)
-            {
-                String destinationDatabaseNameInstance;
-                destinationDatabaseNameInstance = destinationDatabaseNameElement.getTextContent();
-                result.setDestinationDatabaseName(destinationDatabaseNameInstance);
-            }
-            
-            NodeList elements8 = serviceResourceElement2.getElementsByTagName("MaxLagInMinutes");
-            Element maxLagInMinutesElement2 = elements8.getLength() > 0 ? ((Element)elements8.item(0)) : null;
-            if (maxLagInMinutesElement2 != null && (maxLagInMinutesElement2.getTextContent() != null && maxLagInMinutesElement2.getTextContent().isEmpty() != true) == false)
-            {
-                int maxLagInMinutesInstance;
-                maxLagInMinutesInstance = Integer.parseInt(maxLagInMinutesElement2.getTextContent());
-                result.setMaxLagInMinutes(maxLagInMinutesInstance);
-            }
-            
-            NodeList elements9 = serviceResourceElement2.getElementsByTagName("IsContinuous");
-            Element isContinuousElement2 = elements9.getLength() > 0 ? ((Element)elements9.item(0)) : null;
-            if (isContinuousElement2 != null)
-            {
-                boolean isContinuousInstance;
-                isContinuousInstance = Boolean.parseBoolean(isContinuousElement2.getTextContent());
-                result.setIsContinuous(isContinuousInstance);
-            }
-            
-            NodeList elements10 = serviceResourceElement2.getElementsByTagName("ReplicationState");
-            Element replicationStateElement = elements10.getLength() > 0 ? ((Element)elements10.item(0)) : null;
-            if (replicationStateElement != null)
-            {
-                byte replicationStateInstance;
-                replicationStateInstance = Byte.valueOf(replicationStateElement.getTextContent());
-                result.setReplicationState(replicationStateInstance);
-            }
-            
-            NodeList elements11 = serviceResourceElement2.getElementsByTagName("ReplicationStateDescription");
-            Element replicationStateDescriptionElement = elements11.getLength() > 0 ? ((Element)elements11.item(0)) : null;
-            if (replicationStateDescriptionElement != null)
-            {
-                String replicationStateDescriptionInstance;
-                replicationStateDescriptionInstance = replicationStateDescriptionElement.getTextContent();
-                result.setReplicationStateDescription(replicationStateDescriptionInstance);
-            }
-            
-            NodeList elements12 = serviceResourceElement2.getElementsByTagName("LocalDatabaseId");
-            Element localDatabaseIdElement = elements12.getLength() > 0 ? ((Element)elements12.item(0)) : null;
-            if (localDatabaseIdElement != null)
-            {
-                int localDatabaseIdInstance;
-                localDatabaseIdInstance = Integer.parseInt(localDatabaseIdElement.getTextContent());
-                result.setLocalDatabaseId(localDatabaseIdInstance);
-            }
-            
-            NodeList elements13 = serviceResourceElement2.getElementsByTagName("IsLocalDatabaseReplicationTarget");
-            Element isLocalDatabaseReplicationTargetElement = elements13.getLength() > 0 ? ((Element)elements13.item(0)) : null;
-            if (isLocalDatabaseReplicationTargetElement != null)
-            {
-                boolean isLocalDatabaseReplicationTargetInstance;
-                isLocalDatabaseReplicationTargetInstance = Boolean.parseBoolean(isLocalDatabaseReplicationTargetElement.getTextContent());
-                result.setIsLocalDatabaseReplicationTarget(isLocalDatabaseReplicationTargetInstance);
-            }
-            
-            NodeList elements14 = serviceResourceElement2.getElementsByTagName("IsInterlinkConnected");
-            Element isInterlinkConnectedElement = elements14.getLength() > 0 ? ((Element)elements14.item(0)) : null;
-            if (isInterlinkConnectedElement != null)
-            {
-                boolean isInterlinkConnectedInstance;
-                isInterlinkConnectedInstance = Boolean.parseBoolean(isInterlinkConnectedElement.getTextContent());
-                result.setIsInterlinkConnected(isInterlinkConnectedInstance);
-            }
-            
-            NodeList elements15 = serviceResourceElement2.getElementsByTagName("TextStartDate");
-            Element textStartDateElement = elements15.getLength() > 0 ? ((Element)elements15.item(0)) : null;
-            if (textStartDateElement != null)
-            {
-            }
-            
-            NodeList elements16 = serviceResourceElement2.getElementsByTagName("TextModifyDate");
-            Element textModifyDateElement = elements16.getLength() > 0 ? ((Element)elements16.item(0)) : null;
-            if (textModifyDateElement != null)
-            {
-            }
-            
-            NodeList elements17 = serviceResourceElement2.getElementsByTagName("PercentComplete");
-            Element percentCompleteElement = elements17.getLength() > 0 ? ((Element)elements17.item(0)) : null;
-            if (percentCompleteElement != null && (percentCompleteElement.getTextContent() != null && percentCompleteElement.getTextContent().isEmpty() != true) == false)
-            {
-                float percentCompleteInstance;
-                percentCompleteInstance = Float.parseFloat(percentCompleteElement.getTextContent());
-                result.setPercentComplete(percentCompleteInstance);
-            }
-            
-            NodeList elements18 = serviceResourceElement2.getElementsByTagName("IsForcedTerminate");
-            Element isForcedTerminateElement2 = elements18.getLength() > 0 ? ((Element)elements18.item(0)) : null;
-            if (isForcedTerminateElement2 != null && (isForcedTerminateElement2.getTextContent() != null && isForcedTerminateElement2.getTextContent().isEmpty() != true) == false)
-            {
-                boolean isForcedTerminateInstance;
-                isForcedTerminateInstance = Boolean.parseBoolean(isForcedTerminateElement2.getTextContent());
-                result.setIsForcedTerminate(isForcedTerminateInstance);
+                httpResponse.getEntity().getContent().close();
             }
         }
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-        {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
-        }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -435,6 +460,10 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
     * @param databaseName The name of the database
     * @param databaseCopyName The unique identifier for the database copy to
     * stop
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -476,40 +505,50 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        OperationResponse result = null;
-        result = new OperationResponse();
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -545,6 +584,16 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
     * @param databaseName The name of the database
     * @param databaseCopyName The unique identifier for the database copy to
     * retrieve
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -589,198 +638,208 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            DatabaseCopyResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new DatabaseCopyResponse();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document responseDoc = documentBuilder.parse(responseContent);
+            
+            NodeList elements = responseDoc.getElementsByTagName("ServiceResource");
+            Element serviceResourceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            if (serviceResourceElement != null)
+            {
+                NodeList elements2 = serviceResourceElement.getElementsByTagName("Name");
+                Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                if (nameElement != null)
+                {
+                    String nameInstance;
+                    nameInstance = nameElement.getTextContent();
+                    result.setName(nameInstance);
+                }
+                
+                NodeList elements3 = serviceResourceElement.getElementsByTagName("State");
+                Element stateElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                if (stateElement != null)
+                {
+                    String stateInstance;
+                    stateInstance = stateElement.getTextContent();
+                    result.setState(stateInstance);
+                }
+                
+                NodeList elements4 = serviceResourceElement.getElementsByTagName("SourceServerName");
+                Element sourceServerNameElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                if (sourceServerNameElement != null)
+                {
+                    String sourceServerNameInstance;
+                    sourceServerNameInstance = sourceServerNameElement.getTextContent();
+                    result.setSourceServerName(sourceServerNameInstance);
+                }
+                
+                NodeList elements5 = serviceResourceElement.getElementsByTagName("SourceDatabaseName");
+                Element sourceDatabaseNameElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                if (sourceDatabaseNameElement != null)
+                {
+                    String sourceDatabaseNameInstance;
+                    sourceDatabaseNameInstance = sourceDatabaseNameElement.getTextContent();
+                    result.setSourceDatabaseName(sourceDatabaseNameInstance);
+                }
+                
+                NodeList elements6 = serviceResourceElement.getElementsByTagName("DestinationServerName");
+                Element destinationServerNameElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                if (destinationServerNameElement != null)
+                {
+                    String destinationServerNameInstance;
+                    destinationServerNameInstance = destinationServerNameElement.getTextContent();
+                    result.setDestinationServerName(destinationServerNameInstance);
+                }
+                
+                NodeList elements7 = serviceResourceElement.getElementsByTagName("DestinationDatabaseName");
+                Element destinationDatabaseNameElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
+                if (destinationDatabaseNameElement != null)
+                {
+                    String destinationDatabaseNameInstance;
+                    destinationDatabaseNameInstance = destinationDatabaseNameElement.getTextContent();
+                    result.setDestinationDatabaseName(destinationDatabaseNameInstance);
+                }
+                
+                NodeList elements8 = serviceResourceElement.getElementsByTagName("MaxLagInMinutes");
+                Element maxLagInMinutesElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
+                if (maxLagInMinutesElement != null && (maxLagInMinutesElement.getTextContent() != null && maxLagInMinutesElement.getTextContent().isEmpty() != true) == false)
+                {
+                    int maxLagInMinutesInstance;
+                    maxLagInMinutesInstance = Integer.parseInt(maxLagInMinutesElement.getTextContent());
+                    result.setMaxLagInMinutes(maxLagInMinutesInstance);
+                }
+                
+                NodeList elements9 = serviceResourceElement.getElementsByTagName("IsContinuous");
+                Element isContinuousElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
+                if (isContinuousElement != null)
+                {
+                    boolean isContinuousInstance;
+                    isContinuousInstance = Boolean.parseBoolean(isContinuousElement.getTextContent());
+                    result.setIsContinuous(isContinuousInstance);
+                }
+                
+                NodeList elements10 = serviceResourceElement.getElementsByTagName("ReplicationState");
+                Element replicationStateElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
+                if (replicationStateElement != null)
+                {
+                    byte replicationStateInstance;
+                    replicationStateInstance = Byte.valueOf(replicationStateElement.getTextContent());
+                    result.setReplicationState(replicationStateInstance);
+                }
+                
+                NodeList elements11 = serviceResourceElement.getElementsByTagName("ReplicationStateDescription");
+                Element replicationStateDescriptionElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
+                if (replicationStateDescriptionElement != null)
+                {
+                    String replicationStateDescriptionInstance;
+                    replicationStateDescriptionInstance = replicationStateDescriptionElement.getTextContent();
+                    result.setReplicationStateDescription(replicationStateDescriptionInstance);
+                }
+                
+                NodeList elements12 = serviceResourceElement.getElementsByTagName("LocalDatabaseId");
+                Element localDatabaseIdElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
+                if (localDatabaseIdElement != null)
+                {
+                    int localDatabaseIdInstance;
+                    localDatabaseIdInstance = Integer.parseInt(localDatabaseIdElement.getTextContent());
+                    result.setLocalDatabaseId(localDatabaseIdInstance);
+                }
+                
+                NodeList elements13 = serviceResourceElement.getElementsByTagName("IsLocalDatabaseReplicationTarget");
+                Element isLocalDatabaseReplicationTargetElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
+                if (isLocalDatabaseReplicationTargetElement != null)
+                {
+                    boolean isLocalDatabaseReplicationTargetInstance;
+                    isLocalDatabaseReplicationTargetInstance = Boolean.parseBoolean(isLocalDatabaseReplicationTargetElement.getTextContent());
+                    result.setIsLocalDatabaseReplicationTarget(isLocalDatabaseReplicationTargetInstance);
+                }
+                
+                NodeList elements14 = serviceResourceElement.getElementsByTagName("IsInterlinkConnected");
+                Element isInterlinkConnectedElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
+                if (isInterlinkConnectedElement != null)
+                {
+                    boolean isInterlinkConnectedInstance;
+                    isInterlinkConnectedInstance = Boolean.parseBoolean(isInterlinkConnectedElement.getTextContent());
+                    result.setIsInterlinkConnected(isInterlinkConnectedInstance);
+                }
+                
+                NodeList elements15 = serviceResourceElement.getElementsByTagName("TextStartDate");
+                Element textStartDateElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
+                if (textStartDateElement != null)
+                {
+                }
+                
+                NodeList elements16 = serviceResourceElement.getElementsByTagName("TextModifyDate");
+                Element textModifyDateElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
+                if (textModifyDateElement != null)
+                {
+                }
+                
+                NodeList elements17 = serviceResourceElement.getElementsByTagName("PercentComplete");
+                Element percentCompleteElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
+                if (percentCompleteElement != null && (percentCompleteElement.getTextContent() != null && percentCompleteElement.getTextContent().isEmpty() != true) == false)
+                {
+                    float percentCompleteInstance;
+                    percentCompleteInstance = Float.parseFloat(percentCompleteElement.getTextContent());
+                    result.setPercentComplete(percentCompleteInstance);
+                }
+                
+                NodeList elements18 = serviceResourceElement.getElementsByTagName("IsForcedTerminate");
+                Element isForcedTerminateElement = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
+                if (isForcedTerminateElement != null && (isForcedTerminateElement.getTextContent() != null && isForcedTerminateElement.getTextContent().isEmpty() != true) == false)
+                {
+                    boolean isForcedTerminateInstance;
+                    isForcedTerminateInstance = Boolean.parseBoolean(isForcedTerminateElement.getTextContent());
+                    result.setIsForcedTerminate(isForcedTerminateInstance);
+                }
+            }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        DatabaseCopyResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new DatabaseCopyResponse();
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document responseDoc = documentBuilder.parse(responseContent);
-        
-        NodeList elements = responseDoc.getElementsByTagName("ServiceResource");
-        Element serviceResourceElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
-        if (serviceResourceElement != null)
+        finally
         {
-            NodeList elements2 = serviceResourceElement.getElementsByTagName("Name");
-            Element nameElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
-            if (nameElement != null)
+            if (httpResponse != null && httpResponse.getEntity() != null)
             {
-                String nameInstance;
-                nameInstance = nameElement.getTextContent();
-                result.setName(nameInstance);
-            }
-            
-            NodeList elements3 = serviceResourceElement.getElementsByTagName("State");
-            Element stateElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
-            if (stateElement != null)
-            {
-                String stateInstance;
-                stateInstance = stateElement.getTextContent();
-                result.setState(stateInstance);
-            }
-            
-            NodeList elements4 = serviceResourceElement.getElementsByTagName("SourceServerName");
-            Element sourceServerNameElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
-            if (sourceServerNameElement != null)
-            {
-                String sourceServerNameInstance;
-                sourceServerNameInstance = sourceServerNameElement.getTextContent();
-                result.setSourceServerName(sourceServerNameInstance);
-            }
-            
-            NodeList elements5 = serviceResourceElement.getElementsByTagName("SourceDatabaseName");
-            Element sourceDatabaseNameElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
-            if (sourceDatabaseNameElement != null)
-            {
-                String sourceDatabaseNameInstance;
-                sourceDatabaseNameInstance = sourceDatabaseNameElement.getTextContent();
-                result.setSourceDatabaseName(sourceDatabaseNameInstance);
-            }
-            
-            NodeList elements6 = serviceResourceElement.getElementsByTagName("DestinationServerName");
-            Element destinationServerNameElement = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
-            if (destinationServerNameElement != null)
-            {
-                String destinationServerNameInstance;
-                destinationServerNameInstance = destinationServerNameElement.getTextContent();
-                result.setDestinationServerName(destinationServerNameInstance);
-            }
-            
-            NodeList elements7 = serviceResourceElement.getElementsByTagName("DestinationDatabaseName");
-            Element destinationDatabaseNameElement = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
-            if (destinationDatabaseNameElement != null)
-            {
-                String destinationDatabaseNameInstance;
-                destinationDatabaseNameInstance = destinationDatabaseNameElement.getTextContent();
-                result.setDestinationDatabaseName(destinationDatabaseNameInstance);
-            }
-            
-            NodeList elements8 = serviceResourceElement.getElementsByTagName("MaxLagInMinutes");
-            Element maxLagInMinutesElement = elements8.getLength() > 0 ? ((Element)elements8.item(0)) : null;
-            if (maxLagInMinutesElement != null && (maxLagInMinutesElement.getTextContent() != null && maxLagInMinutesElement.getTextContent().isEmpty() != true) == false)
-            {
-                int maxLagInMinutesInstance;
-                maxLagInMinutesInstance = Integer.parseInt(maxLagInMinutesElement.getTextContent());
-                result.setMaxLagInMinutes(maxLagInMinutesInstance);
-            }
-            
-            NodeList elements9 = serviceResourceElement.getElementsByTagName("IsContinuous");
-            Element isContinuousElement = elements9.getLength() > 0 ? ((Element)elements9.item(0)) : null;
-            if (isContinuousElement != null)
-            {
-                boolean isContinuousInstance;
-                isContinuousInstance = Boolean.parseBoolean(isContinuousElement.getTextContent());
-                result.setIsContinuous(isContinuousInstance);
-            }
-            
-            NodeList elements10 = serviceResourceElement.getElementsByTagName("ReplicationState");
-            Element replicationStateElement = elements10.getLength() > 0 ? ((Element)elements10.item(0)) : null;
-            if (replicationStateElement != null)
-            {
-                byte replicationStateInstance;
-                replicationStateInstance = Byte.valueOf(replicationStateElement.getTextContent());
-                result.setReplicationState(replicationStateInstance);
-            }
-            
-            NodeList elements11 = serviceResourceElement.getElementsByTagName("ReplicationStateDescription");
-            Element replicationStateDescriptionElement = elements11.getLength() > 0 ? ((Element)elements11.item(0)) : null;
-            if (replicationStateDescriptionElement != null)
-            {
-                String replicationStateDescriptionInstance;
-                replicationStateDescriptionInstance = replicationStateDescriptionElement.getTextContent();
-                result.setReplicationStateDescription(replicationStateDescriptionInstance);
-            }
-            
-            NodeList elements12 = serviceResourceElement.getElementsByTagName("LocalDatabaseId");
-            Element localDatabaseIdElement = elements12.getLength() > 0 ? ((Element)elements12.item(0)) : null;
-            if (localDatabaseIdElement != null)
-            {
-                int localDatabaseIdInstance;
-                localDatabaseIdInstance = Integer.parseInt(localDatabaseIdElement.getTextContent());
-                result.setLocalDatabaseId(localDatabaseIdInstance);
-            }
-            
-            NodeList elements13 = serviceResourceElement.getElementsByTagName("IsLocalDatabaseReplicationTarget");
-            Element isLocalDatabaseReplicationTargetElement = elements13.getLength() > 0 ? ((Element)elements13.item(0)) : null;
-            if (isLocalDatabaseReplicationTargetElement != null)
-            {
-                boolean isLocalDatabaseReplicationTargetInstance;
-                isLocalDatabaseReplicationTargetInstance = Boolean.parseBoolean(isLocalDatabaseReplicationTargetElement.getTextContent());
-                result.setIsLocalDatabaseReplicationTarget(isLocalDatabaseReplicationTargetInstance);
-            }
-            
-            NodeList elements14 = serviceResourceElement.getElementsByTagName("IsInterlinkConnected");
-            Element isInterlinkConnectedElement = elements14.getLength() > 0 ? ((Element)elements14.item(0)) : null;
-            if (isInterlinkConnectedElement != null)
-            {
-                boolean isInterlinkConnectedInstance;
-                isInterlinkConnectedInstance = Boolean.parseBoolean(isInterlinkConnectedElement.getTextContent());
-                result.setIsInterlinkConnected(isInterlinkConnectedInstance);
-            }
-            
-            NodeList elements15 = serviceResourceElement.getElementsByTagName("TextStartDate");
-            Element textStartDateElement = elements15.getLength() > 0 ? ((Element)elements15.item(0)) : null;
-            if (textStartDateElement != null)
-            {
-            }
-            
-            NodeList elements16 = serviceResourceElement.getElementsByTagName("TextModifyDate");
-            Element textModifyDateElement = elements16.getLength() > 0 ? ((Element)elements16.item(0)) : null;
-            if (textModifyDateElement != null)
-            {
-            }
-            
-            NodeList elements17 = serviceResourceElement.getElementsByTagName("PercentComplete");
-            Element percentCompleteElement = elements17.getLength() > 0 ? ((Element)elements17.item(0)) : null;
-            if (percentCompleteElement != null && (percentCompleteElement.getTextContent() != null && percentCompleteElement.getTextContent().isEmpty() != true) == false)
-            {
-                float percentCompleteInstance;
-                percentCompleteInstance = Float.parseFloat(percentCompleteElement.getTextContent());
-                result.setPercentComplete(percentCompleteInstance);
-            }
-            
-            NodeList elements18 = serviceResourceElement.getElementsByTagName("IsForcedTerminate");
-            Element isForcedTerminateElement = elements18.getLength() > 0 ? ((Element)elements18.item(0)) : null;
-            if (isForcedTerminateElement != null && (isForcedTerminateElement.getTextContent() != null && isForcedTerminateElement.getTextContent().isEmpty() != true) == false)
-            {
-                boolean isForcedTerminateInstance;
-                isForcedTerminateInstance = Boolean.parseBoolean(isForcedTerminateElement.getTextContent());
-                result.setIsForcedTerminate(isForcedTerminateInstance);
+                httpResponse.getEntity().getContent().close();
             }
         }
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-        {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
-        }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -806,6 +865,16 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
     *
     * @param serverName The name of the database server to be queried
     * @param databaseName The name of the database to be queried
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return Response containing the list of database copies for a given
     * database.
     */
@@ -845,205 +914,215 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
-        }
-        
-        // Create Result
-        DatabaseCopyListResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new DatabaseCopyListResponse();
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document responseDoc = documentBuilder.parse(responseContent);
-        
-        NodeList elements = responseDoc.getElementsByTagName("ServiceResources");
-        Element serviceResourcesSequenceElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
-        if (serviceResourcesSequenceElement != null)
-        {
-            for (int i1 = 0; i1 < serviceResourcesSequenceElement.getElementsByTagName("ServiceResource").getLength(); i1 = i1 + 1)
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
             {
-                org.w3c.dom.Element serviceResourcesElement = ((org.w3c.dom.Element)serviceResourcesSequenceElement.getElementsByTagName("ServiceResource").item(i1));
-                DatabaseCopyResponse serviceResourceInstance = new DatabaseCopyResponse();
-                result.getDatabaseCopies().add(serviceResourceInstance);
-                
-                NodeList elements2 = serviceResourcesElement.getElementsByTagName("Name");
-                Element nameElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
-                if (nameElement != null)
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
                 {
-                    String nameInstance;
-                    nameInstance = nameElement.getTextContent();
-                    serviceResourceInstance.setName(nameInstance);
+                    CloudTracing.error(invocationId, ex);
                 }
-                
-                NodeList elements3 = serviceResourcesElement.getElementsByTagName("State");
-                Element stateElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
-                if (stateElement != null)
+                throw ex;
+            }
+            
+            // Create Result
+            DatabaseCopyListResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new DatabaseCopyListResponse();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document responseDoc = documentBuilder.parse(responseContent);
+            
+            NodeList elements = responseDoc.getElementsByTagName("ServiceResources");
+            Element serviceResourcesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            if (serviceResourcesSequenceElement != null)
+            {
+                for (int i1 = 0; i1 < serviceResourcesSequenceElement.getElementsByTagName("ServiceResource").getLength(); i1 = i1 + 1)
                 {
-                    String stateInstance;
-                    stateInstance = stateElement.getTextContent();
-                    serviceResourceInstance.setState(stateInstance);
-                }
-                
-                NodeList elements4 = serviceResourcesElement.getElementsByTagName("SourceServerName");
-                Element sourceServerNameElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
-                if (sourceServerNameElement != null)
-                {
-                    String sourceServerNameInstance;
-                    sourceServerNameInstance = sourceServerNameElement.getTextContent();
-                    serviceResourceInstance.setSourceServerName(sourceServerNameInstance);
-                }
-                
-                NodeList elements5 = serviceResourcesElement.getElementsByTagName("SourceDatabaseName");
-                Element sourceDatabaseNameElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
-                if (sourceDatabaseNameElement != null)
-                {
-                    String sourceDatabaseNameInstance;
-                    sourceDatabaseNameInstance = sourceDatabaseNameElement.getTextContent();
-                    serviceResourceInstance.setSourceDatabaseName(sourceDatabaseNameInstance);
-                }
-                
-                NodeList elements6 = serviceResourcesElement.getElementsByTagName("DestinationServerName");
-                Element destinationServerNameElement = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
-                if (destinationServerNameElement != null)
-                {
-                    String destinationServerNameInstance;
-                    destinationServerNameInstance = destinationServerNameElement.getTextContent();
-                    serviceResourceInstance.setDestinationServerName(destinationServerNameInstance);
-                }
-                
-                NodeList elements7 = serviceResourcesElement.getElementsByTagName("DestinationDatabaseName");
-                Element destinationDatabaseNameElement = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
-                if (destinationDatabaseNameElement != null)
-                {
-                    String destinationDatabaseNameInstance;
-                    destinationDatabaseNameInstance = destinationDatabaseNameElement.getTextContent();
-                    serviceResourceInstance.setDestinationDatabaseName(destinationDatabaseNameInstance);
-                }
-                
-                NodeList elements8 = serviceResourcesElement.getElementsByTagName("MaxLagInMinutes");
-                Element maxLagInMinutesElement = elements8.getLength() > 0 ? ((Element)elements8.item(0)) : null;
-                if (maxLagInMinutesElement != null && (maxLagInMinutesElement.getTextContent() != null && maxLagInMinutesElement.getTextContent().isEmpty() != true) == false)
-                {
-                    int maxLagInMinutesInstance;
-                    maxLagInMinutesInstance = Integer.parseInt(maxLagInMinutesElement.getTextContent());
-                    serviceResourceInstance.setMaxLagInMinutes(maxLagInMinutesInstance);
-                }
-                
-                NodeList elements9 = serviceResourcesElement.getElementsByTagName("IsContinuous");
-                Element isContinuousElement = elements9.getLength() > 0 ? ((Element)elements9.item(0)) : null;
-                if (isContinuousElement != null)
-                {
-                    boolean isContinuousInstance;
-                    isContinuousInstance = Boolean.parseBoolean(isContinuousElement.getTextContent());
-                    serviceResourceInstance.setIsContinuous(isContinuousInstance);
-                }
-                
-                NodeList elements10 = serviceResourcesElement.getElementsByTagName("ReplicationState");
-                Element replicationStateElement = elements10.getLength() > 0 ? ((Element)elements10.item(0)) : null;
-                if (replicationStateElement != null)
-                {
-                    byte replicationStateInstance;
-                    replicationStateInstance = Byte.valueOf(replicationStateElement.getTextContent());
-                    serviceResourceInstance.setReplicationState(replicationStateInstance);
-                }
-                
-                NodeList elements11 = serviceResourcesElement.getElementsByTagName("ReplicationStateDescription");
-                Element replicationStateDescriptionElement = elements11.getLength() > 0 ? ((Element)elements11.item(0)) : null;
-                if (replicationStateDescriptionElement != null)
-                {
-                    String replicationStateDescriptionInstance;
-                    replicationStateDescriptionInstance = replicationStateDescriptionElement.getTextContent();
-                    serviceResourceInstance.setReplicationStateDescription(replicationStateDescriptionInstance);
-                }
-                
-                NodeList elements12 = serviceResourcesElement.getElementsByTagName("LocalDatabaseId");
-                Element localDatabaseIdElement = elements12.getLength() > 0 ? ((Element)elements12.item(0)) : null;
-                if (localDatabaseIdElement != null)
-                {
-                    int localDatabaseIdInstance;
-                    localDatabaseIdInstance = Integer.parseInt(localDatabaseIdElement.getTextContent());
-                    serviceResourceInstance.setLocalDatabaseId(localDatabaseIdInstance);
-                }
-                
-                NodeList elements13 = serviceResourcesElement.getElementsByTagName("IsLocalDatabaseReplicationTarget");
-                Element isLocalDatabaseReplicationTargetElement = elements13.getLength() > 0 ? ((Element)elements13.item(0)) : null;
-                if (isLocalDatabaseReplicationTargetElement != null)
-                {
-                    boolean isLocalDatabaseReplicationTargetInstance;
-                    isLocalDatabaseReplicationTargetInstance = Boolean.parseBoolean(isLocalDatabaseReplicationTargetElement.getTextContent());
-                    serviceResourceInstance.setIsLocalDatabaseReplicationTarget(isLocalDatabaseReplicationTargetInstance);
-                }
-                
-                NodeList elements14 = serviceResourcesElement.getElementsByTagName("IsInterlinkConnected");
-                Element isInterlinkConnectedElement = elements14.getLength() > 0 ? ((Element)elements14.item(0)) : null;
-                if (isInterlinkConnectedElement != null)
-                {
-                    boolean isInterlinkConnectedInstance;
-                    isInterlinkConnectedInstance = Boolean.parseBoolean(isInterlinkConnectedElement.getTextContent());
-                    serviceResourceInstance.setIsInterlinkConnected(isInterlinkConnectedInstance);
-                }
-                
-                NodeList elements15 = serviceResourcesElement.getElementsByTagName("TextStartDate");
-                Element textStartDateElement = elements15.getLength() > 0 ? ((Element)elements15.item(0)) : null;
-                if (textStartDateElement != null)
-                {
-                }
-                
-                NodeList elements16 = serviceResourcesElement.getElementsByTagName("TextModifyDate");
-                Element textModifyDateElement = elements16.getLength() > 0 ? ((Element)elements16.item(0)) : null;
-                if (textModifyDateElement != null)
-                {
-                }
-                
-                NodeList elements17 = serviceResourcesElement.getElementsByTagName("PercentComplete");
-                Element percentCompleteElement = elements17.getLength() > 0 ? ((Element)elements17.item(0)) : null;
-                if (percentCompleteElement != null && (percentCompleteElement.getTextContent() != null && percentCompleteElement.getTextContent().isEmpty() != true) == false)
-                {
-                    float percentCompleteInstance;
-                    percentCompleteInstance = Float.parseFloat(percentCompleteElement.getTextContent());
-                    serviceResourceInstance.setPercentComplete(percentCompleteInstance);
-                }
-                
-                NodeList elements18 = serviceResourcesElement.getElementsByTagName("IsForcedTerminate");
-                Element isForcedTerminateElement = elements18.getLength() > 0 ? ((Element)elements18.item(0)) : null;
-                if (isForcedTerminateElement != null && (isForcedTerminateElement.getTextContent() != null && isForcedTerminateElement.getTextContent().isEmpty() != true) == false)
-                {
-                    boolean isForcedTerminateInstance;
-                    isForcedTerminateInstance = Boolean.parseBoolean(isForcedTerminateElement.getTextContent());
-                    serviceResourceInstance.setIsForcedTerminate(isForcedTerminateInstance);
+                    org.w3c.dom.Element serviceResourcesElement = ((org.w3c.dom.Element) serviceResourcesSequenceElement.getElementsByTagName("ServiceResource").item(i1));
+                    DatabaseCopyResponse serviceResourceInstance = new DatabaseCopyResponse();
+                    result.getDatabaseCopies().add(serviceResourceInstance);
+                    
+                    NodeList elements2 = serviceResourcesElement.getElementsByTagName("Name");
+                    Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                    if (nameElement != null)
+                    {
+                        String nameInstance;
+                        nameInstance = nameElement.getTextContent();
+                        serviceResourceInstance.setName(nameInstance);
+                    }
+                    
+                    NodeList elements3 = serviceResourcesElement.getElementsByTagName("State");
+                    Element stateElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                    if (stateElement != null)
+                    {
+                        String stateInstance;
+                        stateInstance = stateElement.getTextContent();
+                        serviceResourceInstance.setState(stateInstance);
+                    }
+                    
+                    NodeList elements4 = serviceResourcesElement.getElementsByTagName("SourceServerName");
+                    Element sourceServerNameElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                    if (sourceServerNameElement != null)
+                    {
+                        String sourceServerNameInstance;
+                        sourceServerNameInstance = sourceServerNameElement.getTextContent();
+                        serviceResourceInstance.setSourceServerName(sourceServerNameInstance);
+                    }
+                    
+                    NodeList elements5 = serviceResourcesElement.getElementsByTagName("SourceDatabaseName");
+                    Element sourceDatabaseNameElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                    if (sourceDatabaseNameElement != null)
+                    {
+                        String sourceDatabaseNameInstance;
+                        sourceDatabaseNameInstance = sourceDatabaseNameElement.getTextContent();
+                        serviceResourceInstance.setSourceDatabaseName(sourceDatabaseNameInstance);
+                    }
+                    
+                    NodeList elements6 = serviceResourcesElement.getElementsByTagName("DestinationServerName");
+                    Element destinationServerNameElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                    if (destinationServerNameElement != null)
+                    {
+                        String destinationServerNameInstance;
+                        destinationServerNameInstance = destinationServerNameElement.getTextContent();
+                        serviceResourceInstance.setDestinationServerName(destinationServerNameInstance);
+                    }
+                    
+                    NodeList elements7 = serviceResourcesElement.getElementsByTagName("DestinationDatabaseName");
+                    Element destinationDatabaseNameElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
+                    if (destinationDatabaseNameElement != null)
+                    {
+                        String destinationDatabaseNameInstance;
+                        destinationDatabaseNameInstance = destinationDatabaseNameElement.getTextContent();
+                        serviceResourceInstance.setDestinationDatabaseName(destinationDatabaseNameInstance);
+                    }
+                    
+                    NodeList elements8 = serviceResourcesElement.getElementsByTagName("MaxLagInMinutes");
+                    Element maxLagInMinutesElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
+                    if (maxLagInMinutesElement != null && (maxLagInMinutesElement.getTextContent() != null && maxLagInMinutesElement.getTextContent().isEmpty() != true) == false)
+                    {
+                        int maxLagInMinutesInstance;
+                        maxLagInMinutesInstance = Integer.parseInt(maxLagInMinutesElement.getTextContent());
+                        serviceResourceInstance.setMaxLagInMinutes(maxLagInMinutesInstance);
+                    }
+                    
+                    NodeList elements9 = serviceResourcesElement.getElementsByTagName("IsContinuous");
+                    Element isContinuousElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
+                    if (isContinuousElement != null)
+                    {
+                        boolean isContinuousInstance;
+                        isContinuousInstance = Boolean.parseBoolean(isContinuousElement.getTextContent());
+                        serviceResourceInstance.setIsContinuous(isContinuousInstance);
+                    }
+                    
+                    NodeList elements10 = serviceResourcesElement.getElementsByTagName("ReplicationState");
+                    Element replicationStateElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
+                    if (replicationStateElement != null)
+                    {
+                        byte replicationStateInstance;
+                        replicationStateInstance = Byte.valueOf(replicationStateElement.getTextContent());
+                        serviceResourceInstance.setReplicationState(replicationStateInstance);
+                    }
+                    
+                    NodeList elements11 = serviceResourcesElement.getElementsByTagName("ReplicationStateDescription");
+                    Element replicationStateDescriptionElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
+                    if (replicationStateDescriptionElement != null)
+                    {
+                        String replicationStateDescriptionInstance;
+                        replicationStateDescriptionInstance = replicationStateDescriptionElement.getTextContent();
+                        serviceResourceInstance.setReplicationStateDescription(replicationStateDescriptionInstance);
+                    }
+                    
+                    NodeList elements12 = serviceResourcesElement.getElementsByTagName("LocalDatabaseId");
+                    Element localDatabaseIdElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
+                    if (localDatabaseIdElement != null)
+                    {
+                        int localDatabaseIdInstance;
+                        localDatabaseIdInstance = Integer.parseInt(localDatabaseIdElement.getTextContent());
+                        serviceResourceInstance.setLocalDatabaseId(localDatabaseIdInstance);
+                    }
+                    
+                    NodeList elements13 = serviceResourcesElement.getElementsByTagName("IsLocalDatabaseReplicationTarget");
+                    Element isLocalDatabaseReplicationTargetElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
+                    if (isLocalDatabaseReplicationTargetElement != null)
+                    {
+                        boolean isLocalDatabaseReplicationTargetInstance;
+                        isLocalDatabaseReplicationTargetInstance = Boolean.parseBoolean(isLocalDatabaseReplicationTargetElement.getTextContent());
+                        serviceResourceInstance.setIsLocalDatabaseReplicationTarget(isLocalDatabaseReplicationTargetInstance);
+                    }
+                    
+                    NodeList elements14 = serviceResourcesElement.getElementsByTagName("IsInterlinkConnected");
+                    Element isInterlinkConnectedElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
+                    if (isInterlinkConnectedElement != null)
+                    {
+                        boolean isInterlinkConnectedInstance;
+                        isInterlinkConnectedInstance = Boolean.parseBoolean(isInterlinkConnectedElement.getTextContent());
+                        serviceResourceInstance.setIsInterlinkConnected(isInterlinkConnectedInstance);
+                    }
+                    
+                    NodeList elements15 = serviceResourcesElement.getElementsByTagName("TextStartDate");
+                    Element textStartDateElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
+                    if (textStartDateElement != null)
+                    {
+                    }
+                    
+                    NodeList elements16 = serviceResourcesElement.getElementsByTagName("TextModifyDate");
+                    Element textModifyDateElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
+                    if (textModifyDateElement != null)
+                    {
+                    }
+                    
+                    NodeList elements17 = serviceResourcesElement.getElementsByTagName("PercentComplete");
+                    Element percentCompleteElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
+                    if (percentCompleteElement != null && (percentCompleteElement.getTextContent() != null && percentCompleteElement.getTextContent().isEmpty() != true) == false)
+                    {
+                        float percentCompleteInstance;
+                        percentCompleteInstance = Float.parseFloat(percentCompleteElement.getTextContent());
+                        serviceResourceInstance.setPercentComplete(percentCompleteInstance);
+                    }
+                    
+                    NodeList elements18 = serviceResourcesElement.getElementsByTagName("IsForcedTerminate");
+                    Element isForcedTerminateElement = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
+                    if (isForcedTerminateElement != null && (isForcedTerminateElement.getTextContent() != null && isForcedTerminateElement.getTextContent().isEmpty() != true) == false)
+                    {
+                        boolean isForcedTerminateInstance;
+                        isForcedTerminateInstance = Boolean.parseBoolean(isForcedTerminateElement.getTextContent());
+                        serviceResourceInstance.setIsForcedTerminate(isForcedTerminateInstance);
+                    }
                 }
             }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -1081,11 +1160,23 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
     * update
     * @param parameters Additional parameters for the update database copy
     * operation
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
     @Override
-    public DatabaseCopyResponse update(String serverName, String databaseName, String databaseCopyName, DatabaseCopyUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException, ParseException
+    public DatabaseCopyResponse update(String serverName, String databaseName, String databaseCopyName, DatabaseCopyUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, ParseException
     {
         // Validate
         if (serverName == null)
@@ -1155,17 +1246,17 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
             serviceResourceElement.appendChild(maxLagInMinutesElement);
         }
         
-        if (parameters.getIsContinuous() != null)
+        if (parameters.isContinuous() != null)
         {
             Element isContinuousElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IsContinuous");
-            isContinuousElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.getIsContinuous()).toLowerCase()));
+            isContinuousElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.isContinuous()).toLowerCase()));
             serviceResourceElement.appendChild(isContinuousElement);
         }
         
-        if (parameters.getIsForcedTerminate() != null)
+        if (parameters.isForcedTerminate() != null)
         {
             Element isForcedTerminateElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IsForcedTerminate");
-            isForcedTerminateElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.getIsForcedTerminate()).toLowerCase()));
+            isForcedTerminateElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.isForcedTerminate()).toLowerCase()));
             serviceResourceElement.appendChild(isForcedTerminateElement);
         }
         
@@ -1182,197 +1273,207 @@ public class DatabaseCopyOperationsImpl implements ServiceOperations<SqlManageme
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            DatabaseCopyResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new DatabaseCopyResponse();
+            DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
+            Document responseDoc = documentBuilder2.parse(responseContent);
+            
+            NodeList elements = responseDoc.getElementsByTagName("ServiceResource");
+            Element serviceResourceElement2 = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            if (serviceResourceElement2 != null)
+            {
+                NodeList elements2 = serviceResourceElement2.getElementsByTagName("Name");
+                Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                if (nameElement != null)
+                {
+                    String nameInstance;
+                    nameInstance = nameElement.getTextContent();
+                    result.setName(nameInstance);
+                }
+                
+                NodeList elements3 = serviceResourceElement2.getElementsByTagName("State");
+                Element stateElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                if (stateElement != null)
+                {
+                    String stateInstance;
+                    stateInstance = stateElement.getTextContent();
+                    result.setState(stateInstance);
+                }
+                
+                NodeList elements4 = serviceResourceElement2.getElementsByTagName("SourceServerName");
+                Element sourceServerNameElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                if (sourceServerNameElement != null)
+                {
+                    String sourceServerNameInstance;
+                    sourceServerNameInstance = sourceServerNameElement.getTextContent();
+                    result.setSourceServerName(sourceServerNameInstance);
+                }
+                
+                NodeList elements5 = serviceResourceElement2.getElementsByTagName("SourceDatabaseName");
+                Element sourceDatabaseNameElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                if (sourceDatabaseNameElement != null)
+                {
+                    String sourceDatabaseNameInstance;
+                    sourceDatabaseNameInstance = sourceDatabaseNameElement.getTextContent();
+                    result.setSourceDatabaseName(sourceDatabaseNameInstance);
+                }
+                
+                NodeList elements6 = serviceResourceElement2.getElementsByTagName("DestinationServerName");
+                Element destinationServerNameElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                if (destinationServerNameElement != null)
+                {
+                    String destinationServerNameInstance;
+                    destinationServerNameInstance = destinationServerNameElement.getTextContent();
+                    result.setDestinationServerName(destinationServerNameInstance);
+                }
+                
+                NodeList elements7 = serviceResourceElement2.getElementsByTagName("DestinationDatabaseName");
+                Element destinationDatabaseNameElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
+                if (destinationDatabaseNameElement != null)
+                {
+                    String destinationDatabaseNameInstance;
+                    destinationDatabaseNameInstance = destinationDatabaseNameElement.getTextContent();
+                    result.setDestinationDatabaseName(destinationDatabaseNameInstance);
+                }
+                
+                NodeList elements8 = serviceResourceElement2.getElementsByTagName("MaxLagInMinutes");
+                Element maxLagInMinutesElement2 = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
+                if (maxLagInMinutesElement2 != null && (maxLagInMinutesElement2.getTextContent() != null && maxLagInMinutesElement2.getTextContent().isEmpty() != true) == false)
+                {
+                    int maxLagInMinutesInstance;
+                    maxLagInMinutesInstance = Integer.parseInt(maxLagInMinutesElement2.getTextContent());
+                    result.setMaxLagInMinutes(maxLagInMinutesInstance);
+                }
+                
+                NodeList elements9 = serviceResourceElement2.getElementsByTagName("IsContinuous");
+                Element isContinuousElement2 = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
+                if (isContinuousElement2 != null)
+                {
+                    boolean isContinuousInstance;
+                    isContinuousInstance = Boolean.parseBoolean(isContinuousElement2.getTextContent());
+                    result.setIsContinuous(isContinuousInstance);
+                }
+                
+                NodeList elements10 = serviceResourceElement2.getElementsByTagName("ReplicationState");
+                Element replicationStateElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
+                if (replicationStateElement != null)
+                {
+                    byte replicationStateInstance;
+                    replicationStateInstance = Byte.valueOf(replicationStateElement.getTextContent());
+                    result.setReplicationState(replicationStateInstance);
+                }
+                
+                NodeList elements11 = serviceResourceElement2.getElementsByTagName("ReplicationStateDescription");
+                Element replicationStateDescriptionElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
+                if (replicationStateDescriptionElement != null)
+                {
+                    String replicationStateDescriptionInstance;
+                    replicationStateDescriptionInstance = replicationStateDescriptionElement.getTextContent();
+                    result.setReplicationStateDescription(replicationStateDescriptionInstance);
+                }
+                
+                NodeList elements12 = serviceResourceElement2.getElementsByTagName("LocalDatabaseId");
+                Element localDatabaseIdElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
+                if (localDatabaseIdElement != null)
+                {
+                    int localDatabaseIdInstance;
+                    localDatabaseIdInstance = Integer.parseInt(localDatabaseIdElement.getTextContent());
+                    result.setLocalDatabaseId(localDatabaseIdInstance);
+                }
+                
+                NodeList elements13 = serviceResourceElement2.getElementsByTagName("IsLocalDatabaseReplicationTarget");
+                Element isLocalDatabaseReplicationTargetElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
+                if (isLocalDatabaseReplicationTargetElement != null)
+                {
+                    boolean isLocalDatabaseReplicationTargetInstance;
+                    isLocalDatabaseReplicationTargetInstance = Boolean.parseBoolean(isLocalDatabaseReplicationTargetElement.getTextContent());
+                    result.setIsLocalDatabaseReplicationTarget(isLocalDatabaseReplicationTargetInstance);
+                }
+                
+                NodeList elements14 = serviceResourceElement2.getElementsByTagName("IsInterlinkConnected");
+                Element isInterlinkConnectedElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
+                if (isInterlinkConnectedElement != null)
+                {
+                    boolean isInterlinkConnectedInstance;
+                    isInterlinkConnectedInstance = Boolean.parseBoolean(isInterlinkConnectedElement.getTextContent());
+                    result.setIsInterlinkConnected(isInterlinkConnectedInstance);
+                }
+                
+                NodeList elements15 = serviceResourceElement2.getElementsByTagName("TextStartDate");
+                Element textStartDateElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
+                if (textStartDateElement != null)
+                {
+                }
+                
+                NodeList elements16 = serviceResourceElement2.getElementsByTagName("TextModifyDate");
+                Element textModifyDateElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
+                if (textModifyDateElement != null)
+                {
+                }
+                
+                NodeList elements17 = serviceResourceElement2.getElementsByTagName("PercentComplete");
+                Element percentCompleteElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
+                if (percentCompleteElement != null && (percentCompleteElement.getTextContent() != null && percentCompleteElement.getTextContent().isEmpty() != true) == false)
+                {
+                    float percentCompleteInstance;
+                    percentCompleteInstance = Float.parseFloat(percentCompleteElement.getTextContent());
+                    result.setPercentComplete(percentCompleteInstance);
+                }
+                
+                NodeList elements18 = serviceResourceElement2.getElementsByTagName("IsForcedTerminate");
+                Element isForcedTerminateElement2 = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
+                if (isForcedTerminateElement2 != null && (isForcedTerminateElement2.getTextContent() != null && isForcedTerminateElement2.getTextContent().isEmpty() != true) == false)
+                {
+                    boolean isForcedTerminateInstance;
+                    isForcedTerminateInstance = Boolean.parseBoolean(isForcedTerminateElement2.getTextContent());
+                    result.setIsForcedTerminate(isForcedTerminateInstance);
+                }
+            }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        DatabaseCopyResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new DatabaseCopyResponse();
-        DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
-        Document responseDoc = documentBuilder2.parse(responseContent);
-        
-        NodeList elements = responseDoc.getElementsByTagName("ServiceResource");
-        Element serviceResourceElement2 = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
-        if (serviceResourceElement2 != null)
+        finally
         {
-            NodeList elements2 = serviceResourceElement2.getElementsByTagName("Name");
-            Element nameElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
-            if (nameElement != null)
+            if (httpResponse != null && httpResponse.getEntity() != null)
             {
-                String nameInstance;
-                nameInstance = nameElement.getTextContent();
-                result.setName(nameInstance);
-            }
-            
-            NodeList elements3 = serviceResourceElement2.getElementsByTagName("State");
-            Element stateElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
-            if (stateElement != null)
-            {
-                String stateInstance;
-                stateInstance = stateElement.getTextContent();
-                result.setState(stateInstance);
-            }
-            
-            NodeList elements4 = serviceResourceElement2.getElementsByTagName("SourceServerName");
-            Element sourceServerNameElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
-            if (sourceServerNameElement != null)
-            {
-                String sourceServerNameInstance;
-                sourceServerNameInstance = sourceServerNameElement.getTextContent();
-                result.setSourceServerName(sourceServerNameInstance);
-            }
-            
-            NodeList elements5 = serviceResourceElement2.getElementsByTagName("SourceDatabaseName");
-            Element sourceDatabaseNameElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
-            if (sourceDatabaseNameElement != null)
-            {
-                String sourceDatabaseNameInstance;
-                sourceDatabaseNameInstance = sourceDatabaseNameElement.getTextContent();
-                result.setSourceDatabaseName(sourceDatabaseNameInstance);
-            }
-            
-            NodeList elements6 = serviceResourceElement2.getElementsByTagName("DestinationServerName");
-            Element destinationServerNameElement = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
-            if (destinationServerNameElement != null)
-            {
-                String destinationServerNameInstance;
-                destinationServerNameInstance = destinationServerNameElement.getTextContent();
-                result.setDestinationServerName(destinationServerNameInstance);
-            }
-            
-            NodeList elements7 = serviceResourceElement2.getElementsByTagName("DestinationDatabaseName");
-            Element destinationDatabaseNameElement = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
-            if (destinationDatabaseNameElement != null)
-            {
-                String destinationDatabaseNameInstance;
-                destinationDatabaseNameInstance = destinationDatabaseNameElement.getTextContent();
-                result.setDestinationDatabaseName(destinationDatabaseNameInstance);
-            }
-            
-            NodeList elements8 = serviceResourceElement2.getElementsByTagName("MaxLagInMinutes");
-            Element maxLagInMinutesElement2 = elements8.getLength() > 0 ? ((Element)elements8.item(0)) : null;
-            if (maxLagInMinutesElement2 != null && (maxLagInMinutesElement2.getTextContent() != null && maxLagInMinutesElement2.getTextContent().isEmpty() != true) == false)
-            {
-                int maxLagInMinutesInstance;
-                maxLagInMinutesInstance = Integer.parseInt(maxLagInMinutesElement2.getTextContent());
-                result.setMaxLagInMinutes(maxLagInMinutesInstance);
-            }
-            
-            NodeList elements9 = serviceResourceElement2.getElementsByTagName("IsContinuous");
-            Element isContinuousElement2 = elements9.getLength() > 0 ? ((Element)elements9.item(0)) : null;
-            if (isContinuousElement2 != null)
-            {
-                boolean isContinuousInstance;
-                isContinuousInstance = Boolean.parseBoolean(isContinuousElement2.getTextContent());
-                result.setIsContinuous(isContinuousInstance);
-            }
-            
-            NodeList elements10 = serviceResourceElement2.getElementsByTagName("ReplicationState");
-            Element replicationStateElement = elements10.getLength() > 0 ? ((Element)elements10.item(0)) : null;
-            if (replicationStateElement != null)
-            {
-                byte replicationStateInstance;
-                replicationStateInstance = Byte.valueOf(replicationStateElement.getTextContent());
-                result.setReplicationState(replicationStateInstance);
-            }
-            
-            NodeList elements11 = serviceResourceElement2.getElementsByTagName("ReplicationStateDescription");
-            Element replicationStateDescriptionElement = elements11.getLength() > 0 ? ((Element)elements11.item(0)) : null;
-            if (replicationStateDescriptionElement != null)
-            {
-                String replicationStateDescriptionInstance;
-                replicationStateDescriptionInstance = replicationStateDescriptionElement.getTextContent();
-                result.setReplicationStateDescription(replicationStateDescriptionInstance);
-            }
-            
-            NodeList elements12 = serviceResourceElement2.getElementsByTagName("LocalDatabaseId");
-            Element localDatabaseIdElement = elements12.getLength() > 0 ? ((Element)elements12.item(0)) : null;
-            if (localDatabaseIdElement != null)
-            {
-                int localDatabaseIdInstance;
-                localDatabaseIdInstance = Integer.parseInt(localDatabaseIdElement.getTextContent());
-                result.setLocalDatabaseId(localDatabaseIdInstance);
-            }
-            
-            NodeList elements13 = serviceResourceElement2.getElementsByTagName("IsLocalDatabaseReplicationTarget");
-            Element isLocalDatabaseReplicationTargetElement = elements13.getLength() > 0 ? ((Element)elements13.item(0)) : null;
-            if (isLocalDatabaseReplicationTargetElement != null)
-            {
-                boolean isLocalDatabaseReplicationTargetInstance;
-                isLocalDatabaseReplicationTargetInstance = Boolean.parseBoolean(isLocalDatabaseReplicationTargetElement.getTextContent());
-                result.setIsLocalDatabaseReplicationTarget(isLocalDatabaseReplicationTargetInstance);
-            }
-            
-            NodeList elements14 = serviceResourceElement2.getElementsByTagName("IsInterlinkConnected");
-            Element isInterlinkConnectedElement = elements14.getLength() > 0 ? ((Element)elements14.item(0)) : null;
-            if (isInterlinkConnectedElement != null)
-            {
-                boolean isInterlinkConnectedInstance;
-                isInterlinkConnectedInstance = Boolean.parseBoolean(isInterlinkConnectedElement.getTextContent());
-                result.setIsInterlinkConnected(isInterlinkConnectedInstance);
-            }
-            
-            NodeList elements15 = serviceResourceElement2.getElementsByTagName("TextStartDate");
-            Element textStartDateElement = elements15.getLength() > 0 ? ((Element)elements15.item(0)) : null;
-            if (textStartDateElement != null)
-            {
-            }
-            
-            NodeList elements16 = serviceResourceElement2.getElementsByTagName("TextModifyDate");
-            Element textModifyDateElement = elements16.getLength() > 0 ? ((Element)elements16.item(0)) : null;
-            if (textModifyDateElement != null)
-            {
-            }
-            
-            NodeList elements17 = serviceResourceElement2.getElementsByTagName("PercentComplete");
-            Element percentCompleteElement = elements17.getLength() > 0 ? ((Element)elements17.item(0)) : null;
-            if (percentCompleteElement != null && (percentCompleteElement.getTextContent() != null && percentCompleteElement.getTextContent().isEmpty() != true) == false)
-            {
-                float percentCompleteInstance;
-                percentCompleteInstance = Float.parseFloat(percentCompleteElement.getTextContent());
-                result.setPercentComplete(percentCompleteInstance);
-            }
-            
-            NodeList elements18 = serviceResourceElement2.getElementsByTagName("IsForcedTerminate");
-            Element isForcedTerminateElement2 = elements18.getLength() > 0 ? ((Element)elements18.item(0)) : null;
-            if (isForcedTerminateElement2 != null && (isForcedTerminateElement2.getTextContent() != null && isForcedTerminateElement2.getTextContent().isEmpty() != true) == false)
-            {
-                boolean isForcedTerminateInstance;
-                isForcedTerminateInstance = Boolean.parseBoolean(isForcedTerminateElement2.getTextContent());
-                result.setIsForcedTerminate(isForcedTerminateInstance);
+                httpResponse.getEntity().getContent().close();
             }
         }
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-        {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
-        }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
 }

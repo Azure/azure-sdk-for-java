@@ -36,13 +36,21 @@ public class OperatingSystemListFamiliesResponse extends OperationResponse imple
     
     /**
     * The operating system families that are valid for your subscription.
+    * @return The OperatingSystemFamilies value.
     */
-    public ArrayList<OperatingSystemListFamiliesResponse.OperatingSystemFamily> getOperatingSystemFamilies() { return this.operatingSystemFamilies; }
+    public ArrayList<OperatingSystemListFamiliesResponse.OperatingSystemFamily> getOperatingSystemFamilies()
+    {
+        return this.operatingSystemFamilies;
+    }
     
     /**
     * The operating system families that are valid for your subscription.
+    * @param operatingSystemFamiliesValue The OperatingSystemFamilies value.
     */
-    public void setOperatingSystemFamilies(ArrayList<OperatingSystemListFamiliesResponse.OperatingSystemFamily> operatingSystemFamilies) { this.operatingSystemFamilies = operatingSystemFamilies; }
+    public void setOperatingSystemFamilies(final ArrayList<OperatingSystemListFamiliesResponse.OperatingSystemFamily> operatingSystemFamiliesValue)
+    {
+        this.operatingSystemFamilies = operatingSystemFamiliesValue;
+    }
     
     /**
     * Initializes a new instance of the OperatingSystemListFamiliesResponse
@@ -51,6 +59,7 @@ public class OperatingSystemListFamiliesResponse extends OperationResponse imple
     */
     public OperatingSystemListFamiliesResponse()
     {
+        super();
         this.operatingSystemFamilies = new ArrayList<OperatingSystemListFamiliesResponse.OperatingSystemFamily>();
     }
     
@@ -84,8 +93,12 @@ public class OperatingSystemListFamiliesResponse extends OperationResponse imple
         * service. In this case you will either need to manually configure
         * your service to run on a newer version, or configure your service to
         * use auto-upgrade to manage operating system upgrades.
+        * @return The IsActive value.
         */
-        public boolean getIsActive() { return this.isActive; }
+        public boolean isActive()
+        {
+            return this.isActive;
+        }
         
         /**
         * Indicates whether this operating system version is currently active
@@ -101,8 +114,12 @@ public class OperatingSystemListFamiliesResponse extends OperationResponse imple
         * service. In this case you will either need to manually configure
         * your service to run on a newer version, or configure your service to
         * use auto-upgrade to manage operating system upgrades.
+        * @param isActiveValue The IsActive value.
         */
-        public void setIsActive(boolean isActive) { this.isActive = isActive; }
+        public void setIsActive(final boolean isActiveValue)
+        {
+            this.isActive = isActiveValue;
+        }
         
         private boolean isDefault;
         
@@ -114,8 +131,12 @@ public class OperatingSystemListFamiliesResponse extends OperationResponse imple
         * exactly one default operating system version at any given time, for
         * which the IsDefault element is set to true; for all other versions,
         * IsDefault is set to false.
+        * @return The IsDefault value.
         */
-        public boolean getIsDefault() { return this.isDefault; }
+        public boolean isDefault()
+        {
+            return this.isDefault;
+        }
         
         /**
         * Indicates whether this operating system version is the default
@@ -125,20 +146,32 @@ public class OperatingSystemListFamiliesResponse extends OperationResponse imple
         * exactly one default operating system version at any given time, for
         * which the IsDefault element is set to true; for all other versions,
         * IsDefault is set to false.
+        * @param isDefaultValue The IsDefault value.
         */
-        public void setIsDefault(boolean isDefault) { this.isDefault = isDefault; }
+        public void setIsDefault(final boolean isDefaultValue)
+        {
+            this.isDefault = isDefaultValue;
+        }
         
         private String label;
         
         /**
         * The label of the operating system version.
+        * @return The Label value.
         */
-        public String getLabel() { return this.label; }
+        public String getLabel()
+        {
+            return this.label;
+        }
         
         /**
         * The label of the operating system version.
+        * @param labelValue The Label value.
         */
-        public void setLabel(String label) { this.label = label; }
+        public void setLabel(final String labelValue)
+        {
+            this.label = labelValue;
+        }
         
         private String version;
         
@@ -148,8 +181,12 @@ public class OperatingSystemListFamiliesResponse extends OperationResponse imple
         * particular version of the Windows Azure guest operating system. See
         * Configuring Settings for the Windows Azure Guest OS for additional
         * details.
+        * @return The Version value.
         */
-        public String getVersion() { return this.version; }
+        public String getVersion()
+        {
+            return this.version;
+        }
         
         /**
         * The operating system version. This value corresponds to the
@@ -157,15 +194,11 @@ public class OperatingSystemListFamiliesResponse extends OperationResponse imple
         * particular version of the Windows Azure guest operating system. See
         * Configuring Settings for the Windows Azure Guest OS for additional
         * details.
+        * @param versionValue The Version value.
         */
-        public void setVersion(String version) { this.version = version; }
-        
-        /**
-        * Initializes a new instance of the OperatingSystem class.
-        *
-        */
-        public OperatingSystem()
+        public void setVersion(final String versionValue)
         {
+            this.version = versionValue;
         }
     }
     
@@ -178,13 +211,21 @@ public class OperatingSystemListFamiliesResponse extends OperationResponse imple
         
         /**
         * The label of the operating system family.
+        * @return The Label value.
         */
-        public String getLabel() { return this.label; }
+        public String getLabel()
+        {
+            return this.label;
+        }
         
         /**
         * The label of the operating system family.
+        * @param labelValue The Label value.
         */
-        public void setLabel(String label) { this.label = label; }
+        public void setLabel(final String labelValue)
+        {
+            this.label = labelValue;
+        }
         
         private int name;
         
@@ -194,8 +235,12 @@ public class OperatingSystemListFamiliesResponse extends OperationResponse imple
         * that is substantially compatible with Windows Server 2008 SP2. A
         * value of 2 corresponds to the Windows Azure guest operating system
         * that is substantially compatible with Windows Server 2008 R2.
+        * @return The Name value.
         */
-        public int getName() { return this.name; }
+        public int getName()
+        {
+            return this.name;
+        }
         
         /**
         * Indicates which operating system family this version belongs to. A
@@ -203,22 +248,34 @@ public class OperatingSystemListFamiliesResponse extends OperationResponse imple
         * that is substantially compatible with Windows Server 2008 SP2. A
         * value of 2 corresponds to the Windows Azure guest operating system
         * that is substantially compatible with Windows Server 2008 R2.
+        * @param nameValue The Name value.
         */
-        public void setName(int name) { this.name = name; }
+        public void setName(final int nameValue)
+        {
+            this.name = nameValue;
+        }
         
         private ArrayList<OperatingSystemListFamiliesResponse.OperatingSystem> operatingSystems;
         
         /**
         * The available operating systems in your subscription belonging to
         * this family.
+        * @return The OperatingSystems value.
         */
-        public ArrayList<OperatingSystemListFamiliesResponse.OperatingSystem> getOperatingSystems() { return this.operatingSystems; }
+        public ArrayList<OperatingSystemListFamiliesResponse.OperatingSystem> getOperatingSystems()
+        {
+            return this.operatingSystems;
+        }
         
         /**
         * The available operating systems in your subscription belonging to
         * this family.
+        * @param operatingSystemsValue The OperatingSystems value.
         */
-        public void setOperatingSystems(ArrayList<OperatingSystemListFamiliesResponse.OperatingSystem> operatingSystems) { this.operatingSystems = operatingSystems; }
+        public void setOperatingSystems(final ArrayList<OperatingSystemListFamiliesResponse.OperatingSystem> operatingSystemsValue)
+        {
+            this.operatingSystems = operatingSystemsValue;
+        }
         
         /**
         * Initializes a new instance of the OperatingSystemFamily class.

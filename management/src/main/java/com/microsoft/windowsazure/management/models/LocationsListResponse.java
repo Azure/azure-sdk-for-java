@@ -36,13 +36,21 @@ public class LocationsListResponse extends OperationResponse implements Iterable
     
     /**
     * The data center locations that are valid for your subscription.
+    * @return The Locations value.
     */
-    public ArrayList<LocationsListResponse.Location> getLocations() { return this.locations; }
+    public ArrayList<LocationsListResponse.Location> getLocations()
+    {
+        return this.locations;
+    }
     
     /**
     * The data center locations that are valid for your subscription.
+    * @param locationsValue The Locations value.
     */
-    public void setLocations(ArrayList<LocationsListResponse.Location> locations) { this.locations = locations; }
+    public void setLocations(final ArrayList<LocationsListResponse.Location> locationsValue)
+    {
+        this.locations = locationsValue;
+    }
     
     /**
     * Initializes a new instance of the LocationsListResponse class.
@@ -50,6 +58,7 @@ public class LocationsListResponse extends OperationResponse implements Iterable
     */
     public LocationsListResponse()
     {
+        super();
         this.locations = new ArrayList<LocationsListResponse.Location>();
     }
     
@@ -71,39 +80,63 @@ public class LocationsListResponse extends OperationResponse implements Iterable
         
         /**
         * Indicates the services available at a location.
+        * @return The AvailableServices value.
         */
-        public ArrayList<String> getAvailableServices() { return this.availableServices; }
+        public ArrayList<String> getAvailableServices()
+        {
+            return this.availableServices;
+        }
         
         /**
         * Indicates the services available at a location.
+        * @param availableServicesValue The AvailableServices value.
         */
-        public void setAvailableServices(ArrayList<String> availableServices) { this.availableServices = availableServices; }
+        public void setAvailableServices(final ArrayList<String> availableServicesValue)
+        {
+            this.availableServices = availableServicesValue;
+        }
         
         private String displayName;
         
         /**
         * The localized name of data center location.
+        * @return The DisplayName value.
         */
-        public String getDisplayName() { return this.displayName; }
+        public String getDisplayName()
+        {
+            return this.displayName;
+        }
         
         /**
         * The localized name of data center location.
+        * @param displayNameValue The DisplayName value.
         */
-        public void setDisplayName(String displayName) { this.displayName = displayName; }
+        public void setDisplayName(final String displayNameValue)
+        {
+            this.displayName = displayNameValue;
+        }
         
         private String name;
         
         /**
         * The name of a data center location that is valid for your
         * subscription.
+        * @return The Name value.
         */
-        public String getName() { return this.name; }
+        public String getName()
+        {
+            return this.name;
+        }
         
         /**
         * The name of a data center location that is valid for your
         * subscription.
+        * @param nameValue The Name value.
         */
-        public void setName(String name) { this.name = name; }
+        public void setName(final String nameValue)
+        {
+            this.name = nameValue;
+        }
         
         /**
         * Initializes a new instance of the Location class.

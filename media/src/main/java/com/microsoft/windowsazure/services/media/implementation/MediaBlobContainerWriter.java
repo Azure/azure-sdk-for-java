@@ -36,7 +36,8 @@ import com.sun.jersey.api.client.Client;
  * Media Services storage.
  * 
  */
-public class MediaBlobContainerWriter implements WritableBlobContainerContract {
+public class MediaBlobContainerWriter implements WritableBlobContainerContract
+{
 
     private final BlobContract blobService;
     private BlobContract restProxy;
@@ -45,125 +46,213 @@ public class MediaBlobContainerWriter implements WritableBlobContainerContract {
     {
         return this.restProxy;
     }
-    
+
     public void setBlobContract(BlobContract blobContract)
     {
         this.restProxy = blobContract;
     }
-    
+
     private final String containerName;
 
-    public MediaBlobContainerWriter(Client client, String accountName, String blobServiceUri, String containerName,
-            String sasToken) {
+    public MediaBlobContainerWriter(Client client, String accountName,
+            String blobServiceUri, String containerName, String sasToken)
+    {
         this.containerName = containerName;
-        this.restProxy = new MediaBlobRestProxy(client, accountName, blobServiceUri, new SASTokenFilter(sasToken));
+        this.restProxy = new MediaBlobRestProxy(client, accountName,
+                blobServiceUri, new SASTokenFilter(sasToken));
         this.blobService = new BlobExceptionProcessor(this.restProxy);
     }
 
-    private MediaBlobContainerWriter(MediaBlobContainerWriter baseWriter) {
+    private MediaBlobContainerWriter(MediaBlobContainerWriter baseWriter)
+    {
         this.containerName = baseWriter.containerName;
         this.blobService = new BlobExceptionProcessor(this.restProxy);
     }
-    
-    /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.core.JerseyFilterableService#withFilter(com.microsoft.windowsazure.services.core.ServiceFilter)
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.microsoft.windowsazure.services.core.JerseyFilterableService#withFilter
+     * (com.microsoft.windowsazure.services.core.ServiceFilter)
      */
     @Override
-    public WritableBlobContainerContract withFilter(ServiceFilter filter) {
-        MediaBlobContainerWriter mediaBlobContainerWriter = new MediaBlobContainerWriter(this);
-        mediaBlobContainerWriter.setBlobContract(mediaBlobContainerWriter.getBlobContract().withFilter(filter));
+    public WritableBlobContainerContract withFilter(ServiceFilter filter)
+    {
+        MediaBlobContainerWriter mediaBlobContainerWriter = new MediaBlobContainerWriter(
+                this);
+        mediaBlobContainerWriter.setBlobContract(mediaBlobContainerWriter
+                .getBlobContract().withFilter(filter));
         return mediaBlobContainerWriter;
     }
 
-    /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.core.FilterableService#withRequestFilterFirst(com.microsoft.windowsazure.services.core.ServiceFilter)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.microsoft.windowsazure.services.core.FilterableService#
+     * withRequestFilterFirst
+     * (com.microsoft.windowsazure.services.core.ServiceFilter)
      */
     @Override
-    public WritableBlobContainerContract withRequestFilterFirst(ServiceRequestFilter serviceRequestFilter) {
-        MediaBlobContainerWriter mediaBlobContainerWriter = new MediaBlobContainerWriter(this);
-        mediaBlobContainerWriter.setBlobContract(mediaBlobContainerWriter.getBlobContract().withRequestFilterFirst(serviceRequestFilter));
+    public WritableBlobContainerContract withRequestFilterFirst(
+            ServiceRequestFilter serviceRequestFilter)
+    {
+        MediaBlobContainerWriter mediaBlobContainerWriter = new MediaBlobContainerWriter(
+                this);
+        mediaBlobContainerWriter
+                .setBlobContract(mediaBlobContainerWriter.getBlobContract()
+                        .withRequestFilterFirst(serviceRequestFilter));
         return mediaBlobContainerWriter;
     }
 
-    /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.core.FilterableService#withRequestFilterLast(com.microsoft.windowsazure.services.core.ServiceFilter)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.microsoft.windowsazure.services.core.FilterableService#
+     * withRequestFilterLast
+     * (com.microsoft.windowsazure.services.core.ServiceFilter)
      */
     @Override
-    public WritableBlobContainerContract withRequestFilterLast(ServiceRequestFilter serviceRequestFilter) {
-        MediaBlobContainerWriter mediaBlobContainerWriter = new MediaBlobContainerWriter(this);
-        mediaBlobContainerWriter.setBlobContract(mediaBlobContainerWriter.getBlobContract().withRequestFilterLast(serviceRequestFilter));
+    public WritableBlobContainerContract withRequestFilterLast(
+            ServiceRequestFilter serviceRequestFilter)
+    {
+        MediaBlobContainerWriter mediaBlobContainerWriter = new MediaBlobContainerWriter(
+                this);
+        mediaBlobContainerWriter.setBlobContract(mediaBlobContainerWriter
+                .getBlobContract().withRequestFilterLast(serviceRequestFilter));
         return mediaBlobContainerWriter;
     }
-    
-    /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.core.FilterableService#withResponseFilterFirst(com.microsoft.windowsazure.services.core.ServiceFilter)
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.microsoft.windowsazure.services.core.FilterableService#
+     * withResponseFilterFirst
+     * (com.microsoft.windowsazure.services.core.ServiceFilter)
      */
     @Override
-    public WritableBlobContainerContract withResponseFilterFirst(ServiceResponseFilter serviceResponseFilter) { 
-        MediaBlobContainerWriter mediaBlobContainerWriter = new MediaBlobContainerWriter(this);
-        mediaBlobContainerWriter.setBlobContract(mediaBlobContainerWriter.getBlobContract().withResponseFilterFirst(serviceResponseFilter));
+    public WritableBlobContainerContract withResponseFilterFirst(
+            ServiceResponseFilter serviceResponseFilter)
+    {
+        MediaBlobContainerWriter mediaBlobContainerWriter = new MediaBlobContainerWriter(
+                this);
+        mediaBlobContainerWriter.setBlobContract(mediaBlobContainerWriter
+                .getBlobContract().withResponseFilterFirst(
+                        serviceResponseFilter));
         return mediaBlobContainerWriter;
     }
-    
-    /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.core.FilterableService#withResponseFilterLast(com.microsoft.windowsazure.services.core.ServiceFilter)
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.microsoft.windowsazure.services.core.FilterableService#
+     * withResponseFilterLast
+     * (com.microsoft.windowsazure.services.core.ServiceFilter)
      */
     @Override
-    public WritableBlobContainerContract withResponseFilterLast(ServiceResponseFilter serviceResponseFilter) {
-        MediaBlobContainerWriter mediaBlobContainerWriter = new MediaBlobContainerWriter(this);
-        mediaBlobContainerWriter.setBlobContract(mediaBlobContainerWriter.getBlobContract().withResponseFilterLast(serviceResponseFilter));
+    public WritableBlobContainerContract withResponseFilterLast(
+            ServiceResponseFilter serviceResponseFilter)
+    {
+        MediaBlobContainerWriter mediaBlobContainerWriter = new MediaBlobContainerWriter(
+                this);
+        mediaBlobContainerWriter.setBlobContract(mediaBlobContainerWriter
+                .getBlobContract()
+                .withResponseFilterLast(serviceResponseFilter));
         return mediaBlobContainerWriter;
     }
-    
-    /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.WritableBlobContainerContract#createBlockBlob(java.lang.String, java.io.InputStream)
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.microsoft.windowsazure.services.media.WritableBlobContainerContract
+     * #createBlockBlob(java.lang.String, java.io.InputStream)
      */
     @Override
-    public CreateBlobResult createBlockBlob(String blob, InputStream contentStream) throws ServiceException {
+    public CreateBlobResult createBlockBlob(String blob,
+            InputStream contentStream) throws ServiceException
+    {
         return blobService.createBlockBlob(containerName, blob, contentStream);
     }
 
-    /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.WritableBlobContainerContract#createBlockBlob(java.lang.String, java.io.InputStream, com.microsoft.windowsazure.services.blob.models.CreateBlobOptions)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.microsoft.windowsazure.services.media.WritableBlobContainerContract
+     * #createBlockBlob(java.lang.String, java.io.InputStream,
+     * com.microsoft.windowsazure.services.blob.models.CreateBlobOptions)
      */
     @Override
-    public CreateBlobResult createBlockBlob(String blob, InputStream contentStream, CreateBlobOptions options)
-            throws ServiceException {
-        return blobService.createBlockBlob(containerName, blob, contentStream, options);
+    public CreateBlobResult createBlockBlob(String blob,
+            InputStream contentStream, CreateBlobOptions options)
+            throws ServiceException
+    {
+        return blobService.createBlockBlob(containerName, blob, contentStream,
+                options);
     }
 
-    /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.WritableBlobContainerContract#createBlobBlock(java.lang.String, java.lang.String, java.io.InputStream)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.microsoft.windowsazure.services.media.WritableBlobContainerContract
+     * #createBlobBlock(java.lang.String, java.lang.String, java.io.InputStream)
      */
     @Override
-    public void createBlobBlock(String blob, String blockId, InputStream contentStream) throws ServiceException {
-        blobService.createBlobBlock(containerName, blob, blockId, contentStream);
+    public void createBlobBlock(String blob, String blockId,
+            InputStream contentStream) throws ServiceException
+    {
+        blobService
+                .createBlobBlock(containerName, blob, blockId, contentStream);
 
     }
 
-    /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.WritableBlobContainerContract#createBlobBlock(java.lang.String, java.lang.String, java.io.InputStream, com.microsoft.windowsazure.services.blob.models.CreateBlobBlockOptions)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.microsoft.windowsazure.services.media.WritableBlobContainerContract
+     * #createBlobBlock(java.lang.String, java.lang.String, java.io.InputStream,
+     * com.microsoft.windowsazure.services.blob.models.CreateBlobBlockOptions)
      */
     @Override
-    public void createBlobBlock(String blob, String blockId, InputStream contentStream, CreateBlobBlockOptions options)
-            throws ServiceException {
-        blobService.createBlobBlock(containerName, blob, blockId, contentStream, options);
+    public void createBlobBlock(String blob, String blockId,
+            InputStream contentStream, CreateBlobBlockOptions options)
+            throws ServiceException
+    {
+        blobService.createBlobBlock(containerName, blob, blockId,
+                contentStream, options);
     }
 
-    /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.WritableBlobContainerContract#commitBlobBlocks(java.lang.String, com.microsoft.windowsazure.services.blob.models.BlockList)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.microsoft.windowsazure.services.media.WritableBlobContainerContract
+     * #commitBlobBlocks(java.lang.String,
+     * com.microsoft.windowsazure.services.blob.models.BlockList)
      */
     @Override
-    public void commitBlobBlocks(String blob, BlockList blockList) throws ServiceException {
+    public void commitBlobBlocks(String blob, BlockList blockList)
+            throws ServiceException
+    {
         blobService.commitBlobBlocks(containerName, blob, blockList);
     }
 
-    /* (non-Javadoc)
-     * @see com.microsoft.windowsazure.services.media.WritableBlobContainerContract#commitBlobBlocks(java.lang.String, com.microsoft.windowsazure.services.blob.models.BlockList, com.microsoft.windowsazure.services.blob.models.CommitBlobBlocksOptions)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.microsoft.windowsazure.services.media.WritableBlobContainerContract
+     * #commitBlobBlocks(java.lang.String,
+     * com.microsoft.windowsazure.services.blob.models.BlockList,
+     * com.microsoft.windowsazure.services.blob.models.CommitBlobBlocksOptions)
      */
     @Override
-    public void commitBlobBlocks(String blob, BlockList blockList, CommitBlobBlocksOptions options)
-            throws ServiceException {
+    public void commitBlobBlocks(String blob, BlockList blockList,
+            CommitBlobBlocksOptions options) throws ServiceException
+    {
         blobService.commitBlobBlocks(containerName, blob, blockList, options);
     }
 }

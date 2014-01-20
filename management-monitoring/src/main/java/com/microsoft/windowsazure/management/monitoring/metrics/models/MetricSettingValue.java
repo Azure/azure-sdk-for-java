@@ -28,11 +28,4 @@ package com.microsoft.windowsazure.management.monitoring.metrics.models;
 */
 public abstract class MetricSettingValue
 {
-    /**
-    * Initializes a new instance of the MetricSettingValue class.
-    *
-    */
-    public MetricSettingValue()
-    {
-    }
 }

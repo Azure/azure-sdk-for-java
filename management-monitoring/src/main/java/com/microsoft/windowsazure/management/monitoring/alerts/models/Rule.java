@@ -35,85 +35,141 @@ public class Rule
     
     /**
     * Rule actions.
+    * @return The Actions value.
     */
-    public ArrayList<RuleAction> getActions() { return this.actions; }
+    public ArrayList<RuleAction> getActions()
+    {
+        return this.actions;
+    }
     
     /**
     * Rule actions.
+    * @param actionsValue The Actions value.
     */
-    public void setActions(ArrayList<RuleAction> actions) { this.actions = actions; }
+    public void setActions(final ArrayList<RuleAction> actionsValue)
+    {
+        this.actions = actionsValue;
+    }
     
     private RuleCondition condition;
     
     /**
     * Rule condition.
+    * @return The Condition value.
     */
-    public RuleCondition getCondition() { return this.condition; }
+    public RuleCondition getCondition()
+    {
+        return this.condition;
+    }
     
     /**
     * Rule condition.
+    * @param conditionValue The Condition value.
     */
-    public void setCondition(RuleCondition condition) { this.condition = condition; }
+    public void setCondition(final RuleCondition conditionValue)
+    {
+        this.condition = conditionValue;
+    }
     
     private String description;
     
     /**
     * Rule description.
+    * @return The Description value.
     */
-    public String getDescription() { return this.description; }
+    public String getDescription()
+    {
+        return this.description;
+    }
     
     /**
     * Rule description.
+    * @param descriptionValue The Description value.
     */
-    public void setDescription(String description) { this.description = description; }
+    public void setDescription(final String descriptionValue)
+    {
+        this.description = descriptionValue;
+    }
     
     private String id;
     
     /**
     * Rule identifier.
+    * @return The Id value.
     */
-    public String getId() { return this.id; }
+    public String getId()
+    {
+        return this.id;
+    }
     
     /**
     * Rule identifier.
+    * @param idValue The Id value.
     */
-    public void setId(String id) { this.id = id; }
+    public void setId(final String idValue)
+    {
+        this.id = idValue;
+    }
     
     private boolean isEnabled;
     
     /**
     * A flag that determines whether the rule is enabled or disabled.
+    * @return The IsEnabled value.
     */
-    public boolean getIsEnabled() { return this.isEnabled; }
+    public boolean isEnabled()
+    {
+        return this.isEnabled;
+    }
     
     /**
     * A flag that determines whether the rule is enabled or disabled.
+    * @param isEnabledValue The IsEnabled value.
     */
-    public void setIsEnabled(boolean isEnabled) { this.isEnabled = isEnabled; }
+    public void setIsEnabled(final boolean isEnabledValue)
+    {
+        this.isEnabled = isEnabledValue;
+    }
     
     private Calendar lastUpdatedTime;
     
     /**
     * Rule last updated time.
+    * @return The LastUpdatedTime value.
     */
-    public Calendar getLastUpdatedTime() { return this.lastUpdatedTime; }
+    public Calendar getLastUpdatedTime()
+    {
+        return this.lastUpdatedTime;
+    }
     
     /**
     * Rule last updated time.
+    * @param lastUpdatedTimeValue The LastUpdatedTime value.
     */
-    public void setLastUpdatedTime(Calendar lastUpdatedTime) { this.lastUpdatedTime = lastUpdatedTime; }
+    public void setLastUpdatedTime(final Calendar lastUpdatedTimeValue)
+    {
+        this.lastUpdatedTime = lastUpdatedTimeValue;
+    }
     
     private String name;
     
     /**
     * Rule name.
+    * @return The Name value.
     */
-    public String getName() { return this.name; }
+    public String getName()
+    {
+        return this.name;
+    }
     
     /**
     * Rule name.
+    * @param nameValue The Name value.
     */
-    public void setName(String name) { this.name = name; }
+    public void setName(final String nameValue)
+    {
+        this.name = nameValue;
+    }
     
     /**
     * Initializes a new instance of the Rule class.

@@ -32,44 +32,59 @@ public class ServiceCertificateDeleteParameters
     
     /**
     * The DNS prefix name of your service.
+    * @return The ServiceName value.
     */
-    public String getServiceName() { return this.serviceName; }
+    public String getServiceName()
+    {
+        return this.serviceName;
+    }
     
     /**
     * The DNS prefix name of your service.
+    * @param serviceNameValue The ServiceName value.
     */
-    public void setServiceName(String serviceName) { this.serviceName = serviceName; }
+    public void setServiceName(final String serviceNameValue)
+    {
+        this.serviceName = serviceNameValue;
+    }
     
     private String thumbprint;
     
     /**
     * The hexadecimal representation of the thumbprint.
+    * @return The Thumbprint value.
     */
-    public String getThumbprint() { return this.thumbprint; }
+    public String getThumbprint()
+    {
+        return this.thumbprint;
+    }
     
     /**
     * The hexadecimal representation of the thumbprint.
+    * @param thumbprintValue The Thumbprint value.
     */
-    public void setThumbprint(String thumbprint) { this.thumbprint = thumbprint; }
+    public void setThumbprint(final String thumbprintValue)
+    {
+        this.thumbprint = thumbprintValue;
+    }
     
     private String thumbprintAlgorithm;
     
     /**
     * The algorithm for the certificate's thumbprint.
+    * @return The ThumbprintAlgorithm value.
     */
-    public String getThumbprintAlgorithm() { return this.thumbprintAlgorithm; }
+    public String getThumbprintAlgorithm()
+    {
+        return this.thumbprintAlgorithm;
+    }
     
     /**
     * The algorithm for the certificate's thumbprint.
+    * @param thumbprintAlgorithmValue The ThumbprintAlgorithm value.
     */
-    public void setThumbprintAlgorithm(String thumbprintAlgorithm) { this.thumbprintAlgorithm = thumbprintAlgorithm; }
-    
-    /**
-    * Initializes a new instance of the ServiceCertificateDeleteParameters
-    * class.
-    *
-    */
-    public ServiceCertificateDeleteParameters()
+    public void setThumbprintAlgorithm(final String thumbprintAlgorithmValue)
     {
+        this.thumbprintAlgorithm = thumbprintAlgorithmValue;
     }
 }

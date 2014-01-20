@@ -38,8 +38,12 @@ public class AlertsClientImpl extends ServiceClient<AlertsClient> implements Ale
     
     /**
     * Optional base uri parameter for Azure REST.
+    * @return The BaseUri value.
     */
-    public URI getBaseUri() { return this.baseUri; }
+    public URI getBaseUri()
+    {
+        return this.baseUri;
+    }
     
     private SubscriptionCloudCredentials credentials;
     
@@ -50,22 +54,34 @@ public class AlertsClientImpl extends ServiceClient<AlertsClient> implements Ale
     * Azure Service ManagementAPI use mutual authentication of management
     * certificates over SSL to ensure that a request made to the service is
     * secure.  No anonymous requests are allowed.
+    * @return The Credentials value.
     */
-    public SubscriptionCloudCredentials getCredentials() { return this.credentials; }
+    public SubscriptionCloudCredentials getCredentials()
+    {
+        return this.credentials;
+    }
     
     private IncidentOperations incidents;
     
     /**
     * Operations for managing the alert incidents.
+    * @return The IncidentsOperations value.
     */
-    public IncidentOperations getIncidentsOperations() { return this.incidents; }
+    public IncidentOperations getIncidentsOperations()
+    {
+        return this.incidents;
+    }
     
     private RuleOperations rules;
     
     /**
     * Operations for managing the alert rules.
+    * @return The RulesOperations value.
     */
-    public RuleOperations getRulesOperations() { return this.rules; }
+    public RuleOperations getRulesOperations()
+    {
+        return this.rules;
+    }
     
     /**
     * Initializes a new instance of the AlertsClientImpl class.
@@ -120,6 +136,8 @@ public class AlertsClientImpl extends ServiceClient<AlertsClient> implements Ale
     * The Windows Azure Service ManagementAPI use mutual authentication of
     * management certificates over SSL to ensure that a request made to the
     * service is secure.  No anonymous requests are allowed.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
     */
     @Inject
     public AlertsClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, @Named(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS) SubscriptionCloudCredentials credentials) throws java.net.URISyntaxException

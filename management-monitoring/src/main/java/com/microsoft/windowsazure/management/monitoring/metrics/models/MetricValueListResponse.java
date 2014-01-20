@@ -34,19 +34,19 @@ public class MetricValueListResponse extends OperationResponse
     
     /**
     * The retrieved metric value sets.
+    * @return The MetricValueSetCollection value.
     */
-    public MetricValueSetCollection getMetricValueSetCollection() { return this.metricValueSetCollection; }
+    public MetricValueSetCollection getMetricValueSetCollection()
+    {
+        return this.metricValueSetCollection;
+    }
     
     /**
     * The retrieved metric value sets.
+    * @param metricValueSetCollectionValue The MetricValueSetCollection value.
     */
-    public void setMetricValueSetCollection(MetricValueSetCollection metricValueSetCollection) { this.metricValueSetCollection = metricValueSetCollection; }
-    
-    /**
-    * Initializes a new instance of the MetricValueListResponse class.
-    *
-    */
-    public MetricValueListResponse()
+    public void setMetricValueSetCollection(final MetricValueSetCollection metricValueSetCollectionValue)
     {
+        this.metricValueSetCollection = metricValueSetCollectionValue;
     }
 }

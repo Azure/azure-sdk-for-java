@@ -37,8 +37,12 @@ public class DomainJoinCredentials
     * is not specified, Username must specify the user principal name (UPN)
     * format (user@fully-qualified-DNS-domain) or the
     * fully-qualified-DNS-domain\\username format.  Example: example.com
+    * @return The Domain value.
     */
-    public String getDomain() { return this.domain; }
+    public String getDomain()
+    {
+        return this.domain;
+    }
     
     /**
     * Optional. Specifies the name of the domain used to authenticate an
@@ -46,40 +50,52 @@ public class DomainJoinCredentials
     * is not specified, Username must specify the user principal name (UPN)
     * format (user@fully-qualified-DNS-domain) or the
     * fully-qualified-DNS-domain\\username format.  Example: example.com
+    * @param domainValue The Domain value.
     */
-    public void setDomain(String domain) { this.domain = domain; }
+    public void setDomain(final String domainValue)
+    {
+        this.domain = domainValue;
+    }
     
     private String password;
     
     /**
     * Required. Specifies the password to use to join the domain.
+    * @return The Password value.
     */
-    public String getPassword() { return this.password; }
+    public String getPassword()
+    {
+        return this.password;
+    }
     
     /**
     * Required. Specifies the password to use to join the domain.
+    * @param passwordValue The Password value.
     */
-    public void setPassword(String password) { this.password = password; }
+    public void setPassword(final String passwordValue)
+    {
+        this.password = passwordValue;
+    }
     
     private String userName;
     
     /**
     * Required. Specifies a user name in the domain that can be used to join
     * the domain.
+    * @return The UserName value.
     */
-    public String getUserName() { return this.userName; }
+    public String getUserName()
+    {
+        return this.userName;
+    }
     
     /**
     * Required. Specifies a user name in the domain that can be used to join
     * the domain.
+    * @param userNameValue The UserName value.
     */
-    public void setUserName(String userName) { this.userName = userName; }
-    
-    /**
-    * Initializes a new instance of the DomainJoinCredentials class.
-    *
-    */
-    public DomainJoinCredentials()
+    public void setUserName(final String userNameValue)
     {
+        this.userName = userNameValue;
     }
 }

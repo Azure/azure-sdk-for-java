@@ -35,18 +35,16 @@ public class JobUpdateStateResponse extends OperationResponse
     /**
     * The updated job.
     */
-    public Job getJob() { return this.job; }
+    public Job getJob()
+    {
+        return this.job;
+    }
     
     /**
     * The updated job.
     */
-    public void setJob(Job job) { this.job = job; }
-    
-    /**
-    * Initializes a new instance of the JobUpdateStateResponse class.
-    *
-    */
-    public JobUpdateStateResponse()
+    public void setJob(Job job)
     {
+        this.job = job;
     }
 }

@@ -35,24 +35,36 @@ public class JobStatus
     /**
     * Number of times this job has executed.
     */
-    public int getExecutionCount() { return this.executionCount; }
+    public int getExecutionCount()
+    {
+        return this.executionCount;
+    }
     
     /**
     * Number of times this job has executed.
     */
-    public void setExecutionCount(int executionCount) { this.executionCount = executionCount; }
+    public void setExecutionCount(int executionCount)
+    {
+        this.executionCount = executionCount;
+    }
     
     private int failureCount;
     
     /**
     * Number of times this job has failed.
     */
-    public int getFailureCount() { return this.failureCount; }
+    public int getFailureCount()
+    {
+        return this.failureCount;
+    }
     
     /**
     * Number of times this job has failed.
     */
-    public void setFailureCount(int failureCount) { this.failureCount = failureCount; }
+    public void setFailureCount(int failureCount)
+    {
+        this.failureCount = failureCount;
+    }
     
     private int faultedCount;
     
@@ -60,13 +72,19 @@ public class JobStatus
     * Number of faulted occurrences (occurrences that were retried and failed
     * as many times as the retry policy states).
     */
-    public int getFaultedCount() { return this.faultedCount; }
+    public int getFaultedCount()
+    {
+        return this.faultedCount;
+    }
     
     /**
     * Number of faulted occurrences (occurrences that were retried and failed
     * as many times as the retry policy states).
     */
-    public void setFaultedCount(int faultedCount) { this.faultedCount = faultedCount; }
+    public void setFaultedCount(int faultedCount)
+    {
+        this.faultedCount = faultedCount;
+    }
     
     private Calendar lastExecutionTime;
     
@@ -74,13 +92,19 @@ public class JobStatus
     * Time the last occurrence executed in ISO-8601 format. Could be empty if
     * job has not run yet.
     */
-    public Calendar getLastExecutionTime() { return this.lastExecutionTime; }
+    public Calendar getLastExecutionTime()
+    {
+        return this.lastExecutionTime;
+    }
     
     /**
     * Time the last occurrence executed in ISO-8601 format. Could be empty if
     * job has not run yet.
     */
-    public void setLastExecutionTime(Calendar lastExecutionTime) { this.lastExecutionTime = lastExecutionTime; }
+    public void setLastExecutionTime(Calendar lastExecutionTime)
+    {
+        this.lastExecutionTime = lastExecutionTime;
+    }
     
     private Calendar nextExecutionTime;
     
@@ -88,19 +112,17 @@ public class JobStatus
     * Time of the next occurrence in ISO-8601 format. Could be empty if the job
     * is completed.
     */
-    public Calendar getNextExecutionTime() { return this.nextExecutionTime; }
+    public Calendar getNextExecutionTime()
+    {
+        return this.nextExecutionTime;
+    }
     
     /**
     * Time of the next occurrence in ISO-8601 format. Could be empty if the job
     * is completed.
     */
-    public void setNextExecutionTime(Calendar nextExecutionTime) { this.nextExecutionTime = nextExecutionTime; }
-    
-    /**
-    * Initializes a new instance of the JobStatus class.
-    *
-    */
-    public JobStatus()
+    public void setNextExecutionTime(Calendar nextExecutionTime)
     {
+        this.nextExecutionTime = nextExecutionTime;
     }
 }

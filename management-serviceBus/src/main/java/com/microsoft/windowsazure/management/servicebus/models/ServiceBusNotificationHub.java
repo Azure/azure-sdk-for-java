@@ -29,21 +29,57 @@ public class ServiceBusNotificationHub
 {
     private ArrayList<ServiceBusSharedAccessAuthorizationRule> authorizationRules;
     
-    public ArrayList<ServiceBusSharedAccessAuthorizationRule> getAuthorizationRules() { return this.authorizationRules; }
+    /**
+    * @return The AuthorizationRules value.
+    */
+    public ArrayList<ServiceBusSharedAccessAuthorizationRule> getAuthorizationRules()
+    {
+        return this.authorizationRules;
+    }
     
-    public void setAuthorizationRules(ArrayList<ServiceBusSharedAccessAuthorizationRule> authorizationRules) { this.authorizationRules = authorizationRules; }
+    /**
+    * @param authorizationRulesValue The AuthorizationRules value.
+    */
+    public void setAuthorizationRules(final ArrayList<ServiceBusSharedAccessAuthorizationRule> authorizationRulesValue)
+    {
+        this.authorizationRules = authorizationRulesValue;
+    }
     
     private String name;
     
-    public String getName() { return this.name; }
+    /**
+    * @return The Name value.
+    */
+    public String getName()
+    {
+        return this.name;
+    }
     
-    public void setName(String name) { this.name = name; }
+    /**
+    * @param nameValue The Name value.
+    */
+    public void setName(final String nameValue)
+    {
+        this.name = nameValue;
+    }
     
     private String registrationTtl;
     
-    public String getRegistrationTtl() { return this.registrationTtl; }
+    /**
+    * @return The RegistrationTtl value.
+    */
+    public String getRegistrationTtl()
+    {
+        return this.registrationTtl;
+    }
     
-    public void setRegistrationTtl(String registrationTtl) { this.registrationTtl = registrationTtl; }
+    /**
+    * @param registrationTtlValue The RegistrationTtl value.
+    */
+    public void setRegistrationTtl(final String registrationTtlValue)
+    {
+        this.registrationTtl = registrationTtlValue;
+    }
     
     /**
     * Initializes a new instance of the ServiceBusNotificationHub class.

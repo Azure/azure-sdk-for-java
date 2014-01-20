@@ -26,35 +26,46 @@ import com.microsoft.windowsazure.services.servicebus.implementation.ServiceBusR
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.json.JSONConfiguration;
 
-public class Exports implements Builder.Exports {
+public class Exports implements Builder.Exports
+{
     @Override
-    public void register(Builder.Registry registry) {
+    public void register(Builder.Registry registry)
+    {
 
         // provide contract implementation
-        registry.add(ServiceBusContract.class, ServiceBusExceptionProcessor.class);
+        registry.add(ServiceBusContract.class,
+                ServiceBusExceptionProcessor.class);
         registry.add(ServiceBusExceptionProcessor.class);
         registry.add(ServiceBusRestProxy.class);
         registry.add(UserAgentFilter.class);
 
         // alter jersey client config for serviceBus
-        registry.alter(ServiceBusContract.class, ClientConfig.class, new Builder.Alteration<ClientConfig>() {
+        registry.alter(ServiceBusContract.class, ClientConfig.class,
+                new Builder.Alteration<ClientConfig>()
+                {
 
-            @Override
-            public ClientConfig alter(String profile, ClientConfig instance, Builder builder,
-                    Map<String, Object> properties) {
+                    @Override
+                    public ClientConfig alter(String profile,
+                            ClientConfig instance, Builder builder,
+                            Map<String, Object> properties)
+                    {
 
-                // enable this feature for unattributed json object serialization
-                instance.getProperties().put(JSONConfiguration.FEATURE_POJO_MAPPING, true);
+                        // enable this feature for unattributed json object
+                        // serialization
+                        instance.getProperties().put(
+                                JSONConfiguration.FEATURE_POJO_MAPPING, true);
 
-                // need to avoid certain element prefixes, which the service does not ignore
-                instance.getSingletons().add(new MarshallerProvider());
+                        // need to avoid certain element prefixes, which the
+                        // service does not ignore
+                        instance.getSingletons().add(new MarshallerProvider());
 
-                // add body reader/writer for EntryModel<?> descendant classes
-                instance.getClasses().add(EntryModelProvider.class);
+                        // add body reader/writer for EntryModel<?> descendant
+                        // classes
+                        instance.getClasses().add(EntryModelProvider.class);
 
-                return instance;
-            }
-        });
+                        return instance;
+                    }
+                });
 
         // convenience provider to transform BrokerProperty headers to json
         registry.add(BrokerPropertiesMapper.class);

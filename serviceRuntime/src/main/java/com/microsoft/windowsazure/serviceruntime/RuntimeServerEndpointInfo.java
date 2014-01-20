@@ -19,7 +19,6 @@
 // Generated on: 2011.11.14 at 04:34:45 PM PST 
 //
 
-
 package com.microsoft.windowsazure.serviceruntime;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -27,11 +26,13 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
- * <p>Java class for RuntimeServerEndpointInfo complex type.
+ * <p>
+ * Java class for RuntimeServerEndpointInfo complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="RuntimeServerEndpointInfo">
@@ -48,7 +49,8 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "RuntimeServerEndpointInfo")
-class RuntimeServerEndpointInfo {
+class RuntimeServerEndpointInfo
+{
 
     @XmlAttribute(required = true)
     protected String version;
@@ -58,12 +60,11 @@ class RuntimeServerEndpointInfo {
     /**
      * Gets the value of the version property.
      * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     * @return possible object is {@link String }
+     * 
      */
-    public String getVersion() {
+    public String getVersion()
+    {
         return version;
     }
 
@@ -71,23 +72,22 @@ class RuntimeServerEndpointInfo {
      * Sets the value of the version property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *            allowed object is {@link String }
+     * 
      */
-    public void setVersion(String value) {
+    public void setVersion(String value)
+    {
         this.version = value;
     }
 
     /**
      * Gets the value of the path property.
      * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     * @return possible object is {@link String }
+     * 
      */
-    public String getPath() {
+    public String getPath()
+    {
         return path;
     }
 
@@ -95,11 +95,11 @@ class RuntimeServerEndpointInfo {
      * Sets the value of the path property.
      * 
      * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *            allowed object is {@link String }
+     * 
      */
-    public void setPath(String value) {
+    public void setPath(String value)
+    {
         this.path = value;
     }
 

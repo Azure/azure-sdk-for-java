@@ -36,13 +36,21 @@ public class DatabaseCopyListResponse extends OperationResponse implements Itera
     
     /**
     * The matching SQL Server database copies.
+    * @return The DatabaseCopies value.
     */
-    public ArrayList<DatabaseCopyResponse> getDatabaseCopies() { return this.databaseCopies; }
+    public ArrayList<DatabaseCopyResponse> getDatabaseCopies()
+    {
+        return this.databaseCopies;
+    }
     
     /**
     * The matching SQL Server database copies.
+    * @param databaseCopiesValue The DatabaseCopies value.
     */
-    public void setDatabaseCopies(ArrayList<DatabaseCopyResponse> databaseCopies) { this.databaseCopies = databaseCopies; }
+    public void setDatabaseCopies(final ArrayList<DatabaseCopyResponse> databaseCopiesValue)
+    {
+        this.databaseCopies = databaseCopiesValue;
+    }
     
     /**
     * Initializes a new instance of the DatabaseCopyListResponse class.
@@ -50,6 +58,7 @@ public class DatabaseCopyListResponse extends OperationResponse implements Itera
     */
     public DatabaseCopyListResponse()
     {
+        super();
         this.databaseCopies = new ArrayList<DatabaseCopyResponse>();
     }
     

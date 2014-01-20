@@ -34,93 +34,141 @@ public class MetricValue
     
     /**
     * Specifies annotation for the metric.
+    * @return The Annotation value.
     */
-    public String getAnnotation() { return this.annotation; }
+    public String getAnnotation()
+    {
+        return this.annotation;
+    }
     
     /**
     * Specifies annotation for the metric.
+    * @param annotationValue The Annotation value.
     */
-    public void setAnnotation(String annotation) { this.annotation = annotation; }
+    public void setAnnotation(final String annotationValue)
+    {
+        this.annotation = annotationValue;
+    }
     
     private Double average;
     
     /**
     * Specifies the average value in the time interval.
+    * @return The Average value.
     */
-    public Double getAverage() { return this.average; }
+    public Double getAverage()
+    {
+        return this.average;
+    }
     
     /**
     * Specifies the average value in the time interval.
+    * @param averageValue The Average value.
     */
-    public void setAverage(Double average) { this.average = average; }
+    public void setAverage(final Double averageValue)
+    {
+        this.average = averageValue;
+    }
     
     private Integer count;
     
     /**
     * Specifies the sample count in the time interval. Can be used to determine
     * the number of values that contributed to the average value.
+    * @return The Count value.
     */
-    public Integer getCount() { return this.count; }
+    public Integer getCount()
+    {
+        return this.count;
+    }
     
     /**
     * Specifies the sample count in the time interval. Can be used to determine
     * the number of values that contributed to the average value.
+    * @param countValue The Count value.
     */
-    public void setCount(Integer count) { this.count = count; }
+    public void setCount(final Integer countValue)
+    {
+        this.count = countValue;
+    }
     
     private Double maximum;
     
     /**
     * Specifies the maximum value in the time interval.
+    * @return The Maximum value.
     */
-    public Double getMaximum() { return this.maximum; }
+    public Double getMaximum()
+    {
+        return this.maximum;
+    }
     
     /**
     * Specifies the maximum value in the time interval.
+    * @param maximumValue The Maximum value.
     */
-    public void setMaximum(Double maximum) { this.maximum = maximum; }
+    public void setMaximum(final Double maximumValue)
+    {
+        this.maximum = maximumValue;
+    }
     
     private Double minimum;
     
     /**
     * Specifies the minimum value in the time interval.
+    * @return The Minimum value.
     */
-    public Double getMinimum() { return this.minimum; }
+    public Double getMinimum()
+    {
+        return this.minimum;
+    }
     
     /**
     * Specifies the minimum value in the time interval.
+    * @param minimumValue The Minimum value.
     */
-    public void setMinimum(Double minimum) { this.minimum = minimum; }
+    public void setMinimum(final Double minimumValue)
+    {
+        this.minimum = minimumValue;
+    }
     
     private Calendar timestamp;
     
     /**
     * The timestamp for the metric value.
+    * @return The Timestamp value.
     */
-    public Calendar getTimestamp() { return this.timestamp; }
+    public Calendar getTimestamp()
+    {
+        return this.timestamp;
+    }
     
     /**
     * The timestamp for the metric value.
+    * @param timestampValue The Timestamp value.
     */
-    public void setTimestamp(Calendar timestamp) { this.timestamp = timestamp; }
+    public void setTimestamp(final Calendar timestampValue)
+    {
+        this.timestamp = timestampValue;
+    }
     
     private Double total;
     
     /**
     * Specifies the total value in the time interval.
+    * @return The Total value.
     */
-    public Double getTotal() { return this.total; }
+    public Double getTotal()
+    {
+        return this.total;
+    }
     
     /**
     * Specifies the total value in the time interval.
+    * @param totalValue The Total value.
     */
-    public void setTotal(Double total) { this.total = total; }
-    
-    /**
-    * Initializes a new instance of the MetricValue class.
-    *
-    */
-    public MetricValue()
+    public void setTotal(final Double totalValue)
     {
+        this.total = totalValue;
     }
 }

@@ -40,7 +40,8 @@ import com.sun.jersey.api.representation.Form;
  * The OAuth rest proxy.
  * 
  */
-public class OAuthRestProxy implements OAuthContract {
+public class OAuthRestProxy implements OAuthContract
+{
     Client channel;
 
     private final String grantType = "client_credentials";
@@ -48,13 +49,15 @@ public class OAuthRestProxy implements OAuthContract {
     static Log log = LogFactory.getLog(OAuthContract.class);
 
     @Inject
-    public OAuthRestProxy(Client channel, UserAgentFilter userAgentFilter) {
+    public OAuthRestProxy(Client channel, UserAgentFilter userAgentFilter)
+    {
         this.channel = channel;
         channel.addFilter(new ClientFilterRequestAdapter(userAgentFilter));
     }
 
     /**
-     * Gets an OAuth access token with specified OAUTH URI, client ID, client secret, and scope.
+     * Gets an OAuth access token with specified OAUTH URI, client ID, client
+     * secret, and scope.
      * 
      * @param oAuthUri
      *            A <code>URI</code> object which represents an OAUTH URI.
@@ -72,8 +75,9 @@ public class OAuthRestProxy implements OAuthContract {
      * @throws ServiceException
      */
     @Override
-    public OAuthTokenResponse getAccessToken(URI oAuthUri, String clientId, String clientSecret, String scope)
-            throws ServiceException {
+    public OAuthTokenResponse getAccessToken(URI oAuthUri, String clientId,
+            String clientSecret, String scope) throws ServiceException
+    {
         OAuthTokenResponse response = null;
         Form requestForm = new Form();
         ClientResponse clientResponse;
@@ -84,38 +88,63 @@ public class OAuthRestProxy implements OAuthContract {
         requestForm.add("client_secret", clientSecret);
         requestForm.add("scope", scope);
 
-        try {
-            clientResponse = channel.resource(oAuthUri).accept(MediaType.APPLICATION_FORM_URLENCODED)
-                    .type(MediaType.APPLICATION_FORM_URLENCODED).post(ClientResponse.class, requestForm);
-        }
-        catch (UniformInterfaceException e) {
+        try
+        {
+            clientResponse = channel.resource(oAuthUri)
+                    .accept(MediaType.APPLICATION_FORM_URLENCODED)
+                    .type(MediaType.APPLICATION_FORM_URLENCODED)
+                    .post(ClientResponse.class, requestForm);
+        } catch (UniformInterfaceException e)
+        {
             log.warn("OAuth server returned error acquiring access_token", e);
-            throw ServiceExceptionFactory.process("OAuth", new ServiceException(
-                    "OAuth server returned error acquiring access_token", e));
+            throw ServiceExceptionFactory
+                    .process(
+                            "OAuth",
+                            new ServiceException(
+                                    "OAuth server returned error acquiring access_token",
+                                    e));
         }
 
         responseJson = clientResponse.getEntity(String.class);
 
-        try {
+        try
+        {
             ObjectMapper mapper = new ObjectMapper();
-            TypeReference<OAuthTokenResponse> typeReference = new TypeReference<OAuthTokenResponse>() {
+            TypeReference<OAuthTokenResponse> typeReference = new TypeReference<OAuthTokenResponse>()
+            {
             };
             response = mapper.readValue(responseJson, typeReference);
-        }
-        catch (JsonParseException e) {
-            log.warn("The response from OAuth server cannot be parsed correctly", e);
-            throw ServiceExceptionFactory.process("OAuth", new ServiceException(
-                    "The response from OAuth server cannot be parsed correctly", e));
-        }
-        catch (JsonMappingException e) {
-            log.warn("The response from OAuth server cannot be mapped to OAuthResponse object", e);
-            throw ServiceExceptionFactory.process("OAuth", new ServiceException(
-                    "The response from OAuth server cannot be mapped to OAuthResponse object", e));
-        }
-        catch (IOException e) {
+        } catch (JsonParseException e)
+        {
+            log.warn(
+                    "The response from OAuth server cannot be parsed correctly",
+                    e);
+            throw ServiceExceptionFactory
+                    .process(
+                            "OAuth",
+                            new ServiceException(
+                                    "The response from OAuth server cannot be parsed correctly",
+                                    e));
+        } catch (JsonMappingException e)
+        {
+            log.warn(
+                    "The response from OAuth server cannot be mapped to OAuthResponse object",
+                    e);
+            throw ServiceExceptionFactory
+                    .process(
+                            "OAuth",
+                            new ServiceException(
+                                    "The response from OAuth server cannot be mapped to OAuthResponse object",
+                                    e));
+        } catch (IOException e)
+        {
             log.warn("Cannot map the response from OAuth server correctly.", e);
-            throw ServiceExceptionFactory.process("OAuth", new ServiceException(
-                    "Cannot map the response from OAuth server correctly.", e));
+            throw ServiceExceptionFactory
+                    .process(
+                            "OAuth",
+                            new ServiceException(
+                                    "Cannot map the response from OAuth server correctly.",
+                                    e));
         }
 
         return response;

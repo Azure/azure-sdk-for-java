@@ -33,44 +33,60 @@ public class MetricSetting
     /**
     * The metric settings namespace. For endpoint monitoring metrics the
     * namespace value is WindowsAzure.Availability
+    * @return The Namespace value.
     */
-    public String getNamespace() { return this.namespace; }
+    public String getNamespace()
+    {
+        return this.namespace;
+    }
     
     /**
     * The metric settings namespace. For endpoint monitoring metrics the
     * namespace value is WindowsAzure.Availability
+    * @param namespaceValue The Namespace value.
     */
-    public void setNamespace(String namespace) { this.namespace = namespace; }
+    public void setNamespace(final String namespaceValue)
+    {
+        this.namespace = namespaceValue;
+    }
     
     private String resourceId;
     
     /**
     * The resource id of the service.
+    * @return The ResourceId value.
     */
-    public String getResourceId() { return this.resourceId; }
+    public String getResourceId()
+    {
+        return this.resourceId;
+    }
     
     /**
     * The resource id of the service.
+    * @param resourceIdValue The ResourceId value.
     */
-    public void setResourceId(String resourceId) { this.resourceId = resourceId; }
+    public void setResourceId(final String resourceIdValue)
+    {
+        this.resourceId = resourceIdValue;
+    }
     
     private MetricSettingValue value;
     
     /**
     * The metric settings value.
+    * @return The Value value.
     */
-    public MetricSettingValue getValue() { return this.value; }
+    public MetricSettingValue getValue()
+    {
+        return this.value;
+    }
     
     /**
     * The metric settings value.
+    * @param valueValue The Value value.
     */
-    public void setValue(MetricSettingValue value) { this.value = value; }
-    
-    /**
-    * Initializes a new instance of the MetricSetting class.
-    *
-    */
-    public MetricSetting()
+    public void setValue(final MetricSettingValue valueValue)
     {
+        this.value = valueValue;
     }
 }

@@ -19,15 +19,16 @@ import com.microsoft.windowsazure.core.Builder;
 /**
  * The Class Exports.
  */
-public class Exports implements Builder.Exports {
-
+public class Exports implements Builder.Exports
+{
     /* (non-Javadoc)
      * @see com.microsoft.windowsazure.services.core.Builder.Exports#register(com.microsoft.windowsazure.services.core.Builder.Registry)
      */
     @Override
-    public void register(Builder.Registry registry) {
-
+    public void register(final Builder.Registry registry)
+    {
         // provide contract implementation
-        registry.add(StoreManagementClient.class, StoreManagementClientImpl.class);
+        registry.add(StoreManagementClient.class,
+                StoreManagementClientImpl.class);
     }
 }

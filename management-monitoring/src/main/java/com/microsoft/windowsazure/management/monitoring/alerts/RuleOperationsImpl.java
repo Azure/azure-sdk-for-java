@@ -31,7 +31,6 @@ import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.monitoring.alerts.models.ConditionOperator;
 import com.microsoft.windowsazure.management.monitoring.alerts.models.Rule;
 import com.microsoft.windowsazure.management.monitoring.alerts.models.RuleAction;
-import com.microsoft.windowsazure.management.monitoring.alerts.models.RuleCollection;
 import com.microsoft.windowsazure.management.monitoring.alerts.models.RuleCreateOrUpdateParameters;
 import com.microsoft.windowsazure.management.monitoring.alerts.models.RuleEmailAction;
 import com.microsoft.windowsazure.management.monitoring.alerts.models.RuleGetResponse;
@@ -42,7 +41,6 @@ import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -52,6 +50,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 import javax.xml.datatype.Duration;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
@@ -80,8 +79,12 @@ public class RuleOperationsImpl implements ServiceOperations<AlertsClientImpl>, 
     /**
     * Gets a reference to the
     * microsoft.windowsazure.management.monitoring.alerts.AlertsClientImpl.
+    * @return The Client value.
     */
-    public AlertsClientImpl getClient() { return this.client; }
+    public AlertsClientImpl getClient()
+    {
+        return this.client;
+    }
     
     /**
     *
@@ -104,11 +107,15 @@ public class RuleOperationsImpl implements ServiceOperations<AlertsClientImpl>, 
     /**
     *
     * @param parameters The rule to create or update.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
     @Override
-    public OperationResponse createOrUpdate(RuleCreateOrUpdateParameters parameters) throws UnsupportedEncodingException, IOException, ServiceException
+    public OperationResponse createOrUpdate(RuleCreateOrUpdateParameters parameters) throws IOException, ServiceException
     {
         // Validate
         if (parameters == null)
@@ -163,7 +170,7 @@ public class RuleOperationsImpl implements ServiceOperations<AlertsClientImpl>, 
                 ruleValue.put("Description", parameters.getRule().getDescription());
             }
             
-            ruleValue.put("IsEnabled", parameters.getRule().getIsEnabled());
+            ruleValue.put("IsEnabled", parameters.getRule().isEnabled());
             
             if (parameters.getRule().getCondition() != null)
             {
@@ -172,7 +179,7 @@ public class RuleOperationsImpl implements ServiceOperations<AlertsClientImpl>, 
                 conditionValue.put("odata.type", parameters.getRule().getCondition().getClass().getName());
                 if (parameters.getRule().getCondition().getClass().isInstance(ThresholdRuleCondition.class))
                 {
-                    ThresholdRuleCondition derived = ((ThresholdRuleCondition)parameters.getRule().getCondition());
+                    ThresholdRuleCondition derived = ((ThresholdRuleCondition) parameters.getRule().getCondition());
                     
                     if (derived.getDataSource() != null)
                     {
@@ -181,7 +188,7 @@ public class RuleOperationsImpl implements ServiceOperations<AlertsClientImpl>, 
                         dataSourceValue.put("odata.type", derived.getDataSource().getClass().getName());
                         if (derived.getDataSource().getClass().isInstance(RuleMetricDataSource.class))
                         {
-                            RuleMetricDataSource derived2 = ((RuleMetricDataSource)derived.getDataSource());
+                            RuleMetricDataSource derived2 = ((RuleMetricDataSource) derived.getDataSource());
                             
                             if (derived2.getResourceId() != null)
                             {
@@ -218,9 +225,9 @@ public class RuleOperationsImpl implements ServiceOperations<AlertsClientImpl>, 
                     ruleActionValue.put("odata.type", actionsItem.getClass().getName());
                     if (actionsItem.getClass().isInstance(RuleEmailAction.class))
                     {
-                        RuleEmailAction derived3 = ((RuleEmailAction)actionsItem);
+                        RuleEmailAction derived3 = ((RuleEmailAction) actionsItem);
                         
-                        ruleActionValue.put("SendToServiceOwners", derived3.getSendToServiceOwners());
+                        ruleActionValue.put("SendToServiceOwners", derived3.isSendToServiceOwners());
                         
                         if (derived3.getCustomEmails() != null)
                         {
@@ -251,40 +258,50 @@ public class RuleOperationsImpl implements ServiceOperations<AlertsClientImpl>, 
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200 && statusCode != 201)
-        {
-            ServiceException ex = ServiceException.createFromJson(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK && statusCode != HttpStatus.SC_CREATED)
+            {
+                ServiceException ex = ServiceException.createFromJson(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        OperationResponse result = null;
-        result = new OperationResponse();
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -308,6 +325,10 @@ public class RuleOperationsImpl implements ServiceOperations<AlertsClientImpl>, 
     /**
     *
     * @param ruleId The id of the rule to delete.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -344,40 +365,50 @@ public class RuleOperationsImpl implements ServiceOperations<AlertsClientImpl>, 
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
-        {
-            ServiceException ex = ServiceException.createFromJson(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromJson(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        OperationResponse result = null;
-        result = new OperationResponse();
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -400,6 +431,12 @@ public class RuleOperationsImpl implements ServiceOperations<AlertsClientImpl>, 
     /**
     *
     * @param ruleId The id of the rule to retrieve.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return The Get Rule operation response.
     */
     @Override
@@ -435,195 +472,205 @@ public class RuleOperationsImpl implements ServiceOperations<AlertsClientImpl>, 
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
-        {
-            ServiceException ex = ServiceException.createFromJson(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
-        }
-        
-        // Create Result
-        RuleGetResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new RuleGetResponse();
-        ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode responseDoc = objectMapper.readTree(responseContent);
-        
-        if (responseDoc != null)
-        {
-            Rule ruleInstance = new Rule();
-            result.setRule(ruleInstance);
-            
-            JsonNode idValue = responseDoc.get("Id");
-            if (idValue != null)
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
             {
-                String idInstance;
-                idInstance = idValue.getTextValue();
-                ruleInstance.setId(idInstance);
+                CloudTracing.receiveResponse(invocationId, httpResponse);
             }
-            
-            JsonNode nameValue = responseDoc.get("Name");
-            if (nameValue != null)
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
             {
-                String nameInstance;
-                nameInstance = nameValue.getTextValue();
-                ruleInstance.setName(nameInstance);
-            }
-            
-            JsonNode descriptionValue = responseDoc.get("Description");
-            if (descriptionValue != null)
-            {
-                String descriptionInstance;
-                descriptionInstance = descriptionValue.getTextValue();
-                ruleInstance.setDescription(descriptionInstance);
-            }
-            
-            JsonNode isEnabledValue = responseDoc.get("IsEnabled");
-            if (isEnabledValue != null)
-            {
-                boolean isEnabledInstance;
-                isEnabledInstance = isEnabledValue.getBooleanValue();
-                ruleInstance.setIsEnabled(isEnabledInstance);
-            }
-            
-            JsonNode conditionValue = responseDoc.get("Condition");
-            if (conditionValue != null)
-            {
-                String typeName = conditionValue.get("odata.type").getTextValue();
-                if (typeName == "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.ThresholdRuleCondition")
+                ServiceException ex = ServiceException.createFromJson(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
                 {
-                    ThresholdRuleCondition thresholdRuleConditionInstance = new ThresholdRuleCondition();
-                    
-                    JsonNode dataSourceValue = conditionValue.get("DataSource");
-                    if (dataSourceValue != null)
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            RuleGetResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new RuleGetResponse();
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode responseDoc = objectMapper.readTree(responseContent);
+            
+            if (responseDoc != null)
+            {
+                Rule ruleInstance = new Rule();
+                result.setRule(ruleInstance);
+                
+                JsonNode idValue = responseDoc.get("Id");
+                if (idValue != null)
+                {
+                    String idInstance;
+                    idInstance = idValue.getTextValue();
+                    ruleInstance.setId(idInstance);
+                }
+                
+                JsonNode nameValue = responseDoc.get("Name");
+                if (nameValue != null)
+                {
+                    String nameInstance;
+                    nameInstance = nameValue.getTextValue();
+                    ruleInstance.setName(nameInstance);
+                }
+                
+                JsonNode descriptionValue = responseDoc.get("Description");
+                if (descriptionValue != null)
+                {
+                    String descriptionInstance;
+                    descriptionInstance = descriptionValue.getTextValue();
+                    ruleInstance.setDescription(descriptionInstance);
+                }
+                
+                JsonNode isEnabledValue = responseDoc.get("IsEnabled");
+                if (isEnabledValue != null)
+                {
+                    boolean isEnabledInstance;
+                    isEnabledInstance = isEnabledValue.getBooleanValue();
+                    ruleInstance.setIsEnabled(isEnabledInstance);
+                }
+                
+                JsonNode conditionValue = responseDoc.get("Condition");
+                if (conditionValue != null)
+                {
+                    String typeName = conditionValue.get("odata.type").getTextValue();
+                    if (typeName == "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.ThresholdRuleCondition")
                     {
-                        String typeName2 = dataSourceValue.get("odata.type").getTextValue();
-                        if (typeName2 == "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.RuleMetricDataSource")
+                        ThresholdRuleCondition thresholdRuleConditionInstance = new ThresholdRuleCondition();
+                        
+                        JsonNode dataSourceValue = conditionValue.get("DataSource");
+                        if (dataSourceValue != null)
                         {
-                            RuleMetricDataSource ruleMetricDataSourceInstance = new RuleMetricDataSource();
-                            
-                            JsonNode resourceIdValue = dataSourceValue.get("ResourceId");
-                            if (resourceIdValue != null)
+                            String typeName2 = dataSourceValue.get("odata.type").getTextValue();
+                            if (typeName2 == "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.RuleMetricDataSource")
                             {
-                                String resourceIdInstance;
-                                resourceIdInstance = resourceIdValue.getTextValue();
-                                ruleMetricDataSourceInstance.setResourceId(resourceIdInstance);
+                                RuleMetricDataSource ruleMetricDataSourceInstance = new RuleMetricDataSource();
+                                
+                                JsonNode resourceIdValue = dataSourceValue.get("ResourceId");
+                                if (resourceIdValue != null)
+                                {
+                                    String resourceIdInstance;
+                                    resourceIdInstance = resourceIdValue.getTextValue();
+                                    ruleMetricDataSourceInstance.setResourceId(resourceIdInstance);
+                                }
+                                
+                                JsonNode metricNamespaceValue = dataSourceValue.get("MetricNamespace");
+                                if (metricNamespaceValue != null)
+                                {
+                                    String metricNamespaceInstance;
+                                    metricNamespaceInstance = metricNamespaceValue.getTextValue();
+                                    ruleMetricDataSourceInstance.setMetricNamespace(metricNamespaceInstance);
+                                }
+                                
+                                JsonNode metricNameValue = dataSourceValue.get("MetricName");
+                                if (metricNameValue != null)
+                                {
+                                    String metricNameInstance;
+                                    metricNameInstance = metricNameValue.getTextValue();
+                                    ruleMetricDataSourceInstance.setMetricName(metricNameInstance);
+                                }
+                                thresholdRuleConditionInstance.setDataSource(ruleMetricDataSourceInstance);
+                            }
+                        }
+                        
+                        JsonNode operatorValue = conditionValue.get("Operator");
+                        if (operatorValue != null)
+                        {
+                            ConditionOperator operatorInstance;
+                            operatorInstance = ConditionOperator.valueOf(operatorValue.getTextValue());
+                            thresholdRuleConditionInstance.setOperator(operatorInstance);
+                        }
+                        
+                        JsonNode thresholdValue = conditionValue.get("Threshold");
+                        if (thresholdValue != null)
+                        {
+                            double thresholdInstance;
+                            thresholdInstance = thresholdValue.getDoubleValue();
+                            thresholdRuleConditionInstance.setThreshold(thresholdInstance);
+                        }
+                        
+                        JsonNode windowSizeValue = conditionValue.get("WindowSize");
+                        if (windowSizeValue != null)
+                        {
+                            Duration windowSizeInstance;
+                            windowSizeInstance = TimeSpan8601Converter.parse(windowSizeValue.getTextValue());
+                            thresholdRuleConditionInstance.setWindowSize(windowSizeInstance);
+                        }
+                        ruleInstance.setCondition(thresholdRuleConditionInstance);
+                    }
+                }
+                
+                ArrayNode actionsArray = ((ArrayNode) responseDoc.get("Actions"));
+                if (actionsArray != null)
+                {
+                    for (JsonNode actionsValue : actionsArray)
+                    {
+                        String typeName3 = actionsValue.get("odata.type").getTextValue();
+                        if (typeName3 == "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.RuleEmailAction")
+                        {
+                            RuleEmailAction ruleEmailActionInstance = new RuleEmailAction();
+                            
+                            JsonNode sendToServiceOwnersValue = actionsValue.get("SendToServiceOwners");
+                            if (sendToServiceOwnersValue != null)
+                            {
+                                boolean sendToServiceOwnersInstance;
+                                sendToServiceOwnersInstance = sendToServiceOwnersValue.getBooleanValue();
+                                ruleEmailActionInstance.setSendToServiceOwners(sendToServiceOwnersInstance);
                             }
                             
-                            JsonNode metricNamespaceValue = dataSourceValue.get("MetricNamespace");
-                            if (metricNamespaceValue != null)
+                            ArrayNode customEmailsArray = ((ArrayNode) actionsValue.get("CustomEmails"));
+                            if (customEmailsArray != null)
                             {
-                                String metricNamespaceInstance;
-                                metricNamespaceInstance = metricNamespaceValue.getTextValue();
-                                ruleMetricDataSourceInstance.setMetricNamespace(metricNamespaceInstance);
+                                for (JsonNode customEmailsValue : customEmailsArray)
+                                {
+                                    ruleEmailActionInstance.getCustomEmails().add(customEmailsValue.getTextValue());
+                                }
                             }
-                            
-                            JsonNode metricNameValue = dataSourceValue.get("MetricName");
-                            if (metricNameValue != null)
-                            {
-                                String metricNameInstance;
-                                metricNameInstance = metricNameValue.getTextValue();
-                                ruleMetricDataSourceInstance.setMetricName(metricNameInstance);
-                            }
-                            thresholdRuleConditionInstance.setDataSource(ruleMetricDataSourceInstance);
+                            ruleInstance.getActions().add(ruleEmailActionInstance);
                         }
                     }
-                    
-                    JsonNode operatorValue = conditionValue.get("Operator");
-                    if (operatorValue != null)
-                    {
-                        ConditionOperator operatorInstance;
-                        operatorInstance = ConditionOperator.valueOf(operatorValue.getTextValue());
-                        thresholdRuleConditionInstance.setOperator(operatorInstance);
-                    }
-                    
-                    JsonNode thresholdValue = conditionValue.get("Threshold");
-                    if (thresholdValue != null)
-                    {
-                        double thresholdInstance;
-                        thresholdInstance = thresholdValue.getDoubleValue();
-                        thresholdRuleConditionInstance.setThreshold(thresholdInstance);
-                    }
-                    
-                    JsonNode windowSizeValue = conditionValue.get("WindowSize");
-                    if (windowSizeValue != null)
-                    {
-                        Duration windowSizeInstance;
-                        windowSizeInstance = TimeSpan8601Converter.parse(windowSizeValue.getTextValue());
-                        thresholdRuleConditionInstance.setWindowSize(windowSizeInstance);
-                    }
-                    ruleInstance.setCondition(thresholdRuleConditionInstance);
+                }
+                
+                JsonNode lastUpdatedTimeValue = responseDoc.get("LastUpdatedTime");
+                if (lastUpdatedTimeValue != null)
+                {
+                    Calendar lastUpdatedTimeInstance;
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(simpleDateFormat.parse(lastUpdatedTimeValue.getTextValue()));
+                    lastUpdatedTimeInstance = calendar;
+                    ruleInstance.setLastUpdatedTime(lastUpdatedTimeInstance);
                 }
             }
             
-            ArrayNode actionsArray = ((ArrayNode)responseDoc.get("Actions"));
-            if (actionsArray != null)
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
             {
-                for (JsonNode actionsValue : actionsArray)
-                {
-                    String typeName3 = actionsValue.get("odata.type").getTextValue();
-                    if (typeName3 == "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.RuleEmailAction")
-                    {
-                        RuleEmailAction ruleEmailActionInstance = new RuleEmailAction();
-                        
-                        JsonNode sendToServiceOwnersValue = actionsValue.get("SendToServiceOwners");
-                        if (sendToServiceOwnersValue != null)
-                        {
-                            boolean sendToServiceOwnersInstance;
-                            sendToServiceOwnersInstance = sendToServiceOwnersValue.getBooleanValue();
-                            ruleEmailActionInstance.setSendToServiceOwners(sendToServiceOwnersInstance);
-                        }
-                        
-                        ArrayNode customEmailsArray = ((ArrayNode)actionsValue.get("CustomEmails"));
-                        if (customEmailsArray != null)
-                        {
-                            for (JsonNode customEmailsValue : customEmailsArray)
-                            {
-                                ruleEmailActionInstance.getCustomEmails().add(customEmailsValue.getTextValue());
-                            }
-                        }
-                        ruleInstance.getActions().add(ruleEmailActionInstance);
-                    }
-                }
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            JsonNode lastUpdatedTimeValue = responseDoc.get("LastUpdatedTime");
-            if (lastUpdatedTimeValue != null)
+            if (shouldTrace)
             {
-                Calendar lastUpdatedTimeInstance;
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(simpleDateFormat.parse(lastUpdatedTimeValue.getTextValue()));
-                lastUpdatedTimeInstance = calendar;
-                ruleInstance.setLastUpdatedTime(lastUpdatedTimeInstance);
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
             }
         }
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-        {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
-        }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -646,6 +693,12 @@ public class RuleOperationsImpl implements ServiceOperations<AlertsClientImpl>, 
     /**
     * List the alert rules within a subscription.
     *
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return The List Rules operation response.
     */
     @Override
@@ -676,204 +729,211 @@ public class RuleOperationsImpl implements ServiceOperations<AlertsClientImpl>, 
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
-        {
-            ServiceException ex = ServiceException.createFromJson(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
-        }
-        
-        // Create Result
-        RuleListResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new RuleListResponse();
-        ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode responseDoc = objectMapper.readTree(responseContent);
-        
-        if (responseDoc != null)
-        {
-            RuleCollection ruleCollectionInstance = new RuleCollection();
-            result.setRuleCollection(ruleCollectionInstance);
-            
-            ArrayNode valueArray = ((ArrayNode)responseDoc.get("Value"));
-            if (valueArray != null)
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
             {
-                for (JsonNode valueValue : valueArray)
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromJson(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
                 {
-                    Rule ruleInstance = new Rule();
-                    ruleCollectionInstance.getValue().add(ruleInstance);
-                    
-                    JsonNode idValue = valueValue.get("Id");
-                    if (idValue != null)
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            RuleListResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new RuleListResponse();
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode responseDoc = objectMapper.readTree(responseContent);
+            
+            if (responseDoc != null)
+            {
+                ArrayNode valueArray = ((ArrayNode) responseDoc.get("Value"));
+                if (valueArray != null)
+                {
+                    for (JsonNode valueValue : valueArray)
                     {
-                        String idInstance;
-                        idInstance = idValue.getTextValue();
-                        ruleInstance.setId(idInstance);
-                    }
-                    
-                    JsonNode nameValue = valueValue.get("Name");
-                    if (nameValue != null)
-                    {
-                        String nameInstance;
-                        nameInstance = nameValue.getTextValue();
-                        ruleInstance.setName(nameInstance);
-                    }
-                    
-                    JsonNode descriptionValue = valueValue.get("Description");
-                    if (descriptionValue != null)
-                    {
-                        String descriptionInstance;
-                        descriptionInstance = descriptionValue.getTextValue();
-                        ruleInstance.setDescription(descriptionInstance);
-                    }
-                    
-                    JsonNode isEnabledValue = valueValue.get("IsEnabled");
-                    if (isEnabledValue != null)
-                    {
-                        boolean isEnabledInstance;
-                        isEnabledInstance = isEnabledValue.getBooleanValue();
-                        ruleInstance.setIsEnabled(isEnabledInstance);
-                    }
-                    
-                    JsonNode conditionValue = valueValue.get("Condition");
-                    if (conditionValue != null)
-                    {
-                        String typeName = conditionValue.get("odata.type").getTextValue();
-                        if (typeName == "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.ThresholdRuleCondition")
+                        Rule ruleInstance = new Rule();
+                        result.getValue().add(ruleInstance);
+                        
+                        JsonNode idValue = valueValue.get("Id");
+                        if (idValue != null)
                         {
-                            ThresholdRuleCondition thresholdRuleConditionInstance = new ThresholdRuleCondition();
-                            
-                            JsonNode dataSourceValue = conditionValue.get("DataSource");
-                            if (dataSourceValue != null)
-                            {
-                                String typeName2 = dataSourceValue.get("odata.type").getTextValue();
-                                if (typeName2 == "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.RuleMetricDataSource")
-                                {
-                                    RuleMetricDataSource ruleMetricDataSourceInstance = new RuleMetricDataSource();
-                                    
-                                    JsonNode resourceIdValue = dataSourceValue.get("ResourceId");
-                                    if (resourceIdValue != null)
-                                    {
-                                        String resourceIdInstance;
-                                        resourceIdInstance = resourceIdValue.getTextValue();
-                                        ruleMetricDataSourceInstance.setResourceId(resourceIdInstance);
-                                    }
-                                    
-                                    JsonNode metricNamespaceValue = dataSourceValue.get("MetricNamespace");
-                                    if (metricNamespaceValue != null)
-                                    {
-                                        String metricNamespaceInstance;
-                                        metricNamespaceInstance = metricNamespaceValue.getTextValue();
-                                        ruleMetricDataSourceInstance.setMetricNamespace(metricNamespaceInstance);
-                                    }
-                                    
-                                    JsonNode metricNameValue = dataSourceValue.get("MetricName");
-                                    if (metricNameValue != null)
-                                    {
-                                        String metricNameInstance;
-                                        metricNameInstance = metricNameValue.getTextValue();
-                                        ruleMetricDataSourceInstance.setMetricName(metricNameInstance);
-                                    }
-                                    thresholdRuleConditionInstance.setDataSource(ruleMetricDataSourceInstance);
-                                }
-                            }
-                            
-                            JsonNode operatorValue = conditionValue.get("Operator");
-                            if (operatorValue != null)
-                            {
-                                ConditionOperator operatorInstance;
-                                operatorInstance = ConditionOperator.valueOf(operatorValue.getTextValue());
-                                thresholdRuleConditionInstance.setOperator(operatorInstance);
-                            }
-                            
-                            JsonNode thresholdValue = conditionValue.get("Threshold");
-                            if (thresholdValue != null)
-                            {
-                                double thresholdInstance;
-                                thresholdInstance = thresholdValue.getDoubleValue();
-                                thresholdRuleConditionInstance.setThreshold(thresholdInstance);
-                            }
-                            
-                            JsonNode windowSizeValue = conditionValue.get("WindowSize");
-                            if (windowSizeValue != null)
-                            {
-                                Duration windowSizeInstance;
-                                windowSizeInstance = TimeSpan8601Converter.parse(windowSizeValue.getTextValue());
-                                thresholdRuleConditionInstance.setWindowSize(windowSizeInstance);
-                            }
-                            ruleInstance.setCondition(thresholdRuleConditionInstance);
+                            String idInstance;
+                            idInstance = idValue.getTextValue();
+                            ruleInstance.setId(idInstance);
                         }
-                    }
-                    
-                    ArrayNode actionsArray = ((ArrayNode)valueValue.get("Actions"));
-                    if (actionsArray != null)
-                    {
-                        for (JsonNode actionsValue : actionsArray)
+                        
+                        JsonNode nameValue = valueValue.get("Name");
+                        if (nameValue != null)
                         {
-                            String typeName3 = actionsValue.get("odata.type").getTextValue();
-                            if (typeName3 == "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.RuleEmailAction")
+                            String nameInstance;
+                            nameInstance = nameValue.getTextValue();
+                            ruleInstance.setName(nameInstance);
+                        }
+                        
+                        JsonNode descriptionValue = valueValue.get("Description");
+                        if (descriptionValue != null)
+                        {
+                            String descriptionInstance;
+                            descriptionInstance = descriptionValue.getTextValue();
+                            ruleInstance.setDescription(descriptionInstance);
+                        }
+                        
+                        JsonNode isEnabledValue = valueValue.get("IsEnabled");
+                        if (isEnabledValue != null)
+                        {
+                            boolean isEnabledInstance;
+                            isEnabledInstance = isEnabledValue.getBooleanValue();
+                            ruleInstance.setIsEnabled(isEnabledInstance);
+                        }
+                        
+                        JsonNode conditionValue = valueValue.get("Condition");
+                        if (conditionValue != null)
+                        {
+                            String typeName = conditionValue.get("odata.type").getTextValue();
+                            if (typeName == "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.ThresholdRuleCondition")
                             {
-                                RuleEmailAction ruleEmailActionInstance = new RuleEmailAction();
+                                ThresholdRuleCondition thresholdRuleConditionInstance = new ThresholdRuleCondition();
                                 
-                                JsonNode sendToServiceOwnersValue = actionsValue.get("SendToServiceOwners");
-                                if (sendToServiceOwnersValue != null)
+                                JsonNode dataSourceValue = conditionValue.get("DataSource");
+                                if (dataSourceValue != null)
                                 {
-                                    boolean sendToServiceOwnersInstance;
-                                    sendToServiceOwnersInstance = sendToServiceOwnersValue.getBooleanValue();
-                                    ruleEmailActionInstance.setSendToServiceOwners(sendToServiceOwnersInstance);
+                                    String typeName2 = dataSourceValue.get("odata.type").getTextValue();
+                                    if (typeName2 == "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.RuleMetricDataSource")
+                                    {
+                                        RuleMetricDataSource ruleMetricDataSourceInstance = new RuleMetricDataSource();
+                                        
+                                        JsonNode resourceIdValue = dataSourceValue.get("ResourceId");
+                                        if (resourceIdValue != null)
+                                        {
+                                            String resourceIdInstance;
+                                            resourceIdInstance = resourceIdValue.getTextValue();
+                                            ruleMetricDataSourceInstance.setResourceId(resourceIdInstance);
+                                        }
+                                        
+                                        JsonNode metricNamespaceValue = dataSourceValue.get("MetricNamespace");
+                                        if (metricNamespaceValue != null)
+                                        {
+                                            String metricNamespaceInstance;
+                                            metricNamespaceInstance = metricNamespaceValue.getTextValue();
+                                            ruleMetricDataSourceInstance.setMetricNamespace(metricNamespaceInstance);
+                                        }
+                                        
+                                        JsonNode metricNameValue = dataSourceValue.get("MetricName");
+                                        if (metricNameValue != null)
+                                        {
+                                            String metricNameInstance;
+                                            metricNameInstance = metricNameValue.getTextValue();
+                                            ruleMetricDataSourceInstance.setMetricName(metricNameInstance);
+                                        }
+                                        thresholdRuleConditionInstance.setDataSource(ruleMetricDataSourceInstance);
+                                    }
                                 }
                                 
-                                ArrayNode customEmailsArray = ((ArrayNode)actionsValue.get("CustomEmails"));
-                                if (customEmailsArray != null)
+                                JsonNode operatorValue = conditionValue.get("Operator");
+                                if (operatorValue != null)
                                 {
-                                    for (JsonNode customEmailsValue : customEmailsArray)
-                                    {
-                                        ruleEmailActionInstance.getCustomEmails().add(customEmailsValue.getTextValue());
-                                    }
+                                    ConditionOperator operatorInstance;
+                                    operatorInstance = ConditionOperator.valueOf(operatorValue.getTextValue());
+                                    thresholdRuleConditionInstance.setOperator(operatorInstance);
                                 }
-                                ruleInstance.getActions().add(ruleEmailActionInstance);
+                                
+                                JsonNode thresholdValue = conditionValue.get("Threshold");
+                                if (thresholdValue != null)
+                                {
+                                    double thresholdInstance;
+                                    thresholdInstance = thresholdValue.getDoubleValue();
+                                    thresholdRuleConditionInstance.setThreshold(thresholdInstance);
+                                }
+                                
+                                JsonNode windowSizeValue = conditionValue.get("WindowSize");
+                                if (windowSizeValue != null)
+                                {
+                                    Duration windowSizeInstance;
+                                    windowSizeInstance = TimeSpan8601Converter.parse(windowSizeValue.getTextValue());
+                                    thresholdRuleConditionInstance.setWindowSize(windowSizeInstance);
+                                }
+                                ruleInstance.setCondition(thresholdRuleConditionInstance);
                             }
                         }
-                    }
-                    
-                    JsonNode lastUpdatedTimeValue = valueValue.get("LastUpdatedTime");
-                    if (lastUpdatedTimeValue != null)
-                    {
-                        Calendar lastUpdatedTimeInstance;
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.setTime(simpleDateFormat.parse(lastUpdatedTimeValue.getTextValue()));
-                        lastUpdatedTimeInstance = calendar;
-                        ruleInstance.setLastUpdatedTime(lastUpdatedTimeInstance);
+                        
+                        ArrayNode actionsArray = ((ArrayNode) valueValue.get("Actions"));
+                        if (actionsArray != null)
+                        {
+                            for (JsonNode actionsValue : actionsArray)
+                            {
+                                String typeName3 = actionsValue.get("odata.type").getTextValue();
+                                if (typeName3 == "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.RuleEmailAction")
+                                {
+                                    RuleEmailAction ruleEmailActionInstance = new RuleEmailAction();
+                                    
+                                    JsonNode sendToServiceOwnersValue = actionsValue.get("SendToServiceOwners");
+                                    if (sendToServiceOwnersValue != null)
+                                    {
+                                        boolean sendToServiceOwnersInstance;
+                                        sendToServiceOwnersInstance = sendToServiceOwnersValue.getBooleanValue();
+                                        ruleEmailActionInstance.setSendToServiceOwners(sendToServiceOwnersInstance);
+                                    }
+                                    
+                                    ArrayNode customEmailsArray = ((ArrayNode) actionsValue.get("CustomEmails"));
+                                    if (customEmailsArray != null)
+                                    {
+                                        for (JsonNode customEmailsValue : customEmailsArray)
+                                        {
+                                            ruleEmailActionInstance.getCustomEmails().add(customEmailsValue.getTextValue());
+                                        }
+                                    }
+                                    ruleInstance.getActions().add(ruleEmailActionInstance);
+                                }
+                            }
+                        }
+                        
+                        JsonNode lastUpdatedTimeValue = valueValue.get("LastUpdatedTime");
+                        if (lastUpdatedTimeValue != null)
+                        {
+                            Calendar lastUpdatedTimeInstance;
+                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                            Calendar calendar = Calendar.getInstance();
+                            calendar.setTime(simpleDateFormat.parse(lastUpdatedTimeValue.getTextValue()));
+                            lastUpdatedTimeInstance = calendar;
+                            ruleInstance.setLastUpdatedTime(lastUpdatedTimeInstance);
+                        }
                     }
                 }
             }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
 }

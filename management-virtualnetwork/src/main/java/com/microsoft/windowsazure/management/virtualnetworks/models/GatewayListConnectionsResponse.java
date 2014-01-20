@@ -37,13 +37,21 @@ public class GatewayListConnectionsResponse extends OperationResponse implements
     
     /**
     * The list of connections.
+    * @return The Connections value.
     */
-    public ArrayList<GatewayListConnectionsResponse.GatewayConnection> getConnections() { return this.connections; }
+    public ArrayList<GatewayListConnectionsResponse.GatewayConnection> getConnections()
+    {
+        return this.connections;
+    }
     
     /**
     * The list of connections.
+    * @param connectionsValue The Connections value.
     */
-    public void setConnections(ArrayList<GatewayListConnectionsResponse.GatewayConnection> connections) { this.connections = connections; }
+    public void setConnections(final ArrayList<GatewayListConnectionsResponse.GatewayConnection> connectionsValue)
+    {
+        this.connections = connectionsValue;
+    }
     
     /**
     * Initializes a new instance of the GatewayListConnectionsResponse class.
@@ -51,6 +59,7 @@ public class GatewayListConnectionsResponse extends OperationResponse implements
     */
     public GatewayListConnectionsResponse()
     {
+        super();
         this.connections = new ArrayList<GatewayListConnectionsResponse.GatewayConnection>();
     }
     
@@ -71,87 +80,148 @@ public class GatewayListConnectionsResponse extends OperationResponse implements
         * If LocalNetworkSiteName is defined as VPNClientConnection, this
         * element contains a list of IP addresses (represented as strings)
         * that are assigned to currently connected VPN clients.
+        * @return The AllocatedIPAddresses value.
         */
-        public ArrayList<String> getAllocatedIPAddresses() { return this.allocatedIPAddresses; }
+        public ArrayList<String> getAllocatedIPAddresses()
+        {
+            return this.allocatedIPAddresses;
+        }
         
         /**
         * If LocalNetworkSiteName is defined as VPNClientConnection, this
         * element contains a list of IP addresses (represented as strings)
         * that are assigned to currently connected VPN clients.
+        * @param allocatedIPAddressesValue The AllocatedIPAddresses value.
         */
-        public void setAllocatedIPAddresses(ArrayList<String> allocatedIPAddresses) { this.allocatedIPAddresses = allocatedIPAddresses; }
+        public void setAllocatedIPAddresses(final ArrayList<String> allocatedIPAddressesValue)
+        {
+            this.allocatedIPAddresses = allocatedIPAddressesValue;
+        }
         
         private GatewayConnectivityState connectivityState;
         
         /**
         * The connection state of the site. You can set the connection state to
         * Connected, Connecting or NotConnected.
+        * @return The ConnectivityState value.
         */
-        public GatewayConnectivityState getConnectivityState() { return this.connectivityState; }
+        public GatewayConnectivityState getConnectivityState()
+        {
+            return this.connectivityState;
+        }
         
         /**
         * The connection state of the site. You can set the connection state to
         * Connected, Connecting or NotConnected.
+        * @param connectivityStateValue The ConnectivityState value.
         */
-        public void setConnectivityState(GatewayConnectivityState connectivityState) { this.connectivityState = connectivityState; }
+        public void setConnectivityState(final GatewayConnectivityState connectivityStateValue)
+        {
+            this.connectivityState = connectivityStateValue;
+        }
         
         private long egressBytesTransferred;
         
         /**
         * The number of bytes of data transferred out through this connection
         * since it was started.
+        * @return The EgressBytesTransferred value.
         */
-        public long getEgressBytesTransferred() { return this.egressBytesTransferred; }
+        public long getEgressBytesTransferred()
+        {
+            return this.egressBytesTransferred;
+        }
         
         /**
         * The number of bytes of data transferred out through this connection
         * since it was started.
+        * @param egressBytesTransferredValue The EgressBytesTransferred value.
         */
-        public void setEgressBytesTransferred(long egressBytesTransferred) { this.egressBytesTransferred = egressBytesTransferred; }
+        public void setEgressBytesTransferred(final long egressBytesTransferredValue)
+        {
+            this.egressBytesTransferred = egressBytesTransferredValue;
+        }
         
         private long ingressBytesTransferred;
         
         /**
         * The number of bytes of data transferred in through this connection
         * since it was started.
+        * @return The IngressBytesTransferred value.
         */
-        public long getIngressBytesTransferred() { return this.ingressBytesTransferred; }
+        public long getIngressBytesTransferred()
+        {
+            return this.ingressBytesTransferred;
+        }
         
         /**
         * The number of bytes of data transferred in through this connection
         * since it was started.
+        * @param ingressBytesTransferredValue The IngressBytesTransferred value.
         */
-        public void setIngressBytesTransferred(long ingressBytesTransferred) { this.ingressBytesTransferred = ingressBytesTransferred; }
+        public void setIngressBytesTransferred(final long ingressBytesTransferredValue)
+        {
+            this.ingressBytesTransferred = ingressBytesTransferredValue;
+        }
         
         private Calendar lastConnectionEstablished;
         
-        public Calendar getLastConnectionEstablished() { return this.lastConnectionEstablished; }
+        /**
+        * @return The LastConnectionEstablished value.
+        */
+        public Calendar getLastConnectionEstablished()
+        {
+            return this.lastConnectionEstablished;
+        }
         
-        public void setLastConnectionEstablished(Calendar lastConnectionEstablished) { this.lastConnectionEstablished = lastConnectionEstablished; }
+        /**
+        * @param lastConnectionEstablishedValue The LastConnectionEstablished
+        * value.
+        */
+        public void setLastConnectionEstablished(final Calendar lastConnectionEstablishedValue)
+        {
+            this.lastConnectionEstablished = lastConnectionEstablishedValue;
+        }
         
         private GatewayEvent lastEvent;
         
         /**
         * A record of the last provisioning event for this connection.
+        * @return The LastEvent value.
         */
-        public GatewayEvent getLastEvent() { return this.lastEvent; }
+        public GatewayEvent getLastEvent()
+        {
+            return this.lastEvent;
+        }
         
         /**
         * A record of the last provisioning event for this connection.
+        * @param lastEventValue The LastEvent value.
         */
-        public void setLastEvent(GatewayEvent lastEvent) { this.lastEvent = lastEvent; }
+        public void setLastEvent(final GatewayEvent lastEventValue)
+        {
+            this.lastEvent = lastEventValue;
+        }
         
         private String localNetworkSiteName;
         
         /**
         * The name of the local network site represented by the connection.
+        * @return The LocalNetworkSiteName value.
         */
-        public String getLocalNetworkSiteName() { return this.localNetworkSiteName; }
+        public String getLocalNetworkSiteName()
+        {
+            return this.localNetworkSiteName;
+        }
         
         /**
         * The name of the local network site represented by the connection.
+        * @param localNetworkSiteNameValue The LocalNetworkSiteName value.
         */
-        public void setLocalNetworkSiteName(String localNetworkSiteName) { this.localNetworkSiteName = localNetworkSiteName; }
+        public void setLocalNetworkSiteName(final String localNetworkSiteNameValue)
+        {
+            this.localNetworkSiteName = localNetworkSiteNameValue;
+        }
         
         /**
         * Initializes a new instance of the GatewayConnection class.

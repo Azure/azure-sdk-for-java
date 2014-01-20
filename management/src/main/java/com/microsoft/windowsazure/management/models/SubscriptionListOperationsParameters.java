@@ -40,8 +40,12 @@ public class SubscriptionListOperationsParameters
     * operations from where the last response left off. If no token is
     * specified, a filter is not applied and the response will begin at the
     * specified StartTime.
+    * @return The ContinuationToken value.
     */
-    public String getContinuationToken() { return this.continuationToken; }
+    public String getContinuationToken()
+    {
+        return this.continuationToken;
+    }
     
     /**
     * Optional. When there are too many operations to list, such as when the
@@ -51,8 +55,12 @@ public class SubscriptionListOperationsParameters
     * operations from where the last response left off. If no token is
     * specified, a filter is not applied and the response will begin at the
     * specified StartTime.
+    * @param continuationTokenValue The ContinuationToken value.
     */
-    public void setContinuationToken(String continuationToken) { this.continuationToken = continuationToken; }
+    public void setContinuationToken(final String continuationTokenValue)
+    {
+        this.continuationToken = continuationTokenValue;
+    }
     
     private Calendar endTime;
     
@@ -60,15 +68,23 @@ public class SubscriptionListOperationsParameters
     * Required. The end of the timeframe to begin listing subscription
     * operations in UTC format. This parameter and the StartTime parameter
     * indicate the timeframe to retrieve subscription operations.
+    * @return The EndTime value.
     */
-    public Calendar getEndTime() { return this.endTime; }
+    public Calendar getEndTime()
+    {
+        return this.endTime;
+    }
     
     /**
     * Required. The end of the timeframe to begin listing subscription
     * operations in UTC format. This parameter and the StartTime parameter
     * indicate the timeframe to retrieve subscription operations.
+    * @param endTimeValue The EndTime value.
     */
-    public void setEndTime(Calendar endTime) { this.endTime = endTime; }
+    public void setEndTime(final Calendar endTimeValue)
+    {
+        this.endTime = endTimeValue;
+    }
     
     private String objectIdFilter;
     
@@ -77,16 +93,24 @@ public class SubscriptionListOperationsParameters
     * type and object ID. This parameter must be set equal to the URL value
     * for performing an HTTP GET on the object. If no object is specified, a
     * filter is not applied.
+    * @return The ObjectIdFilter value.
     */
-    public String getObjectIdFilter() { return this.objectIdFilter; }
+    public String getObjectIdFilter()
+    {
+        return this.objectIdFilter;
+    }
     
     /**
     * Optional. Returns subscription operations only for the specified object
     * type and object ID. This parameter must be set equal to the URL value
     * for performing an HTTP GET on the object. If no object is specified, a
     * filter is not applied.
+    * @param objectIdFilterValue The ObjectIdFilter value.
     */
-    public void setObjectIdFilter(String objectIdFilter) { this.objectIdFilter = objectIdFilter; }
+    public void setObjectIdFilter(final String objectIdFilterValue)
+    {
+        this.objectIdFilter = objectIdFilterValue;
+    }
     
     private OperationStatus operationStatus;
     
@@ -96,8 +120,12 @@ public class SubscriptionListOperationsParameters
     * combined with the ObjectIdFilter to selectsubscription operations for an
     * object with a specific resultstatus. If no result status is specified, a
     * filter is not applied.
+    * @return The OperationStatus value.
     */
-    public OperationStatus getOperationStatus() { return this.operationStatus; }
+    public OperationStatus getOperationStatus()
+    {
+        return this.operationStatus;
+    }
     
     /**
     * Optional. Returns subscription operations only for thespecified result
@@ -105,8 +133,12 @@ public class SubscriptionListOperationsParameters
     * combined with the ObjectIdFilter to selectsubscription operations for an
     * object with a specific resultstatus. If no result status is specified, a
     * filter is not applied.
+    * @param operationStatusValue The OperationStatus value.
     */
-    public void setOperationStatus(OperationStatus operationStatus) { this.operationStatus = operationStatus; }
+    public void setOperationStatus(final OperationStatus operationStatusValue)
+    {
+        this.operationStatus = operationStatusValue;
+    }
     
     private Calendar startTime;
     
@@ -115,23 +147,22 @@ public class SubscriptionListOperationsParameters
     * operations in UTC format. This parameter and theEndTime parameter
     * indicate the timeframe to retrieve subscription operations. This
     * parameter cannot indicate a start date of more than 90 days in the past.
+    * @return The StartTime value.
     */
-    public Calendar getStartTime() { return this.startTime; }
+    public Calendar getStartTime()
+    {
+        return this.startTime;
+    }
     
     /**
     * Required. The start of the timeframe to begin listingsubscription
     * operations in UTC format. This parameter and theEndTime parameter
     * indicate the timeframe to retrieve subscription operations. This
     * parameter cannot indicate a start date of more than 90 days in the past.
+    * @param startTimeValue The StartTime value.
     */
-    public void setStartTime(Calendar startTime) { this.startTime = startTime; }
-    
-    /**
-    * Initializes a new instance of the SubscriptionListOperationsParameters
-    * class.
-    *
-    */
-    public SubscriptionListOperationsParameters()
+    public void setStartTime(final Calendar startTimeValue)
     {
+        this.startTime = startTimeValue;
     }
 }

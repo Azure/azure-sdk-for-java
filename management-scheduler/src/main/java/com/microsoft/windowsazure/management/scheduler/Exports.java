@@ -19,15 +19,19 @@ import com.microsoft.windowsazure.core.Builder;
 /**
  * The Class Exports.
  */
-public class Exports implements Builder.Exports {
-
+public class Exports implements Builder.Exports
+{
     /* (non-Javadoc)
      * @see com.microsoft.windowsazure.services.core.Builder.Exports#register(com.microsoft.windowsazure.services.core.Builder.Registry)
      */
     @Override
-    public void register(Builder.Registry registry) {
-
-        // provide contract implementation
-        registry.add(SchedulerManagementClient.class, SchedulerManagementClientImpl.class);
+    public void register(final Builder.Registry registry)
+    {
+        // provide contract implementations
+        registry.add(SchedulerManagementClient.class,
+                SchedulerManagementClientImpl.class);
+      
+        registry.add(CloudServiceManagementClient.class,
+                CloudServiceManagementClientImpl.class);
     }
 }

@@ -34,19 +34,17 @@ public class JobListWithFilterParameters extends JobListParameters
     * Filter the job history to have it only return job execution attempts
     * having a particular State, enabled, disabled, faulted, or completed.
     */
-    public JobState getState() { return this.state; }
+    public JobState getState()
+    {
+        return this.state;
+    }
     
     /**
     * Filter the job history to have it only return job execution attempts
     * having a particular State, enabled, disabled, faulted, or completed.
     */
-    public void setState(JobState state) { this.state = state; }
-    
-    /**
-    * Initializes a new instance of the JobListWithFilterParameters class.
-    *
-    */
-    public JobListWithFilterParameters()
+    public void setState(JobState state)
     {
+        this.state = state;
     }
 }

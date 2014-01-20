@@ -39,7 +39,6 @@ import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.util.HashMap;
@@ -49,12 +48,12 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
@@ -86,8 +85,12 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
     /**
     * Gets a reference to the
     * microsoft.windowsazure.management.websites.WebSiteManagementClientImpl.
+    * @return The Client value.
     */
-    public WebSiteManagementClientImpl getClient() { return this.client; }
+    public WebSiteManagementClientImpl getClient()
+    {
+        return this.client;
+    }
     
     /**
     * You can create a server farm by issuing an HTTP POST request. Only one
@@ -133,10 +136,24 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
     *
     * @param webSpaceName The name of the web space.
     * @param parameters Parameters supplied to the Create Server Farm operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
     * @return The Create Server Farm operation response.
     */
     @Override
-    public ServerFarmCreateResponse create(String webSpaceName, ServerFarmCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException, ParseException, URISyntaxException
+    public ServerFarmCreateResponse create(String webSpaceName, ServerFarmCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, ParseException, URISyntaxException
     {
         // Validate
         if (webSpaceName == null)
@@ -225,105 +242,115 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            ServerFarmCreateResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new ServerFarmCreateResponse();
+            DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
+            Document responseDoc = documentBuilder2.parse(responseContent);
+            
+            NodeList elements = responseDoc.getElementsByTagName("ServerFarm");
+            Element serverFarmElement2 = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            if (serverFarmElement2 != null)
+            {
+                NodeList elements2 = serverFarmElement2.getElementsByTagName("CurrentNumberOfWorkers");
+                Element currentNumberOfWorkersElement2 = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                if (currentNumberOfWorkersElement2 != null)
+                {
+                    int currentNumberOfWorkersInstance;
+                    currentNumberOfWorkersInstance = Integer.parseInt(currentNumberOfWorkersElement2.getTextContent());
+                    result.setCurrentNumberOfWorkers(currentNumberOfWorkersInstance);
+                }
+                
+                NodeList elements3 = serverFarmElement2.getElementsByTagName("CurrentWorkerSize");
+                Element currentWorkerSizeElement2 = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                if (currentWorkerSizeElement2 != null)
+                {
+                    ServerFarmWorkerSize currentWorkerSizeInstance;
+                    currentWorkerSizeInstance = ServerFarmWorkerSize.valueOf(currentWorkerSizeElement2.getTextContent());
+                    result.setCurrentWorkerSize(currentWorkerSizeInstance);
+                }
+                
+                NodeList elements4 = serverFarmElement2.getElementsByTagName("Name");
+                Element nameElement2 = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                if (nameElement2 != null)
+                {
+                    String nameInstance;
+                    nameInstance = nameElement2.getTextContent();
+                    result.setName(nameInstance);
+                }
+                
+                NodeList elements5 = serverFarmElement2.getElementsByTagName("NumberOfWorkers");
+                Element numberOfWorkersElement2 = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                if (numberOfWorkersElement2 != null)
+                {
+                    int numberOfWorkersInstance;
+                    numberOfWorkersInstance = Integer.parseInt(numberOfWorkersElement2.getTextContent());
+                    result.setNumberOfWorkers(numberOfWorkersInstance);
+                }
+                
+                NodeList elements6 = serverFarmElement2.getElementsByTagName("WorkerSize");
+                Element workerSizeElement2 = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                if (workerSizeElement2 != null)
+                {
+                    ServerFarmWorkerSize workerSizeInstance;
+                    workerSizeInstance = ServerFarmWorkerSize.valueOf(workerSizeElement2.getTextContent());
+                    result.setWorkerSize(workerSizeInstance);
+                }
+                
+                NodeList elements7 = serverFarmElement2.getElementsByTagName("Status");
+                Element statusElement2 = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
+                if (statusElement2 != null)
+                {
+                    ServerFarmStatus statusInstance;
+                    statusInstance = ServerFarmStatus.valueOf(statusElement2.getTextContent());
+                    result.setStatus(statusInstance);
+                }
+            }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        ServerFarmCreateResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new ServerFarmCreateResponse();
-        DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
-        Document responseDoc = documentBuilder2.parse(responseContent);
-        
-        NodeList elements = responseDoc.getElementsByTagName("ServerFarm");
-        Element serverFarmElement2 = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
-        if (serverFarmElement2 != null)
+        finally
         {
-            NodeList elements2 = serverFarmElement2.getElementsByTagName("CurrentNumberOfWorkers");
-            Element currentNumberOfWorkersElement2 = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
-            if (currentNumberOfWorkersElement2 != null)
+            if (httpResponse != null && httpResponse.getEntity() != null)
             {
-                int currentNumberOfWorkersInstance;
-                currentNumberOfWorkersInstance = Integer.parseInt(currentNumberOfWorkersElement2.getTextContent());
-                result.setCurrentNumberOfWorkers(currentNumberOfWorkersInstance);
-            }
-            
-            NodeList elements3 = serverFarmElement2.getElementsByTagName("CurrentWorkerSize");
-            Element currentWorkerSizeElement2 = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
-            if (currentWorkerSizeElement2 != null)
-            {
-                ServerFarmWorkerSize currentWorkerSizeInstance;
-                currentWorkerSizeInstance = ServerFarmWorkerSize.valueOf(currentWorkerSizeElement2.getTextContent());
-                result.setCurrentWorkerSize(currentWorkerSizeInstance);
-            }
-            
-            NodeList elements4 = serverFarmElement2.getElementsByTagName("Name");
-            Element nameElement2 = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
-            if (nameElement2 != null)
-            {
-                String nameInstance;
-                nameInstance = nameElement2.getTextContent();
-                result.setName(nameInstance);
-            }
-            
-            NodeList elements5 = serverFarmElement2.getElementsByTagName("NumberOfWorkers");
-            Element numberOfWorkersElement2 = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
-            if (numberOfWorkersElement2 != null)
-            {
-                int numberOfWorkersInstance;
-                numberOfWorkersInstance = Integer.parseInt(numberOfWorkersElement2.getTextContent());
-                result.setNumberOfWorkers(numberOfWorkersInstance);
-            }
-            
-            NodeList elements6 = serverFarmElement2.getElementsByTagName("WorkerSize");
-            Element workerSizeElement2 = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
-            if (workerSizeElement2 != null)
-            {
-                ServerFarmWorkerSize workerSizeInstance;
-                workerSizeInstance = ServerFarmWorkerSize.valueOf(workerSizeElement2.getTextContent());
-                result.setWorkerSize(workerSizeInstance);
-            }
-            
-            NodeList elements7 = serverFarmElement2.getElementsByTagName("Status");
-            Element statusElement2 = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
-            if (statusElement2 != null)
-            {
-                ServerFarmStatus statusInstance;
-                statusInstance = ServerFarmStatus.valueOf(statusElement2.getTextContent());
-                result.setStatus(statusInstance);
+                httpResponse.getEntity().getContent().close();
             }
         }
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-        {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
-        }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -369,6 +396,10 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
     * more information)
     *
     * @param webSpaceName The name of the web space.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -403,40 +434,50 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        OperationResponse result = null;
-        result = new OperationResponse();
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -483,6 +524,18 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
     *
     * @param webSpaceName The name of the web space.
     * @param serverFarmName The name of the server farm.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
     * @return The Get Server Farm operation response.
     */
     @Override
@@ -521,105 +574,115 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            ServerFarmGetResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new ServerFarmGetResponse();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document responseDoc = documentBuilder.parse(responseContent);
+            
+            NodeList elements = responseDoc.getElementsByTagName("ServerFarm");
+            Element serverFarmElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            if (serverFarmElement != null)
+            {
+                NodeList elements2 = serverFarmElement.getElementsByTagName("CurrentNumberOfWorkers");
+                Element currentNumberOfWorkersElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                if (currentNumberOfWorkersElement != null)
+                {
+                    int currentNumberOfWorkersInstance;
+                    currentNumberOfWorkersInstance = Integer.parseInt(currentNumberOfWorkersElement.getTextContent());
+                    result.setCurrentNumberOfWorkers(currentNumberOfWorkersInstance);
+                }
+                
+                NodeList elements3 = serverFarmElement.getElementsByTagName("CurrentWorkerSize");
+                Element currentWorkerSizeElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                if (currentWorkerSizeElement != null)
+                {
+                    ServerFarmWorkerSize currentWorkerSizeInstance;
+                    currentWorkerSizeInstance = ServerFarmWorkerSize.valueOf(currentWorkerSizeElement.getTextContent());
+                    result.setCurrentWorkerSize(currentWorkerSizeInstance);
+                }
+                
+                NodeList elements4 = serverFarmElement.getElementsByTagName("Name");
+                Element nameElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                if (nameElement != null)
+                {
+                    String nameInstance;
+                    nameInstance = nameElement.getTextContent();
+                    result.setName(nameInstance);
+                }
+                
+                NodeList elements5 = serverFarmElement.getElementsByTagName("NumberOfWorkers");
+                Element numberOfWorkersElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                if (numberOfWorkersElement != null)
+                {
+                    int numberOfWorkersInstance;
+                    numberOfWorkersInstance = Integer.parseInt(numberOfWorkersElement.getTextContent());
+                    result.setNumberOfWorkers(numberOfWorkersInstance);
+                }
+                
+                NodeList elements6 = serverFarmElement.getElementsByTagName("WorkerSize");
+                Element workerSizeElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                if (workerSizeElement != null)
+                {
+                    ServerFarmWorkerSize workerSizeInstance;
+                    workerSizeInstance = ServerFarmWorkerSize.valueOf(workerSizeElement.getTextContent());
+                    result.setWorkerSize(workerSizeInstance);
+                }
+                
+                NodeList elements7 = serverFarmElement.getElementsByTagName("Status");
+                Element statusElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
+                if (statusElement != null)
+                {
+                    ServerFarmStatus statusInstance;
+                    statusInstance = ServerFarmStatus.valueOf(statusElement.getTextContent());
+                    result.setStatus(statusInstance);
+                }
+            }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        ServerFarmGetResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new ServerFarmGetResponse();
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document responseDoc = documentBuilder.parse(responseContent);
-        
-        NodeList elements = responseDoc.getElementsByTagName("ServerFarm");
-        Element serverFarmElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
-        if (serverFarmElement != null)
+        finally
         {
-            NodeList elements2 = serverFarmElement.getElementsByTagName("CurrentNumberOfWorkers");
-            Element currentNumberOfWorkersElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
-            if (currentNumberOfWorkersElement != null)
+            if (httpResponse != null && httpResponse.getEntity() != null)
             {
-                int currentNumberOfWorkersInstance;
-                currentNumberOfWorkersInstance = Integer.parseInt(currentNumberOfWorkersElement.getTextContent());
-                result.setCurrentNumberOfWorkers(currentNumberOfWorkersInstance);
-            }
-            
-            NodeList elements3 = serverFarmElement.getElementsByTagName("CurrentWorkerSize");
-            Element currentWorkerSizeElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
-            if (currentWorkerSizeElement != null)
-            {
-                ServerFarmWorkerSize currentWorkerSizeInstance;
-                currentWorkerSizeInstance = ServerFarmWorkerSize.valueOf(currentWorkerSizeElement.getTextContent());
-                result.setCurrentWorkerSize(currentWorkerSizeInstance);
-            }
-            
-            NodeList elements4 = serverFarmElement.getElementsByTagName("Name");
-            Element nameElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
-            if (nameElement != null)
-            {
-                String nameInstance;
-                nameInstance = nameElement.getTextContent();
-                result.setName(nameInstance);
-            }
-            
-            NodeList elements5 = serverFarmElement.getElementsByTagName("NumberOfWorkers");
-            Element numberOfWorkersElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
-            if (numberOfWorkersElement != null)
-            {
-                int numberOfWorkersInstance;
-                numberOfWorkersInstance = Integer.parseInt(numberOfWorkersElement.getTextContent());
-                result.setNumberOfWorkers(numberOfWorkersInstance);
-            }
-            
-            NodeList elements6 = serverFarmElement.getElementsByTagName("WorkerSize");
-            Element workerSizeElement = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
-            if (workerSizeElement != null)
-            {
-                ServerFarmWorkerSize workerSizeInstance;
-                workerSizeInstance = ServerFarmWorkerSize.valueOf(workerSizeElement.getTextContent());
-                result.setWorkerSize(workerSizeInstance);
-            }
-            
-            NodeList elements7 = serverFarmElement.getElementsByTagName("Status");
-            Element statusElement = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
-            if (statusElement != null)
-            {
-                ServerFarmStatus statusInstance;
-                statusInstance = ServerFarmStatus.valueOf(statusElement.getTextContent());
-                result.setStatus(statusInstance);
+                httpResponse.getEntity().getContent().close();
             }
         }
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-        {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
-        }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -664,6 +727,14 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
     * more information)
     *
     * @param webSpaceName The name of the web space.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
     * @return The List Server Farm operation response.
     */
     @Override
@@ -697,112 +768,122 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
-        }
-        
-        // Create Result
-        ServerFarmListResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new ServerFarmListResponse();
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document responseDoc = documentBuilder.parse(responseContent);
-        
-        NodeList elements = responseDoc.getElementsByTagName("ServerFarms");
-        Element serverFarmsSequenceElement = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
-        if (serverFarmsSequenceElement != null)
-        {
-            for (int i1 = 0; i1 < serverFarmsSequenceElement.getElementsByTagName("ServerFarm").getLength(); i1 = i1 + 1)
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
             {
-                org.w3c.dom.Element serverFarmsElement = ((org.w3c.dom.Element)serverFarmsSequenceElement.getElementsByTagName("ServerFarm").item(i1));
-                ServerFarmListResponse.ServerFarm serverFarmInstance = new ServerFarmListResponse.ServerFarm();
-                result.getServerFarms().add(serverFarmInstance);
-                
-                NodeList elements2 = serverFarmsElement.getElementsByTagName("CurrentNumberOfWorkers");
-                Element currentNumberOfWorkersElement = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
-                if (currentNumberOfWorkersElement != null)
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
                 {
-                    int currentNumberOfWorkersInstance;
-                    currentNumberOfWorkersInstance = Integer.parseInt(currentNumberOfWorkersElement.getTextContent());
-                    serverFarmInstance.setCurrentNumberOfWorkers(currentNumberOfWorkersInstance);
+                    CloudTracing.error(invocationId, ex);
                 }
-                
-                NodeList elements3 = serverFarmsElement.getElementsByTagName("CurrentWorkerSize");
-                Element currentWorkerSizeElement = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
-                if (currentWorkerSizeElement != null)
+                throw ex;
+            }
+            
+            // Create Result
+            ServerFarmListResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new ServerFarmListResponse();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document responseDoc = documentBuilder.parse(responseContent);
+            
+            NodeList elements = responseDoc.getElementsByTagName("ServerFarms");
+            Element serverFarmsSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            if (serverFarmsSequenceElement != null)
+            {
+                for (int i1 = 0; i1 < serverFarmsSequenceElement.getElementsByTagName("ServerFarm").getLength(); i1 = i1 + 1)
                 {
-                    ServerFarmWorkerSize currentWorkerSizeInstance;
-                    currentWorkerSizeInstance = ServerFarmWorkerSize.valueOf(currentWorkerSizeElement.getTextContent());
-                    serverFarmInstance.setCurrentWorkerSize(currentWorkerSizeInstance);
-                }
-                
-                NodeList elements4 = serverFarmsElement.getElementsByTagName("Name");
-                Element nameElement = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
-                if (nameElement != null)
-                {
-                    String nameInstance;
-                    nameInstance = nameElement.getTextContent();
-                    serverFarmInstance.setName(nameInstance);
-                }
-                
-                NodeList elements5 = serverFarmsElement.getElementsByTagName("NumberOfWorkers");
-                Element numberOfWorkersElement = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
-                if (numberOfWorkersElement != null)
-                {
-                    int numberOfWorkersInstance;
-                    numberOfWorkersInstance = Integer.parseInt(numberOfWorkersElement.getTextContent());
-                    serverFarmInstance.setNumberOfWorkers(numberOfWorkersInstance);
-                }
-                
-                NodeList elements6 = serverFarmsElement.getElementsByTagName("WorkerSize");
-                Element workerSizeElement = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
-                if (workerSizeElement != null)
-                {
-                    ServerFarmWorkerSize workerSizeInstance;
-                    workerSizeInstance = ServerFarmWorkerSize.valueOf(workerSizeElement.getTextContent());
-                    serverFarmInstance.setWorkerSize(workerSizeInstance);
-                }
-                
-                NodeList elements7 = serverFarmsElement.getElementsByTagName("Status");
-                Element statusElement = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
-                if (statusElement != null)
-                {
-                    ServerFarmStatus statusInstance;
-                    statusInstance = ServerFarmStatus.valueOf(statusElement.getTextContent());
-                    serverFarmInstance.setStatus(statusInstance);
+                    org.w3c.dom.Element serverFarmsElement = ((org.w3c.dom.Element) serverFarmsSequenceElement.getElementsByTagName("ServerFarm").item(i1));
+                    ServerFarmListResponse.ServerFarm serverFarmInstance = new ServerFarmListResponse.ServerFarm();
+                    result.getServerFarms().add(serverFarmInstance);
+                    
+                    NodeList elements2 = serverFarmsElement.getElementsByTagName("CurrentNumberOfWorkers");
+                    Element currentNumberOfWorkersElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                    if (currentNumberOfWorkersElement != null)
+                    {
+                        int currentNumberOfWorkersInstance;
+                        currentNumberOfWorkersInstance = Integer.parseInt(currentNumberOfWorkersElement.getTextContent());
+                        serverFarmInstance.setCurrentNumberOfWorkers(currentNumberOfWorkersInstance);
+                    }
+                    
+                    NodeList elements3 = serverFarmsElement.getElementsByTagName("CurrentWorkerSize");
+                    Element currentWorkerSizeElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                    if (currentWorkerSizeElement != null)
+                    {
+                        ServerFarmWorkerSize currentWorkerSizeInstance;
+                        currentWorkerSizeInstance = ServerFarmWorkerSize.valueOf(currentWorkerSizeElement.getTextContent());
+                        serverFarmInstance.setCurrentWorkerSize(currentWorkerSizeInstance);
+                    }
+                    
+                    NodeList elements4 = serverFarmsElement.getElementsByTagName("Name");
+                    Element nameElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                    if (nameElement != null)
+                    {
+                        String nameInstance;
+                        nameInstance = nameElement.getTextContent();
+                        serverFarmInstance.setName(nameInstance);
+                    }
+                    
+                    NodeList elements5 = serverFarmsElement.getElementsByTagName("NumberOfWorkers");
+                    Element numberOfWorkersElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                    if (numberOfWorkersElement != null)
+                    {
+                        int numberOfWorkersInstance;
+                        numberOfWorkersInstance = Integer.parseInt(numberOfWorkersElement.getTextContent());
+                        serverFarmInstance.setNumberOfWorkers(numberOfWorkersInstance);
+                    }
+                    
+                    NodeList elements6 = serverFarmsElement.getElementsByTagName("WorkerSize");
+                    Element workerSizeElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                    if (workerSizeElement != null)
+                    {
+                        ServerFarmWorkerSize workerSizeInstance;
+                        workerSizeInstance = ServerFarmWorkerSize.valueOf(workerSizeElement.getTextContent());
+                        serverFarmInstance.setWorkerSize(workerSizeInstance);
+                    }
+                    
+                    NodeList elements7 = serverFarmsElement.getElementsByTagName("Status");
+                    Element statusElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
+                    if (statusElement != null)
+                    {
+                        ServerFarmStatus statusInstance;
+                        statusInstance = ServerFarmStatus.valueOf(statusElement.getTextContent());
+                        serverFarmInstance.setStatus(statusInstance);
+                    }
                 }
             }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -849,10 +930,24 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
     *
     * @param webSpaceName The name of the web space.
     * @param parameters Parameters supplied to the Update Server Farm operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
     * @return The Update Server Farm operation response.
     */
     @Override
-    public ServerFarmUpdateResponse update(String webSpaceName, ServerFarmUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException, ParseException, URISyntaxException
+    public ServerFarmUpdateResponse update(String webSpaceName, ServerFarmUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, ParseException, URISyntaxException
     {
         // Validate
         if (webSpaceName == null)
@@ -941,104 +1036,114 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != 200)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            ServerFarmUpdateResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new ServerFarmUpdateResponse();
+            DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
+            Document responseDoc = documentBuilder2.parse(responseContent);
+            
+            NodeList elements = responseDoc.getElementsByTagName("ServerFarm");
+            Element serverFarmElement2 = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            if (serverFarmElement2 != null)
+            {
+                NodeList elements2 = serverFarmElement2.getElementsByTagName("CurrentNumberOfWorkers");
+                Element currentNumberOfWorkersElement2 = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                if (currentNumberOfWorkersElement2 != null)
+                {
+                    int currentNumberOfWorkersInstance;
+                    currentNumberOfWorkersInstance = Integer.parseInt(currentNumberOfWorkersElement2.getTextContent());
+                    result.setCurrentNumberOfWorkers(currentNumberOfWorkersInstance);
+                }
+                
+                NodeList elements3 = serverFarmElement2.getElementsByTagName("CurrentWorkerSize");
+                Element currentWorkerSizeElement2 = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                if (currentWorkerSizeElement2 != null)
+                {
+                    ServerFarmWorkerSize currentWorkerSizeInstance;
+                    currentWorkerSizeInstance = ServerFarmWorkerSize.valueOf(currentWorkerSizeElement2.getTextContent());
+                    result.setCurrentWorkerSize(currentWorkerSizeInstance);
+                }
+                
+                NodeList elements4 = serverFarmElement2.getElementsByTagName("Name");
+                Element nameElement2 = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                if (nameElement2 != null)
+                {
+                    String nameInstance;
+                    nameInstance = nameElement2.getTextContent();
+                    result.setName(nameInstance);
+                }
+                
+                NodeList elements5 = serverFarmElement2.getElementsByTagName("NumberOfWorkers");
+                Element numberOfWorkersElement2 = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                if (numberOfWorkersElement2 != null)
+                {
+                    int numberOfWorkersInstance;
+                    numberOfWorkersInstance = Integer.parseInt(numberOfWorkersElement2.getTextContent());
+                    result.setNumberOfWorkers(numberOfWorkersInstance);
+                }
+                
+                NodeList elements6 = serverFarmElement2.getElementsByTagName("WorkerSize");
+                Element workerSizeElement2 = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                if (workerSizeElement2 != null)
+                {
+                    ServerFarmWorkerSize workerSizeInstance;
+                    workerSizeInstance = ServerFarmWorkerSize.valueOf(workerSizeElement2.getTextContent());
+                    result.setWorkerSize(workerSizeInstance);
+                }
+                
+                NodeList elements7 = serverFarmElement2.getElementsByTagName("Status");
+                Element statusElement2 = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
+                if (statusElement2 != null)
+                {
+                    ServerFarmStatus statusInstance;
+                    statusInstance = ServerFarmStatus.valueOf(statusElement2.getTextContent());
+                    result.setStatus(statusInstance);
+                }
+            }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        ServerFarmUpdateResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new ServerFarmUpdateResponse();
-        DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
-        Document responseDoc = documentBuilder2.parse(responseContent);
-        
-        NodeList elements = responseDoc.getElementsByTagName("ServerFarm");
-        Element serverFarmElement2 = elements.getLength() > 0 ? ((Element)elements.item(0)) : null;
-        if (serverFarmElement2 != null)
+        finally
         {
-            NodeList elements2 = serverFarmElement2.getElementsByTagName("CurrentNumberOfWorkers");
-            Element currentNumberOfWorkersElement2 = elements2.getLength() > 0 ? ((Element)elements2.item(0)) : null;
-            if (currentNumberOfWorkersElement2 != null)
+            if (httpResponse != null && httpResponse.getEntity() != null)
             {
-                int currentNumberOfWorkersInstance;
-                currentNumberOfWorkersInstance = Integer.parseInt(currentNumberOfWorkersElement2.getTextContent());
-                result.setCurrentNumberOfWorkers(currentNumberOfWorkersInstance);
-            }
-            
-            NodeList elements3 = serverFarmElement2.getElementsByTagName("CurrentWorkerSize");
-            Element currentWorkerSizeElement2 = elements3.getLength() > 0 ? ((Element)elements3.item(0)) : null;
-            if (currentWorkerSizeElement2 != null)
-            {
-                ServerFarmWorkerSize currentWorkerSizeInstance;
-                currentWorkerSizeInstance = ServerFarmWorkerSize.valueOf(currentWorkerSizeElement2.getTextContent());
-                result.setCurrentWorkerSize(currentWorkerSizeInstance);
-            }
-            
-            NodeList elements4 = serverFarmElement2.getElementsByTagName("Name");
-            Element nameElement2 = elements4.getLength() > 0 ? ((Element)elements4.item(0)) : null;
-            if (nameElement2 != null)
-            {
-                String nameInstance;
-                nameInstance = nameElement2.getTextContent();
-                result.setName(nameInstance);
-            }
-            
-            NodeList elements5 = serverFarmElement2.getElementsByTagName("NumberOfWorkers");
-            Element numberOfWorkersElement2 = elements5.getLength() > 0 ? ((Element)elements5.item(0)) : null;
-            if (numberOfWorkersElement2 != null)
-            {
-                int numberOfWorkersInstance;
-                numberOfWorkersInstance = Integer.parseInt(numberOfWorkersElement2.getTextContent());
-                result.setNumberOfWorkers(numberOfWorkersInstance);
-            }
-            
-            NodeList elements6 = serverFarmElement2.getElementsByTagName("WorkerSize");
-            Element workerSizeElement2 = elements6.getLength() > 0 ? ((Element)elements6.item(0)) : null;
-            if (workerSizeElement2 != null)
-            {
-                ServerFarmWorkerSize workerSizeInstance;
-                workerSizeInstance = ServerFarmWorkerSize.valueOf(workerSizeElement2.getTextContent());
-                result.setWorkerSize(workerSizeInstance);
-            }
-            
-            NodeList elements7 = serverFarmElement2.getElementsByTagName("Status");
-            Element statusElement2 = elements7.getLength() > 0 ? ((Element)elements7.item(0)) : null;
-            if (statusElement2 != null)
-            {
-                ServerFarmStatus statusInstance;
-                statusInstance = ServerFarmStatus.valueOf(statusElement2.getTextContent());
-                result.setStatus(statusInstance);
+                httpResponse.getEntity().getContent().close();
             }
         }
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-        {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
-        }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
 }

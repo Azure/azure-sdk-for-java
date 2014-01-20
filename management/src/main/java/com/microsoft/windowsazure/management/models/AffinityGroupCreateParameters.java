@@ -33,14 +33,22 @@ public class AffinityGroupCreateParameters
     /**
     * Optional. A description for the affinity group. The description can be up
     * to 1024 characters in length.
+    * @return The Description value.
     */
-    public String getDescription() { return this.description; }
+    public String getDescription()
+    {
+        return this.description;
+    }
     
     /**
     * Optional. A description for the affinity group. The description can be up
     * to 1024 characters in length.
+    * @param descriptionValue The Description value.
     */
-    public void setDescription(String description) { this.description = description; }
+    public void setDescription(final String descriptionValue)
+    {
+        this.description = descriptionValue;
+    }
     
     private String label;
     
@@ -48,6 +56,7 @@ public class AffinityGroupCreateParameters
     * Required. A base-64 encoded name for the affinity group. The name can be
     * up to 100 characters in length.  Its value defaults to the Name of the
     * affinity group if not provided.
+    * @return The Label value.
     */
     public String getLabel()
     {
@@ -65,42 +74,54 @@ public class AffinityGroupCreateParameters
     * Required. A base-64 encoded name for the affinity group. The name can be
     * up to 100 characters in length.  Its value defaults to the Name of the
     * affinity group if not provided.
+    * @param labelValue The Label value.
     */
-    public void setLabel(String label) { this.label = label; }
+    public void setLabel(final String labelValue)
+    {
+        this.label = labelValue;
+    }
     
     private String location;
     
     /**
     * Required. The data center location where the affinity group will be
     * created. To list available locations, see the List Locations operation.
+    * @return The Location value.
     */
-    public String getLocation() { return this.location; }
+    public String getLocation()
+    {
+        return this.location;
+    }
     
     /**
     * Required. The data center location where the affinity group will be
     * created. To list available locations, see the List Locations operation.
+    * @param locationValue The Location value.
     */
-    public void setLocation(String location) { this.location = location; }
+    public void setLocation(final String locationValue)
+    {
+        this.location = locationValue;
+    }
     
     private String name;
     
     /**
     * Required. A name for the affinity group that is unique to the
     * subscription.
+    * @return The Name value.
     */
-    public String getName() { return this.name; }
+    public String getName()
+    {
+        return this.name;
+    }
     
     /**
     * Required. A name for the affinity group that is unique to the
     * subscription.
+    * @param nameValue The Name value.
     */
-    public void setName(String name) { this.name = name; }
-    
-    /**
-    * Initializes a new instance of the AffinityGroupCreateParameters class.
-    *
-    */
-    public AffinityGroupCreateParameters()
+    public void setName(final String nameValue)
     {
+        this.name = nameValue;
     }
 }

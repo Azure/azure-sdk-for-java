@@ -34,55 +34,79 @@ public class ScaleAction
     
     /**
     * The cooldown interval for scaling action.
+    * @return The Cooldown value.
     */
-    public Duration getCooldown() { return this.cooldown; }
+    public Duration getCooldown()
+    {
+        return this.cooldown;
+    }
     
     /**
     * The cooldown interval for scaling action.
+    * @param cooldownValue The Cooldown value.
     */
-    public void setCooldown(Duration cooldown) { this.cooldown = cooldown; }
+    public void setCooldown(final Duration cooldownValue)
+    {
+        this.cooldown = cooldownValue;
+    }
     
     private ScaleDirection direction;
     
     /**
     * The direction of scaling.
+    * @return The Direction value.
     */
-    public ScaleDirection getDirection() { return this.direction; }
+    public ScaleDirection getDirection()
+    {
+        return this.direction;
+    }
     
     /**
     * The direction of scaling.
+    * @param directionValue The Direction value.
     */
-    public void setDirection(ScaleDirection direction) { this.direction = direction; }
+    public void setDirection(final ScaleDirection directionValue)
+    {
+        this.direction = directionValue;
+    }
     
     private ScaleType type;
     
     /**
     * The type of scaling.
+    * @return The Type value.
     */
-    public ScaleType getType() { return this.type; }
+    public ScaleType getType()
+    {
+        return this.type;
+    }
     
     /**
     * The type of scaling.
+    * @param typeValue The Type value.
     */
-    public void setType(ScaleType type) { this.type = type; }
+    public void setType(final ScaleType typeValue)
+    {
+        this.type = typeValue;
+    }
     
     private String value;
     
     /**
     * The rate of scaling.
+    * @return The Value value.
     */
-    public String getValue() { return this.value; }
+    public String getValue()
+    {
+        return this.value;
+    }
     
     /**
     * The rate of scaling.
+    * @param valueValue The Value value.
     */
-    public void setValue(String value) { this.value = value; }
-    
-    /**
-    * Initializes a new instance of the ScaleAction class.
-    *
-    */
-    public ScaleAction()
+    public void setValue(final String valueValue)
     {
+        this.value = valueValue;
     }
 }

@@ -32,55 +32,87 @@ public class HostedServiceAddExtensionParameters
     
     /**
     * The identifier of the extension.
+    * @return The Id value.
     */
-    public String getId() { return this.id; }
+    public String getId()
+    {
+        return this.id;
+    }
     
     /**
     * The identifier of the extension.
+    * @param idValue The Id value.
     */
-    public void setId(String id) { this.id = id; }
+    public void setId(final String idValue)
+    {
+        this.id = idValue;
+    }
     
     private String privateConfiguration;
     
     /**
     * The private configuration that is defined using the schema returned by
     * the List Available Extensions operation.
+    * @return The PrivateConfiguration value.
     */
-    public String getPrivateConfiguration() { return this.privateConfiguration; }
+    public String getPrivateConfiguration()
+    {
+        return this.privateConfiguration;
+    }
     
     /**
     * The private configuration that is defined using the schema returned by
     * the List Available Extensions operation.
+    * @param privateConfigurationValue The PrivateConfiguration value.
     */
-    public void setPrivateConfiguration(String privateConfiguration) { this.privateConfiguration = privateConfiguration; }
+    public void setPrivateConfiguration(final String privateConfigurationValue)
+    {
+        this.privateConfiguration = privateConfigurationValue;
+    }
     
     private String providerNamespace;
     
     /**
     * The provider namespace of the extension. The provider namespace for
     * Windows Azure extensions is Microsoft.Windows.Azure.Extensions.
+    * @return The ProviderNamespace value.
     */
-    public String getProviderNamespace() { return this.providerNamespace; }
+    public String getProviderNamespace()
+    {
+        return this.providerNamespace;
+    }
     
     /**
     * The provider namespace of the extension. The provider namespace for
     * Windows Azure extensions is Microsoft.Windows.Azure.Extensions.
+    * @param providerNamespaceValue The ProviderNamespace value.
     */
-    public void setProviderNamespace(String providerNamespace) { this.providerNamespace = providerNamespace; }
+    public void setProviderNamespace(final String providerNamespaceValue)
+    {
+        this.providerNamespace = providerNamespaceValue;
+    }
     
     private String publicConfiguration;
     
     /**
     * The public configuration that is defined using the schema returned by the
     * List Available Extensions operation.
+    * @return The PublicConfiguration value.
     */
-    public String getPublicConfiguration() { return this.publicConfiguration; }
+    public String getPublicConfiguration()
+    {
+        return this.publicConfiguration;
+    }
     
     /**
     * The public configuration that is defined using the schema returned by the
     * List Available Extensions operation.
+    * @param publicConfigurationValue The PublicConfiguration value.
     */
-    public void setPublicConfiguration(String publicConfiguration) { this.publicConfiguration = publicConfiguration; }
+    public void setPublicConfiguration(final String publicConfigurationValue)
+    {
+        this.publicConfiguration = publicConfigurationValue;
+    }
     
     private String thumbprint;
     
@@ -89,49 +121,64 @@ public class HostedServiceAddExtensionParameters
     * configuration specified in PrivateConfiguration. If this element is not
     * specified, a certificate may be automatically generated and added to the
     * cloud service.
+    * @return The Thumbprint value.
     */
-    public String getThumbprint() { return this.thumbprint; }
+    public String getThumbprint()
+    {
+        return this.thumbprint;
+    }
     
     /**
     * The thumbprint of the certificate that is used to encrypt the
     * configuration specified in PrivateConfiguration. If this element is not
     * specified, a certificate may be automatically generated and added to the
     * cloud service.
+    * @param thumbprintValue The Thumbprint value.
     */
-    public void setThumbprint(String thumbprint) { this.thumbprint = thumbprint; }
+    public void setThumbprint(final String thumbprintValue)
+    {
+        this.thumbprint = thumbprintValue;
+    }
     
     private String thumbprintAlgorithm;
     
     /**
     * The thumbprint algorithm of the certificate that is used toencrypt the
     * configuration specified in PrivateConfiguration.
+    * @return The ThumbprintAlgorithm value.
     */
-    public String getThumbprintAlgorithm() { return this.thumbprintAlgorithm; }
+    public String getThumbprintAlgorithm()
+    {
+        return this.thumbprintAlgorithm;
+    }
     
     /**
     * The thumbprint algorithm of the certificate that is used toencrypt the
     * configuration specified in PrivateConfiguration.
+    * @param thumbprintAlgorithmValue The ThumbprintAlgorithm value.
     */
-    public void setThumbprintAlgorithm(String thumbprintAlgorithm) { this.thumbprintAlgorithm = thumbprintAlgorithm; }
+    public void setThumbprintAlgorithm(final String thumbprintAlgorithmValue)
+    {
+        this.thumbprintAlgorithm = thumbprintAlgorithmValue;
+    }
     
     private String type;
     
     /**
     * Required. The type of the extension.
+    * @return The Type value.
     */
-    public String getType() { return this.type; }
+    public String getType()
+    {
+        return this.type;
+    }
     
     /**
     * Required. The type of the extension.
+    * @param typeValue The Type value.
     */
-    public void setType(String type) { this.type = type; }
-    
-    /**
-    * Initializes a new instance of the HostedServiceAddExtensionParameters
-    * class.
-    *
-    */
-    public HostedServiceAddExtensionParameters()
+    public void setType(final String typeValue)
     {
+        this.type = typeValue;
     }
 }

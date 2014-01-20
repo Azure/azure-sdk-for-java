@@ -37,13 +37,21 @@ public class ServiceCertificateListResponse extends OperationResponse implements
     
     /**
     * The service certificates that are valid for your subscription.
+    * @return The Certificates value.
     */
-    public ArrayList<ServiceCertificateListResponse.Certificate> getCertificates() { return this.certificates; }
+    public ArrayList<ServiceCertificateListResponse.Certificate> getCertificates()
+    {
+        return this.certificates;
+    }
     
     /**
     * The service certificates that are valid for your subscription.
+    * @param certificatesValue The Certificates value.
     */
-    public void setCertificates(ArrayList<ServiceCertificateListResponse.Certificate> certificates) { this.certificates = certificates; }
+    public void setCertificates(final ArrayList<ServiceCertificateListResponse.Certificate> certificatesValue)
+    {
+        this.certificates = certificatesValue;
+    }
     
     /**
     * Initializes a new instance of the ServiceCertificateListResponse class.
@@ -51,6 +59,7 @@ public class ServiceCertificateListResponse extends OperationResponse implements
     */
     public ServiceCertificateListResponse()
     {
+        super();
         this.certificates = new ArrayList<ServiceCertificateListResponse.Certificate>();
     }
     
@@ -73,59 +82,83 @@ public class ServiceCertificateListResponse extends OperationResponse implements
         /**
         * The Service Management API request URI used to perform Get Service
         * Certificate requests against the certificate store.
+        * @return The CertificateUri value.
         */
-        public URI getCertificateUri() { return this.certificateUri; }
+        public URI getCertificateUri()
+        {
+            return this.certificateUri;
+        }
         
         /**
         * The Service Management API request URI used to perform Get Service
         * Certificate requests against the certificate store.
+        * @param certificateUriValue The CertificateUri value.
         */
-        public void setCertificateUri(URI certificateUri) { this.certificateUri = certificateUri; }
+        public void setCertificateUri(final URI certificateUriValue)
+        {
+            this.certificateUri = certificateUriValue;
+        }
         
         private byte[] data;
         
         /**
         * The public part of the service certificate as a .cer file.
+        * @return The Data value.
         */
-        public byte[] getData() { return this.data; }
+        public byte[] getData()
+        {
+            return this.data;
+        }
         
         /**
         * The public part of the service certificate as a .cer file.
+        * @param dataValue The Data value.
         */
-        public void setData(byte[] data) { this.data = data; }
+        public void setData(final byte[] dataValue)
+        {
+            this.data = dataValue;
+        }
         
         private String thumbprint;
         
         /**
         * The X509 certificate thumb print property of the service certificate.
+        * @return The Thumbprint value.
         */
-        public String getThumbprint() { return this.thumbprint; }
+        public String getThumbprint()
+        {
+            return this.thumbprint;
+        }
         
         /**
         * The X509 certificate thumb print property of the service certificate.
+        * @param thumbprintValue The Thumbprint value.
         */
-        public void setThumbprint(String thumbprint) { this.thumbprint = thumbprint; }
+        public void setThumbprint(final String thumbprintValue)
+        {
+            this.thumbprint = thumbprintValue;
+        }
         
         private String thumbprintAlgorithm;
         
         /**
         * The algorithm that was used to hash the service certificate.
         * Currently SHA-1 is the only supported algorithm.
+        * @return The ThumbprintAlgorithm value.
         */
-        public String getThumbprintAlgorithm() { return this.thumbprintAlgorithm; }
+        public String getThumbprintAlgorithm()
+        {
+            return this.thumbprintAlgorithm;
+        }
         
         /**
         * The algorithm that was used to hash the service certificate.
         * Currently SHA-1 is the only supported algorithm.
+        * @param thumbprintAlgorithmValue The ThumbprintAlgorithm value.
         */
-        public void setThumbprintAlgorithm(String thumbprintAlgorithm) { this.thumbprintAlgorithm = thumbprintAlgorithm; }
-        
-        /**
-        * Initializes a new instance of the Certificate class.
-        *
-        */
-        public Certificate()
+        public void setThumbprintAlgorithm(final String thumbprintAlgorithmValue)
         {
+            this.thumbprintAlgorithm = thumbprintAlgorithmValue;
         }
     }
 }

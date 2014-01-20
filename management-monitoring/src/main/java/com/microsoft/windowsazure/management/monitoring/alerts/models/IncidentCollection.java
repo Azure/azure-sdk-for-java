@@ -34,13 +34,21 @@ public class IncidentCollection
     
     /**
     * Incident collection.
+    * @return The Value value.
     */
-    public ArrayList<Incident> getValue() { return this.value; }
+    public ArrayList<Incident> getValue()
+    {
+        return this.value;
+    }
     
     /**
     * Incident collection.
+    * @param valueValue The Value value.
     */
-    public void setValue(ArrayList<Incident> value) { this.value = value; }
+    public void setValue(final ArrayList<Incident> valueValue)
+    {
+        this.value = valueValue;
+    }
     
     /**
     * Initializes a new instance of the IncidentCollection class.

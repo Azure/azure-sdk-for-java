@@ -17,7 +17,8 @@ package com.microsoft.windowsazure.services.servicebus.models;
 /**
  * Represents the result of a <code>createQueue</code> operation.
  */
-public class CreateQueueResult {
+public class CreateQueueResult
+{
 
     private QueueInfo value;
 
@@ -25,9 +26,11 @@ public class CreateQueueResult {
      * Creates an instance of the <code>CreateQueueResult</code> class.
      * 
      * @param value
-     *            A {@link QueueInfo} object assigned as the value of the result.
+     *            A {@link QueueInfo} object assigned as the value of the
+     *            result.
      */
-    public CreateQueueResult(QueueInfo value) {
+    public CreateQueueResult(QueueInfo value)
+    {
         this.setValue(value);
     }
 
@@ -35,18 +38,22 @@ public class CreateQueueResult {
      * Specfies the value of the result.
      * 
      * @param value
-     *            A {@link QueueInfo} object assigned as the value of the result.
+     *            A {@link QueueInfo} object assigned as the value of the
+     *            result.
      */
-    public void setValue(QueueInfo value) {
+    public void setValue(QueueInfo value)
+    {
         this.value = value;
     }
 
     /**
      * Returns the value of the result.
      * 
-     * @return A {@link QueueInfo} object that represents the value of the result.
+     * @return A {@link QueueInfo} object that represents the value of the
+     *         result.
      */
-    public QueueInfo getValue() {
+    public QueueInfo getValue()
+    {
         return value;
     }
 

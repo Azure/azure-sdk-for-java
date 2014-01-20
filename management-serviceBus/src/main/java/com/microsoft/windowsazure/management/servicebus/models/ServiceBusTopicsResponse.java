@@ -36,13 +36,21 @@ public class ServiceBusTopicsResponse extends OperationResponse implements Itera
     
     /**
     * The list of topics.
+    * @return The Topics value.
     */
-    public ArrayList<ServiceBusTopic> getTopics() { return this.topics; }
+    public ArrayList<ServiceBusTopic> getTopics()
+    {
+        return this.topics;
+    }
     
     /**
     * The list of topics.
+    * @param topicsValue The Topics value.
     */
-    public void setTopics(ArrayList<ServiceBusTopic> topics) { this.topics = topics; }
+    public void setTopics(final ArrayList<ServiceBusTopic> topicsValue)
+    {
+        this.topics = topicsValue;
+    }
     
     /**
     * Initializes a new instance of the ServiceBusTopicsResponse class.
@@ -50,6 +58,7 @@ public class ServiceBusTopicsResponse extends OperationResponse implements Itera
     */
     public ServiceBusTopicsResponse()
     {
+        super();
         this.topics = new ArrayList<ServiceBusTopic>();
     }
     

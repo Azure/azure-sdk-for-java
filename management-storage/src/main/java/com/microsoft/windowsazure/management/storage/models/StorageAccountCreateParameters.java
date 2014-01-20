@@ -37,30 +37,46 @@ public class StorageAccountCreateParameters
     * group in the specified subscription.  You can include either a Location
     * or AffinityGroup element in the request body, but not both. To list
     * available affinity groups, use the List Affinity Groups operation.
+    * @return The AffinityGroup value.
     */
-    public String getAffinityGroup() { return this.affinityGroup; }
+    public String getAffinityGroup()
+    {
+        return this.affinityGroup;
+    }
     
     /**
     * Required if Location is not specified. The name of an existing affinity
     * group in the specified subscription.  You can include either a Location
     * or AffinityGroup element in the request body, but not both. To list
     * available affinity groups, use the List Affinity Groups operation.
+    * @param affinityGroupValue The AffinityGroup value.
     */
-    public void setAffinityGroup(String affinityGroup) { this.affinityGroup = affinityGroup; }
+    public void setAffinityGroup(final String affinityGroupValue)
+    {
+        this.affinityGroup = affinityGroupValue;
+    }
     
     private String description;
     
     /**
     * Optional. A description for the storage account. The description may be
     * up to 1024 characters in length.
+    * @return The Description value.
     */
-    public String getDescription() { return this.description; }
+    public String getDescription()
+    {
+        return this.description;
+    }
     
     /**
     * Optional. A description for the storage account. The description may be
     * up to 1024 characters in length.
+    * @param descriptionValue The Description value.
     */
-    public void setDescription(String description) { this.description = description; }
+    public void setDescription(final String descriptionValue)
+    {
+        this.description = descriptionValue;
+    }
     
     private HashMap<String, String> extendedProperties;
     
@@ -75,8 +91,12 @@ public class StorageAccountCreateParameters
     * to that of another extended property owned by the same storage account,
     * will result in a status code 400 (Bad Request) error.  Each extended
     * property value has a maximum length of 255 characters.
+    * @return The ExtendedProperties value.
     */
-    public HashMap<String, String> getExtendedProperties() { return this.extendedProperties; }
+    public HashMap<String, String> getExtendedProperties()
+    {
+        return this.extendedProperties;
+    }
     
     /**
     * Optional. Represents the name of an extended storage account property.
@@ -89,8 +109,12 @@ public class StorageAccountCreateParameters
     * to that of another extended property owned by the same storage account,
     * will result in a status code 400 (Bad Request) error.  Each extended
     * property value has a maximum length of 255 characters.
+    * @param extendedPropertiesValue The ExtendedProperties value.
     */
-    public void setExtendedProperties(HashMap<String, String> extendedProperties) { this.extendedProperties = extendedProperties; }
+    public void setExtendedProperties(final HashMap<String, String> extendedPropertiesValue)
+    {
+        this.extendedProperties = extendedPropertiesValue;
+    }
     
     private boolean geoReplicationEnabled;
     
@@ -100,8 +124,12 @@ public class StorageAccountCreateParameters
     * body, the default value is true. If set to true, the data in the storage
     * account is replicated across more than one geographic location so as to
     * enable resilience in the face of catastrophic service loss.
+    * @return The GeoReplicationEnabled value.
     */
-    public boolean getGeoReplicationEnabled() { return this.geoReplicationEnabled; }
+    public boolean isGeoReplicationEnabled()
+    {
+        return this.geoReplicationEnabled;
+    }
     
     /**
     * Optional. Specifies whether the storage account is created with the
@@ -109,8 +137,12 @@ public class StorageAccountCreateParameters
     * body, the default value is true. If set to true, the data in the storage
     * account is replicated across more than one geographic location so as to
     * enable resilience in the face of catastrophic service loss.
+    * @param geoReplicationEnabledValue The GeoReplicationEnabled value.
     */
-    public void setGeoReplicationEnabled(boolean geoReplicationEnabled) { this.geoReplicationEnabled = geoReplicationEnabled; }
+    public void setGeoReplicationEnabled(final boolean geoReplicationEnabledValue)
+    {
+        this.geoReplicationEnabled = geoReplicationEnabledValue;
+    }
     
     private String label;
     
@@ -118,6 +150,7 @@ public class StorageAccountCreateParameters
     * Required. A name for the storage account specified as abase64-encoded
     * string. The name may be up to 100 characters inlength. The name can be
     * used identify the storage account for yourtracking purposes.
+    * @return The Label value.
     */
     public String getLabel()
     {
@@ -135,8 +168,12 @@ public class StorageAccountCreateParameters
     * Required. A name for the storage account specified as abase64-encoded
     * string. The name may be up to 100 characters inlength. The name can be
     * used identify the storage account for yourtracking purposes.
+    * @param labelValue The Label value.
     */
-    public void setLabel(String label) { this.label = label; }
+    public void setLabel(final String labelValue)
+    {
+        this.label = labelValue;
+    }
     
     private String location;
     
@@ -145,16 +182,24 @@ public class StorageAccountCreateParameters
     * storage account is created.  You can include either a Location or
     * AffinityGroup element in the request body, but not both. To list
     * available locations, use the List Locations operation.
+    * @return The Location value.
     */
-    public String getLocation() { return this.location; }
+    public String getLocation()
+    {
+        return this.location;
+    }
     
     /**
     * Required if AffinityGroup is not specified. The location where the
     * storage account is created.  You can include either a Location or
     * AffinityGroup element in the request body, but not both. To list
     * available locations, use the List Locations operation.
+    * @param locationValue The Location value.
     */
-    public void setLocation(String location) { this.location = location; }
+    public void setLocation(final String locationValue)
+    {
+        this.location = locationValue;
+    }
     
     private String serviceName;
     
@@ -165,8 +210,12 @@ public class StorageAccountCreateParameters
     * DNS prefix name and can be used to access blobs, queues, and tables in
     * the storage account.  For example:
     * http://ServiceName.blob.core.windows.net/mycontainer/
+    * @return The ServiceName value.
     */
-    public String getServiceName() { return this.serviceName; }
+    public String getServiceName()
+    {
+        return this.serviceName;
+    }
     
     /**
     * Required. A name for the storage account that is unique within Windows
@@ -175,8 +224,12 @@ public class StorageAccountCreateParameters
     * DNS prefix name and can be used to access blobs, queues, and tables in
     * the storage account.  For example:
     * http://ServiceName.blob.core.windows.net/mycontainer/
+    * @param serviceNameValue The ServiceName value.
     */
-    public void setServiceName(String serviceName) { this.serviceName = serviceName; }
+    public void setServiceName(final String serviceNameValue)
+    {
+        this.serviceName = serviceNameValue;
+    }
     
     /**
     * Initializes a new instance of the StorageAccountCreateParameters class.

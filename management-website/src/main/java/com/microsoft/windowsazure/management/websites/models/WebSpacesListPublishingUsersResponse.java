@@ -36,13 +36,21 @@ public class WebSpacesListPublishingUsersResponse extends OperationResponse impl
     
     /**
     * The publishing users.
+    * @return The Users value.
     */
-    public ArrayList<WebSpacesListPublishingUsersResponse.User> getUsers() { return this.users; }
+    public ArrayList<WebSpacesListPublishingUsersResponse.User> getUsers()
+    {
+        return this.users;
+    }
     
     /**
     * The publishing users.
+    * @param usersValue The Users value.
     */
-    public void setUsers(ArrayList<WebSpacesListPublishingUsersResponse.User> users) { this.users = users; }
+    public void setUsers(final ArrayList<WebSpacesListPublishingUsersResponse.User> usersValue)
+    {
+        this.users = usersValue;
+    }
     
     /**
     * Initializes a new instance of the WebSpacesListPublishingUsersResponse
@@ -51,6 +59,7 @@ public class WebSpacesListPublishingUsersResponse extends OperationResponse impl
     */
     public WebSpacesListPublishingUsersResponse()
     {
+        super();
         this.users = new ArrayList<WebSpacesListPublishingUsersResponse.User>();
     }
     
@@ -72,20 +81,20 @@ public class WebSpacesListPublishingUsersResponse extends OperationResponse impl
         
         /**
         * The publishing user name.
+        * @return The Name value.
         */
-        public String getName() { return this.name; }
+        public String getName()
+        {
+            return this.name;
+        }
         
         /**
         * The publishing user name.
+        * @param nameValue The Name value.
         */
-        public void setName(String name) { this.name = name; }
-        
-        /**
-        * Initializes a new instance of the User class.
-        *
-        */
-        public User()
+        public void setName(final String nameValue)
         {
+            this.name = nameValue;
         }
     }
 }

@@ -34,13 +34,21 @@ public class DeploymentChangeConfigurationParameters
     
     /**
     * Required. The encoded service configuration file for the deployment.
+    * @return The Configuration value.
     */
-    public String getConfiguration() { return this.configuration; }
+    public String getConfiguration()
+    {
+        return this.configuration;
+    }
     
     /**
     * Required. The encoded service configuration file for the deployment.
+    * @param configurationValue The Configuration value.
     */
-    public void setConfiguration(String configuration) { this.configuration = configuration; }
+    public void setConfiguration(final String configurationValue)
+    {
+        this.configuration = configurationValue;
+    }
     
     private HashMap<String, String> extendedProperties;
     
@@ -54,8 +62,12 @@ public class DeploymentChangeConfigurationParameters
     * non-letter character, or entering a name that is identical to that of
     * another extended property owned by the same hosted service, will result
     * in a status code 400 (Bad Request) error.
+    * @return The ExtendedProperties value.
     */
-    public HashMap<String, String> getExtendedProperties() { return this.extendedProperties; }
+    public HashMap<String, String> getExtendedProperties()
+    {
+        return this.extendedProperties;
+    }
     
     /**
     * Optional. Represents the name of an extended deployment property. Each
@@ -67,8 +79,12 @@ public class DeploymentChangeConfigurationParameters
     * non-letter character, or entering a name that is identical to that of
     * another extended property owned by the same hosted service, will result
     * in a status code 400 (Bad Request) error.
+    * @param extendedPropertiesValue The ExtendedProperties value.
     */
-    public void setExtendedProperties(HashMap<String, String> extendedProperties) { this.extendedProperties = extendedProperties; }
+    public void setExtendedProperties(final HashMap<String, String> extendedPropertiesValue)
+    {
+        this.extendedProperties = extendedPropertiesValue;
+    }
     
     private ExtensionConfiguration extensionConfiguration;
     
@@ -79,8 +95,12 @@ public class DeploymentChangeConfigurationParameters
     * can run as extensions to the cloud service. You must add an extension to
     * the cloud service by using Add Extension before it can be added to the
     * deployment.
+    * @return The ExtensionConfiguration value.
     */
-    public ExtensionConfiguration getExtensionConfiguration() { return this.extensionConfiguration; }
+    public ExtensionConfiguration getExtensionConfiguration()
+    {
+        return this.extensionConfiguration;
+    }
     
     /**
     * Optional. Represents an extension that is added to the cloud service. In
@@ -89,8 +109,12 @@ public class DeploymentChangeConfigurationParameters
     * can run as extensions to the cloud service. You must add an extension to
     * the cloud service by using Add Extension before it can be added to the
     * deployment.
+    * @param extensionConfigurationValue The ExtensionConfiguration value.
     */
-    public void setExtensionConfiguration(ExtensionConfiguration extensionConfiguration) { this.extensionConfiguration = extensionConfiguration; }
+    public void setExtensionConfiguration(final ExtensionConfiguration extensionConfigurationValue)
+    {
+        this.extensionConfiguration = extensionConfigurationValue;
+    }
     
     private DeploymentChangeConfigurationMode mode;
     
@@ -99,16 +123,24 @@ public class DeploymentChangeConfigurationParameters
     * default value is Auto. If set to Manual, WalkUpgradeDomain must be
     * called to apply the update. If set to Auto, the update is automatically
     * applied to each update domain for the service.
+    * @return The Mode value.
     */
-    public DeploymentChangeConfigurationMode getMode() { return this.mode; }
+    public DeploymentChangeConfigurationMode getMode()
+    {
+        return this.mode;
+    }
     
     /**
     * Optional. Possible values are: Auto, Manual.  If not specified the
     * default value is Auto. If set to Manual, WalkUpgradeDomain must be
     * called to apply the update. If set to Auto, the update is automatically
     * applied to each update domain for the service.
+    * @param modeValue The Mode value.
     */
-    public void setMode(DeploymentChangeConfigurationMode mode) { this.mode = mode; }
+    public void setMode(final DeploymentChangeConfigurationMode modeValue)
+    {
+        this.mode = modeValue;
+    }
     
     private Boolean treatWarningsAsError;
     
@@ -117,16 +149,24 @@ public class DeploymentChangeConfigurationParameters
     * errors. The default value is false. If set to true, the Created
     * Deployment operation fails if there are validation warnings on the
     * service package.
+    * @return The TreatWarningsAsError value.
     */
-    public Boolean getTreatWarningsAsError() { return this.treatWarningsAsError; }
+    public Boolean isTreatWarningsAsError()
+    {
+        return this.treatWarningsAsError;
+    }
     
     /**
     * Optional. Indicates whether to treat package validation warnings as
     * errors. The default value is false. If set to true, the Created
     * Deployment operation fails if there are validation warnings on the
     * service package.
+    * @param treatWarningsAsErrorValue The TreatWarningsAsError value.
     */
-    public void setTreatWarningsAsError(Boolean treatWarningsAsError) { this.treatWarningsAsError = treatWarningsAsError; }
+    public void setTreatWarningsAsError(final Boolean treatWarningsAsErrorValue)
+    {
+        this.treatWarningsAsError = treatWarningsAsErrorValue;
+    }
     
     /**
     * Initializes a new instance of the DeploymentChangeConfigurationParameters

@@ -43,60 +43,84 @@ public class ComputeOperationStatusResponse extends OperationResponse
     * If the asynchronous operation failed, the response body includes the HTTP
     * status code for the failed request, and also includes error information
     * regarding the failure.
+    * @return The Error value.
     */
-    public ComputeOperationStatusResponse.ErrorDetails getError() { return this.error; }
+    public ComputeOperationStatusResponse.ErrorDetails getError()
+    {
+        return this.error;
+    }
     
     /**
     * If the asynchronous operation failed, the response body includes the HTTP
     * status code for the failed request, and also includes error information
     * regarding the failure.
+    * @param errorValue The Error value.
     */
-    public void setError(ComputeOperationStatusResponse.ErrorDetails error) { this.error = error; }
+    public void setError(final ComputeOperationStatusResponse.ErrorDetails errorValue)
+    {
+        this.error = errorValue;
+    }
     
     private Integer httpStatusCode;
     
     /**
     * The HTTP status code for the asynchronous request.
+    * @return The HttpStatusCode value.
     */
-    public Integer getHttpStatusCode() { return this.httpStatusCode; }
+    public Integer getHttpStatusCode()
+    {
+        return this.httpStatusCode;
+    }
     
     /**
     * The HTTP status code for the asynchronous request.
+    * @param httpStatusCodeValue The HttpStatusCode value.
     */
-    public void setHttpStatusCode(Integer httpStatusCode) { this.httpStatusCode = httpStatusCode; }
+    public void setHttpStatusCode(final Integer httpStatusCodeValue)
+    {
+        this.httpStatusCode = httpStatusCodeValue;
+    }
     
     private String id;
     
     /**
     * The request ID of the asynchronous request. This value is returned in the
     * x-ms-request-id response header of the asynchronous request.
+    * @return The Id value.
     */
-    public String getId() { return this.id; }
+    public String getId()
+    {
+        return this.id;
+    }
     
     /**
     * The request ID of the asynchronous request. This value is returned in the
     * x-ms-request-id response header of the asynchronous request.
+    * @param idValue The Id value.
     */
-    public void setId(String id) { this.id = id; }
+    public void setId(final String idValue)
+    {
+        this.id = idValue;
+    }
     
     private OperationStatus status;
     
     /**
     * The status of the asynchronous request.
+    * @return The Status value.
     */
-    public OperationStatus getStatus() { return this.status; }
+    public OperationStatus getStatus()
+    {
+        return this.status;
+    }
     
     /**
     * The status of the asynchronous request.
+    * @param statusValue The Status value.
     */
-    public void setStatus(OperationStatus status) { this.status = status; }
-    
-    /**
-    * Initializes a new instance of the ComputeOperationStatusResponse class.
-    *
-    */
-    public ComputeOperationStatusResponse()
+    public void setStatus(final OperationStatus statusValue)
     {
+        this.status = statusValue;
     }
     
     /**
@@ -111,35 +135,43 @@ public class ComputeOperationStatusResponse extends OperationResponse
         /**
         * The management service error code returned if the asynchronous
         * request failed.
+        * @return The Code value.
         */
-        public String getCode() { return this.code; }
+        public String getCode()
+        {
+            return this.code;
+        }
         
         /**
         * The management service error code returned if the asynchronous
         * request failed.
+        * @param codeValue The Code value.
         */
-        public void setCode(String code) { this.code = code; }
+        public void setCode(final String codeValue)
+        {
+            this.code = codeValue;
+        }
         
         private String message;
         
         /**
         * The management service error message returned if the asynchronous
         * request failed.
+        * @return The Message value.
         */
-        public String getMessage() { return this.message; }
+        public String getMessage()
+        {
+            return this.message;
+        }
         
         /**
         * The management service error message returned if the asynchronous
         * request failed.
+        * @param messageValue The Message value.
         */
-        public void setMessage(String message) { this.message = message; }
-        
-        /**
-        * Initializes a new instance of the ErrorDetails class.
-        *
-        */
-        public ErrorDetails()
+        public void setMessage(final String messageValue)
         {
+            this.message = messageValue;
         }
     }
 }
