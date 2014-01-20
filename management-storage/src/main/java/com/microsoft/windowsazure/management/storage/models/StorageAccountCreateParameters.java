@@ -37,6 +37,7 @@ public class StorageAccountCreateParameters
     * group in the specified subscription.  You can include either a Location
     * or AffinityGroup element in the request body, but not both. To list
     * available affinity groups, use the List Affinity Groups operation.
+    * @return The AffinityGroup value.
     */
     public String getAffinityGroup()
     {
@@ -48,10 +49,11 @@ public class StorageAccountCreateParameters
     * group in the specified subscription.  You can include either a Location
     * or AffinityGroup element in the request body, but not both. To list
     * available affinity groups, use the List Affinity Groups operation.
+    * @param affinityGroupValue The AffinityGroup value.
     */
-    public void setAffinityGroup(String affinityGroup)
+    public void setAffinityGroup(final String affinityGroupValue)
     {
-        this.affinityGroup = affinityGroup;
+        this.affinityGroup = affinityGroupValue;
     }
     
     private String description;
@@ -59,6 +61,7 @@ public class StorageAccountCreateParameters
     /**
     * Optional. A description for the storage account. The description may be
     * up to 1024 characters in length.
+    * @return The Description value.
     */
     public String getDescription()
     {
@@ -68,10 +71,11 @@ public class StorageAccountCreateParameters
     /**
     * Optional. A description for the storage account. The description may be
     * up to 1024 characters in length.
+    * @param descriptionValue The Description value.
     */
-    public void setDescription(String description)
+    public void setDescription(final String descriptionValue)
     {
-        this.description = description;
+        this.description = descriptionValue;
     }
     
     private HashMap<String, String> extendedProperties;
@@ -87,6 +91,7 @@ public class StorageAccountCreateParameters
     * to that of another extended property owned by the same storage account,
     * will result in a status code 400 (Bad Request) error.  Each extended
     * property value has a maximum length of 255 characters.
+    * @return The ExtendedProperties value.
     */
     public HashMap<String, String> getExtendedProperties()
     {
@@ -104,10 +109,11 @@ public class StorageAccountCreateParameters
     * to that of another extended property owned by the same storage account,
     * will result in a status code 400 (Bad Request) error.  Each extended
     * property value has a maximum length of 255 characters.
+    * @param extendedPropertiesValue The ExtendedProperties value.
     */
-    public void setExtendedProperties(HashMap<String, String> extendedProperties)
+    public void setExtendedProperties(final HashMap<String, String> extendedPropertiesValue)
     {
-        this.extendedProperties = extendedProperties;
+        this.extendedProperties = extendedPropertiesValue;
     }
     
     private boolean geoReplicationEnabled;
@@ -118,6 +124,7 @@ public class StorageAccountCreateParameters
     * body, the default value is true. If set to true, the data in the storage
     * account is replicated across more than one geographic location so as to
     * enable resilience in the face of catastrophic service loss.
+    * @return The GeoReplicationEnabled value.
     */
     public boolean isGeoReplicationEnabled()
     {
@@ -130,10 +137,11 @@ public class StorageAccountCreateParameters
     * body, the default value is true. If set to true, the data in the storage
     * account is replicated across more than one geographic location so as to
     * enable resilience in the face of catastrophic service loss.
+    * @param geoReplicationEnabledValue The GeoReplicationEnabled value.
     */
-    public void setGeoReplicationEnabled(boolean geoReplicationEnabled)
+    public void setGeoReplicationEnabled(final boolean geoReplicationEnabledValue)
     {
-        this.geoReplicationEnabled = geoReplicationEnabled;
+        this.geoReplicationEnabled = geoReplicationEnabledValue;
     }
     
     private String label;
@@ -142,6 +150,7 @@ public class StorageAccountCreateParameters
     * Required. A name for the storage account specified as abase64-encoded
     * string. The name may be up to 100 characters inlength. The name can be
     * used identify the storage account for yourtracking purposes.
+    * @return The Label value.
     */
     public String getLabel()
     {
@@ -159,10 +168,11 @@ public class StorageAccountCreateParameters
     * Required. A name for the storage account specified as abase64-encoded
     * string. The name may be up to 100 characters inlength. The name can be
     * used identify the storage account for yourtracking purposes.
+    * @param labelValue The Label value.
     */
-    public void setLabel(String label)
+    public void setLabel(final String labelValue)
     {
-        this.label = label;
+        this.label = labelValue;
     }
     
     private String location;
@@ -172,6 +182,7 @@ public class StorageAccountCreateParameters
     * storage account is created.  You can include either a Location or
     * AffinityGroup element in the request body, but not both. To list
     * available locations, use the List Locations operation.
+    * @return The Location value.
     */
     public String getLocation()
     {
@@ -183,10 +194,11 @@ public class StorageAccountCreateParameters
     * storage account is created.  You can include either a Location or
     * AffinityGroup element in the request body, but not both. To list
     * available locations, use the List Locations operation.
+    * @param locationValue The Location value.
     */
-    public void setLocation(String location)
+    public void setLocation(final String locationValue)
     {
-        this.location = location;
+        this.location = locationValue;
     }
     
     private String serviceName;
@@ -198,6 +210,7 @@ public class StorageAccountCreateParameters
     * DNS prefix name and can be used to access blobs, queues, and tables in
     * the storage account.  For example:
     * http://ServiceName.blob.core.windows.net/mycontainer/
+    * @return The ServiceName value.
     */
     public String getServiceName()
     {
@@ -211,10 +224,11 @@ public class StorageAccountCreateParameters
     * DNS prefix name and can be used to access blobs, queues, and tables in
     * the storage account.  For example:
     * http://ServiceName.blob.core.windows.net/mycontainer/
+    * @param serviceNameValue The ServiceName value.
     */
-    public void setServiceName(String serviceName)
+    public void setServiceName(final String serviceNameValue)
     {
-        this.serviceName = serviceName;
+        this.serviceName = serviceNameValue;
     }
     
     /**

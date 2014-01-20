@@ -32,6 +32,7 @@ public class DomainJoinProvisioning
     
     /**
     * The account infor for joining the domain.
+    * @return The AccountData value.
     */
     public String getAccountData()
     {
@@ -40,9 +41,10 @@ public class DomainJoinProvisioning
     
     /**
     * The account infor for joining the domain.
+    * @param accountDataValue The AccountData value.
     */
-    public void setAccountData(String accountData)
+    public void setAccountData(final String accountDataValue)
     {
-        this.accountData = accountData;
+        this.accountData = accountDataValue;
     }
 }

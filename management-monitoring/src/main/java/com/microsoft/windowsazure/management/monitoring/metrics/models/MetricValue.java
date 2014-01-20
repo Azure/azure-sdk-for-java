@@ -34,6 +34,7 @@ public class MetricValue
     
     /**
     * Specifies annotation for the metric.
+    * @return The Annotation value.
     */
     public String getAnnotation()
     {
@@ -42,16 +43,18 @@ public class MetricValue
     
     /**
     * Specifies annotation for the metric.
+    * @param annotationValue The Annotation value.
     */
-    public void setAnnotation(String annotation)
+    public void setAnnotation(final String annotationValue)
     {
-        this.annotation = annotation;
+        this.annotation = annotationValue;
     }
     
     private Double average;
     
     /**
     * Specifies the average value in the time interval.
+    * @return The Average value.
     */
     public Double getAverage()
     {
@@ -60,10 +63,11 @@ public class MetricValue
     
     /**
     * Specifies the average value in the time interval.
+    * @param averageValue The Average value.
     */
-    public void setAverage(Double average)
+    public void setAverage(final Double averageValue)
     {
-        this.average = average;
+        this.average = averageValue;
     }
     
     private Integer count;
@@ -71,6 +75,7 @@ public class MetricValue
     /**
     * Specifies the sample count in the time interval. Can be used to determine
     * the number of values that contributed to the average value.
+    * @return The Count value.
     */
     public Integer getCount()
     {
@@ -80,16 +85,18 @@ public class MetricValue
     /**
     * Specifies the sample count in the time interval. Can be used to determine
     * the number of values that contributed to the average value.
+    * @param countValue The Count value.
     */
-    public void setCount(Integer count)
+    public void setCount(final Integer countValue)
     {
-        this.count = count;
+        this.count = countValue;
     }
     
     private Double maximum;
     
     /**
     * Specifies the maximum value in the time interval.
+    * @return The Maximum value.
     */
     public Double getMaximum()
     {
@@ -98,16 +105,18 @@ public class MetricValue
     
     /**
     * Specifies the maximum value in the time interval.
+    * @param maximumValue The Maximum value.
     */
-    public void setMaximum(Double maximum)
+    public void setMaximum(final Double maximumValue)
     {
-        this.maximum = maximum;
+        this.maximum = maximumValue;
     }
     
     private Double minimum;
     
     /**
     * Specifies the minimum value in the time interval.
+    * @return The Minimum value.
     */
     public Double getMinimum()
     {
@@ -116,16 +125,18 @@ public class MetricValue
     
     /**
     * Specifies the minimum value in the time interval.
+    * @param minimumValue The Minimum value.
     */
-    public void setMinimum(Double minimum)
+    public void setMinimum(final Double minimumValue)
     {
-        this.minimum = minimum;
+        this.minimum = minimumValue;
     }
     
     private Calendar timestamp;
     
     /**
     * The timestamp for the metric value.
+    * @return The Timestamp value.
     */
     public Calendar getTimestamp()
     {
@@ -134,16 +145,18 @@ public class MetricValue
     
     /**
     * The timestamp for the metric value.
+    * @param timestampValue The Timestamp value.
     */
-    public void setTimestamp(Calendar timestamp)
+    public void setTimestamp(final Calendar timestampValue)
     {
-        this.timestamp = timestamp;
+        this.timestamp = timestampValue;
     }
     
     private Double total;
     
     /**
     * Specifies the total value in the time interval.
+    * @return The Total value.
     */
     public Double getTotal()
     {
@@ -152,9 +165,10 @@ public class MetricValue
     
     /**
     * Specifies the total value in the time interval.
+    * @param totalValue The Total value.
     */
-    public void setTotal(Double total)
+    public void setTotal(final Double totalValue)
     {
-        this.total = total;
+        this.total = totalValue;
     }
 }

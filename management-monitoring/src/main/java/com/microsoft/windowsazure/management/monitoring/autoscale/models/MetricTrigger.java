@@ -34,6 +34,7 @@ public class MetricTrigger
     
     /**
     * The name of the metric.
+    * @return The MetricName value.
     */
     public String getMetricName()
     {
@@ -42,16 +43,18 @@ public class MetricTrigger
     
     /**
     * The name of the metric.
+    * @param metricNameValue The MetricName value.
     */
-    public void setMetricName(String metricName)
+    public void setMetricName(final String metricNameValue)
     {
-        this.metricName = metricName;
+        this.metricName = metricNameValue;
     }
     
     private String metricNamespace;
     
     /**
     * The namespace of the metric.
+    * @return The MetricNamespace value.
     */
     public String getMetricNamespace()
     {
@@ -60,16 +63,18 @@ public class MetricTrigger
     
     /**
     * The namespace of the metric.
+    * @param metricNamespaceValue The MetricNamespace value.
     */
-    public void setMetricNamespace(String metricNamespace)
+    public void setMetricNamespace(final String metricNamespaceValue)
     {
-        this.metricNamespace = metricNamespace;
+        this.metricNamespace = metricNamespaceValue;
     }
     
     private String metricSource;
     
     /**
     * The metric source.
+    * @return The MetricSource value.
     */
     public String getMetricSource()
     {
@@ -78,16 +83,18 @@ public class MetricTrigger
     
     /**
     * The metric source.
+    * @param metricSourceValue The MetricSource value.
     */
-    public void setMetricSource(String metricSource)
+    public void setMetricSource(final String metricSourceValue)
     {
-        this.metricSource = metricSource;
+        this.metricSource = metricSourceValue;
     }
     
     private ComparisonOperationType operator;
     
     /**
     * The operator that is used to evaluate the metric.
+    * @return The Operator value.
     */
     public ComparisonOperationType getOperator()
     {
@@ -96,16 +103,18 @@ public class MetricTrigger
     
     /**
     * The operator that is used to evaluate the metric.
+    * @param operatorValue The Operator value.
     */
-    public void setOperator(ComparisonOperationType operator)
+    public void setOperator(final ComparisonOperationType operatorValue)
     {
-        this.operator = operator;
+        this.operator = operatorValue;
     }
     
     private MetricStatisticType statistic;
     
     /**
     * How the metrics from multiple instances are combined.
+    * @return The Statistic value.
     */
     public MetricStatisticType getStatistic()
     {
@@ -114,16 +123,18 @@ public class MetricTrigger
     
     /**
     * How the metrics from multiple instances are combined.
+    * @param statisticValue The Statistic value.
     */
-    public void setStatistic(MetricStatisticType statistic)
+    public void setStatistic(final MetricStatisticType statisticValue)
     {
-        this.statistic = statistic;
+        this.statistic = statisticValue;
     }
     
     private double threshold;
     
     /**
     * The percentage of usage that triggers the scaling operation.
+    * @return The Threshold value.
     */
     public double getThreshold()
     {
@@ -132,16 +143,18 @@ public class MetricTrigger
     
     /**
     * The percentage of usage that triggers the scaling operation.
+    * @param thresholdValue The Threshold value.
     */
-    public void setThreshold(double threshold)
+    public void setThreshold(final double thresholdValue)
     {
-        this.threshold = threshold;
+        this.threshold = thresholdValue;
     }
     
     private TimeAggregationType timeAggregation;
     
     /**
     * How the data that is collected should be combined over time.
+    * @return The TimeAggregation value.
     */
     public TimeAggregationType getTimeAggregation()
     {
@@ -150,16 +163,18 @@ public class MetricTrigger
     
     /**
     * How the data that is collected should be combined over time.
+    * @param timeAggregationValue The TimeAggregation value.
     */
-    public void setTimeAggregation(TimeAggregationType timeAggregation)
+    public void setTimeAggregation(final TimeAggregationType timeAggregationValue)
     {
-        this.timeAggregation = timeAggregation;
+        this.timeAggregation = timeAggregationValue;
     }
     
     private Duration timeGrain;
     
     /**
     * The frequency of data collection.
+    * @return The TimeGrain value.
     */
     public Duration getTimeGrain()
     {
@@ -168,16 +183,18 @@ public class MetricTrigger
     
     /**
     * The frequency of data collection.
+    * @param timeGrainValue The TimeGrain value.
     */
-    public void setTimeGrain(Duration timeGrain)
+    public void setTimeGrain(final Duration timeGrainValue)
     {
-        this.timeGrain = timeGrain;
+        this.timeGrain = timeGrainValue;
     }
     
     private Duration timeWindow;
     
     /**
     * The range of time in which instance data is collected.
+    * @return The TimeWindow value.
     */
     public Duration getTimeWindow()
     {
@@ -186,9 +203,10 @@ public class MetricTrigger
     
     /**
     * The range of time in which instance data is collected.
+    * @param timeWindowValue The TimeWindow value.
     */
-    public void setTimeWindow(Duration timeWindow)
+    public void setTimeWindow(final Duration timeWindowValue)
     {
-        this.timeWindow = timeWindow;
+        this.timeWindow = timeWindowValue;
     }
 }

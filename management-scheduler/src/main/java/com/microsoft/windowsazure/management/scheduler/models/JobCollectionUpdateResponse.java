@@ -34,6 +34,7 @@ public class JobCollectionUpdateResponse extends OperationResponse
     
     /**
     * New ETag of the updated Job Collection.
+    * @return The ETag value.
     */
     public String getETag()
     {
@@ -42,9 +43,10 @@ public class JobCollectionUpdateResponse extends OperationResponse
     
     /**
     * New ETag of the updated Job Collection.
+    * @param eTagValue The ETag value.
     */
-    public void setETag(String eTag)
+    public void setETag(final String eTagValue)
     {
-        this.eTag = eTag;
+        this.eTag = eTagValue;
     }
 }

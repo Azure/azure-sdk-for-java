@@ -34,6 +34,7 @@ public class WebSpacesGetDnsSuffixResponse extends OperationResponse
     
     /**
     * The DNS Suffix used for the web space.
+    * @return The DnsSuffix value.
     */
     public String getDnsSuffix()
     {
@@ -42,9 +43,10 @@ public class WebSpacesGetDnsSuffixResponse extends OperationResponse
     
     /**
     * The DNS Suffix used for the web space.
+    * @param dnsSuffixValue The DnsSuffix value.
     */
-    public void setDnsSuffix(String dnsSuffix)
+    public void setDnsSuffix(final String dnsSuffixValue)
     {
-        this.dnsSuffix = dnsSuffix;
+        this.dnsSuffix = dnsSuffixValue;
     }
 }

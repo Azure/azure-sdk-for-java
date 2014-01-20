@@ -29,50 +29,74 @@ public class RecurrentSchedule
 {
     private ArrayList<String> days;
     
+    /**
+    * @return The Days value.
+    */
     public ArrayList<String> getDays()
     {
         return this.days;
     }
     
-    public void setDays(ArrayList<String> days)
+    /**
+    * @param daysValue The Days value.
+    */
+    public void setDays(final ArrayList<String> daysValue)
     {
-        this.days = days;
+        this.days = daysValue;
     }
     
     private ArrayList<Integer> hours;
     
+    /**
+    * @return The Hours value.
+    */
     public ArrayList<Integer> getHours()
     {
         return this.hours;
     }
     
-    public void setHours(ArrayList<Integer> hours)
+    /**
+    * @param hoursValue The Hours value.
+    */
+    public void setHours(final ArrayList<Integer> hoursValue)
     {
-        this.hours = hours;
+        this.hours = hoursValue;
     }
     
     private ArrayList<Integer> minutes;
     
+    /**
+    * @return The Minutes value.
+    */
     public ArrayList<Integer> getMinutes()
     {
         return this.minutes;
     }
     
-    public void setMinutes(ArrayList<Integer> minutes)
+    /**
+    * @param minutesValue The Minutes value.
+    */
+    public void setMinutes(final ArrayList<Integer> minutesValue)
     {
-        this.minutes = minutes;
+        this.minutes = minutesValue;
     }
     
     private String timeZone;
     
+    /**
+    * @return The TimeZone value.
+    */
     public String getTimeZone()
     {
         return this.timeZone;
     }
     
-    public void setTimeZone(String timeZone)
+    /**
+    * @param timeZoneValue The TimeZone value.
+    */
+    public void setTimeZone(final String timeZoneValue)
     {
-        this.timeZone = timeZone;
+        this.timeZone = timeZoneValue;
     }
     
     /**

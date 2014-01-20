@@ -32,14 +32,20 @@ public class StorageAccountUpdateParameters
 {
     private String description;
     
+    /**
+    * @return The Description value.
+    */
     public String getDescription()
     {
         return this.description;
     }
     
-    public void setDescription(String description)
+    /**
+    * @param descriptionValue The Description value.
+    */
+    public void setDescription(final String descriptionValue)
     {
-        this.description = description;
+        this.description = descriptionValue;
     }
     
     private HashMap<String, String> extendedProperties;
@@ -56,6 +62,7 @@ public class StorageAccountUpdateParameters
     * will result in a status code 400 (Bad Request) error.  Each extended
     * property value has a maximum length of 255 characters.  You can delete
     * an extended property by setting the value to NULL.
+    * @return The ExtendedProperties value.
     */
     public HashMap<String, String> getExtendedProperties()
     {
@@ -74,10 +81,11 @@ public class StorageAccountUpdateParameters
     * will result in a status code 400 (Bad Request) error.  Each extended
     * property value has a maximum length of 255 characters.  You can delete
     * an extended property by setting the value to NULL.
+    * @param extendedPropertiesValue The ExtendedProperties value.
     */
-    public void setExtendedProperties(HashMap<String, String> extendedProperties)
+    public void setExtendedProperties(final HashMap<String, String> extendedPropertiesValue)
     {
-        this.extendedProperties = extendedProperties;
+        this.extendedProperties = extendedPropertiesValue;
     }
     
     private Boolean geoReplicationEnabled;
@@ -97,6 +105,7 @@ public class StorageAccountUpdateParameters
     * the secondary data center. After the existing copy of the data is
     * replicated to the secondary data center, updates are geo-replicated at
     * no additional charge.
+    * @return The GeoReplicationEnabled value.
     */
     public Boolean isGeoReplicationEnabled()
     {
@@ -118,10 +127,11 @@ public class StorageAccountUpdateParameters
     * the secondary data center. After the existing copy of the data is
     * replicated to the secondary data center, updates are geo-replicated at
     * no additional charge.
+    * @param geoReplicationEnabledValue The GeoReplicationEnabled value.
     */
-    public void setGeoReplicationEnabled(Boolean geoReplicationEnabled)
+    public void setGeoReplicationEnabled(final Boolean geoReplicationEnabledValue)
     {
-        this.geoReplicationEnabled = geoReplicationEnabled;
+        this.geoReplicationEnabled = geoReplicationEnabledValue;
     }
     
     private String label;
@@ -130,6 +140,7 @@ public class StorageAccountUpdateParameters
     * Optional. A name for the storage account that is base64-encoded. The
     * label may be up to 100 characters in length. The name can be used
     * identify the storage account for your tracking purposes.
+    * @return The Label value.
     */
     public String getLabel()
     {
@@ -140,10 +151,11 @@ public class StorageAccountUpdateParameters
     * Optional. A name for the storage account that is base64-encoded. The
     * label may be up to 100 characters in length. The name can be used
     * identify the storage account for your tracking purposes.
+    * @param labelValue The Label value.
     */
-    public void setLabel(String label)
+    public void setLabel(final String labelValue)
     {
-        this.label = label;
+        this.label = labelValue;
     }
     
     /**

@@ -31,6 +31,7 @@ public interface AutoscaleClient extends FilterableService<AutoscaleClient>
 {
     /**
     * Optional base uri parameter.
+    * @return The BaseUri value.
     */
     URI getBaseUri(); 
     
@@ -41,11 +42,13 @@ public interface AutoscaleClient extends FilterableService<AutoscaleClient>
     * Azure Service ManagementAPI use mutual authentication of management
     * certificates over SSL to ensure that a request made to the service is
     * secure.  No anonymous requests are allowed.
+    * @return The Credentials value.
     */
     SubscriptionCloudCredentials getCredentials(); 
     
     /**
     * Operations for managing the autoscale settings.
+    * @return The SettingsOperations value.
     */
     SettingOperations getSettingsOperations(); 
 }

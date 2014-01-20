@@ -32,6 +32,7 @@ public class GatewayCreateParameters
     
     /**
     * The routing type for this virtual network gateway.
+    * @return The GatewayType value.
     */
     public GatewayType getGatewayType()
     {
@@ -40,9 +41,10 @@ public class GatewayCreateParameters
     
     /**
     * The routing type for this virtual network gateway.
+    * @param gatewayTypeValue The GatewayType value.
     */
-    public void setGatewayType(GatewayType gatewayType)
+    public void setGatewayType(final GatewayType gatewayTypeValue)
     {
-        this.gatewayType = gatewayType;
+        this.gatewayType = gatewayTypeValue;
     }
 }

@@ -30,6 +30,7 @@ public class ClientRootCertificateCreateParameters
     /**
     * The new client root certificate to upload, represented as a hex encoded
     * string
+    * @return The Certificate value.
     */
     public String getCertificate()
     {
@@ -39,9 +40,10 @@ public class ClientRootCertificateCreateParameters
     /**
     * The new client root certificate to upload, represented as a hex encoded
     * string
+    * @param certificateValue The Certificate value.
     */
-    public void setCertificate(String certificate)
+    public void setCertificate(final String certificateValue)
     {
-        this.certificate = certificate;
+        this.certificate = certificateValue;
     }
 }

@@ -37,12 +37,10 @@ import com.microsoft.windowsazure.management.virtualnetworks.models.GatewayListS
 import com.microsoft.windowsazure.management.virtualnetworks.models.GatewayOperationResponse;
 import com.microsoft.windowsazure.management.virtualnetworks.models.GatewayResetSharedKeyParameters;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.xml.sax.SAXException;
 
@@ -61,10 +59,20 @@ public interface GatewayOperations
     * @param localNetworkSiteName The name of the site to connect to.
     * @param parameters Parameters supplied to the Create Virtual Network
     * Gateway operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard storage response including an HTTP status code and
     * request ID.
     */
-    GatewayOperationResponse beginConnectDisconnectOrTesting(String virtualNetworkName, String localNetworkSiteName, GatewayConnectDisconnectOrTestParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException;
+    GatewayOperationResponse beginConnectDisconnectOrTesting(String virtualNetworkName, String localNetworkSiteName, GatewayConnectDisconnectOrTestParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * To connect to, disconnect from, or test your connection to a local
@@ -94,10 +102,20 @@ public interface GatewayOperations
     * gateway.
     * @param parameters Parameters supplied to the Create Virtual Network
     * Gateway operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard storage response including an HTTP status code and
     * request ID.
     */
-    GatewayOperationResponse beginCreating(String virtualNetworkName, GatewayCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException;
+    GatewayOperationResponse beginCreating(String virtualNetworkName, GatewayCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * The Create Virtual network Gateway operation creates a new network
@@ -121,6 +139,14 @@ public interface GatewayOperations
     * more information)
     *
     * @param virtualNetworkName The name of the virtual network.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
     * @return A standard storage response including an HTTP status code and
     * request ID.
     */
@@ -145,10 +171,18 @@ public interface GatewayOperations
     * more information)
     *
     * @param virtualNetworkName The name of the virtual network in Azure.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
     * @return A standard storage response including an HTTP status code and
     * request ID.
     */
-    GatewayOperationResponse beginFailover(String virtualNetworkName) throws UnsupportedEncodingException, IOException, ServiceException, ParserConfigurationException, SAXException;
+    GatewayOperationResponse beginFailover(String virtualNetworkName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
     
     /**
     * The Failover Virtual network Gateway operation causes a network gateway
@@ -174,10 +208,20 @@ public interface GatewayOperations
     * @param localNetworkName The name of the local network.
     * @param parameters The parameters to the Virtual Network Gateway Reset
     * Shared Key request.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard storage response including an HTTP status code and
     * request ID.
     */
-    GatewayOperationResponse beginResetSharedKey(String virtualNetworkName, String localNetworkName, GatewayResetSharedKeyParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException;
+    GatewayOperationResponse beginResetSharedKey(String virtualNetworkName, String localNetworkName, GatewayResetSharedKeyParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * The Reset Virtual network Gateway shared key operation resets the shared
@@ -209,6 +253,18 @@ public interface GatewayOperations
     * @param localNetworkSiteName The name of the site to connect to.
     * @param parameters Parameters supplied to the Create Virtual Network
     * Gateway operation.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -256,6 +312,24 @@ public interface GatewayOperations
     * gateway.
     * @param parameters Parameters supplied to the Create Virtual Network
     * Gateway operation.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -266,7 +340,7 @@ public interface GatewayOperations
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    GatewayGetOperationStatusResponse create(String virtualNetworkName, GatewayCreateParameters parameters) throws UnsupportedEncodingException, IOException, ServiceException, ParserConfigurationException, SAXException, InterruptedException, ExecutionException, ServiceException;
+    GatewayGetOperationStatusResponse create(String virtualNetworkName, GatewayCreateParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException, InterruptedException, ExecutionException, ServiceException;
     
     /**
     * The Create Virtual network Gateway operation creates a new network
@@ -297,6 +371,24 @@ public interface GatewayOperations
     * more information)
     *
     * @param virtualNetworkName The name of the virtual network.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -335,6 +427,18 @@ public interface GatewayOperations
     * more information)
     *
     * @param virtualNetworkName The name of the virtual network in Azure.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -376,10 +480,20 @@ public interface GatewayOperations
     * gateway.
     * @param parameters Parameters supplied to the Create Virtual Network
     * Gateway operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard storage response including an HTTP status code and
     * request ID.
     */
-    GatewayOperationResponse generateVpnClientPackage(String virtualNetworkName, GatewayGenerateVpnClientPackageParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException;
+    GatewayOperationResponse generateVpnClientPackage(String virtualNetworkName, GatewayGenerateVpnClientPackageParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * The Generate VPN Client Package creates a VPN client package for the
@@ -404,6 +518,16 @@ public interface GatewayOperations
     *
     * @param virtualNetworkName The name of the virtual network for this
     * gateway.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return A standard storage response including an HTTP status code and
     * request ID.
     */
@@ -432,6 +556,10 @@ public interface GatewayOperations
     * gateway.
     * @param parameters The parameters for the GetDeviceConfigurationScript
     * request.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return The configuration script returned from the get device
     * configuration script request.
     */
@@ -459,6 +587,14 @@ public interface GatewayOperations
     * more information)
     *
     * @param operationId The id  of the virtualnetwork operation.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -500,6 +636,14 @@ public interface GatewayOperations
     * @param virtualNetworkName The name of the virtual network for this
     * gateway.
     * @param localNetworkName The name of the local network.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
     * @return The response to the get shared key request.
     */
     GatewayGetSharedKeyResponse getSharedKey(String virtualNetworkName, String localNetworkName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
@@ -526,6 +670,16 @@ public interface GatewayOperations
     *
     * @param virtualNetworkName The name of the virtual network for this
     * gateway.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return The response to a ListConnections request to a Virtual Network
     * Gateway.
     */
@@ -550,6 +704,14 @@ public interface GatewayOperations
     * (see http://msdn.microsoft.com/en-us/library/windowsazure/jj154102.aspx
     * for more information)
     *
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
     * @return The respoonse to the get supported platform configuration request.
     */
     GatewayListSupportedDevicesResponse listSupportedDevices() throws IOException, ServiceException, ParserConfigurationException, SAXException;
@@ -576,6 +738,18 @@ public interface GatewayOperations
     * @param localNetworkName The name of the local network.
     * @param parameters The parameters to the Virtual Network Gateway Reset
     * Shared Key request.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the

@@ -28,19 +28,34 @@ import com.microsoft.windowsazure.core.ServiceClient;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.ManagementConfiguration;
+import com.microsoft.windowsazure.management.websites.models.WebSiteOperationStatus;
+import com.microsoft.windowsazure.management.websites.models.WebSiteOperationStatusResponse;
 import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 /**
 * The Windows Azure Web Sites management API provides a RESTful set of web
@@ -56,6 +71,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     
     /**
     * The URI used as the base for all Service Management requests.
+    * @return The BaseUri value.
     */
     public URI getBaseUri()
     {
@@ -71,6 +87,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     * Azure Service ManagementAPI use mutual authentication of management
     * certificates over SSL to ensure that a request made to the service is
     * secure.  No anonymous requests are allowed.
+    * @return The Credentials value.
     */
     public SubscriptionCloudCredentials getCredentials()
     {
@@ -83,6 +100,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     * Operations for managing the server farm in a web space.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn194277.aspx for
     * more information)
+    * @return The ServerFarmsOperations value.
     */
     public ServerFarmOperations getServerFarmsOperations()
     {
@@ -93,6 +111,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     
     /**
     * Operations for managing the web sites in a web space.
+    * @return The WebSitesOperations value.
     */
     public WebSiteOperations getWebSitesOperations()
     {
@@ -103,6 +122,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     
     /**
     * Operations for managing web spaces beneath your subscription.
+    * @return The WebSpacesOperations value.
     */
     public WebSpaceOperations getWebSpacesOperations()
     {
@@ -164,6 +184,8 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     * The Windows Azure Service ManagementAPI use mutual authentication of
     * management certificates over SSL to ensure that a request made to the
     * service is secure.  No anonymous requests are allowed.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
     */
     @Inject
     public WebSiteManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, @Named(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS) SubscriptionCloudCredentials credentials) throws java.net.URISyntaxException
@@ -188,6 +210,398 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     }
     
     /**
+    * The Get Operation Status operation returns the status of thespecified
+    * operation. After calling a long-running operation, you can call Get
+    * Operation Status to determine whether the operation has succeeded,
+    * failed, timed out, or is still in progress.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460783.aspx for
+    * more information)
+    *
+    * @param webSpaceName The name of the webspace for the website where the
+    * operation was targeted.
+    * @param siteName The name of the site where the operation was targeted.
+    * @param operationId The operation ID for the operation you wish to track.
+    * The operation ID is returned in the Id field in the body of the response
+    * for long-running operations.
+    * @return The response body contains the status of the specified
+    * long-running operation, indicating whether it has succeeded, is
+    * inprogress, has time dout, or has failed. Note that this status is
+    * distinct from the HTTP status code returned for the Get Operation Status
+    * operation itself.  If the long-running operation failed, the response
+    * body includes error information regarding the failure.
+    */
+    @Override
+    public Future<WebSiteOperationStatusResponse> getOperationStatusAsync(final String webSpaceName, final String siteName, final String operationId)
+    {
+        return this.getExecutorService().submit(new Callable<WebSiteOperationStatusResponse>() { 
+            @Override
+            public WebSiteOperationStatusResponse call() throws Exception
+            {
+                return getOperationStatus(webSpaceName, siteName, operationId);
+            }
+         });
+    }
+    
+    /**
+    * The Get Operation Status operation returns the status of thespecified
+    * operation. After calling a long-running operation, you can call Get
+    * Operation Status to determine whether the operation has succeeded,
+    * failed, timed out, or is still in progress.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460783.aspx for
+    * more information)
+    *
+    * @param webSpaceName The name of the webspace for the website where the
+    * operation was targeted.
+    * @param siteName The name of the site where the operation was targeted.
+    * @param operationId The operation ID for the operation you wish to track.
+    * The operation ID is returned in the Id field in the body of the response
+    * for long-running operations.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
+    * @return The response body contains the status of the specified
+    * long-running operation, indicating whether it has succeeded, is
+    * inprogress, has time dout, or has failed. Note that this status is
+    * distinct from the HTTP status code returned for the Get Operation Status
+    * operation itself.  If the long-running operation failed, the response
+    * body includes error information regarding the failure.
+    */
+    @Override
+    public WebSiteOperationStatusResponse getOperationStatus(String webSpaceName, String siteName, String operationId) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException
+    {
+        // Validate
+        if (webSpaceName == null)
+        {
+            throw new NullPointerException("webSpaceName");
+        }
+        if (siteName == null)
+        {
+            throw new NullPointerException("siteName");
+        }
+        if (operationId == null)
+        {
+            throw new NullPointerException("operationId");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace)
+        {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("webSpaceName", webSpaceName);
+            tracingParameters.put("siteName", siteName);
+            tracingParameters.put("operationId", operationId);
+            CloudTracing.enter(invocationId, this, "getOperationStatusAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = this.getBaseUri() + "/" + this.getCredentials().getSubscriptionId() + "/services/WebSpaces/" + webSpaceName + "/sites/" + siteName + "/operations/" + operationId;
+        
+        // Create HTTP transport objects
+        HttpGet httpRequest = new HttpGet(url);
+        
+        // Set Headers
+        httpRequest.setHeader("x-ms-version", "2013-08-01");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try
+        {
+            if (shouldTrace)
+            {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            WebSiteOperationStatusResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new WebSiteOperationStatusResponse();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document responseDoc = documentBuilder.parse(responseContent);
+            
+            NodeList elements = responseDoc.getElementsByTagName("Operation");
+            Element operationElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            if (operationElement != null)
+            {
+                NodeList elements2 = operationElement.getElementsByTagName("CreatedTime");
+                Element createdTimeElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                if (createdTimeElement != null)
+                {
+                    Calendar createdTimeInstance;
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(simpleDateFormat.parse(createdTimeElement.getTextContent()));
+                    createdTimeInstance = calendar;
+                    result.setCreatedTime(createdTimeInstance);
+                }
+                
+                NodeList elements3 = operationElement.getElementsByTagName("Errors");
+                Element errorsSequenceElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                if (errorsSequenceElement != null)
+                {
+                    boolean isNil = false;
+                    Attr nilAttribute = errorsSequenceElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                    if (nilAttribute != null)
+                    {
+                        isNil = nilAttribute.getValue() == "true";
+                    }
+                    if (isNil == false)
+                    {
+                        for (int i1 = 0; i1 < errorsSequenceElement.getElementsByTagName("Error").getLength(); i1 = i1 + 1)
+                        {
+                            org.w3c.dom.Element errorsElement = ((org.w3c.dom.Element) errorsSequenceElement.getElementsByTagName("Error").item(i1));
+                            WebSiteOperationStatusResponse.Error errorInstance = new WebSiteOperationStatusResponse.Error();
+                            result.getErrors().add(errorInstance);
+                            
+                            NodeList elements4 = errorsElement.getElementsByTagName("Code");
+                            Element codeElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                            if (codeElement != null)
+                            {
+                                boolean isNil2 = false;
+                                Attr nilAttribute2 = codeElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                                if (nilAttribute2 != null)
+                                {
+                                    isNil2 = nilAttribute2.getValue() == "true";
+                                }
+                                if (isNil2 == false)
+                                {
+                                    String codeInstance;
+                                    codeInstance = codeElement.getTextContent();
+                                    errorInstance.setCode(codeInstance);
+                                }
+                            }
+                            
+                            NodeList elements5 = errorsElement.getElementsByTagName("Message");
+                            Element messageElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                            if (messageElement != null)
+                            {
+                                boolean isNil3 = false;
+                                Attr nilAttribute3 = messageElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                                if (nilAttribute3 != null)
+                                {
+                                    isNil3 = nilAttribute3.getValue() == "true";
+                                }
+                                if (isNil3 == false)
+                                {
+                                    String messageInstance;
+                                    messageInstance = messageElement.getTextContent();
+                                    errorInstance.setMessage(messageInstance);
+                                }
+                            }
+                            
+                            NodeList elements6 = errorsElement.getElementsByTagName("ExtendedCode");
+                            Element extendedCodeElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                            if (extendedCodeElement != null)
+                            {
+                                boolean isNil4 = false;
+                                Attr nilAttribute4 = extendedCodeElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                                if (nilAttribute4 != null)
+                                {
+                                    isNil4 = nilAttribute4.getValue() == "true";
+                                }
+                                if (isNil4 == false)
+                                {
+                                    String extendedCodeInstance;
+                                    extendedCodeInstance = extendedCodeElement.getTextContent();
+                                    errorInstance.setExtendedCode(extendedCodeInstance);
+                                }
+                            }
+                            
+                            NodeList elements7 = errorsElement.getElementsByTagName("MessageTemplate");
+                            Element messageTemplateElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
+                            if (messageTemplateElement != null)
+                            {
+                                boolean isNil5 = false;
+                                Attr nilAttribute5 = messageTemplateElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                                if (nilAttribute5 != null)
+                                {
+                                    isNil5 = nilAttribute5.getValue() == "true";
+                                }
+                                if (isNil5 == false)
+                                {
+                                    String messageTemplateInstance;
+                                    messageTemplateInstance = messageTemplateElement.getTextContent();
+                                    errorInstance.setMessageTemplate(messageTemplateInstance);
+                                }
+                            }
+                            
+                            NodeList elements8 = errorsElement.getElementsByTagName("Parameters");
+                            Element parametersSequenceElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
+                            if (parametersSequenceElement != null)
+                            {
+                                boolean isNil6 = false;
+                                Attr nilAttribute6 = parametersSequenceElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                                if (nilAttribute6 != null)
+                                {
+                                    isNil6 = nilAttribute6.getValue() == "true";
+                                }
+                                if (isNil6 == false)
+                                {
+                                    for (int i2 = 0; i2 < parametersSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i2 = i2 + 1)
+                                    {
+                                        org.w3c.dom.Element parametersElement = ((org.w3c.dom.Element) parametersSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i2));
+                                        errorInstance.getParameters().add(parametersElement.getTextContent());
+                                    }
+                                }
+                            }
+                            
+                            NodeList elements9 = errorsElement.getElementsByTagName("InnerErrors");
+                            Element innerErrorsElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
+                            if (innerErrorsElement != null)
+                            {
+                                boolean isNil7 = false;
+                                Attr nilAttribute7 = innerErrorsElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                                if (nilAttribute7 != null)
+                                {
+                                    isNil7 = nilAttribute7.getValue() == "true";
+                                }
+                                if (isNil7 == false)
+                                {
+                                    String innerErrorsInstance;
+                                    innerErrorsInstance = innerErrorsElement.getTextContent();
+                                    errorInstance.setInnerErrors(innerErrorsInstance);
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                NodeList elements10 = operationElement.getElementsByTagName("ExpirationTime");
+                Element expirationTimeElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
+                if (expirationTimeElement != null)
+                {
+                    Calendar expirationTimeInstance;
+                    SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                    Calendar calendar2 = Calendar.getInstance();
+                    calendar2.setTime(simpleDateFormat2.parse(expirationTimeElement.getTextContent()));
+                    expirationTimeInstance = calendar2;
+                    result.setExpirationTime(expirationTimeInstance);
+                }
+                
+                NodeList elements11 = operationElement.getElementsByTagName("GeoMasterOperationId");
+                Element geoMasterOperationIdElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
+                if (geoMasterOperationIdElement != null)
+                {
+                    boolean isNil8 = false;
+                    Attr nilAttribute8 = geoMasterOperationIdElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                    if (nilAttribute8 != null)
+                    {
+                        isNil8 = nilAttribute8.getValue() == "true";
+                    }
+                    if (isNil8 == false)
+                    {
+                        String geoMasterOperationIdInstance;
+                        geoMasterOperationIdInstance = geoMasterOperationIdElement.getTextContent();
+                        result.setGeoMasterOperationId(geoMasterOperationIdInstance);
+                    }
+                }
+                
+                NodeList elements12 = operationElement.getElementsByTagName("Id");
+                Element idElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
+                if (idElement != null)
+                {
+                    boolean isNil9 = false;
+                    Attr nilAttribute9 = idElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                    if (nilAttribute9 != null)
+                    {
+                        isNil9 = nilAttribute9.getValue() == "true";
+                    }
+                    if (isNil9 == false)
+                    {
+                        String idInstance;
+                        idInstance = idElement.getTextContent();
+                        result.setOperationId(idInstance);
+                    }
+                }
+                
+                NodeList elements13 = operationElement.getElementsByTagName("ModifiedTime");
+                Element modifiedTimeElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
+                if (modifiedTimeElement != null)
+                {
+                    Calendar modifiedTimeInstance;
+                    SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                    Calendar calendar3 = Calendar.getInstance();
+                    calendar3.setTime(simpleDateFormat3.parse(modifiedTimeElement.getTextContent()));
+                    modifiedTimeInstance = calendar3;
+                    result.setModifiedTime(modifiedTimeInstance);
+                }
+                
+                NodeList elements14 = operationElement.getElementsByTagName("Name");
+                Element nameElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
+                if (nameElement != null)
+                {
+                    boolean isNil10 = false;
+                    Attr nilAttribute10 = nameElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                    if (nilAttribute10 != null)
+                    {
+                        isNil10 = nilAttribute10.getValue() == "true";
+                    }
+                    if (isNil10 == false)
+                    {
+                        String nameInstance;
+                        nameInstance = nameElement.getTextContent();
+                        result.setName(nameInstance);
+                    }
+                }
+                
+                NodeList elements15 = operationElement.getElementsByTagName("Status");
+                Element statusElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
+                if (statusElement != null)
+                {
+                    WebSiteOperationStatus statusInstance;
+                    statusInstance = WebSiteOperationStatus.valueOf(statusElement.getTextContent());
+                    result.setStatus(statusInstance);
+                }
+            }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
     * Register your subscription to use Windows Azure Web Sites.
     *
     * @return A standard service response including an HTTP status code and
@@ -208,6 +622,10 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     /**
     * Register your subscription to use Windows Azure Web Sites.
     *
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -238,40 +656,50 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != HttpStatus.SC_ACCEPTED)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        OperationResponse result = null;
-        result = new OperationResponse();
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -295,6 +723,10 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     /**
     * Unregister your subscription to use Windows Azure Web Sites.
     *
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -325,39 +757,49 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != HttpStatus.SC_ACCEPTED)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        OperationResponse result = null;
-        result = new OperationResponse();
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
 }

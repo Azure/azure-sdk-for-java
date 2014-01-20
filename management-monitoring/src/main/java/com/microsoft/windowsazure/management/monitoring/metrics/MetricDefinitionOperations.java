@@ -43,6 +43,14 @@ public interface MetricDefinitionOperations
     * @param metricNamespace The namespace of the metrics.The value is either
     * null or WindowsAzure.Availability.WindowsAzure.Availability returns the
     * metric definitions for endpoint monitoring metrics
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return The List Metric Definitions operation response.
     */
     MetricDefinitionListResponse list(String resourceId, ArrayList<String> metricNames, String metricNamespace) throws IOException, ServiceException, URISyntaxException, ParseException;

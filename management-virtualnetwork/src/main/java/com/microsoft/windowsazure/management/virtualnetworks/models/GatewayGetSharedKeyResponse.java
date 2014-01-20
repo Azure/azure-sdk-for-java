@@ -35,6 +35,7 @@ public class GatewayGetSharedKeyResponse extends OperationResponse
     /**
     * Contains the shared key used by the gateway to authenticate connections
     * to sites on a virtual network.
+    * @return The SharedKey value.
     */
     public String getSharedKey()
     {
@@ -44,9 +45,10 @@ public class GatewayGetSharedKeyResponse extends OperationResponse
     /**
     * Contains the shared key used by the gateway to authenticate connections
     * to sites on a virtual network.
+    * @param sharedKeyValue The SharedKey value.
     */
-    public void setSharedKey(String sharedKey)
+    public void setSharedKey(final String sharedKeyValue)
     {
-        this.sharedKey = sharedKey;
+        this.sharedKey = sharedKeyValue;
     }
 }

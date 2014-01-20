@@ -38,6 +38,7 @@ public class VirtualMachineUpdateParameters
     * the Windows Azure environment. Virtual machines specified in the same
     * availability set are allocated to different nodes to maximize
     * availability.
+    * @return The AvailabilitySetName value.
     */
     public String getAvailabilitySetName()
     {
@@ -50,10 +51,11 @@ public class VirtualMachineUpdateParameters
     * the Windows Azure environment. Virtual machines specified in the same
     * availability set are allocated to different nodes to maximize
     * availability.
+    * @param availabilitySetNameValue The AvailabilitySetName value.
     */
-    public void setAvailabilitySetName(String availabilitySetName)
+    public void setAvailabilitySetName(final String availabilitySetNameValue)
     {
-        this.availabilitySetName = availabilitySetName;
+        this.availabilitySetName = availabilitySetNameValue;
     }
     
     private ArrayList<ConfigurationSet> configurationSets;
@@ -61,6 +63,7 @@ public class VirtualMachineUpdateParameters
     /**
     * Contains the collection of configuration sets that contain system and
     * application configuration settings.
+    * @return The ConfigurationSets value.
     */
     public ArrayList<ConfigurationSet> getConfigurationSets()
     {
@@ -70,10 +73,11 @@ public class VirtualMachineUpdateParameters
     /**
     * Contains the collection of configuration sets that contain system and
     * application configuration settings.
+    * @param configurationSetsValue The ConfigurationSets value.
     */
-    public void setConfigurationSets(ArrayList<ConfigurationSet> configurationSets)
+    public void setConfigurationSets(final ArrayList<ConfigurationSet> configurationSetsValue)
     {
-        this.configurationSets = configurationSets;
+        this.configurationSets = configurationSetsValue;
     }
     
     private ArrayList<DataVirtualHardDisk> dataVirtualHardDisks;
@@ -81,6 +85,7 @@ public class VirtualMachineUpdateParameters
     /**
     * Contains the parameters Windows Azure used to create the data disk for
     * the virtual machine.
+    * @return The DataVirtualHardDisks value.
     */
     public ArrayList<DataVirtualHardDisk> getDataVirtualHardDisks()
     {
@@ -90,16 +95,18 @@ public class VirtualMachineUpdateParameters
     /**
     * Contains the parameters Windows Azure used to create the data disk for
     * the virtual machine.
+    * @param dataVirtualHardDisksValue The DataVirtualHardDisks value.
     */
-    public void setDataVirtualHardDisks(ArrayList<DataVirtualHardDisk> dataVirtualHardDisks)
+    public void setDataVirtualHardDisks(final ArrayList<DataVirtualHardDisk> dataVirtualHardDisksValue)
     {
-        this.dataVirtualHardDisks = dataVirtualHardDisks;
+        this.dataVirtualHardDisks = dataVirtualHardDisksValue;
     }
     
     private String label;
     
     /**
     * Optional. Specifies the friendly name for the virtual machine.
+    * @return The Label value.
     */
     public String getLabel()
     {
@@ -108,10 +115,11 @@ public class VirtualMachineUpdateParameters
     
     /**
     * Optional. Specifies the friendly name for the virtual machine.
+    * @param labelValue The Label value.
     */
-    public void setLabel(String label)
+    public void setLabel(final String labelValue)
     {
-        this.label = label;
+        this.label = labelValue;
     }
     
     private OSVirtualHardDisk oSVirtualHardDisk;
@@ -119,6 +127,7 @@ public class VirtualMachineUpdateParameters
     /**
     * Contains the parameters Windows Azure used to create the operating system
     * disk for the virtual machine.
+    * @return The OSVirtualHardDisk value.
     */
     public OSVirtualHardDisk getOSVirtualHardDisk()
     {
@@ -128,10 +137,11 @@ public class VirtualMachineUpdateParameters
     /**
     * Contains the parameters Windows Azure used to create the operating system
     * disk for the virtual machine.
+    * @param oSVirtualHardDiskValue The OSVirtualHardDisk value.
     */
-    public void setOSVirtualHardDisk(OSVirtualHardDisk oSVirtualHardDisk)
+    public void setOSVirtualHardDisk(final OSVirtualHardDisk oSVirtualHardDiskValue)
     {
-        this.oSVirtualHardDisk = oSVirtualHardDisk;
+        this.oSVirtualHardDisk = oSVirtualHardDiskValue;
     }
     
     private String roleName;
@@ -139,6 +149,7 @@ public class VirtualMachineUpdateParameters
     /**
     * Required. Specifies the name for the virtual machine. The name must be
     * unique within the deployment.
+    * @return The RoleName value.
     */
     public String getRoleName()
     {
@@ -148,28 +159,31 @@ public class VirtualMachineUpdateParameters
     /**
     * Required. Specifies the name for the virtual machine. The name must be
     * unique within the deployment.
+    * @param roleNameValue The RoleName value.
     */
-    public void setRoleName(String roleName)
+    public void setRoleName(final String roleNameValue)
     {
-        this.roleName = roleName;
+        this.roleName = roleNameValue;
     }
     
-    private VirtualMachineRoleSize roleSize;
+    private String roleSize;
     
     /**
     * The size of the virtual machine.
+    * @return The RoleSize value.
     */
-    public VirtualMachineRoleSize getRoleSize()
+    public String getRoleSize()
     {
         return this.roleSize;
     }
     
     /**
     * The size of the virtual machine.
+    * @param roleSizeValue The RoleSize value.
     */
-    public void setRoleSize(VirtualMachineRoleSize roleSize)
+    public void setRoleSize(final String roleSizeValue)
     {
-        this.roleSize = roleSize;
+        this.roleSize = roleSizeValue;
     }
     
     /**

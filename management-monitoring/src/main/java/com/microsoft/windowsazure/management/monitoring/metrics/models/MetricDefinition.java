@@ -35,6 +35,7 @@ public class MetricDefinition
     
     /**
     * Metric display name.
+    * @return The DisplayName value.
     */
     public String getDisplayName()
     {
@@ -43,10 +44,11 @@ public class MetricDefinition
     
     /**
     * Metric display name.
+    * @param displayNameValue The DisplayName value.
     */
-    public void setDisplayName(String displayName)
+    public void setDisplayName(final String displayNameValue)
     {
-        this.displayName = displayName;
+        this.displayName = displayNameValue;
     }
     
     private boolean isAlertable;
@@ -54,6 +56,7 @@ public class MetricDefinition
     /**
     * Specifies if the metric is alertable. Alerts can be defined on a metric
     * only if this property is true.
+    * @return The IsAlertable value.
     */
     public boolean isAlertable()
     {
@@ -63,10 +66,11 @@ public class MetricDefinition
     /**
     * Specifies if the metric is alertable. Alerts can be defined on a metric
     * only if this property is true.
+    * @param isAlertableValue The IsAlertable value.
     */
-    public void setIsAlertable(boolean isAlertable)
+    public void setIsAlertable(final boolean isAlertableValue)
     {
-        this.isAlertable = isAlertable;
+        this.isAlertable = isAlertableValue;
     }
     
     private ArrayList<MetricAvailability> metricAvailabilities;
@@ -74,6 +78,7 @@ public class MetricDefinition
     /**
     * Metric availability specifies the time grain (aggregation interval) and
     * the retention period for the metric in a timegrain.
+    * @return The MetricAvailabilities value.
     */
     public ArrayList<MetricAvailability> getMetricAvailabilities()
     {
@@ -83,16 +88,18 @@ public class MetricDefinition
     /**
     * Metric availability specifies the time grain (aggregation interval) and
     * the retention period for the metric in a timegrain.
+    * @param metricAvailabilitiesValue The MetricAvailabilities value.
     */
-    public void setMetricAvailabilities(ArrayList<MetricAvailability> metricAvailabilities)
+    public void setMetricAvailabilities(final ArrayList<MetricAvailability> metricAvailabilitiesValue)
     {
-        this.metricAvailabilities = metricAvailabilities;
+        this.metricAvailabilities = metricAvailabilitiesValue;
     }
     
     private Duration minimumAlertableTimeWindow;
     
     /**
     * Specifies the minimum alertable time window for the metric.
+    * @return The MinimumAlertableTimeWindow value.
     */
     public Duration getMinimumAlertableTimeWindow()
     {
@@ -101,16 +108,19 @@ public class MetricDefinition
     
     /**
     * Specifies the minimum alertable time window for the metric.
+    * @param minimumAlertableTimeWindowValue The MinimumAlertableTimeWindow
+    * value.
     */
-    public void setMinimumAlertableTimeWindow(Duration minimumAlertableTimeWindow)
+    public void setMinimumAlertableTimeWindow(final Duration minimumAlertableTimeWindowValue)
     {
-        this.minimumAlertableTimeWindow = minimumAlertableTimeWindow;
+        this.minimumAlertableTimeWindow = minimumAlertableTimeWindowValue;
     }
     
     private String name;
     
     /**
     * Get the metric name.
+    * @return The Name value.
     */
     public String getName()
     {
@@ -119,16 +129,18 @@ public class MetricDefinition
     
     /**
     * Get the metric name.
+    * @param nameValue The Name value.
     */
-    public void setName(String name)
+    public void setName(final String nameValue)
     {
-        this.name = name;
+        this.name = nameValue;
     }
     
     private String namespace;
     
     /**
     * Get the metric namespace.
+    * @return The Namespace value.
     */
     public String getNamespace()
     {
@@ -137,10 +149,11 @@ public class MetricDefinition
     
     /**
     * Get the metric namespace.
+    * @param namespaceValue The Namespace value.
     */
-    public void setNamespace(String namespace)
+    public void setNamespace(final String namespaceValue)
     {
-        this.namespace = namespace;
+        this.namespace = namespaceValue;
     }
     
     private String primaryAggregation;
@@ -149,6 +162,7 @@ public class MetricDefinition
     * Metric primary aggregation specifies the default type for the metrics.
     * This indicates if the metric is of type average, total, minimum or
     * maximum.
+    * @return The PrimaryAggregation value.
     */
     public String getPrimaryAggregation()
     {
@@ -159,10 +173,11 @@ public class MetricDefinition
     * Metric primary aggregation specifies the default type for the metrics.
     * This indicates if the metric is of type average, total, minimum or
     * maximum.
+    * @param primaryAggregationValue The PrimaryAggregation value.
     */
-    public void setPrimaryAggregation(String primaryAggregation)
+    public void setPrimaryAggregation(final String primaryAggregationValue)
     {
-        this.primaryAggregation = primaryAggregation;
+        this.primaryAggregation = primaryAggregationValue;
     }
     
     private String resourceIdSuffix;
@@ -170,6 +185,7 @@ public class MetricDefinition
     /**
     * Metric resource id suffix specfies the sub-resource path within the the
     * resource for the metric.
+    * @return The ResourceIdSuffix value.
     */
     public String getResourceIdSuffix()
     {
@@ -179,16 +195,18 @@ public class MetricDefinition
     /**
     * Metric resource id suffix specfies the sub-resource path within the the
     * resource for the metric.
+    * @param resourceIdSuffixValue The ResourceIdSuffix value.
     */
-    public void setResourceIdSuffix(String resourceIdSuffix)
+    public void setResourceIdSuffix(final String resourceIdSuffixValue)
     {
-        this.resourceIdSuffix = resourceIdSuffix;
+        this.resourceIdSuffix = resourceIdSuffixValue;
     }
     
     private String unit;
     
     /**
     * The unit for the metric.
+    * @return The Unit value.
     */
     public String getUnit()
     {
@@ -197,10 +215,11 @@ public class MetricDefinition
     
     /**
     * The unit for the metric.
+    * @param unitValue The Unit value.
     */
-    public void setUnit(String unit)
+    public void setUnit(final String unitValue)
     {
-        this.unit = unit;
+        this.unit = unitValue;
     }
     
     /**

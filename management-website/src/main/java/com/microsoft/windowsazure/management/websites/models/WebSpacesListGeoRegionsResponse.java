@@ -36,6 +36,7 @@ public class WebSpacesListGeoRegionsResponse extends OperationResponse implement
     
     /**
     * The available geo regions.
+    * @return The GeoRegions value.
     */
     public ArrayList<WebSpacesListGeoRegionsResponse.GeoRegion> getGeoRegions()
     {
@@ -44,10 +45,11 @@ public class WebSpacesListGeoRegionsResponse extends OperationResponse implement
     
     /**
     * The available geo regions.
+    * @param geoRegionsValue The GeoRegions value.
     */
-    public void setGeoRegions(ArrayList<WebSpacesListGeoRegionsResponse.GeoRegion> geoRegions)
+    public void setGeoRegions(final ArrayList<WebSpacesListGeoRegionsResponse.GeoRegion> geoRegionsValue)
     {
-        this.geoRegions = geoRegions;
+        this.geoRegions = geoRegionsValue;
     }
     
     /**
@@ -78,6 +80,7 @@ public class WebSpacesListGeoRegionsResponse extends OperationResponse implement
         
         /**
         * Geo Region description.
+        * @return The Description value.
         */
         public String getDescription()
         {
@@ -86,16 +89,18 @@ public class WebSpacesListGeoRegionsResponse extends OperationResponse implement
         
         /**
         * Geo Region description.
+        * @param descriptionValue The Description value.
         */
-        public void setDescription(String description)
+        public void setDescription(final String descriptionValue)
         {
-            this.description = description;
+            this.description = descriptionValue;
         }
         
         private String name;
         
         /**
         * Name of the region.
+        * @return The Name value.
         */
         public String getName()
         {
@@ -104,16 +109,18 @@ public class WebSpacesListGeoRegionsResponse extends OperationResponse implement
         
         /**
         * Name of the region.
+        * @param nameValue The Name value.
         */
-        public void setName(String name)
+        public void setName(final String nameValue)
         {
-            this.name = name;
+            this.name = nameValue;
         }
         
         private int sortOrder;
         
         /**
         * Sort order.
+        * @return The SortOrder value.
         */
         public int getSortOrder()
         {
@@ -122,10 +129,11 @@ public class WebSpacesListGeoRegionsResponse extends OperationResponse implement
         
         /**
         * Sort order.
+        * @param sortOrderValue The SortOrder value.
         */
-        public void setSortOrder(int sortOrder)
+        public void setSortOrder(final int sortOrderValue)
         {
-            this.sortOrder = sortOrder;
+            this.sortOrder = sortOrderValue;
         }
     }
 }

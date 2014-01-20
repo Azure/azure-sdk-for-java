@@ -44,6 +44,7 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
     
     /**
     * The URI used as the base for all SQL requests.
+    * @return The BaseUri value.
     */
     public URI getBaseUri()
     {
@@ -59,6 +60,7 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
     * Azure Service ManagementAPI use mutual authentication of management
     * certificates over SSL to ensure that a request made to the service is
     * secure.  No anonymous requests are allowed.
+    * @return The Credentials value.
     */
     public SubscriptionCloudCredentials getCredentials()
     {
@@ -70,6 +72,7 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
     /**
     * Includes operations for importing and exporting SQL Databases into and
     * out of Windows Azure blob storage.
+    * @return The DacOperations value.
     */
     public DacOperations getDacOperations()
     {
@@ -81,6 +84,7 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
     /**
     * The SQL Database Management API includes operations for managing SQL
     * Database Copies for a subscription.
+    * @return The DatabaseCopiesOperations value.
     */
     public DatabaseCopyOperations getDatabaseCopiesOperations()
     {
@@ -92,6 +96,7 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
     /**
     * The SQL Database Management API includes operations for get/stop SQL
     * Databases' operations for a subscription.
+    * @return The DatabaseOperationsOperations value.
     */
     public DatabaseOperationOperations getDatabaseOperationsOperations()
     {
@@ -103,6 +108,7 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
     /**
     * The SQL Database Management API includes operations for managing SQL
     * Databases for a subscription.
+    * @return The DatabasesOperations value.
     */
     public DatabaseOperations getDatabasesOperations()
     {
@@ -120,6 +126,7 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
     * databases.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715276.aspx for
     * more information)
+    * @return The FirewallRulesOperations value.
     */
     public FirewallRuleOperations getFirewallRulesOperations()
     {
@@ -133,6 +140,7 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
     * Database servers for a subscription.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715271.aspx for
     * more information)
+    * @return The ServersOperations value.
     */
     public ServerOperations getServersOperations()
     {
@@ -144,6 +152,7 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
     /**
     * The SQL Database Management API includes operations for getting Service
     * Objective for a subscription.
+    * @return The ServiceObjectivesOperations value.
     */
     public ServiceObjectiveOperations getServiceObjectivesOperations()
     {
@@ -208,6 +217,8 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
     * The Windows Azure Service ManagementAPI use mutual authentication of
     * management certificates over SSL to ensure that a request made to the
     * service is secure.  No anonymous requests are allowed.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
     */
     @Inject
     public SqlManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, @Named(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS) SubscriptionCloudCredentials credentials) throws java.net.URISyntaxException

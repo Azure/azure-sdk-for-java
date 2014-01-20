@@ -68,6 +68,7 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     
     /**
     * The URI used as the base for all Service Management requests.
+    * @return The BaseUri value.
     */
     public URI getBaseUri()
     {
@@ -83,6 +84,7 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     * Azure Service ManagementAPI use mutual authentication of management
     * certificates over SSL to ensure that a request made to the service is
     * secure.  No anonymous requests are allowed.
+    * @return The Credentials value.
     */
     public SubscriptionCloudCredentials getCredentials()
     {
@@ -96,6 +98,7 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     * deployments beneath your subscription.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460812.aspx for
     * more information)
+    * @return The DeploymentsOperations value.
     */
     public DeploymentOperations getDeploymentsOperations()
     {
@@ -109,6 +112,7 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     * services beneath your subscription.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460812.aspx for
     * more information)
+    * @return The HostedServicesOperations value.
     */
     public HostedServiceOperations getHostedServicesOperations()
     {
@@ -122,6 +126,7 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     * Operating System on which your service is running.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/ff684169.aspx for
     * more information)
+    * @return The OperatingSystemsOperations value.
     */
     public OperatingSystemOperations getOperatingSystemsOperations()
     {
@@ -134,6 +139,7 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     * Operations for managing service certificates for your subscription.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee795178.aspx for
     * more information)
+    * @return The ServiceCertificatesOperations value.
     */
     public ServiceCertificateOperations getServiceCertificatesOperations()
     {
@@ -147,6 +153,7 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     * your subscription.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157188.aspx for
     * more information)
+    * @return The VirtualMachineDisksOperations value.
     */
     public VirtualMachineDiskOperations getVirtualMachineDisksOperations()
     {
@@ -160,6 +167,7 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     * in your subscription.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157175.aspx for
     * more information)
+    * @return The VirtualMachineImagesOperations value.
     */
     public VirtualMachineImageOperations getVirtualMachineImagesOperations()
     {
@@ -173,6 +181,7 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     * machines in your subscription.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157206.aspx for
     * more information)
+    * @return The VirtualMachinesOperations value.
     */
     public VirtualMachineOperations getVirtualMachinesOperations()
     {
@@ -238,6 +247,8 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     * The Windows Azure Service ManagementAPI use mutual authentication of
     * management certificates over SSL to ensure that a request made to the
     * service is secure.  No anonymous requests are allowed.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
     */
     @Inject
     public ComputeManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, @Named(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS) SubscriptionCloudCredentials credentials) throws java.net.URISyntaxException
@@ -305,6 +316,14 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     * @param requestId The request ID for the request you wish to track. The
     * request ID is returned in the x-ms-request-id response header for every
     * request.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -346,104 +365,114 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != HttpStatus.SC_OK)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
-        }
-        
-        // Create Result
-        ComputeOperationStatusResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new ComputeOperationStatusResponse();
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document responseDoc = documentBuilder.parse(responseContent);
-        
-        NodeList elements = responseDoc.getElementsByTagName("Operation");
-        Element operationElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-        if (operationElement != null)
-        {
-            NodeList elements2 = operationElement.getElementsByTagName("ID");
-            Element idElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-            if (idElement != null)
+            httpResponse = this.getHttpClient().execute(httpRequest);
+            if (shouldTrace)
             {
-                String idInstance;
-                idInstance = idElement.getTextContent();
-                result.setId(idInstance);
+                CloudTracing.receiveResponse(invocationId, httpResponse);
             }
-            
-            NodeList elements3 = operationElement.getElementsByTagName("Status");
-            Element statusElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-            if (statusElement != null)
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
             {
-                OperationStatus statusInstance;
-                statusInstance = OperationStatus.valueOf(statusElement.getTextContent());
-                result.setStatus(statusInstance);
-            }
-            
-            NodeList elements4 = operationElement.getElementsByTagName("HttpStatusCode");
-            Element httpStatusCodeElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-            if (httpStatusCodeElement != null)
-            {
-                Integer httpStatusCodeInstance;
-                httpStatusCodeInstance = Integer.valueOf(httpStatusCodeElement.getTextContent());
-                result.setHttpStatusCode(httpStatusCodeInstance);
-            }
-            
-            NodeList elements5 = operationElement.getElementsByTagName("Error");
-            Element errorElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-            if (errorElement != null)
-            {
-                ComputeOperationStatusResponse.ErrorDetails errorInstance = new ComputeOperationStatusResponse.ErrorDetails();
-                result.setError(errorInstance);
-                
-                NodeList elements6 = errorElement.getElementsByTagName("Code");
-                Element codeElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                if (codeElement != null)
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
                 {
-                    String codeInstance;
-                    codeInstance = codeElement.getTextContent();
-                    errorInstance.setCode(codeInstance);
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            ComputeOperationStatusResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new ComputeOperationStatusResponse();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document responseDoc = documentBuilder.parse(responseContent);
+            
+            NodeList elements = responseDoc.getElementsByTagName("Operation");
+            Element operationElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            if (operationElement != null)
+            {
+                NodeList elements2 = operationElement.getElementsByTagName("ID");
+                Element idElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                if (idElement != null)
+                {
+                    String idInstance;
+                    idInstance = idElement.getTextContent();
+                    result.setId(idInstance);
                 }
                 
-                NodeList elements7 = errorElement.getElementsByTagName("Message");
-                Element messageElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                if (messageElement != null)
+                NodeList elements3 = operationElement.getElementsByTagName("Status");
+                Element statusElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                if (statusElement != null)
                 {
-                    String messageInstance;
-                    messageInstance = messageElement.getTextContent();
-                    errorInstance.setMessage(messageInstance);
+                    OperationStatus statusInstance;
+                    statusInstance = OperationStatus.valueOf(statusElement.getTextContent());
+                    result.setStatus(statusInstance);
+                }
+                
+                NodeList elements4 = operationElement.getElementsByTagName("HttpStatusCode");
+                Element httpStatusCodeElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                if (httpStatusCodeElement != null)
+                {
+                    Integer httpStatusCodeInstance;
+                    httpStatusCodeInstance = Integer.valueOf(httpStatusCodeElement.getTextContent());
+                    result.setHttpStatusCode(httpStatusCodeInstance);
+                }
+                
+                NodeList elements5 = operationElement.getElementsByTagName("Error");
+                Element errorElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                if (errorElement != null)
+                {
+                    ComputeOperationStatusResponse.ErrorDetails errorInstance = new ComputeOperationStatusResponse.ErrorDetails();
+                    result.setError(errorInstance);
+                    
+                    NodeList elements6 = errorElement.getElementsByTagName("Code");
+                    Element codeElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                    if (codeElement != null)
+                    {
+                        String codeInstance;
+                        codeInstance = codeElement.getTextContent();
+                        errorInstance.setCode(codeInstance);
+                    }
+                    
+                    NodeList elements7 = errorElement.getElementsByTagName("Message");
+                    Element messageElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
+                    if (messageElement != null)
+                    {
+                        String messageInstance;
+                        messageInstance = messageElement.getTextContent();
+                        errorInstance.setMessage(messageInstance);
+                    }
                 }
             }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**

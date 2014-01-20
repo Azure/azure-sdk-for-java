@@ -27,25 +27,37 @@ public class Recurrence
 {
     private RecurrenceFrequency frequency;
     
+    /**
+    * @return The Frequency value.
+    */
     public RecurrenceFrequency getFrequency()
     {
         return this.frequency;
     }
     
-    public void setFrequency(RecurrenceFrequency frequency)
+    /**
+    * @param frequencyValue The Frequency value.
+    */
+    public void setFrequency(final RecurrenceFrequency frequencyValue)
     {
-        this.frequency = frequency;
+        this.frequency = frequencyValue;
     }
     
     private RecurrentSchedule schedule;
     
+    /**
+    * @return The Schedule value.
+    */
     public RecurrentSchedule getSchedule()
     {
         return this.schedule;
     }
     
-    public void setSchedule(RecurrentSchedule schedule)
+    /**
+    * @param scheduleValue The Schedule value.
+    */
+    public void setSchedule(final RecurrentSchedule scheduleValue)
     {
-        this.schedule = schedule;
+        this.schedule = scheduleValue;
     }
 }

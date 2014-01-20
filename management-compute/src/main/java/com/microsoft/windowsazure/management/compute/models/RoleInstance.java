@@ -36,6 +36,7 @@ public class RoleInstance
     /**
     * The DNS host name of the service in which the role instance is running.
     * This element is only listed for Virtual Machine deployments.
+    * @return The HostName value.
     */
     public String getHostName()
     {
@@ -45,16 +46,18 @@ public class RoleInstance
     /**
     * The DNS host name of the service in which the role instance is running.
     * This element is only listed for Virtual Machine deployments.
+    * @param hostNameValue The HostName value.
     */
-    public void setHostName(String hostName)
+    public void setHostName(final String hostNameValue)
     {
-        this.hostName = hostName;
+        this.hostName = hostNameValue;
     }
     
     private ArrayList<InstanceEndpoint> instanceEndpoints;
     
     /**
     * The list of instance endpoints for the role.
+    * @return The InstanceEndpoints value.
     */
     public ArrayList<InstanceEndpoint> getInstanceEndpoints()
     {
@@ -63,10 +66,11 @@ public class RoleInstance
     
     /**
     * The list of instance endpoints for the role.
+    * @param instanceEndpointsValue The InstanceEndpoints value.
     */
-    public void setInstanceEndpoints(ArrayList<InstanceEndpoint> instanceEndpoints)
+    public void setInstanceEndpoints(final ArrayList<InstanceEndpoint> instanceEndpointsValue)
     {
-        this.instanceEndpoints = instanceEndpoints;
+        this.instanceEndpoints = instanceEndpointsValue;
     }
     
     private String instanceErrorCode;
@@ -74,6 +78,7 @@ public class RoleInstance
     /**
     * An error code that can be provided to WindowsAzure support to assist in
     * resolution of errors. Typicallythis field will be empty.
+    * @return The InstanceErrorCode value.
     */
     public String getInstanceErrorCode()
     {
@@ -83,10 +88,11 @@ public class RoleInstance
     /**
     * An error code that can be provided to WindowsAzure support to assist in
     * resolution of errors. Typicallythis field will be empty.
+    * @param instanceErrorCodeValue The InstanceErrorCode value.
     */
-    public void setInstanceErrorCode(String instanceErrorCode)
+    public void setInstanceErrorCode(final String instanceErrorCodeValue)
     {
-        this.instanceErrorCode = instanceErrorCode;
+        this.instanceErrorCode = instanceErrorCodeValue;
     }
     
     private Integer instanceFaultDomain;
@@ -95,6 +101,7 @@ public class RoleInstance
     * The fault domain that this role instance belongs to. Role instances that
     * are part of the same fault domain may all be vulnerable to the failure
     * of the same piece of shared hardware.
+    * @return The InstanceFaultDomain value.
     */
     public Integer getInstanceFaultDomain()
     {
@@ -105,10 +112,11 @@ public class RoleInstance
     * The fault domain that this role instance belongs to. Role instances that
     * are part of the same fault domain may all be vulnerable to the failure
     * of the same piece of shared hardware.
+    * @param instanceFaultDomainValue The InstanceFaultDomain value.
     */
-    public void setInstanceFaultDomain(Integer instanceFaultDomain)
+    public void setInstanceFaultDomain(final Integer instanceFaultDomainValue)
     {
-        this.instanceFaultDomain = instanceFaultDomain;
+        this.instanceFaultDomain = instanceFaultDomainValue;
     }
     
     private String instanceName;
@@ -116,6 +124,7 @@ public class RoleInstance
     /**
     * TThe name of the specific role instance, if an instance of the role is
     * running.
+    * @return The InstanceName value.
     */
     public String getInstanceName()
     {
@@ -125,28 +134,31 @@ public class RoleInstance
     /**
     * TThe name of the specific role instance, if an instance of the role is
     * running.
+    * @param instanceNameValue The InstanceName value.
     */
-    public void setInstanceName(String instanceName)
+    public void setInstanceName(final String instanceNameValue)
     {
-        this.instanceName = instanceName;
+        this.instanceName = instanceNameValue;
     }
     
-    private VirtualMachineRoleSize instanceSize;
+    private String instanceSize;
     
     /**
     * The size of the role instance.
+    * @return The InstanceSize value.
     */
-    public VirtualMachineRoleSize getInstanceSize()
+    public String getInstanceSize()
     {
         return this.instanceSize;
     }
     
     /**
     * The size of the role instance.
+    * @param instanceSizeValue The InstanceSize value.
     */
-    public void setInstanceSize(VirtualMachineRoleSize instanceSize)
+    public void setInstanceSize(final String instanceSizeValue)
     {
-        this.instanceSize = instanceSize;
+        this.instanceSize = instanceSizeValue;
     }
     
     private String instanceStateDetails;
@@ -155,6 +167,7 @@ public class RoleInstance
     * The instance state is returned as a string that, when present, provides a
     * snapshot of the state of the virtual machine at the time the operation
     * was called.
+    * @return The InstanceStateDetails value.
     */
     public String getInstanceStateDetails()
     {
@@ -165,16 +178,18 @@ public class RoleInstance
     * The instance state is returned as a string that, when present, provides a
     * snapshot of the state of the virtual machine at the time the operation
     * was called.
+    * @param instanceStateDetailsValue The InstanceStateDetails value.
     */
-    public void setInstanceStateDetails(String instanceStateDetails)
+    public void setInstanceStateDetails(final String instanceStateDetailsValue)
     {
-        this.instanceStateDetails = instanceStateDetails;
+        this.instanceStateDetails = instanceStateDetailsValue;
     }
     
     private String instanceStatus;
     
     /**
     * The current status of this instance.
+    * @return The InstanceStatus value.
     */
     public String getInstanceStatus()
     {
@@ -183,10 +198,11 @@ public class RoleInstance
     
     /**
     * The current status of this instance.
+    * @param instanceStatusValue The InstanceStatus value.
     */
-    public void setInstanceStatus(String instanceStatus)
+    public void setInstanceStatus(final String instanceStatusValue)
     {
-        this.instanceStatus = instanceStatus;
+        this.instanceStatus = instanceStatusValue;
     }
     
     private Integer instanceUpgradeDomain;
@@ -195,6 +211,7 @@ public class RoleInstance
     * The update domain that this role instance belongs to. During an Upgrade
     * Deployment, all roles in the same update domain are updated at the same
     * time.
+    * @return The InstanceUpgradeDomain value.
     */
     public Integer getInstanceUpgradeDomain()
     {
@@ -205,16 +222,18 @@ public class RoleInstance
     * The update domain that this role instance belongs to. During an Upgrade
     * Deployment, all roles in the same update domain are updated at the same
     * time.
+    * @param instanceUpgradeDomainValue The InstanceUpgradeDomain value.
     */
-    public void setInstanceUpgradeDomain(Integer instanceUpgradeDomain)
+    public void setInstanceUpgradeDomain(final Integer instanceUpgradeDomainValue)
     {
-        this.instanceUpgradeDomain = instanceUpgradeDomain;
+        this.instanceUpgradeDomain = instanceUpgradeDomainValue;
     }
     
     private InetAddress iPAddress;
     
     /**
     * The IP address of the role instance (DIP).
+    * @return The IPAddress value.
     */
     public InetAddress getIPAddress()
     {
@@ -223,16 +242,18 @@ public class RoleInstance
     
     /**
     * The IP address of the role instance (DIP).
+    * @param iPAddressValue The IPAddress value.
     */
-    public void setIPAddress(InetAddress iPAddress)
+    public void setIPAddress(final InetAddress iPAddressValue)
     {
-        this.iPAddress = iPAddress;
+        this.iPAddress = iPAddressValue;
     }
     
     private RoleInstancePowerState powerState;
     
     /**
     * The running state of the role instance.
+    * @return The PowerState value.
     */
     public RoleInstancePowerState getPowerState()
     {
@@ -241,10 +262,11 @@ public class RoleInstance
     
     /**
     * The running state of the role instance.
+    * @param powerStateValue The PowerState value.
     */
-    public void setPowerState(RoleInstancePowerState powerState)
+    public void setPowerState(final RoleInstancePowerState powerStateValue)
     {
-        this.powerState = powerState;
+        this.powerState = powerStateValue;
     }
     
     private String remoteAccessCertificateThumbprint;
@@ -253,6 +275,7 @@ public class RoleInstance
     * The thumbprint of the RDP server certificate (in Windows) or SSH server
     * certificate (in Linux). The thumbprint is only used for Virtual Machines
     * that have been created from an image.
+    * @return The RemoteAccessCertificateThumbprint value.
     */
     public String getRemoteAccessCertificateThumbprint()
     {
@@ -263,16 +286,19 @@ public class RoleInstance
     * The thumbprint of the RDP server certificate (in Windows) or SSH server
     * certificate (in Linux). The thumbprint is only used for Virtual Machines
     * that have been created from an image.
+    * @param remoteAccessCertificateThumbprintValue The
+    * RemoteAccessCertificateThumbprint value.
     */
-    public void setRemoteAccessCertificateThumbprint(String remoteAccessCertificateThumbprint)
+    public void setRemoteAccessCertificateThumbprint(final String remoteAccessCertificateThumbprintValue)
     {
-        this.remoteAccessCertificateThumbprint = remoteAccessCertificateThumbprint;
+        this.remoteAccessCertificateThumbprint = remoteAccessCertificateThumbprintValue;
     }
     
     private String roleName;
     
     /**
     * The name of the role.
+    * @return The RoleName value.
     */
     public String getRoleName()
     {
@@ -281,10 +307,11 @@ public class RoleInstance
     
     /**
     * The name of the role.
+    * @param roleNameValue The RoleName value.
     */
-    public void setRoleName(String roleName)
+    public void setRoleName(final String roleNameValue)
     {
-        this.roleName = roleName;
+        this.roleName = roleNameValue;
     }
     
     /**

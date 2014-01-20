@@ -34,6 +34,7 @@ public class EndpointAcl
     
     /**
     * The set of access control rules for the endpoint.
+    * @return The Rules value.
     */
     public ArrayList<AccessControlListRule> getRules()
     {
@@ -42,10 +43,11 @@ public class EndpointAcl
     
     /**
     * The set of access control rules for the endpoint.
+    * @param rulesValue The Rules value.
     */
-    public void setRules(ArrayList<AccessControlListRule> rules)
+    public void setRules(final ArrayList<AccessControlListRule> rulesValue)
     {
-        this.rules = rules;
+        this.rules = rulesValue;
     }
     
     /**

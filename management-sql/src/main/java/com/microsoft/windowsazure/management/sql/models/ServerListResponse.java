@@ -37,6 +37,7 @@ public class ServerListResponse extends OperationResponse implements Iterable<Se
     
     /**
     * Gets or sets the SQL Servers that are valid for your subscription.
+    * @return The Servers value.
     */
     public ArrayList<ServerListResponse.Server> getServers()
     {
@@ -45,10 +46,11 @@ public class ServerListResponse extends OperationResponse implements Iterable<Se
     
     /**
     * Gets or sets the SQL Servers that are valid for your subscription.
+    * @param serversValue The Servers value.
     */
-    public void setServers(ArrayList<ServerListResponse.Server> servers)
+    public void setServers(final ArrayList<ServerListResponse.Server> serversValue)
     {
-        this.servers = servers;
+        this.servers = serversValue;
     }
     
     /**
@@ -79,6 +81,7 @@ public class ServerListResponse extends OperationResponse implements Iterable<Se
         
         /**
         * Gets or sets the name of an administrator for this server.
+        * @return The AdministratorUserName value.
         */
         public String getAdministratorUserName()
         {
@@ -87,10 +90,11 @@ public class ServerListResponse extends OperationResponse implements Iterable<Se
         
         /**
         * Gets or sets the name of an administrator for this server.
+        * @param administratorUserNameValue The AdministratorUserName value.
         */
-        public void setAdministratorUserName(String administratorUserName)
+        public void setAdministratorUserName(final String administratorUserNameValue)
         {
-            this.administratorUserName = administratorUserName;
+            this.administratorUserName = administratorUserNameValue;
         }
         
         private HashMap<String, String> features;
@@ -98,6 +102,7 @@ public class ServerListResponse extends OperationResponse implements Iterable<Se
         /**
         * Gets or sets the list of features and the type of database server for
         * an individual server.
+        * @return The Features value.
         */
         public HashMap<String, String> getFeatures()
         {
@@ -107,10 +112,11 @@ public class ServerListResponse extends OperationResponse implements Iterable<Se
         /**
         * Gets or sets the list of features and the type of database server for
         * an individual server.
+        * @param featuresValue The Features value.
         */
-        public void setFeatures(HashMap<String, String> features)
+        public void setFeatures(final HashMap<String, String> featuresValue)
         {
-            this.features = features;
+            this.features = featuresValue;
         }
         
         private String location;
@@ -118,6 +124,7 @@ public class ServerListResponse extends OperationResponse implements Iterable<Se
         /**
         * Gets or sets the name of a data center location that is valid for
         * your subscription.
+        * @return The Location value.
         */
         public String getLocation()
         {
@@ -127,16 +134,18 @@ public class ServerListResponse extends OperationResponse implements Iterable<Se
         /**
         * Gets or sets the name of a data center location that is valid for
         * your subscription.
+        * @param locationValue The Location value.
         */
-        public void setLocation(String location)
+        public void setLocation(final String locationValue)
         {
-            this.location = location;
+            this.location = locationValue;
         }
         
         private String name;
         
         /**
         * Gets or sets the name of a SQL Server running in your subscription.
+        * @return The Name value.
         */
         public String getName()
         {
@@ -145,10 +154,11 @@ public class ServerListResponse extends OperationResponse implements Iterable<Se
         
         /**
         * Gets or sets the name of a SQL Server running in your subscription.
+        * @param nameValue The Name value.
         */
-        public void setName(String name)
+        public void setName(final String nameValue)
         {
-            this.name = name;
+            this.name = nameValue;
         }
         
         /**

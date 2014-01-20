@@ -32,6 +32,7 @@ public class AccessControlListRule
     
     /**
     * the action allowed by this Access Control List Rule.
+    * @return The Action value.
     */
     public String getAction()
     {
@@ -40,16 +41,18 @@ public class AccessControlListRule
     
     /**
     * the action allowed by this Access Control List Rule.
+    * @param actionValue The Action value.
     */
-    public void setAction(String action)
+    public void setAction(final String actionValue)
     {
-        this.action = action;
+        this.action = actionValue;
     }
     
     private String description;
     
     /**
     * the description for this Access Control List Rule.
+    * @return The Description value.
     */
     public String getDescription()
     {
@@ -58,16 +61,18 @@ public class AccessControlListRule
     
     /**
     * the description for this Access Control List Rule.
+    * @param descriptionValue The Description value.
     */
-    public void setDescription(String description)
+    public void setDescription(final String descriptionValue)
     {
-        this.description = description;
+        this.description = descriptionValue;
     }
     
     private Integer order;
     
     /**
     * the order of application for this Access Control List Rule.
+    * @return The Order value.
     */
     public Integer getOrder()
     {
@@ -76,10 +81,11 @@ public class AccessControlListRule
     
     /**
     * the order of application for this Access Control List Rule.
+    * @param orderValue The Order value.
     */
-    public void setOrder(Integer order)
+    public void setOrder(final Integer orderValue)
     {
-        this.order = order;
+        this.order = orderValue;
     }
     
     private String remoteSubnet;
@@ -87,6 +93,7 @@ public class AccessControlListRule
     /**
     * the remote subnet that is granted access for this Access Control List
     * Rule.
+    * @return The RemoteSubnet value.
     */
     public String getRemoteSubnet()
     {
@@ -96,9 +103,10 @@ public class AccessControlListRule
     /**
     * the remote subnet that is granted access for this Access Control List
     * Rule.
+    * @param remoteSubnetValue The RemoteSubnet value.
     */
-    public void setRemoteSubnet(String remoteSubnet)
+    public void setRemoteSubnet(final String remoteSubnetValue)
     {
-        this.remoteSubnet = remoteSubnet;
+        this.remoteSubnet = remoteSubnetValue;
     }
 }

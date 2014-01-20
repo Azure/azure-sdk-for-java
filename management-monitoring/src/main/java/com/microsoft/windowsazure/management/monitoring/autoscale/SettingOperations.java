@@ -28,7 +28,6 @@ import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.monitoring.autoscale.models.AutoscaleSettingCreateOrUpdateParameters;
 import com.microsoft.windowsazure.management.monitoring.autoscale.models.AutoscaleSettingGetResponse;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.util.concurrent.Future;
 
@@ -41,10 +40,14 @@ public interface SettingOperations
     *
     * @param resourceId The resource ID.
     * @param parameters Parameters supplied to the operation.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse createOrUpdate(String resourceId, AutoscaleSettingCreateOrUpdateParameters parameters) throws UnsupportedEncodingException, IOException, ServiceException;
+    OperationResponse createOrUpdate(String resourceId, AutoscaleSettingCreateOrUpdateParameters parameters) throws IOException, ServiceException;
     
     /**
     *
@@ -58,6 +61,10 @@ public interface SettingOperations
     /**
     *
     * @param resourceId The resource ID.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -74,6 +81,12 @@ public interface SettingOperations
     /**
     *
     * @param resourceId The resource ID.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */

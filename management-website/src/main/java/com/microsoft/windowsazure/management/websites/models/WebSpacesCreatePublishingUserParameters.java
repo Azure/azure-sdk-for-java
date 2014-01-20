@@ -32,6 +32,7 @@ public class WebSpacesCreatePublishingUserParameters
     
     /**
     * Optional. The publishing user name
+    * @return The Name value.
     */
     public String getName()
     {
@@ -40,16 +41,18 @@ public class WebSpacesCreatePublishingUserParameters
     
     /**
     * Optional. The publishing user name
+    * @param nameValue The Name value.
     */
-    public void setName(String name)
+    public void setName(final String nameValue)
     {
-        this.name = name;
+        this.name = nameValue;
     }
     
     private String publishingPassword;
     
     /**
     * Required. The publishing user password
+    * @return The PublishingPassword value.
     */
     public String getPublishingPassword()
     {
@@ -58,16 +61,18 @@ public class WebSpacesCreatePublishingUserParameters
     
     /**
     * Required. The publishing user password
+    * @param publishingPasswordValue The PublishingPassword value.
     */
-    public void setPublishingPassword(String publishingPassword)
+    public void setPublishingPassword(final String publishingPasswordValue)
     {
-        this.publishingPassword = publishingPassword;
+        this.publishingPassword = publishingPasswordValue;
     }
     
     private String publishingUserName;
     
     /**
     * Required. The publishing user username
+    * @return The PublishingUserName value.
     */
     public String getPublishingUserName()
     {
@@ -76,9 +81,10 @@ public class WebSpacesCreatePublishingUserParameters
     
     /**
     * Required. The publishing user username
+    * @param publishingUserNameValue The PublishingUserName value.
     */
-    public void setPublishingUserName(String publishingUserName)
+    public void setPublishingUserName(final String publishingUserNameValue)
     {
-        this.publishingUserName = publishingUserName;
+        this.publishingUserName = publishingUserNameValue;
     }
 }

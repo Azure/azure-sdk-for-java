@@ -37,10 +37,19 @@ import org.xml.sax.SAXException;
 
 public interface SchedulerManagementClient extends FilterableService<SchedulerManagementClient>
 {
+    /**
+    * @return The BaseUri value.
+    */
     URI getBaseUri(); 
     
+    /**
+    * @return The Credentials value.
+    */
     SubscriptionCloudCredentials getCredentials(); 
     
+    /**
+    * @return The JobCollectionsOperations value.
+    */
     JobCollectionOperations getJobCollectionsOperations(); 
     
     /**
@@ -54,6 +63,14 @@ public interface SchedulerManagementClient extends FilterableService<SchedulerMa
     * @param requestId The request ID for the request you wish to track. The
     * request ID is returned in the x-ms-request-id response header for every
     * request.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -93,6 +110,14 @@ public interface SchedulerManagementClient extends FilterableService<SchedulerMa
     * Gets a list of properties for the resource provider, including supported
     * regions and plans.
     *
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
     * @return The Resource Provider Get Properties operation response.
     */
     ResourceProviderGetPropertiesResponse getResourceProviderProperties() throws IOException, ServiceException, ParserConfigurationException, SAXException;
@@ -108,6 +133,10 @@ public interface SchedulerManagementClient extends FilterableService<SchedulerMa
     /**
     * Register the Scheduler resource provider with your subscription.
     *
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -124,6 +153,10 @@ public interface SchedulerManagementClient extends FilterableService<SchedulerMa
     /**
     * Unregister the Scheduler resource provider with your subscription.
     *
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */

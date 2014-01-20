@@ -32,6 +32,7 @@ public class NameConfig
     
     /**
     * Availability metric name config display name.
+    * @return The DisplayName value.
     */
     public String getDisplayName()
     {
@@ -40,16 +41,18 @@ public class NameConfig
     
     /**
     * Availability metric name config display name.
+    * @param displayNameValue The DisplayName value.
     */
-    public void setDisplayName(String displayName)
+    public void setDisplayName(final String displayNameValue)
     {
-        this.displayName = displayName;
+        this.displayName = displayNameValue;
     }
     
     private String name;
     
     /**
     * Availability metric name config name.
+    * @return The Name value.
     */
     public String getName()
     {
@@ -58,9 +61,10 @@ public class NameConfig
     
     /**
     * Availability metric name config name.
+    * @param nameValue The Name value.
     */
-    public void setName(String name)
+    public void setName(final String nameValue)
     {
-        this.name = name;
+        this.name = nameValue;
     }
 }

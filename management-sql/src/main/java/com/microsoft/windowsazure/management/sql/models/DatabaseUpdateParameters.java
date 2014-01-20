@@ -32,6 +32,7 @@ public class DatabaseUpdateParameters
     
     /**
     * Gets or sets the collation name for the new database.
+    * @return The CollationName value.
     */
     public String getCollationName()
     {
@@ -40,16 +41,18 @@ public class DatabaseUpdateParameters
     
     /**
     * Gets or sets the collation name for the new database.
+    * @param collationNameValue The CollationName value.
     */
-    public void setCollationName(String collationName)
+    public void setCollationName(final String collationNameValue)
     {
-        this.collationName = collationName;
+        this.collationName = collationNameValue;
     }
     
     private String edition;
     
     /**
     * Gets or sets the edition for the new database.
+    * @return The Edition value.
     */
     public String getEdition()
     {
@@ -58,16 +61,18 @@ public class DatabaseUpdateParameters
     
     /**
     * Gets or sets the edition for the new database.
+    * @param editionValue The Edition value.
     */
-    public void setEdition(String edition)
+    public void setEdition(final String editionValue)
     {
-        this.edition = edition;
+        this.edition = editionValue;
     }
     
     private int id;
     
     /**
     * Gets or sets the id of the database.
+    * @return The Id value.
     */
     public int getId()
     {
@@ -76,16 +81,18 @@ public class DatabaseUpdateParameters
     
     /**
     * Gets or sets the id of the database.
+    * @param idValue The Id value.
     */
-    public void setId(int id)
+    public void setId(final int idValue)
     {
-        this.id = id;
+        this.id = idValue;
     }
     
     private long maximumDatabaseSizeInGB;
     
     /**
     * Gets or sets the maximum size of this database, in Gigabytes.
+    * @return The MaximumDatabaseSizeInGB value.
     */
     public long getMaximumDatabaseSizeInGB()
     {
@@ -94,16 +101,18 @@ public class DatabaseUpdateParameters
     
     /**
     * Gets or sets the maximum size of this database, in Gigabytes.
+    * @param maximumDatabaseSizeInGBValue The MaximumDatabaseSizeInGB value.
     */
-    public void setMaximumDatabaseSizeInGB(long maximumDatabaseSizeInGB)
+    public void setMaximumDatabaseSizeInGB(final long maximumDatabaseSizeInGBValue)
     {
-        this.maximumDatabaseSizeInGB = maximumDatabaseSizeInGB;
+        this.maximumDatabaseSizeInGB = maximumDatabaseSizeInGBValue;
     }
     
     private String name;
     
     /**
     * Gets or sets the name of the database.
+    * @return The Name value.
     */
     public String getName()
     {
@@ -112,16 +121,18 @@ public class DatabaseUpdateParameters
     
     /**
     * Gets or sets the name of the database.
+    * @param nameValue The Name value.
     */
-    public void setName(String name)
+    public void setName(final String nameValue)
     {
-        this.name = name;
+        this.name = nameValue;
     }
     
     private String serviceObjectiveId;
     
     /**
     * Gets or sets the id of this service objective.
+    * @return The ServiceObjectiveId value.
     */
     public String getServiceObjectiveId()
     {
@@ -130,9 +141,10 @@ public class DatabaseUpdateParameters
     
     /**
     * Gets or sets the id of this service objective.
+    * @param serviceObjectiveIdValue The ServiceObjectiveId value.
     */
-    public void setServiceObjectiveId(String serviceObjectiveId)
+    public void setServiceObjectiveId(final String serviceObjectiveIdValue)
     {
-        this.serviceObjectiveId = serviceObjectiveId;
+        this.serviceObjectiveId = serviceObjectiveIdValue;
     }
 }

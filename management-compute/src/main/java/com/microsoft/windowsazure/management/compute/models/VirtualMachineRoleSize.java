@@ -26,25 +26,25 @@ package com.microsoft.windowsazure.management.compute.models;
 /**
 * The size of a virtual machine.
 */
-public enum VirtualMachineRoleSize
+public class VirtualMachineRoleSize
 {
-    Small,
+    public static final String Small = "Small";
     
-    ExtraSmall,
+    public static final String ExtraSmall = "ExtraSmall";
     
-    Large,
+    public static final String Large = "Large";
     
-    Medium,
+    public static final String Medium = "Medium";
     
-    ExtraLarge,
+    public static final String ExtraLarge = "ExtraLarge";
     
-    A5,
+    public static final String A5 = "A5";
     
-    A6,
+    public static final String A6 = "A6";
     
-    A7,
+    public static final String A7 = "A7";
     
-    A8,
+    public static final String A8 = "A8";
     
-    A9,
+    public static final String A9 = "A9";
 }

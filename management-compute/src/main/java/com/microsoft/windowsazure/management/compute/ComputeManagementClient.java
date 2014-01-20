@@ -45,6 +45,7 @@ public interface ComputeManagementClient extends FilterableService<ComputeManage
 {
     /**
     * The URI used as the base for all Service Management requests.
+    * @return The BaseUri value.
     */
     URI getBaseUri(); 
     
@@ -55,6 +56,7 @@ public interface ComputeManagementClient extends FilterableService<ComputeManage
     * Azure Service ManagementAPI use mutual authentication of management
     * certificates over SSL to ensure that a request made to the service is
     * secure.  No anonymous requests are allowed.
+    * @return The Credentials value.
     */
     SubscriptionCloudCredentials getCredentials(); 
     
@@ -63,6 +65,7 @@ public interface ComputeManagementClient extends FilterableService<ComputeManage
     * deployments beneath your subscription.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460812.aspx for
     * more information)
+    * @return The DeploymentsOperations value.
     */
     DeploymentOperations getDeploymentsOperations(); 
     
@@ -71,6 +74,7 @@ public interface ComputeManagementClient extends FilterableService<ComputeManage
     * services beneath your subscription.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460812.aspx for
     * more information)
+    * @return The HostedServicesOperations value.
     */
     HostedServiceOperations getHostedServicesOperations(); 
     
@@ -79,6 +83,7 @@ public interface ComputeManagementClient extends FilterableService<ComputeManage
     * Operating System on which your service is running.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/ff684169.aspx for
     * more information)
+    * @return The OperatingSystemsOperations value.
     */
     OperatingSystemOperations getOperatingSystemsOperations(); 
     
@@ -86,6 +91,7 @@ public interface ComputeManagementClient extends FilterableService<ComputeManage
     * Operations for managing service certificates for your subscription.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee795178.aspx for
     * more information)
+    * @return The ServiceCertificatesOperations value.
     */
     ServiceCertificateOperations getServiceCertificatesOperations(); 
     
@@ -94,6 +100,7 @@ public interface ComputeManagementClient extends FilterableService<ComputeManage
     * your subscription.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157188.aspx for
     * more information)
+    * @return The VirtualMachineDisksOperations value.
     */
     VirtualMachineDiskOperations getVirtualMachineDisksOperations(); 
     
@@ -102,6 +109,7 @@ public interface ComputeManagementClient extends FilterableService<ComputeManage
     * in your subscription.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157175.aspx for
     * more information)
+    * @return The VirtualMachineImagesOperations value.
     */
     VirtualMachineImageOperations getVirtualMachineImagesOperations(); 
     
@@ -110,6 +118,7 @@ public interface ComputeManagementClient extends FilterableService<ComputeManage
     * machines in your subscription.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157206.aspx for
     * more information)
+    * @return The VirtualMachinesOperations value.
     */
     VirtualMachineOperations getVirtualMachinesOperations(); 
     
@@ -124,6 +133,14 @@ public interface ComputeManagementClient extends FilterableService<ComputeManage
     * @param requestId The request ID for the request you wish to track. The
     * request ID is returned in the x-ms-request-id response header for every
     * request.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the

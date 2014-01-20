@@ -35,6 +35,7 @@ public class Rule
     
     /**
     * Rule actions.
+    * @return The Actions value.
     */
     public ArrayList<RuleAction> getActions()
     {
@@ -43,16 +44,18 @@ public class Rule
     
     /**
     * Rule actions.
+    * @param actionsValue The Actions value.
     */
-    public void setActions(ArrayList<RuleAction> actions)
+    public void setActions(final ArrayList<RuleAction> actionsValue)
     {
-        this.actions = actions;
+        this.actions = actionsValue;
     }
     
     private RuleCondition condition;
     
     /**
     * Rule condition.
+    * @return The Condition value.
     */
     public RuleCondition getCondition()
     {
@@ -61,16 +64,18 @@ public class Rule
     
     /**
     * Rule condition.
+    * @param conditionValue The Condition value.
     */
-    public void setCondition(RuleCondition condition)
+    public void setCondition(final RuleCondition conditionValue)
     {
-        this.condition = condition;
+        this.condition = conditionValue;
     }
     
     private String description;
     
     /**
     * Rule description.
+    * @return The Description value.
     */
     public String getDescription()
     {
@@ -79,16 +84,18 @@ public class Rule
     
     /**
     * Rule description.
+    * @param descriptionValue The Description value.
     */
-    public void setDescription(String description)
+    public void setDescription(final String descriptionValue)
     {
-        this.description = description;
+        this.description = descriptionValue;
     }
     
     private String id;
     
     /**
     * Rule identifier.
+    * @return The Id value.
     */
     public String getId()
     {
@@ -97,16 +104,18 @@ public class Rule
     
     /**
     * Rule identifier.
+    * @param idValue The Id value.
     */
-    public void setId(String id)
+    public void setId(final String idValue)
     {
-        this.id = id;
+        this.id = idValue;
     }
     
     private boolean isEnabled;
     
     /**
     * A flag that determines whether the rule is enabled or disabled.
+    * @return The IsEnabled value.
     */
     public boolean isEnabled()
     {
@@ -115,16 +124,18 @@ public class Rule
     
     /**
     * A flag that determines whether the rule is enabled or disabled.
+    * @param isEnabledValue The IsEnabled value.
     */
-    public void setIsEnabled(boolean isEnabled)
+    public void setIsEnabled(final boolean isEnabledValue)
     {
-        this.isEnabled = isEnabled;
+        this.isEnabled = isEnabledValue;
     }
     
     private Calendar lastUpdatedTime;
     
     /**
     * Rule last updated time.
+    * @return The LastUpdatedTime value.
     */
     public Calendar getLastUpdatedTime()
     {
@@ -133,16 +144,18 @@ public class Rule
     
     /**
     * Rule last updated time.
+    * @param lastUpdatedTimeValue The LastUpdatedTime value.
     */
-    public void setLastUpdatedTime(Calendar lastUpdatedTime)
+    public void setLastUpdatedTime(final Calendar lastUpdatedTimeValue)
     {
-        this.lastUpdatedTime = lastUpdatedTime;
+        this.lastUpdatedTime = lastUpdatedTimeValue;
     }
     
     private String name;
     
     /**
     * Rule name.
+    * @return The Name value.
     */
     public String getName()
     {
@@ -151,10 +164,11 @@ public class Rule
     
     /**
     * Rule name.
+    * @param nameValue The Name value.
     */
-    public void setName(String name)
+    public void setName(final String nameValue)
     {
-        this.name = name;
+        this.name = nameValue;
     }
     
     /**

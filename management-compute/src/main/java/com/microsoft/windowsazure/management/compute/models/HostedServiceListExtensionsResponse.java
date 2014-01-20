@@ -36,6 +36,7 @@ public class HostedServiceListExtensionsResponse extends OperationResponse imple
     
     /**
     * The extensions that were added to a cloud service.
+    * @return The Extensions value.
     */
     public ArrayList<HostedServiceListExtensionsResponse.Extension> getExtensions()
     {
@@ -44,10 +45,11 @@ public class HostedServiceListExtensionsResponse extends OperationResponse imple
     
     /**
     * The extensions that were added to a cloud service.
+    * @param extensionsValue The Extensions value.
     */
-    public void setExtensions(ArrayList<HostedServiceListExtensionsResponse.Extension> extensions)
+    public void setExtensions(final ArrayList<HostedServiceListExtensionsResponse.Extension> extensionsValue)
     {
-        this.extensions = extensions;
+        this.extensions = extensionsValue;
     }
     
     /**
@@ -79,6 +81,7 @@ public class HostedServiceListExtensionsResponse extends OperationResponse imple
         
         /**
         * The identifier of the extension.
+        * @return The Id value.
         */
         public String getId()
         {
@@ -87,10 +90,11 @@ public class HostedServiceListExtensionsResponse extends OperationResponse imple
         
         /**
         * The identifier of the extension.
+        * @param idValue The Id value.
         */
-        public void setId(String id)
+        public void setId(final String idValue)
         {
-            this.id = id;
+            this.id = idValue;
         }
         
         private String providerNamespace;
@@ -98,6 +102,7 @@ public class HostedServiceListExtensionsResponse extends OperationResponse imple
         /**
         * The provider namespace of the extension. The provider namespace for
         * Windows Azure extensions is Microsoft.Windows.Azure.Extensions.
+        * @return The ProviderNamespace value.
         */
         public String getProviderNamespace()
         {
@@ -107,10 +112,11 @@ public class HostedServiceListExtensionsResponse extends OperationResponse imple
         /**
         * The provider namespace of the extension. The provider namespace for
         * Windows Azure extensions is Microsoft.Windows.Azure.Extensions.
+        * @param providerNamespaceValue The ProviderNamespace value.
         */
-        public void setProviderNamespace(String providerNamespace)
+        public void setProviderNamespace(final String providerNamespaceValue)
         {
-            this.providerNamespace = providerNamespace;
+            this.providerNamespace = providerNamespaceValue;
         }
         
         private String publicConfiguration;
@@ -118,6 +124,7 @@ public class HostedServiceListExtensionsResponse extends OperationResponse imple
         /**
         * The public configuration that is defined using the schema returned by
         * the List Available Extensions operation.
+        * @return The PublicConfiguration value.
         */
         public String getPublicConfiguration()
         {
@@ -127,10 +134,11 @@ public class HostedServiceListExtensionsResponse extends OperationResponse imple
         /**
         * The public configuration that is defined using the schema returned by
         * the List Available Extensions operation.
+        * @param publicConfigurationValue The PublicConfiguration value.
         */
-        public void setPublicConfiguration(String publicConfiguration)
+        public void setPublicConfiguration(final String publicConfigurationValue)
         {
-            this.publicConfiguration = publicConfiguration;
+            this.publicConfiguration = publicConfigurationValue;
         }
         
         private String thumbprint;
@@ -140,6 +148,7 @@ public class HostedServiceListExtensionsResponse extends OperationResponse imple
         * configuration specified in PrivateConfiguration. If this element is
         * not specified, a certificate may be automatically generated and
         * added to the cloud service.
+        * @return The Thumbprint value.
         */
         public String getThumbprint()
         {
@@ -151,10 +160,11 @@ public class HostedServiceListExtensionsResponse extends OperationResponse imple
         * configuration specified in PrivateConfiguration. If this element is
         * not specified, a certificate may be automatically generated and
         * added to the cloud service.
+        * @param thumbprintValue The Thumbprint value.
         */
-        public void setThumbprint(String thumbprint)
+        public void setThumbprint(final String thumbprintValue)
         {
-            this.thumbprint = thumbprint;
+            this.thumbprint = thumbprintValue;
         }
         
         private String thumbprintAlgorithm;
@@ -162,6 +172,7 @@ public class HostedServiceListExtensionsResponse extends OperationResponse imple
         /**
         * The thumbprint algorithm of the certificate that is used toencrypt
         * the configuration specified in PrivateConfiguration.
+        * @return The ThumbprintAlgorithm value.
         */
         public String getThumbprintAlgorithm()
         {
@@ -171,16 +182,18 @@ public class HostedServiceListExtensionsResponse extends OperationResponse imple
         /**
         * The thumbprint algorithm of the certificate that is used toencrypt
         * the configuration specified in PrivateConfiguration.
+        * @param thumbprintAlgorithmValue The ThumbprintAlgorithm value.
         */
-        public void setThumbprintAlgorithm(String thumbprintAlgorithm)
+        public void setThumbprintAlgorithm(final String thumbprintAlgorithmValue)
         {
-            this.thumbprintAlgorithm = thumbprintAlgorithm;
+            this.thumbprintAlgorithm = thumbprintAlgorithmValue;
         }
         
         private String type;
         
         /**
         * Required. The type of the extension.
+        * @return The Type value.
         */
         public String getType()
         {
@@ -189,16 +202,18 @@ public class HostedServiceListExtensionsResponse extends OperationResponse imple
         
         /**
         * Required. The type of the extension.
+        * @param typeValue The Type value.
         */
-        public void setType(String type)
+        public void setType(final String typeValue)
         {
-            this.type = type;
+            this.type = typeValue;
         }
         
         private String version;
         
         /**
         * The version of the extension.
+        * @return The Version value.
         */
         public String getVersion()
         {
@@ -207,10 +222,11 @@ public class HostedServiceListExtensionsResponse extends OperationResponse imple
         
         /**
         * The version of the extension.
+        * @param versionValue The Version value.
         */
-        public void setVersion(String version)
+        public void setVersion(final String versionValue)
         {
-            this.version = version;
+            this.version = versionValue;
         }
     }
 }

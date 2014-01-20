@@ -32,6 +32,7 @@ public class AddOnUpdateParameters
     
     /**
     * The selected plan for this store addon.
+    * @return The Plan value.
     */
     public String getPlan()
     {
@@ -40,16 +41,18 @@ public class AddOnUpdateParameters
     
     /**
     * The selected plan for this store addon.
+    * @param planValue The Plan value.
     */
-    public void setPlan(String plan)
+    public void setPlan(final String planValue)
     {
-        this.plan = plan;
+        this.plan = planValue;
     }
     
     private String promotionCode;
     
     /**
     * The promotion code for this store addon.
+    * @return The PromotionCode value.
     */
     public String getPromotionCode()
     {
@@ -58,16 +61,18 @@ public class AddOnUpdateParameters
     
     /**
     * The promotion code for this store addon.
+    * @param promotionCodeValue The PromotionCode value.
     */
-    public void setPromotionCode(String promotionCode)
+    public void setPromotionCode(final String promotionCodeValue)
     {
-        this.promotionCode = promotionCode;
+        this.promotionCode = promotionCodeValue;
     }
     
     private String type;
     
     /**
     * The type of store item to be created.
+    * @return The Type value.
     */
     public String getType()
     {
@@ -76,9 +81,10 @@ public class AddOnUpdateParameters
     
     /**
     * The type of store item to be created.
+    * @param typeValue The Type value.
     */
-    public void setType(String type)
+    public void setType(final String typeValue)
     {
-        this.type = type;
+        this.type = typeValue;
     }
 }

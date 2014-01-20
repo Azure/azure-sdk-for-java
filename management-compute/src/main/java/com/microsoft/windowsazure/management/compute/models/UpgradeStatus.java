@@ -34,6 +34,7 @@ public class UpgradeStatus
     * An integer value that identifies the current upgrade domain. Upgrade
     * domains are identified with a zero-based index: the first upgrade domain
     * has an ID of 0, the second has an ID of 1, and so on.
+    * @return The CurrentUpgradeDomain value.
     */
     public int getCurrentUpgradeDomain()
     {
@@ -44,16 +45,18 @@ public class UpgradeStatus
     * An integer value that identifies the current upgrade domain. Upgrade
     * domains are identified with a zero-based index: the first upgrade domain
     * has an ID of 0, the second has an ID of 1, and so on.
+    * @param currentUpgradeDomainValue The CurrentUpgradeDomain value.
     */
-    public void setCurrentUpgradeDomain(int currentUpgradeDomain)
+    public void setCurrentUpgradeDomain(final int currentUpgradeDomainValue)
     {
-        this.currentUpgradeDomain = currentUpgradeDomain;
+        this.currentUpgradeDomain = currentUpgradeDomainValue;
     }
     
     private UpgradeDomainState currentUpgradeDomainState;
     
     /**
     * The current state of the upgrade. Possible values are Before and During
+    * @return The CurrentUpgradeDomainState value.
     */
     public UpgradeDomainState getCurrentUpgradeDomainState()
     {
@@ -62,16 +65,18 @@ public class UpgradeStatus
     
     /**
     * The current state of the upgrade. Possible values are Before and During
+    * @param currentUpgradeDomainStateValue The CurrentUpgradeDomainState value.
     */
-    public void setCurrentUpgradeDomainState(UpgradeDomainState currentUpgradeDomainState)
+    public void setCurrentUpgradeDomainState(final UpgradeDomainState currentUpgradeDomainStateValue)
     {
-        this.currentUpgradeDomainState = currentUpgradeDomainState;
+        this.currentUpgradeDomainState = currentUpgradeDomainStateValue;
     }
     
     private DeploymentUpgradeType upgradeType;
     
     /**
     * The type of the upgrade. Possible values are Auto and Manual.
+    * @return The UpgradeType value.
     */
     public DeploymentUpgradeType getUpgradeType()
     {
@@ -80,9 +85,10 @@ public class UpgradeStatus
     
     /**
     * The type of the upgrade. Possible values are Auto and Manual.
+    * @param upgradeTypeValue The UpgradeType value.
     */
-    public void setUpgradeType(DeploymentUpgradeType upgradeType)
+    public void setUpgradeType(final DeploymentUpgradeType upgradeTypeValue)
     {
-        this.upgradeType = upgradeType;
+        this.upgradeType = upgradeTypeValue;
     }
 }

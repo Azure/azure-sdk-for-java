@@ -34,6 +34,7 @@ public class EndpointConfig
     
     /**
     * The config id for endpoint monitoring config.
+    * @return The ConfigId value.
     */
     public String getConfigId()
     {
@@ -42,16 +43,18 @@ public class EndpointConfig
     
     /**
     * The config id for endpoint monitoring config.
+    * @param configIdValue The ConfigId value.
     */
-    public void setConfigId(String configId)
+    public void setConfigId(final String configIdValue)
     {
-        this.configId = configId;
+        this.configId = configIdValue;
     }
     
     private String location;
     
     /**
     * The location from which the endpoint is monitored.
+    * @return The Location value.
     */
     public String getLocation()
     {
@@ -60,16 +63,18 @@ public class EndpointConfig
     
     /**
     * The location from which the endpoint is monitored.
+    * @param locationValue The Location value.
     */
-    public void setLocation(String location)
+    public void setLocation(final String locationValue)
     {
-        this.location = location;
+        this.location = locationValue;
     }
     
     private String name;
     
     /**
     * The friendly name for the url for which endpoint monitoring is configured.
+    * @return The Name value.
     */
     public String getName()
     {
@@ -78,16 +83,18 @@ public class EndpointConfig
     
     /**
     * The friendly name for the url for which endpoint monitoring is configured.
+    * @param nameValue The Name value.
     */
-    public void setName(String name)
+    public void setName(final String nameValue)
     {
-        this.name = name;
+        this.name = nameValue;
     }
     
     private URI url;
     
     /**
     * The Url to be monitored.
+    * @return The Url value.
     */
     public URI getUrl()
     {
@@ -96,9 +103,10 @@ public class EndpointConfig
     
     /**
     * The Url to be monitored.
+    * @param urlValue The Url value.
     */
-    public void setUrl(URI url)
+    public void setUrl(final URI urlValue)
     {
-        this.url = url;
+        this.url = urlValue;
     }
 }

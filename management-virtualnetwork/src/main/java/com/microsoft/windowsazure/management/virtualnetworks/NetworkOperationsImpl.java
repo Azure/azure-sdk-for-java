@@ -38,7 +38,6 @@ import com.microsoft.windowsazure.tracing.ClientRequestTrackingHandler;
 import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.text.ParseException;
 import java.util.HashMap;
@@ -75,6 +74,7 @@ public class NetworkOperationsImpl implements ServiceOperations<VirtualNetworkMa
     /**
     * Gets a reference to the
     * microsoft.windowsazure.management.virtualnetworks.VirtualNetworkManagementClientImpl.
+    * @return The Client value.
     */
     public VirtualNetworkManagementClientImpl getClient()
     {
@@ -110,11 +110,15 @@ public class NetworkOperationsImpl implements ServiceOperations<VirtualNetworkMa
     * more information)
     *
     * @param parameters The updated network configuration.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard storage response including an HTTP status code and
     * request ID.
     */
     @Override
-    public OperationResponse beginSettingConfiguration(NetworkSetConfigurationParameters parameters) throws UnsupportedEncodingException, IOException, ServiceException
+    public OperationResponse beginSettingConfiguration(NetworkSetConfigurationParameters parameters) throws IOException, ServiceException
     {
         // Validate
         if (parameters == null)
@@ -156,40 +160,50 @@ public class NetworkOperationsImpl implements ServiceOperations<VirtualNetworkMa
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != HttpStatus.SC_ACCEPTED)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        OperationResponse result = null;
-        result = new OperationResponse();
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -218,6 +232,10 @@ public class NetworkOperationsImpl implements ServiceOperations<VirtualNetworkMa
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157196.aspx for
     * more information)
     *
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return The Get Network Configuration operation response.
     */
     @Override
@@ -246,44 +264,54 @@ public class NetworkOperationsImpl implements ServiceOperations<VirtualNetworkMa
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != HttpStatus.SC_OK)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            NetworkGetConfigurationResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new NetworkGetConfigurationResponse();
+            result.setConfiguration(StreamUtils.toString(responseContent));
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        NetworkGetConfigurationResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new NetworkGetConfigurationResponse();
-        result.setConfiguration(StreamUtils.toString(responseContent));
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -312,6 +340,16 @@ public class NetworkOperationsImpl implements ServiceOperations<VirtualNetworkMa
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157185.aspx for
     * more information)
     *
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return The response structure for the Server List operation.
     */
     @Override
@@ -340,293 +378,303 @@ public class NetworkOperationsImpl implements ServiceOperations<VirtualNetworkMa
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != HttpStatus.SC_OK)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
-        }
-        
-        // Create Result
-        NetworkListResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new NetworkListResponse();
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document responseDoc = documentBuilder.parse(responseContent);
-        
-        NodeList elements = responseDoc.getElementsByTagName("VirtualNetworkSites");
-        Element virtualNetworkSitesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-        if (virtualNetworkSitesSequenceElement != null)
-        {
-            for (int i1 = 0; i1 < virtualNetworkSitesSequenceElement.getElementsByTagName("VirtualNetworkSite").getLength(); i1 = i1 + 1)
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
             {
-                org.w3c.dom.Element virtualNetworkSitesElement = ((org.w3c.dom.Element) virtualNetworkSitesSequenceElement.getElementsByTagName("VirtualNetworkSite").item(i1));
-                NetworkListResponse.VirtualNetworkSite virtualNetworkSiteInstance = new NetworkListResponse.VirtualNetworkSite();
-                result.getVirtualNetworkSites().add(virtualNetworkSiteInstance);
-                
-                NodeList elements2 = virtualNetworkSitesElement.getElementsByTagName("Name");
-                Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (nameElement != null)
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
                 {
-                    String nameInstance;
-                    nameInstance = nameElement.getTextContent();
-                    virtualNetworkSiteInstance.setName(nameInstance);
+                    CloudTracing.error(invocationId, ex);
                 }
-                
-                NodeList elements3 = virtualNetworkSitesElement.getElementsByTagName("Label");
-                Element labelElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                if (labelElement != null)
+                throw ex;
+            }
+            
+            // Create Result
+            NetworkListResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new NetworkListResponse();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document responseDoc = documentBuilder.parse(responseContent);
+            
+            NodeList elements = responseDoc.getElementsByTagName("VirtualNetworkSites");
+            Element virtualNetworkSitesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            if (virtualNetworkSitesSequenceElement != null)
+            {
+                for (int i1 = 0; i1 < virtualNetworkSitesSequenceElement.getElementsByTagName("VirtualNetworkSite").getLength(); i1 = i1 + 1)
                 {
-                    String labelInstance;
-                    labelInstance = labelElement.getTextContent();
-                    virtualNetworkSiteInstance.setLabel(labelInstance);
-                }
-                
-                NodeList elements4 = virtualNetworkSitesElement.getElementsByTagName("Id");
-                Element idElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                if (idElement != null)
-                {
-                    String idInstance;
-                    idInstance = idElement.getTextContent();
-                    virtualNetworkSiteInstance.setId(idInstance);
-                }
-                
-                NodeList elements5 = virtualNetworkSitesElement.getElementsByTagName("AffinityGroup");
-                Element affinityGroupElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                if (affinityGroupElement != null)
-                {
-                    String affinityGroupInstance;
-                    affinityGroupInstance = affinityGroupElement.getTextContent();
-                    virtualNetworkSiteInstance.setAffinityGroup(affinityGroupInstance);
-                }
-                
-                NodeList elements6 = virtualNetworkSitesElement.getElementsByTagName("State");
-                Element stateElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                if (stateElement != null)
-                {
-                    String stateInstance;
-                    stateInstance = stateElement.getTextContent();
-                    virtualNetworkSiteInstance.setState(stateInstance);
-                }
-                
-                NodeList elements7 = virtualNetworkSitesElement.getElementsByTagName("AddressSpace");
-                Element addressSpaceElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                if (addressSpaceElement != null)
-                {
-                    NetworkListResponse.AddressSpace addressSpaceInstance = new NetworkListResponse.AddressSpace();
-                    virtualNetworkSiteInstance.setAddressSpace(addressSpaceInstance);
+                    org.w3c.dom.Element virtualNetworkSitesElement = ((org.w3c.dom.Element) virtualNetworkSitesSequenceElement.getElementsByTagName("VirtualNetworkSite").item(i1));
+                    NetworkListResponse.VirtualNetworkSite virtualNetworkSiteInstance = new NetworkListResponse.VirtualNetworkSite();
+                    result.getVirtualNetworkSites().add(virtualNetworkSiteInstance);
                     
-                    NodeList elements8 = addressSpaceElement.getElementsByTagName("AddressPrefixes");
-                    Element addressPrefixesSequenceElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                    if (addressPrefixesSequenceElement != null)
+                    NodeList elements2 = virtualNetworkSitesElement.getElementsByTagName("Name");
+                    Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                    if (nameElement != null)
                     {
-                        for (int i2 = 0; i2 < addressPrefixesSequenceElement.getElementsByTagName("AddressPrefix").getLength(); i2 = i2 + 1)
-                        {
-                            org.w3c.dom.Element addressPrefixesElement = ((org.w3c.dom.Element) addressPrefixesSequenceElement.getElementsByTagName("AddressPrefix").item(i2));
-                            addressSpaceInstance.getAddressPrefixes().add(addressPrefixesElement.getTextContent());
-                        }
+                        String nameInstance;
+                        nameInstance = nameElement.getTextContent();
+                        virtualNetworkSiteInstance.setName(nameInstance);
                     }
-                }
-                
-                NodeList elements9 = virtualNetworkSitesElement.getElementsByTagName("Subnets");
-                Element subnetsSequenceElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-                if (subnetsSequenceElement != null)
-                {
-                    for (int i3 = 0; i3 < subnetsSequenceElement.getElementsByTagName("Subnet").getLength(); i3 = i3 + 1)
+                    
+                    NodeList elements3 = virtualNetworkSitesElement.getElementsByTagName("Label");
+                    Element labelElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                    if (labelElement != null)
                     {
-                        org.w3c.dom.Element subnetsElement = ((org.w3c.dom.Element) subnetsSequenceElement.getElementsByTagName("Subnet").item(i3));
-                        NetworkListResponse.Subnet subnetInstance = new NetworkListResponse.Subnet();
-                        virtualNetworkSiteInstance.getSubnets().add(subnetInstance);
+                        String labelInstance;
+                        labelInstance = labelElement.getTextContent();
+                        virtualNetworkSiteInstance.setLabel(labelInstance);
+                    }
+                    
+                    NodeList elements4 = virtualNetworkSitesElement.getElementsByTagName("Id");
+                    Element idElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                    if (idElement != null)
+                    {
+                        String idInstance;
+                        idInstance = idElement.getTextContent();
+                        virtualNetworkSiteInstance.setId(idInstance);
+                    }
+                    
+                    NodeList elements5 = virtualNetworkSitesElement.getElementsByTagName("AffinityGroup");
+                    Element affinityGroupElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                    if (affinityGroupElement != null)
+                    {
+                        String affinityGroupInstance;
+                        affinityGroupInstance = affinityGroupElement.getTextContent();
+                        virtualNetworkSiteInstance.setAffinityGroup(affinityGroupInstance);
+                    }
+                    
+                    NodeList elements6 = virtualNetworkSitesElement.getElementsByTagName("State");
+                    Element stateElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                    if (stateElement != null)
+                    {
+                        String stateInstance;
+                        stateInstance = stateElement.getTextContent();
+                        virtualNetworkSiteInstance.setState(stateInstance);
+                    }
+                    
+                    NodeList elements7 = virtualNetworkSitesElement.getElementsByTagName("AddressSpace");
+                    Element addressSpaceElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
+                    if (addressSpaceElement != null)
+                    {
+                        NetworkListResponse.AddressSpace addressSpaceInstance = new NetworkListResponse.AddressSpace();
+                        virtualNetworkSiteInstance.setAddressSpace(addressSpaceInstance);
                         
-                        NodeList elements10 = subnetsElement.getElementsByTagName("Name");
-                        Element nameElement2 = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
-                        if (nameElement2 != null)
+                        NodeList elements8 = addressSpaceElement.getElementsByTagName("AddressPrefixes");
+                        Element addressPrefixesSequenceElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
+                        if (addressPrefixesSequenceElement != null)
                         {
-                            String nameInstance2;
-                            nameInstance2 = nameElement2.getTextContent();
-                            subnetInstance.setName(nameInstance2);
-                        }
-                        
-                        NodeList elements11 = subnetsElement.getElementsByTagName("AddressPrefix");
-                        Element addressPrefixElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
-                        if (addressPrefixElement != null)
-                        {
-                            String addressPrefixInstance;
-                            addressPrefixInstance = addressPrefixElement.getTextContent();
-                            subnetInstance.setAddressPrefix(addressPrefixInstance);
-                        }
-                    }
-                }
-                
-                NodeList elements12 = virtualNetworkSitesElement.getElementsByTagName("Dns");
-                Element dnsElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
-                if (dnsElement != null)
-                {
-                    NodeList elements13 = dnsElement.getElementsByTagName("DnsServers");
-                    Element dnsServersSequenceElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
-                    if (dnsServersSequenceElement != null)
-                    {
-                        for (int i4 = 0; i4 < dnsServersSequenceElement.getElementsByTagName("DnsServer").getLength(); i4 = i4 + 1)
-                        {
-                            org.w3c.dom.Element dnsServersElement = ((org.w3c.dom.Element) dnsServersSequenceElement.getElementsByTagName("DnsServer").item(i4));
-                            NetworkListResponse.DnsServer dnsServerInstance = new NetworkListResponse.DnsServer();
-                            virtualNetworkSiteInstance.getDnsServers().add(dnsServerInstance);
-                            
-                            NodeList elements14 = dnsServersElement.getElementsByTagName("Name");
-                            Element nameElement3 = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
-                            if (nameElement3 != null)
+                            for (int i2 = 0; i2 < addressPrefixesSequenceElement.getElementsByTagName("AddressPrefix").getLength(); i2 = i2 + 1)
                             {
-                                String nameInstance3;
-                                nameInstance3 = nameElement3.getTextContent();
-                                dnsServerInstance.setName(nameInstance3);
-                            }
-                            
-                            NodeList elements15 = dnsServersElement.getElementsByTagName("Address");
-                            Element addressElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
-                            if (addressElement != null)
-                            {
-                                InetAddress addressInstance;
-                                addressInstance = InetAddress.getByName(addressElement.getTextContent());
-                                dnsServerInstance.setAddress(addressInstance);
+                                org.w3c.dom.Element addressPrefixesElement = ((org.w3c.dom.Element) addressPrefixesSequenceElement.getElementsByTagName("AddressPrefix").item(i2));
+                                addressSpaceInstance.getAddressPrefixes().add(addressPrefixesElement.getTextContent());
                             }
                         }
-                    }
-                }
-                
-                NodeList elements16 = virtualNetworkSitesElement.getElementsByTagName("Gateway");
-                Element gatewayElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
-                if (gatewayElement != null)
-                {
-                    NetworkListResponse.Gateway gatewayInstance = new NetworkListResponse.Gateway();
-                    virtualNetworkSiteInstance.setGateway(gatewayInstance);
-                    
-                    NodeList elements17 = gatewayElement.getElementsByTagName("Profile");
-                    Element profileElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
-                    if (profileElement != null)
-                    {
-                        GatewayProfile profileInstance;
-                        profileInstance = GatewayProfile.valueOf(profileElement.getTextContent());
-                        gatewayInstance.setProfile(profileInstance);
                     }
                     
-                    NodeList elements18 = gatewayElement.getElementsByTagName("Sites");
-                    Element sitesSequenceElement = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
-                    if (sitesSequenceElement != null)
+                    NodeList elements9 = virtualNetworkSitesElement.getElementsByTagName("Subnets");
+                    Element subnetsSequenceElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
+                    if (subnetsSequenceElement != null)
                     {
-                        for (int i5 = 0; i5 < sitesSequenceElement.getElementsByTagName("LocalNetworkSite").getLength(); i5 = i5 + 1)
+                        for (int i3 = 0; i3 < subnetsSequenceElement.getElementsByTagName("Subnet").getLength(); i3 = i3 + 1)
                         {
-                            org.w3c.dom.Element sitesElement = ((org.w3c.dom.Element) sitesSequenceElement.getElementsByTagName("LocalNetworkSite").item(i5));
-                            NetworkListResponse.LocalNetworkSite localNetworkSiteInstance = new NetworkListResponse.LocalNetworkSite();
-                            gatewayInstance.getSites().add(localNetworkSiteInstance);
+                            org.w3c.dom.Element subnetsElement = ((org.w3c.dom.Element) subnetsSequenceElement.getElementsByTagName("Subnet").item(i3));
+                            NetworkListResponse.Subnet subnetInstance = new NetworkListResponse.Subnet();
+                            virtualNetworkSiteInstance.getSubnets().add(subnetInstance);
                             
-                            NodeList elements19 = sitesElement.getElementsByTagName("Name");
-                            Element nameElement4 = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
-                            if (nameElement4 != null)
+                            NodeList elements10 = subnetsElement.getElementsByTagName("Name");
+                            Element nameElement2 = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
+                            if (nameElement2 != null)
                             {
-                                String nameInstance4;
-                                nameInstance4 = nameElement4.getTextContent();
-                                localNetworkSiteInstance.setName(nameInstance4);
+                                String nameInstance2;
+                                nameInstance2 = nameElement2.getTextContent();
+                                subnetInstance.setName(nameInstance2);
                             }
                             
-                            NodeList elements20 = sitesElement.getElementsByTagName("VpnGatewayAddress");
-                            Element vpnGatewayAddressElement = elements20.getLength() > 0 ? ((Element) elements20.item(0)) : null;
-                            if (vpnGatewayAddressElement != null)
+                            NodeList elements11 = subnetsElement.getElementsByTagName("AddressPrefix");
+                            Element addressPrefixElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
+                            if (addressPrefixElement != null)
                             {
-                                InetAddress vpnGatewayAddressInstance;
-                                vpnGatewayAddressInstance = InetAddress.getByName(vpnGatewayAddressElement.getTextContent());
-                                localNetworkSiteInstance.setVpnGatewayAddress(vpnGatewayAddressInstance);
+                                String addressPrefixInstance;
+                                addressPrefixInstance = addressPrefixElement.getTextContent();
+                                subnetInstance.setAddressPrefix(addressPrefixInstance);
                             }
-                            
-                            NodeList elements21 = sitesElement.getElementsByTagName("AddressSpace");
-                            Element addressSpaceElement2 = elements21.getLength() > 0 ? ((Element) elements21.item(0)) : null;
-                            if (addressSpaceElement2 != null)
+                        }
+                    }
+                    
+                    NodeList elements12 = virtualNetworkSitesElement.getElementsByTagName("Dns");
+                    Element dnsElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
+                    if (dnsElement != null)
+                    {
+                        NodeList elements13 = dnsElement.getElementsByTagName("DnsServers");
+                        Element dnsServersSequenceElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
+                        if (dnsServersSequenceElement != null)
+                        {
+                            for (int i4 = 0; i4 < dnsServersSequenceElement.getElementsByTagName("DnsServer").getLength(); i4 = i4 + 1)
                             {
-                                NetworkListResponse.AddressSpace addressSpaceInstance2 = new NetworkListResponse.AddressSpace();
-                                localNetworkSiteInstance.setAddressSpace(addressSpaceInstance2);
+                                org.w3c.dom.Element dnsServersElement = ((org.w3c.dom.Element) dnsServersSequenceElement.getElementsByTagName("DnsServer").item(i4));
+                                NetworkListResponse.DnsServer dnsServerInstance = new NetworkListResponse.DnsServer();
+                                virtualNetworkSiteInstance.getDnsServers().add(dnsServerInstance);
                                 
-                                NodeList elements22 = addressSpaceElement2.getElementsByTagName("AddressPrefixes");
-                                Element addressPrefixesSequenceElement2 = elements22.getLength() > 0 ? ((Element) elements22.item(0)) : null;
-                                if (addressPrefixesSequenceElement2 != null)
+                                NodeList elements14 = dnsServersElement.getElementsByTagName("Name");
+                                Element nameElement3 = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
+                                if (nameElement3 != null)
                                 {
-                                    for (int i6 = 0; i6 < addressPrefixesSequenceElement2.getElementsByTagName("AddressPrefix").getLength(); i6 = i6 + 1)
-                                    {
-                                        org.w3c.dom.Element addressPrefixesElement2 = ((org.w3c.dom.Element) addressPrefixesSequenceElement2.getElementsByTagName("AddressPrefix").item(i6));
-                                        addressSpaceInstance2.getAddressPrefixes().add(addressPrefixesElement2.getTextContent());
-                                    }
+                                    String nameInstance3;
+                                    nameInstance3 = nameElement3.getTextContent();
+                                    dnsServerInstance.setName(nameInstance3);
                                 }
-                            }
-                            
-                            NodeList elements23 = sitesElement.getElementsByTagName("Connections");
-                            Element connectionsSequenceElement = elements23.getLength() > 0 ? ((Element) elements23.item(0)) : null;
-                            if (connectionsSequenceElement != null)
-                            {
-                                for (int i7 = 0; i7 < connectionsSequenceElement.getElementsByTagName("Connection").getLength(); i7 = i7 + 1)
+                                
+                                NodeList elements15 = dnsServersElement.getElementsByTagName("Address");
+                                Element addressElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
+                                if (addressElement != null)
                                 {
-                                    org.w3c.dom.Element connectionsElement = ((org.w3c.dom.Element) connectionsSequenceElement.getElementsByTagName("Connection").item(i7));
-                                    NetworkListResponse.Connection connectionInstance = new NetworkListResponse.Connection();
-                                    localNetworkSiteInstance.getConnections().add(connectionInstance);
-                                    
-                                    NodeList elements24 = connectionsElement.getElementsByTagName("Type");
-                                    Element typeElement = elements24.getLength() > 0 ? ((Element) elements24.item(0)) : null;
-                                    if (typeElement != null)
-                                    {
-                                        LocalNetworkConnectionType typeInstance;
-                                        typeInstance = VirtualNetworkManagementClientImpl.parseLocalNetworkConnectionType(typeElement.getTextContent());
-                                        connectionInstance.setType(typeInstance);
-                                    }
+                                    InetAddress addressInstance;
+                                    addressInstance = InetAddress.getByName(addressElement.getTextContent());
+                                    dnsServerInstance.setAddress(addressInstance);
                                 }
                             }
                         }
                     }
                     
-                    NodeList elements25 = gatewayElement.getElementsByTagName("VPNClientAddressPool");
-                    Element vPNClientAddressPoolElement = elements25.getLength() > 0 ? ((Element) elements25.item(0)) : null;
-                    if (vPNClientAddressPoolElement != null)
+                    NodeList elements16 = virtualNetworkSitesElement.getElementsByTagName("Gateway");
+                    Element gatewayElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
+                    if (gatewayElement != null)
                     {
-                        NetworkListResponse.VPNClientAddressPool vPNClientAddressPoolInstance = new NetworkListResponse.VPNClientAddressPool();
-                        gatewayInstance.setVPNClientAddressPool(vPNClientAddressPoolInstance);
+                        NetworkListResponse.Gateway gatewayInstance = new NetworkListResponse.Gateway();
+                        virtualNetworkSiteInstance.setGateway(gatewayInstance);
                         
-                        NodeList elements26 = vPNClientAddressPoolElement.getElementsByTagName("AddressPrefixes");
-                        Element addressPrefixesSequenceElement3 = elements26.getLength() > 0 ? ((Element) elements26.item(0)) : null;
-                        if (addressPrefixesSequenceElement3 != null)
+                        NodeList elements17 = gatewayElement.getElementsByTagName("Profile");
+                        Element profileElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
+                        if (profileElement != null)
                         {
-                            for (int i8 = 0; i8 < addressPrefixesSequenceElement3.getElementsByTagName("AddressPrefix").getLength(); i8 = i8 + 1)
+                            GatewayProfile profileInstance;
+                            profileInstance = GatewayProfile.valueOf(profileElement.getTextContent());
+                            gatewayInstance.setProfile(profileInstance);
+                        }
+                        
+                        NodeList elements18 = gatewayElement.getElementsByTagName("Sites");
+                        Element sitesSequenceElement = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
+                        if (sitesSequenceElement != null)
+                        {
+                            for (int i5 = 0; i5 < sitesSequenceElement.getElementsByTagName("LocalNetworkSite").getLength(); i5 = i5 + 1)
                             {
-                                org.w3c.dom.Element addressPrefixesElement3 = ((org.w3c.dom.Element) addressPrefixesSequenceElement3.getElementsByTagName("AddressPrefix").item(i8));
-                                vPNClientAddressPoolInstance.getAddressPrefixes().add(addressPrefixesElement3.getTextContent());
+                                org.w3c.dom.Element sitesElement = ((org.w3c.dom.Element) sitesSequenceElement.getElementsByTagName("LocalNetworkSite").item(i5));
+                                NetworkListResponse.LocalNetworkSite localNetworkSiteInstance = new NetworkListResponse.LocalNetworkSite();
+                                gatewayInstance.getSites().add(localNetworkSiteInstance);
+                                
+                                NodeList elements19 = sitesElement.getElementsByTagName("Name");
+                                Element nameElement4 = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
+                                if (nameElement4 != null)
+                                {
+                                    String nameInstance4;
+                                    nameInstance4 = nameElement4.getTextContent();
+                                    localNetworkSiteInstance.setName(nameInstance4);
+                                }
+                                
+                                NodeList elements20 = sitesElement.getElementsByTagName("VpnGatewayAddress");
+                                Element vpnGatewayAddressElement = elements20.getLength() > 0 ? ((Element) elements20.item(0)) : null;
+                                if (vpnGatewayAddressElement != null)
+                                {
+                                    InetAddress vpnGatewayAddressInstance;
+                                    vpnGatewayAddressInstance = InetAddress.getByName(vpnGatewayAddressElement.getTextContent());
+                                    localNetworkSiteInstance.setVpnGatewayAddress(vpnGatewayAddressInstance);
+                                }
+                                
+                                NodeList elements21 = sitesElement.getElementsByTagName("AddressSpace");
+                                Element addressSpaceElement2 = elements21.getLength() > 0 ? ((Element) elements21.item(0)) : null;
+                                if (addressSpaceElement2 != null)
+                                {
+                                    NetworkListResponse.AddressSpace addressSpaceInstance2 = new NetworkListResponse.AddressSpace();
+                                    localNetworkSiteInstance.setAddressSpace(addressSpaceInstance2);
+                                    
+                                    NodeList elements22 = addressSpaceElement2.getElementsByTagName("AddressPrefixes");
+                                    Element addressPrefixesSequenceElement2 = elements22.getLength() > 0 ? ((Element) elements22.item(0)) : null;
+                                    if (addressPrefixesSequenceElement2 != null)
+                                    {
+                                        for (int i6 = 0; i6 < addressPrefixesSequenceElement2.getElementsByTagName("AddressPrefix").getLength(); i6 = i6 + 1)
+                                        {
+                                            org.w3c.dom.Element addressPrefixesElement2 = ((org.w3c.dom.Element) addressPrefixesSequenceElement2.getElementsByTagName("AddressPrefix").item(i6));
+                                            addressSpaceInstance2.getAddressPrefixes().add(addressPrefixesElement2.getTextContent());
+                                        }
+                                    }
+                                }
+                                
+                                NodeList elements23 = sitesElement.getElementsByTagName("Connections");
+                                Element connectionsSequenceElement = elements23.getLength() > 0 ? ((Element) elements23.item(0)) : null;
+                                if (connectionsSequenceElement != null)
+                                {
+                                    for (int i7 = 0; i7 < connectionsSequenceElement.getElementsByTagName("Connection").getLength(); i7 = i7 + 1)
+                                    {
+                                        org.w3c.dom.Element connectionsElement = ((org.w3c.dom.Element) connectionsSequenceElement.getElementsByTagName("Connection").item(i7));
+                                        NetworkListResponse.Connection connectionInstance = new NetworkListResponse.Connection();
+                                        localNetworkSiteInstance.getConnections().add(connectionInstance);
+                                        
+                                        NodeList elements24 = connectionsElement.getElementsByTagName("Type");
+                                        Element typeElement = elements24.getLength() > 0 ? ((Element) elements24.item(0)) : null;
+                                        if (typeElement != null)
+                                        {
+                                            LocalNetworkConnectionType typeInstance;
+                                            typeInstance = VirtualNetworkManagementClientImpl.parseLocalNetworkConnectionType(typeElement.getTextContent());
+                                            connectionInstance.setType(typeInstance);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        
+                        NodeList elements25 = gatewayElement.getElementsByTagName("VPNClientAddressPool");
+                        Element vPNClientAddressPoolElement = elements25.getLength() > 0 ? ((Element) elements25.item(0)) : null;
+                        if (vPNClientAddressPoolElement != null)
+                        {
+                            NetworkListResponse.VPNClientAddressPool vPNClientAddressPoolInstance = new NetworkListResponse.VPNClientAddressPool();
+                            gatewayInstance.setVPNClientAddressPool(vPNClientAddressPoolInstance);
+                            
+                            NodeList elements26 = vPNClientAddressPoolElement.getElementsByTagName("AddressPrefixes");
+                            Element addressPrefixesSequenceElement3 = elements26.getLength() > 0 ? ((Element) elements26.item(0)) : null;
+                            if (addressPrefixesSequenceElement3 != null)
+                            {
+                                for (int i8 = 0; i8 < addressPrefixesSequenceElement3.getElementsByTagName("AddressPrefix").getLength(); i8 = i8 + 1)
+                                {
+                                    org.w3c.dom.Element addressPrefixesElement3 = ((org.w3c.dom.Element) addressPrefixesSequenceElement3.getElementsByTagName("AddressPrefix").item(i8));
+                                    vPNClientAddressPoolInstance.getAddressPrefixes().add(addressPrefixesElement3.getTextContent());
+                                }
                             }
                         }
                     }
                 }
             }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -665,6 +713,18 @@ public class NetworkOperationsImpl implements ServiceOperations<VirtualNetworkMa
     * more information)
     *
     * @param parameters The updated network configuration.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the

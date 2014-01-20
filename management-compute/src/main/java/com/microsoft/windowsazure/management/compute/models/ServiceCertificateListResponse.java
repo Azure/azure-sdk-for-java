@@ -37,6 +37,7 @@ public class ServiceCertificateListResponse extends OperationResponse implements
     
     /**
     * The service certificates that are valid for your subscription.
+    * @return The Certificates value.
     */
     public ArrayList<ServiceCertificateListResponse.Certificate> getCertificates()
     {
@@ -45,10 +46,11 @@ public class ServiceCertificateListResponse extends OperationResponse implements
     
     /**
     * The service certificates that are valid for your subscription.
+    * @param certificatesValue The Certificates value.
     */
-    public void setCertificates(ArrayList<ServiceCertificateListResponse.Certificate> certificates)
+    public void setCertificates(final ArrayList<ServiceCertificateListResponse.Certificate> certificatesValue)
     {
-        this.certificates = certificates;
+        this.certificates = certificatesValue;
     }
     
     /**
@@ -80,6 +82,7 @@ public class ServiceCertificateListResponse extends OperationResponse implements
         /**
         * The Service Management API request URI used to perform Get Service
         * Certificate requests against the certificate store.
+        * @return The CertificateUri value.
         */
         public URI getCertificateUri()
         {
@@ -89,16 +92,18 @@ public class ServiceCertificateListResponse extends OperationResponse implements
         /**
         * The Service Management API request URI used to perform Get Service
         * Certificate requests against the certificate store.
+        * @param certificateUriValue The CertificateUri value.
         */
-        public void setCertificateUri(URI certificateUri)
+        public void setCertificateUri(final URI certificateUriValue)
         {
-            this.certificateUri = certificateUri;
+            this.certificateUri = certificateUriValue;
         }
         
         private byte[] data;
         
         /**
         * The public part of the service certificate as a .cer file.
+        * @return The Data value.
         */
         public byte[] getData()
         {
@@ -107,16 +112,18 @@ public class ServiceCertificateListResponse extends OperationResponse implements
         
         /**
         * The public part of the service certificate as a .cer file.
+        * @param dataValue The Data value.
         */
-        public void setData(byte[] data)
+        public void setData(final byte[] dataValue)
         {
-            this.data = data;
+            this.data = dataValue;
         }
         
         private String thumbprint;
         
         /**
         * The X509 certificate thumb print property of the service certificate.
+        * @return The Thumbprint value.
         */
         public String getThumbprint()
         {
@@ -125,10 +132,11 @@ public class ServiceCertificateListResponse extends OperationResponse implements
         
         /**
         * The X509 certificate thumb print property of the service certificate.
+        * @param thumbprintValue The Thumbprint value.
         */
-        public void setThumbprint(String thumbprint)
+        public void setThumbprint(final String thumbprintValue)
         {
-            this.thumbprint = thumbprint;
+            this.thumbprint = thumbprintValue;
         }
         
         private String thumbprintAlgorithm;
@@ -136,6 +144,7 @@ public class ServiceCertificateListResponse extends OperationResponse implements
         /**
         * The algorithm that was used to hash the service certificate.
         * Currently SHA-1 is the only supported algorithm.
+        * @return The ThumbprintAlgorithm value.
         */
         public String getThumbprintAlgorithm()
         {
@@ -145,10 +154,11 @@ public class ServiceCertificateListResponse extends OperationResponse implements
         /**
         * The algorithm that was used to hash the service certificate.
         * Currently SHA-1 is the only supported algorithm.
+        * @param thumbprintAlgorithmValue The ThumbprintAlgorithm value.
         */
-        public void setThumbprintAlgorithm(String thumbprintAlgorithm)
+        public void setThumbprintAlgorithm(final String thumbprintAlgorithmValue)
         {
-            this.thumbprintAlgorithm = thumbprintAlgorithm;
+            this.thumbprintAlgorithm = thumbprintAlgorithmValue;
         }
     }
 }

@@ -34,6 +34,7 @@ public class ScaleAction
     
     /**
     * The cooldown interval for scaling action.
+    * @return The Cooldown value.
     */
     public Duration getCooldown()
     {
@@ -42,16 +43,18 @@ public class ScaleAction
     
     /**
     * The cooldown interval for scaling action.
+    * @param cooldownValue The Cooldown value.
     */
-    public void setCooldown(Duration cooldown)
+    public void setCooldown(final Duration cooldownValue)
     {
-        this.cooldown = cooldown;
+        this.cooldown = cooldownValue;
     }
     
     private ScaleDirection direction;
     
     /**
     * The direction of scaling.
+    * @return The Direction value.
     */
     public ScaleDirection getDirection()
     {
@@ -60,16 +63,18 @@ public class ScaleAction
     
     /**
     * The direction of scaling.
+    * @param directionValue The Direction value.
     */
-    public void setDirection(ScaleDirection direction)
+    public void setDirection(final ScaleDirection directionValue)
     {
-        this.direction = direction;
+        this.direction = directionValue;
     }
     
     private ScaleType type;
     
     /**
     * The type of scaling.
+    * @return The Type value.
     */
     public ScaleType getType()
     {
@@ -78,16 +83,18 @@ public class ScaleAction
     
     /**
     * The type of scaling.
+    * @param typeValue The Type value.
     */
-    public void setType(ScaleType type)
+    public void setType(final ScaleType typeValue)
     {
-        this.type = type;
+        this.type = typeValue;
     }
     
     private String value;
     
     /**
     * The rate of scaling.
+    * @return The Value value.
     */
     public String getValue()
     {
@@ -96,9 +103,10 @@ public class ScaleAction
     
     /**
     * The rate of scaling.
+    * @param valueValue The Value value.
     */
-    public void setValue(String value)
+    public void setValue(final String valueValue)
     {
-        this.value = value;
+        this.value = valueValue;
     }
 }
