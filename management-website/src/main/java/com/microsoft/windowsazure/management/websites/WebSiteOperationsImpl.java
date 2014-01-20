@@ -34,6 +34,7 @@ import com.microsoft.windowsazure.management.websites.models.WebSite;
 import com.microsoft.windowsazure.management.websites.models.WebSiteComputeMode;
 import com.microsoft.windowsazure.management.websites.models.WebSiteCreateParameters;
 import com.microsoft.windowsazure.management.websites.models.WebSiteCreateResponse;
+import com.microsoft.windowsazure.management.websites.models.WebSiteDeleteParameters;
 import com.microsoft.windowsazure.management.websites.models.WebSiteDeleteRepositoryResponse;
 import com.microsoft.windowsazure.management.websites.models.WebSiteGetConfigurationResponse;
 import com.microsoft.windowsazure.management.websites.models.WebSiteGetHistoricalUsageMetricsParameters;
@@ -44,6 +45,8 @@ import com.microsoft.windowsazure.management.websites.models.WebSiteGetRepositor
 import com.microsoft.windowsazure.management.websites.models.WebSiteGetResponse;
 import com.microsoft.windowsazure.management.websites.models.WebSiteGetUsageMetricsResponse;
 import com.microsoft.windowsazure.management.websites.models.WebSiteMode;
+import com.microsoft.windowsazure.management.websites.models.WebSiteOperationStatus;
+import com.microsoft.windowsazure.management.websites.models.WebSiteOperationStatusResponse;
 import com.microsoft.windowsazure.management.websites.models.WebSiteRuntimeAvailabilityState;
 import com.microsoft.windowsazure.management.websites.models.WebSiteSslState;
 import com.microsoft.windowsazure.management.websites.models.WebSiteState;
@@ -52,15 +55,14 @@ import com.microsoft.windowsazure.management.websites.models.WebSiteUpdateParame
 import com.microsoft.windowsazure.management.websites.models.WebSiteUpdateResponse;
 import com.microsoft.windowsazure.management.websites.models.WebSiteUsageState;
 import com.microsoft.windowsazure.management.websites.models.WebSpaceAvailabilityState;
+import com.microsoft.windowsazure.tracing.ClientRequestTrackingHandler;
 import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -68,12 +70,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -85,6 +87,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
+import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -110,10 +113,390 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     /**
     * Gets a reference to the
     * microsoft.windowsazure.management.websites.WebSiteManagementClientImpl.
+    * @return The Client value.
     */
     public WebSiteManagementClientImpl getClient()
     {
         return this.client;
+    }
+    
+    /**
+    * You can swap a web site from one slot to the production slot.
+    *
+    * @param webSpaceName The name of the web space.
+    * @param webSiteName The name of the web site.
+    * @param slotName The name of the web site slot to swap with the production
+    * slot.
+    * @return The response body contains the status of the specified
+    * long-running operation, indicating whether it has succeeded, is
+    * inprogress, has time dout, or has failed. Note that this status is
+    * distinct from the HTTP status code returned for the Get Operation Status
+    * operation itself.  If the long-running operation failed, the response
+    * body includes error information regarding the failure.
+    */
+    @Override
+    public Future<WebSiteOperationStatusResponse> beginSwapingSlotsAsync(final String webSpaceName, final String webSiteName, final String slotName)
+    {
+        return this.getClient().getExecutorService().submit(new Callable<WebSiteOperationStatusResponse>() { 
+            @Override
+            public WebSiteOperationStatusResponse call() throws Exception
+            {
+                return beginSwapingSlots(webSpaceName, webSiteName, slotName);
+            }
+         });
+    }
+    
+    /**
+    * You can swap a web site from one slot to the production slot.
+    *
+    * @param webSpaceName The name of the web space.
+    * @param webSiteName The name of the web site.
+    * @param slotName The name of the web site slot to swap with the production
+    * slot.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
+    * @return The response body contains the status of the specified
+    * long-running operation, indicating whether it has succeeded, is
+    * inprogress, has time dout, or has failed. Note that this status is
+    * distinct from the HTTP status code returned for the Get Operation Status
+    * operation itself.  If the long-running operation failed, the response
+    * body includes error information regarding the failure.
+    */
+    @Override
+    public WebSiteOperationStatusResponse beginSwapingSlots(String webSpaceName, String webSiteName, String slotName) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException
+    {
+        // Validate
+        if (webSpaceName == null)
+        {
+            throw new NullPointerException("webSpaceName");
+        }
+        if (webSiteName == null)
+        {
+            throw new NullPointerException("webSiteName");
+        }
+        if (slotName == null)
+        {
+            throw new NullPointerException("slotName");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace)
+        {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("webSpaceName", webSpaceName);
+            tracingParameters.put("webSiteName", webSiteName);
+            tracingParameters.put("slotName", slotName);
+            CloudTracing.enter(invocationId, this, "beginSwapingSlotsAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/WebSpaces/" + webSpaceName + "/sites/" + webSiteName + "/slots?Command=swap&targetSlot=" + slotName;
+        
+        // Create HTTP transport objects
+        HttpPost httpRequest = new HttpPost(url);
+        
+        // Set Headers
+        httpRequest.setHeader("Content-Length", "0");
+        httpRequest.setHeader("x-ms-version", "2013-08-01");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try
+        {
+            if (shouldTrace)
+            {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            WebSiteOperationStatusResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new WebSiteOperationStatusResponse();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document responseDoc = documentBuilder.parse(responseContent);
+            
+            NodeList elements = responseDoc.getElementsByTagName("Operation");
+            Element operationElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            if (operationElement != null)
+            {
+                NodeList elements2 = operationElement.getElementsByTagName("CreatedTime");
+                Element createdTimeElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                if (createdTimeElement != null)
+                {
+                    Calendar createdTimeInstance;
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(simpleDateFormat.parse(createdTimeElement.getTextContent()));
+                    createdTimeInstance = calendar;
+                    result.setCreatedTime(createdTimeInstance);
+                }
+                
+                NodeList elements3 = operationElement.getElementsByTagName("Errors");
+                Element errorsSequenceElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                if (errorsSequenceElement != null)
+                {
+                    boolean isNil = false;
+                    Attr nilAttribute = errorsSequenceElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                    if (nilAttribute != null)
+                    {
+                        isNil = nilAttribute.getValue() == "true";
+                    }
+                    if (isNil == false)
+                    {
+                        for (int i1 = 0; i1 < errorsSequenceElement.getElementsByTagName("Error").getLength(); i1 = i1 + 1)
+                        {
+                            org.w3c.dom.Element errorsElement = ((org.w3c.dom.Element) errorsSequenceElement.getElementsByTagName("Error").item(i1));
+                            WebSiteOperationStatusResponse.Error errorInstance = new WebSiteOperationStatusResponse.Error();
+                            result.getErrors().add(errorInstance);
+                            
+                            NodeList elements4 = errorsElement.getElementsByTagName("Code");
+                            Element codeElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                            if (codeElement != null)
+                            {
+                                boolean isNil2 = false;
+                                Attr nilAttribute2 = codeElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                                if (nilAttribute2 != null)
+                                {
+                                    isNil2 = nilAttribute2.getValue() == "true";
+                                }
+                                if (isNil2 == false)
+                                {
+                                    String codeInstance;
+                                    codeInstance = codeElement.getTextContent();
+                                    errorInstance.setCode(codeInstance);
+                                }
+                            }
+                            
+                            NodeList elements5 = errorsElement.getElementsByTagName("Message");
+                            Element messageElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                            if (messageElement != null)
+                            {
+                                boolean isNil3 = false;
+                                Attr nilAttribute3 = messageElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                                if (nilAttribute3 != null)
+                                {
+                                    isNil3 = nilAttribute3.getValue() == "true";
+                                }
+                                if (isNil3 == false)
+                                {
+                                    String messageInstance;
+                                    messageInstance = messageElement.getTextContent();
+                                    errorInstance.setMessage(messageInstance);
+                                }
+                            }
+                            
+                            NodeList elements6 = errorsElement.getElementsByTagName("ExtendedCode");
+                            Element extendedCodeElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                            if (extendedCodeElement != null)
+                            {
+                                boolean isNil4 = false;
+                                Attr nilAttribute4 = extendedCodeElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                                if (nilAttribute4 != null)
+                                {
+                                    isNil4 = nilAttribute4.getValue() == "true";
+                                }
+                                if (isNil4 == false)
+                                {
+                                    String extendedCodeInstance;
+                                    extendedCodeInstance = extendedCodeElement.getTextContent();
+                                    errorInstance.setExtendedCode(extendedCodeInstance);
+                                }
+                            }
+                            
+                            NodeList elements7 = errorsElement.getElementsByTagName("MessageTemplate");
+                            Element messageTemplateElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
+                            if (messageTemplateElement != null)
+                            {
+                                boolean isNil5 = false;
+                                Attr nilAttribute5 = messageTemplateElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                                if (nilAttribute5 != null)
+                                {
+                                    isNil5 = nilAttribute5.getValue() == "true";
+                                }
+                                if (isNil5 == false)
+                                {
+                                    String messageTemplateInstance;
+                                    messageTemplateInstance = messageTemplateElement.getTextContent();
+                                    errorInstance.setMessageTemplate(messageTemplateInstance);
+                                }
+                            }
+                            
+                            NodeList elements8 = errorsElement.getElementsByTagName("Parameters");
+                            Element parametersSequenceElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
+                            if (parametersSequenceElement != null)
+                            {
+                                boolean isNil6 = false;
+                                Attr nilAttribute6 = parametersSequenceElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                                if (nilAttribute6 != null)
+                                {
+                                    isNil6 = nilAttribute6.getValue() == "true";
+                                }
+                                if (isNil6 == false)
+                                {
+                                    for (int i2 = 0; i2 < parametersSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i2 = i2 + 1)
+                                    {
+                                        org.w3c.dom.Element parametersElement = ((org.w3c.dom.Element) parametersSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i2));
+                                        errorInstance.getParameters().add(parametersElement.getTextContent());
+                                    }
+                                }
+                            }
+                            
+                            NodeList elements9 = errorsElement.getElementsByTagName("InnerErrors");
+                            Element innerErrorsElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
+                            if (innerErrorsElement != null)
+                            {
+                                boolean isNil7 = false;
+                                Attr nilAttribute7 = innerErrorsElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                                if (nilAttribute7 != null)
+                                {
+                                    isNil7 = nilAttribute7.getValue() == "true";
+                                }
+                                if (isNil7 == false)
+                                {
+                                    String innerErrorsInstance;
+                                    innerErrorsInstance = innerErrorsElement.getTextContent();
+                                    errorInstance.setInnerErrors(innerErrorsInstance);
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                NodeList elements10 = operationElement.getElementsByTagName("ExpirationTime");
+                Element expirationTimeElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
+                if (expirationTimeElement != null)
+                {
+                    Calendar expirationTimeInstance;
+                    SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                    Calendar calendar2 = Calendar.getInstance();
+                    calendar2.setTime(simpleDateFormat2.parse(expirationTimeElement.getTextContent()));
+                    expirationTimeInstance = calendar2;
+                    result.setExpirationTime(expirationTimeInstance);
+                }
+                
+                NodeList elements11 = operationElement.getElementsByTagName("GeoMasterOperationId");
+                Element geoMasterOperationIdElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
+                if (geoMasterOperationIdElement != null)
+                {
+                    boolean isNil8 = false;
+                    Attr nilAttribute8 = geoMasterOperationIdElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                    if (nilAttribute8 != null)
+                    {
+                        isNil8 = nilAttribute8.getValue() == "true";
+                    }
+                    if (isNil8 == false)
+                    {
+                        String geoMasterOperationIdInstance;
+                        geoMasterOperationIdInstance = geoMasterOperationIdElement.getTextContent();
+                        result.setGeoMasterOperationId(geoMasterOperationIdInstance);
+                    }
+                }
+                
+                NodeList elements12 = operationElement.getElementsByTagName("Id");
+                Element idElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
+                if (idElement != null)
+                {
+                    boolean isNil9 = false;
+                    Attr nilAttribute9 = idElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                    if (nilAttribute9 != null)
+                    {
+                        isNil9 = nilAttribute9.getValue() == "true";
+                    }
+                    if (isNil9 == false)
+                    {
+                        String idInstance;
+                        idInstance = idElement.getTextContent();
+                        result.setOperationId(idInstance);
+                    }
+                }
+                
+                NodeList elements13 = operationElement.getElementsByTagName("ModifiedTime");
+                Element modifiedTimeElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
+                if (modifiedTimeElement != null)
+                {
+                    Calendar modifiedTimeInstance;
+                    SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                    Calendar calendar3 = Calendar.getInstance();
+                    calendar3.setTime(simpleDateFormat3.parse(modifiedTimeElement.getTextContent()));
+                    modifiedTimeInstance = calendar3;
+                    result.setModifiedTime(modifiedTimeInstance);
+                }
+                
+                NodeList elements14 = operationElement.getElementsByTagName("Name");
+                Element nameElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
+                if (nameElement != null)
+                {
+                    boolean isNil10 = false;
+                    Attr nilAttribute10 = nameElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                    if (nilAttribute10 != null)
+                    {
+                        isNil10 = nilAttribute10.getValue() == "true";
+                    }
+                    if (isNil10 == false)
+                    {
+                        String nameInstance;
+                        nameInstance = nameElement.getTextContent();
+                        result.setName(nameInstance);
+                    }
+                }
+                
+                NodeList elements15 = operationElement.getElementsByTagName("Status");
+                Element statusElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
+                if (statusElement != null)
+                {
+                    WebSiteOperationStatus statusInstance;
+                    statusInstance = WebSiteOperationStatus.valueOf(statusElement.getTextContent());
+                    result.setStatus(statusInstance);
+                }
+            }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
     }
     
     /**
@@ -146,10 +529,24 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     *
     * @param webSpaceName The name of the web space.
     * @param parameters Parameters supplied to the Create Web Site operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
     * @return The Create Web Space operation response.
     */
     @Override
-    public WebSiteCreateResponse create(String webSpaceName, WebSiteCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException, ParseException, URISyntaxException
+    public WebSiteCreateResponse create(String webSpaceName, WebSiteCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, ParseException, URISyntaxException
     {
         // Validate
         if (webSpaceName == null)
@@ -159,10 +556,6 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         if (parameters == null)
         {
             throw new NullPointerException("parameters");
-        }
-        if (parameters.getHostNames() == null)
-        {
-            throw new NullPointerException("parameters.HostNames");
         }
         if (parameters.getName() == null)
         {
@@ -219,14 +612,17 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         Element siteElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Site");
         requestDoc.appendChild(siteElement);
         
-        Element hostNamesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "HostNames");
-        for (String hostNamesItem : parameters.getHostNames())
+        if (parameters.getHostNames() != null)
         {
-            Element hostNamesItemElement = requestDoc.createElementNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string");
-            hostNamesItemElement.appendChild(requestDoc.createTextNode(hostNamesItem));
-            hostNamesSequenceElement.appendChild(hostNamesItemElement);
+            Element hostNamesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "HostNames");
+            for (String hostNamesItem : parameters.getHostNames())
+            {
+                Element hostNamesItemElement = requestDoc.createElementNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string");
+                hostNamesItemElement.appendChild(requestDoc.createTextNode(hostNamesItem));
+                hostNamesSequenceElement.appendChild(hostNamesItemElement);
+            }
+            siteElement.appendChild(hostNamesSequenceElement);
         }
-        siteElement.appendChild(hostNamesSequenceElement);
         
         Element nameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
         nameElement.appendChild(requestDoc.createTextNode(parameters.getName()));
@@ -288,479 +684,615 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != HttpStatus.SC_OK && statusCode != HttpStatus.SC_CREATED)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
-        }
-        
-        // Create Result
-        WebSiteCreateResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new WebSiteCreateResponse();
-        DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
-        Document responseDoc = documentBuilder2.parse(responseContent);
-        
-        NodeList elements = responseDoc.getElementsByTagName("Site");
-        Element siteElement2 = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-        if (siteElement2 != null)
-        {
-            WebSite webSiteInstance = new WebSite();
-            result.setWebSite(webSiteInstance);
-            
-            NodeList elements2 = siteElement2.getElementsByTagName("AdminEnabled");
-            Element adminEnabledElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-            if (adminEnabledElement != null)
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
             {
-                boolean adminEnabledInstance;
-                adminEnabledInstance = Boolean.parseBoolean(adminEnabledElement.getTextContent());
-                webSiteInstance.setAdminEnabled(adminEnabledInstance);
+                CloudTracing.receiveResponse(invocationId, httpResponse);
             }
-            
-            NodeList elements3 = siteElement2.getElementsByTagName("AvailabilityState");
-            Element availabilityStateElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-            if (availabilityStateElement != null)
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK && statusCode != HttpStatus.SC_CREATED)
             {
-                WebSpaceAvailabilityState availabilityStateInstance;
-                availabilityStateInstance = WebSpaceAvailabilityState.valueOf(availabilityStateElement.getTextContent());
-                webSiteInstance.setAvailabilityState(availabilityStateInstance);
-            }
-            
-            NodeList elements4 = siteElement2.getElementsByTagName("ComputeMode");
-            Element computeModeElement2 = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-            if (computeModeElement2 != null)
-            {
-                WebSiteComputeMode computeModeInstance;
-                computeModeInstance = WebSiteComputeMode.valueOf(computeModeElement2.getTextContent());
-                webSiteInstance.setComputeMode(computeModeInstance);
-            }
-            
-            NodeList elements5 = siteElement2.getElementsByTagName("Enabled");
-            Element enabledElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-            if (enabledElement != null)
-            {
-                boolean enabledInstance;
-                enabledInstance = Boolean.parseBoolean(enabledElement.getTextContent());
-                webSiteInstance.setEnabled(enabledInstance);
-            }
-            
-            NodeList elements6 = siteElement2.getElementsByTagName("EnabledHostNames");
-            Element enabledHostNamesSequenceElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-            if (enabledHostNamesSequenceElement != null)
-            {
-                for (int i1 = 0; i1 < enabledHostNamesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i1 = i1 + 1)
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
                 {
-                    org.w3c.dom.Element enabledHostNamesElement = ((org.w3c.dom.Element) enabledHostNamesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i1));
-                    webSiteInstance.getEnabledHostNames().add(enabledHostNamesElement.getTextContent());
+                    CloudTracing.error(invocationId, ex);
                 }
+                throw ex;
             }
             
-            NodeList elements7 = siteElement2.getElementsByTagName("HostNameSslStates");
-            Element hostNameSslStatesSequenceElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-            if (hostNameSslStatesSequenceElement != null)
-            {
-                for (int i2 = 0; i2 < hostNameSslStatesSequenceElement.getElementsByTagName("WebSiteHostNameSslState").getLength(); i2 = i2 + 1)
-                {
-                    org.w3c.dom.Element hostNameSslStatesElement = ((org.w3c.dom.Element) hostNameSslStatesSequenceElement.getElementsByTagName("WebSiteHostNameSslState").item(i2));
-                    WebSite.WebSiteHostNameSslState webSiteHostNameSslStateInstance = new WebSite.WebSiteHostNameSslState();
-                    webSiteInstance.getHostNameSslStates().add(webSiteHostNameSslStateInstance);
-                    
-                    NodeList elements8 = hostNameSslStatesElement.getElementsByTagName("Name");
-                    Element nameElement3 = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                    if (nameElement3 != null)
-                    {
-                        String nameInstance;
-                        nameInstance = nameElement3.getTextContent();
-                        webSiteHostNameSslStateInstance.setName(nameInstance);
-                    }
-                    
-                    NodeList elements9 = hostNameSslStatesElement.getElementsByTagName("SslState");
-                    Element sslStateElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-                    if (sslStateElement != null)
-                    {
-                        WebSiteSslState sslStateInstance;
-                        sslStateInstance = WebSiteSslState.valueOf(sslStateElement.getTextContent());
-                        webSiteHostNameSslStateInstance.setSslState(sslStateInstance);
-                    }
-                    
-                    NodeList elements10 = hostNameSslStatesElement.getElementsByTagName("Thumbprint");
-                    Element thumbprintElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
-                    if (thumbprintElement != null)
-                    {
-                        boolean isNil = false;
-                        String nilAttribute = thumbprintElement.getAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
-                        if (nilAttribute != null)
-                        {
-                            isNil = nilAttribute == "true";
-                        }
-                        if (isNil == false)
-                        {
-                            String thumbprintInstance;
-                            thumbprintInstance = thumbprintElement.getTextContent();
-                            webSiteHostNameSslStateInstance.setThumbprint(thumbprintInstance);
-                        }
-                    }
-                    
-                    NodeList elements11 = hostNameSslStatesElement.getElementsByTagName("VirtualIP");
-                    Element virtualIPElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
-                    if (virtualIPElement != null)
-                    {
-                        boolean isNil2 = false;
-                        String nilAttribute2 = virtualIPElement.getAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
-                        if (nilAttribute2 != null)
-                        {
-                            isNil2 = nilAttribute2 == "true";
-                        }
-                        if (isNil2 == false)
-                        {
-                            InetAddress virtualIPInstance;
-                            virtualIPInstance = InetAddress.getByName(virtualIPElement.getTextContent());
-                            webSiteHostNameSslStateInstance.setVirtualIP(virtualIPInstance);
-                        }
-                    }
-                }
-            }
+            // Create Result
+            WebSiteCreateResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new WebSiteCreateResponse();
+            DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
+            Document responseDoc = documentBuilder2.parse(responseContent);
             
-            NodeList elements12 = siteElement2.getElementsByTagName("HostNames");
-            Element hostNamesSequenceElement2 = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
-            if (hostNamesSequenceElement2 != null)
+            NodeList elements = responseDoc.getElementsByTagName("Site");
+            Element siteElement2 = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            if (siteElement2 != null)
             {
-                for (int i3 = 0; i3 < hostNamesSequenceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i3 = i3 + 1)
-                {
-                    org.w3c.dom.Element hostNamesElement = ((org.w3c.dom.Element) hostNamesSequenceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i3));
-                    webSiteInstance.getHostNames().add(hostNamesElement.getTextContent());
-                }
-            }
-            
-            NodeList elements13 = siteElement2.getElementsByTagName("LastModifiedTimeUtc");
-            Element lastModifiedTimeUtcElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
-            if (lastModifiedTimeUtcElement != null)
-            {
-                Calendar lastModifiedTimeUtcInstance;
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(simpleDateFormat.parse(lastModifiedTimeUtcElement.getTextContent()));
-                lastModifiedTimeUtcInstance = calendar;
-                webSiteInstance.setLastModifiedTimeUtc(lastModifiedTimeUtcInstance);
-            }
-            
-            NodeList elements14 = siteElement2.getElementsByTagName("Name");
-            Element nameElement4 = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
-            if (nameElement4 != null)
-            {
-                String nameInstance2;
-                nameInstance2 = nameElement4.getTextContent();
-                webSiteInstance.setName(nameInstance2);
-            }
-            
-            NodeList elements15 = siteElement2.getElementsByTagName("Owner");
-            Element ownerElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
-            if (ownerElement != null)
-            {
-                boolean isNil3 = false;
-                String nilAttribute3 = ownerElement.getAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
-                if (nilAttribute3 != null)
-                {
-                    isNil3 = nilAttribute3 == "true";
-                }
-                if (isNil3 == false)
-                {
-                    String ownerInstance;
-                    ownerInstance = ownerElement.getTextContent();
-                    webSiteInstance.setOwner(ownerInstance);
-                }
-            }
-            
-            NodeList elements16 = siteElement2.getElementsByTagName("RepositorySiteName");
-            Element repositorySiteNameElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
-            if (repositorySiteNameElement != null)
-            {
-                String repositorySiteNameInstance;
-                repositorySiteNameInstance = repositorySiteNameElement.getTextContent();
-                webSiteInstance.setRepositorySiteName(repositorySiteNameInstance);
-            }
-            
-            NodeList elements17 = siteElement2.getElementsByTagName("RuntimeAvailabilityState");
-            Element runtimeAvailabilityStateElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
-            if (runtimeAvailabilityStateElement != null)
-            {
-                WebSiteRuntimeAvailabilityState runtimeAvailabilityStateInstance;
-                runtimeAvailabilityStateInstance = WebSiteRuntimeAvailabilityState.valueOf(runtimeAvailabilityStateElement.getTextContent());
-                webSiteInstance.setRuntimeAvailabilityState(runtimeAvailabilityStateInstance);
-            }
-            
-            NodeList elements18 = siteElement2.getElementsByTagName("SSLCertificates");
-            Element sSLCertificatesSequenceElement = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
-            if (sSLCertificatesSequenceElement != null)
-            {
-                for (int i4 = 0; i4 < sSLCertificatesSequenceElement.getElementsByTagName("Certificate").getLength(); i4 = i4 + 1)
-                {
-                    org.w3c.dom.Element sSLCertificatesElement = ((org.w3c.dom.Element) sSLCertificatesSequenceElement.getElementsByTagName("Certificate").item(i4));
-                    WebSite.WebSiteSslCertificate certificateInstance = new WebSite.WebSiteSslCertificate();
-                    webSiteInstance.getSslCertificates().add(certificateInstance);
-                    
-                    NodeList elements19 = sSLCertificatesElement.getElementsByTagName("ExpirationDate");
-                    Element expirationDateElement = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
-                    if (expirationDateElement != null)
-                    {
-                        Calendar expirationDateInstance;
-                        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                        Calendar calendar2 = Calendar.getInstance();
-                        calendar2.setTime(simpleDateFormat2.parse(expirationDateElement.getTextContent()));
-                        expirationDateInstance = calendar2;
-                        certificateInstance.setExpirationDate(expirationDateInstance);
-                    }
-                    
-                    NodeList elements20 = sSLCertificatesElement.getElementsByTagName("FriendlyName");
-                    Element friendlyNameElement = elements20.getLength() > 0 ? ((Element) elements20.item(0)) : null;
-                    if (friendlyNameElement != null)
-                    {
-                        String friendlyNameInstance;
-                        friendlyNameInstance = friendlyNameElement.getTextContent();
-                        certificateInstance.setFriendlyName(friendlyNameInstance);
-                    }
-                    
-                    NodeList elements21 = sSLCertificatesElement.getElementsByTagName("HostNames");
-                    Element hostNamesSequenceElement3 = elements21.getLength() > 0 ? ((Element) elements21.item(0)) : null;
-                    if (hostNamesSequenceElement3 != null)
-                    {
-                        for (int i5 = 0; i5 < hostNamesSequenceElement3.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i5 = i5 + 1)
-                        {
-                            org.w3c.dom.Element hostNamesElement2 = ((org.w3c.dom.Element) hostNamesSequenceElement3.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i5));
-                            certificateInstance.getHostNames().add(hostNamesElement2.getTextContent());
-                        }
-                    }
-                    
-                    NodeList elements22 = sSLCertificatesElement.getElementsByTagName("IssueDate");
-                    Element issueDateElement = elements22.getLength() > 0 ? ((Element) elements22.item(0)) : null;
-                    if (issueDateElement != null)
-                    {
-                        Calendar issueDateInstance;
-                        SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                        Calendar calendar3 = Calendar.getInstance();
-                        calendar3.setTime(simpleDateFormat3.parse(issueDateElement.getTextContent()));
-                        issueDateInstance = calendar3;
-                        certificateInstance.setIssueDate(issueDateInstance);
-                    }
-                    
-                    NodeList elements23 = sSLCertificatesElement.getElementsByTagName("Issuer");
-                    Element issuerElement = elements23.getLength() > 0 ? ((Element) elements23.item(0)) : null;
-                    if (issuerElement != null)
-                    {
-                        String issuerInstance;
-                        issuerInstance = issuerElement.getTextContent();
-                        certificateInstance.setIssuer(issuerInstance);
-                    }
-                    
-                    NodeList elements24 = sSLCertificatesElement.getElementsByTagName("Password");
-                    Element passwordElement = elements24.getLength() > 0 ? ((Element) elements24.item(0)) : null;
-                    if (passwordElement != null)
-                    {
-                        String passwordInstance;
-                        passwordInstance = passwordElement.getTextContent();
-                        certificateInstance.setPassword(passwordInstance);
-                    }
-                    
-                    NodeList elements25 = sSLCertificatesElement.getElementsByTagName("PfxBlob");
-                    Element pfxBlobElement = elements25.getLength() > 0 ? ((Element) elements25.item(0)) : null;
-                    if (pfxBlobElement != null)
-                    {
-                        byte[] pfxBlobInstance;
-                        pfxBlobInstance = pfxBlobElement.getTextContent() != null ? Base64.decodeBase64(pfxBlobElement.getTextContent().getBytes()) : null;
-                        certificateInstance.setPfxBlob(pfxBlobInstance);
-                    }
-                    
-                    NodeList elements26 = sSLCertificatesElement.getElementsByTagName("SelfLink");
-                    Element selfLinkElement = elements26.getLength() > 0 ? ((Element) elements26.item(0)) : null;
-                    if (selfLinkElement != null)
-                    {
-                        URI selfLinkInstance;
-                        selfLinkInstance = new URI(selfLinkElement.getTextContent());
-                        certificateInstance.setSelfLinkUri(selfLinkInstance);
-                    }
-                    
-                    NodeList elements27 = sSLCertificatesElement.getElementsByTagName("SiteName");
-                    Element siteNameElement = elements27.getLength() > 0 ? ((Element) elements27.item(0)) : null;
-                    if (siteNameElement != null)
-                    {
-                        String siteNameInstance;
-                        siteNameInstance = siteNameElement.getTextContent();
-                        certificateInstance.setSiteName(siteNameInstance);
-                    }
-                    
-                    NodeList elements28 = sSLCertificatesElement.getElementsByTagName("SubjectName");
-                    Element subjectNameElement = elements28.getLength() > 0 ? ((Element) elements28.item(0)) : null;
-                    if (subjectNameElement != null)
-                    {
-                        String subjectNameInstance;
-                        subjectNameInstance = subjectNameElement.getTextContent();
-                        certificateInstance.setSubjectName(subjectNameInstance);
-                    }
-                    
-                    NodeList elements29 = sSLCertificatesElement.getElementsByTagName("Thumbprint");
-                    Element thumbprintElement2 = elements29.getLength() > 0 ? ((Element) elements29.item(0)) : null;
-                    if (thumbprintElement2 != null)
-                    {
-                        String thumbprintInstance2;
-                        thumbprintInstance2 = thumbprintElement2.getTextContent();
-                        certificateInstance.setThumbprint(thumbprintInstance2);
-                    }
-                    
-                    NodeList elements30 = sSLCertificatesElement.getElementsByTagName("ToDelete");
-                    Element toDeleteElement = elements30.getLength() > 0 ? ((Element) elements30.item(0)) : null;
-                    if (toDeleteElement != null)
-                    {
-                        boolean toDeleteInstance;
-                        toDeleteInstance = Boolean.parseBoolean(toDeleteElement.getTextContent());
-                        certificateInstance.setIsToBeDeleted(toDeleteInstance);
-                    }
-                    
-                    NodeList elements31 = sSLCertificatesElement.getElementsByTagName("Valid");
-                    Element validElement = elements31.getLength() > 0 ? ((Element) elements31.item(0)) : null;
-                    if (validElement != null)
-                    {
-                        boolean validInstance;
-                        validInstance = Boolean.parseBoolean(validElement.getTextContent());
-                        certificateInstance.setIsValid(validInstance);
-                    }
-                }
-            }
-            
-            NodeList elements32 = siteElement2.getElementsByTagName("SelfLink");
-            Element selfLinkElement2 = elements32.getLength() > 0 ? ((Element) elements32.item(0)) : null;
-            if (selfLinkElement2 != null)
-            {
-                URI selfLinkInstance2;
-                selfLinkInstance2 = new URI(selfLinkElement2.getTextContent());
-                webSiteInstance.setUri(selfLinkInstance2);
-            }
-            
-            NodeList elements33 = siteElement2.getElementsByTagName("ServerFarm");
-            Element serverFarmElement2 = elements33.getLength() > 0 ? ((Element) elements33.item(0)) : null;
-            if (serverFarmElement2 != null)
-            {
-                String serverFarmInstance;
-                serverFarmInstance = serverFarmElement2.getTextContent();
-                webSiteInstance.setServerFarm(serverFarmInstance);
-            }
-            
-            NodeList elements34 = siteElement2.getElementsByTagName("SiteMode");
-            Element siteModeElement2 = elements34.getLength() > 0 ? ((Element) elements34.item(0)) : null;
-            if (siteModeElement2 != null)
-            {
-                WebSiteMode siteModeInstance;
-                siteModeInstance = WebSiteMode.valueOf(siteModeElement2.getTextContent());
-                webSiteInstance.setSiteMode(siteModeInstance);
-            }
-            
-            NodeList elements35 = siteElement2.getElementsByTagName("SiteProperties");
-            Element sitePropertiesElement = elements35.getLength() > 0 ? ((Element) elements35.item(0)) : null;
-            if (sitePropertiesElement != null)
-            {
-                WebSite.WebSiteProperties sitePropertiesInstance = new WebSite.WebSiteProperties();
-                webSiteInstance.setSiteProperties(sitePropertiesInstance);
+                WebSite webSiteInstance = new WebSite();
+                result.setWebSite(webSiteInstance);
                 
-                NodeList elements36 = sitePropertiesElement.getElementsByTagName("AppSettings");
-                Element appSettingsSequenceElement = elements36.getLength() > 0 ? ((Element) elements36.item(0)) : null;
-                if (appSettingsSequenceElement != null)
+                NodeList elements2 = siteElement2.getElementsByTagName("AdminEnabled");
+                Element adminEnabledElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                if (adminEnabledElement != null)
                 {
-                    for (int i6 = 0; i6 < appSettingsSequenceElement.getElementsByTagName("NameValuePair").getLength(); i6 = i6 + 1)
+                    boolean adminEnabledInstance;
+                    adminEnabledInstance = Boolean.parseBoolean(adminEnabledElement.getTextContent());
+                    webSiteInstance.setAdminEnabled(adminEnabledInstance);
+                }
+                
+                NodeList elements3 = siteElement2.getElementsByTagName("AvailabilityState");
+                Element availabilityStateElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                if (availabilityStateElement != null)
+                {
+                    WebSpaceAvailabilityState availabilityStateInstance;
+                    availabilityStateInstance = WebSpaceAvailabilityState.valueOf(availabilityStateElement.getTextContent());
+                    webSiteInstance.setAvailabilityState(availabilityStateInstance);
+                }
+                
+                NodeList elements4 = siteElement2.getElementsByTagName("ComputeMode");
+                Element computeModeElement2 = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                if (computeModeElement2 != null)
+                {
+                    WebSiteComputeMode computeModeInstance;
+                    computeModeInstance = WebSiteComputeMode.valueOf(computeModeElement2.getTextContent());
+                    webSiteInstance.setComputeMode(computeModeInstance);
+                }
+                
+                NodeList elements5 = siteElement2.getElementsByTagName("Enabled");
+                Element enabledElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                if (enabledElement != null)
+                {
+                    boolean enabledInstance;
+                    enabledInstance = Boolean.parseBoolean(enabledElement.getTextContent());
+                    webSiteInstance.setEnabled(enabledInstance);
+                }
+                
+                NodeList elements6 = siteElement2.getElementsByTagName("EnabledHostNames");
+                Element enabledHostNamesSequenceElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                if (enabledHostNamesSequenceElement != null)
+                {
+                    for (int i1 = 0; i1 < enabledHostNamesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i1 = i1 + 1)
                     {
-                        org.w3c.dom.Element appSettingsElement = ((org.w3c.dom.Element) appSettingsSequenceElement.getElementsByTagName("NameValuePair").item(i6));
-                        NodeList elements37 = appSettingsElement.getElementsByTagName("Name");
-                        String appSettingsKey = elements37.getLength() > 0 ? ((org.w3c.dom.Element) elements37.item(0)).getTextContent() : null;
-                        NodeList elements38 = appSettingsElement.getElementsByTagName("Value");
-                        String appSettingsValue = elements38.getLength() > 0 ? ((org.w3c.dom.Element) elements38.item(0)).getTextContent() : null;
-                        sitePropertiesInstance.getAppSettings().put(appSettingsKey, appSettingsValue);
+                        org.w3c.dom.Element enabledHostNamesElement = ((org.w3c.dom.Element) enabledHostNamesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i1));
+                        webSiteInstance.getEnabledHostNames().add(enabledHostNamesElement.getTextContent());
                     }
                 }
                 
-                NodeList elements39 = sitePropertiesElement.getElementsByTagName("Metadata");
-                Element metadataSequenceElement = elements39.getLength() > 0 ? ((Element) elements39.item(0)) : null;
-                if (metadataSequenceElement != null)
+                NodeList elements7 = siteElement2.getElementsByTagName("HostNameSslStates");
+                Element hostNameSslStatesSequenceElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
+                if (hostNameSslStatesSequenceElement != null)
                 {
-                    for (int i7 = 0; i7 < metadataSequenceElement.getElementsByTagName("NameValuePair").getLength(); i7 = i7 + 1)
+                    for (int i2 = 0; i2 < hostNameSslStatesSequenceElement.getElementsByTagName("WebSiteHostNameSslState").getLength(); i2 = i2 + 1)
                     {
-                        org.w3c.dom.Element metadataElement = ((org.w3c.dom.Element) metadataSequenceElement.getElementsByTagName("NameValuePair").item(i7));
-                        NodeList elements40 = metadataElement.getElementsByTagName("Name");
-                        String metadataKey = elements40.getLength() > 0 ? ((org.w3c.dom.Element) elements40.item(0)).getTextContent() : null;
-                        NodeList elements41 = metadataElement.getElementsByTagName("Value");
-                        String metadataValue = elements41.getLength() > 0 ? ((org.w3c.dom.Element) elements41.item(0)).getTextContent() : null;
-                        sitePropertiesInstance.getMetadata().put(metadataKey, metadataValue);
+                        org.w3c.dom.Element hostNameSslStatesElement = ((org.w3c.dom.Element) hostNameSslStatesSequenceElement.getElementsByTagName("WebSiteHostNameSslState").item(i2));
+                        WebSite.WebSiteHostNameSslState webSiteHostNameSslStateInstance = new WebSite.WebSiteHostNameSslState();
+                        webSiteInstance.getHostNameSslStates().add(webSiteHostNameSslStateInstance);
+                        
+                        NodeList elements8 = hostNameSslStatesElement.getElementsByTagName("Name");
+                        Element nameElement3 = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
+                        if (nameElement3 != null)
+                        {
+                            String nameInstance;
+                            nameInstance = nameElement3.getTextContent();
+                            webSiteHostNameSslStateInstance.setName(nameInstance);
+                        }
+                        
+                        NodeList elements9 = hostNameSslStatesElement.getElementsByTagName("SslState");
+                        Element sslStateElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
+                        if (sslStateElement != null)
+                        {
+                            WebSiteSslState sslStateInstance;
+                            sslStateInstance = WebSiteSslState.valueOf(sslStateElement.getTextContent());
+                            webSiteHostNameSslStateInstance.setSslState(sslStateInstance);
+                        }
+                        
+                        NodeList elements10 = hostNameSslStatesElement.getElementsByTagName("Thumbprint");
+                        Element thumbprintElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
+                        if (thumbprintElement != null)
+                        {
+                            boolean isNil = false;
+                            Attr nilAttribute = thumbprintElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                            if (nilAttribute != null)
+                            {
+                                isNil = nilAttribute.getValue() == "true";
+                            }
+                            if (isNil == false)
+                            {
+                                String thumbprintInstance;
+                                thumbprintInstance = thumbprintElement.getTextContent();
+                                webSiteHostNameSslStateInstance.setThumbprint(thumbprintInstance);
+                            }
+                        }
+                        
+                        NodeList elements11 = hostNameSslStatesElement.getElementsByTagName("VirtualIP");
+                        Element virtualIPElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
+                        if (virtualIPElement != null)
+                        {
+                            boolean isNil2 = false;
+                            Attr nilAttribute2 = virtualIPElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                            if (nilAttribute2 != null)
+                            {
+                                isNil2 = nilAttribute2.getValue() == "true";
+                            }
+                            if (isNil2 == false)
+                            {
+                                InetAddress virtualIPInstance;
+                                virtualIPInstance = InetAddress.getByName(virtualIPElement.getTextContent());
+                                webSiteHostNameSslStateInstance.setVirtualIP(virtualIPInstance);
+                            }
+                        }
                     }
                 }
                 
-                NodeList elements42 = sitePropertiesElement.getElementsByTagName("Properties");
-                Element propertiesSequenceElement = elements42.getLength() > 0 ? ((Element) elements42.item(0)) : null;
-                if (propertiesSequenceElement != null)
+                NodeList elements12 = siteElement2.getElementsByTagName("HostNames");
+                Element hostNamesSequenceElement2 = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
+                if (hostNamesSequenceElement2 != null)
                 {
-                    for (int i8 = 0; i8 < propertiesSequenceElement.getElementsByTagName("NameValuePair").getLength(); i8 = i8 + 1)
+                    for (int i3 = 0; i3 < hostNamesSequenceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i3 = i3 + 1)
                     {
-                        org.w3c.dom.Element propertiesElement = ((org.w3c.dom.Element) propertiesSequenceElement.getElementsByTagName("NameValuePair").item(i8));
-                        NodeList elements43 = propertiesElement.getElementsByTagName("Name");
-                        String propertiesKey = elements43.getLength() > 0 ? ((org.w3c.dom.Element) elements43.item(0)).getTextContent() : null;
-                        NodeList elements44 = propertiesElement.getElementsByTagName("Value");
-                        String propertiesValue = elements44.getLength() > 0 ? ((org.w3c.dom.Element) elements44.item(0)).getTextContent() : null;
-                        sitePropertiesInstance.getProperties().put(propertiesKey, propertiesValue);
+                        org.w3c.dom.Element hostNamesElement = ((org.w3c.dom.Element) hostNamesSequenceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i3));
+                        webSiteInstance.getHostNames().add(hostNamesElement.getTextContent());
                     }
+                }
+                
+                NodeList elements13 = siteElement2.getElementsByTagName("LastModifiedTimeUtc");
+                Element lastModifiedTimeUtcElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
+                if (lastModifiedTimeUtcElement != null)
+                {
+                    Calendar lastModifiedTimeUtcInstance;
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(simpleDateFormat.parse(lastModifiedTimeUtcElement.getTextContent()));
+                    lastModifiedTimeUtcInstance = calendar;
+                    webSiteInstance.setLastModifiedTimeUtc(lastModifiedTimeUtcInstance);
+                }
+                
+                NodeList elements14 = siteElement2.getElementsByTagName("Name");
+                Element nameElement4 = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
+                if (nameElement4 != null)
+                {
+                    String nameInstance2;
+                    nameInstance2 = nameElement4.getTextContent();
+                    webSiteInstance.setName(nameInstance2);
+                }
+                
+                NodeList elements15 = siteElement2.getElementsByTagName("Owner");
+                Element ownerElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
+                if (ownerElement != null)
+                {
+                    boolean isNil3 = false;
+                    Attr nilAttribute3 = ownerElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                    if (nilAttribute3 != null)
+                    {
+                        isNil3 = nilAttribute3.getValue() == "true";
+                    }
+                    if (isNil3 == false)
+                    {
+                        String ownerInstance;
+                        ownerInstance = ownerElement.getTextContent();
+                        webSiteInstance.setOwner(ownerInstance);
+                    }
+                }
+                
+                NodeList elements16 = siteElement2.getElementsByTagName("RepositorySiteName");
+                Element repositorySiteNameElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
+                if (repositorySiteNameElement != null)
+                {
+                    String repositorySiteNameInstance;
+                    repositorySiteNameInstance = repositorySiteNameElement.getTextContent();
+                    webSiteInstance.setRepositorySiteName(repositorySiteNameInstance);
+                }
+                
+                NodeList elements17 = siteElement2.getElementsByTagName("RuntimeAvailabilityState");
+                Element runtimeAvailabilityStateElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
+                if (runtimeAvailabilityStateElement != null)
+                {
+                    WebSiteRuntimeAvailabilityState runtimeAvailabilityStateInstance;
+                    runtimeAvailabilityStateInstance = WebSiteRuntimeAvailabilityState.valueOf(runtimeAvailabilityStateElement.getTextContent());
+                    webSiteInstance.setRuntimeAvailabilityState(runtimeAvailabilityStateInstance);
+                }
+                
+                NodeList elements18 = siteElement2.getElementsByTagName("SSLCertificates");
+                Element sSLCertificatesSequenceElement = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
+                if (sSLCertificatesSequenceElement != null)
+                {
+                    boolean isNil4 = false;
+                    Attr nilAttribute4 = sSLCertificatesSequenceElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                    if (nilAttribute4 != null)
+                    {
+                        isNil4 = nilAttribute4.getValue() == "true";
+                    }
+                    if (isNil4 == false)
+                    {
+                        for (int i4 = 0; i4 < sSLCertificatesSequenceElement.getElementsByTagName("Certificate").getLength(); i4 = i4 + 1)
+                        {
+                            org.w3c.dom.Element sSLCertificatesElement = ((org.w3c.dom.Element) sSLCertificatesSequenceElement.getElementsByTagName("Certificate").item(i4));
+                            WebSite.WebSiteSslCertificate certificateInstance = new WebSite.WebSiteSslCertificate();
+                            webSiteInstance.getSslCertificates().add(certificateInstance);
+                            
+                            NodeList elements19 = sSLCertificatesElement.getElementsByTagName("ExpirationDate");
+                            Element expirationDateElement = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
+                            if (expirationDateElement != null && (expirationDateElement.getTextContent() != null && expirationDateElement.getTextContent().isEmpty() != true) == false)
+                            {
+                                boolean isNil5 = false;
+                                Attr nilAttribute5 = expirationDateElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                                if (nilAttribute5 != null)
+                                {
+                                    isNil5 = nilAttribute5.getValue() == "true";
+                                }
+                                if (isNil5 == false)
+                                {
+                                    Calendar expirationDateInstance;
+                                    SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                                    Calendar calendar2 = Calendar.getInstance();
+                                    calendar2.setTime(simpleDateFormat2.parse(expirationDateElement.getTextContent()));
+                                    expirationDateInstance = calendar2;
+                                    certificateInstance.setExpirationDate(expirationDateInstance);
+                                }
+                            }
+                            
+                            NodeList elements20 = sSLCertificatesElement.getElementsByTagName("FriendlyName");
+                            Element friendlyNameElement = elements20.getLength() > 0 ? ((Element) elements20.item(0)) : null;
+                            if (friendlyNameElement != null)
+                            {
+                                boolean isNil6 = false;
+                                Attr nilAttribute6 = friendlyNameElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                                if (nilAttribute6 != null)
+                                {
+                                    isNil6 = nilAttribute6.getValue() == "true";
+                                }
+                                if (isNil6 == false)
+                                {
+                                    String friendlyNameInstance;
+                                    friendlyNameInstance = friendlyNameElement.getTextContent();
+                                    certificateInstance.setFriendlyName(friendlyNameInstance);
+                                }
+                            }
+                            
+                            NodeList elements21 = sSLCertificatesElement.getElementsByTagName("HostNames");
+                            Element hostNamesSequenceElement3 = elements21.getLength() > 0 ? ((Element) elements21.item(0)) : null;
+                            if (hostNamesSequenceElement3 != null)
+                            {
+                                boolean isNil7 = false;
+                                Attr nilAttribute7 = hostNamesSequenceElement3.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                                if (nilAttribute7 != null)
+                                {
+                                    isNil7 = nilAttribute7.getValue() == "true";
+                                }
+                                if (isNil7 == false)
+                                {
+                                    for (int i5 = 0; i5 < hostNamesSequenceElement3.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i5 = i5 + 1)
+                                    {
+                                        org.w3c.dom.Element hostNamesElement2 = ((org.w3c.dom.Element) hostNamesSequenceElement3.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i5));
+                                        certificateInstance.getHostNames().add(hostNamesElement2.getTextContent());
+                                    }
+                                }
+                            }
+                            
+                            NodeList elements22 = sSLCertificatesElement.getElementsByTagName("IssueDate");
+                            Element issueDateElement = elements22.getLength() > 0 ? ((Element) elements22.item(0)) : null;
+                            if (issueDateElement != null && (issueDateElement.getTextContent() != null && issueDateElement.getTextContent().isEmpty() != true) == false)
+                            {
+                                boolean isNil8 = false;
+                                Attr nilAttribute8 = issueDateElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                                if (nilAttribute8 != null)
+                                {
+                                    isNil8 = nilAttribute8.getValue() == "true";
+                                }
+                                if (isNil8 == false)
+                                {
+                                    Calendar issueDateInstance;
+                                    SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                                    Calendar calendar3 = Calendar.getInstance();
+                                    calendar3.setTime(simpleDateFormat3.parse(issueDateElement.getTextContent()));
+                                    issueDateInstance = calendar3;
+                                    certificateInstance.setIssueDate(issueDateInstance);
+                                }
+                            }
+                            
+                            NodeList elements23 = sSLCertificatesElement.getElementsByTagName("Issuer");
+                            Element issuerElement = elements23.getLength() > 0 ? ((Element) elements23.item(0)) : null;
+                            if (issuerElement != null)
+                            {
+                                boolean isNil9 = false;
+                                Attr nilAttribute9 = issuerElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                                if (nilAttribute9 != null)
+                                {
+                                    isNil9 = nilAttribute9.getValue() == "true";
+                                }
+                                if (isNil9 == false)
+                                {
+                                    String issuerInstance;
+                                    issuerInstance = issuerElement.getTextContent();
+                                    certificateInstance.setIssuer(issuerInstance);
+                                }
+                            }
+                            
+                            NodeList elements24 = sSLCertificatesElement.getElementsByTagName("Password");
+                            Element passwordElement = elements24.getLength() > 0 ? ((Element) elements24.item(0)) : null;
+                            if (passwordElement != null)
+                            {
+                                boolean isNil10 = false;
+                                Attr nilAttribute10 = passwordElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                                if (nilAttribute10 != null)
+                                {
+                                    isNil10 = nilAttribute10.getValue() == "true";
+                                }
+                                if (isNil10 == false)
+                                {
+                                    String passwordInstance;
+                                    passwordInstance = passwordElement.getTextContent();
+                                    certificateInstance.setPassword(passwordInstance);
+                                }
+                            }
+                            
+                            NodeList elements25 = sSLCertificatesElement.getElementsByTagName("PfxBlob");
+                            Element pfxBlobElement = elements25.getLength() > 0 ? ((Element) elements25.item(0)) : null;
+                            if (pfxBlobElement != null)
+                            {
+                                boolean isNil11 = false;
+                                Attr nilAttribute11 = pfxBlobElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                                if (nilAttribute11 != null)
+                                {
+                                    isNil11 = nilAttribute11.getValue() == "true";
+                                }
+                                if (isNil11 == false)
+                                {
+                                    byte[] pfxBlobInstance;
+                                    pfxBlobInstance = pfxBlobElement.getTextContent() != null ? Base64.decodeBase64(pfxBlobElement.getTextContent().getBytes()) : null;
+                                    certificateInstance.setPfxBlob(pfxBlobInstance);
+                                }
+                            }
+                            
+                            NodeList elements26 = sSLCertificatesElement.getElementsByTagName("SelfLink");
+                            Element selfLinkElement = elements26.getLength() > 0 ? ((Element) elements26.item(0)) : null;
+                            if (selfLinkElement != null)
+                            {
+                                boolean isNil12 = false;
+                                Attr nilAttribute12 = selfLinkElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                                if (nilAttribute12 != null)
+                                {
+                                    isNil12 = nilAttribute12.getValue() == "true";
+                                }
+                                if (isNil12 == false)
+                                {
+                                    URI selfLinkInstance;
+                                    selfLinkInstance = new URI(selfLinkElement.getTextContent());
+                                    certificateInstance.setSelfLinkUri(selfLinkInstance);
+                                }
+                            }
+                            
+                            NodeList elements27 = sSLCertificatesElement.getElementsByTagName("SiteName");
+                            Element siteNameElement = elements27.getLength() > 0 ? ((Element) elements27.item(0)) : null;
+                            if (siteNameElement != null)
+                            {
+                                boolean isNil13 = false;
+                                Attr nilAttribute13 = siteNameElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                                if (nilAttribute13 != null)
+                                {
+                                    isNil13 = nilAttribute13.getValue() == "true";
+                                }
+                                if (isNil13 == false)
+                                {
+                                    String siteNameInstance;
+                                    siteNameInstance = siteNameElement.getTextContent();
+                                    certificateInstance.setSiteName(siteNameInstance);
+                                }
+                            }
+                            
+                            NodeList elements28 = sSLCertificatesElement.getElementsByTagName("SubjectName");
+                            Element subjectNameElement = elements28.getLength() > 0 ? ((Element) elements28.item(0)) : null;
+                            if (subjectNameElement != null)
+                            {
+                                boolean isNil14 = false;
+                                Attr nilAttribute14 = subjectNameElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                                if (nilAttribute14 != null)
+                                {
+                                    isNil14 = nilAttribute14.getValue() == "true";
+                                }
+                                if (isNil14 == false)
+                                {
+                                    String subjectNameInstance;
+                                    subjectNameInstance = subjectNameElement.getTextContent();
+                                    certificateInstance.setSubjectName(subjectNameInstance);
+                                }
+                            }
+                            
+                            NodeList elements29 = sSLCertificatesElement.getElementsByTagName("Thumbprint");
+                            Element thumbprintElement2 = elements29.getLength() > 0 ? ((Element) elements29.item(0)) : null;
+                            if (thumbprintElement2 != null)
+                            {
+                                boolean isNil15 = false;
+                                Attr nilAttribute15 = thumbprintElement2.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                                if (nilAttribute15 != null)
+                                {
+                                    isNil15 = nilAttribute15.getValue() == "true";
+                                }
+                                if (isNil15 == false)
+                                {
+                                    String thumbprintInstance2;
+                                    thumbprintInstance2 = thumbprintElement2.getTextContent();
+                                    certificateInstance.setThumbprint(thumbprintInstance2);
+                                }
+                            }
+                            
+                            NodeList elements30 = sSLCertificatesElement.getElementsByTagName("ToDelete");
+                            Element toDeleteElement = elements30.getLength() > 0 ? ((Element) elements30.item(0)) : null;
+                            if (toDeleteElement != null && (toDeleteElement.getTextContent() != null && toDeleteElement.getTextContent().isEmpty() != true) == false)
+                            {
+                                boolean isNil16 = false;
+                                Attr nilAttribute16 = toDeleteElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                                if (nilAttribute16 != null)
+                                {
+                                    isNil16 = nilAttribute16.getValue() == "true";
+                                }
+                                if (isNil16 == false)
+                                {
+                                    boolean toDeleteInstance;
+                                    toDeleteInstance = Boolean.parseBoolean(toDeleteElement.getTextContent());
+                                    certificateInstance.setIsToBeDeleted(toDeleteInstance);
+                                }
+                            }
+                            
+                            NodeList elements31 = sSLCertificatesElement.getElementsByTagName("Valid");
+                            Element validElement = elements31.getLength() > 0 ? ((Element) elements31.item(0)) : null;
+                            if (validElement != null && (validElement.getTextContent() != null && validElement.getTextContent().isEmpty() != true) == false)
+                            {
+                                boolean isNil17 = false;
+                                Attr nilAttribute17 = validElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                                if (nilAttribute17 != null)
+                                {
+                                    isNil17 = nilAttribute17.getValue() == "true";
+                                }
+                                if (isNil17 == false)
+                                {
+                                    boolean validInstance;
+                                    validInstance = Boolean.parseBoolean(validElement.getTextContent());
+                                    certificateInstance.setIsValid(validInstance);
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                NodeList elements32 = siteElement2.getElementsByTagName("SelfLink");
+                Element selfLinkElement2 = elements32.getLength() > 0 ? ((Element) elements32.item(0)) : null;
+                if (selfLinkElement2 != null)
+                {
+                    URI selfLinkInstance2;
+                    selfLinkInstance2 = new URI(selfLinkElement2.getTextContent());
+                    webSiteInstance.setUri(selfLinkInstance2);
+                }
+                
+                NodeList elements33 = siteElement2.getElementsByTagName("ServerFarm");
+                Element serverFarmElement2 = elements33.getLength() > 0 ? ((Element) elements33.item(0)) : null;
+                if (serverFarmElement2 != null)
+                {
+                    String serverFarmInstance;
+                    serverFarmInstance = serverFarmElement2.getTextContent();
+                    webSiteInstance.setServerFarm(serverFarmInstance);
+                }
+                
+                NodeList elements34 = siteElement2.getElementsByTagName("SiteMode");
+                Element siteModeElement2 = elements34.getLength() > 0 ? ((Element) elements34.item(0)) : null;
+                if (siteModeElement2 != null)
+                {
+                    WebSiteMode siteModeInstance;
+                    siteModeInstance = WebSiteMode.valueOf(siteModeElement2.getTextContent());
+                    webSiteInstance.setSiteMode(siteModeInstance);
+                }
+                
+                NodeList elements35 = siteElement2.getElementsByTagName("SiteProperties");
+                Element sitePropertiesElement = elements35.getLength() > 0 ? ((Element) elements35.item(0)) : null;
+                if (sitePropertiesElement != null)
+                {
+                    WebSite.WebSiteProperties sitePropertiesInstance = new WebSite.WebSiteProperties();
+                    webSiteInstance.setSiteProperties(sitePropertiesInstance);
+                    
+                    NodeList elements36 = sitePropertiesElement.getElementsByTagName("AppSettings");
+                    Element appSettingsSequenceElement = elements36.getLength() > 0 ? ((Element) elements36.item(0)) : null;
+                    if (appSettingsSequenceElement != null)
+                    {
+                        for (int i6 = 0; i6 < appSettingsSequenceElement.getElementsByTagName("NameValuePair").getLength(); i6 = i6 + 1)
+                        {
+                            org.w3c.dom.Element appSettingsElement = ((org.w3c.dom.Element) appSettingsSequenceElement.getElementsByTagName("NameValuePair").item(i6));
+                            NodeList elements37 = appSettingsElement.getElementsByTagName("Name");
+                            String appSettingsKey = elements37.getLength() > 0 ? ((org.w3c.dom.Element) elements37.item(0)).getTextContent() : null;
+                            NodeList elements38 = appSettingsElement.getElementsByTagName("Value");
+                            String appSettingsValue = elements38.getLength() > 0 ? ((org.w3c.dom.Element) elements38.item(0)).getTextContent() : null;
+                            sitePropertiesInstance.getAppSettings().put(appSettingsKey, appSettingsValue);
+                        }
+                    }
+                    
+                    NodeList elements39 = sitePropertiesElement.getElementsByTagName("Metadata");
+                    Element metadataSequenceElement = elements39.getLength() > 0 ? ((Element) elements39.item(0)) : null;
+                    if (metadataSequenceElement != null)
+                    {
+                        for (int i7 = 0; i7 < metadataSequenceElement.getElementsByTagName("NameValuePair").getLength(); i7 = i7 + 1)
+                        {
+                            org.w3c.dom.Element metadataElement = ((org.w3c.dom.Element) metadataSequenceElement.getElementsByTagName("NameValuePair").item(i7));
+                            NodeList elements40 = metadataElement.getElementsByTagName("Name");
+                            String metadataKey = elements40.getLength() > 0 ? ((org.w3c.dom.Element) elements40.item(0)).getTextContent() : null;
+                            NodeList elements41 = metadataElement.getElementsByTagName("Value");
+                            String metadataValue = elements41.getLength() > 0 ? ((org.w3c.dom.Element) elements41.item(0)).getTextContent() : null;
+                            sitePropertiesInstance.getMetadata().put(metadataKey, metadataValue);
+                        }
+                    }
+                    
+                    NodeList elements42 = sitePropertiesElement.getElementsByTagName("Properties");
+                    Element propertiesSequenceElement = elements42.getLength() > 0 ? ((Element) elements42.item(0)) : null;
+                    if (propertiesSequenceElement != null)
+                    {
+                        for (int i8 = 0; i8 < propertiesSequenceElement.getElementsByTagName("NameValuePair").getLength(); i8 = i8 + 1)
+                        {
+                            org.w3c.dom.Element propertiesElement = ((org.w3c.dom.Element) propertiesSequenceElement.getElementsByTagName("NameValuePair").item(i8));
+                            NodeList elements43 = propertiesElement.getElementsByTagName("Name");
+                            String propertiesKey = elements43.getLength() > 0 ? ((org.w3c.dom.Element) elements43.item(0)).getTextContent() : null;
+                            NodeList elements44 = propertiesElement.getElementsByTagName("Value");
+                            String propertiesValue = elements44.getLength() > 0 ? ((org.w3c.dom.Element) elements44.item(0)).getTextContent() : null;
+                            sitePropertiesInstance.getProperties().put(propertiesKey, propertiesValue);
+                        }
+                    }
+                }
+                
+                NodeList elements45 = siteElement2.getElementsByTagName("State");
+                Element stateElement = elements45.getLength() > 0 ? ((Element) elements45.item(0)) : null;
+                if (stateElement != null)
+                {
+                    WebSiteState stateInstance;
+                    stateInstance = WebSiteState.valueOf(stateElement.getTextContent());
+                    webSiteInstance.setState(stateInstance);
+                }
+                
+                NodeList elements46 = siteElement2.getElementsByTagName("UsageState");
+                Element usageStateElement = elements46.getLength() > 0 ? ((Element) elements46.item(0)) : null;
+                if (usageStateElement != null)
+                {
+                    WebSiteUsageState usageStateInstance;
+                    usageStateInstance = WebSiteUsageState.valueOf(usageStateElement.getTextContent());
+                    webSiteInstance.setUsageState(usageStateInstance);
+                }
+                
+                NodeList elements47 = siteElement2.getElementsByTagName("WebSpace");
+                Element webSpaceElement2 = elements47.getLength() > 0 ? ((Element) elements47.item(0)) : null;
+                if (webSpaceElement2 != null)
+                {
+                    String webSpaceInstance;
+                    webSpaceInstance = webSpaceElement2.getTextContent();
+                    webSiteInstance.setWebSpace(webSpaceInstance);
                 }
             }
             
-            NodeList elements45 = siteElement2.getElementsByTagName("State");
-            Element stateElement = elements45.getLength() > 0 ? ((Element) elements45.item(0)) : null;
-            if (stateElement != null)
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
             {
-                WebSiteState stateInstance;
-                stateInstance = WebSiteState.valueOf(stateElement.getTextContent());
-                webSiteInstance.setState(stateInstance);
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            NodeList elements46 = siteElement2.getElementsByTagName("UsageState");
-            Element usageStateElement = elements46.getLength() > 0 ? ((Element) elements46.item(0)) : null;
-            if (usageStateElement != null)
+            if (shouldTrace)
             {
-                WebSiteUsageState usageStateInstance;
-                usageStateInstance = WebSiteUsageState.valueOf(usageStateElement.getTextContent());
-                webSiteInstance.setUsageState(usageStateInstance);
+                CloudTracing.exit(invocationId, result);
             }
-            
-            NodeList elements47 = siteElement2.getElementsByTagName("WebSpace");
-            Element webSpaceElement2 = elements47.getLength() > 0 ? ((Element) elements47.item(0)) : null;
-            if (webSpaceElement2 != null)
+            return result;
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
             {
-                String webSpaceInstance;
-                webSpaceInstance = webSpaceElement2.getTextContent();
-                webSiteInstance.setWebSpace(webSpaceInstance);
+                httpResponse.getEntity().getContent().close();
             }
         }
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-        {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
-        }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -800,6 +1332,10 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     *
     * @param webSpaceName The name of the web space.
     * @param webSiteName The name of the web site.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -840,40 +1376,50 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != HttpStatus.SC_OK)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        OperationResponse result = null;
-        result = new OperationResponse();
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -886,20 +1432,18 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     *
     * @param webSpaceName The name of the web space.
     * @param webSiteName The name of the web site.
-    * @param deleteEmptyServerFarm If the site being deleted is the last web
-    * site in a server farm, you can delete the server farm.
-    * @param deleteMetrics Delete the metrics for the site that you are deleting
+    * @param parameters The parameters to delete a web site.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
     @Override
-    public Future<OperationResponse> deleteAsync(final String webSpaceName, final String webSiteName, final boolean deleteEmptyServerFarm, final boolean deleteMetrics)
+    public Future<OperationResponse> deleteAsync(final String webSpaceName, final String webSiteName, final WebSiteDeleteParameters parameters)
     {
         return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
             public OperationResponse call() throws Exception
             {
-                return delete(webSpaceName, webSiteName, deleteEmptyServerFarm, deleteMetrics);
+                return delete(webSpaceName, webSiteName, parameters);
             }
          });
     }
@@ -914,14 +1458,16 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     *
     * @param webSpaceName The name of the web space.
     * @param webSiteName The name of the web site.
-    * @param deleteEmptyServerFarm If the site being deleted is the last web
-    * site in a server farm, you can delete the server farm.
-    * @param deleteMetrics Delete the metrics for the site that you are deleting
+    * @param parameters The parameters to delete a web site.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
     @Override
-    public OperationResponse delete(String webSpaceName, String webSiteName, boolean deleteEmptyServerFarm, boolean deleteMetrics) throws IOException, ServiceException
+    public OperationResponse delete(String webSpaceName, String webSiteName, WebSiteDeleteParameters parameters) throws IOException, ServiceException
     {
         // Validate
         if (webSpaceName == null)
@@ -931,6 +1477,10 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         if (webSiteName == null)
         {
             throw new NullPointerException("webSiteName");
+        }
+        if (parameters == null)
+        {
+            throw new NullPointerException("parameters");
         }
         
         // Tracing
@@ -942,15 +1492,12 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("webSpaceName", webSpaceName);
             tracingParameters.put("webSiteName", webSiteName);
-            tracingParameters.put("deleteEmptyServerFarm", deleteEmptyServerFarm);
-            tracingParameters.put("deleteMetrics", deleteMetrics);
+            tracingParameters.put("parameters", parameters);
             CloudTracing.enter(invocationId, this, "deleteAsync", tracingParameters);
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/WebSpaces/" + webSpaceName + "/sites/" + webSiteName + "?";
-        url = url + "&deleteEmptyServerFarm=" + URLEncoder.encode(Boolean.toString(deleteEmptyServerFarm).toLowerCase(), "UTF-8");
-        url = url + "&deleteMetrics=" + URLEncoder.encode(Boolean.toString(deleteMetrics).toLowerCase(), "UTF-8");
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/WebSpaces/" + webSpaceName + "/sites/" + webSiteName + "?deleteEmptyServerFarm=" + parameters.isDeleteEmptyServerFarm() + "&deleteMetrics=" + parameters.isDeleteMetrics() + "&deleteAllSlots=" + parameters.isDeleteAllSlots();
         
         // Create HTTP transport objects
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
@@ -960,40 +1507,50 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != HttpStatus.SC_OK)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        OperationResponse result = null;
-        result = new OperationResponse();
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -1032,6 +1589,16 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     *
     * @param webSpaceName The name of the web space.
     * @param webSiteName The name of the web site.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
     * @return The Delete Web Site Repository operation response.
     */
     @Override
@@ -1070,53 +1637,63 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != HttpStatus.SC_OK)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            WebSiteDeleteRepositoryResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new WebSiteDeleteRepositoryResponse();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document responseDoc = documentBuilder.parse(responseContent);
+            
+            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/", "anyURI");
+            Element anyURIElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            if (anyURIElement != null)
+            {
+                result.setUri(new URI(anyURIElement.getTextContent()));
+            }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        WebSiteDeleteRepositoryResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new WebSiteDeleteRepositoryResponse();
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document responseDoc = documentBuilder.parse(responseContent);
-        
-        NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/", "anyURI");
-        Element anyURIElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-        if (anyURIElement != null)
+        finally
         {
-            result.setUri(new URI(anyURIElement.getTextContent()));
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-        {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
-        }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -1160,6 +1737,10 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     *
     * @param webSpaceName The name of the web space.
     * @param webSiteName The name of the web site.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -1200,40 +1781,50 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != HttpStatus.SC_OK)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        OperationResponse result = null;
-        result = new OperationResponse();
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -1266,6 +1857,18 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * @param webSpaceName The name of the web space.
     * @param webSiteName The name of the web site.
     * @param parameters Additional parameters.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
     * @return The Get Web Site Details operation response.
     */
     @Override
@@ -1295,11 +1898,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/WebSpaces/" + webSpaceName + "/sites/" + webSiteName + "?";
-        if (parameters.getPropertiesToInclude() != null && parameters.getPropertiesToInclude().size() > 0)
-        {
-            url = url + "&propertiesToInclude=" + URLEncoder.encode(CommaStringBuilder.join(parameters.getPropertiesToInclude()), "UTF-8");
-        }
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/WebSpaces/" + webSpaceName + "/sites/" + webSiteName + "?propertiesToInclude=" + CommaStringBuilder.join(parameters.getPropertiesToInclude());
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -1309,479 +1908,615 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != HttpStatus.SC_OK)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
-        }
-        
-        // Create Result
-        WebSiteGetResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new WebSiteGetResponse();
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document responseDoc = documentBuilder.parse(responseContent);
-        
-        NodeList elements = responseDoc.getElementsByTagName("Site");
-        Element siteElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-        if (siteElement != null)
-        {
-            WebSite webSiteInstance = new WebSite();
-            result.setWebSite(webSiteInstance);
-            
-            NodeList elements2 = siteElement.getElementsByTagName("AdminEnabled");
-            Element adminEnabledElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-            if (adminEnabledElement != null)
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
             {
-                boolean adminEnabledInstance;
-                adminEnabledInstance = Boolean.parseBoolean(adminEnabledElement.getTextContent());
-                webSiteInstance.setAdminEnabled(adminEnabledInstance);
+                CloudTracing.receiveResponse(invocationId, httpResponse);
             }
-            
-            NodeList elements3 = siteElement.getElementsByTagName("AvailabilityState");
-            Element availabilityStateElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-            if (availabilityStateElement != null)
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
             {
-                WebSpaceAvailabilityState availabilityStateInstance;
-                availabilityStateInstance = WebSpaceAvailabilityState.valueOf(availabilityStateElement.getTextContent());
-                webSiteInstance.setAvailabilityState(availabilityStateInstance);
-            }
-            
-            NodeList elements4 = siteElement.getElementsByTagName("ComputeMode");
-            Element computeModeElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-            if (computeModeElement != null)
-            {
-                WebSiteComputeMode computeModeInstance;
-                computeModeInstance = WebSiteComputeMode.valueOf(computeModeElement.getTextContent());
-                webSiteInstance.setComputeMode(computeModeInstance);
-            }
-            
-            NodeList elements5 = siteElement.getElementsByTagName("Enabled");
-            Element enabledElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-            if (enabledElement != null)
-            {
-                boolean enabledInstance;
-                enabledInstance = Boolean.parseBoolean(enabledElement.getTextContent());
-                webSiteInstance.setEnabled(enabledInstance);
-            }
-            
-            NodeList elements6 = siteElement.getElementsByTagName("EnabledHostNames");
-            Element enabledHostNamesSequenceElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-            if (enabledHostNamesSequenceElement != null)
-            {
-                for (int i1 = 0; i1 < enabledHostNamesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i1 = i1 + 1)
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
                 {
-                    org.w3c.dom.Element enabledHostNamesElement = ((org.w3c.dom.Element) enabledHostNamesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i1));
-                    webSiteInstance.getEnabledHostNames().add(enabledHostNamesElement.getTextContent());
+                    CloudTracing.error(invocationId, ex);
                 }
+                throw ex;
             }
             
-            NodeList elements7 = siteElement.getElementsByTagName("HostNameSslStates");
-            Element hostNameSslStatesSequenceElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-            if (hostNameSslStatesSequenceElement != null)
-            {
-                for (int i2 = 0; i2 < hostNameSslStatesSequenceElement.getElementsByTagName("WebSiteHostNameSslState").getLength(); i2 = i2 + 1)
-                {
-                    org.w3c.dom.Element hostNameSslStatesElement = ((org.w3c.dom.Element) hostNameSslStatesSequenceElement.getElementsByTagName("WebSiteHostNameSslState").item(i2));
-                    WebSite.WebSiteHostNameSslState webSiteHostNameSslStateInstance = new WebSite.WebSiteHostNameSslState();
-                    webSiteInstance.getHostNameSslStates().add(webSiteHostNameSslStateInstance);
-                    
-                    NodeList elements8 = hostNameSslStatesElement.getElementsByTagName("Name");
-                    Element nameElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                    if (nameElement != null)
-                    {
-                        String nameInstance;
-                        nameInstance = nameElement.getTextContent();
-                        webSiteHostNameSslStateInstance.setName(nameInstance);
-                    }
-                    
-                    NodeList elements9 = hostNameSslStatesElement.getElementsByTagName("SslState");
-                    Element sslStateElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-                    if (sslStateElement != null)
-                    {
-                        WebSiteSslState sslStateInstance;
-                        sslStateInstance = WebSiteSslState.valueOf(sslStateElement.getTextContent());
-                        webSiteHostNameSslStateInstance.setSslState(sslStateInstance);
-                    }
-                    
-                    NodeList elements10 = hostNameSslStatesElement.getElementsByTagName("Thumbprint");
-                    Element thumbprintElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
-                    if (thumbprintElement != null)
-                    {
-                        boolean isNil = false;
-                        String nilAttribute = thumbprintElement.getAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
-                        if (nilAttribute != null)
-                        {
-                            isNil = nilAttribute == "true";
-                        }
-                        if (isNil == false)
-                        {
-                            String thumbprintInstance;
-                            thumbprintInstance = thumbprintElement.getTextContent();
-                            webSiteHostNameSslStateInstance.setThumbprint(thumbprintInstance);
-                        }
-                    }
-                    
-                    NodeList elements11 = hostNameSslStatesElement.getElementsByTagName("VirtualIP");
-                    Element virtualIPElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
-                    if (virtualIPElement != null)
-                    {
-                        boolean isNil2 = false;
-                        String nilAttribute2 = virtualIPElement.getAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
-                        if (nilAttribute2 != null)
-                        {
-                            isNil2 = nilAttribute2 == "true";
-                        }
-                        if (isNil2 == false)
-                        {
-                            InetAddress virtualIPInstance;
-                            virtualIPInstance = InetAddress.getByName(virtualIPElement.getTextContent());
-                            webSiteHostNameSslStateInstance.setVirtualIP(virtualIPInstance);
-                        }
-                    }
-                }
-            }
+            // Create Result
+            WebSiteGetResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new WebSiteGetResponse();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements12 = siteElement.getElementsByTagName("HostNames");
-            Element hostNamesSequenceElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
-            if (hostNamesSequenceElement != null)
+            NodeList elements = responseDoc.getElementsByTagName("Site");
+            Element siteElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            if (siteElement != null)
             {
-                for (int i3 = 0; i3 < hostNamesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i3 = i3 + 1)
-                {
-                    org.w3c.dom.Element hostNamesElement = ((org.w3c.dom.Element) hostNamesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i3));
-                    webSiteInstance.getHostNames().add(hostNamesElement.getTextContent());
-                }
-            }
-            
-            NodeList elements13 = siteElement.getElementsByTagName("LastModifiedTimeUtc");
-            Element lastModifiedTimeUtcElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
-            if (lastModifiedTimeUtcElement != null)
-            {
-                Calendar lastModifiedTimeUtcInstance;
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(simpleDateFormat.parse(lastModifiedTimeUtcElement.getTextContent()));
-                lastModifiedTimeUtcInstance = calendar;
-                webSiteInstance.setLastModifiedTimeUtc(lastModifiedTimeUtcInstance);
-            }
-            
-            NodeList elements14 = siteElement.getElementsByTagName("Name");
-            Element nameElement2 = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
-            if (nameElement2 != null)
-            {
-                String nameInstance2;
-                nameInstance2 = nameElement2.getTextContent();
-                webSiteInstance.setName(nameInstance2);
-            }
-            
-            NodeList elements15 = siteElement.getElementsByTagName("Owner");
-            Element ownerElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
-            if (ownerElement != null)
-            {
-                boolean isNil3 = false;
-                String nilAttribute3 = ownerElement.getAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
-                if (nilAttribute3 != null)
-                {
-                    isNil3 = nilAttribute3 == "true";
-                }
-                if (isNil3 == false)
-                {
-                    String ownerInstance;
-                    ownerInstance = ownerElement.getTextContent();
-                    webSiteInstance.setOwner(ownerInstance);
-                }
-            }
-            
-            NodeList elements16 = siteElement.getElementsByTagName("RepositorySiteName");
-            Element repositorySiteNameElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
-            if (repositorySiteNameElement != null)
-            {
-                String repositorySiteNameInstance;
-                repositorySiteNameInstance = repositorySiteNameElement.getTextContent();
-                webSiteInstance.setRepositorySiteName(repositorySiteNameInstance);
-            }
-            
-            NodeList elements17 = siteElement.getElementsByTagName("RuntimeAvailabilityState");
-            Element runtimeAvailabilityStateElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
-            if (runtimeAvailabilityStateElement != null)
-            {
-                WebSiteRuntimeAvailabilityState runtimeAvailabilityStateInstance;
-                runtimeAvailabilityStateInstance = WebSiteRuntimeAvailabilityState.valueOf(runtimeAvailabilityStateElement.getTextContent());
-                webSiteInstance.setRuntimeAvailabilityState(runtimeAvailabilityStateInstance);
-            }
-            
-            NodeList elements18 = siteElement.getElementsByTagName("SSLCertificates");
-            Element sSLCertificatesSequenceElement = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
-            if (sSLCertificatesSequenceElement != null)
-            {
-                for (int i4 = 0; i4 < sSLCertificatesSequenceElement.getElementsByTagName("Certificate").getLength(); i4 = i4 + 1)
-                {
-                    org.w3c.dom.Element sSLCertificatesElement = ((org.w3c.dom.Element) sSLCertificatesSequenceElement.getElementsByTagName("Certificate").item(i4));
-                    WebSite.WebSiteSslCertificate certificateInstance = new WebSite.WebSiteSslCertificate();
-                    webSiteInstance.getSslCertificates().add(certificateInstance);
-                    
-                    NodeList elements19 = sSLCertificatesElement.getElementsByTagName("ExpirationDate");
-                    Element expirationDateElement = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
-                    if (expirationDateElement != null)
-                    {
-                        Calendar expirationDateInstance;
-                        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                        Calendar calendar2 = Calendar.getInstance();
-                        calendar2.setTime(simpleDateFormat2.parse(expirationDateElement.getTextContent()));
-                        expirationDateInstance = calendar2;
-                        certificateInstance.setExpirationDate(expirationDateInstance);
-                    }
-                    
-                    NodeList elements20 = sSLCertificatesElement.getElementsByTagName("FriendlyName");
-                    Element friendlyNameElement = elements20.getLength() > 0 ? ((Element) elements20.item(0)) : null;
-                    if (friendlyNameElement != null)
-                    {
-                        String friendlyNameInstance;
-                        friendlyNameInstance = friendlyNameElement.getTextContent();
-                        certificateInstance.setFriendlyName(friendlyNameInstance);
-                    }
-                    
-                    NodeList elements21 = sSLCertificatesElement.getElementsByTagName("HostNames");
-                    Element hostNamesSequenceElement2 = elements21.getLength() > 0 ? ((Element) elements21.item(0)) : null;
-                    if (hostNamesSequenceElement2 != null)
-                    {
-                        for (int i5 = 0; i5 < hostNamesSequenceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i5 = i5 + 1)
-                        {
-                            org.w3c.dom.Element hostNamesElement2 = ((org.w3c.dom.Element) hostNamesSequenceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i5));
-                            certificateInstance.getHostNames().add(hostNamesElement2.getTextContent());
-                        }
-                    }
-                    
-                    NodeList elements22 = sSLCertificatesElement.getElementsByTagName("IssueDate");
-                    Element issueDateElement = elements22.getLength() > 0 ? ((Element) elements22.item(0)) : null;
-                    if (issueDateElement != null)
-                    {
-                        Calendar issueDateInstance;
-                        SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                        Calendar calendar3 = Calendar.getInstance();
-                        calendar3.setTime(simpleDateFormat3.parse(issueDateElement.getTextContent()));
-                        issueDateInstance = calendar3;
-                        certificateInstance.setIssueDate(issueDateInstance);
-                    }
-                    
-                    NodeList elements23 = sSLCertificatesElement.getElementsByTagName("Issuer");
-                    Element issuerElement = elements23.getLength() > 0 ? ((Element) elements23.item(0)) : null;
-                    if (issuerElement != null)
-                    {
-                        String issuerInstance;
-                        issuerInstance = issuerElement.getTextContent();
-                        certificateInstance.setIssuer(issuerInstance);
-                    }
-                    
-                    NodeList elements24 = sSLCertificatesElement.getElementsByTagName("Password");
-                    Element passwordElement = elements24.getLength() > 0 ? ((Element) elements24.item(0)) : null;
-                    if (passwordElement != null)
-                    {
-                        String passwordInstance;
-                        passwordInstance = passwordElement.getTextContent();
-                        certificateInstance.setPassword(passwordInstance);
-                    }
-                    
-                    NodeList elements25 = sSLCertificatesElement.getElementsByTagName("PfxBlob");
-                    Element pfxBlobElement = elements25.getLength() > 0 ? ((Element) elements25.item(0)) : null;
-                    if (pfxBlobElement != null)
-                    {
-                        byte[] pfxBlobInstance;
-                        pfxBlobInstance = pfxBlobElement.getTextContent() != null ? Base64.decodeBase64(pfxBlobElement.getTextContent().getBytes()) : null;
-                        certificateInstance.setPfxBlob(pfxBlobInstance);
-                    }
-                    
-                    NodeList elements26 = sSLCertificatesElement.getElementsByTagName("SelfLink");
-                    Element selfLinkElement = elements26.getLength() > 0 ? ((Element) elements26.item(0)) : null;
-                    if (selfLinkElement != null)
-                    {
-                        URI selfLinkInstance;
-                        selfLinkInstance = new URI(selfLinkElement.getTextContent());
-                        certificateInstance.setSelfLinkUri(selfLinkInstance);
-                    }
-                    
-                    NodeList elements27 = sSLCertificatesElement.getElementsByTagName("SiteName");
-                    Element siteNameElement = elements27.getLength() > 0 ? ((Element) elements27.item(0)) : null;
-                    if (siteNameElement != null)
-                    {
-                        String siteNameInstance;
-                        siteNameInstance = siteNameElement.getTextContent();
-                        certificateInstance.setSiteName(siteNameInstance);
-                    }
-                    
-                    NodeList elements28 = sSLCertificatesElement.getElementsByTagName("SubjectName");
-                    Element subjectNameElement = elements28.getLength() > 0 ? ((Element) elements28.item(0)) : null;
-                    if (subjectNameElement != null)
-                    {
-                        String subjectNameInstance;
-                        subjectNameInstance = subjectNameElement.getTextContent();
-                        certificateInstance.setSubjectName(subjectNameInstance);
-                    }
-                    
-                    NodeList elements29 = sSLCertificatesElement.getElementsByTagName("Thumbprint");
-                    Element thumbprintElement2 = elements29.getLength() > 0 ? ((Element) elements29.item(0)) : null;
-                    if (thumbprintElement2 != null)
-                    {
-                        String thumbprintInstance2;
-                        thumbprintInstance2 = thumbprintElement2.getTextContent();
-                        certificateInstance.setThumbprint(thumbprintInstance2);
-                    }
-                    
-                    NodeList elements30 = sSLCertificatesElement.getElementsByTagName("ToDelete");
-                    Element toDeleteElement = elements30.getLength() > 0 ? ((Element) elements30.item(0)) : null;
-                    if (toDeleteElement != null)
-                    {
-                        boolean toDeleteInstance;
-                        toDeleteInstance = Boolean.parseBoolean(toDeleteElement.getTextContent());
-                        certificateInstance.setIsToBeDeleted(toDeleteInstance);
-                    }
-                    
-                    NodeList elements31 = sSLCertificatesElement.getElementsByTagName("Valid");
-                    Element validElement = elements31.getLength() > 0 ? ((Element) elements31.item(0)) : null;
-                    if (validElement != null)
-                    {
-                        boolean validInstance;
-                        validInstance = Boolean.parseBoolean(validElement.getTextContent());
-                        certificateInstance.setIsValid(validInstance);
-                    }
-                }
-            }
-            
-            NodeList elements32 = siteElement.getElementsByTagName("SelfLink");
-            Element selfLinkElement2 = elements32.getLength() > 0 ? ((Element) elements32.item(0)) : null;
-            if (selfLinkElement2 != null)
-            {
-                URI selfLinkInstance2;
-                selfLinkInstance2 = new URI(selfLinkElement2.getTextContent());
-                webSiteInstance.setUri(selfLinkInstance2);
-            }
-            
-            NodeList elements33 = siteElement.getElementsByTagName("ServerFarm");
-            Element serverFarmElement = elements33.getLength() > 0 ? ((Element) elements33.item(0)) : null;
-            if (serverFarmElement != null)
-            {
-                String serverFarmInstance;
-                serverFarmInstance = serverFarmElement.getTextContent();
-                webSiteInstance.setServerFarm(serverFarmInstance);
-            }
-            
-            NodeList elements34 = siteElement.getElementsByTagName("SiteMode");
-            Element siteModeElement = elements34.getLength() > 0 ? ((Element) elements34.item(0)) : null;
-            if (siteModeElement != null)
-            {
-                WebSiteMode siteModeInstance;
-                siteModeInstance = WebSiteMode.valueOf(siteModeElement.getTextContent());
-                webSiteInstance.setSiteMode(siteModeInstance);
-            }
-            
-            NodeList elements35 = siteElement.getElementsByTagName("SiteProperties");
-            Element sitePropertiesElement = elements35.getLength() > 0 ? ((Element) elements35.item(0)) : null;
-            if (sitePropertiesElement != null)
-            {
-                WebSite.WebSiteProperties sitePropertiesInstance = new WebSite.WebSiteProperties();
-                webSiteInstance.setSiteProperties(sitePropertiesInstance);
+                WebSite webSiteInstance = new WebSite();
+                result.setWebSite(webSiteInstance);
                 
-                NodeList elements36 = sitePropertiesElement.getElementsByTagName("AppSettings");
-                Element appSettingsSequenceElement = elements36.getLength() > 0 ? ((Element) elements36.item(0)) : null;
-                if (appSettingsSequenceElement != null)
+                NodeList elements2 = siteElement.getElementsByTagName("AdminEnabled");
+                Element adminEnabledElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                if (adminEnabledElement != null)
                 {
-                    for (int i6 = 0; i6 < appSettingsSequenceElement.getElementsByTagName("NameValuePair").getLength(); i6 = i6 + 1)
+                    boolean adminEnabledInstance;
+                    adminEnabledInstance = Boolean.parseBoolean(adminEnabledElement.getTextContent());
+                    webSiteInstance.setAdminEnabled(adminEnabledInstance);
+                }
+                
+                NodeList elements3 = siteElement.getElementsByTagName("AvailabilityState");
+                Element availabilityStateElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                if (availabilityStateElement != null)
+                {
+                    WebSpaceAvailabilityState availabilityStateInstance;
+                    availabilityStateInstance = WebSpaceAvailabilityState.valueOf(availabilityStateElement.getTextContent());
+                    webSiteInstance.setAvailabilityState(availabilityStateInstance);
+                }
+                
+                NodeList elements4 = siteElement.getElementsByTagName("ComputeMode");
+                Element computeModeElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                if (computeModeElement != null)
+                {
+                    WebSiteComputeMode computeModeInstance;
+                    computeModeInstance = WebSiteComputeMode.valueOf(computeModeElement.getTextContent());
+                    webSiteInstance.setComputeMode(computeModeInstance);
+                }
+                
+                NodeList elements5 = siteElement.getElementsByTagName("Enabled");
+                Element enabledElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                if (enabledElement != null)
+                {
+                    boolean enabledInstance;
+                    enabledInstance = Boolean.parseBoolean(enabledElement.getTextContent());
+                    webSiteInstance.setEnabled(enabledInstance);
+                }
+                
+                NodeList elements6 = siteElement.getElementsByTagName("EnabledHostNames");
+                Element enabledHostNamesSequenceElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                if (enabledHostNamesSequenceElement != null)
+                {
+                    for (int i1 = 0; i1 < enabledHostNamesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i1 = i1 + 1)
                     {
-                        org.w3c.dom.Element appSettingsElement = ((org.w3c.dom.Element) appSettingsSequenceElement.getElementsByTagName("NameValuePair").item(i6));
-                        NodeList elements37 = appSettingsElement.getElementsByTagName("Name");
-                        String appSettingsKey = elements37.getLength() > 0 ? ((org.w3c.dom.Element) elements37.item(0)).getTextContent() : null;
-                        NodeList elements38 = appSettingsElement.getElementsByTagName("Value");
-                        String appSettingsValue = elements38.getLength() > 0 ? ((org.w3c.dom.Element) elements38.item(0)).getTextContent() : null;
-                        sitePropertiesInstance.getAppSettings().put(appSettingsKey, appSettingsValue);
+                        org.w3c.dom.Element enabledHostNamesElement = ((org.w3c.dom.Element) enabledHostNamesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i1));
+                        webSiteInstance.getEnabledHostNames().add(enabledHostNamesElement.getTextContent());
                     }
                 }
                 
-                NodeList elements39 = sitePropertiesElement.getElementsByTagName("Metadata");
-                Element metadataSequenceElement = elements39.getLength() > 0 ? ((Element) elements39.item(0)) : null;
-                if (metadataSequenceElement != null)
+                NodeList elements7 = siteElement.getElementsByTagName("HostNameSslStates");
+                Element hostNameSslStatesSequenceElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
+                if (hostNameSslStatesSequenceElement != null)
                 {
-                    for (int i7 = 0; i7 < metadataSequenceElement.getElementsByTagName("NameValuePair").getLength(); i7 = i7 + 1)
+                    for (int i2 = 0; i2 < hostNameSslStatesSequenceElement.getElementsByTagName("WebSiteHostNameSslState").getLength(); i2 = i2 + 1)
                     {
-                        org.w3c.dom.Element metadataElement = ((org.w3c.dom.Element) metadataSequenceElement.getElementsByTagName("NameValuePair").item(i7));
-                        NodeList elements40 = metadataElement.getElementsByTagName("Name");
-                        String metadataKey = elements40.getLength() > 0 ? ((org.w3c.dom.Element) elements40.item(0)).getTextContent() : null;
-                        NodeList elements41 = metadataElement.getElementsByTagName("Value");
-                        String metadataValue = elements41.getLength() > 0 ? ((org.w3c.dom.Element) elements41.item(0)).getTextContent() : null;
-                        sitePropertiesInstance.getMetadata().put(metadataKey, metadataValue);
+                        org.w3c.dom.Element hostNameSslStatesElement = ((org.w3c.dom.Element) hostNameSslStatesSequenceElement.getElementsByTagName("WebSiteHostNameSslState").item(i2));
+                        WebSite.WebSiteHostNameSslState webSiteHostNameSslStateInstance = new WebSite.WebSiteHostNameSslState();
+                        webSiteInstance.getHostNameSslStates().add(webSiteHostNameSslStateInstance);
+                        
+                        NodeList elements8 = hostNameSslStatesElement.getElementsByTagName("Name");
+                        Element nameElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
+                        if (nameElement != null)
+                        {
+                            String nameInstance;
+                            nameInstance = nameElement.getTextContent();
+                            webSiteHostNameSslStateInstance.setName(nameInstance);
+                        }
+                        
+                        NodeList elements9 = hostNameSslStatesElement.getElementsByTagName("SslState");
+                        Element sslStateElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
+                        if (sslStateElement != null)
+                        {
+                            WebSiteSslState sslStateInstance;
+                            sslStateInstance = WebSiteSslState.valueOf(sslStateElement.getTextContent());
+                            webSiteHostNameSslStateInstance.setSslState(sslStateInstance);
+                        }
+                        
+                        NodeList elements10 = hostNameSslStatesElement.getElementsByTagName("Thumbprint");
+                        Element thumbprintElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
+                        if (thumbprintElement != null)
+                        {
+                            boolean isNil = false;
+                            Attr nilAttribute = thumbprintElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                            if (nilAttribute != null)
+                            {
+                                isNil = nilAttribute.getValue() == "true";
+                            }
+                            if (isNil == false)
+                            {
+                                String thumbprintInstance;
+                                thumbprintInstance = thumbprintElement.getTextContent();
+                                webSiteHostNameSslStateInstance.setThumbprint(thumbprintInstance);
+                            }
+                        }
+                        
+                        NodeList elements11 = hostNameSslStatesElement.getElementsByTagName("VirtualIP");
+                        Element virtualIPElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
+                        if (virtualIPElement != null)
+                        {
+                            boolean isNil2 = false;
+                            Attr nilAttribute2 = virtualIPElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                            if (nilAttribute2 != null)
+                            {
+                                isNil2 = nilAttribute2.getValue() == "true";
+                            }
+                            if (isNil2 == false)
+                            {
+                                InetAddress virtualIPInstance;
+                                virtualIPInstance = InetAddress.getByName(virtualIPElement.getTextContent());
+                                webSiteHostNameSslStateInstance.setVirtualIP(virtualIPInstance);
+                            }
+                        }
                     }
                 }
                 
-                NodeList elements42 = sitePropertiesElement.getElementsByTagName("Properties");
-                Element propertiesSequenceElement = elements42.getLength() > 0 ? ((Element) elements42.item(0)) : null;
-                if (propertiesSequenceElement != null)
+                NodeList elements12 = siteElement.getElementsByTagName("HostNames");
+                Element hostNamesSequenceElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
+                if (hostNamesSequenceElement != null)
                 {
-                    for (int i8 = 0; i8 < propertiesSequenceElement.getElementsByTagName("NameValuePair").getLength(); i8 = i8 + 1)
+                    for (int i3 = 0; i3 < hostNamesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i3 = i3 + 1)
                     {
-                        org.w3c.dom.Element propertiesElement = ((org.w3c.dom.Element) propertiesSequenceElement.getElementsByTagName("NameValuePair").item(i8));
-                        NodeList elements43 = propertiesElement.getElementsByTagName("Name");
-                        String propertiesKey = elements43.getLength() > 0 ? ((org.w3c.dom.Element) elements43.item(0)).getTextContent() : null;
-                        NodeList elements44 = propertiesElement.getElementsByTagName("Value");
-                        String propertiesValue = elements44.getLength() > 0 ? ((org.w3c.dom.Element) elements44.item(0)).getTextContent() : null;
-                        sitePropertiesInstance.getProperties().put(propertiesKey, propertiesValue);
+                        org.w3c.dom.Element hostNamesElement = ((org.w3c.dom.Element) hostNamesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i3));
+                        webSiteInstance.getHostNames().add(hostNamesElement.getTextContent());
                     }
+                }
+                
+                NodeList elements13 = siteElement.getElementsByTagName("LastModifiedTimeUtc");
+                Element lastModifiedTimeUtcElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
+                if (lastModifiedTimeUtcElement != null)
+                {
+                    Calendar lastModifiedTimeUtcInstance;
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(simpleDateFormat.parse(lastModifiedTimeUtcElement.getTextContent()));
+                    lastModifiedTimeUtcInstance = calendar;
+                    webSiteInstance.setLastModifiedTimeUtc(lastModifiedTimeUtcInstance);
+                }
+                
+                NodeList elements14 = siteElement.getElementsByTagName("Name");
+                Element nameElement2 = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
+                if (nameElement2 != null)
+                {
+                    String nameInstance2;
+                    nameInstance2 = nameElement2.getTextContent();
+                    webSiteInstance.setName(nameInstance2);
+                }
+                
+                NodeList elements15 = siteElement.getElementsByTagName("Owner");
+                Element ownerElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
+                if (ownerElement != null)
+                {
+                    boolean isNil3 = false;
+                    Attr nilAttribute3 = ownerElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                    if (nilAttribute3 != null)
+                    {
+                        isNil3 = nilAttribute3.getValue() == "true";
+                    }
+                    if (isNil3 == false)
+                    {
+                        String ownerInstance;
+                        ownerInstance = ownerElement.getTextContent();
+                        webSiteInstance.setOwner(ownerInstance);
+                    }
+                }
+                
+                NodeList elements16 = siteElement.getElementsByTagName("RepositorySiteName");
+                Element repositorySiteNameElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
+                if (repositorySiteNameElement != null)
+                {
+                    String repositorySiteNameInstance;
+                    repositorySiteNameInstance = repositorySiteNameElement.getTextContent();
+                    webSiteInstance.setRepositorySiteName(repositorySiteNameInstance);
+                }
+                
+                NodeList elements17 = siteElement.getElementsByTagName("RuntimeAvailabilityState");
+                Element runtimeAvailabilityStateElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
+                if (runtimeAvailabilityStateElement != null)
+                {
+                    WebSiteRuntimeAvailabilityState runtimeAvailabilityStateInstance;
+                    runtimeAvailabilityStateInstance = WebSiteRuntimeAvailabilityState.valueOf(runtimeAvailabilityStateElement.getTextContent());
+                    webSiteInstance.setRuntimeAvailabilityState(runtimeAvailabilityStateInstance);
+                }
+                
+                NodeList elements18 = siteElement.getElementsByTagName("SSLCertificates");
+                Element sSLCertificatesSequenceElement = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
+                if (sSLCertificatesSequenceElement != null)
+                {
+                    boolean isNil4 = false;
+                    Attr nilAttribute4 = sSLCertificatesSequenceElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                    if (nilAttribute4 != null)
+                    {
+                        isNil4 = nilAttribute4.getValue() == "true";
+                    }
+                    if (isNil4 == false)
+                    {
+                        for (int i4 = 0; i4 < sSLCertificatesSequenceElement.getElementsByTagName("Certificate").getLength(); i4 = i4 + 1)
+                        {
+                            org.w3c.dom.Element sSLCertificatesElement = ((org.w3c.dom.Element) sSLCertificatesSequenceElement.getElementsByTagName("Certificate").item(i4));
+                            WebSite.WebSiteSslCertificate certificateInstance = new WebSite.WebSiteSslCertificate();
+                            webSiteInstance.getSslCertificates().add(certificateInstance);
+                            
+                            NodeList elements19 = sSLCertificatesElement.getElementsByTagName("ExpirationDate");
+                            Element expirationDateElement = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
+                            if (expirationDateElement != null && (expirationDateElement.getTextContent() != null && expirationDateElement.getTextContent().isEmpty() != true) == false)
+                            {
+                                boolean isNil5 = false;
+                                Attr nilAttribute5 = expirationDateElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                                if (nilAttribute5 != null)
+                                {
+                                    isNil5 = nilAttribute5.getValue() == "true";
+                                }
+                                if (isNil5 == false)
+                                {
+                                    Calendar expirationDateInstance;
+                                    SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                                    Calendar calendar2 = Calendar.getInstance();
+                                    calendar2.setTime(simpleDateFormat2.parse(expirationDateElement.getTextContent()));
+                                    expirationDateInstance = calendar2;
+                                    certificateInstance.setExpirationDate(expirationDateInstance);
+                                }
+                            }
+                            
+                            NodeList elements20 = sSLCertificatesElement.getElementsByTagName("FriendlyName");
+                            Element friendlyNameElement = elements20.getLength() > 0 ? ((Element) elements20.item(0)) : null;
+                            if (friendlyNameElement != null)
+                            {
+                                boolean isNil6 = false;
+                                Attr nilAttribute6 = friendlyNameElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                                if (nilAttribute6 != null)
+                                {
+                                    isNil6 = nilAttribute6.getValue() == "true";
+                                }
+                                if (isNil6 == false)
+                                {
+                                    String friendlyNameInstance;
+                                    friendlyNameInstance = friendlyNameElement.getTextContent();
+                                    certificateInstance.setFriendlyName(friendlyNameInstance);
+                                }
+                            }
+                            
+                            NodeList elements21 = sSLCertificatesElement.getElementsByTagName("HostNames");
+                            Element hostNamesSequenceElement2 = elements21.getLength() > 0 ? ((Element) elements21.item(0)) : null;
+                            if (hostNamesSequenceElement2 != null)
+                            {
+                                boolean isNil7 = false;
+                                Attr nilAttribute7 = hostNamesSequenceElement2.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                                if (nilAttribute7 != null)
+                                {
+                                    isNil7 = nilAttribute7.getValue() == "true";
+                                }
+                                if (isNil7 == false)
+                                {
+                                    for (int i5 = 0; i5 < hostNamesSequenceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i5 = i5 + 1)
+                                    {
+                                        org.w3c.dom.Element hostNamesElement2 = ((org.w3c.dom.Element) hostNamesSequenceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i5));
+                                        certificateInstance.getHostNames().add(hostNamesElement2.getTextContent());
+                                    }
+                                }
+                            }
+                            
+                            NodeList elements22 = sSLCertificatesElement.getElementsByTagName("IssueDate");
+                            Element issueDateElement = elements22.getLength() > 0 ? ((Element) elements22.item(0)) : null;
+                            if (issueDateElement != null && (issueDateElement.getTextContent() != null && issueDateElement.getTextContent().isEmpty() != true) == false)
+                            {
+                                boolean isNil8 = false;
+                                Attr nilAttribute8 = issueDateElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                                if (nilAttribute8 != null)
+                                {
+                                    isNil8 = nilAttribute8.getValue() == "true";
+                                }
+                                if (isNil8 == false)
+                                {
+                                    Calendar issueDateInstance;
+                                    SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                                    Calendar calendar3 = Calendar.getInstance();
+                                    calendar3.setTime(simpleDateFormat3.parse(issueDateElement.getTextContent()));
+                                    issueDateInstance = calendar3;
+                                    certificateInstance.setIssueDate(issueDateInstance);
+                                }
+                            }
+                            
+                            NodeList elements23 = sSLCertificatesElement.getElementsByTagName("Issuer");
+                            Element issuerElement = elements23.getLength() > 0 ? ((Element) elements23.item(0)) : null;
+                            if (issuerElement != null)
+                            {
+                                boolean isNil9 = false;
+                                Attr nilAttribute9 = issuerElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                                if (nilAttribute9 != null)
+                                {
+                                    isNil9 = nilAttribute9.getValue() == "true";
+                                }
+                                if (isNil9 == false)
+                                {
+                                    String issuerInstance;
+                                    issuerInstance = issuerElement.getTextContent();
+                                    certificateInstance.setIssuer(issuerInstance);
+                                }
+                            }
+                            
+                            NodeList elements24 = sSLCertificatesElement.getElementsByTagName("Password");
+                            Element passwordElement = elements24.getLength() > 0 ? ((Element) elements24.item(0)) : null;
+                            if (passwordElement != null)
+                            {
+                                boolean isNil10 = false;
+                                Attr nilAttribute10 = passwordElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                                if (nilAttribute10 != null)
+                                {
+                                    isNil10 = nilAttribute10.getValue() == "true";
+                                }
+                                if (isNil10 == false)
+                                {
+                                    String passwordInstance;
+                                    passwordInstance = passwordElement.getTextContent();
+                                    certificateInstance.setPassword(passwordInstance);
+                                }
+                            }
+                            
+                            NodeList elements25 = sSLCertificatesElement.getElementsByTagName("PfxBlob");
+                            Element pfxBlobElement = elements25.getLength() > 0 ? ((Element) elements25.item(0)) : null;
+                            if (pfxBlobElement != null)
+                            {
+                                boolean isNil11 = false;
+                                Attr nilAttribute11 = pfxBlobElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                                if (nilAttribute11 != null)
+                                {
+                                    isNil11 = nilAttribute11.getValue() == "true";
+                                }
+                                if (isNil11 == false)
+                                {
+                                    byte[] pfxBlobInstance;
+                                    pfxBlobInstance = pfxBlobElement.getTextContent() != null ? Base64.decodeBase64(pfxBlobElement.getTextContent().getBytes()) : null;
+                                    certificateInstance.setPfxBlob(pfxBlobInstance);
+                                }
+                            }
+                            
+                            NodeList elements26 = sSLCertificatesElement.getElementsByTagName("SelfLink");
+                            Element selfLinkElement = elements26.getLength() > 0 ? ((Element) elements26.item(0)) : null;
+                            if (selfLinkElement != null)
+                            {
+                                boolean isNil12 = false;
+                                Attr nilAttribute12 = selfLinkElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                                if (nilAttribute12 != null)
+                                {
+                                    isNil12 = nilAttribute12.getValue() == "true";
+                                }
+                                if (isNil12 == false)
+                                {
+                                    URI selfLinkInstance;
+                                    selfLinkInstance = new URI(selfLinkElement.getTextContent());
+                                    certificateInstance.setSelfLinkUri(selfLinkInstance);
+                                }
+                            }
+                            
+                            NodeList elements27 = sSLCertificatesElement.getElementsByTagName("SiteName");
+                            Element siteNameElement = elements27.getLength() > 0 ? ((Element) elements27.item(0)) : null;
+                            if (siteNameElement != null)
+                            {
+                                boolean isNil13 = false;
+                                Attr nilAttribute13 = siteNameElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                                if (nilAttribute13 != null)
+                                {
+                                    isNil13 = nilAttribute13.getValue() == "true";
+                                }
+                                if (isNil13 == false)
+                                {
+                                    String siteNameInstance;
+                                    siteNameInstance = siteNameElement.getTextContent();
+                                    certificateInstance.setSiteName(siteNameInstance);
+                                }
+                            }
+                            
+                            NodeList elements28 = sSLCertificatesElement.getElementsByTagName("SubjectName");
+                            Element subjectNameElement = elements28.getLength() > 0 ? ((Element) elements28.item(0)) : null;
+                            if (subjectNameElement != null)
+                            {
+                                boolean isNil14 = false;
+                                Attr nilAttribute14 = subjectNameElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                                if (nilAttribute14 != null)
+                                {
+                                    isNil14 = nilAttribute14.getValue() == "true";
+                                }
+                                if (isNil14 == false)
+                                {
+                                    String subjectNameInstance;
+                                    subjectNameInstance = subjectNameElement.getTextContent();
+                                    certificateInstance.setSubjectName(subjectNameInstance);
+                                }
+                            }
+                            
+                            NodeList elements29 = sSLCertificatesElement.getElementsByTagName("Thumbprint");
+                            Element thumbprintElement2 = elements29.getLength() > 0 ? ((Element) elements29.item(0)) : null;
+                            if (thumbprintElement2 != null)
+                            {
+                                boolean isNil15 = false;
+                                Attr nilAttribute15 = thumbprintElement2.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                                if (nilAttribute15 != null)
+                                {
+                                    isNil15 = nilAttribute15.getValue() == "true";
+                                }
+                                if (isNil15 == false)
+                                {
+                                    String thumbprintInstance2;
+                                    thumbprintInstance2 = thumbprintElement2.getTextContent();
+                                    certificateInstance.setThumbprint(thumbprintInstance2);
+                                }
+                            }
+                            
+                            NodeList elements30 = sSLCertificatesElement.getElementsByTagName("ToDelete");
+                            Element toDeleteElement = elements30.getLength() > 0 ? ((Element) elements30.item(0)) : null;
+                            if (toDeleteElement != null && (toDeleteElement.getTextContent() != null && toDeleteElement.getTextContent().isEmpty() != true) == false)
+                            {
+                                boolean isNil16 = false;
+                                Attr nilAttribute16 = toDeleteElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                                if (nilAttribute16 != null)
+                                {
+                                    isNil16 = nilAttribute16.getValue() == "true";
+                                }
+                                if (isNil16 == false)
+                                {
+                                    boolean toDeleteInstance;
+                                    toDeleteInstance = Boolean.parseBoolean(toDeleteElement.getTextContent());
+                                    certificateInstance.setIsToBeDeleted(toDeleteInstance);
+                                }
+                            }
+                            
+                            NodeList elements31 = sSLCertificatesElement.getElementsByTagName("Valid");
+                            Element validElement = elements31.getLength() > 0 ? ((Element) elements31.item(0)) : null;
+                            if (validElement != null && (validElement.getTextContent() != null && validElement.getTextContent().isEmpty() != true) == false)
+                            {
+                                boolean isNil17 = false;
+                                Attr nilAttribute17 = validElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                                if (nilAttribute17 != null)
+                                {
+                                    isNil17 = nilAttribute17.getValue() == "true";
+                                }
+                                if (isNil17 == false)
+                                {
+                                    boolean validInstance;
+                                    validInstance = Boolean.parseBoolean(validElement.getTextContent());
+                                    certificateInstance.setIsValid(validInstance);
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                NodeList elements32 = siteElement.getElementsByTagName("SelfLink");
+                Element selfLinkElement2 = elements32.getLength() > 0 ? ((Element) elements32.item(0)) : null;
+                if (selfLinkElement2 != null)
+                {
+                    URI selfLinkInstance2;
+                    selfLinkInstance2 = new URI(selfLinkElement2.getTextContent());
+                    webSiteInstance.setUri(selfLinkInstance2);
+                }
+                
+                NodeList elements33 = siteElement.getElementsByTagName("ServerFarm");
+                Element serverFarmElement = elements33.getLength() > 0 ? ((Element) elements33.item(0)) : null;
+                if (serverFarmElement != null)
+                {
+                    String serverFarmInstance;
+                    serverFarmInstance = serverFarmElement.getTextContent();
+                    webSiteInstance.setServerFarm(serverFarmInstance);
+                }
+                
+                NodeList elements34 = siteElement.getElementsByTagName("SiteMode");
+                Element siteModeElement = elements34.getLength() > 0 ? ((Element) elements34.item(0)) : null;
+                if (siteModeElement != null)
+                {
+                    WebSiteMode siteModeInstance;
+                    siteModeInstance = WebSiteMode.valueOf(siteModeElement.getTextContent());
+                    webSiteInstance.setSiteMode(siteModeInstance);
+                }
+                
+                NodeList elements35 = siteElement.getElementsByTagName("SiteProperties");
+                Element sitePropertiesElement = elements35.getLength() > 0 ? ((Element) elements35.item(0)) : null;
+                if (sitePropertiesElement != null)
+                {
+                    WebSite.WebSiteProperties sitePropertiesInstance = new WebSite.WebSiteProperties();
+                    webSiteInstance.setSiteProperties(sitePropertiesInstance);
+                    
+                    NodeList elements36 = sitePropertiesElement.getElementsByTagName("AppSettings");
+                    Element appSettingsSequenceElement = elements36.getLength() > 0 ? ((Element) elements36.item(0)) : null;
+                    if (appSettingsSequenceElement != null)
+                    {
+                        for (int i6 = 0; i6 < appSettingsSequenceElement.getElementsByTagName("NameValuePair").getLength(); i6 = i6 + 1)
+                        {
+                            org.w3c.dom.Element appSettingsElement = ((org.w3c.dom.Element) appSettingsSequenceElement.getElementsByTagName("NameValuePair").item(i6));
+                            NodeList elements37 = appSettingsElement.getElementsByTagName("Name");
+                            String appSettingsKey = elements37.getLength() > 0 ? ((org.w3c.dom.Element) elements37.item(0)).getTextContent() : null;
+                            NodeList elements38 = appSettingsElement.getElementsByTagName("Value");
+                            String appSettingsValue = elements38.getLength() > 0 ? ((org.w3c.dom.Element) elements38.item(0)).getTextContent() : null;
+                            sitePropertiesInstance.getAppSettings().put(appSettingsKey, appSettingsValue);
+                        }
+                    }
+                    
+                    NodeList elements39 = sitePropertiesElement.getElementsByTagName("Metadata");
+                    Element metadataSequenceElement = elements39.getLength() > 0 ? ((Element) elements39.item(0)) : null;
+                    if (metadataSequenceElement != null)
+                    {
+                        for (int i7 = 0; i7 < metadataSequenceElement.getElementsByTagName("NameValuePair").getLength(); i7 = i7 + 1)
+                        {
+                            org.w3c.dom.Element metadataElement = ((org.w3c.dom.Element) metadataSequenceElement.getElementsByTagName("NameValuePair").item(i7));
+                            NodeList elements40 = metadataElement.getElementsByTagName("Name");
+                            String metadataKey = elements40.getLength() > 0 ? ((org.w3c.dom.Element) elements40.item(0)).getTextContent() : null;
+                            NodeList elements41 = metadataElement.getElementsByTagName("Value");
+                            String metadataValue = elements41.getLength() > 0 ? ((org.w3c.dom.Element) elements41.item(0)).getTextContent() : null;
+                            sitePropertiesInstance.getMetadata().put(metadataKey, metadataValue);
+                        }
+                    }
+                    
+                    NodeList elements42 = sitePropertiesElement.getElementsByTagName("Properties");
+                    Element propertiesSequenceElement = elements42.getLength() > 0 ? ((Element) elements42.item(0)) : null;
+                    if (propertiesSequenceElement != null)
+                    {
+                        for (int i8 = 0; i8 < propertiesSequenceElement.getElementsByTagName("NameValuePair").getLength(); i8 = i8 + 1)
+                        {
+                            org.w3c.dom.Element propertiesElement = ((org.w3c.dom.Element) propertiesSequenceElement.getElementsByTagName("NameValuePair").item(i8));
+                            NodeList elements43 = propertiesElement.getElementsByTagName("Name");
+                            String propertiesKey = elements43.getLength() > 0 ? ((org.w3c.dom.Element) elements43.item(0)).getTextContent() : null;
+                            NodeList elements44 = propertiesElement.getElementsByTagName("Value");
+                            String propertiesValue = elements44.getLength() > 0 ? ((org.w3c.dom.Element) elements44.item(0)).getTextContent() : null;
+                            sitePropertiesInstance.getProperties().put(propertiesKey, propertiesValue);
+                        }
+                    }
+                }
+                
+                NodeList elements45 = siteElement.getElementsByTagName("State");
+                Element stateElement = elements45.getLength() > 0 ? ((Element) elements45.item(0)) : null;
+                if (stateElement != null)
+                {
+                    WebSiteState stateInstance;
+                    stateInstance = WebSiteState.valueOf(stateElement.getTextContent());
+                    webSiteInstance.setState(stateInstance);
+                }
+                
+                NodeList elements46 = siteElement.getElementsByTagName("UsageState");
+                Element usageStateElement = elements46.getLength() > 0 ? ((Element) elements46.item(0)) : null;
+                if (usageStateElement != null)
+                {
+                    WebSiteUsageState usageStateInstance;
+                    usageStateInstance = WebSiteUsageState.valueOf(usageStateElement.getTextContent());
+                    webSiteInstance.setUsageState(usageStateInstance);
+                }
+                
+                NodeList elements47 = siteElement.getElementsByTagName("WebSpace");
+                Element webSpaceElement = elements47.getLength() > 0 ? ((Element) elements47.item(0)) : null;
+                if (webSpaceElement != null)
+                {
+                    String webSpaceInstance;
+                    webSpaceInstance = webSpaceElement.getTextContent();
+                    webSiteInstance.setWebSpace(webSpaceInstance);
                 }
             }
             
-            NodeList elements45 = siteElement.getElementsByTagName("State");
-            Element stateElement = elements45.getLength() > 0 ? ((Element) elements45.item(0)) : null;
-            if (stateElement != null)
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
             {
-                WebSiteState stateInstance;
-                stateInstance = WebSiteState.valueOf(stateElement.getTextContent());
-                webSiteInstance.setState(stateInstance);
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            NodeList elements46 = siteElement.getElementsByTagName("UsageState");
-            Element usageStateElement = elements46.getLength() > 0 ? ((Element) elements46.item(0)) : null;
-            if (usageStateElement != null)
+            if (shouldTrace)
             {
-                WebSiteUsageState usageStateInstance;
-                usageStateInstance = WebSiteUsageState.valueOf(usageStateElement.getTextContent());
-                webSiteInstance.setUsageState(usageStateInstance);
+                CloudTracing.exit(invocationId, result);
             }
-            
-            NodeList elements47 = siteElement.getElementsByTagName("WebSpace");
-            Element webSpaceElement = elements47.getLength() > 0 ? ((Element) elements47.item(0)) : null;
-            if (webSpaceElement != null)
+            return result;
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
             {
-                String webSpaceInstance;
-                webSpaceInstance = webSpaceElement.getTextContent();
-                webSiteInstance.setWebSpace(webSpaceInstance);
+                httpResponse.getEntity().getContent().close();
             }
         }
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-        {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
-        }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -1816,6 +2551,16 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     *
     * @param webSpaceName The name of the web space.
     * @param webSiteName The name of the web site.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return The Get Web Site Configuration operation response.
     */
     @Override
@@ -1854,344 +2599,354 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != HttpStatus.SC_OK)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            WebSiteGetConfigurationResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new WebSiteGetConfigurationResponse();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document responseDoc = documentBuilder.parse(responseContent);
+            
+            NodeList elements = responseDoc.getElementsByTagName("SiteConfig");
+            Element siteConfigElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            if (siteConfigElement != null)
+            {
+                NodeList elements2 = siteConfigElement.getElementsByTagName("AppSettings");
+                Element appSettingsSequenceElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                if (appSettingsSequenceElement != null)
+                {
+                    for (int i1 = 0; i1 < appSettingsSequenceElement.getElementsByTagName("NameValuePair").getLength(); i1 = i1 + 1)
+                    {
+                        org.w3c.dom.Element appSettingsElement = ((org.w3c.dom.Element) appSettingsSequenceElement.getElementsByTagName("NameValuePair").item(i1));
+                        NodeList elements3 = appSettingsElement.getElementsByTagName("Name");
+                        String appSettingsKey = elements3.getLength() > 0 ? ((org.w3c.dom.Element) elements3.item(0)).getTextContent() : null;
+                        NodeList elements4 = appSettingsElement.getElementsByTagName("Value");
+                        String appSettingsValue = elements4.getLength() > 0 ? ((org.w3c.dom.Element) elements4.item(0)).getTextContent() : null;
+                        result.getAppSettings().put(appSettingsKey, appSettingsValue);
+                    }
+                }
+                
+                NodeList elements5 = siteConfigElement.getElementsByTagName("ConnectionStrings");
+                Element connectionStringsSequenceElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                if (connectionStringsSequenceElement != null)
+                {
+                    for (int i2 = 0; i2 < connectionStringsSequenceElement.getElementsByTagName("ConnStringInfo").getLength(); i2 = i2 + 1)
+                    {
+                        org.w3c.dom.Element connectionStringsElement = ((org.w3c.dom.Element) connectionStringsSequenceElement.getElementsByTagName("ConnStringInfo").item(i2));
+                        WebSiteGetConfigurationResponse.ConnectionStringInfo connStringInfoInstance = new WebSiteGetConfigurationResponse.ConnectionStringInfo();
+                        result.getConnectionStrings().add(connStringInfoInstance);
+                        
+                        NodeList elements6 = connectionStringsElement.getElementsByTagName("ConnectionString");
+                        Element connectionStringElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                        if (connectionStringElement != null)
+                        {
+                            String connectionStringInstance;
+                            connectionStringInstance = connectionStringElement.getTextContent();
+                            connStringInfoInstance.setConnectionString(connectionStringInstance);
+                        }
+                        
+                        NodeList elements7 = connectionStringsElement.getElementsByTagName("Name");
+                        Element nameElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
+                        if (nameElement != null)
+                        {
+                            String nameInstance;
+                            nameInstance = nameElement.getTextContent();
+                            connStringInfoInstance.setName(nameInstance);
+                        }
+                        
+                        NodeList elements8 = connectionStringsElement.getElementsByTagName("Type");
+                        Element typeElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
+                        if (typeElement != null)
+                        {
+                            String typeInstance;
+                            typeInstance = typeElement.getTextContent();
+                            connStringInfoInstance.setType(typeInstance);
+                        }
+                    }
+                }
+                
+                NodeList elements9 = siteConfigElement.getElementsByTagName("DefaultDocuments");
+                Element defaultDocumentsSequenceElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
+                if (defaultDocumentsSequenceElement != null)
+                {
+                    for (int i3 = 0; i3 < defaultDocumentsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i3 = i3 + 1)
+                    {
+                        org.w3c.dom.Element defaultDocumentsElement = ((org.w3c.dom.Element) defaultDocumentsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i3));
+                        result.getDefaultDocuments().add(defaultDocumentsElement.getTextContent());
+                    }
+                }
+                
+                NodeList elements10 = siteConfigElement.getElementsByTagName("DetailedErrorLoggingEnabled");
+                Element detailedErrorLoggingEnabledElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
+                if (detailedErrorLoggingEnabledElement != null && (detailedErrorLoggingEnabledElement.getTextContent() != null && detailedErrorLoggingEnabledElement.getTextContent().isEmpty() != true) == false)
+                {
+                    boolean detailedErrorLoggingEnabledInstance;
+                    detailedErrorLoggingEnabledInstance = Boolean.parseBoolean(detailedErrorLoggingEnabledElement.getTextContent());
+                    result.setDetailedErrorLoggingEnabled(detailedErrorLoggingEnabledInstance);
+                }
+                
+                NodeList elements11 = siteConfigElement.getElementsByTagName("DocumentRoot");
+                Element documentRootElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
+                if (documentRootElement != null)
+                {
+                    String documentRootInstance;
+                    documentRootInstance = documentRootElement.getTextContent();
+                    result.setDocumentRoot(documentRootInstance);
+                }
+                
+                NodeList elements12 = siteConfigElement.getElementsByTagName("HandlerMappings");
+                Element handlerMappingsSequenceElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
+                if (handlerMappingsSequenceElement != null)
+                {
+                    for (int i4 = 0; i4 < handlerMappingsSequenceElement.getElementsByTagName("HandlerMapping").getLength(); i4 = i4 + 1)
+                    {
+                        org.w3c.dom.Element handlerMappingsElement = ((org.w3c.dom.Element) handlerMappingsSequenceElement.getElementsByTagName("HandlerMapping").item(i4));
+                        WebSiteGetConfigurationResponse.HandlerMapping handlerMappingInstance = new WebSiteGetConfigurationResponse.HandlerMapping();
+                        result.getHandlerMappings().add(handlerMappingInstance);
+                        
+                        NodeList elements13 = handlerMappingsElement.getElementsByTagName("Arguments");
+                        Element argumentsElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
+                        if (argumentsElement != null)
+                        {
+                            String argumentsInstance;
+                            argumentsInstance = argumentsElement.getTextContent();
+                            handlerMappingInstance.setArguments(argumentsInstance);
+                        }
+                        
+                        NodeList elements14 = handlerMappingsElement.getElementsByTagName("Extension");
+                        Element extensionElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
+                        if (extensionElement != null)
+                        {
+                            String extensionInstance;
+                            extensionInstance = extensionElement.getTextContent();
+                            handlerMappingInstance.setExtension(extensionInstance);
+                        }
+                        
+                        NodeList elements15 = handlerMappingsElement.getElementsByTagName("ScriptProcessor");
+                        Element scriptProcessorElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
+                        if (scriptProcessorElement != null)
+                        {
+                            String scriptProcessorInstance;
+                            scriptProcessorInstance = scriptProcessorElement.getTextContent();
+                            handlerMappingInstance.setScriptProcessor(scriptProcessorInstance);
+                        }
+                    }
+                }
+                
+                NodeList elements16 = siteConfigElement.getElementsByTagName("HttpLoggingEnabled");
+                Element httpLoggingEnabledElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
+                if (httpLoggingEnabledElement != null && (httpLoggingEnabledElement.getTextContent() != null && httpLoggingEnabledElement.getTextContent().isEmpty() != true) == false)
+                {
+                    boolean httpLoggingEnabledInstance;
+                    httpLoggingEnabledInstance = Boolean.parseBoolean(httpLoggingEnabledElement.getTextContent());
+                    result.setHttpLoggingEnabled(httpLoggingEnabledInstance);
+                }
+                
+                NodeList elements17 = siteConfigElement.getElementsByTagName("LogsDirectorySizeLimit");
+                Element logsDirectorySizeLimitElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
+                if (logsDirectorySizeLimitElement != null && (logsDirectorySizeLimitElement.getTextContent() != null && logsDirectorySizeLimitElement.getTextContent().isEmpty() != true) == false)
+                {
+                    int logsDirectorySizeLimitInstance;
+                    logsDirectorySizeLimitInstance = Integer.parseInt(logsDirectorySizeLimitElement.getTextContent());
+                    result.setLogsDirectorySizeLimit(logsDirectorySizeLimitInstance);
+                }
+                
+                NodeList elements18 = siteConfigElement.getElementsByTagName("ManagedPipelineMode");
+                Element managedPipelineModeElement = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
+                if (managedPipelineModeElement != null && (managedPipelineModeElement.getTextContent() != null && managedPipelineModeElement.getTextContent().isEmpty() != true) == false)
+                {
+                    ManagedPipelineMode managedPipelineModeInstance;
+                    managedPipelineModeInstance = ManagedPipelineMode.valueOf(managedPipelineModeElement.getTextContent());
+                    result.setManagedPipelineMode(managedPipelineModeInstance);
+                }
+                
+                NodeList elements19 = siteConfigElement.getElementsByTagName("Metadata");
+                Element metadataSequenceElement = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
+                if (metadataSequenceElement != null)
+                {
+                    for (int i5 = 0; i5 < metadataSequenceElement.getElementsByTagName("NameValuePair").getLength(); i5 = i5 + 1)
+                    {
+                        org.w3c.dom.Element metadataElement = ((org.w3c.dom.Element) metadataSequenceElement.getElementsByTagName("NameValuePair").item(i5));
+                        NodeList elements20 = metadataElement.getElementsByTagName("Name");
+                        String metadataKey = elements20.getLength() > 0 ? ((org.w3c.dom.Element) elements20.item(0)).getTextContent() : null;
+                        NodeList elements21 = metadataElement.getElementsByTagName("Value");
+                        String metadataValue = elements21.getLength() > 0 ? ((org.w3c.dom.Element) elements21.item(0)).getTextContent() : null;
+                        result.getMetadata().put(metadataKey, metadataValue);
+                    }
+                }
+                
+                NodeList elements22 = siteConfigElement.getElementsByTagName("NetFrameworkVersion");
+                Element netFrameworkVersionElement = elements22.getLength() > 0 ? ((Element) elements22.item(0)) : null;
+                if (netFrameworkVersionElement != null)
+                {
+                    String netFrameworkVersionInstance;
+                    netFrameworkVersionInstance = netFrameworkVersionElement.getTextContent();
+                    result.setNetFrameworkVersion(netFrameworkVersionInstance);
+                }
+                
+                NodeList elements23 = siteConfigElement.getElementsByTagName("NumberOfWorkers");
+                Element numberOfWorkersElement = elements23.getLength() > 0 ? ((Element) elements23.item(0)) : null;
+                if (numberOfWorkersElement != null && (numberOfWorkersElement.getTextContent() != null && numberOfWorkersElement.getTextContent().isEmpty() != true) == false)
+                {
+                    int numberOfWorkersInstance;
+                    numberOfWorkersInstance = Integer.parseInt(numberOfWorkersElement.getTextContent());
+                    result.setNumberOfWorkers(numberOfWorkersInstance);
+                }
+                
+                NodeList elements24 = siteConfigElement.getElementsByTagName("PhpVersion");
+                Element phpVersionElement = elements24.getLength() > 0 ? ((Element) elements24.item(0)) : null;
+                if (phpVersionElement != null)
+                {
+                    String phpVersionInstance;
+                    phpVersionInstance = phpVersionElement.getTextContent();
+                    result.setPhpVersion(phpVersionInstance);
+                }
+                
+                NodeList elements25 = siteConfigElement.getElementsByTagName("PublishingPassword");
+                Element publishingPasswordElement = elements25.getLength() > 0 ? ((Element) elements25.item(0)) : null;
+                if (publishingPasswordElement != null)
+                {
+                    String publishingPasswordInstance;
+                    publishingPasswordInstance = publishingPasswordElement.getTextContent();
+                    result.setPublishingPassword(publishingPasswordInstance);
+                }
+                
+                NodeList elements26 = siteConfigElement.getElementsByTagName("PublishingUsername");
+                Element publishingUsernameElement = elements26.getLength() > 0 ? ((Element) elements26.item(0)) : null;
+                if (publishingUsernameElement != null)
+                {
+                    String publishingUsernameInstance;
+                    publishingUsernameInstance = publishingUsernameElement.getTextContent();
+                    result.setPublishingUserName(publishingUsernameInstance);
+                }
+                
+                NodeList elements27 = siteConfigElement.getElementsByTagName("RemoteDebuggingEnabled");
+                Element remoteDebuggingEnabledElement = elements27.getLength() > 0 ? ((Element) elements27.item(0)) : null;
+                if (remoteDebuggingEnabledElement != null && (remoteDebuggingEnabledElement.getTextContent() != null && remoteDebuggingEnabledElement.getTextContent().isEmpty() != true) == false)
+                {
+                    boolean remoteDebuggingEnabledInstance;
+                    remoteDebuggingEnabledInstance = Boolean.parseBoolean(remoteDebuggingEnabledElement.getTextContent());
+                    result.setRemoteDebuggingEnabled(remoteDebuggingEnabledInstance);
+                }
+                
+                NodeList elements28 = siteConfigElement.getElementsByTagName("RemoteDebuggingVersion");
+                Element remoteDebuggingVersionElement = elements28.getLength() > 0 ? ((Element) elements28.item(0)) : null;
+                if (remoteDebuggingVersionElement != null)
+                {
+                    boolean isNil = false;
+                    Attr nilAttribute = remoteDebuggingVersionElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                    if (nilAttribute != null)
+                    {
+                        isNil = nilAttribute.getValue() == "true";
+                    }
+                    if (isNil == false)
+                    {
+                        RemoteDebuggingVersion remoteDebuggingVersionInstance;
+                        remoteDebuggingVersionInstance = RemoteDebuggingVersion.valueOf(remoteDebuggingVersionElement.getTextContent());
+                        result.setRemoteDebuggingVersion(remoteDebuggingVersionInstance);
+                    }
+                }
+                
+                NodeList elements29 = siteConfigElement.getElementsByTagName("RequestTracingEnabled");
+                Element requestTracingEnabledElement = elements29.getLength() > 0 ? ((Element) elements29.item(0)) : null;
+                if (requestTracingEnabledElement != null && (requestTracingEnabledElement.getTextContent() != null && requestTracingEnabledElement.getTextContent().isEmpty() != true) == false)
+                {
+                    boolean requestTracingEnabledInstance;
+                    requestTracingEnabledInstance = Boolean.parseBoolean(requestTracingEnabledElement.getTextContent());
+                    result.setRequestTracingEnabled(requestTracingEnabledInstance);
+                }
+                
+                NodeList elements30 = siteConfigElement.getElementsByTagName("RequestTracingExpirationTime");
+                Element requestTracingExpirationTimeElement = elements30.getLength() > 0 ? ((Element) elements30.item(0)) : null;
+                if (requestTracingExpirationTimeElement != null && (requestTracingExpirationTimeElement.getTextContent() != null && requestTracingExpirationTimeElement.getTextContent().isEmpty() != true) == false)
+                {
+                    boolean isNil2 = false;
+                    Attr nilAttribute2 = requestTracingExpirationTimeElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                    if (nilAttribute2 != null)
+                    {
+                        isNil2 = nilAttribute2.getValue() == "true";
+                    }
+                    if (isNil2 == false)
+                    {
+                        Calendar requestTracingExpirationTimeInstance;
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.setTime(simpleDateFormat.parse(requestTracingExpirationTimeElement.getTextContent()));
+                        requestTracingExpirationTimeInstance = calendar;
+                        result.setRequestTracingExpirationTime(requestTracingExpirationTimeInstance);
+                    }
+                }
+                
+                NodeList elements31 = siteConfigElement.getElementsByTagName("ScmType");
+                Element scmTypeElement = elements31.getLength() > 0 ? ((Element) elements31.item(0)) : null;
+                if (scmTypeElement != null)
+                {
+                    String scmTypeInstance;
+                    scmTypeInstance = scmTypeElement.getTextContent();
+                    result.setScmType(scmTypeInstance);
+                }
+                
+                NodeList elements32 = siteConfigElement.getElementsByTagName("Use32BitWorkerProcess");
+                Element use32BitWorkerProcessElement = elements32.getLength() > 0 ? ((Element) elements32.item(0)) : null;
+                if (use32BitWorkerProcessElement != null && (use32BitWorkerProcessElement.getTextContent() != null && use32BitWorkerProcessElement.getTextContent().isEmpty() != true) == false)
+                {
+                    boolean use32BitWorkerProcessInstance;
+                    use32BitWorkerProcessInstance = Boolean.parseBoolean(use32BitWorkerProcessElement.getTextContent());
+                    result.setUse32BitWorkerProcess(use32BitWorkerProcessInstance);
+                }
+                
+                NodeList elements33 = siteConfigElement.getElementsByTagName("WebSocketsEnabled");
+                Element webSocketsEnabledElement = elements33.getLength() > 0 ? ((Element) elements33.item(0)) : null;
+                if (webSocketsEnabledElement != null && (webSocketsEnabledElement.getTextContent() != null && webSocketsEnabledElement.getTextContent().isEmpty() != true) == false)
+                {
+                    boolean webSocketsEnabledInstance;
+                    webSocketsEnabledInstance = Boolean.parseBoolean(webSocketsEnabledElement.getTextContent());
+                    result.setWebSocketsEnabled(webSocketsEnabledInstance);
+                }
+            }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        WebSiteGetConfigurationResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new WebSiteGetConfigurationResponse();
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document responseDoc = documentBuilder.parse(responseContent);
-        
-        NodeList elements = responseDoc.getElementsByTagName("SiteConfig");
-        Element siteConfigElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-        if (siteConfigElement != null)
+        finally
         {
-            NodeList elements2 = siteConfigElement.getElementsByTagName("AppSettings");
-            Element appSettingsSequenceElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-            if (appSettingsSequenceElement != null)
+            if (httpResponse != null && httpResponse.getEntity() != null)
             {
-                for (int i1 = 0; i1 < appSettingsSequenceElement.getElementsByTagName("NameValuePair").getLength(); i1 = i1 + 1)
-                {
-                    org.w3c.dom.Element appSettingsElement = ((org.w3c.dom.Element) appSettingsSequenceElement.getElementsByTagName("NameValuePair").item(i1));
-                    NodeList elements3 = appSettingsElement.getElementsByTagName("Name");
-                    String appSettingsKey = elements3.getLength() > 0 ? ((org.w3c.dom.Element) elements3.item(0)).getTextContent() : null;
-                    NodeList elements4 = appSettingsElement.getElementsByTagName("Value");
-                    String appSettingsValue = elements4.getLength() > 0 ? ((org.w3c.dom.Element) elements4.item(0)).getTextContent() : null;
-                    result.getAppSettings().put(appSettingsKey, appSettingsValue);
-                }
-            }
-            
-            NodeList elements5 = siteConfigElement.getElementsByTagName("ConnectionStrings");
-            Element connectionStringsSequenceElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-            if (connectionStringsSequenceElement != null)
-            {
-                for (int i2 = 0; i2 < connectionStringsSequenceElement.getElementsByTagName("ConnStringInfo").getLength(); i2 = i2 + 1)
-                {
-                    org.w3c.dom.Element connectionStringsElement = ((org.w3c.dom.Element) connectionStringsSequenceElement.getElementsByTagName("ConnStringInfo").item(i2));
-                    WebSiteGetConfigurationResponse.ConnectionStringInfo connStringInfoInstance = new WebSiteGetConfigurationResponse.ConnectionStringInfo();
-                    result.getConnectionStrings().add(connStringInfoInstance);
-                    
-                    NodeList elements6 = connectionStringsElement.getElementsByTagName("ConnectionString");
-                    Element connectionStringElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                    if (connectionStringElement != null)
-                    {
-                        String connectionStringInstance;
-                        connectionStringInstance = connectionStringElement.getTextContent();
-                        connStringInfoInstance.setConnectionString(connectionStringInstance);
-                    }
-                    
-                    NodeList elements7 = connectionStringsElement.getElementsByTagName("Name");
-                    Element nameElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                    if (nameElement != null)
-                    {
-                        String nameInstance;
-                        nameInstance = nameElement.getTextContent();
-                        connStringInfoInstance.setName(nameInstance);
-                    }
-                    
-                    NodeList elements8 = connectionStringsElement.getElementsByTagName("Type");
-                    Element typeElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                    if (typeElement != null)
-                    {
-                        String typeInstance;
-                        typeInstance = typeElement.getTextContent();
-                        connStringInfoInstance.setType(typeInstance);
-                    }
-                }
-            }
-            
-            NodeList elements9 = siteConfigElement.getElementsByTagName("DefaultDocuments");
-            Element defaultDocumentsSequenceElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-            if (defaultDocumentsSequenceElement != null)
-            {
-                for (int i3 = 0; i3 < defaultDocumentsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i3 = i3 + 1)
-                {
-                    org.w3c.dom.Element defaultDocumentsElement = ((org.w3c.dom.Element) defaultDocumentsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i3));
-                    result.getDefaultDocuments().add(defaultDocumentsElement.getTextContent());
-                }
-            }
-            
-            NodeList elements10 = siteConfigElement.getElementsByTagName("DetailedErrorLoggingEnabled");
-            Element detailedErrorLoggingEnabledElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
-            if (detailedErrorLoggingEnabledElement != null && (detailedErrorLoggingEnabledElement.getTextContent() != null && detailedErrorLoggingEnabledElement.getTextContent().isEmpty() != true) == false)
-            {
-                boolean detailedErrorLoggingEnabledInstance;
-                detailedErrorLoggingEnabledInstance = Boolean.parseBoolean(detailedErrorLoggingEnabledElement.getTextContent());
-                result.setDetailedErrorLoggingEnabled(detailedErrorLoggingEnabledInstance);
-            }
-            
-            NodeList elements11 = siteConfigElement.getElementsByTagName("DocumentRoot");
-            Element documentRootElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
-            if (documentRootElement != null)
-            {
-                String documentRootInstance;
-                documentRootInstance = documentRootElement.getTextContent();
-                result.setDocumentRoot(documentRootInstance);
-            }
-            
-            NodeList elements12 = siteConfigElement.getElementsByTagName("HandlerMappings");
-            Element handlerMappingsSequenceElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
-            if (handlerMappingsSequenceElement != null)
-            {
-                for (int i4 = 0; i4 < handlerMappingsSequenceElement.getElementsByTagName("HandlerMapping").getLength(); i4 = i4 + 1)
-                {
-                    org.w3c.dom.Element handlerMappingsElement = ((org.w3c.dom.Element) handlerMappingsSequenceElement.getElementsByTagName("HandlerMapping").item(i4));
-                    WebSiteGetConfigurationResponse.HandlerMapping handlerMappingInstance = new WebSiteGetConfigurationResponse.HandlerMapping();
-                    result.getHandlerMappings().add(handlerMappingInstance);
-                    
-                    NodeList elements13 = handlerMappingsElement.getElementsByTagName("Arguments");
-                    Element argumentsElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
-                    if (argumentsElement != null)
-                    {
-                        String argumentsInstance;
-                        argumentsInstance = argumentsElement.getTextContent();
-                        handlerMappingInstance.setArguments(argumentsInstance);
-                    }
-                    
-                    NodeList elements14 = handlerMappingsElement.getElementsByTagName("Extension");
-                    Element extensionElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
-                    if (extensionElement != null)
-                    {
-                        String extensionInstance;
-                        extensionInstance = extensionElement.getTextContent();
-                        handlerMappingInstance.setExtension(extensionInstance);
-                    }
-                    
-                    NodeList elements15 = handlerMappingsElement.getElementsByTagName("ScriptProcessor");
-                    Element scriptProcessorElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
-                    if (scriptProcessorElement != null)
-                    {
-                        String scriptProcessorInstance;
-                        scriptProcessorInstance = scriptProcessorElement.getTextContent();
-                        handlerMappingInstance.setScriptProcessor(scriptProcessorInstance);
-                    }
-                }
-            }
-            
-            NodeList elements16 = siteConfigElement.getElementsByTagName("HttpLoggingEnabled");
-            Element httpLoggingEnabledElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
-            if (httpLoggingEnabledElement != null && (httpLoggingEnabledElement.getTextContent() != null && httpLoggingEnabledElement.getTextContent().isEmpty() != true) == false)
-            {
-                boolean httpLoggingEnabledInstance;
-                httpLoggingEnabledInstance = Boolean.parseBoolean(httpLoggingEnabledElement.getTextContent());
-                result.setHttpLoggingEnabled(httpLoggingEnabledInstance);
-            }
-            
-            NodeList elements17 = siteConfigElement.getElementsByTagName("LogsDirectorySizeLimit");
-            Element logsDirectorySizeLimitElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
-            if (logsDirectorySizeLimitElement != null && (logsDirectorySizeLimitElement.getTextContent() != null && logsDirectorySizeLimitElement.getTextContent().isEmpty() != true) == false)
-            {
-                int logsDirectorySizeLimitInstance;
-                logsDirectorySizeLimitInstance = Integer.parseInt(logsDirectorySizeLimitElement.getTextContent());
-                result.setLogsDirectorySizeLimit(logsDirectorySizeLimitInstance);
-            }
-            
-            NodeList elements18 = siteConfigElement.getElementsByTagName("ManagedPipelineMode");
-            Element managedPipelineModeElement = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
-            if (managedPipelineModeElement != null && (managedPipelineModeElement.getTextContent() != null && managedPipelineModeElement.getTextContent().isEmpty() != true) == false)
-            {
-                ManagedPipelineMode managedPipelineModeInstance;
-                managedPipelineModeInstance = ManagedPipelineMode.valueOf(managedPipelineModeElement.getTextContent());
-                result.setManagedPipelineMode(managedPipelineModeInstance);
-            }
-            
-            NodeList elements19 = siteConfigElement.getElementsByTagName("Metadata");
-            Element metadataSequenceElement = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
-            if (metadataSequenceElement != null)
-            {
-                for (int i5 = 0; i5 < metadataSequenceElement.getElementsByTagName("NameValuePair").getLength(); i5 = i5 + 1)
-                {
-                    org.w3c.dom.Element metadataElement = ((org.w3c.dom.Element) metadataSequenceElement.getElementsByTagName("NameValuePair").item(i5));
-                    NodeList elements20 = metadataElement.getElementsByTagName("Name");
-                    String metadataKey = elements20.getLength() > 0 ? ((org.w3c.dom.Element) elements20.item(0)).getTextContent() : null;
-                    NodeList elements21 = metadataElement.getElementsByTagName("Value");
-                    String metadataValue = elements21.getLength() > 0 ? ((org.w3c.dom.Element) elements21.item(0)).getTextContent() : null;
-                    result.getMetadata().put(metadataKey, metadataValue);
-                }
-            }
-            
-            NodeList elements22 = siteConfigElement.getElementsByTagName("NetFrameworkVersion");
-            Element netFrameworkVersionElement = elements22.getLength() > 0 ? ((Element) elements22.item(0)) : null;
-            if (netFrameworkVersionElement != null)
-            {
-                String netFrameworkVersionInstance;
-                netFrameworkVersionInstance = netFrameworkVersionElement.getTextContent();
-                result.setNetFrameworkVersion(netFrameworkVersionInstance);
-            }
-            
-            NodeList elements23 = siteConfigElement.getElementsByTagName("NumberOfWorkers");
-            Element numberOfWorkersElement = elements23.getLength() > 0 ? ((Element) elements23.item(0)) : null;
-            if (numberOfWorkersElement != null && (numberOfWorkersElement.getTextContent() != null && numberOfWorkersElement.getTextContent().isEmpty() != true) == false)
-            {
-                int numberOfWorkersInstance;
-                numberOfWorkersInstance = Integer.parseInt(numberOfWorkersElement.getTextContent());
-                result.setNumberOfWorkers(numberOfWorkersInstance);
-            }
-            
-            NodeList elements24 = siteConfigElement.getElementsByTagName("PhpVersion");
-            Element phpVersionElement = elements24.getLength() > 0 ? ((Element) elements24.item(0)) : null;
-            if (phpVersionElement != null)
-            {
-                String phpVersionInstance;
-                phpVersionInstance = phpVersionElement.getTextContent();
-                result.setPhpVersion(phpVersionInstance);
-            }
-            
-            NodeList elements25 = siteConfigElement.getElementsByTagName("PublishingPassword");
-            Element publishingPasswordElement = elements25.getLength() > 0 ? ((Element) elements25.item(0)) : null;
-            if (publishingPasswordElement != null)
-            {
-                String publishingPasswordInstance;
-                publishingPasswordInstance = publishingPasswordElement.getTextContent();
-                result.setPublishingPassword(publishingPasswordInstance);
-            }
-            
-            NodeList elements26 = siteConfigElement.getElementsByTagName("PublishingUsername");
-            Element publishingUsernameElement = elements26.getLength() > 0 ? ((Element) elements26.item(0)) : null;
-            if (publishingUsernameElement != null)
-            {
-                String publishingUsernameInstance;
-                publishingUsernameInstance = publishingUsernameElement.getTextContent();
-                result.setPublishingUserName(publishingUsernameInstance);
-            }
-            
-            NodeList elements27 = siteConfigElement.getElementsByTagName("RemoteDebuggingEnabled");
-            Element remoteDebuggingEnabledElement = elements27.getLength() > 0 ? ((Element) elements27.item(0)) : null;
-            if (remoteDebuggingEnabledElement != null && (remoteDebuggingEnabledElement.getTextContent() != null && remoteDebuggingEnabledElement.getTextContent().isEmpty() != true) == false)
-            {
-                boolean remoteDebuggingEnabledInstance;
-                remoteDebuggingEnabledInstance = Boolean.parseBoolean(remoteDebuggingEnabledElement.getTextContent());
-                result.setRemoteDebuggingEnabled(remoteDebuggingEnabledInstance);
-            }
-            
-            NodeList elements28 = siteConfigElement.getElementsByTagName("RemoteDebuggingVersion");
-            Element remoteDebuggingVersionElement = elements28.getLength() > 0 ? ((Element) elements28.item(0)) : null;
-            if (remoteDebuggingVersionElement != null)
-            {
-                boolean isNil = false;
-                String nilAttribute = remoteDebuggingVersionElement.getAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
-                if (nilAttribute != null)
-                {
-                    isNil = nilAttribute == "true";
-                }
-                if (isNil == false)
-                {
-                    RemoteDebuggingVersion remoteDebuggingVersionInstance;
-                    remoteDebuggingVersionInstance = RemoteDebuggingVersion.valueOf(remoteDebuggingVersionElement.getTextContent());
-                    result.setRemoteDebuggingVersion(remoteDebuggingVersionInstance);
-                }
-            }
-            
-            NodeList elements29 = siteConfigElement.getElementsByTagName("RequestTracingEnabled");
-            Element requestTracingEnabledElement = elements29.getLength() > 0 ? ((Element) elements29.item(0)) : null;
-            if (requestTracingEnabledElement != null && (requestTracingEnabledElement.getTextContent() != null && requestTracingEnabledElement.getTextContent().isEmpty() != true) == false)
-            {
-                boolean requestTracingEnabledInstance;
-                requestTracingEnabledInstance = Boolean.parseBoolean(requestTracingEnabledElement.getTextContent());
-                result.setRequestTracingEnabled(requestTracingEnabledInstance);
-            }
-            
-            NodeList elements30 = siteConfigElement.getElementsByTagName("RequestTracingExpirationTime");
-            Element requestTracingExpirationTimeElement = elements30.getLength() > 0 ? ((Element) elements30.item(0)) : null;
-            if (requestTracingExpirationTimeElement != null && (requestTracingExpirationTimeElement.getTextContent() != null && requestTracingExpirationTimeElement.getTextContent().isEmpty() != true) == false)
-            {
-                boolean isNil2 = false;
-                String nilAttribute2 = requestTracingExpirationTimeElement.getAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
-                if (nilAttribute2 != null)
-                {
-                    isNil2 = nilAttribute2 == "true";
-                }
-                if (isNil2 == false)
-                {
-                    Calendar requestTracingExpirationTimeInstance;
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(simpleDateFormat.parse(requestTracingExpirationTimeElement.getTextContent()));
-                    requestTracingExpirationTimeInstance = calendar;
-                    result.setRequestTracingExpirationTime(requestTracingExpirationTimeInstance);
-                }
-            }
-            
-            NodeList elements31 = siteConfigElement.getElementsByTagName("ScmType");
-            Element scmTypeElement = elements31.getLength() > 0 ? ((Element) elements31.item(0)) : null;
-            if (scmTypeElement != null)
-            {
-                String scmTypeInstance;
-                scmTypeInstance = scmTypeElement.getTextContent();
-                result.setScmType(scmTypeInstance);
-            }
-            
-            NodeList elements32 = siteConfigElement.getElementsByTagName("Use32BitWorkerProcess");
-            Element use32BitWorkerProcessElement = elements32.getLength() > 0 ? ((Element) elements32.item(0)) : null;
-            if (use32BitWorkerProcessElement != null && (use32BitWorkerProcessElement.getTextContent() != null && use32BitWorkerProcessElement.getTextContent().isEmpty() != true) == false)
-            {
-                boolean use32BitWorkerProcessInstance;
-                use32BitWorkerProcessInstance = Boolean.parseBoolean(use32BitWorkerProcessElement.getTextContent());
-                result.setUse32BitWorkerProcess(use32BitWorkerProcessInstance);
-            }
-            
-            NodeList elements33 = siteConfigElement.getElementsByTagName("WebSocketsEnabled");
-            Element webSocketsEnabledElement = elements33.getLength() > 0 ? ((Element) elements33.item(0)) : null;
-            if (webSocketsEnabledElement != null && (webSocketsEnabledElement.getTextContent() != null && webSocketsEnabledElement.getTextContent().isEmpty() != true) == false)
-            {
-                boolean webSocketsEnabledInstance;
-                webSocketsEnabledInstance = Boolean.parseBoolean(webSocketsEnabledElement.getTextContent());
-                result.setWebSocketsEnabled(webSocketsEnabledInstance);
+                httpResponse.getEntity().getContent().close();
             }
         }
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-        {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
-        }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -2226,6 +2981,16 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * @param webSpaceName The name of the web space.
     * @param webSiteName The name of the web site.
     * @param parameters The Get Web Site Historical Usage Metrics parameters.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return The Get Web Site Historical Usage Metrics operation response.
     */
     @Override
@@ -2259,23 +3024,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         }
         
         // Construct URL
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
-        simpleDateFormat2.setTimeZone(TimeZone.getTimeZone("UTC"));
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/WebSpaces/" + webSpaceName + "/sites/" + webSiteName + "/metrics?";
-        if (parameters.getMetricNames() != null && parameters.getMetricNames().size() > 0)
-        {
-            url = url + "&names=" + URLEncoder.encode(CommaStringBuilder.join(parameters.getMetricNames()), "UTF-8");
-        }
-        if (parameters.getStartTime() != null)
-        {
-            url = url + "&StartTime=" + URLEncoder.encode(simpleDateFormat.format(parameters.getStartTime().getTime()), "UTF-8");
-        }
-        if (parameters.getEndTime() != null)
-        {
-            url = url + "&EndTime=" + URLEncoder.encode(simpleDateFormat2.format(parameters.getEndTime().getTime()), "UTF-8");
-        }
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/WebSpaces/" + webSpaceName + "/sites/" + webSiteName + "/metrics?&names=" + CommaStringBuilder.join(parameters.getMetricNames()) + "&StartTime=" + parameters.getStartTime() + "&EndTime=" + parameters.getEndTime();
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -2285,234 +3034,244 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != HttpStatus.SC_OK)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
-        }
-        
-        // Create Result
-        WebSiteGetHistoricalUsageMetricsResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new WebSiteGetHistoricalUsageMetricsResponse();
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document responseDoc = documentBuilder.parse(responseContent);
-        
-        NodeList elements = responseDoc.getElementsByTagName("MetricResponses");
-        Element metricResponsesElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-        if (metricResponsesElement != null)
-        {
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            WebSiteGetHistoricalUsageMetricsResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new WebSiteGetHistoricalUsageMetricsResponse();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document responseDoc = documentBuilder.parse(responseContent);
+            
+            NodeList elements = responseDoc.getElementsByTagName("MetricResponses");
+            Element metricResponsesElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (metricResponsesElement != null)
             {
-                for (int i1 = 0; i1 < metricResponsesElement.getElementsByTagName("MetricResponse").getLength(); i1 = i1 + 1)
+                if (metricResponsesElement != null)
                 {
-                    org.w3c.dom.Element usageMetricsElement = ((org.w3c.dom.Element) metricResponsesElement.getElementsByTagName("MetricResponse").item(i1));
-                    WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetric metricResponseInstance = new WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetric();
-                    result.getUsageMetrics().add(metricResponseInstance);
-                    
-                    NodeList elements2 = usageMetricsElement.getElementsByTagName("Code");
-                    Element codeElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                    if (codeElement != null)
+                    for (int i1 = 0; i1 < metricResponsesElement.getElementsByTagName("MetricResponse").getLength(); i1 = i1 + 1)
                     {
-                        String codeInstance;
-                        codeInstance = codeElement.getTextContent();
-                        metricResponseInstance.setCode(codeInstance);
-                    }
-                    
-                    NodeList elements3 = usageMetricsElement.getElementsByTagName("Data");
-                    Element dataElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                    if (dataElement != null)
-                    {
-                        WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetricData dataInstance = new WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetricData();
-                        metricResponseInstance.setData(dataInstance);
+                        org.w3c.dom.Element usageMetricsElement = ((org.w3c.dom.Element) metricResponsesElement.getElementsByTagName("MetricResponse").item(i1));
+                        WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetric metricResponseInstance = new WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetric();
+                        result.getUsageMetrics().add(metricResponseInstance);
                         
-                        NodeList elements4 = dataElement.getElementsByTagName("DisplayName");
-                        Element displayNameElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                        if (displayNameElement != null)
+                        NodeList elements2 = usageMetricsElement.getElementsByTagName("Code");
+                        Element codeElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                        if (codeElement != null)
                         {
-                            String displayNameInstance;
-                            displayNameInstance = displayNameElement.getTextContent();
-                            dataInstance.setDisplayName(displayNameInstance);
+                            String codeInstance;
+                            codeInstance = codeElement.getTextContent();
+                            metricResponseInstance.setCode(codeInstance);
                         }
                         
-                        NodeList elements5 = dataElement.getElementsByTagName("EndTime");
-                        Element endTimeElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                        if (endTimeElement != null)
+                        NodeList elements3 = usageMetricsElement.getElementsByTagName("Data");
+                        Element dataElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                        if (dataElement != null)
                         {
-                            Calendar endTimeInstance;
-                            SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                            Calendar calendar = Calendar.getInstance();
-                            calendar.setTime(simpleDateFormat3.parse(endTimeElement.getTextContent()));
-                            endTimeInstance = calendar;
-                            dataInstance.setEndTime(endTimeInstance);
-                        }
-                        
-                        NodeList elements6 = dataElement.getElementsByTagName("Name");
-                        Element nameElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                        if (nameElement != null)
-                        {
-                            String nameInstance;
-                            nameInstance = nameElement.getTextContent();
-                            dataInstance.setName(nameInstance);
-                        }
-                        
-                        NodeList elements7 = dataElement.getElementsByTagName("PrimaryAggregationType");
-                        Element primaryAggregationTypeElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                        if (primaryAggregationTypeElement != null)
-                        {
-                            String primaryAggregationTypeInstance;
-                            primaryAggregationTypeInstance = primaryAggregationTypeElement.getTextContent();
-                            dataInstance.setPrimaryAggregationType(primaryAggregationTypeInstance);
-                        }
-                        
-                        NodeList elements8 = dataElement.getElementsByTagName("StartTime");
-                        Element startTimeElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                        if (startTimeElement != null)
-                        {
-                            Calendar startTimeInstance;
-                            SimpleDateFormat simpleDateFormat4 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                            Calendar calendar2 = Calendar.getInstance();
-                            calendar2.setTime(simpleDateFormat4.parse(startTimeElement.getTextContent()));
-                            startTimeInstance = calendar2;
-                            dataInstance.setStartTime(startTimeInstance);
-                        }
-                        
-                        NodeList elements9 = dataElement.getElementsByTagName("TimeGrain");
-                        Element timeGrainElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-                        if (timeGrainElement != null)
-                        {
-                            String timeGrainInstance;
-                            timeGrainInstance = timeGrainElement.getTextContent();
-                            dataInstance.setTimeGrain(timeGrainInstance);
-                        }
-                        
-                        NodeList elements10 = dataElement.getElementsByTagName("Unit");
-                        Element unitElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
-                        if (unitElement != null)
-                        {
-                            String unitInstance;
-                            unitInstance = unitElement.getTextContent();
-                            dataInstance.setUnit(unitInstance);
-                        }
-                        
-                        NodeList elements11 = dataElement.getElementsByTagName("Values");
-                        Element valuesSequenceElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
-                        if (valuesSequenceElement != null)
-                        {
-                            for (int i2 = 0; i2 < valuesSequenceElement.getElementsByTagName("MetricSample").getLength(); i2 = i2 + 1)
+                            WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetricData dataInstance = new WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetricData();
+                            metricResponseInstance.setData(dataInstance);
+                            
+                            NodeList elements4 = dataElement.getElementsByTagName("DisplayName");
+                            Element displayNameElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                            if (displayNameElement != null)
                             {
-                                org.w3c.dom.Element valuesElement = ((org.w3c.dom.Element) valuesSequenceElement.getElementsByTagName("MetricSample").item(i2));
-                                WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetricSample metricSampleInstance = new WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetricSample();
-                                dataInstance.getValues().add(metricSampleInstance);
-                                
-                                NodeList elements12 = valuesElement.getElementsByTagName("Count");
-                                Element countElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
-                                if (countElement != null)
+                                String displayNameInstance;
+                                displayNameInstance = displayNameElement.getTextContent();
+                                dataInstance.setDisplayName(displayNameInstance);
+                            }
+                            
+                            NodeList elements5 = dataElement.getElementsByTagName("EndTime");
+                            Element endTimeElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                            if (endTimeElement != null)
+                            {
+                                Calendar endTimeInstance;
+                                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                                Calendar calendar = Calendar.getInstance();
+                                calendar.setTime(simpleDateFormat.parse(endTimeElement.getTextContent()));
+                                endTimeInstance = calendar;
+                                dataInstance.setEndTime(endTimeInstance);
+                            }
+                            
+                            NodeList elements6 = dataElement.getElementsByTagName("Name");
+                            Element nameElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                            if (nameElement != null)
+                            {
+                                String nameInstance;
+                                nameInstance = nameElement.getTextContent();
+                                dataInstance.setName(nameInstance);
+                            }
+                            
+                            NodeList elements7 = dataElement.getElementsByTagName("PrimaryAggregationType");
+                            Element primaryAggregationTypeElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
+                            if (primaryAggregationTypeElement != null)
+                            {
+                                String primaryAggregationTypeInstance;
+                                primaryAggregationTypeInstance = primaryAggregationTypeElement.getTextContent();
+                                dataInstance.setPrimaryAggregationType(primaryAggregationTypeInstance);
+                            }
+                            
+                            NodeList elements8 = dataElement.getElementsByTagName("StartTime");
+                            Element startTimeElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
+                            if (startTimeElement != null)
+                            {
+                                Calendar startTimeInstance;
+                                SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                                Calendar calendar2 = Calendar.getInstance();
+                                calendar2.setTime(simpleDateFormat2.parse(startTimeElement.getTextContent()));
+                                startTimeInstance = calendar2;
+                                dataInstance.setStartTime(startTimeInstance);
+                            }
+                            
+                            NodeList elements9 = dataElement.getElementsByTagName("TimeGrain");
+                            Element timeGrainElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
+                            if (timeGrainElement != null)
+                            {
+                                String timeGrainInstance;
+                                timeGrainInstance = timeGrainElement.getTextContent();
+                                dataInstance.setTimeGrain(timeGrainInstance);
+                            }
+                            
+                            NodeList elements10 = dataElement.getElementsByTagName("Unit");
+                            Element unitElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
+                            if (unitElement != null)
+                            {
+                                String unitInstance;
+                                unitInstance = unitElement.getTextContent();
+                                dataInstance.setUnit(unitInstance);
+                            }
+                            
+                            NodeList elements11 = dataElement.getElementsByTagName("Values");
+                            Element valuesSequenceElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
+                            if (valuesSequenceElement != null)
+                            {
+                                for (int i2 = 0; i2 < valuesSequenceElement.getElementsByTagName("MetricSample").getLength(); i2 = i2 + 1)
                                 {
-                                    int countInstance;
-                                    countInstance = Integer.parseInt(countElement.getTextContent());
-                                    metricSampleInstance.setCount(countInstance);
-                                }
-                                
-                                NodeList elements13 = valuesElement.getElementsByTagName("Maximum");
-                                Element maximumElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
-                                if (maximumElement != null)
-                                {
-                                    boolean isNil = false;
-                                    String nilAttribute = maximumElement.getAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
-                                    if (nilAttribute != null)
+                                    org.w3c.dom.Element valuesElement = ((org.w3c.dom.Element) valuesSequenceElement.getElementsByTagName("MetricSample").item(i2));
+                                    WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetricSample metricSampleInstance = new WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetricSample();
+                                    dataInstance.getValues().add(metricSampleInstance);
+                                    
+                                    NodeList elements12 = valuesElement.getElementsByTagName("Count");
+                                    Element countElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
+                                    if (countElement != null)
                                     {
-                                        isNil = nilAttribute == "true";
+                                        int countInstance;
+                                        countInstance = Integer.parseInt(countElement.getTextContent());
+                                        metricSampleInstance.setCount(countInstance);
                                     }
-                                    if (isNil == false)
+                                    
+                                    NodeList elements13 = valuesElement.getElementsByTagName("Maximum");
+                                    Element maximumElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
+                                    if (maximumElement != null)
                                     {
-                                        String maximumInstance;
-                                        maximumInstance = maximumElement.getTextContent();
-                                        metricSampleInstance.setMaximum(maximumInstance);
+                                        boolean isNil = false;
+                                        Attr nilAttribute = maximumElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                                        if (nilAttribute != null)
+                                        {
+                                            isNil = nilAttribute.getValue() == "true";
+                                        }
+                                        if (isNil == false)
+                                        {
+                                            String maximumInstance;
+                                            maximumInstance = maximumElement.getTextContent();
+                                            metricSampleInstance.setMaximum(maximumInstance);
+                                        }
                                     }
-                                }
-                                
-                                NodeList elements14 = valuesElement.getElementsByTagName("Minimum");
-                                Element minimumElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
-                                if (minimumElement != null)
-                                {
-                                    boolean isNil2 = false;
-                                    String nilAttribute2 = minimumElement.getAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
-                                    if (nilAttribute2 != null)
+                                    
+                                    NodeList elements14 = valuesElement.getElementsByTagName("Minimum");
+                                    Element minimumElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
+                                    if (minimumElement != null)
                                     {
-                                        isNil2 = nilAttribute2 == "true";
+                                        boolean isNil2 = false;
+                                        Attr nilAttribute2 = minimumElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                                        if (nilAttribute2 != null)
+                                        {
+                                            isNil2 = nilAttribute2.getValue() == "true";
+                                        }
+                                        if (isNil2 == false)
+                                        {
+                                            String minimumInstance;
+                                            minimumInstance = minimumElement.getTextContent();
+                                            metricSampleInstance.setMinimum(minimumInstance);
+                                        }
                                     }
-                                    if (isNil2 == false)
+                                    
+                                    NodeList elements15 = valuesElement.getElementsByTagName("TimeCreated");
+                                    Element timeCreatedElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
+                                    if (timeCreatedElement != null)
                                     {
-                                        String minimumInstance;
-                                        minimumInstance = minimumElement.getTextContent();
-                                        metricSampleInstance.setMinimum(minimumInstance);
+                                        Calendar timeCreatedInstance;
+                                        SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                                        Calendar calendar3 = Calendar.getInstance();
+                                        calendar3.setTime(simpleDateFormat3.parse(timeCreatedElement.getTextContent()));
+                                        timeCreatedInstance = calendar3;
+                                        metricSampleInstance.setTimeCreated(timeCreatedInstance);
                                     }
-                                }
-                                
-                                NodeList elements15 = valuesElement.getElementsByTagName("TimeCreated");
-                                Element timeCreatedElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
-                                if (timeCreatedElement != null)
-                                {
-                                    Calendar timeCreatedInstance;
-                                    SimpleDateFormat simpleDateFormat5 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                                    Calendar calendar3 = Calendar.getInstance();
-                                    calendar3.setTime(simpleDateFormat5.parse(timeCreatedElement.getTextContent()));
-                                    timeCreatedInstance = calendar3;
-                                    metricSampleInstance.setTimeCreated(timeCreatedInstance);
-                                }
-                                
-                                NodeList elements16 = valuesElement.getElementsByTagName("Total");
-                                Element totalElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
-                                if (totalElement != null)
-                                {
-                                    String totalInstance;
-                                    totalInstance = totalElement.getTextContent();
-                                    metricSampleInstance.setTotal(totalInstance);
+                                    
+                                    NodeList elements16 = valuesElement.getElementsByTagName("Total");
+                                    Element totalElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
+                                    if (totalElement != null)
+                                    {
+                                        String totalInstance;
+                                        totalInstance = totalElement.getTextContent();
+                                        metricSampleInstance.setTotal(totalInstance);
+                                    }
                                 }
                             }
                         }
-                    }
-                    
-                    NodeList elements17 = usageMetricsElement.getElementsByTagName("Message");
-                    Element messageElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
-                    if (messageElement != null)
-                    {
-                        String messageInstance;
-                        messageInstance = messageElement.getTextContent();
-                        metricResponseInstance.setMessage(messageInstance);
+                        
+                        NodeList elements17 = usageMetricsElement.getElementsByTagName("Message");
+                        Element messageElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
+                        if (messageElement != null)
+                        {
+                            String messageInstance;
+                            messageInstance = messageElement.getTextContent();
+                            metricResponseInstance.setMessage(messageInstance);
+                        }
                     }
                 }
             }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -2545,6 +3304,16 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     *
     * @param webSpaceName The name of the web space.
     * @param webSiteName The name of the web site.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
     * @return The Get Web Site Publish Profile operation response.
     */
     @Override
@@ -2583,169 +3352,179 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != HttpStatus.SC_OK)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
-        }
-        
-        // Create Result
-        WebSiteGetPublishProfileResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new WebSiteGetPublishProfileResponse();
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document responseDoc = documentBuilder.parse(responseContent);
-        
-        NodeList elements = responseDoc.getElementsByTagNameNS("", "publishData");
-        Element publishDataElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-        if (publishDataElement != null)
-        {
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            WebSiteGetPublishProfileResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new WebSiteGetPublishProfileResponse();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document responseDoc = documentBuilder.parse(responseContent);
+            
+            NodeList elements = responseDoc.getElementsByTagNameNS("", "publishData");
+            Element publishDataElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (publishDataElement != null)
             {
-                for (int i1 = 0; i1 < publishDataElement.getElementsByTagNameNS("", "publishProfile").getLength(); i1 = i1 + 1)
+                if (publishDataElement != null)
                 {
-                    org.w3c.dom.Element publishProfilesElement = ((org.w3c.dom.Element) publishDataElement.getElementsByTagNameNS("", "publishProfile").item(i1));
-                    WebSiteGetPublishProfileResponse.PublishProfile publishProfileInstance = new WebSiteGetPublishProfileResponse.PublishProfile();
-                    result.getPublishProfiles().add(publishProfileInstance);
-                    
-                    String profileNameAttribute = publishProfilesElement.getAttributeNS("", "profileName");
-                    if (profileNameAttribute != null)
+                    for (int i1 = 0; i1 < publishDataElement.getElementsByTagNameNS("", "publishProfile").getLength(); i1 = i1 + 1)
                     {
-                        publishProfileInstance.setProfileName(profileNameAttribute);
-                    }
-                    
-                    String publishMethodAttribute = publishProfilesElement.getAttributeNS("", "publishMethod");
-                    if (publishMethodAttribute != null)
-                    {
-                        publishProfileInstance.setPublishMethod(publishMethodAttribute);
-                    }
-                    
-                    String publishUrlAttribute = publishProfilesElement.getAttributeNS("", "publishUrl");
-                    if (publishUrlAttribute != null)
-                    {
-                        publishProfileInstance.setPublishUrl(publishUrlAttribute);
-                    }
-                    
-                    String msdeploySiteAttribute = publishProfilesElement.getAttributeNS("", "msdeploySite");
-                    if (msdeploySiteAttribute != null)
-                    {
-                        publishProfileInstance.setMSDeploySite(msdeploySiteAttribute);
-                    }
-                    
-                    String ftpPassiveModeAttribute = publishProfilesElement.getAttributeNS("", "ftpPassiveMode");
-                    if (ftpPassiveModeAttribute != null)
-                    {
-                        publishProfileInstance.setFtpPassiveMode(Boolean.parseBoolean(ftpPassiveModeAttribute));
-                    }
-                    
-                    String userNameAttribute = publishProfilesElement.getAttributeNS("", "userName");
-                    if (userNameAttribute != null)
-                    {
-                        publishProfileInstance.setUserName(userNameAttribute);
-                    }
-                    
-                    String userPWDAttribute = publishProfilesElement.getAttributeNS("", "userPWD");
-                    if (userPWDAttribute != null)
-                    {
-                        publishProfileInstance.setUserPassword(userPWDAttribute);
-                    }
-                    
-                    String destinationAppUrlAttribute = publishProfilesElement.getAttributeNS("", "destinationAppUrl");
-                    if (destinationAppUrlAttribute != null)
-                    {
-                        publishProfileInstance.setDestinationAppUri(new URI(destinationAppUrlAttribute));
-                    }
-                    
-                    String sQLServerDBConnectionStringAttribute = publishProfilesElement.getAttributeNS("", "SQLServerDBConnectionString");
-                    if (sQLServerDBConnectionStringAttribute != null)
-                    {
-                        publishProfileInstance.setSqlServerConnectionString(sQLServerDBConnectionStringAttribute);
-                    }
-                    
-                    String mySQLDBConnectionStringAttribute = publishProfilesElement.getAttributeNS("", "mySQLDBConnectionString");
-                    if (mySQLDBConnectionStringAttribute != null)
-                    {
-                        publishProfileInstance.setMySqlConnectionString(mySQLDBConnectionStringAttribute);
-                    }
-                    
-                    String hostingProviderForumLinkAttribute = publishProfilesElement.getAttributeNS("", "hostingProviderForumLink");
-                    if (hostingProviderForumLinkAttribute != null)
-                    {
-                        publishProfileInstance.setHostingProviderForumUri(new URI(hostingProviderForumLinkAttribute));
-                    }
-                    
-                    String controlPanelLinkAttribute = publishProfilesElement.getAttributeNS("", "controlPanelLink");
-                    if (controlPanelLinkAttribute != null)
-                    {
-                        publishProfileInstance.setControlPanelUri(new URI(controlPanelLinkAttribute));
-                    }
-                    
-                    NodeList elements2 = publishProfilesElement.getElementsByTagNameNS("", "databases");
-                    Element databasesSequenceElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                    if (databasesSequenceElement != null)
-                    {
-                        for (int i2 = 0; i2 < databasesSequenceElement.getElementsByTagNameNS("", "add").getLength(); i2 = i2 + 1)
+                        org.w3c.dom.Element publishProfilesElement = ((org.w3c.dom.Element) publishDataElement.getElementsByTagNameNS("", "publishProfile").item(i1));
+                        WebSiteGetPublishProfileResponse.PublishProfile publishProfileInstance = new WebSiteGetPublishProfileResponse.PublishProfile();
+                        result.getPublishProfiles().add(publishProfileInstance);
+                        
+                        Attr profileNameAttribute = publishProfilesElement.getAttributeNodeNS("", "profileName");
+                        if (profileNameAttribute != null)
                         {
-                            org.w3c.dom.Element databasesElement = ((org.w3c.dom.Element) databasesSequenceElement.getElementsByTagNameNS("", "add").item(i2));
-                            WebSiteGetPublishProfileResponse.Database addInstance = new WebSiteGetPublishProfileResponse.Database();
-                            publishProfileInstance.getDatabases().add(addInstance);
-                            
-                            String nameAttribute = databasesElement.getAttributeNS("", "name");
-                            if (nameAttribute != null)
+                            publishProfileInstance.setProfileName(profileNameAttribute.getValue());
+                        }
+                        
+                        Attr publishMethodAttribute = publishProfilesElement.getAttributeNodeNS("", "publishMethod");
+                        if (publishMethodAttribute != null)
+                        {
+                            publishProfileInstance.setPublishMethod(publishMethodAttribute.getValue());
+                        }
+                        
+                        Attr publishUrlAttribute = publishProfilesElement.getAttributeNodeNS("", "publishUrl");
+                        if (publishUrlAttribute != null)
+                        {
+                            publishProfileInstance.setPublishUrl(publishUrlAttribute.getValue());
+                        }
+                        
+                        Attr msdeploySiteAttribute = publishProfilesElement.getAttributeNodeNS("", "msdeploySite");
+                        if (msdeploySiteAttribute != null)
+                        {
+                            publishProfileInstance.setMSDeploySite(msdeploySiteAttribute.getValue());
+                        }
+                        
+                        Attr ftpPassiveModeAttribute = publishProfilesElement.getAttributeNodeNS("", "ftpPassiveMode");
+                        if (ftpPassiveModeAttribute != null)
+                        {
+                            publishProfileInstance.setFtpPassiveMode(Boolean.parseBoolean(ftpPassiveModeAttribute.getValue()));
+                        }
+                        
+                        Attr userNameAttribute = publishProfilesElement.getAttributeNodeNS("", "userName");
+                        if (userNameAttribute != null)
+                        {
+                            publishProfileInstance.setUserName(userNameAttribute.getValue());
+                        }
+                        
+                        Attr userPWDAttribute = publishProfilesElement.getAttributeNodeNS("", "userPWD");
+                        if (userPWDAttribute != null)
+                        {
+                            publishProfileInstance.setUserPassword(userPWDAttribute.getValue());
+                        }
+                        
+                        Attr destinationAppUrlAttribute = publishProfilesElement.getAttributeNodeNS("", "destinationAppUrl");
+                        if (destinationAppUrlAttribute != null)
+                        {
+                            publishProfileInstance.setDestinationAppUri(new URI(destinationAppUrlAttribute.getValue()));
+                        }
+                        
+                        Attr sQLServerDBConnectionStringAttribute = publishProfilesElement.getAttributeNodeNS("", "SQLServerDBConnectionString");
+                        if (sQLServerDBConnectionStringAttribute != null)
+                        {
+                            publishProfileInstance.setSqlServerConnectionString(sQLServerDBConnectionStringAttribute.getValue());
+                        }
+                        
+                        Attr mySQLDBConnectionStringAttribute = publishProfilesElement.getAttributeNodeNS("", "mySQLDBConnectionString");
+                        if (mySQLDBConnectionStringAttribute != null)
+                        {
+                            publishProfileInstance.setMySqlConnectionString(mySQLDBConnectionStringAttribute.getValue());
+                        }
+                        
+                        Attr hostingProviderForumLinkAttribute = publishProfilesElement.getAttributeNodeNS("", "hostingProviderForumLink");
+                        if (hostingProviderForumLinkAttribute != null)
+                        {
+                            publishProfileInstance.setHostingProviderForumUri(new URI(hostingProviderForumLinkAttribute.getValue()));
+                        }
+                        
+                        Attr controlPanelLinkAttribute = publishProfilesElement.getAttributeNodeNS("", "controlPanelLink");
+                        if (controlPanelLinkAttribute != null)
+                        {
+                            publishProfileInstance.setControlPanelUri(new URI(controlPanelLinkAttribute.getValue()));
+                        }
+                        
+                        NodeList elements2 = publishProfilesElement.getElementsByTagNameNS("", "databases");
+                        Element databasesSequenceElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                        if (databasesSequenceElement != null)
+                        {
+                            for (int i2 = 0; i2 < databasesSequenceElement.getElementsByTagNameNS("", "add").getLength(); i2 = i2 + 1)
                             {
-                                addInstance.setName(nameAttribute);
-                            }
-                            
-                            String connectionStringAttribute = databasesElement.getAttributeNS("", "connectionString");
-                            if (connectionStringAttribute != null)
-                            {
-                                addInstance.setConnectionString(connectionStringAttribute);
-                            }
-                            
-                            String providerNameAttribute = databasesElement.getAttributeNS("", "providerName");
-                            if (providerNameAttribute != null)
-                            {
-                                addInstance.setProviderName(providerNameAttribute);
-                            }
-                            
-                            String typeAttribute = databasesElement.getAttributeNS("", "type");
-                            if (typeAttribute != null)
-                            {
-                                addInstance.setType(typeAttribute);
+                                org.w3c.dom.Element databasesElement = ((org.w3c.dom.Element) databasesSequenceElement.getElementsByTagNameNS("", "add").item(i2));
+                                WebSiteGetPublishProfileResponse.Database addInstance = new WebSiteGetPublishProfileResponse.Database();
+                                publishProfileInstance.getDatabases().add(addInstance);
+                                
+                                Attr nameAttribute = databasesElement.getAttributeNodeNS("", "name");
+                                if (nameAttribute != null)
+                                {
+                                    addInstance.setName(nameAttribute.getValue());
+                                }
+                                
+                                Attr connectionStringAttribute = databasesElement.getAttributeNodeNS("", "connectionString");
+                                if (connectionStringAttribute != null)
+                                {
+                                    addInstance.setConnectionString(connectionStringAttribute.getValue());
+                                }
+                                
+                                Attr providerNameAttribute = databasesElement.getAttributeNodeNS("", "providerName");
+                                if (providerNameAttribute != null)
+                                {
+                                    addInstance.setProviderName(providerNameAttribute.getValue());
+                                }
+                                
+                                Attr typeAttribute = databasesElement.getAttributeNodeNS("", "type");
+                                if (typeAttribute != null)
+                                {
+                                    addInstance.setType(typeAttribute.getValue());
+                                }
                             }
                         }
                     }
                 }
             }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -2784,6 +3563,16 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     *
     * @param webSpaceName The name of the web space.
     * @param webSiteName The name of the web site.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
     * @return The Get Web Site Repository operation response.
     */
     @Override
@@ -2822,53 +3611,63 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != HttpStatus.SC_OK)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            WebSiteGetRepositoryResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new WebSiteGetRepositoryResponse();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document responseDoc = documentBuilder.parse(responseContent);
+            
+            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/", "anyURI");
+            Element anyURIElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            if (anyURIElement != null)
+            {
+                result.setUri(new URI(anyURIElement.getTextContent()));
+            }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        WebSiteGetRepositoryResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new WebSiteGetRepositoryResponse();
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document responseDoc = documentBuilder.parse(responseContent);
-        
-        NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/", "anyURI");
-        Element anyURIElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-        if (anyURIElement != null)
+        finally
         {
-            result.setUri(new URI(anyURIElement.getTextContent()));
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-        {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
-        }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -2907,6 +3706,16 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     *
     * @param webSpaceName The name of the web space.
     * @param webSiteName The name of the web site.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return The Get Web Site Usage Metrics operation response.
     */
     @Override
@@ -2945,145 +3754,155 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != HttpStatus.SC_OK)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
-        }
-        
-        // Create Result
-        WebSiteGetUsageMetricsResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new WebSiteGetUsageMetricsResponse();
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document responseDoc = documentBuilder.parse(responseContent);
-        
-        NodeList elements = responseDoc.getElementsByTagName("Usages");
-        Element usagesElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-        if (usagesElement != null)
-        {
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            WebSiteGetUsageMetricsResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new WebSiteGetUsageMetricsResponse();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document responseDoc = documentBuilder.parse(responseContent);
+            
+            NodeList elements = responseDoc.getElementsByTagName("Usages");
+            Element usagesElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (usagesElement != null)
             {
-                for (int i1 = 0; i1 < usagesElement.getElementsByTagName("Usage").getLength(); i1 = i1 + 1)
+                if (usagesElement != null)
                 {
-                    org.w3c.dom.Element usageMetricsElement = ((org.w3c.dom.Element) usagesElement.getElementsByTagName("Usage").item(i1));
-                    WebSiteGetUsageMetricsResponse.UsageMetric usageInstance = new WebSiteGetUsageMetricsResponse.UsageMetric();
-                    result.getUsageMetrics().add(usageInstance);
-                    
-                    NodeList elements2 = usageMetricsElement.getElementsByTagName("ComputeMode");
-                    Element computeModeElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                    if (computeModeElement != null)
+                    for (int i1 = 0; i1 < usagesElement.getElementsByTagName("Usage").getLength(); i1 = i1 + 1)
                     {
-                        WebSiteComputeMode computeModeInstance;
-                        computeModeInstance = WebSiteComputeMode.valueOf(computeModeElement.getTextContent());
-                        usageInstance.setComputeMode(computeModeInstance);
-                    }
-                    
-                    NodeList elements3 = usageMetricsElement.getElementsByTagName("CurrentValue");
-                    Element currentValueElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                    if (currentValueElement != null)
-                    {
-                        String currentValueInstance;
-                        currentValueInstance = currentValueElement.getTextContent();
-                        usageInstance.setCurrentValue(currentValueInstance);
-                    }
-                    
-                    NodeList elements4 = usageMetricsElement.getElementsByTagName("DisplayName");
-                    Element displayNameElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                    if (displayNameElement != null)
-                    {
-                        String displayNameInstance;
-                        displayNameInstance = displayNameElement.getTextContent();
-                        usageInstance.setDisplayName(displayNameInstance);
-                    }
-                    
-                    NodeList elements5 = usageMetricsElement.getElementsByTagName("Limit");
-                    Element limitElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                    if (limitElement != null)
-                    {
-                        String limitInstance;
-                        limitInstance = limitElement.getTextContent();
-                        usageInstance.setLimit(limitInstance);
-                    }
-                    
-                    NodeList elements6 = usageMetricsElement.getElementsByTagName("Name");
-                    Element nameElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                    if (nameElement != null)
-                    {
-                        String nameInstance;
-                        nameInstance = nameElement.getTextContent();
-                        usageInstance.setName(nameInstance);
-                    }
-                    
-                    NodeList elements7 = usageMetricsElement.getElementsByTagName("NextResetTime");
-                    Element nextResetTimeElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                    if (nextResetTimeElement != null)
-                    {
-                        Calendar nextResetTimeInstance;
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.setTime(simpleDateFormat.parse(nextResetTimeElement.getTextContent()));
-                        nextResetTimeInstance = calendar;
-                        usageInstance.setNextResetTime(nextResetTimeInstance);
-                    }
-                    
-                    NodeList elements8 = usageMetricsElement.getElementsByTagName("ResourceName");
-                    Element resourceNameElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                    if (resourceNameElement != null)
-                    {
-                        String resourceNameInstance;
-                        resourceNameInstance = resourceNameElement.getTextContent();
-                        usageInstance.setResourceName(resourceNameInstance);
-                    }
-                    
-                    NodeList elements9 = usageMetricsElement.getElementsByTagName("SiteMode");
-                    Element siteModeElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-                    if (siteModeElement != null)
-                    {
-                        WebSiteMode siteModeInstance;
-                        siteModeInstance = WebSiteMode.valueOf(siteModeElement.getTextContent());
-                        usageInstance.setSiteMode(siteModeInstance);
-                    }
-                    
-                    NodeList elements10 = usageMetricsElement.getElementsByTagName("Unit");
-                    Element unitElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
-                    if (unitElement != null)
-                    {
-                        String unitInstance;
-                        unitInstance = unitElement.getTextContent();
-                        usageInstance.setUnit(unitInstance);
+                        org.w3c.dom.Element usageMetricsElement = ((org.w3c.dom.Element) usagesElement.getElementsByTagName("Usage").item(i1));
+                        WebSiteGetUsageMetricsResponse.UsageMetric usageInstance = new WebSiteGetUsageMetricsResponse.UsageMetric();
+                        result.getUsageMetrics().add(usageInstance);
+                        
+                        NodeList elements2 = usageMetricsElement.getElementsByTagName("ComputeMode");
+                        Element computeModeElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                        if (computeModeElement != null)
+                        {
+                            WebSiteComputeMode computeModeInstance;
+                            computeModeInstance = WebSiteComputeMode.valueOf(computeModeElement.getTextContent());
+                            usageInstance.setComputeMode(computeModeInstance);
+                        }
+                        
+                        NodeList elements3 = usageMetricsElement.getElementsByTagName("CurrentValue");
+                        Element currentValueElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                        if (currentValueElement != null)
+                        {
+                            String currentValueInstance;
+                            currentValueInstance = currentValueElement.getTextContent();
+                            usageInstance.setCurrentValue(currentValueInstance);
+                        }
+                        
+                        NodeList elements4 = usageMetricsElement.getElementsByTagName("DisplayName");
+                        Element displayNameElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                        if (displayNameElement != null)
+                        {
+                            String displayNameInstance;
+                            displayNameInstance = displayNameElement.getTextContent();
+                            usageInstance.setDisplayName(displayNameInstance);
+                        }
+                        
+                        NodeList elements5 = usageMetricsElement.getElementsByTagName("Limit");
+                        Element limitElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                        if (limitElement != null)
+                        {
+                            String limitInstance;
+                            limitInstance = limitElement.getTextContent();
+                            usageInstance.setLimit(limitInstance);
+                        }
+                        
+                        NodeList elements6 = usageMetricsElement.getElementsByTagName("Name");
+                        Element nameElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                        if (nameElement != null)
+                        {
+                            String nameInstance;
+                            nameInstance = nameElement.getTextContent();
+                            usageInstance.setName(nameInstance);
+                        }
+                        
+                        NodeList elements7 = usageMetricsElement.getElementsByTagName("NextResetTime");
+                        Element nextResetTimeElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
+                        if (nextResetTimeElement != null)
+                        {
+                            Calendar nextResetTimeInstance;
+                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                            Calendar calendar = Calendar.getInstance();
+                            calendar.setTime(simpleDateFormat.parse(nextResetTimeElement.getTextContent()));
+                            nextResetTimeInstance = calendar;
+                            usageInstance.setNextResetTime(nextResetTimeInstance);
+                        }
+                        
+                        NodeList elements8 = usageMetricsElement.getElementsByTagName("ResourceName");
+                        Element resourceNameElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
+                        if (resourceNameElement != null)
+                        {
+                            String resourceNameInstance;
+                            resourceNameInstance = resourceNameElement.getTextContent();
+                            usageInstance.setResourceName(resourceNameInstance);
+                        }
+                        
+                        NodeList elements9 = usageMetricsElement.getElementsByTagName("SiteMode");
+                        Element siteModeElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
+                        if (siteModeElement != null)
+                        {
+                            WebSiteMode siteModeInstance;
+                            siteModeInstance = WebSiteMode.valueOf(siteModeElement.getTextContent());
+                            usageInstance.setSiteMode(siteModeInstance);
+                        }
+                        
+                        NodeList elements10 = usageMetricsElement.getElementsByTagName("Unit");
+                        Element unitElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
+                        if (unitElement != null)
+                        {
+                            String unitInstance;
+                            unitInstance = unitElement.getTextContent();
+                            usageInstance.setUnit(unitInstance);
+                        }
                     }
                 }
             }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -3115,6 +3934,10 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     *
     * @param webSpaceName The name of the web space.
     * @param webSiteName The name of the web site.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -3155,40 +3978,299 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != HttpStatus.SC_OK)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        OperationResponse result = null;
-        result = new OperationResponse();
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
+    }
+    
+    /**
+    * You can swap a web site from one slot to the production slot.
+    *
+    * @param webSpaceName The name of the web space.
+    * @param webSiteName The name of the web site.
+    * @param slotName The name of the web site slot to swap with the production
+    * slot.
+    * @return The response body contains the status of the specified
+    * long-running operation, indicating whether it has succeeded, is
+    * inprogress, has time dout, or has failed. Note that this status is
+    * distinct from the HTTP status code returned for the Get Operation Status
+    * operation itself.  If the long-running operation failed, the response
+    * body includes error information regarding the failure.
+    */
+    @Override
+    public Future<WebSiteOperationStatusResponse> swapSlotsAsync(final String webSpaceName, final String webSiteName, final String slotName)
+    {
+        return this.getClient().getExecutorService().submit(new Callable<WebSiteOperationStatusResponse>() { 
+            @Override
+            public WebSiteOperationStatusResponse call() throws Exception
+            {
+                return swapSlots(webSpaceName, webSiteName, slotName);
+            }
+         });
+    }
+    
+    /**
+    * You can swap a web site from one slot to the production slot.
+    *
+    * @param webSpaceName The name of the web space.
+    * @param webSiteName The name of the web site.
+    * @param slotName The name of the web site slot to swap with the production
+    * slot.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * long-running operation, indicating whether it has succeeded, is
+    * inprogress, has time dout, or has failed. Note that this status is
+    * distinct from the HTTP status code returned for the Get Operation Status
+    * operation itself.  If the long-running operation failed, the response
+    * body includes error information regarding the failure.
+    */
+    @Override
+    public WebSiteOperationStatusResponse swapSlots(String webSpaceName, String webSiteName, String slotName) throws InterruptedException, ExecutionException, ServiceException, IOException
+    {
+        WebSiteManagementClient client2 = this.getClient();
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
         if (shouldTrace)
         {
-            CloudTracing.exit(invocationId, result);
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("webSpaceName", webSpaceName);
+            tracingParameters.put("webSiteName", webSiteName);
+            tracingParameters.put("slotName", slotName);
+            CloudTracing.enter(invocationId, this, "swapSlotsAsync", tracingParameters);
         }
-        return result;
+        try
+        {
+            if (shouldTrace)
+            {
+                client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
+            }
+            
+            WebSiteOperationStatusResponse response = client2.getWebSitesOperations().beginSwapingSlotsAsync(webSpaceName, webSiteName, slotName).get();
+            WebSiteOperationStatusResponse result = client2.getOperationStatusAsync(webSpaceName, webSiteName, response.getOperationId()).get();
+            int delayInSeconds = 30;
+            while ((result.getStatus() != WebSiteOperationStatus.InProgress) == false)
+            {
+                Thread.sleep(delayInSeconds * 1000);
+                result = client2.getOperationStatusAsync(webSpaceName, webSiteName, response.getOperationId()).get();
+                delayInSeconds = 30;
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            
+            if (result.getStatus() != WebSiteOperationStatus.Succeeded)
+            {
+                if (result.getErrors() != null && result.getErrors().size() > 0)
+                {
+                    ServiceException ex = new ServiceException(result.getErrors().get(0).getCode() + " : " + result.getErrors().get(0).getMessage());
+                    ex.setErrorCode(result.getErrors().get(0).getCode());
+                    ex.setErrorMessage(result.getErrors().get(0).getMessage());
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
+                else
+                {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace)
+                    {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
+            }
+            
+            return result;
+        }
+        finally
+        {
+            if (this.getClient() != null && shouldTrace)
+            {
+                this.getClient().close();
+            }
+        }
+    }
+    
+    /**
+    * A web site repository is essentially a GIT repository that you can use to
+    * manage your web site content. By using GIT source control tools, you can
+    * push or pull version controlled changes to your site. This API executes
+    * a repository sync operation.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/dn166967.aspx for
+    * more information)
+    *
+    * @param webSpaceName The name of the web space.
+    * @param webSiteName The name of the web site.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public Future<OperationResponse> syncRepositoryAsync(final String webSpaceName, final String webSiteName)
+    {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception
+            {
+                return syncRepository(webSpaceName, webSiteName);
+            }
+         });
+    }
+    
+    /**
+    * A web site repository is essentially a GIT repository that you can use to
+    * manage your web site content. By using GIT source control tools, you can
+    * push or pull version controlled changes to your site. This API executes
+    * a repository sync operation.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/dn166967.aspx for
+    * more information)
+    *
+    * @param webSpaceName The name of the web space.
+    * @param webSiteName The name of the web site.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public OperationResponse syncRepository(String webSpaceName, String webSiteName) throws IOException, ServiceException
+    {
+        // Validate
+        if (webSpaceName == null)
+        {
+            throw new NullPointerException("webSpaceName");
+        }
+        if (webSiteName == null)
+        {
+            throw new NullPointerException("webSiteName");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace)
+        {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("webSpaceName", webSpaceName);
+            tracingParameters.put("webSiteName", webSiteName);
+            CloudTracing.enter(invocationId, this, "syncRepositoryAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/WebSpaces/" + webSpaceName + "/sites/" + webSiteName + "/repository?action=sync";
+        
+        // Create HTTP transport objects
+        HttpPost httpRequest = new HttpPost(url);
+        
+        // Set Headers
+        httpRequest.setHeader("Content-Length", "0");
+        httpRequest.setHeader("x-ms-version", "2013-08-01");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try
+        {
+            if (shouldTrace)
+            {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
     }
     
     /**
@@ -3223,10 +4305,24 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * @param webSpaceName The name of the web space.
     * @param webSiteName The name of the web site.
     * @param parameters Parameters supplied to the Update Web Site operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
     * @return The Update Web Site operation response.
     */
     @Override
-    public WebSiteUpdateResponse update(String webSpaceName, String webSiteName, WebSiteUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException, ParseException, URISyntaxException
+    public WebSiteUpdateResponse update(String webSpaceName, String webSiteName, WebSiteUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, ParseException, URISyntaxException
     {
         // Validate
         if (webSpaceName == null)
@@ -3319,7 +4415,9 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 else
                 {
                     Element emptyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Thumbprint");
-                    String nilAttribute = null;
+                    Attr nilAttribute = requestDoc.createAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                    nilAttribute.setValue("true");
+                    emptyElement.setAttributeNode(nilAttribute);
                     webSiteHostNameSslStateElement.appendChild(emptyElement);
                 }
                 
@@ -3425,479 +4523,615 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != HttpStatus.SC_OK)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
-        }
-        
-        // Create Result
-        WebSiteUpdateResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new WebSiteUpdateResponse();
-        DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
-        Document responseDoc = documentBuilder2.parse(responseContent);
-        
-        NodeList elements = responseDoc.getElementsByTagName("Site");
-        Element siteElement2 = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-        if (siteElement2 != null)
-        {
-            WebSite webSiteInstance = new WebSite();
-            result.setWebSite(webSiteInstance);
-            
-            NodeList elements2 = siteElement2.getElementsByTagName("AdminEnabled");
-            Element adminEnabledElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-            if (adminEnabledElement != null)
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
             {
-                boolean adminEnabledInstance;
-                adminEnabledInstance = Boolean.parseBoolean(adminEnabledElement.getTextContent());
-                webSiteInstance.setAdminEnabled(adminEnabledInstance);
+                CloudTracing.receiveResponse(invocationId, httpResponse);
             }
-            
-            NodeList elements3 = siteElement2.getElementsByTagName("AvailabilityState");
-            Element availabilityStateElement2 = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-            if (availabilityStateElement2 != null)
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
             {
-                WebSpaceAvailabilityState availabilityStateInstance;
-                availabilityStateInstance = WebSpaceAvailabilityState.valueOf(availabilityStateElement2.getTextContent());
-                webSiteInstance.setAvailabilityState(availabilityStateInstance);
-            }
-            
-            NodeList elements4 = siteElement2.getElementsByTagName("ComputeMode");
-            Element computeModeElement2 = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-            if (computeModeElement2 != null)
-            {
-                WebSiteComputeMode computeModeInstance;
-                computeModeInstance = WebSiteComputeMode.valueOf(computeModeElement2.getTextContent());
-                webSiteInstance.setComputeMode(computeModeInstance);
-            }
-            
-            NodeList elements5 = siteElement2.getElementsByTagName("Enabled");
-            Element enabledElement2 = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-            if (enabledElement2 != null)
-            {
-                boolean enabledInstance;
-                enabledInstance = Boolean.parseBoolean(enabledElement2.getTextContent());
-                webSiteInstance.setEnabled(enabledInstance);
-            }
-            
-            NodeList elements6 = siteElement2.getElementsByTagName("EnabledHostNames");
-            Element enabledHostNamesSequenceElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-            if (enabledHostNamesSequenceElement != null)
-            {
-                for (int i1 = 0; i1 < enabledHostNamesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i1 = i1 + 1)
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
                 {
-                    org.w3c.dom.Element enabledHostNamesElement = ((org.w3c.dom.Element) enabledHostNamesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i1));
-                    webSiteInstance.getEnabledHostNames().add(enabledHostNamesElement.getTextContent());
+                    CloudTracing.error(invocationId, ex);
                 }
+                throw ex;
             }
             
-            NodeList elements7 = siteElement2.getElementsByTagName("HostNameSslStates");
-            Element hostNameSslStatesSequenceElement2 = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-            if (hostNameSslStatesSequenceElement2 != null)
-            {
-                for (int i2 = 0; i2 < hostNameSslStatesSequenceElement2.getElementsByTagName("WebSiteHostNameSslState").getLength(); i2 = i2 + 1)
-                {
-                    org.w3c.dom.Element hostNameSslStatesElement = ((org.w3c.dom.Element) hostNameSslStatesSequenceElement2.getElementsByTagName("WebSiteHostNameSslState").item(i2));
-                    WebSite.WebSiteHostNameSslState webSiteHostNameSslStateInstance = new WebSite.WebSiteHostNameSslState();
-                    webSiteInstance.getHostNameSslStates().add(webSiteHostNameSslStateInstance);
-                    
-                    NodeList elements8 = hostNameSslStatesElement.getElementsByTagName("Name");
-                    Element nameElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                    if (nameElement != null)
-                    {
-                        String nameInstance;
-                        nameInstance = nameElement.getTextContent();
-                        webSiteHostNameSslStateInstance.setName(nameInstance);
-                    }
-                    
-                    NodeList elements9 = hostNameSslStatesElement.getElementsByTagName("SslState");
-                    Element sslStateElement2 = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-                    if (sslStateElement2 != null)
-                    {
-                        WebSiteSslState sslStateInstance;
-                        sslStateInstance = WebSiteSslState.valueOf(sslStateElement2.getTextContent());
-                        webSiteHostNameSslStateInstance.setSslState(sslStateInstance);
-                    }
-                    
-                    NodeList elements10 = hostNameSslStatesElement.getElementsByTagName("Thumbprint");
-                    Element thumbprintElement3 = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
-                    if (thumbprintElement3 != null)
-                    {
-                        boolean isNil = false;
-                        String nilAttribute2 = thumbprintElement3.getAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
-                        if (nilAttribute2 != null)
-                        {
-                            isNil = nilAttribute2 == "true";
-                        }
-                        if (isNil == false)
-                        {
-                            String thumbprintInstance;
-                            thumbprintInstance = thumbprintElement3.getTextContent();
-                            webSiteHostNameSslStateInstance.setThumbprint(thumbprintInstance);
-                        }
-                    }
-                    
-                    NodeList elements11 = hostNameSslStatesElement.getElementsByTagName("VirtualIP");
-                    Element virtualIPElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
-                    if (virtualIPElement != null)
-                    {
-                        boolean isNil2 = false;
-                        String nilAttribute3 = virtualIPElement.getAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
-                        if (nilAttribute3 != null)
-                        {
-                            isNil2 = nilAttribute3 == "true";
-                        }
-                        if (isNil2 == false)
-                        {
-                            InetAddress virtualIPInstance;
-                            virtualIPInstance = InetAddress.getByName(virtualIPElement.getTextContent());
-                            webSiteHostNameSslStateInstance.setVirtualIP(virtualIPInstance);
-                        }
-                    }
-                }
-            }
+            // Create Result
+            WebSiteUpdateResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new WebSiteUpdateResponse();
+            DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
+            Document responseDoc = documentBuilder2.parse(responseContent);
             
-            NodeList elements12 = siteElement2.getElementsByTagName("HostNames");
-            Element hostNamesSequenceElement2 = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
-            if (hostNamesSequenceElement2 != null)
+            NodeList elements = responseDoc.getElementsByTagName("Site");
+            Element siteElement2 = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            if (siteElement2 != null)
             {
-                for (int i3 = 0; i3 < hostNamesSequenceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i3 = i3 + 1)
-                {
-                    org.w3c.dom.Element hostNamesElement = ((org.w3c.dom.Element) hostNamesSequenceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i3));
-                    webSiteInstance.getHostNames().add(hostNamesElement.getTextContent());
-                }
-            }
-            
-            NodeList elements13 = siteElement2.getElementsByTagName("LastModifiedTimeUtc");
-            Element lastModifiedTimeUtcElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
-            if (lastModifiedTimeUtcElement != null)
-            {
-                Calendar lastModifiedTimeUtcInstance;
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(simpleDateFormat.parse(lastModifiedTimeUtcElement.getTextContent()));
-                lastModifiedTimeUtcInstance = calendar;
-                webSiteInstance.setLastModifiedTimeUtc(lastModifiedTimeUtcInstance);
-            }
-            
-            NodeList elements14 = siteElement2.getElementsByTagName("Name");
-            Element nameElement2 = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
-            if (nameElement2 != null)
-            {
-                String nameInstance2;
-                nameInstance2 = nameElement2.getTextContent();
-                webSiteInstance.setName(nameInstance2);
-            }
-            
-            NodeList elements15 = siteElement2.getElementsByTagName("Owner");
-            Element ownerElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
-            if (ownerElement != null)
-            {
-                boolean isNil3 = false;
-                String nilAttribute4 = ownerElement.getAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
-                if (nilAttribute4 != null)
-                {
-                    isNil3 = nilAttribute4 == "true";
-                }
-                if (isNil3 == false)
-                {
-                    String ownerInstance;
-                    ownerInstance = ownerElement.getTextContent();
-                    webSiteInstance.setOwner(ownerInstance);
-                }
-            }
-            
-            NodeList elements16 = siteElement2.getElementsByTagName("RepositorySiteName");
-            Element repositorySiteNameElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
-            if (repositorySiteNameElement != null)
-            {
-                String repositorySiteNameInstance;
-                repositorySiteNameInstance = repositorySiteNameElement.getTextContent();
-                webSiteInstance.setRepositorySiteName(repositorySiteNameInstance);
-            }
-            
-            NodeList elements17 = siteElement2.getElementsByTagName("RuntimeAvailabilityState");
-            Element runtimeAvailabilityStateElement2 = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
-            if (runtimeAvailabilityStateElement2 != null)
-            {
-                WebSiteRuntimeAvailabilityState runtimeAvailabilityStateInstance;
-                runtimeAvailabilityStateInstance = WebSiteRuntimeAvailabilityState.valueOf(runtimeAvailabilityStateElement2.getTextContent());
-                webSiteInstance.setRuntimeAvailabilityState(runtimeAvailabilityStateInstance);
-            }
-            
-            NodeList elements18 = siteElement2.getElementsByTagName("SSLCertificates");
-            Element sSLCertificatesSequenceElement2 = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
-            if (sSLCertificatesSequenceElement2 != null)
-            {
-                for (int i4 = 0; i4 < sSLCertificatesSequenceElement2.getElementsByTagName("Certificate").getLength(); i4 = i4 + 1)
-                {
-                    org.w3c.dom.Element sSLCertificatesElement = ((org.w3c.dom.Element) sSLCertificatesSequenceElement2.getElementsByTagName("Certificate").item(i4));
-                    WebSite.WebSiteSslCertificate certificateInstance = new WebSite.WebSiteSslCertificate();
-                    webSiteInstance.getSslCertificates().add(certificateInstance);
-                    
-                    NodeList elements19 = sSLCertificatesElement.getElementsByTagName("ExpirationDate");
-                    Element expirationDateElement = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
-                    if (expirationDateElement != null)
-                    {
-                        Calendar expirationDateInstance;
-                        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                        Calendar calendar2 = Calendar.getInstance();
-                        calendar2.setTime(simpleDateFormat2.parse(expirationDateElement.getTextContent()));
-                        expirationDateInstance = calendar2;
-                        certificateInstance.setExpirationDate(expirationDateInstance);
-                    }
-                    
-                    NodeList elements20 = sSLCertificatesElement.getElementsByTagName("FriendlyName");
-                    Element friendlyNameElement = elements20.getLength() > 0 ? ((Element) elements20.item(0)) : null;
-                    if (friendlyNameElement != null)
-                    {
-                        String friendlyNameInstance;
-                        friendlyNameInstance = friendlyNameElement.getTextContent();
-                        certificateInstance.setFriendlyName(friendlyNameInstance);
-                    }
-                    
-                    NodeList elements21 = sSLCertificatesElement.getElementsByTagName("HostNames");
-                    Element hostNamesSequenceElement3 = elements21.getLength() > 0 ? ((Element) elements21.item(0)) : null;
-                    if (hostNamesSequenceElement3 != null)
-                    {
-                        for (int i5 = 0; i5 < hostNamesSequenceElement3.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i5 = i5 + 1)
-                        {
-                            org.w3c.dom.Element hostNamesElement2 = ((org.w3c.dom.Element) hostNamesSequenceElement3.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i5));
-                            certificateInstance.getHostNames().add(hostNamesElement2.getTextContent());
-                        }
-                    }
-                    
-                    NodeList elements22 = sSLCertificatesElement.getElementsByTagName("IssueDate");
-                    Element issueDateElement = elements22.getLength() > 0 ? ((Element) elements22.item(0)) : null;
-                    if (issueDateElement != null)
-                    {
-                        Calendar issueDateInstance;
-                        SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                        Calendar calendar3 = Calendar.getInstance();
-                        calendar3.setTime(simpleDateFormat3.parse(issueDateElement.getTextContent()));
-                        issueDateInstance = calendar3;
-                        certificateInstance.setIssueDate(issueDateInstance);
-                    }
-                    
-                    NodeList elements23 = sSLCertificatesElement.getElementsByTagName("Issuer");
-                    Element issuerElement = elements23.getLength() > 0 ? ((Element) elements23.item(0)) : null;
-                    if (issuerElement != null)
-                    {
-                        String issuerInstance;
-                        issuerInstance = issuerElement.getTextContent();
-                        certificateInstance.setIssuer(issuerInstance);
-                    }
-                    
-                    NodeList elements24 = sSLCertificatesElement.getElementsByTagName("Password");
-                    Element passwordElement2 = elements24.getLength() > 0 ? ((Element) elements24.item(0)) : null;
-                    if (passwordElement2 != null)
-                    {
-                        String passwordInstance;
-                        passwordInstance = passwordElement2.getTextContent();
-                        certificateInstance.setPassword(passwordInstance);
-                    }
-                    
-                    NodeList elements25 = sSLCertificatesElement.getElementsByTagName("PfxBlob");
-                    Element pfxBlobElement2 = elements25.getLength() > 0 ? ((Element) elements25.item(0)) : null;
-                    if (pfxBlobElement2 != null)
-                    {
-                        byte[] pfxBlobInstance;
-                        pfxBlobInstance = pfxBlobElement2.getTextContent() != null ? Base64.decodeBase64(pfxBlobElement2.getTextContent().getBytes()) : null;
-                        certificateInstance.setPfxBlob(pfxBlobInstance);
-                    }
-                    
-                    NodeList elements26 = sSLCertificatesElement.getElementsByTagName("SelfLink");
-                    Element selfLinkElement = elements26.getLength() > 0 ? ((Element) elements26.item(0)) : null;
-                    if (selfLinkElement != null)
-                    {
-                        URI selfLinkInstance;
-                        selfLinkInstance = new URI(selfLinkElement.getTextContent());
-                        certificateInstance.setSelfLinkUri(selfLinkInstance);
-                    }
-                    
-                    NodeList elements27 = sSLCertificatesElement.getElementsByTagName("SiteName");
-                    Element siteNameElement = elements27.getLength() > 0 ? ((Element) elements27.item(0)) : null;
-                    if (siteNameElement != null)
-                    {
-                        String siteNameInstance;
-                        siteNameInstance = siteNameElement.getTextContent();
-                        certificateInstance.setSiteName(siteNameInstance);
-                    }
-                    
-                    NodeList elements28 = sSLCertificatesElement.getElementsByTagName("SubjectName");
-                    Element subjectNameElement = elements28.getLength() > 0 ? ((Element) elements28.item(0)) : null;
-                    if (subjectNameElement != null)
-                    {
-                        String subjectNameInstance;
-                        subjectNameInstance = subjectNameElement.getTextContent();
-                        certificateInstance.setSubjectName(subjectNameInstance);
-                    }
-                    
-                    NodeList elements29 = sSLCertificatesElement.getElementsByTagName("Thumbprint");
-                    Element thumbprintElement4 = elements29.getLength() > 0 ? ((Element) elements29.item(0)) : null;
-                    if (thumbprintElement4 != null)
-                    {
-                        String thumbprintInstance2;
-                        thumbprintInstance2 = thumbprintElement4.getTextContent();
-                        certificateInstance.setThumbprint(thumbprintInstance2);
-                    }
-                    
-                    NodeList elements30 = sSLCertificatesElement.getElementsByTagName("ToDelete");
-                    Element toDeleteElement2 = elements30.getLength() > 0 ? ((Element) elements30.item(0)) : null;
-                    if (toDeleteElement2 != null)
-                    {
-                        boolean toDeleteInstance;
-                        toDeleteInstance = Boolean.parseBoolean(toDeleteElement2.getTextContent());
-                        certificateInstance.setIsToBeDeleted(toDeleteInstance);
-                    }
-                    
-                    NodeList elements31 = sSLCertificatesElement.getElementsByTagName("Valid");
-                    Element validElement = elements31.getLength() > 0 ? ((Element) elements31.item(0)) : null;
-                    if (validElement != null)
-                    {
-                        boolean validInstance;
-                        validInstance = Boolean.parseBoolean(validElement.getTextContent());
-                        certificateInstance.setIsValid(validInstance);
-                    }
-                }
-            }
-            
-            NodeList elements32 = siteElement2.getElementsByTagName("SelfLink");
-            Element selfLinkElement2 = elements32.getLength() > 0 ? ((Element) elements32.item(0)) : null;
-            if (selfLinkElement2 != null)
-            {
-                URI selfLinkInstance2;
-                selfLinkInstance2 = new URI(selfLinkElement2.getTextContent());
-                webSiteInstance.setUri(selfLinkInstance2);
-            }
-            
-            NodeList elements33 = siteElement2.getElementsByTagName("ServerFarm");
-            Element serverFarmElement2 = elements33.getLength() > 0 ? ((Element) elements33.item(0)) : null;
-            if (serverFarmElement2 != null)
-            {
-                String serverFarmInstance;
-                serverFarmInstance = serverFarmElement2.getTextContent();
-                webSiteInstance.setServerFarm(serverFarmInstance);
-            }
-            
-            NodeList elements34 = siteElement2.getElementsByTagName("SiteMode");
-            Element siteModeElement2 = elements34.getLength() > 0 ? ((Element) elements34.item(0)) : null;
-            if (siteModeElement2 != null)
-            {
-                WebSiteMode siteModeInstance;
-                siteModeInstance = WebSiteMode.valueOf(siteModeElement2.getTextContent());
-                webSiteInstance.setSiteMode(siteModeInstance);
-            }
-            
-            NodeList elements35 = siteElement2.getElementsByTagName("SiteProperties");
-            Element sitePropertiesElement = elements35.getLength() > 0 ? ((Element) elements35.item(0)) : null;
-            if (sitePropertiesElement != null)
-            {
-                WebSite.WebSiteProperties sitePropertiesInstance = new WebSite.WebSiteProperties();
-                webSiteInstance.setSiteProperties(sitePropertiesInstance);
+                WebSite webSiteInstance = new WebSite();
+                result.setWebSite(webSiteInstance);
                 
-                NodeList elements36 = sitePropertiesElement.getElementsByTagName("AppSettings");
-                Element appSettingsSequenceElement = elements36.getLength() > 0 ? ((Element) elements36.item(0)) : null;
-                if (appSettingsSequenceElement != null)
+                NodeList elements2 = siteElement2.getElementsByTagName("AdminEnabled");
+                Element adminEnabledElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                if (adminEnabledElement != null)
                 {
-                    for (int i6 = 0; i6 < appSettingsSequenceElement.getElementsByTagName("NameValuePair").getLength(); i6 = i6 + 1)
+                    boolean adminEnabledInstance;
+                    adminEnabledInstance = Boolean.parseBoolean(adminEnabledElement.getTextContent());
+                    webSiteInstance.setAdminEnabled(adminEnabledInstance);
+                }
+                
+                NodeList elements3 = siteElement2.getElementsByTagName("AvailabilityState");
+                Element availabilityStateElement2 = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                if (availabilityStateElement2 != null)
+                {
+                    WebSpaceAvailabilityState availabilityStateInstance;
+                    availabilityStateInstance = WebSpaceAvailabilityState.valueOf(availabilityStateElement2.getTextContent());
+                    webSiteInstance.setAvailabilityState(availabilityStateInstance);
+                }
+                
+                NodeList elements4 = siteElement2.getElementsByTagName("ComputeMode");
+                Element computeModeElement2 = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                if (computeModeElement2 != null)
+                {
+                    WebSiteComputeMode computeModeInstance;
+                    computeModeInstance = WebSiteComputeMode.valueOf(computeModeElement2.getTextContent());
+                    webSiteInstance.setComputeMode(computeModeInstance);
+                }
+                
+                NodeList elements5 = siteElement2.getElementsByTagName("Enabled");
+                Element enabledElement2 = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                if (enabledElement2 != null)
+                {
+                    boolean enabledInstance;
+                    enabledInstance = Boolean.parseBoolean(enabledElement2.getTextContent());
+                    webSiteInstance.setEnabled(enabledInstance);
+                }
+                
+                NodeList elements6 = siteElement2.getElementsByTagName("EnabledHostNames");
+                Element enabledHostNamesSequenceElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                if (enabledHostNamesSequenceElement != null)
+                {
+                    for (int i1 = 0; i1 < enabledHostNamesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i1 = i1 + 1)
                     {
-                        org.w3c.dom.Element appSettingsElement = ((org.w3c.dom.Element) appSettingsSequenceElement.getElementsByTagName("NameValuePair").item(i6));
-                        NodeList elements37 = appSettingsElement.getElementsByTagName("Name");
-                        String appSettingsKey = elements37.getLength() > 0 ? ((org.w3c.dom.Element) elements37.item(0)).getTextContent() : null;
-                        NodeList elements38 = appSettingsElement.getElementsByTagName("Value");
-                        String appSettingsValue = elements38.getLength() > 0 ? ((org.w3c.dom.Element) elements38.item(0)).getTextContent() : null;
-                        sitePropertiesInstance.getAppSettings().put(appSettingsKey, appSettingsValue);
+                        org.w3c.dom.Element enabledHostNamesElement = ((org.w3c.dom.Element) enabledHostNamesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i1));
+                        webSiteInstance.getEnabledHostNames().add(enabledHostNamesElement.getTextContent());
                     }
                 }
                 
-                NodeList elements39 = sitePropertiesElement.getElementsByTagName("Metadata");
-                Element metadataSequenceElement = elements39.getLength() > 0 ? ((Element) elements39.item(0)) : null;
-                if (metadataSequenceElement != null)
+                NodeList elements7 = siteElement2.getElementsByTagName("HostNameSslStates");
+                Element hostNameSslStatesSequenceElement2 = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
+                if (hostNameSslStatesSequenceElement2 != null)
                 {
-                    for (int i7 = 0; i7 < metadataSequenceElement.getElementsByTagName("NameValuePair").getLength(); i7 = i7 + 1)
+                    for (int i2 = 0; i2 < hostNameSslStatesSequenceElement2.getElementsByTagName("WebSiteHostNameSslState").getLength(); i2 = i2 + 1)
                     {
-                        org.w3c.dom.Element metadataElement = ((org.w3c.dom.Element) metadataSequenceElement.getElementsByTagName("NameValuePair").item(i7));
-                        NodeList elements40 = metadataElement.getElementsByTagName("Name");
-                        String metadataKey = elements40.getLength() > 0 ? ((org.w3c.dom.Element) elements40.item(0)).getTextContent() : null;
-                        NodeList elements41 = metadataElement.getElementsByTagName("Value");
-                        String metadataValue = elements41.getLength() > 0 ? ((org.w3c.dom.Element) elements41.item(0)).getTextContent() : null;
-                        sitePropertiesInstance.getMetadata().put(metadataKey, metadataValue);
+                        org.w3c.dom.Element hostNameSslStatesElement = ((org.w3c.dom.Element) hostNameSslStatesSequenceElement2.getElementsByTagName("WebSiteHostNameSslState").item(i2));
+                        WebSite.WebSiteHostNameSslState webSiteHostNameSslStateInstance = new WebSite.WebSiteHostNameSslState();
+                        webSiteInstance.getHostNameSslStates().add(webSiteHostNameSslStateInstance);
+                        
+                        NodeList elements8 = hostNameSslStatesElement.getElementsByTagName("Name");
+                        Element nameElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
+                        if (nameElement != null)
+                        {
+                            String nameInstance;
+                            nameInstance = nameElement.getTextContent();
+                            webSiteHostNameSslStateInstance.setName(nameInstance);
+                        }
+                        
+                        NodeList elements9 = hostNameSslStatesElement.getElementsByTagName("SslState");
+                        Element sslStateElement2 = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
+                        if (sslStateElement2 != null)
+                        {
+                            WebSiteSslState sslStateInstance;
+                            sslStateInstance = WebSiteSslState.valueOf(sslStateElement2.getTextContent());
+                            webSiteHostNameSslStateInstance.setSslState(sslStateInstance);
+                        }
+                        
+                        NodeList elements10 = hostNameSslStatesElement.getElementsByTagName("Thumbprint");
+                        Element thumbprintElement3 = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
+                        if (thumbprintElement3 != null)
+                        {
+                            boolean isNil = false;
+                            Attr nilAttribute2 = thumbprintElement3.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                            if (nilAttribute2 != null)
+                            {
+                                isNil = nilAttribute2.getValue() == "true";
+                            }
+                            if (isNil == false)
+                            {
+                                String thumbprintInstance;
+                                thumbprintInstance = thumbprintElement3.getTextContent();
+                                webSiteHostNameSslStateInstance.setThumbprint(thumbprintInstance);
+                            }
+                        }
+                        
+                        NodeList elements11 = hostNameSslStatesElement.getElementsByTagName("VirtualIP");
+                        Element virtualIPElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
+                        if (virtualIPElement != null)
+                        {
+                            boolean isNil2 = false;
+                            Attr nilAttribute3 = virtualIPElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                            if (nilAttribute3 != null)
+                            {
+                                isNil2 = nilAttribute3.getValue() == "true";
+                            }
+                            if (isNil2 == false)
+                            {
+                                InetAddress virtualIPInstance;
+                                virtualIPInstance = InetAddress.getByName(virtualIPElement.getTextContent());
+                                webSiteHostNameSslStateInstance.setVirtualIP(virtualIPInstance);
+                            }
+                        }
                     }
                 }
                 
-                NodeList elements42 = sitePropertiesElement.getElementsByTagName("Properties");
-                Element propertiesSequenceElement = elements42.getLength() > 0 ? ((Element) elements42.item(0)) : null;
-                if (propertiesSequenceElement != null)
+                NodeList elements12 = siteElement2.getElementsByTagName("HostNames");
+                Element hostNamesSequenceElement2 = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
+                if (hostNamesSequenceElement2 != null)
                 {
-                    for (int i8 = 0; i8 < propertiesSequenceElement.getElementsByTagName("NameValuePair").getLength(); i8 = i8 + 1)
+                    for (int i3 = 0; i3 < hostNamesSequenceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i3 = i3 + 1)
                     {
-                        org.w3c.dom.Element propertiesElement = ((org.w3c.dom.Element) propertiesSequenceElement.getElementsByTagName("NameValuePair").item(i8));
-                        NodeList elements43 = propertiesElement.getElementsByTagName("Name");
-                        String propertiesKey = elements43.getLength() > 0 ? ((org.w3c.dom.Element) elements43.item(0)).getTextContent() : null;
-                        NodeList elements44 = propertiesElement.getElementsByTagName("Value");
-                        String propertiesValue = elements44.getLength() > 0 ? ((org.w3c.dom.Element) elements44.item(0)).getTextContent() : null;
-                        sitePropertiesInstance.getProperties().put(propertiesKey, propertiesValue);
+                        org.w3c.dom.Element hostNamesElement = ((org.w3c.dom.Element) hostNamesSequenceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i3));
+                        webSiteInstance.getHostNames().add(hostNamesElement.getTextContent());
                     }
+                }
+                
+                NodeList elements13 = siteElement2.getElementsByTagName("LastModifiedTimeUtc");
+                Element lastModifiedTimeUtcElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
+                if (lastModifiedTimeUtcElement != null)
+                {
+                    Calendar lastModifiedTimeUtcInstance;
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(simpleDateFormat.parse(lastModifiedTimeUtcElement.getTextContent()));
+                    lastModifiedTimeUtcInstance = calendar;
+                    webSiteInstance.setLastModifiedTimeUtc(lastModifiedTimeUtcInstance);
+                }
+                
+                NodeList elements14 = siteElement2.getElementsByTagName("Name");
+                Element nameElement2 = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
+                if (nameElement2 != null)
+                {
+                    String nameInstance2;
+                    nameInstance2 = nameElement2.getTextContent();
+                    webSiteInstance.setName(nameInstance2);
+                }
+                
+                NodeList elements15 = siteElement2.getElementsByTagName("Owner");
+                Element ownerElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
+                if (ownerElement != null)
+                {
+                    boolean isNil3 = false;
+                    Attr nilAttribute4 = ownerElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                    if (nilAttribute4 != null)
+                    {
+                        isNil3 = nilAttribute4.getValue() == "true";
+                    }
+                    if (isNil3 == false)
+                    {
+                        String ownerInstance;
+                        ownerInstance = ownerElement.getTextContent();
+                        webSiteInstance.setOwner(ownerInstance);
+                    }
+                }
+                
+                NodeList elements16 = siteElement2.getElementsByTagName("RepositorySiteName");
+                Element repositorySiteNameElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
+                if (repositorySiteNameElement != null)
+                {
+                    String repositorySiteNameInstance;
+                    repositorySiteNameInstance = repositorySiteNameElement.getTextContent();
+                    webSiteInstance.setRepositorySiteName(repositorySiteNameInstance);
+                }
+                
+                NodeList elements17 = siteElement2.getElementsByTagName("RuntimeAvailabilityState");
+                Element runtimeAvailabilityStateElement2 = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
+                if (runtimeAvailabilityStateElement2 != null)
+                {
+                    WebSiteRuntimeAvailabilityState runtimeAvailabilityStateInstance;
+                    runtimeAvailabilityStateInstance = WebSiteRuntimeAvailabilityState.valueOf(runtimeAvailabilityStateElement2.getTextContent());
+                    webSiteInstance.setRuntimeAvailabilityState(runtimeAvailabilityStateInstance);
+                }
+                
+                NodeList elements18 = siteElement2.getElementsByTagName("SSLCertificates");
+                Element sSLCertificatesSequenceElement2 = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
+                if (sSLCertificatesSequenceElement2 != null)
+                {
+                    boolean isNil4 = false;
+                    Attr nilAttribute5 = sSLCertificatesSequenceElement2.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                    if (nilAttribute5 != null)
+                    {
+                        isNil4 = nilAttribute5.getValue() == "true";
+                    }
+                    if (isNil4 == false)
+                    {
+                        for (int i4 = 0; i4 < sSLCertificatesSequenceElement2.getElementsByTagName("Certificate").getLength(); i4 = i4 + 1)
+                        {
+                            org.w3c.dom.Element sSLCertificatesElement = ((org.w3c.dom.Element) sSLCertificatesSequenceElement2.getElementsByTagName("Certificate").item(i4));
+                            WebSite.WebSiteSslCertificate certificateInstance = new WebSite.WebSiteSslCertificate();
+                            webSiteInstance.getSslCertificates().add(certificateInstance);
+                            
+                            NodeList elements19 = sSLCertificatesElement.getElementsByTagName("ExpirationDate");
+                            Element expirationDateElement = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
+                            if (expirationDateElement != null && (expirationDateElement.getTextContent() != null && expirationDateElement.getTextContent().isEmpty() != true) == false)
+                            {
+                                boolean isNil5 = false;
+                                Attr nilAttribute6 = expirationDateElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                                if (nilAttribute6 != null)
+                                {
+                                    isNil5 = nilAttribute6.getValue() == "true";
+                                }
+                                if (isNil5 == false)
+                                {
+                                    Calendar expirationDateInstance;
+                                    SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                                    Calendar calendar2 = Calendar.getInstance();
+                                    calendar2.setTime(simpleDateFormat2.parse(expirationDateElement.getTextContent()));
+                                    expirationDateInstance = calendar2;
+                                    certificateInstance.setExpirationDate(expirationDateInstance);
+                                }
+                            }
+                            
+                            NodeList elements20 = sSLCertificatesElement.getElementsByTagName("FriendlyName");
+                            Element friendlyNameElement = elements20.getLength() > 0 ? ((Element) elements20.item(0)) : null;
+                            if (friendlyNameElement != null)
+                            {
+                                boolean isNil6 = false;
+                                Attr nilAttribute7 = friendlyNameElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                                if (nilAttribute7 != null)
+                                {
+                                    isNil6 = nilAttribute7.getValue() == "true";
+                                }
+                                if (isNil6 == false)
+                                {
+                                    String friendlyNameInstance;
+                                    friendlyNameInstance = friendlyNameElement.getTextContent();
+                                    certificateInstance.setFriendlyName(friendlyNameInstance);
+                                }
+                            }
+                            
+                            NodeList elements21 = sSLCertificatesElement.getElementsByTagName("HostNames");
+                            Element hostNamesSequenceElement3 = elements21.getLength() > 0 ? ((Element) elements21.item(0)) : null;
+                            if (hostNamesSequenceElement3 != null)
+                            {
+                                boolean isNil7 = false;
+                                Attr nilAttribute8 = hostNamesSequenceElement3.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                                if (nilAttribute8 != null)
+                                {
+                                    isNil7 = nilAttribute8.getValue() == "true";
+                                }
+                                if (isNil7 == false)
+                                {
+                                    for (int i5 = 0; i5 < hostNamesSequenceElement3.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i5 = i5 + 1)
+                                    {
+                                        org.w3c.dom.Element hostNamesElement2 = ((org.w3c.dom.Element) hostNamesSequenceElement3.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i5));
+                                        certificateInstance.getHostNames().add(hostNamesElement2.getTextContent());
+                                    }
+                                }
+                            }
+                            
+                            NodeList elements22 = sSLCertificatesElement.getElementsByTagName("IssueDate");
+                            Element issueDateElement = elements22.getLength() > 0 ? ((Element) elements22.item(0)) : null;
+                            if (issueDateElement != null && (issueDateElement.getTextContent() != null && issueDateElement.getTextContent().isEmpty() != true) == false)
+                            {
+                                boolean isNil8 = false;
+                                Attr nilAttribute9 = issueDateElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                                if (nilAttribute9 != null)
+                                {
+                                    isNil8 = nilAttribute9.getValue() == "true";
+                                }
+                                if (isNil8 == false)
+                                {
+                                    Calendar issueDateInstance;
+                                    SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                                    Calendar calendar3 = Calendar.getInstance();
+                                    calendar3.setTime(simpleDateFormat3.parse(issueDateElement.getTextContent()));
+                                    issueDateInstance = calendar3;
+                                    certificateInstance.setIssueDate(issueDateInstance);
+                                }
+                            }
+                            
+                            NodeList elements23 = sSLCertificatesElement.getElementsByTagName("Issuer");
+                            Element issuerElement = elements23.getLength() > 0 ? ((Element) elements23.item(0)) : null;
+                            if (issuerElement != null)
+                            {
+                                boolean isNil9 = false;
+                                Attr nilAttribute10 = issuerElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                                if (nilAttribute10 != null)
+                                {
+                                    isNil9 = nilAttribute10.getValue() == "true";
+                                }
+                                if (isNil9 == false)
+                                {
+                                    String issuerInstance;
+                                    issuerInstance = issuerElement.getTextContent();
+                                    certificateInstance.setIssuer(issuerInstance);
+                                }
+                            }
+                            
+                            NodeList elements24 = sSLCertificatesElement.getElementsByTagName("Password");
+                            Element passwordElement2 = elements24.getLength() > 0 ? ((Element) elements24.item(0)) : null;
+                            if (passwordElement2 != null)
+                            {
+                                boolean isNil10 = false;
+                                Attr nilAttribute11 = passwordElement2.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                                if (nilAttribute11 != null)
+                                {
+                                    isNil10 = nilAttribute11.getValue() == "true";
+                                }
+                                if (isNil10 == false)
+                                {
+                                    String passwordInstance;
+                                    passwordInstance = passwordElement2.getTextContent();
+                                    certificateInstance.setPassword(passwordInstance);
+                                }
+                            }
+                            
+                            NodeList elements25 = sSLCertificatesElement.getElementsByTagName("PfxBlob");
+                            Element pfxBlobElement2 = elements25.getLength() > 0 ? ((Element) elements25.item(0)) : null;
+                            if (pfxBlobElement2 != null)
+                            {
+                                boolean isNil11 = false;
+                                Attr nilAttribute12 = pfxBlobElement2.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                                if (nilAttribute12 != null)
+                                {
+                                    isNil11 = nilAttribute12.getValue() == "true";
+                                }
+                                if (isNil11 == false)
+                                {
+                                    byte[] pfxBlobInstance;
+                                    pfxBlobInstance = pfxBlobElement2.getTextContent() != null ? Base64.decodeBase64(pfxBlobElement2.getTextContent().getBytes()) : null;
+                                    certificateInstance.setPfxBlob(pfxBlobInstance);
+                                }
+                            }
+                            
+                            NodeList elements26 = sSLCertificatesElement.getElementsByTagName("SelfLink");
+                            Element selfLinkElement = elements26.getLength() > 0 ? ((Element) elements26.item(0)) : null;
+                            if (selfLinkElement != null)
+                            {
+                                boolean isNil12 = false;
+                                Attr nilAttribute13 = selfLinkElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                                if (nilAttribute13 != null)
+                                {
+                                    isNil12 = nilAttribute13.getValue() == "true";
+                                }
+                                if (isNil12 == false)
+                                {
+                                    URI selfLinkInstance;
+                                    selfLinkInstance = new URI(selfLinkElement.getTextContent());
+                                    certificateInstance.setSelfLinkUri(selfLinkInstance);
+                                }
+                            }
+                            
+                            NodeList elements27 = sSLCertificatesElement.getElementsByTagName("SiteName");
+                            Element siteNameElement = elements27.getLength() > 0 ? ((Element) elements27.item(0)) : null;
+                            if (siteNameElement != null)
+                            {
+                                boolean isNil13 = false;
+                                Attr nilAttribute14 = siteNameElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                                if (nilAttribute14 != null)
+                                {
+                                    isNil13 = nilAttribute14.getValue() == "true";
+                                }
+                                if (isNil13 == false)
+                                {
+                                    String siteNameInstance;
+                                    siteNameInstance = siteNameElement.getTextContent();
+                                    certificateInstance.setSiteName(siteNameInstance);
+                                }
+                            }
+                            
+                            NodeList elements28 = sSLCertificatesElement.getElementsByTagName("SubjectName");
+                            Element subjectNameElement = elements28.getLength() > 0 ? ((Element) elements28.item(0)) : null;
+                            if (subjectNameElement != null)
+                            {
+                                boolean isNil14 = false;
+                                Attr nilAttribute15 = subjectNameElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                                if (nilAttribute15 != null)
+                                {
+                                    isNil14 = nilAttribute15.getValue() == "true";
+                                }
+                                if (isNil14 == false)
+                                {
+                                    String subjectNameInstance;
+                                    subjectNameInstance = subjectNameElement.getTextContent();
+                                    certificateInstance.setSubjectName(subjectNameInstance);
+                                }
+                            }
+                            
+                            NodeList elements29 = sSLCertificatesElement.getElementsByTagName("Thumbprint");
+                            Element thumbprintElement4 = elements29.getLength() > 0 ? ((Element) elements29.item(0)) : null;
+                            if (thumbprintElement4 != null)
+                            {
+                                boolean isNil15 = false;
+                                Attr nilAttribute16 = thumbprintElement4.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                                if (nilAttribute16 != null)
+                                {
+                                    isNil15 = nilAttribute16.getValue() == "true";
+                                }
+                                if (isNil15 == false)
+                                {
+                                    String thumbprintInstance2;
+                                    thumbprintInstance2 = thumbprintElement4.getTextContent();
+                                    certificateInstance.setThumbprint(thumbprintInstance2);
+                                }
+                            }
+                            
+                            NodeList elements30 = sSLCertificatesElement.getElementsByTagName("ToDelete");
+                            Element toDeleteElement2 = elements30.getLength() > 0 ? ((Element) elements30.item(0)) : null;
+                            if (toDeleteElement2 != null && (toDeleteElement2.getTextContent() != null && toDeleteElement2.getTextContent().isEmpty() != true) == false)
+                            {
+                                boolean isNil16 = false;
+                                Attr nilAttribute17 = toDeleteElement2.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                                if (nilAttribute17 != null)
+                                {
+                                    isNil16 = nilAttribute17.getValue() == "true";
+                                }
+                                if (isNil16 == false)
+                                {
+                                    boolean toDeleteInstance;
+                                    toDeleteInstance = Boolean.parseBoolean(toDeleteElement2.getTextContent());
+                                    certificateInstance.setIsToBeDeleted(toDeleteInstance);
+                                }
+                            }
+                            
+                            NodeList elements31 = sSLCertificatesElement.getElementsByTagName("Valid");
+                            Element validElement = elements31.getLength() > 0 ? ((Element) elements31.item(0)) : null;
+                            if (validElement != null && (validElement.getTextContent() != null && validElement.getTextContent().isEmpty() != true) == false)
+                            {
+                                boolean isNil17 = false;
+                                Attr nilAttribute18 = validElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
+                                if (nilAttribute18 != null)
+                                {
+                                    isNil17 = nilAttribute18.getValue() == "true";
+                                }
+                                if (isNil17 == false)
+                                {
+                                    boolean validInstance;
+                                    validInstance = Boolean.parseBoolean(validElement.getTextContent());
+                                    certificateInstance.setIsValid(validInstance);
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                NodeList elements32 = siteElement2.getElementsByTagName("SelfLink");
+                Element selfLinkElement2 = elements32.getLength() > 0 ? ((Element) elements32.item(0)) : null;
+                if (selfLinkElement2 != null)
+                {
+                    URI selfLinkInstance2;
+                    selfLinkInstance2 = new URI(selfLinkElement2.getTextContent());
+                    webSiteInstance.setUri(selfLinkInstance2);
+                }
+                
+                NodeList elements33 = siteElement2.getElementsByTagName("ServerFarm");
+                Element serverFarmElement2 = elements33.getLength() > 0 ? ((Element) elements33.item(0)) : null;
+                if (serverFarmElement2 != null)
+                {
+                    String serverFarmInstance;
+                    serverFarmInstance = serverFarmElement2.getTextContent();
+                    webSiteInstance.setServerFarm(serverFarmInstance);
+                }
+                
+                NodeList elements34 = siteElement2.getElementsByTagName("SiteMode");
+                Element siteModeElement2 = elements34.getLength() > 0 ? ((Element) elements34.item(0)) : null;
+                if (siteModeElement2 != null)
+                {
+                    WebSiteMode siteModeInstance;
+                    siteModeInstance = WebSiteMode.valueOf(siteModeElement2.getTextContent());
+                    webSiteInstance.setSiteMode(siteModeInstance);
+                }
+                
+                NodeList elements35 = siteElement2.getElementsByTagName("SiteProperties");
+                Element sitePropertiesElement = elements35.getLength() > 0 ? ((Element) elements35.item(0)) : null;
+                if (sitePropertiesElement != null)
+                {
+                    WebSite.WebSiteProperties sitePropertiesInstance = new WebSite.WebSiteProperties();
+                    webSiteInstance.setSiteProperties(sitePropertiesInstance);
+                    
+                    NodeList elements36 = sitePropertiesElement.getElementsByTagName("AppSettings");
+                    Element appSettingsSequenceElement = elements36.getLength() > 0 ? ((Element) elements36.item(0)) : null;
+                    if (appSettingsSequenceElement != null)
+                    {
+                        for (int i6 = 0; i6 < appSettingsSequenceElement.getElementsByTagName("NameValuePair").getLength(); i6 = i6 + 1)
+                        {
+                            org.w3c.dom.Element appSettingsElement = ((org.w3c.dom.Element) appSettingsSequenceElement.getElementsByTagName("NameValuePair").item(i6));
+                            NodeList elements37 = appSettingsElement.getElementsByTagName("Name");
+                            String appSettingsKey = elements37.getLength() > 0 ? ((org.w3c.dom.Element) elements37.item(0)).getTextContent() : null;
+                            NodeList elements38 = appSettingsElement.getElementsByTagName("Value");
+                            String appSettingsValue = elements38.getLength() > 0 ? ((org.w3c.dom.Element) elements38.item(0)).getTextContent() : null;
+                            sitePropertiesInstance.getAppSettings().put(appSettingsKey, appSettingsValue);
+                        }
+                    }
+                    
+                    NodeList elements39 = sitePropertiesElement.getElementsByTagName("Metadata");
+                    Element metadataSequenceElement = elements39.getLength() > 0 ? ((Element) elements39.item(0)) : null;
+                    if (metadataSequenceElement != null)
+                    {
+                        for (int i7 = 0; i7 < metadataSequenceElement.getElementsByTagName("NameValuePair").getLength(); i7 = i7 + 1)
+                        {
+                            org.w3c.dom.Element metadataElement = ((org.w3c.dom.Element) metadataSequenceElement.getElementsByTagName("NameValuePair").item(i7));
+                            NodeList elements40 = metadataElement.getElementsByTagName("Name");
+                            String metadataKey = elements40.getLength() > 0 ? ((org.w3c.dom.Element) elements40.item(0)).getTextContent() : null;
+                            NodeList elements41 = metadataElement.getElementsByTagName("Value");
+                            String metadataValue = elements41.getLength() > 0 ? ((org.w3c.dom.Element) elements41.item(0)).getTextContent() : null;
+                            sitePropertiesInstance.getMetadata().put(metadataKey, metadataValue);
+                        }
+                    }
+                    
+                    NodeList elements42 = sitePropertiesElement.getElementsByTagName("Properties");
+                    Element propertiesSequenceElement = elements42.getLength() > 0 ? ((Element) elements42.item(0)) : null;
+                    if (propertiesSequenceElement != null)
+                    {
+                        for (int i8 = 0; i8 < propertiesSequenceElement.getElementsByTagName("NameValuePair").getLength(); i8 = i8 + 1)
+                        {
+                            org.w3c.dom.Element propertiesElement = ((org.w3c.dom.Element) propertiesSequenceElement.getElementsByTagName("NameValuePair").item(i8));
+                            NodeList elements43 = propertiesElement.getElementsByTagName("Name");
+                            String propertiesKey = elements43.getLength() > 0 ? ((org.w3c.dom.Element) elements43.item(0)).getTextContent() : null;
+                            NodeList elements44 = propertiesElement.getElementsByTagName("Value");
+                            String propertiesValue = elements44.getLength() > 0 ? ((org.w3c.dom.Element) elements44.item(0)).getTextContent() : null;
+                            sitePropertiesInstance.getProperties().put(propertiesKey, propertiesValue);
+                        }
+                    }
+                }
+                
+                NodeList elements45 = siteElement2.getElementsByTagName("State");
+                Element stateElement2 = elements45.getLength() > 0 ? ((Element) elements45.item(0)) : null;
+                if (stateElement2 != null)
+                {
+                    WebSiteState stateInstance;
+                    stateInstance = WebSiteState.valueOf(stateElement2.getTextContent());
+                    webSiteInstance.setState(stateInstance);
+                }
+                
+                NodeList elements46 = siteElement2.getElementsByTagName("UsageState");
+                Element usageStateElement = elements46.getLength() > 0 ? ((Element) elements46.item(0)) : null;
+                if (usageStateElement != null)
+                {
+                    WebSiteUsageState usageStateInstance;
+                    usageStateInstance = WebSiteUsageState.valueOf(usageStateElement.getTextContent());
+                    webSiteInstance.setUsageState(usageStateInstance);
+                }
+                
+                NodeList elements47 = siteElement2.getElementsByTagName("WebSpace");
+                Element webSpaceElement = elements47.getLength() > 0 ? ((Element) elements47.item(0)) : null;
+                if (webSpaceElement != null)
+                {
+                    String webSpaceInstance;
+                    webSpaceInstance = webSpaceElement.getTextContent();
+                    webSiteInstance.setWebSpace(webSpaceInstance);
                 }
             }
             
-            NodeList elements45 = siteElement2.getElementsByTagName("State");
-            Element stateElement2 = elements45.getLength() > 0 ? ((Element) elements45.item(0)) : null;
-            if (stateElement2 != null)
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
             {
-                WebSiteState stateInstance;
-                stateInstance = WebSiteState.valueOf(stateElement2.getTextContent());
-                webSiteInstance.setState(stateInstance);
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            NodeList elements46 = siteElement2.getElementsByTagName("UsageState");
-            Element usageStateElement = elements46.getLength() > 0 ? ((Element) elements46.item(0)) : null;
-            if (usageStateElement != null)
+            if (shouldTrace)
             {
-                WebSiteUsageState usageStateInstance;
-                usageStateInstance = WebSiteUsageState.valueOf(usageStateElement.getTextContent());
-                webSiteInstance.setUsageState(usageStateInstance);
+                CloudTracing.exit(invocationId, result);
             }
-            
-            NodeList elements47 = siteElement2.getElementsByTagName("WebSpace");
-            Element webSpaceElement = elements47.getLength() > 0 ? ((Element) elements47.item(0)) : null;
-            if (webSpaceElement != null)
+            return result;
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
             {
-                String webSpaceInstance;
-                webSpaceInstance = webSpaceElement.getTextContent();
-                webSiteInstance.setWebSpace(webSpaceInstance);
+                httpResponse.getEntity().getContent().close();
             }
         }
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-        {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
-        }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -3935,11 +5169,21 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * @param webSpaceName The name of the web space.
     * @param webSiteName The name of the web site.
     * @param parameters The Update Web Site Configuration parameters.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
     @Override
-    public OperationResponse updateConfiguration(String webSpaceName, String webSiteName, WebSiteUpdateConfigurationParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException
+    public OperationResponse updateConfiguration(String webSpaceName, String webSiteName, WebSiteUpdateConfigurationParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
     {
         // Validate
         if (webSpaceName == null)
@@ -4236,39 +5480,49 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != HttpStatus.SC_OK)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        OperationResponse result = null;
-        result = new OperationResponse();
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
 }

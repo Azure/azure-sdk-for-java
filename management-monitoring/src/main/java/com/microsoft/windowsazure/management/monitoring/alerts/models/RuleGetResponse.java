@@ -34,6 +34,7 @@ public class RuleGetResponse extends OperationResponse
     
     /**
     * The retrieved rule.
+    * @return The Rule value.
     */
     public Rule getRule()
     {
@@ -42,9 +43,10 @@ public class RuleGetResponse extends OperationResponse
     
     /**
     * The retrieved rule.
+    * @param ruleValue The Rule value.
     */
-    public void setRule(Rule rule)
+    public void setRule(final Rule ruleValue)
     {
-        this.rule = rule;
+        this.rule = ruleValue;
     }
 }

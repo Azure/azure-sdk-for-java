@@ -30,11 +30,9 @@ import com.microsoft.windowsazure.management.sql.models.DatabaseCopyListResponse
 import com.microsoft.windowsazure.management.sql.models.DatabaseCopyResponse;
 import com.microsoft.windowsazure.management.sql.models.DatabaseCopyUpdateParameters;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.util.concurrent.Future;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.xml.sax.SAXException;
 
@@ -52,10 +50,22 @@ public interface DatabaseCopyOperations
     * @param databaseName The name of the source database
     * @param parameters Additional parameters for the create database copy
     * operation
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    DatabaseCopyResponse create(String serverName, String databaseName, DatabaseCopyCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException, ParseException;
+    DatabaseCopyResponse create(String serverName, String databaseName, DatabaseCopyCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, ParseException;
     
     /**
     * The Create Database Copy operation starts a database copy.
@@ -78,6 +88,10 @@ public interface DatabaseCopyOperations
     * @param databaseName The name of the database
     * @param databaseCopyName The unique identifier for the database copy to
     * stop
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -105,6 +119,16 @@ public interface DatabaseCopyOperations
     * @param databaseName The name of the database
     * @param databaseCopyName The unique identifier for the database copy to
     * retrieve
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -128,6 +152,16 @@ public interface DatabaseCopyOperations
     *
     * @param serverName The name of the database server to be queried
     * @param databaseName The name of the database to be queried
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return Response containing the list of database copies for a given
     * database.
     */
@@ -152,10 +186,22 @@ public interface DatabaseCopyOperations
     * update
     * @param parameters Additional parameters for the update database copy
     * operation
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    DatabaseCopyResponse update(String serverName, String databaseName, String databaseCopyName, DatabaseCopyUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException, ParseException;
+    DatabaseCopyResponse update(String serverName, String databaseName, String databaseCopyName, DatabaseCopyUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, ParseException;
     
     /**
     * The Update Database Copy operation updates a SQL Server database copy.

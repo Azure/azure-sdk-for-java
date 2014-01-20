@@ -33,6 +33,7 @@ public class ServiceCertificateCreateParameters
     /**
     * The service certificate format. Windows Azure supports the pfx and cer
     * file formats.
+    * @return The CertificateFormat value.
     */
     public CertificateFormat getCertificateFormat()
     {
@@ -42,16 +43,18 @@ public class ServiceCertificateCreateParameters
     /**
     * The service certificate format. Windows Azure supports the pfx and cer
     * file formats.
+    * @param certificateFormatValue The CertificateFormat value.
     */
-    public void setCertificateFormat(CertificateFormat certificateFormat)
+    public void setCertificateFormat(final CertificateFormat certificateFormatValue)
     {
-        this.certificateFormat = certificateFormat;
+        this.certificateFormat = certificateFormatValue;
     }
     
     private byte[] data;
     
     /**
     * The pfx or .cer file.
+    * @return The Data value.
     */
     public byte[] getData()
     {
@@ -60,10 +63,11 @@ public class ServiceCertificateCreateParameters
     
     /**
     * The pfx or .cer file.
+    * @param dataValue The Data value.
     */
-    public void setData(byte[] data)
+    public void setData(final byte[] dataValue)
     {
-        this.data = data;
+        this.data = dataValue;
     }
     
     private String password;
@@ -71,6 +75,7 @@ public class ServiceCertificateCreateParameters
     /**
     * The password for a .pfx certificate. A .cer certificate does not require
     * a password.
+    * @return The Password value.
     */
     public String getPassword()
     {
@@ -80,9 +85,10 @@ public class ServiceCertificateCreateParameters
     /**
     * The password for a .pfx certificate. A .cer certificate does not require
     * a password.
+    * @param passwordValue The Password value.
     */
-    public void setPassword(String password)
+    public void setPassword(final String passwordValue)
     {
-        this.password = password;
+        this.password = passwordValue;
     }
 }

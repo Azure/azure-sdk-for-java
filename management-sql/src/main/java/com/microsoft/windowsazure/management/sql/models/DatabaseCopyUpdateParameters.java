@@ -32,6 +32,7 @@ public class DatabaseCopyUpdateParameters
     
     /**
     * Whether the copy should be continuous.
+    * @return The IsContinuous value.
     */
     public Boolean isContinuous()
     {
@@ -40,10 +41,11 @@ public class DatabaseCopyUpdateParameters
     
     /**
     * Whether the copy should be continuous.
+    * @param isContinuousValue The IsContinuous value.
     */
-    public void setIsContinuous(Boolean isContinuous)
+    public void setIsContinuous(final Boolean isContinuousValue)
     {
-        this.isContinuous = isContinuous;
+        this.isContinuous = isContinuousValue;
     }
     
     private Boolean isForcedTerminate;
@@ -51,6 +53,7 @@ public class DatabaseCopyUpdateParameters
     /**
     * Whether a Delete Database Operation will cause a forced or friendly
     * termination.
+    * @return The IsForcedTerminate value.
     */
     public Boolean isForcedTerminate()
     {
@@ -60,16 +63,18 @@ public class DatabaseCopyUpdateParameters
     /**
     * Whether a Delete Database Operation will cause a forced or friendly
     * termination.
+    * @param isForcedTerminateValue The IsForcedTerminate value.
     */
-    public void setIsForcedTerminate(Boolean isForcedTerminate)
+    public void setIsForcedTerminate(final Boolean isForcedTerminateValue)
     {
-        this.isForcedTerminate = isForcedTerminate;
+        this.isForcedTerminate = isForcedTerminateValue;
     }
     
     private Integer maxLagInMinutes;
     
     /**
     * The RPO for the continous copy operation.
+    * @return The MaxLagInMinutes value.
     */
     public Integer getMaxLagInMinutes()
     {
@@ -78,16 +83,18 @@ public class DatabaseCopyUpdateParameters
     
     /**
     * The RPO for the continous copy operation.
+    * @param maxLagInMinutesValue The MaxLagInMinutes value.
     */
-    public void setMaxLagInMinutes(Integer maxLagInMinutes)
+    public void setMaxLagInMinutes(final Integer maxLagInMinutesValue)
     {
-        this.maxLagInMinutes = maxLagInMinutes;
+        this.maxLagInMinutes = maxLagInMinutesValue;
     }
     
     private String partnerDatabase;
     
     /**
     * The name of the partner database for the copy.
+    * @return The PartnerDatabase value.
     */
     public String getPartnerDatabase()
     {
@@ -96,16 +103,18 @@ public class DatabaseCopyUpdateParameters
     
     /**
     * The name of the partner database for the copy.
+    * @param partnerDatabaseValue The PartnerDatabase value.
     */
-    public void setPartnerDatabase(String partnerDatabase)
+    public void setPartnerDatabase(final String partnerDatabaseValue)
     {
-        this.partnerDatabase = partnerDatabase;
+        this.partnerDatabase = partnerDatabaseValue;
     }
     
     private String partnerServer;
     
     /**
     * The name of the partner server for the copy.
+    * @return The PartnerServer value.
     */
     public String getPartnerServer()
     {
@@ -114,9 +123,10 @@ public class DatabaseCopyUpdateParameters
     
     /**
     * The name of the partner server for the copy.
+    * @param partnerServerValue The PartnerServer value.
     */
-    public void setPartnerServer(String partnerServer)
+    public void setPartnerServer(final String partnerServerValue)
     {
-        this.partnerServer = partnerServer;
+        this.partnerServer = partnerServerValue;
     }
 }

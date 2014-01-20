@@ -35,7 +35,6 @@ import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
-import java.net.URLEncoder;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -66,6 +65,7 @@ public class MetricDefinitionOperationsImpl implements ServiceOperations<Metrics
     /**
     * Gets a reference to the
     * microsoft.windowsazure.management.monitoring.metrics.MetricsClientImpl.
+    * @return The Client value.
     */
     public MetricsClientImpl getClient()
     {
@@ -106,6 +106,14 @@ public class MetricDefinitionOperationsImpl implements ServiceOperations<Metrics
     * @param metricNamespace The namespace of the metrics.The value is either
     * null or WindowsAzure.Availability.WindowsAzure.Availability returns the
     * metric definitions for endpoint monitoring metrics
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return The List Metric Definitions operation response.
     */
     @Override
@@ -131,16 +139,7 @@ public class MetricDefinitionOperationsImpl implements ServiceOperations<Metrics
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/monitoring/metricdefinitions/query?";
-        url = url + "&resourceId=" + URLEncoder.encode(resourceId, "UTF-8");
-        if (metricNamespace != null)
-        {
-            url = url + "&namespace=" + URLEncoder.encode(metricNamespace, "UTF-8");
-        }
-        if (metricNames != null && metricNames.size() > 0)
-        {
-            url = url + "&names=" + URLEncoder.encode(CommaStringBuilder.join(metricNames), "UTF-8");
-        }
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/monitoring/metricdefinitions/query?&resourceId=" + resourceId + "&namespace=" + metricNamespace + "&names=" + CommaStringBuilder.join(metricNames);
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -151,43 +150,42 @@ public class MetricDefinitionOperationsImpl implements ServiceOperations<Metrics
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != HttpStatus.SC_OK)
-        {
-            ServiceException ex = ServiceException.createFromJson(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
-        }
-        
-        // Create Result
-        MetricDefinitionListResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new MetricDefinitionListResponse();
-        ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode responseDoc = objectMapper.readTree(responseContent);
-        
-        if (responseDoc != null)
-        {
-            JsonNode metricDefinitionCollectionValue = responseDoc.get("MetricDefinitionCollection");
-            if (metricDefinitionCollectionValue != null)
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromJson(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            MetricDefinitionListResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new MetricDefinitionListResponse();
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode responseDoc = objectMapper.readTree(responseContent);
+            
+            if (responseDoc != null)
             {
                 MetricDefinitionCollection metricDefinitionCollectionInstance = new MetricDefinitionCollection();
                 result.setMetricDefinitionCollection(metricDefinitionCollectionInstance);
                 
-                ArrayNode valueArray = ((ArrayNode) metricDefinitionCollectionValue.get("Value"));
+                ArrayNode valueArray = ((ArrayNode) responseDoc.get("Value"));
                 if (valueArray != null)
                 {
                     for (JsonNode valueValue : valueArray)
@@ -287,18 +285,25 @@ public class MetricDefinitionOperationsImpl implements ServiceOperations<Metrics
                     }
                 }
             }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
 }

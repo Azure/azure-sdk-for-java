@@ -31,17 +31,28 @@ public interface MetricsClient extends FilterableService<MetricsClient>
 {
     /**
     * Optional base uri parameter.
+    * @return The BaseUri value.
     */
     URI getBaseUri(); 
     
     /**
     * Windows Azure subscription id.
+    * @return The Credentials value.
     */
     SubscriptionCloudCredentials getCredentials(); 
     
+    /**
+    * @return The MetricDefinitionsOperations value.
+    */
     MetricDefinitionOperations getMetricDefinitionsOperations(); 
     
+    /**
+    * @return The MetricSettingsOperations value.
+    */
     MetricSettingOperations getMetricSettingsOperations(); 
     
+    /**
+    * @return The MetricValuesOperations value.
+    */
     MetricValueOperations getMetricValuesOperations(); 
 }

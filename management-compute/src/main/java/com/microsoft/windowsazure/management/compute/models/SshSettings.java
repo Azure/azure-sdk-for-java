@@ -36,6 +36,7 @@ public class SshSettings
     
     /**
     * Optional. Specifies the collection of SSH public keys.
+    * @return The KeyPairs value.
     */
     public ArrayList<SshSettingKeyPair> getKeyPairs()
     {
@@ -44,16 +45,18 @@ public class SshSettings
     
     /**
     * Optional. Specifies the collection of SSH public keys.
+    * @param keyPairsValue The KeyPairs value.
     */
-    public void setKeyPairs(ArrayList<SshSettingKeyPair> keyPairs)
+    public void setKeyPairs(final ArrayList<SshSettingKeyPair> keyPairsValue)
     {
-        this.keyPairs = keyPairs;
+        this.keyPairs = keyPairsValue;
     }
     
     private ArrayList<SshSettingPublicKey> publicKeys;
     
     /**
     * Optional. Specifies the collection of SSH public keys.
+    * @return The PublicKeys value.
     */
     public ArrayList<SshSettingPublicKey> getPublicKeys()
     {
@@ -62,10 +65,11 @@ public class SshSettings
     
     /**
     * Optional. Specifies the collection of SSH public keys.
+    * @param publicKeysValue The PublicKeys value.
     */
-    public void setPublicKeys(ArrayList<SshSettingPublicKey> publicKeys)
+    public void setPublicKeys(final ArrayList<SshSettingPublicKey> publicKeysValue)
     {
-        this.publicKeys = publicKeys;
+        this.publicKeys = publicKeysValue;
     }
     
     /**

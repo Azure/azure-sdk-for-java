@@ -32,6 +32,7 @@ public class AutoscaleSettingCreateOrUpdateParameters
     
     /**
     * The setting to create or update.
+    * @return The Setting value.
     */
     public AutoscaleSetting getSetting()
     {
@@ -40,9 +41,10 @@ public class AutoscaleSettingCreateOrUpdateParameters
     
     /**
     * The setting to create or update.
+    * @param settingValue The Setting value.
     */
-    public void setSetting(AutoscaleSetting setting)
+    public void setSetting(final AutoscaleSetting settingValue)
     {
-        this.setting = setting;
+        this.setting = settingValue;
     }
 }

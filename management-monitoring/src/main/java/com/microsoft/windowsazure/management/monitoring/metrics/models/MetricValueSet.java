@@ -36,6 +36,7 @@ public class MetricValueSet
     
     /**
     * Metric display name.
+    * @return The DisplayName value.
     */
     public String getDisplayName()
     {
@@ -44,16 +45,18 @@ public class MetricValueSet
     
     /**
     * Metric display name.
+    * @param displayNameValue The DisplayName value.
     */
-    public void setDisplayName(String displayName)
+    public void setDisplayName(final String displayNameValue)
     {
-        this.displayName = displayName;
+        this.displayName = displayNameValue;
     }
     
     private Calendar endTime;
     
     /**
     * The end time in UTC for the metric queried.
+    * @return The EndTime value.
     */
     public Calendar getEndTime()
     {
@@ -62,16 +65,18 @@ public class MetricValueSet
     
     /**
     * The end time in UTC for the metric queried.
+    * @param endTimeValue The EndTime value.
     */
-    public void setEndTime(Calendar endTime)
+    public void setEndTime(final Calendar endTimeValue)
     {
-        this.endTime = endTime;
+        this.endTime = endTimeValue;
     }
     
     private ArrayList<MetricValue> metricValues;
     
     /**
     * Metric values.
+    * @return The MetricValues value.
     */
     public ArrayList<MetricValue> getMetricValues()
     {
@@ -80,16 +85,18 @@ public class MetricValueSet
     
     /**
     * Metric values.
+    * @param metricValuesValue The MetricValues value.
     */
-    public void setMetricValues(ArrayList<MetricValue> metricValues)
+    public void setMetricValues(final ArrayList<MetricValue> metricValuesValue)
     {
-        this.metricValues = metricValues;
+        this.metricValues = metricValuesValue;
     }
     
     private String name;
     
     /**
     * Metric name.
+    * @return The Name value.
     */
     public String getName()
     {
@@ -98,16 +105,18 @@ public class MetricValueSet
     
     /**
     * Metric name.
+    * @param nameValue The Name value.
     */
-    public void setName(String name)
+    public void setName(final String nameValue)
     {
-        this.name = name;
+        this.name = nameValue;
     }
     
     private String namespace;
     
     /**
     * Metric namespace.
+    * @return The Namespace value.
     */
     public String getNamespace()
     {
@@ -116,16 +125,18 @@ public class MetricValueSet
     
     /**
     * Metric namespace.
+    * @param namespaceValue The Namespace value.
     */
-    public void setNamespace(String namespace)
+    public void setNamespace(final String namespaceValue)
     {
-        this.namespace = namespace;
+        this.namespace = namespaceValue;
     }
     
     private String primaryAggregation;
     
     /**
     * Metric primary aggregation.
+    * @return The PrimaryAggregation value.
     */
     public String getPrimaryAggregation()
     {
@@ -134,16 +145,18 @@ public class MetricValueSet
     
     /**
     * Metric primary aggregation.
+    * @param primaryAggregationValue The PrimaryAggregation value.
     */
-    public void setPrimaryAggregation(String primaryAggregation)
+    public void setPrimaryAggregation(final String primaryAggregationValue)
     {
-        this.primaryAggregation = primaryAggregation;
+        this.primaryAggregation = primaryAggregationValue;
     }
     
     private Calendar startTime;
     
     /**
     * The start time in UTC for the metric queried.
+    * @return The StartTime value.
     */
     public Calendar getStartTime()
     {
@@ -152,16 +165,18 @@ public class MetricValueSet
     
     /**
     * The start time in UTC for the metric queried.
+    * @param startTimeValue The StartTime value.
     */
-    public void setStartTime(Calendar startTime)
+    public void setStartTime(final Calendar startTimeValue)
     {
-        this.startTime = startTime;
+        this.startTime = startTimeValue;
     }
     
     private Duration timeGrain;
     
     /**
     * The time grain specifies the aggregation period of the metric value.
+    * @return The TimeGrain value.
     */
     public Duration getTimeGrain()
     {
@@ -170,16 +185,18 @@ public class MetricValueSet
     
     /**
     * The time grain specifies the aggregation period of the metric value.
+    * @param timeGrainValue The TimeGrain value.
     */
-    public void setTimeGrain(Duration timeGrain)
+    public void setTimeGrain(final Duration timeGrainValue)
     {
-        this.timeGrain = timeGrain;
+        this.timeGrain = timeGrainValue;
     }
     
     private String unit;
     
     /**
     * Metric unit.
+    * @return The Unit value.
     */
     public String getUnit()
     {
@@ -188,10 +205,11 @@ public class MetricValueSet
     
     /**
     * Metric unit.
+    * @param unitValue The Unit value.
     */
-    public void setUnit(String unit)
+    public void setUnit(final String unitValue)
     {
-        this.unit = unit;
+        this.unit = unitValue;
     }
     
     /**

@@ -35,6 +35,7 @@ public class VirtualMachineGetRemoteDesktopFileResponse extends OperationRespons
     /**
     * A Remote Desktop Protocol (.rdp) file that can be used to establish a
     * remote desktop session to the virtual machine
+    * @return The RemoteDesktopFile value.
     */
     public byte[] getRemoteDesktopFile()
     {
@@ -44,9 +45,10 @@ public class VirtualMachineGetRemoteDesktopFileResponse extends OperationRespons
     /**
     * A Remote Desktop Protocol (.rdp) file that can be used to establish a
     * remote desktop session to the virtual machine
+    * @param remoteDesktopFileValue The RemoteDesktopFile value.
     */
-    public void setRemoteDesktopFile(byte[] remoteDesktopFile)
+    public void setRemoteDesktopFile(final byte[] remoteDesktopFileValue)
     {
-        this.remoteDesktopFile = remoteDesktopFile;
+        this.remoteDesktopFile = remoteDesktopFileValue;
     }
 }

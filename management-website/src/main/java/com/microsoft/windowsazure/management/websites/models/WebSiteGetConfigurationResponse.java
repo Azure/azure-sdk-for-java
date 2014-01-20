@@ -37,6 +37,7 @@ public class WebSiteGetConfigurationResponse extends OperationResponse
     
     /**
     * A set of name/value pairs that contain application settings for a site.
+    * @return The AppSettings value.
     */
     public HashMap<String, String> getAppSettings()
     {
@@ -45,16 +46,18 @@ public class WebSiteGetConfigurationResponse extends OperationResponse
     
     /**
     * A set of name/value pairs that contain application settings for a site.
+    * @param appSettingsValue The AppSettings value.
     */
-    public void setAppSettings(HashMap<String, String> appSettings)
+    public void setAppSettings(final HashMap<String, String> appSettingsValue)
     {
-        this.appSettings = appSettings;
+        this.appSettings = appSettingsValue;
     }
     
     private ArrayList<WebSiteGetConfigurationResponse.ConnectionStringInfo> connectionStrings;
     
     /**
     * Contains connection strings for database and other external resources.
+    * @return The ConnectionStrings value.
     */
     public ArrayList<WebSiteGetConfigurationResponse.ConnectionStringInfo> getConnectionStrings()
     {
@@ -63,10 +66,11 @@ public class WebSiteGetConfigurationResponse extends OperationResponse
     
     /**
     * Contains connection strings for database and other external resources.
+    * @param connectionStringsValue The ConnectionStrings value.
     */
-    public void setConnectionStrings(ArrayList<WebSiteGetConfigurationResponse.ConnectionStringInfo> connectionStrings)
+    public void setConnectionStrings(final ArrayList<WebSiteGetConfigurationResponse.ConnectionStringInfo> connectionStringsValue)
     {
-        this.connectionStrings = connectionStrings;
+        this.connectionStrings = connectionStringsValue;
     }
     
     private ArrayList<String> defaultDocuments;
@@ -78,6 +82,7 @@ public class WebSiteGetConfigurationResponse extends OperationResponse
     * http://contoso.com is default.htm, the page
     * http://www.contoso.com/default.htm is returned when the browser is
     * pointed to http://www.contoso.com.
+    * @return The DefaultDocuments value.
     */
     public ArrayList<String> getDefaultDocuments()
     {
@@ -91,16 +96,18 @@ public class WebSiteGetConfigurationResponse extends OperationResponse
     * http://contoso.com is default.htm, the page
     * http://www.contoso.com/default.htm is returned when the browser is
     * pointed to http://www.contoso.com.
+    * @param defaultDocumentsValue The DefaultDocuments value.
     */
-    public void setDefaultDocuments(ArrayList<String> defaultDocuments)
+    public void setDefaultDocuments(final ArrayList<String> defaultDocumentsValue)
     {
-        this.defaultDocuments = defaultDocuments;
+        this.defaultDocuments = defaultDocumentsValue;
     }
     
     private Boolean detailedErrorLoggingEnabled;
     
     /**
     * True if detailed error logging is enabled; otherwise, false.
+    * @return The DetailedErrorLoggingEnabled value.
     */
     public Boolean isDetailedErrorLoggingEnabled()
     {
@@ -109,16 +116,19 @@ public class WebSiteGetConfigurationResponse extends OperationResponse
     
     /**
     * True if detailed error logging is enabled; otherwise, false.
+    * @param detailedErrorLoggingEnabledValue The DetailedErrorLoggingEnabled
+    * value.
     */
-    public void setDetailedErrorLoggingEnabled(Boolean detailedErrorLoggingEnabled)
+    public void setDetailedErrorLoggingEnabled(final Boolean detailedErrorLoggingEnabledValue)
     {
-        this.detailedErrorLoggingEnabled = detailedErrorLoggingEnabled;
+        this.detailedErrorLoggingEnabled = detailedErrorLoggingEnabledValue;
     }
     
     private String documentRoot;
     
     /**
     * The document root.
+    * @return The DocumentRoot value.
     */
     public String getDocumentRoot()
     {
@@ -127,10 +137,11 @@ public class WebSiteGetConfigurationResponse extends OperationResponse
     
     /**
     * The document root.
+    * @param documentRootValue The DocumentRoot value.
     */
-    public void setDocumentRoot(String documentRoot)
+    public void setDocumentRoot(final String documentRootValue)
     {
-        this.documentRoot = documentRoot;
+        this.documentRoot = documentRootValue;
     }
     
     private ArrayList<WebSiteGetConfigurationResponse.HandlerMapping> handlerMappings;
@@ -138,6 +149,7 @@ public class WebSiteGetConfigurationResponse extends OperationResponse
     /**
     * Specifies custom executable programs for handling requests for specific
     * file name extensions.
+    * @return The HandlerMappings value.
     */
     public ArrayList<WebSiteGetConfigurationResponse.HandlerMapping> getHandlerMappings()
     {
@@ -147,16 +159,18 @@ public class WebSiteGetConfigurationResponse extends OperationResponse
     /**
     * Specifies custom executable programs for handling requests for specific
     * file name extensions.
+    * @param handlerMappingsValue The HandlerMappings value.
     */
-    public void setHandlerMappings(ArrayList<WebSiteGetConfigurationResponse.HandlerMapping> handlerMappings)
+    public void setHandlerMappings(final ArrayList<WebSiteGetConfigurationResponse.HandlerMapping> handlerMappingsValue)
     {
-        this.handlerMappings = handlerMappings;
+        this.handlerMappings = handlerMappingsValue;
     }
     
     private Boolean httpLoggingEnabled;
     
     /**
     * True if HTTP error logging is enabled; otherwise, false.
+    * @return The HttpLoggingEnabled value.
     */
     public Boolean isHttpLoggingEnabled()
     {
@@ -165,16 +179,18 @@ public class WebSiteGetConfigurationResponse extends OperationResponse
     
     /**
     * True if HTTP error logging is enabled; otherwise, false.
+    * @param httpLoggingEnabledValue The HttpLoggingEnabled value.
     */
-    public void setHttpLoggingEnabled(Boolean httpLoggingEnabled)
+    public void setHttpLoggingEnabled(final Boolean httpLoggingEnabledValue)
     {
-        this.httpLoggingEnabled = httpLoggingEnabled;
+        this.httpLoggingEnabled = httpLoggingEnabledValue;
     }
     
     private Integer logsDirectorySizeLimit;
     
     /**
     * The limit of the logs directory.
+    * @return The LogsDirectorySizeLimit value.
     */
     public Integer getLogsDirectorySizeLimit()
     {
@@ -183,16 +199,18 @@ public class WebSiteGetConfigurationResponse extends OperationResponse
     
     /**
     * The limit of the logs directory.
+    * @param logsDirectorySizeLimitValue The LogsDirectorySizeLimit value.
     */
-    public void setLogsDirectorySizeLimit(Integer logsDirectorySizeLimit)
+    public void setLogsDirectorySizeLimit(final Integer logsDirectorySizeLimitValue)
     {
-        this.logsDirectorySizeLimit = logsDirectorySizeLimit;
+        this.logsDirectorySizeLimit = logsDirectorySizeLimitValue;
     }
     
     private ManagedPipelineMode managedPipelineMode;
     
     /**
     * Managed pipeline modes.
+    * @return The ManagedPipelineMode value.
     */
     public ManagedPipelineMode getManagedPipelineMode()
     {
@@ -201,16 +219,18 @@ public class WebSiteGetConfigurationResponse extends OperationResponse
     
     /**
     * Managed pipeline modes.
+    * @param managedPipelineModeValue The ManagedPipelineMode value.
     */
-    public void setManagedPipelineMode(ManagedPipelineMode managedPipelineMode)
+    public void setManagedPipelineMode(final ManagedPipelineMode managedPipelineModeValue)
     {
-        this.managedPipelineMode = managedPipelineMode;
+        this.managedPipelineMode = managedPipelineModeValue;
     }
     
     private HashMap<String, String> metadata;
     
     /**
     * Contains name/value pairs for source control or other information.
+    * @return The Metadata value.
     */
     public HashMap<String, String> getMetadata()
     {
@@ -219,16 +239,18 @@ public class WebSiteGetConfigurationResponse extends OperationResponse
     
     /**
     * Contains name/value pairs for source control or other information.
+    * @param metadataValue The Metadata value.
     */
-    public void setMetadata(HashMap<String, String> metadata)
+    public void setMetadata(final HashMap<String, String> metadataValue)
     {
-        this.metadata = metadata;
+        this.metadata = metadataValue;
     }
     
     private String netFrameworkVersion;
     
     /**
     * The .NET Framework version. Supported values are v2.0 and v4.0.
+    * @return The NetFrameworkVersion value.
     */
     public String getNetFrameworkVersion()
     {
@@ -237,10 +259,11 @@ public class WebSiteGetConfigurationResponse extends OperationResponse
     
     /**
     * The .NET Framework version. Supported values are v2.0 and v4.0.
+    * @param netFrameworkVersionValue The NetFrameworkVersion value.
     */
-    public void setNetFrameworkVersion(String netFrameworkVersion)
+    public void setNetFrameworkVersion(final String netFrameworkVersionValue)
     {
-        this.netFrameworkVersion = netFrameworkVersion;
+        this.netFrameworkVersion = netFrameworkVersionValue;
     }
     
     private Integer numberOfWorkers;
@@ -250,6 +273,7 @@ public class WebSiteGetConfigurationResponse extends OperationResponse
     * Free, this value is 1. If the site mode is Shared, this value can range
     * from 1 through 6. If the site mode is Standard, this value can range
     * from 1 through 10.
+    * @return The NumberOfWorkers value.
     */
     public Integer getNumberOfWorkers()
     {
@@ -261,10 +285,11 @@ public class WebSiteGetConfigurationResponse extends OperationResponse
     * Free, this value is 1. If the site mode is Shared, this value can range
     * from 1 through 6. If the site mode is Standard, this value can range
     * from 1 through 10.
+    * @param numberOfWorkersValue The NumberOfWorkers value.
     */
-    public void setNumberOfWorkers(Integer numberOfWorkers)
+    public void setNumberOfWorkers(final Integer numberOfWorkersValue)
     {
-        this.numberOfWorkers = numberOfWorkers;
+        this.numberOfWorkers = numberOfWorkersValue;
     }
     
     private String phpVersion;
@@ -272,6 +297,7 @@ public class WebSiteGetConfigurationResponse extends OperationResponse
     /**
     * Supported values are an empty string (an empty string disables PHP), 5.3,
     * and 5.4.
+    * @return The PhpVersion value.
     */
     public String getPhpVersion()
     {
@@ -281,16 +307,18 @@ public class WebSiteGetConfigurationResponse extends OperationResponse
     /**
     * Supported values are an empty string (an empty string disables PHP), 5.3,
     * and 5.4.
+    * @param phpVersionValue The PhpVersion value.
     */
-    public void setPhpVersion(String phpVersion)
+    public void setPhpVersion(final String phpVersionValue)
     {
-        this.phpVersion = phpVersion;
+        this.phpVersion = phpVersionValue;
     }
     
     private String publishingPassword;
     
     /**
     * Hash value of the password used for publishing the web site.
+    * @return The PublishingPassword value.
     */
     public String getPublishingPassword()
     {
@@ -299,10 +327,11 @@ public class WebSiteGetConfigurationResponse extends OperationResponse
     
     /**
     * Hash value of the password used for publishing the web site.
+    * @param publishingPasswordValue The PublishingPassword value.
     */
-    public void setPublishingPassword(String publishingPassword)
+    public void setPublishingPassword(final String publishingPasswordValue)
     {
-        this.publishingPassword = publishingPassword;
+        this.publishingPassword = publishingPasswordValue;
     }
     
     private String publishingUserName;
@@ -310,6 +339,7 @@ public class WebSiteGetConfigurationResponse extends OperationResponse
     /**
     * The username used for publishing the web site. This is normally a dollar
     * sign prepended to the web site name (for example, “$contoso”).
+    * @return The PublishingUserName value.
     */
     public String getPublishingUserName()
     {
@@ -319,16 +349,18 @@ public class WebSiteGetConfigurationResponse extends OperationResponse
     /**
     * The username used for publishing the web site. This is normally a dollar
     * sign prepended to the web site name (for example, “$contoso”).
+    * @param publishingUserNameValue The PublishingUserName value.
     */
-    public void setPublishingUserName(String publishingUserName)
+    public void setPublishingUserName(final String publishingUserNameValue)
     {
-        this.publishingUserName = publishingUserName;
+        this.publishingUserName = publishingUserNameValue;
     }
     
     private Boolean remoteDebuggingEnabled;
     
     /**
     * True remote debugging is enabled; otherwise, false.
+    * @return The RemoteDebuggingEnabled value.
     */
     public Boolean isRemoteDebuggingEnabled()
     {
@@ -337,16 +369,18 @@ public class WebSiteGetConfigurationResponse extends OperationResponse
     
     /**
     * True remote debugging is enabled; otherwise, false.
+    * @param remoteDebuggingEnabledValue The RemoteDebuggingEnabled value.
     */
-    public void setRemoteDebuggingEnabled(Boolean remoteDebuggingEnabled)
+    public void setRemoteDebuggingEnabled(final Boolean remoteDebuggingEnabledValue)
     {
-        this.remoteDebuggingEnabled = remoteDebuggingEnabled;
+        this.remoteDebuggingEnabled = remoteDebuggingEnabledValue;
     }
     
     private RemoteDebuggingVersion remoteDebuggingVersion;
     
     /**
     * True remote debugging version.
+    * @return The RemoteDebuggingVersion value.
     */
     public RemoteDebuggingVersion getRemoteDebuggingVersion()
     {
@@ -355,16 +389,18 @@ public class WebSiteGetConfigurationResponse extends OperationResponse
     
     /**
     * True remote debugging version.
+    * @param remoteDebuggingVersionValue The RemoteDebuggingVersion value.
     */
-    public void setRemoteDebuggingVersion(RemoteDebuggingVersion remoteDebuggingVersion)
+    public void setRemoteDebuggingVersion(final RemoteDebuggingVersion remoteDebuggingVersionValue)
     {
-        this.remoteDebuggingVersion = remoteDebuggingVersion;
+        this.remoteDebuggingVersion = remoteDebuggingVersionValue;
     }
     
     private Boolean requestTracingEnabled;
     
     /**
     * True if request tracing is enabled; otherwise, false.
+    * @return The RequestTracingEnabled value.
     */
     public Boolean isRequestTracingEnabled()
     {
@@ -373,16 +409,18 @@ public class WebSiteGetConfigurationResponse extends OperationResponse
     
     /**
     * True if request tracing is enabled; otherwise, false.
+    * @param requestTracingEnabledValue The RequestTracingEnabled value.
     */
-    public void setRequestTracingEnabled(Boolean requestTracingEnabled)
+    public void setRequestTracingEnabled(final Boolean requestTracingEnabledValue)
     {
-        this.requestTracingEnabled = requestTracingEnabled;
+        this.requestTracingEnabled = requestTracingEnabledValue;
     }
     
     private Calendar requestTracingExpirationTime;
     
     /**
     * Time remaining until request tracing expires.
+    * @return The RequestTracingExpirationTime value.
     */
     public Calendar getRequestTracingExpirationTime()
     {
@@ -391,10 +429,12 @@ public class WebSiteGetConfigurationResponse extends OperationResponse
     
     /**
     * Time remaining until request tracing expires.
+    * @param requestTracingExpirationTimeValue The RequestTracingExpirationTime
+    * value.
     */
-    public void setRequestTracingExpirationTime(Calendar requestTracingExpirationTime)
+    public void setRequestTracingExpirationTime(final Calendar requestTracingExpirationTimeValue)
     {
-        this.requestTracingExpirationTime = requestTracingExpirationTime;
+        this.requestTracingExpirationTime = requestTracingExpirationTimeValue;
     }
     
     private String scmType;
@@ -403,6 +443,7 @@ public class WebSiteGetConfigurationResponse extends OperationResponse
     * The source control method that the web site is using (for example, Local
     * Git). If deployment from source control has not been set up for the web
     * site, this value is None.
+    * @return The ScmType value.
     */
     public String getScmType()
     {
@@ -413,16 +454,18 @@ public class WebSiteGetConfigurationResponse extends OperationResponse
     * The source control method that the web site is using (for example, Local
     * Git). If deployment from source control has not been set up for the web
     * site, this value is None.
+    * @param scmTypeValue The ScmType value.
     */
-    public void setScmType(String scmType)
+    public void setScmType(final String scmTypeValue)
     {
-        this.scmType = scmType;
+        this.scmType = scmTypeValue;
     }
     
     private Boolean use32BitWorkerProcess;
     
     /**
     * True if 32-bit mode is enabled; otherwise, false.
+    * @return The Use32BitWorkerProcess value.
     */
     public Boolean isUse32BitWorkerProcess()
     {
@@ -431,16 +474,18 @@ public class WebSiteGetConfigurationResponse extends OperationResponse
     
     /**
     * True if 32-bit mode is enabled; otherwise, false.
+    * @param use32BitWorkerProcessValue The Use32BitWorkerProcess value.
     */
-    public void setUse32BitWorkerProcess(Boolean use32BitWorkerProcess)
+    public void setUse32BitWorkerProcess(final Boolean use32BitWorkerProcessValue)
     {
-        this.use32BitWorkerProcess = use32BitWorkerProcess;
+        this.use32BitWorkerProcess = use32BitWorkerProcessValue;
     }
     
     private Boolean webSocketsEnabled;
     
     /**
     * True if Web Sockets are enabled; otherwise, false.
+    * @return The WebSocketsEnabled value.
     */
     public Boolean isWebSocketsEnabled()
     {
@@ -449,10 +494,11 @@ public class WebSiteGetConfigurationResponse extends OperationResponse
     
     /**
     * True if Web Sockets are enabled; otherwise, false.
+    * @param webSocketsEnabledValue The WebSocketsEnabled value.
     */
-    public void setWebSocketsEnabled(Boolean webSocketsEnabled)
+    public void setWebSocketsEnabled(final Boolean webSocketsEnabledValue)
     {
-        this.webSocketsEnabled = webSocketsEnabled;
+        this.webSocketsEnabled = webSocketsEnabledValue;
     }
     
     /**
@@ -478,6 +524,7 @@ public class WebSiteGetConfigurationResponse extends OperationResponse
         
         /**
         * A database connection string.
+        * @return The ConnectionString value.
         */
         public String getConnectionString()
         {
@@ -486,16 +533,18 @@ public class WebSiteGetConfigurationResponse extends OperationResponse
         
         /**
         * A database connection string.
+        * @param connectionStringValue The ConnectionString value.
         */
-        public void setConnectionString(String connectionString)
+        public void setConnectionString(final String connectionStringValue)
         {
-            this.connectionString = connectionString;
+            this.connectionString = connectionStringValue;
         }
         
         private String name;
         
         /**
         * The name of the connection string.
+        * @return The Name value.
         */
         public String getName()
         {
@@ -504,16 +553,18 @@ public class WebSiteGetConfigurationResponse extends OperationResponse
         
         /**
         * The name of the connection string.
+        * @param nameValue The Name value.
         */
-        public void setName(String name)
+        public void setName(final String nameValue)
         {
-            this.name = name;
+            this.name = nameValue;
         }
         
         private String type;
         
         /**
         * The type of the connection string (for example, "MySQL").
+        * @return The Type value.
         */
         public String getType()
         {
@@ -522,10 +573,11 @@ public class WebSiteGetConfigurationResponse extends OperationResponse
         
         /**
         * The type of the connection string (for example, "MySQL").
+        * @param typeValue The Type value.
         */
-        public void setType(String type)
+        public void setType(final String typeValue)
         {
-            this.type = type;
+            this.type = typeValue;
         }
     }
     
@@ -541,6 +593,7 @@ public class WebSiteGetConfigurationResponse extends OperationResponse
         * A string that contains optional arguments for the script processor
         * specified by the
         * SiteConfig.HandlerMappings.HandlerMapping.ScriptProcessor element.
+        * @return The Arguments value.
         */
         public String getArguments()
         {
@@ -551,10 +604,11 @@ public class WebSiteGetConfigurationResponse extends OperationResponse
         * A string that contains optional arguments for the script processor
         * specified by the
         * SiteConfig.HandlerMappings.HandlerMapping.ScriptProcessor element.
+        * @param argumentsValue The Arguments value.
         */
-        public void setArguments(String arguments)
+        public void setArguments(final String argumentsValue)
         {
-            this.arguments = arguments;
+            this.arguments = argumentsValue;
         }
         
         private String extension;
@@ -562,6 +616,7 @@ public class WebSiteGetConfigurationResponse extends OperationResponse
         /**
         * A string that specifies the extension of the file type that the
         * script processor will handle (for example, *.php).
+        * @return The Extension value.
         */
         public String getExtension()
         {
@@ -571,10 +626,11 @@ public class WebSiteGetConfigurationResponse extends OperationResponse
         /**
         * A string that specifies the extension of the file type that the
         * script processor will handle (for example, *.php).
+        * @param extensionValue The Extension value.
         */
-        public void setExtension(String extension)
+        public void setExtension(final String extensionValue)
         {
-            this.extension = extension;
+            this.extension = extensionValue;
         }
         
         private String scriptProcessor;
@@ -583,6 +639,7 @@ public class WebSiteGetConfigurationResponse extends OperationResponse
         * The absolute path to the location of the executable file that will
         * handle the files specified in the
         * SiteConfig.HandlerMappings.HandlerMapping.Extension element.
+        * @return The ScriptProcessor value.
         */
         public String getScriptProcessor()
         {
@@ -593,10 +650,11 @@ public class WebSiteGetConfigurationResponse extends OperationResponse
         * The absolute path to the location of the executable file that will
         * handle the files specified in the
         * SiteConfig.HandlerMappings.HandlerMapping.Extension element.
+        * @param scriptProcessorValue The ScriptProcessor value.
         */
-        public void setScriptProcessor(String scriptProcessor)
+        public void setScriptProcessor(final String scriptProcessorValue)
         {
-            this.scriptProcessor = scriptProcessor;
+            this.scriptProcessor = scriptProcessorValue;
         }
     }
 }

@@ -34,6 +34,7 @@ public class IncidentCollection
     
     /**
     * Incident collection.
+    * @return The Value value.
     */
     public ArrayList<Incident> getValue()
     {
@@ -42,10 +43,11 @@ public class IncidentCollection
     
     /**
     * Incident collection.
+    * @param valueValue The Value value.
     */
-    public void setValue(ArrayList<Incident> value)
+    public void setValue(final ArrayList<Incident> valueValue)
     {
-        this.value = value;
+        this.value = valueValue;
     }
     
     /**

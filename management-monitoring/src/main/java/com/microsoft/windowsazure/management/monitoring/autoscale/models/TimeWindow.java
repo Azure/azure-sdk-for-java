@@ -34,6 +34,7 @@ public class TimeWindow
     
     /**
     * The end of the time window.
+    * @return The End value.
     */
     public Calendar getEnd()
     {
@@ -42,16 +43,18 @@ public class TimeWindow
     
     /**
     * The end of the time window.
+    * @param endValue The End value.
     */
-    public void setEnd(Calendar end)
+    public void setEnd(final Calendar endValue)
     {
-        this.end = end;
+        this.end = endValue;
     }
     
     private Calendar start;
     
     /**
     * The start of the time window.
+    * @return The Start value.
     */
     public Calendar getStart()
     {
@@ -60,16 +63,18 @@ public class TimeWindow
     
     /**
     * The start of the time window.
+    * @param startValue The Start value.
     */
-    public void setStart(Calendar start)
+    public void setStart(final Calendar startValue)
     {
-        this.start = start;
+        this.start = startValue;
     }
     
     private String timeZone;
     
     /**
     * The time zone information.
+    * @return The TimeZone value.
     */
     public String getTimeZone()
     {
@@ -78,9 +83,10 @@ public class TimeWindow
     
     /**
     * The time zone information.
+    * @param timeZoneValue The TimeZone value.
     */
-    public void setTimeZone(String timeZone)
+    public void setTimeZone(final String timeZoneValue)
     {
-        this.timeZone = timeZone;
+        this.timeZone = timeZoneValue;
     }
 }

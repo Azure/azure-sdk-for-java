@@ -36,6 +36,7 @@ public class StorageServiceProperties
     
     /**
     * The affinity group with which this storage account is associated.
+    * @return The AffinityGroup value.
     */
     public String getAffinityGroup()
     {
@@ -44,16 +45,18 @@ public class StorageServiceProperties
     
     /**
     * The affinity group with which this storage account is associated.
+    * @param affinityGroupValue The AffinityGroup value.
     */
-    public void setAffinityGroup(String affinityGroup)
+    public void setAffinityGroup(final String affinityGroupValue)
     {
-        this.affinityGroup = affinityGroup;
+        this.affinityGroup = affinityGroupValue;
     }
     
     private String description;
     
     /**
     * The user supplied description of the storage account.
+    * @return The Description value.
     */
     public String getDescription()
     {
@@ -62,10 +65,11 @@ public class StorageServiceProperties
     
     /**
     * The user supplied description of the storage account.
+    * @param descriptionValue The Description value.
     */
-    public void setDescription(String description)
+    public void setDescription(final String descriptionValue)
     {
-        this.description = description;
+        this.description = descriptionValue;
     }
     
     private ArrayList<URI> endpoints;
@@ -73,6 +77,7 @@ public class StorageServiceProperties
     /**
     * The URLs that are used to perform a retrieval of a public blob, queue, or
     * table object.
+    * @return The Endpoints value.
     */
     public ArrayList<URI> getEndpoints()
     {
@@ -82,10 +87,11 @@ public class StorageServiceProperties
     /**
     * The URLs that are used to perform a retrieval of a public blob, queue, or
     * table object.
+    * @param endpointsValue The Endpoints value.
     */
-    public void setEndpoints(ArrayList<URI> endpoints)
+    public void setEndpoints(final ArrayList<URI> endpointsValue)
     {
-        this.endpoints = endpoints;
+        this.endpoints = endpointsValue;
     }
     
     private String geoPrimaryRegion;
@@ -93,6 +99,7 @@ public class StorageServiceProperties
     /**
     * Indicates the primary geographical region in which the storage account
     * exists at this time.
+    * @return The GeoPrimaryRegion value.
     */
     public String getGeoPrimaryRegion()
     {
@@ -102,10 +109,11 @@ public class StorageServiceProperties
     /**
     * Indicates the primary geographical region in which the storage account
     * exists at this time.
+    * @param geoPrimaryRegionValue The GeoPrimaryRegion value.
     */
-    public void setGeoPrimaryRegion(String geoPrimaryRegion)
+    public void setGeoPrimaryRegion(final String geoPrimaryRegionValue)
     {
-        this.geoPrimaryRegion = geoPrimaryRegion;
+        this.geoPrimaryRegion = geoPrimaryRegionValue;
     }
     
     private boolean geoReplicationEnabled;
@@ -115,6 +123,7 @@ public class StorageServiceProperties
     * more than one geographic location so as to enable resilience in the face
     * of catastrophic service loss. The value is true if geo-replication is
     * enabled; otherwise false.
+    * @return The GeoReplicationEnabled value.
     */
     public boolean isGeoReplicationEnabled()
     {
@@ -126,10 +135,11 @@ public class StorageServiceProperties
     * more than one geographic location so as to enable resilience in the face
     * of catastrophic service loss. The value is true if geo-replication is
     * enabled; otherwise false.
+    * @param geoReplicationEnabledValue The GeoReplicationEnabled value.
     */
-    public void setGeoReplicationEnabled(boolean geoReplicationEnabled)
+    public void setGeoReplicationEnabled(final boolean geoReplicationEnabledValue)
     {
-        this.geoReplicationEnabled = geoReplicationEnabled;
+        this.geoReplicationEnabled = geoReplicationEnabledValue;
     }
     
     private String geoSecondaryRegion;
@@ -138,6 +148,7 @@ public class StorageServiceProperties
     * Indicates the geographical region in which the storage account is being
     * replicated.  The GeoSecondaryRegion element is not returned if
     * geo-replication is “off” for this account.
+    * @return The GeoSecondaryRegion value.
     */
     public String getGeoSecondaryRegion()
     {
@@ -148,10 +159,11 @@ public class StorageServiceProperties
     * Indicates the geographical region in which the storage account is being
     * replicated.  The GeoSecondaryRegion element is not returned if
     * geo-replication is “off” for this account.
+    * @param geoSecondaryRegionValue The GeoSecondaryRegion value.
     */
-    public void setGeoSecondaryRegion(String geoSecondaryRegion)
+    public void setGeoSecondaryRegion(final String geoSecondaryRegionValue)
     {
-        this.geoSecondaryRegion = geoSecondaryRegion;
+        this.geoSecondaryRegion = geoSecondaryRegionValue;
     }
     
     private String label;
@@ -160,6 +172,7 @@ public class StorageServiceProperties
     * The user supplied name of the storage account returned as a base-64
     * encoded string. This name can be used identify the storage account for
     * your tracking purposes.
+    * @return The Label value.
     */
     public String getLabel()
     {
@@ -170,10 +183,11 @@ public class StorageServiceProperties
     * The user supplied name of the storage account returned as a base-64
     * encoded string. This name can be used identify the storage account for
     * your tracking purposes.
+    * @param labelValue The Label value.
     */
-    public void setLabel(String label)
+    public void setLabel(final String labelValue)
     {
-        this.label = label;
+        this.label = labelValue;
     }
     
     private Calendar lastGeoFailoverTime;
@@ -185,6 +199,7 @@ public class StorageServiceProperties
     * [4DigitYear]-[2DigitMonth]-[2DigitDay]T[2DigitMinute]:[2DigitSecond]:[7DigitsOfPrecision]Z.
     * LastGeoFailoverTime is not returned if there has not been an instance
     * of a failover.
+    * @return The LastGeoFailoverTime value.
     */
     public Calendar getLastGeoFailoverTime()
     {
@@ -198,10 +213,11 @@ public class StorageServiceProperties
     * [4DigitYear]-[2DigitMonth]-[2DigitDay]T[2DigitMinute]:[2DigitSecond]:[7DigitsOfPrecision]Z.
     * LastGeoFailoverTime is not returned if there has not been an instance
     * of a failover.
+    * @param lastGeoFailoverTimeValue The LastGeoFailoverTime value.
     */
-    public void setLastGeoFailoverTime(Calendar lastGeoFailoverTime)
+    public void setLastGeoFailoverTime(final Calendar lastGeoFailoverTimeValue)
     {
-        this.lastGeoFailoverTime = lastGeoFailoverTime;
+        this.lastGeoFailoverTime = lastGeoFailoverTimeValue;
     }
     
     private String location;
@@ -210,6 +226,7 @@ public class StorageServiceProperties
     * The geo-location specified when the storage account was created. This
     * property is only returned if the storage account is not associated with
     * an affinity group.
+    * @return The Location value.
     */
     public String getLocation()
     {
@@ -220,16 +237,18 @@ public class StorageServiceProperties
     * The geo-location specified when the storage account was created. This
     * property is only returned if the storage account is not associated with
     * an affinity group.
+    * @param locationValue The Location value.
     */
-    public void setLocation(String location)
+    public void setLocation(final String locationValue)
     {
-        this.location = location;
+        this.location = locationValue;
     }
     
     private StorageServiceStatus status;
     
     /**
     * The status of the storage account at the time the operation was called.
+    * @return The Status value.
     */
     public StorageServiceStatus getStatus()
     {
@@ -238,16 +257,18 @@ public class StorageServiceProperties
     
     /**
     * The status of the storage account at the time the operation was called.
+    * @param statusValue The Status value.
     */
-    public void setStatus(StorageServiceStatus status)
+    public void setStatus(final StorageServiceStatus statusValue)
     {
-        this.status = status;
+        this.status = statusValue;
     }
     
     private GeoRegionStatus statusOfGeoPrimaryRegion;
     
     /**
     * Indicates whether the primary storage region is available.
+    * @return The StatusOfGeoPrimaryRegion value.
     */
     public GeoRegionStatus getStatusOfGeoPrimaryRegion()
     {
@@ -256,16 +277,18 @@ public class StorageServiceProperties
     
     /**
     * Indicates whether the primary storage region is available.
+    * @param statusOfGeoPrimaryRegionValue The StatusOfGeoPrimaryRegion value.
     */
-    public void setStatusOfGeoPrimaryRegion(GeoRegionStatus statusOfGeoPrimaryRegion)
+    public void setStatusOfGeoPrimaryRegion(final GeoRegionStatus statusOfGeoPrimaryRegionValue)
     {
-        this.statusOfGeoPrimaryRegion = statusOfGeoPrimaryRegion;
+        this.statusOfGeoPrimaryRegion = statusOfGeoPrimaryRegionValue;
     }
     
     private GeoRegionStatus statusOfGeoSecondaryRegion;
     
     /**
     * Indicates whether the secondary storage region is available.
+    * @return The StatusOfGeoSecondaryRegion value.
     */
     public GeoRegionStatus getStatusOfGeoSecondaryRegion()
     {
@@ -274,10 +297,12 @@ public class StorageServiceProperties
     
     /**
     * Indicates whether the secondary storage region is available.
+    * @param statusOfGeoSecondaryRegionValue The StatusOfGeoSecondaryRegion
+    * value.
     */
-    public void setStatusOfGeoSecondaryRegion(GeoRegionStatus statusOfGeoSecondaryRegion)
+    public void setStatusOfGeoSecondaryRegion(final GeoRegionStatus statusOfGeoSecondaryRegionValue)
     {
-        this.statusOfGeoSecondaryRegion = statusOfGeoSecondaryRegion;
+        this.statusOfGeoSecondaryRegion = statusOfGeoSecondaryRegionValue;
     }
     
     /**

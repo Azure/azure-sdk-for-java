@@ -32,6 +32,7 @@ public class DeploymentUpdateStatusParameters
     
     /**
     * Required. The new status of the deployment.
+    * @return The Status value.
     */
     public UpdatedDeploymentStatus getStatus()
     {
@@ -40,9 +41,10 @@ public class DeploymentUpdateStatusParameters
     
     /**
     * Required. The new status of the deployment.
+    * @param statusValue The Status value.
     */
-    public void setStatus(UpdatedDeploymentStatus status)
+    public void setStatus(final UpdatedDeploymentStatus statusValue)
     {
-        this.status = status;
+        this.status = statusValue;
     }
 }

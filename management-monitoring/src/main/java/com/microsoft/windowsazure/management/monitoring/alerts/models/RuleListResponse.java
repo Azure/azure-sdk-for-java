@@ -24,27 +24,50 @@
 package com.microsoft.windowsazure.management.monitoring.alerts.models;
 
 import com.microsoft.windowsazure.core.OperationResponse;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
 * The List Rules operation response.
 */
-public class RuleListResponse extends OperationResponse
+public class RuleListResponse extends OperationResponse implements Iterable<Rule>
 {
-    private RuleCollection ruleCollection;
+    private ArrayList<Rule> value;
     
     /**
-    * The retrieved rules.
+    * Alert rules collection.
+    * @return The Value value.
     */
-    public RuleCollection getRuleCollection()
+    public ArrayList<Rule> getValue()
     {
-        return this.ruleCollection;
+        return this.value;
     }
     
     /**
-    * The retrieved rules.
+    * Alert rules collection.
+    * @param valueValue The Value value.
     */
-    public void setRuleCollection(RuleCollection ruleCollection)
+    public void setValue(final ArrayList<Rule> valueValue)
     {
-        this.ruleCollection = ruleCollection;
+        this.value = valueValue;
+    }
+    
+    /**
+    * Initializes a new instance of the RuleListResponse class.
+    *
+    */
+    public RuleListResponse()
+    {
+        super();
+        this.value = new ArrayList<Rule>();
+    }
+    
+    /**
+    * Gets the sequence of Value.
+    *
+    */
+    public Iterator<Rule> iterator()
+    {
+        return this.getValue().iterator();
     }
 }

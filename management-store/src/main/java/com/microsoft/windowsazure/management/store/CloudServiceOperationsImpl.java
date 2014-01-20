@@ -34,7 +34,6 @@ import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -43,7 +42,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -80,6 +78,7 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
     /**
     * Gets a reference to the
     * microsoft.windowsazure.management.store.StoreManagementClientImpl.
+    * @return The Client value.
     */
     public StoreManagementClientImpl getClient()
     {
@@ -120,6 +119,16 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
     *
     * @param parameters Parameters used to specify how the Create procedure
     * will function.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -131,7 +140,7 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
     * failure.
     */
     @Override
-    public AddOnOperationStatusResponse beginCreating(CloudServiceCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException
+    public AddOnOperationStatusResponse beginCreating(CloudServiceCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
     {
         // Validate
         if (parameters == null)
@@ -214,40 +223,50 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != HttpStatus.SC_ACCEPTED)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            AddOnOperationStatusResponse result = null;
+            result = new AddOnOperationStatusResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        AddOnOperationStatusResponse result = null;
-        result = new AddOnOperationStatusResponse();
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -284,6 +303,18 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
     *
     * @param parameters Parameters used to specify how the Create procedure
     * will function.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -386,6 +417,14 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
     * The List Cloud Services operation enumerates Windows Azure Store entries
     * that are provisioned for a subscription.
     *
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
     * @return The response structure for the Cloud Service List operation.
     */
     @Override
@@ -414,257 +453,267 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != HttpStatus.SC_OK)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
-        }
-        
-        // Create Result
-        CloudServiceListResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new CloudServiceListResponse();
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document responseDoc = documentBuilder.parse(responseContent);
-        
-        NodeList elements = responseDoc.getElementsByTagName("CloudServices");
-        Element cloudServicesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-        if (cloudServicesSequenceElement != null)
-        {
-            for (int i1 = 0; i1 < cloudServicesSequenceElement.getElementsByTagName("CloudService").getLength(); i1 = i1 + 1)
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
             {
-                org.w3c.dom.Element cloudServicesElement = ((org.w3c.dom.Element) cloudServicesSequenceElement.getElementsByTagName("CloudService").item(i1));
-                CloudServiceListResponse.CloudService cloudServiceInstance = new CloudServiceListResponse.CloudService();
-                result.getCloudServices().add(cloudServiceInstance);
-                
-                NodeList elements2 = cloudServicesElement.getElementsByTagName("Name");
-                Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (nameElement != null)
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
                 {
-                    String nameInstance;
-                    nameInstance = nameElement.getTextContent();
-                    cloudServiceInstance.setName(nameInstance);
+                    CloudTracing.error(invocationId, ex);
                 }
-                
-                NodeList elements3 = cloudServicesElement.getElementsByTagName("Label");
-                Element labelElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                if (labelElement != null)
+                throw ex;
+            }
+            
+            // Create Result
+            CloudServiceListResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new CloudServiceListResponse();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document responseDoc = documentBuilder.parse(responseContent);
+            
+            NodeList elements = responseDoc.getElementsByTagName("CloudServices");
+            Element cloudServicesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            if (cloudServicesSequenceElement != null)
+            {
+                for (int i1 = 0; i1 < cloudServicesSequenceElement.getElementsByTagName("CloudService").getLength(); i1 = i1 + 1)
                 {
-                    String labelInstance;
-                    labelInstance = labelElement.getTextContent() != null ? new String(Base64.decodeBase64(labelElement.getTextContent().getBytes())) : null;
-                    cloudServiceInstance.setLabel(labelInstance);
-                }
-                
-                NodeList elements4 = cloudServicesElement.getElementsByTagName("Description");
-                Element descriptionElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                if (descriptionElement != null)
-                {
-                    String descriptionInstance;
-                    descriptionInstance = descriptionElement.getTextContent();
-                    cloudServiceInstance.setDescription(descriptionInstance);
-                }
-                
-                NodeList elements5 = cloudServicesElement.getElementsByTagName("GeoRegion");
-                Element geoRegionElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                if (geoRegionElement != null)
-                {
-                    String geoRegionInstance;
-                    geoRegionInstance = geoRegionElement.getTextContent();
-                    cloudServiceInstance.setGeoRegion(geoRegionInstance);
-                }
-                
-                NodeList elements6 = cloudServicesElement.getElementsByTagName("Resources");
-                Element resourcesSequenceElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                if (resourcesSequenceElement != null)
-                {
-                    for (int i2 = 0; i2 < resourcesSequenceElement.getElementsByTagName("Resource").getLength(); i2 = i2 + 1)
+                    org.w3c.dom.Element cloudServicesElement = ((org.w3c.dom.Element) cloudServicesSequenceElement.getElementsByTagName("CloudService").item(i1));
+                    CloudServiceListResponse.CloudService cloudServiceInstance = new CloudServiceListResponse.CloudService();
+                    result.getCloudServices().add(cloudServiceInstance);
+                    
+                    NodeList elements2 = cloudServicesElement.getElementsByTagName("Name");
+                    Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                    if (nameElement != null)
                     {
-                        org.w3c.dom.Element resourcesElement = ((org.w3c.dom.Element) resourcesSequenceElement.getElementsByTagName("Resource").item(i2));
-                        CloudServiceListResponse.CloudService.AddOnResource resourceInstance = new CloudServiceListResponse.CloudService.AddOnResource();
-                        cloudServiceInstance.getResources().add(resourceInstance);
-                        
-                        NodeList elements7 = resourcesElement.getElementsByTagName("ResourceProviderNamespace");
-                        Element resourceProviderNamespaceElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                        if (resourceProviderNamespaceElement != null)
+                        String nameInstance;
+                        nameInstance = nameElement.getTextContent();
+                        cloudServiceInstance.setName(nameInstance);
+                    }
+                    
+                    NodeList elements3 = cloudServicesElement.getElementsByTagName("Label");
+                    Element labelElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                    if (labelElement != null)
+                    {
+                        String labelInstance;
+                        labelInstance = labelElement.getTextContent() != null ? new String(Base64.decodeBase64(labelElement.getTextContent().getBytes())) : null;
+                        cloudServiceInstance.setLabel(labelInstance);
+                    }
+                    
+                    NodeList elements4 = cloudServicesElement.getElementsByTagName("Description");
+                    Element descriptionElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                    if (descriptionElement != null)
+                    {
+                        String descriptionInstance;
+                        descriptionInstance = descriptionElement.getTextContent();
+                        cloudServiceInstance.setDescription(descriptionInstance);
+                    }
+                    
+                    NodeList elements5 = cloudServicesElement.getElementsByTagName("GeoRegion");
+                    Element geoRegionElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                    if (geoRegionElement != null)
+                    {
+                        String geoRegionInstance;
+                        geoRegionInstance = geoRegionElement.getTextContent();
+                        cloudServiceInstance.setGeoRegion(geoRegionInstance);
+                    }
+                    
+                    NodeList elements6 = cloudServicesElement.getElementsByTagName("Resources");
+                    Element resourcesSequenceElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                    if (resourcesSequenceElement != null)
+                    {
+                        for (int i2 = 0; i2 < resourcesSequenceElement.getElementsByTagName("Resource").getLength(); i2 = i2 + 1)
                         {
-                            String resourceProviderNamespaceInstance;
-                            resourceProviderNamespaceInstance = resourceProviderNamespaceElement.getTextContent();
-                            resourceInstance.setNamespace(resourceProviderNamespaceInstance);
-                        }
-                        
-                        NodeList elements8 = resourcesElement.getElementsByTagName("Type");
-                        Element typeElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                        if (typeElement != null)
-                        {
-                            String typeInstance;
-                            typeInstance = typeElement.getTextContent();
-                            resourceInstance.setType(typeInstance);
-                        }
-                        
-                        NodeList elements9 = resourcesElement.getElementsByTagName("Name");
-                        Element nameElement2 = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-                        if (nameElement2 != null)
-                        {
-                            String nameInstance2;
-                            nameInstance2 = nameElement2.getTextContent();
-                            resourceInstance.setName(nameInstance2);
-                        }
-                        
-                        NodeList elements10 = resourcesElement.getElementsByTagName("Plan");
-                        Element planElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
-                        if (planElement != null)
-                        {
-                            String planInstance;
-                            planInstance = planElement.getTextContent();
-                            resourceInstance.setPlan(planInstance);
-                        }
-                        
-                        NodeList elements11 = resourcesElement.getElementsByTagName("SchemaVersion");
-                        Element schemaVersionElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
-                        if (schemaVersionElement != null)
-                        {
-                            String schemaVersionInstance;
-                            schemaVersionInstance = schemaVersionElement.getTextContent();
-                            resourceInstance.setSchemaVersion(schemaVersionInstance);
-                        }
-                        
-                        NodeList elements12 = resourcesElement.getElementsByTagName("ETag");
-                        Element eTagElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
-                        if (eTagElement != null)
-                        {
-                            String eTagInstance;
-                            eTagInstance = eTagElement.getTextContent();
-                            resourceInstance.setETag(eTagInstance);
-                        }
-                        
-                        NodeList elements13 = resourcesElement.getElementsByTagName("State");
-                        Element stateElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
-                        if (stateElement != null)
-                        {
-                            String stateInstance;
-                            stateInstance = stateElement.getTextContent();
-                            resourceInstance.setState(stateInstance);
-                        }
-                        
-                        NodeList elements14 = resourcesElement.getElementsByTagName("UsageMeters");
-                        Element usageMetersSequenceElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
-                        if (usageMetersSequenceElement != null)
-                        {
-                            for (int i3 = 0; i3 < usageMetersSequenceElement.getElementsByTagName("UsageMeter").getLength(); i3 = i3 + 1)
-                            {
-                                org.w3c.dom.Element usageMetersElement = ((org.w3c.dom.Element) usageMetersSequenceElement.getElementsByTagName("UsageMeter").item(i3));
-                                CloudServiceListResponse.CloudService.AddOnResource.UsageLimit usageMeterInstance = new CloudServiceListResponse.CloudService.AddOnResource.UsageLimit();
-                                resourceInstance.getUsageLimits().add(usageMeterInstance);
-                                
-                                NodeList elements15 = usageMetersElement.getElementsByTagName("Name");
-                                Element nameElement3 = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
-                                if (nameElement3 != null)
-                                {
-                                    String nameInstance3;
-                                    nameInstance3 = nameElement3.getTextContent();
-                                    usageMeterInstance.setName(nameInstance3);
-                                }
-                                
-                                NodeList elements16 = usageMetersElement.getElementsByTagName("Unit");
-                                Element unitElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
-                                if (unitElement != null)
-                                {
-                                    String unitInstance;
-                                    unitInstance = unitElement.getTextContent();
-                                    usageMeterInstance.setUnit(unitInstance);
-                                }
-                                
-                                NodeList elements17 = usageMetersElement.getElementsByTagName("Included");
-                                Element includedElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
-                                if (includedElement != null)
-                                {
-                                    long includedInstance;
-                                    includedInstance = Long.parseLong(includedElement.getTextContent());
-                                    usageMeterInstance.setAmountIncluded(includedInstance);
-                                }
-                                
-                                NodeList elements18 = usageMetersElement.getElementsByTagName("Used");
-                                Element usedElement = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
-                                if (usedElement != null)
-                                {
-                                    long usedInstance;
-                                    usedInstance = Long.parseLong(usedElement.getTextContent());
-                                    usageMeterInstance.setAmountUsed(usedInstance);
-                                }
-                            }
-                        }
-                        
-                        NodeList elements19 = resourcesElement.getElementsByTagName("OutputItems");
-                        Element outputItemsSequenceElement = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
-                        if (outputItemsSequenceElement != null)
-                        {
-                            for (int i4 = 0; i4 < outputItemsSequenceElement.getElementsByTagName("OutputItem").getLength(); i4 = i4 + 1)
-                            {
-                                org.w3c.dom.Element outputItemsElement = ((org.w3c.dom.Element) outputItemsSequenceElement.getElementsByTagName("OutputItem").item(i4));
-                                NodeList elements20 = outputItemsElement.getElementsByTagName("Key");
-                                String outputItemsKey = elements20.getLength() > 0 ? ((org.w3c.dom.Element) elements20.item(0)).getTextContent() : null;
-                                NodeList elements21 = outputItemsElement.getElementsByTagName("Value");
-                                String outputItemsValue = elements21.getLength() > 0 ? ((org.w3c.dom.Element) elements21.item(0)).getTextContent() : null;
-                                resourceInstance.getOutputItems().put(outputItemsKey, outputItemsValue);
-                            }
-                        }
-                        
-                        NodeList elements22 = resourcesElement.getElementsByTagName("OperationStatus");
-                        Element operationStatusElement = elements22.getLength() > 0 ? ((Element) elements22.item(0)) : null;
-                        if (operationStatusElement != null)
-                        {
-                            CloudServiceListResponse.CloudService.AddOnResource.OperationStatus operationStatusInstance = new CloudServiceListResponse.CloudService.AddOnResource.OperationStatus();
-                            resourceInstance.setStatus(operationStatusInstance);
+                            org.w3c.dom.Element resourcesElement = ((org.w3c.dom.Element) resourcesSequenceElement.getElementsByTagName("Resource").item(i2));
+                            CloudServiceListResponse.CloudService.AddOnResource resourceInstance = new CloudServiceListResponse.CloudService.AddOnResource();
+                            cloudServiceInstance.getResources().add(resourceInstance);
                             
-                            NodeList elements23 = operationStatusElement.getElementsByTagName("Type");
-                            Element typeElement2 = elements23.getLength() > 0 ? ((Element) elements23.item(0)) : null;
-                            if (typeElement2 != null)
+                            NodeList elements7 = resourcesElement.getElementsByTagName("ResourceProviderNamespace");
+                            Element resourceProviderNamespaceElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
+                            if (resourceProviderNamespaceElement != null)
                             {
-                                String typeInstance2;
-                                typeInstance2 = typeElement2.getTextContent();
-                                operationStatusInstance.setType(typeInstance2);
+                                String resourceProviderNamespaceInstance;
+                                resourceProviderNamespaceInstance = resourceProviderNamespaceElement.getTextContent();
+                                resourceInstance.setNamespace(resourceProviderNamespaceInstance);
                             }
                             
-                            NodeList elements24 = operationStatusElement.getElementsByTagName("Result");
-                            Element resultElement = elements24.getLength() > 0 ? ((Element) elements24.item(0)) : null;
-                            if (resultElement != null)
+                            NodeList elements8 = resourcesElement.getElementsByTagName("Type");
+                            Element typeElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
+                            if (typeElement != null)
                             {
-                                String resultInstance;
-                                resultInstance = resultElement.getTextContent();
-                                operationStatusInstance.setResult(resultInstance);
+                                String typeInstance;
+                                typeInstance = typeElement.getTextContent();
+                                resourceInstance.setType(typeInstance);
+                            }
+                            
+                            NodeList elements9 = resourcesElement.getElementsByTagName("Name");
+                            Element nameElement2 = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
+                            if (nameElement2 != null)
+                            {
+                                String nameInstance2;
+                                nameInstance2 = nameElement2.getTextContent();
+                                resourceInstance.setName(nameInstance2);
+                            }
+                            
+                            NodeList elements10 = resourcesElement.getElementsByTagName("Plan");
+                            Element planElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
+                            if (planElement != null)
+                            {
+                                String planInstance;
+                                planInstance = planElement.getTextContent();
+                                resourceInstance.setPlan(planInstance);
+                            }
+                            
+                            NodeList elements11 = resourcesElement.getElementsByTagName("SchemaVersion");
+                            Element schemaVersionElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
+                            if (schemaVersionElement != null)
+                            {
+                                String schemaVersionInstance;
+                                schemaVersionInstance = schemaVersionElement.getTextContent();
+                                resourceInstance.setSchemaVersion(schemaVersionInstance);
+                            }
+                            
+                            NodeList elements12 = resourcesElement.getElementsByTagName("ETag");
+                            Element eTagElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
+                            if (eTagElement != null)
+                            {
+                                String eTagInstance;
+                                eTagInstance = eTagElement.getTextContent();
+                                resourceInstance.setETag(eTagInstance);
+                            }
+                            
+                            NodeList elements13 = resourcesElement.getElementsByTagName("State");
+                            Element stateElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
+                            if (stateElement != null)
+                            {
+                                String stateInstance;
+                                stateInstance = stateElement.getTextContent();
+                                resourceInstance.setState(stateInstance);
+                            }
+                            
+                            NodeList elements14 = resourcesElement.getElementsByTagName("UsageMeters");
+                            Element usageMetersSequenceElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
+                            if (usageMetersSequenceElement != null)
+                            {
+                                for (int i3 = 0; i3 < usageMetersSequenceElement.getElementsByTagName("UsageMeter").getLength(); i3 = i3 + 1)
+                                {
+                                    org.w3c.dom.Element usageMetersElement = ((org.w3c.dom.Element) usageMetersSequenceElement.getElementsByTagName("UsageMeter").item(i3));
+                                    CloudServiceListResponse.CloudService.AddOnResource.UsageLimit usageMeterInstance = new CloudServiceListResponse.CloudService.AddOnResource.UsageLimit();
+                                    resourceInstance.getUsageLimits().add(usageMeterInstance);
+                                    
+                                    NodeList elements15 = usageMetersElement.getElementsByTagName("Name");
+                                    Element nameElement3 = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
+                                    if (nameElement3 != null)
+                                    {
+                                        String nameInstance3;
+                                        nameInstance3 = nameElement3.getTextContent();
+                                        usageMeterInstance.setName(nameInstance3);
+                                    }
+                                    
+                                    NodeList elements16 = usageMetersElement.getElementsByTagName("Unit");
+                                    Element unitElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
+                                    if (unitElement != null)
+                                    {
+                                        String unitInstance;
+                                        unitInstance = unitElement.getTextContent();
+                                        usageMeterInstance.setUnit(unitInstance);
+                                    }
+                                    
+                                    NodeList elements17 = usageMetersElement.getElementsByTagName("Included");
+                                    Element includedElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
+                                    if (includedElement != null)
+                                    {
+                                        long includedInstance;
+                                        includedInstance = Long.parseLong(includedElement.getTextContent());
+                                        usageMeterInstance.setAmountIncluded(includedInstance);
+                                    }
+                                    
+                                    NodeList elements18 = usageMetersElement.getElementsByTagName("Used");
+                                    Element usedElement = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
+                                    if (usedElement != null)
+                                    {
+                                        long usedInstance;
+                                        usedInstance = Long.parseLong(usedElement.getTextContent());
+                                        usageMeterInstance.setAmountUsed(usedInstance);
+                                    }
+                                }
+                            }
+                            
+                            NodeList elements19 = resourcesElement.getElementsByTagName("OutputItems");
+                            Element outputItemsSequenceElement = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
+                            if (outputItemsSequenceElement != null)
+                            {
+                                for (int i4 = 0; i4 < outputItemsSequenceElement.getElementsByTagName("OutputItem").getLength(); i4 = i4 + 1)
+                                {
+                                    org.w3c.dom.Element outputItemsElement = ((org.w3c.dom.Element) outputItemsSequenceElement.getElementsByTagName("OutputItem").item(i4));
+                                    NodeList elements20 = outputItemsElement.getElementsByTagName("Key");
+                                    String outputItemsKey = elements20.getLength() > 0 ? ((org.w3c.dom.Element) elements20.item(0)).getTextContent() : null;
+                                    NodeList elements21 = outputItemsElement.getElementsByTagName("Value");
+                                    String outputItemsValue = elements21.getLength() > 0 ? ((org.w3c.dom.Element) elements21.item(0)).getTextContent() : null;
+                                    resourceInstance.getOutputItems().put(outputItemsKey, outputItemsValue);
+                                }
+                            }
+                            
+                            NodeList elements22 = resourcesElement.getElementsByTagName("OperationStatus");
+                            Element operationStatusElement = elements22.getLength() > 0 ? ((Element) elements22.item(0)) : null;
+                            if (operationStatusElement != null)
+                            {
+                                CloudServiceListResponse.CloudService.AddOnResource.OperationStatus operationStatusInstance = new CloudServiceListResponse.CloudService.AddOnResource.OperationStatus();
+                                resourceInstance.setStatus(operationStatusInstance);
+                                
+                                NodeList elements23 = operationStatusElement.getElementsByTagName("Type");
+                                Element typeElement2 = elements23.getLength() > 0 ? ((Element) elements23.item(0)) : null;
+                                if (typeElement2 != null)
+                                {
+                                    String typeInstance2;
+                                    typeInstance2 = typeElement2.getTextContent();
+                                    operationStatusInstance.setType(typeInstance2);
+                                }
+                                
+                                NodeList elements24 = operationStatusElement.getElementsByTagName("Result");
+                                Element resultElement = elements24.getLength() > 0 ? ((Element) elements24.item(0)) : null;
+                                if (resultElement != null)
+                                {
+                                    String resultInstance;
+                                    resultInstance = resultElement.getTextContent();
+                                    operationStatusInstance.setResult(resultInstance);
+                                }
                             }
                         }
                     }
                 }
             }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
 }

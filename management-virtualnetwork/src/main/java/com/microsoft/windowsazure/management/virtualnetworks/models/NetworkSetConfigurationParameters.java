@@ -32,6 +32,7 @@ public class NetworkSetConfigurationParameters
     
     /**
     * The network configuration for this subscription.
+    * @return The Configuration value.
     */
     public String getConfiguration()
     {
@@ -40,9 +41,10 @@ public class NetworkSetConfigurationParameters
     
     /**
     * The network configuration for this subscription.
+    * @param configurationValue The Configuration value.
     */
-    public void setConfiguration(String configuration)
+    public void setConfiguration(final String configurationValue)
     {
-        this.configuration = configuration;
+        this.configuration = configurationValue;
     }
 }

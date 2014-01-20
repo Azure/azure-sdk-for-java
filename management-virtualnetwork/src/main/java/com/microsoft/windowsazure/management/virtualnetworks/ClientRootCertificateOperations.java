@@ -29,7 +29,6 @@ import com.microsoft.windowsazure.management.virtualnetworks.models.ClientRootCe
 import com.microsoft.windowsazure.management.virtualnetworks.models.ClientRootCertificateListResponse;
 import com.microsoft.windowsazure.management.virtualnetworks.models.GatewayOperationResponse;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -48,10 +47,28 @@ public interface ClientRootCertificateOperations
     * gateway.
     * @param parameters Parameters supplied to the Upload client certificate
     * Virtual Network Gateway operation.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
     * @return A standard storage response including an HTTP status code and
     * request ID.
     */
-    GatewayOperationResponse create(String virtualNetworkName, ClientRootCertificateCreateParameters parameters) throws UnsupportedEncodingException, IOException, ServiceException, ParserConfigurationException, SAXException, InterruptedException, ExecutionException, ServiceException;
+    GatewayOperationResponse create(String virtualNetworkName, ClientRootCertificateCreateParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException, InterruptedException, ExecutionException, ServiceException;
     
     /**
     * The Upload Client Root Certificate operation is used to upload a new
@@ -77,6 +94,24 @@ public interface ClientRootCertificateOperations
     * @param virtualNetworkName The name of the virtual network for this
     * gateway.
     * @param certificateThumbprint The X509 certificate thumbprint.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
     * @return A standard storage response including an HTTP status code and
     * request ID.
     */
@@ -106,6 +141,16 @@ public interface ClientRootCertificateOperations
     * @param virtualNetworkName The name of the virtual network for this
     * gateway.
     * @param certificateThumbprint The X509 certificate thumbprint.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return A standard storage response including an HTTP status code and
     * request ID.
     */
@@ -135,6 +180,16 @@ public interface ClientRootCertificateOperations
     *
     * @param virtualNetworkName The name of the virtual network for this
     * gateway.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return The response to the list client root certificates request.
     */
     ClientRootCertificateListResponse list(String virtualNetworkName) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException;

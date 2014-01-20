@@ -36,6 +36,7 @@ public class WebSpacesListPublishingUsersResponse extends OperationResponse impl
     
     /**
     * The publishing users.
+    * @return The Users value.
     */
     public ArrayList<WebSpacesListPublishingUsersResponse.User> getUsers()
     {
@@ -44,10 +45,11 @@ public class WebSpacesListPublishingUsersResponse extends OperationResponse impl
     
     /**
     * The publishing users.
+    * @param usersValue The Users value.
     */
-    public void setUsers(ArrayList<WebSpacesListPublishingUsersResponse.User> users)
+    public void setUsers(final ArrayList<WebSpacesListPublishingUsersResponse.User> usersValue)
     {
-        this.users = users;
+        this.users = usersValue;
     }
     
     /**
@@ -79,6 +81,7 @@ public class WebSpacesListPublishingUsersResponse extends OperationResponse impl
         
         /**
         * The publishing user name.
+        * @return The Name value.
         */
         public String getName()
         {
@@ -87,10 +90,11 @@ public class WebSpacesListPublishingUsersResponse extends OperationResponse impl
         
         /**
         * The publishing user name.
+        * @param nameValue The Name value.
         */
-        public void setName(String name)
+        public void setName(final String nameValue)
         {
-            this.name = name;
+            this.name = nameValue;
         }
     }
 }

@@ -32,13 +32,19 @@ public class AutoscaleSettingGetResponse extends OperationResponse
 {
     private AutoscaleSetting setting;
     
+    /**
+    * @return The Setting value.
+    */
     public AutoscaleSetting getSetting()
     {
         return this.setting;
     }
     
-    public void setSetting(AutoscaleSetting setting)
+    /**
+    * @param settingValue The Setting value.
+    */
+    public void setSetting(final AutoscaleSetting settingValue)
     {
-        this.setting = setting;
+        this.setting = settingValue;
     }
 }

@@ -36,6 +36,7 @@ public class WebSpacesListWebSitesResponse extends OperationResponse implements 
     
     /**
     * The websites associated with the specified web space.
+    * @return The WebSites value.
     */
     public ArrayList<WebSite> getWebSites()
     {
@@ -44,10 +45,11 @@ public class WebSpacesListWebSitesResponse extends OperationResponse implements 
     
     /**
     * The websites associated with the specified web space.
+    * @param webSitesValue The WebSites value.
     */
-    public void setWebSites(ArrayList<WebSite> webSites)
+    public void setWebSites(final ArrayList<WebSite> webSitesValue)
     {
-        this.webSites = webSites;
+        this.webSites = webSitesValue;
     }
     
     /**

@@ -36,8 +36,9 @@ public class HostedServiceCheckNameAvailabilityResponse extends OperationRespons
     * A boolean value that indicates whether the name is available for you to
     * use. True if the name is available; otherwise false.  The operation
     * returns false for reserved or profane words.
+    * @return The IsAvailable value.
     */
-    public boolean getIsAvailable()
+    public boolean isAvailable()
     {
         return this.isAvailable;
     }
@@ -46,16 +47,18 @@ public class HostedServiceCheckNameAvailabilityResponse extends OperationRespons
     * A boolean value that indicates whether the name is available for you to
     * use. True if the name is available; otherwise false.  The operation
     * returns false for reserved or profane words.
+    * @param isAvailableValue The IsAvailable value.
     */
-    public void setIsAvailable(boolean isAvailable)
+    public void setIsAvailable(final boolean isAvailableValue)
     {
-        this.isAvailable = isAvailable;
+        this.isAvailable = isAvailableValue;
     }
     
     private String reason;
     
     /**
     * Describes why the name cannot be used to create the cloud service.
+    * @return The Reason value.
     */
     public String getReason()
     {
@@ -64,9 +67,10 @@ public class HostedServiceCheckNameAvailabilityResponse extends OperationRespons
     
     /**
     * Describes why the name cannot be used to create the cloud service.
+    * @param reasonValue The Reason value.
     */
-    public void setReason(String reason)
+    public void setReason(final String reasonValue)
     {
-        this.reason = reason;
+        this.reason = reasonValue;
     }
 }

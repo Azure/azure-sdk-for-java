@@ -34,6 +34,7 @@ public class MetricDefinitionListResponse extends OperationResponse
     
     /**
     * The retrieved metric definitions.
+    * @return The MetricDefinitionCollection value.
     */
     public MetricDefinitionCollection getMetricDefinitionCollection()
     {
@@ -42,9 +43,11 @@ public class MetricDefinitionListResponse extends OperationResponse
     
     /**
     * The retrieved metric definitions.
+    * @param metricDefinitionCollectionValue The MetricDefinitionCollection
+    * value.
     */
-    public void setMetricDefinitionCollection(MetricDefinitionCollection metricDefinitionCollection)
+    public void setMetricDefinitionCollection(final MetricDefinitionCollection metricDefinitionCollectionValue)
     {
-        this.metricDefinitionCollection = metricDefinitionCollection;
+        this.metricDefinitionCollection = metricDefinitionCollectionValue;
     }
 }

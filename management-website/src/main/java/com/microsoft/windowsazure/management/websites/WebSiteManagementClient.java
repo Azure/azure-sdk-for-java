@@ -27,9 +27,13 @@ import com.microsoft.windowsazure.core.FilterableService;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.exception.ServiceException;
+import com.microsoft.windowsazure.management.websites.models.WebSiteOperationStatusResponse;
 import java.io.IOException;
 import java.net.URI;
+import java.text.ParseException;
 import java.util.concurrent.Future;
+import javax.xml.parsers.ParserConfigurationException;
+import org.xml.sax.SAXException;
 
 /**
 * The Windows Azure Web Sites management API provides a RESTful set of web
@@ -43,6 +47,7 @@ public interface WebSiteManagementClient extends FilterableService<WebSiteManage
 {
     /**
     * The URI used as the base for all Service Management requests.
+    * @return The BaseUri value.
     */
     URI getBaseUri(); 
     
@@ -53,6 +58,7 @@ public interface WebSiteManagementClient extends FilterableService<WebSiteManage
     * Azure Service ManagementAPI use mutual authentication of management
     * certificates over SSL to ensure that a request made to the service is
     * secure.  No anonymous requests are allowed.
+    * @return The Credentials value.
     */
     SubscriptionCloudCredentials getCredentials(); 
     
@@ -60,22 +66,85 @@ public interface WebSiteManagementClient extends FilterableService<WebSiteManage
     * Operations for managing the server farm in a web space.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn194277.aspx for
     * more information)
+    * @return The ServerFarmsOperations value.
     */
     ServerFarmOperations getServerFarmsOperations(); 
     
     /**
     * Operations for managing the web sites in a web space.
+    * @return The WebSitesOperations value.
     */
     WebSiteOperations getWebSitesOperations(); 
     
     /**
     * Operations for managing web spaces beneath your subscription.
+    * @return The WebSpacesOperations value.
     */
     WebSpaceOperations getWebSpacesOperations(); 
     
     /**
+    * The Get Operation Status operation returns the status of thespecified
+    * operation. After calling a long-running operation, you can call Get
+    * Operation Status to determine whether the operation has succeeded,
+    * failed, timed out, or is still in progress.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460783.aspx for
+    * more information)
+    *
+    * @param webSpaceName The name of the webspace for the website where the
+    * operation was targeted.
+    * @param siteName The name of the site where the operation was targeted.
+    * @param operationId The operation ID for the operation you wish to track.
+    * The operation ID is returned in the Id field in the body of the response
+    * for long-running operations.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
+    * @return The response body contains the status of the specified
+    * long-running operation, indicating whether it has succeeded, is
+    * inprogress, has time dout, or has failed. Note that this status is
+    * distinct from the HTTP status code returned for the Get Operation Status
+    * operation itself.  If the long-running operation failed, the response
+    * body includes error information regarding the failure.
+    */
+    WebSiteOperationStatusResponse getOperationStatus(String webSpaceName, String siteName, String operationId) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException;
+    
+    /**
+    * The Get Operation Status operation returns the status of thespecified
+    * operation. After calling a long-running operation, you can call Get
+    * Operation Status to determine whether the operation has succeeded,
+    * failed, timed out, or is still in progress.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460783.aspx for
+    * more information)
+    *
+    * @param webSpaceName The name of the webspace for the website where the
+    * operation was targeted.
+    * @param siteName The name of the site where the operation was targeted.
+    * @param operationId The operation ID for the operation you wish to track.
+    * The operation ID is returned in the Id field in the body of the response
+    * for long-running operations.
+    * @return The response body contains the status of the specified
+    * long-running operation, indicating whether it has succeeded, is
+    * inprogress, has time dout, or has failed. Note that this status is
+    * distinct from the HTTP status code returned for the Get Operation Status
+    * operation itself.  If the long-running operation failed, the response
+    * body includes error information regarding the failure.
+    */
+    Future<WebSiteOperationStatusResponse> getOperationStatusAsync(String webSpaceName, String siteName, String operationId);
+    
+    /**
     * Register your subscription to use Windows Azure Web Sites.
     *
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -92,6 +161,10 @@ public interface WebSiteManagementClient extends FilterableService<WebSiteManage
     /**
     * Unregister your subscription to use Windows Azure Web Sites.
     *
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */

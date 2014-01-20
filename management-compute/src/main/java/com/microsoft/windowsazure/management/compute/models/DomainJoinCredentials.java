@@ -37,6 +37,7 @@ public class DomainJoinCredentials
     * is not specified, Username must specify the user principal name (UPN)
     * format (user@fully-qualified-DNS-domain) or the
     * fully-qualified-DNS-domain\\username format.  Example: example.com
+    * @return The Domain value.
     */
     public String getDomain()
     {
@@ -49,16 +50,18 @@ public class DomainJoinCredentials
     * is not specified, Username must specify the user principal name (UPN)
     * format (user@fully-qualified-DNS-domain) or the
     * fully-qualified-DNS-domain\\username format.  Example: example.com
+    * @param domainValue The Domain value.
     */
-    public void setDomain(String domain)
+    public void setDomain(final String domainValue)
     {
-        this.domain = domain;
+        this.domain = domainValue;
     }
     
     private String password;
     
     /**
     * Required. Specifies the password to use to join the domain.
+    * @return The Password value.
     */
     public String getPassword()
     {
@@ -67,10 +70,11 @@ public class DomainJoinCredentials
     
     /**
     * Required. Specifies the password to use to join the domain.
+    * @param passwordValue The Password value.
     */
-    public void setPassword(String password)
+    public void setPassword(final String passwordValue)
     {
-        this.password = password;
+        this.password = passwordValue;
     }
     
     private String userName;
@@ -78,6 +82,7 @@ public class DomainJoinCredentials
     /**
     * Required. Specifies a user name in the domain that can be used to join
     * the domain.
+    * @return The UserName value.
     */
     public String getUserName()
     {
@@ -87,9 +92,10 @@ public class DomainJoinCredentials
     /**
     * Required. Specifies a user name in the domain that can be used to join
     * the domain.
+    * @param userNameValue The UserName value.
     */
-    public void setUserName(String userName)
+    public void setUserName(final String userNameValue)
     {
-        this.userName = userName;
+        this.userName = userNameValue;
     }
 }

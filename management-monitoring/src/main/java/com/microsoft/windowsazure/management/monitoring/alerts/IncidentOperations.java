@@ -38,6 +38,12 @@ public interface IncidentOperations
     /**
     *
     * @param incidentId The id of the incident to retrieve.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return The Get Incident operation response.
     */
     IncidentGetResponse get(String incidentId) throws IOException, ServiceException, ParseException;
@@ -51,6 +57,12 @@ public interface IncidentOperations
     
     /**
     *
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return The List incidents operation response.
     */
     IncidentListResponse listActiveForSubscription() throws IOException, ServiceException, ParseException;
@@ -65,6 +77,12 @@ public interface IncidentOperations
     *
     * @param ruleId The rule id.
     * @param isActive A boolean to retrieve only active or resolved incidents.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return The List incidents operation response.
     */
     IncidentListResponse listForRule(String ruleId, boolean isActive) throws IOException, ServiceException, ParseException;

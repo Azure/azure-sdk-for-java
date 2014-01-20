@@ -32,6 +32,7 @@ public class GatewayGenerateVpnClientPackageParameters
     
     /**
     * The client processor architecture.
+    * @return The ProcessorArchitecture value.
     */
     public GatewayProcessorArchitecture getProcessorArchitecture()
     {
@@ -40,9 +41,10 @@ public class GatewayGenerateVpnClientPackageParameters
     
     /**
     * The client processor architecture.
+    * @param processorArchitectureValue The ProcessorArchitecture value.
     */
-    public void setProcessorArchitecture(GatewayProcessorArchitecture processorArchitecture)
+    public void setProcessorArchitecture(final GatewayProcessorArchitecture processorArchitectureValue)
     {
-        this.processorArchitecture = processorArchitecture;
+        this.processorArchitecture = processorArchitectureValue;
     }
 }

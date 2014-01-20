@@ -34,6 +34,7 @@ public class MetricSettingListResponse extends OperationResponse
     
     /**
     * The retrieved metric settings.
+    * @return The MetricSettingCollection value.
     */
     public MetricSettingCollection getMetricSettingCollection()
     {
@@ -42,9 +43,10 @@ public class MetricSettingListResponse extends OperationResponse
     
     /**
     * The retrieved metric settings.
+    * @param metricSettingCollectionValue The MetricSettingCollection value.
     */
-    public void setMetricSettingCollection(MetricSettingCollection metricSettingCollection)
+    public void setMetricSettingCollection(final MetricSettingCollection metricSettingCollectionValue)
     {
-        this.metricSettingCollection = metricSettingCollection;
+        this.metricSettingCollection = metricSettingCollectionValue;
     }
 }

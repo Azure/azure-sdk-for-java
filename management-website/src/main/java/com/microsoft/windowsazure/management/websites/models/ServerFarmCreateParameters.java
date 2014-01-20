@@ -32,6 +32,7 @@ public class ServerFarmCreateParameters
     
     /**
     * The current number of Virtual Machines (VMs) in the server farm.
+    * @return The CurrentNumberOfWorkers value.
     */
     public Integer getCurrentNumberOfWorkers()
     {
@@ -40,16 +41,18 @@ public class ServerFarmCreateParameters
     
     /**
     * The current number of Virtual Machines (VMs) in the server farm.
+    * @param currentNumberOfWorkersValue The CurrentNumberOfWorkers value.
     */
-    public void setCurrentNumberOfWorkers(Integer currentNumberOfWorkers)
+    public void setCurrentNumberOfWorkers(final Integer currentNumberOfWorkersValue)
     {
-        this.currentNumberOfWorkers = currentNumberOfWorkers;
+        this.currentNumberOfWorkers = currentNumberOfWorkersValue;
     }
     
     private ServerFarmWorkerSize currentWorkerSize;
     
     /**
     * The current worker size Possible values are Small, Medium, or Large.
+    * @return The CurrentWorkerSize value.
     */
     public ServerFarmWorkerSize getCurrentWorkerSize()
     {
@@ -58,10 +61,11 @@ public class ServerFarmCreateParameters
     
     /**
     * The current worker size Possible values are Small, Medium, or Large.
+    * @param currentWorkerSizeValue The CurrentWorkerSize value.
     */
-    public void setCurrentWorkerSize(ServerFarmWorkerSize currentWorkerSize)
+    public void setCurrentWorkerSize(final ServerFarmWorkerSize currentWorkerSizeValue)
     {
-        this.currentWorkerSize = currentWorkerSize;
+        this.currentWorkerSize = currentWorkerSizeValue;
     }
     
     private int numberOfWorkers;
@@ -69,6 +73,7 @@ public class ServerFarmCreateParameters
     /**
     * The instance count, which is the number of virtual machines dedicated to
     * the farm. Supported values are 1-10.
+    * @return The NumberOfWorkers value.
     */
     public int getNumberOfWorkers()
     {
@@ -78,16 +83,18 @@ public class ServerFarmCreateParameters
     /**
     * The instance count, which is the number of virtual machines dedicated to
     * the farm. Supported values are 1-10.
+    * @param numberOfWorkersValue The NumberOfWorkers value.
     */
-    public void setNumberOfWorkers(int numberOfWorkers)
+    public void setNumberOfWorkers(final int numberOfWorkersValue)
     {
-        this.numberOfWorkers = numberOfWorkers;
+        this.numberOfWorkers = numberOfWorkersValue;
     }
     
     private ServerFarmStatus status;
     
     /**
     * Server farm status. Possible values are Ready or Pending.
+    * @return The Status value.
     */
     public ServerFarmStatus getStatus()
     {
@@ -96,16 +103,18 @@ public class ServerFarmCreateParameters
     
     /**
     * Server farm status. Possible values are Ready or Pending.
+    * @param statusValue The Status value.
     */
-    public void setStatus(ServerFarmStatus status)
+    public void setStatus(final ServerFarmStatus statusValue)
     {
-        this.status = status;
+        this.status = statusValue;
     }
     
     private ServerFarmWorkerSize workerSize;
     
     /**
     * The instance size. Possible values are Small, Medium, or Large.
+    * @return The WorkerSize value.
     */
     public ServerFarmWorkerSize getWorkerSize()
     {
@@ -114,9 +123,10 @@ public class ServerFarmCreateParameters
     
     /**
     * The instance size. Possible values are Small, Medium, or Large.
+    * @param workerSizeValue The WorkerSize value.
     */
-    public void setWorkerSize(ServerFarmWorkerSize workerSize)
+    public void setWorkerSize(final ServerFarmWorkerSize workerSizeValue)
     {
-        this.workerSize = workerSize;
+        this.workerSize = workerSizeValue;
     }
 }

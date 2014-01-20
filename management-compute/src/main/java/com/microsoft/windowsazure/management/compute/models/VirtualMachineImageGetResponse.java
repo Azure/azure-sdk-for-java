@@ -40,6 +40,7 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * is located. If the storage account does not belong to an affinity group
     * the value is NULL and the element is not displayed in the response.
     * This value is NULL for platform images.
+    * @return The AffinityGroup value.
     */
     public String getAffinityGroup()
     {
@@ -52,10 +53,11 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * is located. If the storage account does not belong to an affinity group
     * the value is NULL and the element is not displayed in the response.
     * This value is NULL for platform images.
+    * @param affinityGroupValue The AffinityGroup value.
     */
-    public void setAffinityGroup(String affinityGroup)
+    public void setAffinityGroup(final String affinityGroupValue)
     {
-        this.affinityGroup = affinityGroup;
+        this.affinityGroup = affinityGroupValue;
     }
     
     private String category;
@@ -63,6 +65,7 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     /**
     * The repository classification of the image. All user images have the
     * category User.
+    * @return The Category value.
     */
     public String getCategory()
     {
@@ -72,16 +75,18 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     /**
     * The repository classification of the image. All user images have the
     * category User.
+    * @param categoryValue The Category value.
     */
-    public void setCategory(String category)
+    public void setCategory(final String categoryValue)
     {
-        this.category = category;
+        this.category = categoryValue;
     }
     
     private String description;
     
     /**
     * Specifies the description of the image.
+    * @return The Description value.
     */
     public String getDescription()
     {
@@ -90,10 +95,11 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     
     /**
     * Specifies the description of the image.
+    * @param descriptionValue The Description value.
     */
-    public void setDescription(String description)
+    public void setDescription(final String descriptionValue)
     {
-        this.description = description;
+        this.description = descriptionValue;
     }
     
     private String eula;
@@ -102,6 +108,7 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * Specifies the End User License Agreement that is associated with the
     * image. The value for this element is a string, but it is recommended
     * that the value be a URL that points to a EULA.
+    * @return The Eula value.
     */
     public String getEula()
     {
@@ -112,16 +119,18 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * Specifies the End User License Agreement that is associated with the
     * image. The value for this element is a string, but it is recommended
     * that the value be a URL that points to a EULA.
+    * @param eulaValue The Eula value.
     */
-    public void setEula(String eula)
+    public void setEula(final String eulaValue)
     {
-        this.eula = eula;
+        this.eula = eulaValue;
     }
     
     private URI iconUri;
     
     /**
     * Provides the URI to the icon for this Operating System Image.
+    * @return The IconUri value.
     */
     public URI getIconUri()
     {
@@ -130,16 +139,18 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     
     /**
     * Provides the URI to the icon for this Operating System Image.
+    * @param iconUriValue The IconUri value.
     */
-    public void setIconUri(URI iconUri)
+    public void setIconUri(final URI iconUriValue)
     {
-        this.iconUri = iconUri;
+        this.iconUri = iconUriValue;
     }
     
     private String imageFamily;
     
     /**
     * Specifies a value that can be used to group images.
+    * @return The ImageFamily value.
     */
     public String getImageFamily()
     {
@@ -148,10 +159,11 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     
     /**
     * Specifies a value that can be used to group images.
+    * @param imageFamilyValue The ImageFamily value.
     */
-    public void setImageFamily(String imageFamily)
+    public void setImageFamily(final String imageFamilyValue)
     {
-        this.imageFamily = imageFamily;
+        this.imageFamily = imageFamilyValue;
     }
     
     private Boolean isPremium;
@@ -160,8 +172,9 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * Indicates whether the image contains software or associated services that
     * will incur charges above the core price for the virtual machine. For
     * additional details, see the PricingDetailLink element.
+    * @return The IsPremium value.
     */
-    public Boolean getIsPremium()
+    public Boolean isPremium()
     {
         return this.isPremium;
     }
@@ -170,16 +183,18 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * Indicates whether the image contains software or associated services that
     * will incur charges above the core price for the virtual machine. For
     * additional details, see the PricingDetailLink element.
+    * @param isPremiumValue The IsPremium value.
     */
-    public void setIsPremium(Boolean isPremium)
+    public void setIsPremium(final Boolean isPremiumValue)
     {
-        this.isPremium = isPremium;
+        this.isPremium = isPremiumValue;
     }
     
     private String label;
     
     /**
     * An identifier for the image.
+    * @return The Label value.
     */
     public String getLabel()
     {
@@ -188,10 +203,11 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     
     /**
     * An identifier for the image.
+    * @param labelValue The Label value.
     */
-    public void setLabel(String label)
+    public void setLabel(final String labelValue)
     {
-        this.label = label;
+        this.label = labelValue;
     }
     
     private String language;
@@ -199,6 +215,7 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     /**
     * Specifies the language of the image.  The Language element is only
     * available using version 2013-03-01 or higher.
+    * @return The Language value.
     */
     public String getLanguage()
     {
@@ -208,10 +225,11 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     /**
     * Specifies the language of the image.  The Language element is only
     * available using version 2013-03-01 or higher.
+    * @param languageValue The Language value.
     */
-    public void setLanguage(String language)
+    public void setLanguage(final String languageValue)
     {
-        this.language = language;
+        this.language = languageValue;
     }
     
     private String location;
@@ -223,6 +241,7 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * value is NULL.  If the version is set to 2012-08-01 or later, the
     * locations are returned for platform images; otherwise, this value is
     * NULL for platform images.
+    * @return The Location value.
     */
     public String getLocation()
     {
@@ -236,16 +255,18 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * value is NULL.  If the version is set to 2012-08-01 or later, the
     * locations are returned for platform images; otherwise, this value is
     * NULL for platform images.
+    * @param locationValue The Location value.
     */
-    public void setLocation(String location)
+    public void setLocation(final String locationValue)
     {
-        this.location = location;
+        this.location = locationValue;
     }
     
     private double logicalSizeInGB;
     
     /**
     * The size, in GB, of the image.
+    * @return The LogicalSizeInGB value.
     */
     public double getLogicalSizeInGB()
     {
@@ -254,10 +275,11 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     
     /**
     * The size, in GB, of the image.
+    * @param logicalSizeInGBValue The LogicalSizeInGB value.
     */
-    public void setLogicalSizeInGB(double logicalSizeInGB)
+    public void setLogicalSizeInGB(final double logicalSizeInGBValue)
     {
-        this.logicalSizeInGB = logicalSizeInGB;
+        this.logicalSizeInGB = logicalSizeInGBValue;
     }
     
     private URI mediaLinkUri;
@@ -267,6 +289,7 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * belongs to a storage account in the subscription specified by the
     * SubscriptionId value in the operation call.  Example:
     * http://example.blob.core.windows.net/disks/myimage.vhd
+    * @return The MediaLinkUri value.
     */
     public URI getMediaLinkUri()
     {
@@ -278,10 +301,11 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * belongs to a storage account in the subscription specified by the
     * SubscriptionId value in the operation call.  Example:
     * http://example.blob.core.windows.net/disks/myimage.vhd
+    * @param mediaLinkUriValue The MediaLinkUri value.
     */
-    public void setMediaLinkUri(URI mediaLinkUri)
+    public void setMediaLinkUri(final URI mediaLinkUriValue)
     {
-        this.mediaLinkUri = mediaLinkUri;
+        this.mediaLinkUri = mediaLinkUriValue;
     }
     
     private String name;
@@ -289,6 +313,7 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     /**
     * The name of the operating system image. This is the name that is used
     * when creating one or more virtual machines using the image.
+    * @return The Name value.
     */
     public String getName()
     {
@@ -298,10 +323,11 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     /**
     * The name of the operating system image. This is the name that is used
     * when creating one or more virtual machines using the image.
+    * @param nameValue The Name value.
     */
-    public void setName(String name)
+    public void setName(final String nameValue)
     {
-        this.name = name;
+        this.name = nameValue;
     }
     
     private String operatingSystemType;
@@ -309,6 +335,7 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     /**
     * The operating system type of the OS image. Possible values are: Linux,
     * Windows.
+    * @return The OperatingSystemType value.
     */
     public String getOperatingSystemType()
     {
@@ -318,10 +345,11 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     /**
     * The operating system type of the OS image. Possible values are: Linux,
     * Windows.
+    * @param operatingSystemTypeValue The OperatingSystemType value.
     */
-    public void setOperatingSystemType(String operatingSystemType)
+    public void setOperatingSystemType(final String operatingSystemTypeValue)
     {
-        this.operatingSystemType = operatingSystemType;
+        this.operatingSystemType = operatingSystemTypeValue;
     }
     
     private URI privacyUri;
@@ -329,6 +357,7 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     /**
     * Specifies the URI that points to a document that contains the privacy
     * policy related to the image.
+    * @return The PrivacyUri value.
     */
     public URI getPrivacyUri()
     {
@@ -338,16 +367,18 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     /**
     * Specifies the URI that points to a document that contains the privacy
     * policy related to the image.
+    * @param privacyUriValue The PrivacyUri value.
     */
-    public void setPrivacyUri(URI privacyUri)
+    public void setPrivacyUri(final URI privacyUriValue)
     {
-        this.privacyUri = privacyUri;
+        this.privacyUri = privacyUriValue;
     }
     
     private Calendar publishedDate;
     
     /**
     * Specifies the date when the image was added to the image repository.
+    * @return The PublishedDate value.
     */
     public Calendar getPublishedDate()
     {
@@ -356,16 +387,18 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     
     /**
     * Specifies the date when the image was added to the image repository.
+    * @param publishedDateValue The PublishedDate value.
     */
-    public void setPublishedDate(Calendar publishedDate)
+    public void setPublishedDate(final Calendar publishedDateValue)
     {
-        this.publishedDate = publishedDate;
+        this.publishedDate = publishedDateValue;
     }
     
     private String publisherName;
     
     /**
     * The name of the publisher of this OS Image in Windows Azure.
+    * @return The PublisherName value.
     */
     public String getPublisherName()
     {
@@ -374,19 +407,21 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     
     /**
     * The name of the publisher of this OS Image in Windows Azure.
+    * @param publisherNameValue The PublisherName value.
     */
-    public void setPublisherName(String publisherName)
+    public void setPublisherName(final String publisherNameValue)
     {
-        this.publisherName = publisherName;
+        this.publisherName = publisherNameValue;
     }
     
-    private VirtualMachineRoleSize recommendedVMSize;
+    private String recommendedVMSize;
     
     /**
     * Optional. Specifies the size to use for the virtual machine that is
     * created from the OS image.
+    * @return The RecommendedVMSize value.
     */
-    public VirtualMachineRoleSize getRecommendedVMSize()
+    public String getRecommendedVMSize()
     {
         return this.recommendedVMSize;
     }
@@ -394,28 +429,31 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     /**
     * Optional. Specifies the size to use for the virtual machine that is
     * created from the OS image.
+    * @param recommendedVMSizeValue The RecommendedVMSize value.
     */
-    public void setRecommendedVMSize(VirtualMachineRoleSize recommendedVMSize)
+    public void setRecommendedVMSize(final String recommendedVMSizeValue)
     {
-        this.recommendedVMSize = recommendedVMSize;
+        this.recommendedVMSize = recommendedVMSizeValue;
     }
     
     private Boolean showInGui;
     
     /**
     * Indicates whther the image should be shown in the windows azure portal.
+    * @return The ShowInGui value.
     */
-    public Boolean getShowInGui()
+    public Boolean isShowInGui()
     {
         return this.showInGui;
     }
     
     /**
     * Indicates whther the image should be shown in the windows azure portal.
+    * @param showInGuiValue The ShowInGui value.
     */
-    public void setShowInGui(Boolean showInGui)
+    public void setShowInGui(final Boolean showInGuiValue)
     {
-        this.showInGui = showInGui;
+        this.showInGui = showInGuiValue;
     }
     
     private URI smallIconUri;
@@ -424,6 +462,7 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * Specifies the URI to the small icon that is displayed when the image is
     * presented in the Windows Azure Management Portal.  The SmallIconUri
     * element is only available using version 2013-03-01 or higher.
+    * @return The SmallIconUri value.
     */
     public URI getSmallIconUri()
     {
@@ -434,9 +473,10 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * Specifies the URI to the small icon that is displayed when the image is
     * presented in the Windows Azure Management Portal.  The SmallIconUri
     * element is only available using version 2013-03-01 or higher.
+    * @param smallIconUriValue The SmallIconUri value.
     */
-    public void setSmallIconUri(URI smallIconUri)
+    public void setSmallIconUri(final URI smallIconUriValue)
     {
-        this.smallIconUri = smallIconUri;
+        this.smallIconUri = smallIconUriValue;
     }
 }

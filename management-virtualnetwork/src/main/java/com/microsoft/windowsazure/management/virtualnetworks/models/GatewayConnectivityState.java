@@ -30,4 +30,6 @@ public enum GatewayConnectivityState
     Connecting,
     
     NotConnected,
+    
+    Unknown,
 }

@@ -34,6 +34,7 @@ public class DnsServer
     
     /**
     * The DNS server address.
+    * @return The Address value.
     */
     public InetAddress getAddress()
     {
@@ -42,16 +43,18 @@ public class DnsServer
     
     /**
     * The DNS server address.
+    * @param addressValue The Address value.
     */
-    public void setAddress(InetAddress address)
+    public void setAddress(final InetAddress addressValue)
     {
-        this.address = address;
+        this.address = addressValue;
     }
     
     private String name;
     
     /**
     * The name of the DNS server.
+    * @return The Name value.
     */
     public String getName()
     {
@@ -60,9 +63,10 @@ public class DnsServer
     
     /**
     * The name of the DNS server.
+    * @param nameValue The Name value.
     */
-    public void setName(String name)
+    public void setName(final String nameValue)
     {
-        this.name = name;
+        this.name = nameValue;
     }
 }

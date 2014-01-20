@@ -26,7 +26,6 @@ package com.microsoft.windowsazure.management.monitoring.alerts;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.monitoring.alerts.models.Incident;
-import com.microsoft.windowsazure.management.monitoring.alerts.models.IncidentCollection;
 import com.microsoft.windowsazure.management.monitoring.alerts.models.IncidentGetResponse;
 import com.microsoft.windowsazure.management.monitoring.alerts.models.IncidentListResponse;
 import com.microsoft.windowsazure.tracing.CloudTracing;
@@ -65,6 +64,7 @@ public class IncidentOperationsImpl implements ServiceOperations<AlertsClientImp
     /**
     * Gets a reference to the
     * microsoft.windowsazure.management.monitoring.alerts.AlertsClientImpl.
+    * @return The Client value.
     */
     public AlertsClientImpl getClient()
     {
@@ -91,6 +91,12 @@ public class IncidentOperationsImpl implements ServiceOperations<AlertsClientImp
     /**
     *
     * @param incidentId The id of the incident to retrieve.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return The Get Incident operation response.
     */
     @Override
@@ -126,43 +132,42 @@ public class IncidentOperationsImpl implements ServiceOperations<AlertsClientImp
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != HttpStatus.SC_OK)
-        {
-            ServiceException ex = ServiceException.createFromJson(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
-        }
-        
-        // Create Result
-        IncidentGetResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new IncidentGetResponse();
-        ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode responseDoc = objectMapper.readTree(responseContent);
-        
-        if (responseDoc != null)
-        {
-            JsonNode incidentValue = responseDoc.get("Incident");
-            if (incidentValue != null)
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromJson(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            IncidentGetResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new IncidentGetResponse();
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode responseDoc = objectMapper.readTree(responseContent);
+            
+            if (responseDoc != null)
             {
                 Incident incidentInstance = new Incident();
                 result.setIncident(incidentInstance);
                 
-                JsonNode idValue = incidentValue.get("Id");
+                JsonNode idValue = responseDoc.get("Id");
                 if (idValue != null)
                 {
                     String idInstance;
@@ -170,7 +175,7 @@ public class IncidentOperationsImpl implements ServiceOperations<AlertsClientImp
                     incidentInstance.setId(idInstance);
                 }
                 
-                JsonNode ruleIdValue = incidentValue.get("RuleId");
+                JsonNode ruleIdValue = responseDoc.get("RuleId");
                 if (ruleIdValue != null)
                 {
                     String ruleIdInstance;
@@ -178,7 +183,7 @@ public class IncidentOperationsImpl implements ServiceOperations<AlertsClientImp
                     incidentInstance.setRuleId(ruleIdInstance);
                 }
                 
-                JsonNode isActiveValue = incidentValue.get("IsActive");
+                JsonNode isActiveValue = responseDoc.get("IsActive");
                 if (isActiveValue != null)
                 {
                     boolean isActiveInstance;
@@ -186,7 +191,7 @@ public class IncidentOperationsImpl implements ServiceOperations<AlertsClientImp
                     incidentInstance.setIsActive(isActiveInstance);
                 }
                 
-                JsonNode activatedTimeValue = incidentValue.get("ActivatedTime");
+                JsonNode activatedTimeValue = responseDoc.get("ActivatedTime");
                 if (activatedTimeValue != null)
                 {
                     Calendar activatedTimeInstance;
@@ -197,7 +202,7 @@ public class IncidentOperationsImpl implements ServiceOperations<AlertsClientImp
                     incidentInstance.setActivatedTime(activatedTimeInstance);
                 }
                 
-                JsonNode resolvedTimeValue = incidentValue.get("ResolvedTime");
+                JsonNode resolvedTimeValue = responseDoc.get("ResolvedTime");
                 if (resolvedTimeValue != null)
                 {
                     Calendar resolvedTimeInstance;
@@ -208,19 +213,26 @@ public class IncidentOperationsImpl implements ServiceOperations<AlertsClientImp
                     incidentInstance.setResolvedTime(resolvedTimeInstance);
                 }
             }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -241,6 +253,12 @@ public class IncidentOperationsImpl implements ServiceOperations<AlertsClientImp
     
     /**
     *
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return The List incidents operation response.
     */
     @Override
@@ -271,49 +289,45 @@ public class IncidentOperationsImpl implements ServiceOperations<AlertsClientImp
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != HttpStatus.SC_OK)
-        {
-            ServiceException ex = ServiceException.createFromJson(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
-        }
-        
-        // Create Result
-        IncidentListResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new IncidentListResponse();
-        ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode responseDoc = objectMapper.readTree(responseContent);
-        
-        if (responseDoc != null)
-        {
-            JsonNode incidentCollectionValue = responseDoc.get("IncidentCollection");
-            if (incidentCollectionValue != null)
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
             {
-                IncidentCollection incidentCollectionInstance = new IncidentCollection();
-                result.setIncidentCollection(incidentCollectionInstance);
-                
-                ArrayNode valueArray = ((ArrayNode) incidentCollectionValue.get("Value"));
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromJson(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            IncidentListResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new IncidentListResponse();
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode responseDoc = objectMapper.readTree(responseContent);
+            
+            if (responseDoc != null)
+            {
+                ArrayNode valueArray = ((ArrayNode) responseDoc.get("Value"));
                 if (valueArray != null)
                 {
                     for (JsonNode valueValue : valueArray)
                     {
                         Incident incidentInstance = new Incident();
-                        incidentCollectionInstance.getValue().add(incidentInstance);
+                        result.getValue().add(incidentInstance);
                         
                         JsonNode idValue = valueValue.get("Id");
                         if (idValue != null)
@@ -363,19 +377,26 @@ public class IncidentOperationsImpl implements ServiceOperations<AlertsClientImp
                     }
                 }
             }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -400,6 +421,12 @@ public class IncidentOperationsImpl implements ServiceOperations<AlertsClientImp
     *
     * @param ruleId The rule id.
     * @param isActive A boolean to retrieve only active or resolved incidents.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return The List incidents operation response.
     */
     @Override
@@ -436,49 +463,45 @@ public class IncidentOperationsImpl implements ServiceOperations<AlertsClientImp
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != HttpStatus.SC_OK)
-        {
-            ServiceException ex = ServiceException.createFromJson(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
-        }
-        
-        // Create Result
-        IncidentListResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new IncidentListResponse();
-        ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode responseDoc = objectMapper.readTree(responseContent);
-        
-        if (responseDoc != null)
-        {
-            JsonNode incidentCollectionValue = responseDoc.get("IncidentCollection");
-            if (incidentCollectionValue != null)
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
             {
-                IncidentCollection incidentCollectionInstance = new IncidentCollection();
-                result.setIncidentCollection(incidentCollectionInstance);
-                
-                ArrayNode valueArray = ((ArrayNode) incidentCollectionValue.get("Value"));
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromJson(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            IncidentListResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new IncidentListResponse();
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode responseDoc = objectMapper.readTree(responseContent);
+            
+            if (responseDoc != null)
+            {
+                ArrayNode valueArray = ((ArrayNode) responseDoc.get("Value"));
                 if (valueArray != null)
                 {
                     for (JsonNode valueValue : valueArray)
                     {
                         Incident incidentInstance = new Incident();
-                        incidentCollectionInstance.getValue().add(incidentInstance);
+                        result.getValue().add(incidentInstance);
                         
                         JsonNode idValue = valueValue.get("Id");
                         if (idValue != null)
@@ -528,18 +551,25 @@ public class IncidentOperationsImpl implements ServiceOperations<AlertsClientImp
                     }
                 }
             }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
 }

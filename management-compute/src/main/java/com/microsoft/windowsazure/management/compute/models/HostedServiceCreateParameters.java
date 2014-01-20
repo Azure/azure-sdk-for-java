@@ -39,6 +39,7 @@ public class HostedServiceCreateParameters
     * the List Affinity Groups operation.  Specify either Location or
     * AffinityGroup, but not both. To list available affinity groups, use the
     * List Affinity Groups operation.
+    * @return The AffinityGroup value.
     */
     public String getAffinityGroup()
     {
@@ -52,10 +53,11 @@ public class HostedServiceCreateParameters
     * the List Affinity Groups operation.  Specify either Location or
     * AffinityGroup, but not both. To list available affinity groups, use the
     * List Affinity Groups operation.
+    * @param affinityGroupValue The AffinityGroup value.
     */
-    public void setAffinityGroup(String affinityGroup)
+    public void setAffinityGroup(final String affinityGroupValue)
     {
-        this.affinityGroup = affinityGroup;
+        this.affinityGroup = affinityGroupValue;
     }
     
     private String description;
@@ -63,6 +65,7 @@ public class HostedServiceCreateParameters
     /**
     * Optional. A description for the cloud service. The description can be up
     * to 1024 characters in length.
+    * @return The Description value.
     */
     public String getDescription()
     {
@@ -72,10 +75,11 @@ public class HostedServiceCreateParameters
     /**
     * Optional. A description for the cloud service. The description can be up
     * to 1024 characters in length.
+    * @param descriptionValue The Description value.
     */
-    public void setDescription(String description)
+    public void setDescription(final String descriptionValue)
     {
-        this.description = description;
+        this.description = descriptionValue;
     }
     
     private HashMap<String, String> extendedProperties;
@@ -91,6 +95,7 @@ public class HostedServiceCreateParameters
     * extended property owned by the same service, will result in a status
     * code 400 (Bad Request) error.  Each extended property value has a
     * maximum length of 255 characters.
+    * @return The ExtendedProperties value.
     */
     public HashMap<String, String> getExtendedProperties()
     {
@@ -108,10 +113,11 @@ public class HostedServiceCreateParameters
     * extended property owned by the same service, will result in a status
     * code 400 (Bad Request) error.  Each extended property value has a
     * maximum length of 255 characters.
+    * @param extendedPropertiesValue The ExtendedProperties value.
     */
-    public void setExtendedProperties(HashMap<String, String> extendedProperties)
+    public void setExtendedProperties(final HashMap<String, String> extendedPropertiesValue)
     {
-        this.extendedProperties = extendedProperties;
+        this.extendedProperties = extendedPropertiesValue;
     }
     
     private String label;
@@ -120,6 +126,7 @@ public class HostedServiceCreateParameters
     * Required. A name for the cloud service. The name can be up to 100
     * characters in length. The name can be used to identify the storage
     * account for your tracking purposes.
+    * @return The Label value.
     */
     public String getLabel()
     {
@@ -137,10 +144,11 @@ public class HostedServiceCreateParameters
     * Required. A name for the cloud service. The name can be up to 100
     * characters in length. The name can be used to identify the storage
     * account for your tracking purposes.
+    * @param labelValue The Label value.
     */
-    public void setLabel(String label)
+    public void setLabel(final String labelValue)
     {
-        this.label = label;
+        this.label = labelValue;
     }
     
     private String location;
@@ -149,6 +157,7 @@ public class HostedServiceCreateParameters
     * Required if AffinityGroup is not specified. The location where the cloud
     * service will be created.  Specify either Location or AffinityGroup, but
     * not both. To list available locations, use the List Locations operation.
+    * @return The Location value.
     */
     public String getLocation()
     {
@@ -159,10 +168,11 @@ public class HostedServiceCreateParameters
     * Required if AffinityGroup is not specified. The location where the cloud
     * service will be created.  Specify either Location or AffinityGroup, but
     * not both. To list available locations, use the List Locations operation.
+    * @param locationValue The Location value.
     */
-    public void setLocation(String location)
+    public void setLocation(final String locationValue)
     {
-        this.location = location;
+        this.location = locationValue;
     }
     
     private String serviceName;
@@ -171,6 +181,7 @@ public class HostedServiceCreateParameters
     * Required. A name for the cloud service that is unique within Windows
     * Azure. This name is the DNS prefix name and can be used to access the
     * service.
+    * @return The ServiceName value.
     */
     public String getServiceName()
     {
@@ -181,10 +192,11 @@ public class HostedServiceCreateParameters
     * Required. A name for the cloud service that is unique within Windows
     * Azure. This name is the DNS prefix name and can be used to access the
     * service.
+    * @param serviceNameValue The ServiceName value.
     */
-    public void setServiceName(String serviceName)
+    public void setServiceName(final String serviceNameValue)
     {
-        this.serviceName = serviceName;
+        this.serviceName = serviceNameValue;
     }
     
     /**

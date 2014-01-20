@@ -35,6 +35,7 @@ public class ConfigurationSet
     /**
     * Required. Specifies the string representing the administrator password to
     * use for the virtual machine.
+    * @return The AdminPassword value.
     */
     public String getAdminPassword()
     {
@@ -44,10 +45,11 @@ public class ConfigurationSet
     /**
     * Required. Specifies the string representing the administrator password to
     * use for the virtual machine.
+    * @param adminPasswordValue The AdminPassword value.
     */
-    public void setAdminPassword(String adminPassword)
+    public void setAdminPassword(final String adminPasswordValue)
     {
-        this.adminPassword = adminPassword;
+        this.adminPassword = adminPasswordValue;
     }
     
     private String adminUserName;
@@ -56,6 +58,7 @@ public class ConfigurationSet
     * Required. Specifies the name that is used to rename the default
     * administrator account. This is a required parameter after version
     * 2013-03-01.
+    * @return The AdminUserName value.
     */
     public String getAdminUserName()
     {
@@ -66,10 +69,11 @@ public class ConfigurationSet
     * Required. Specifies the name that is used to rename the default
     * administrator account. This is a required parameter after version
     * 2013-03-01.
+    * @param adminUserNameValue The AdminUserName value.
     */
-    public void setAdminUserName(String adminUserName)
+    public void setAdminUserName(final String adminUserNameValue)
     {
-        this.adminUserName = adminUserName;
+        this.adminUserName = adminUserNameValue;
     }
     
     private String computerName;
@@ -79,6 +83,7 @@ public class ConfigurationSet
     * computer name is not specified, a name is created based on the name of
     * the role.  Computer names must be 1 to 15 characters in length. This
     * element is only used with the WindowsProvisioningConfiguration set.
+    * @return The ComputerName value.
     */
     public String getComputerName()
     {
@@ -90,16 +95,18 @@ public class ConfigurationSet
     * computer name is not specified, a name is created based on the name of
     * the role.  Computer names must be 1 to 15 characters in length. This
     * element is only used with the WindowsProvisioningConfiguration set.
+    * @param computerNameValue The ComputerName value.
     */
-    public void setComputerName(String computerName)
+    public void setComputerName(final String computerNameValue)
     {
-        this.computerName = computerName;
+        this.computerName = computerNameValue;
     }
     
     private String configurationSetType;
     
     /**
     * Specifies the configuration type for the configuration set.
+    * @return The ConfigurationSetType value.
     */
     public String getConfigurationSetType()
     {
@@ -108,10 +115,11 @@ public class ConfigurationSet
     
     /**
     * Specifies the configuration type for the configuration set.
+    * @param configurationSetTypeValue The ConfigurationSetType value.
     */
-    public void setConfigurationSetType(String configurationSetType)
+    public void setConfigurationSetType(final String configurationSetTypeValue)
     {
-        this.configurationSetType = configurationSetType;
+        this.configurationSetType = configurationSetTypeValue;
     }
     
     private Boolean disableSshPasswordAuthentication;
@@ -120,8 +128,9 @@ public class ConfigurationSet
     * Optional. Specifies whether or not SSH authentication is disabled for the
     * password. This element is only used with the
     * LinuxProvisioningConfiguration set. By default this value is set to true.
+    * @return The DisableSshPasswordAuthentication value.
     */
-    public Boolean getDisableSshPasswordAuthentication()
+    public Boolean isDisableSshPasswordAuthentication()
     {
         return this.disableSshPasswordAuthentication;
     }
@@ -130,10 +139,12 @@ public class ConfigurationSet
     * Optional. Specifies whether or not SSH authentication is disabled for the
     * password. This element is only used with the
     * LinuxProvisioningConfiguration set. By default this value is set to true.
+    * @param disableSshPasswordAuthenticationValue The
+    * DisableSshPasswordAuthentication value.
     */
-    public void setDisableSshPasswordAuthentication(Boolean disableSshPasswordAuthentication)
+    public void setDisableSshPasswordAuthentication(final Boolean disableSshPasswordAuthenticationValue)
     {
-        this.disableSshPasswordAuthentication = disableSshPasswordAuthentication;
+        this.disableSshPasswordAuthentication = disableSshPasswordAuthenticationValue;
     }
     
     private DomainJoinSettings domainJoin;
@@ -142,6 +153,7 @@ public class ConfigurationSet
     * Optional.  Contains properties that specify a domain to which the virtual
     * machine will be joined. This element is only used with the
     * WindowsProvisioningConfiguration set.
+    * @return The DomainJoin value.
     */
     public DomainJoinSettings getDomainJoin()
     {
@@ -152,10 +164,11 @@ public class ConfigurationSet
     * Optional.  Contains properties that specify a domain to which the virtual
     * machine will be joined. This element is only used with the
     * WindowsProvisioningConfiguration set.
+    * @param domainJoinValue The DomainJoin value.
     */
-    public void setDomainJoin(DomainJoinSettings domainJoin)
+    public void setDomainJoin(final DomainJoinSettings domainJoinValue)
     {
-        this.domainJoin = domainJoin;
+        this.domainJoin = domainJoinValue;
     }
     
     private Boolean enableAutomaticUpdates;
@@ -164,8 +177,9 @@ public class ConfigurationSet
     * Optional. Specifies whether automatic updates are enabled for the virtual
     * machine. This element is only used with the
     * WindowsProvisioningConfiguration set. The default value is false.
+    * @return The EnableAutomaticUpdates value.
     */
-    public Boolean getEnableAutomaticUpdates()
+    public Boolean isEnableAutomaticUpdates()
     {
         return this.enableAutomaticUpdates;
     }
@@ -174,10 +188,11 @@ public class ConfigurationSet
     * Optional. Specifies whether automatic updates are enabled for the virtual
     * machine. This element is only used with the
     * WindowsProvisioningConfiguration set. The default value is false.
+    * @param enableAutomaticUpdatesValue The EnableAutomaticUpdates value.
     */
-    public void setEnableAutomaticUpdates(Boolean enableAutomaticUpdates)
+    public void setEnableAutomaticUpdates(final Boolean enableAutomaticUpdatesValue)
     {
-        this.enableAutomaticUpdates = enableAutomaticUpdates;
+        this.enableAutomaticUpdates = enableAutomaticUpdatesValue;
     }
     
     private String hostName;
@@ -186,6 +201,7 @@ public class ConfigurationSet
     * Required. Specifies the host name for the VM. Host names are ASCII
     * character strings 1 to 64 characters in length. This element is only
     * used with the LinuxProvisioningConfiguration set.
+    * @return The HostName value.
     */
     public String getHostName()
     {
@@ -196,10 +212,11 @@ public class ConfigurationSet
     * Required. Specifies the host name for the VM. Host names are ASCII
     * character strings 1 to 64 characters in length. This element is only
     * used with the LinuxProvisioningConfiguration set.
+    * @param hostNameValue The HostName value.
     */
-    public void setHostName(String hostName)
+    public void setHostName(final String hostNameValue)
     {
-        this.hostName = hostName;
+        this.hostName = hostNameValue;
     }
     
     private ArrayList<InputEndpoint> inputEndpoints;
@@ -207,6 +224,7 @@ public class ConfigurationSet
     /**
     * Contains a collection of external endpoints for the virtual machine.
     * This element is only used with the NetworkConfigurationSet type.
+    * @return The InputEndpoints value.
     */
     public ArrayList<InputEndpoint> getInputEndpoints()
     {
@@ -216,10 +234,11 @@ public class ConfigurationSet
     /**
     * Contains a collection of external endpoints for the virtual machine.
     * This element is only used with the NetworkConfigurationSet type.
+    * @param inputEndpointsValue The InputEndpoints value.
     */
-    public void setInputEndpoints(ArrayList<InputEndpoint> inputEndpoints)
+    public void setInputEndpoints(final ArrayList<InputEndpoint> inputEndpointsValue)
     {
-        this.inputEndpoints = inputEndpoints;
+        this.inputEndpoints = inputEndpointsValue;
     }
     
     private Boolean resetPasswordOnFirstLogon;
@@ -227,8 +246,9 @@ public class ConfigurationSet
     /**
     * Optional. Specifies whether password should be reset the first time the
     * administrator logs in.
+    * @return The ResetPasswordOnFirstLogon value.
     */
-    public Boolean getResetPasswordOnFirstLogon()
+    public Boolean isResetPasswordOnFirstLogon()
     {
         return this.resetPasswordOnFirstLogon;
     }
@@ -236,10 +256,11 @@ public class ConfigurationSet
     /**
     * Optional. Specifies whether password should be reset the first time the
     * administrator logs in.
+    * @param resetPasswordOnFirstLogonValue The ResetPasswordOnFirstLogon value.
     */
-    public void setResetPasswordOnFirstLogon(Boolean resetPasswordOnFirstLogon)
+    public void setResetPasswordOnFirstLogon(final Boolean resetPasswordOnFirstLogonValue)
     {
-        this.resetPasswordOnFirstLogon = resetPasswordOnFirstLogon;
+        this.resetPasswordOnFirstLogon = resetPasswordOnFirstLogonValue;
     }
     
     private SshSettings sshSettings;
@@ -248,6 +269,7 @@ public class ConfigurationSet
     * Optional. Specifies the SSH public keys and key pairs to populate in the
     * image during provisioning. This element is only used with the
     * LinuxProvisioningConfiguration set.
+    * @return The SshSettings value.
     */
     public SshSettings getSshSettings()
     {
@@ -258,10 +280,34 @@ public class ConfigurationSet
     * Optional. Specifies the SSH public keys and key pairs to populate in the
     * image during provisioning. This element is only used with the
     * LinuxProvisioningConfiguration set.
+    * @param sshSettingsValue The SshSettings value.
     */
-    public void setSshSettings(SshSettings sshSettings)
+    public void setSshSettings(final SshSettings sshSettingsValue)
     {
-        this.sshSettings = sshSettings;
+        this.sshSettings = sshSettingsValue;
+    }
+    
+    private String staticVirtualNetworkIPAddress;
+    
+    /**
+    * Optional. Specifies a Customer Address, i.e. an IP address assigned to a
+    * VM in a VNet's SubNet, for example: 10.0.0.4.
+    * @return The StaticVirtualNetworkIPAddress value.
+    */
+    public String getStaticVirtualNetworkIPAddress()
+    {
+        return this.staticVirtualNetworkIPAddress;
+    }
+    
+    /**
+    * Optional. Specifies a Customer Address, i.e. an IP address assigned to a
+    * VM in a VNet's SubNet, for example: 10.0.0.4.
+    * @param staticVirtualNetworkIPAddressValue The
+    * StaticVirtualNetworkIPAddress value.
+    */
+    public void setStaticVirtualNetworkIPAddress(final String staticVirtualNetworkIPAddressValue)
+    {
+        this.staticVirtualNetworkIPAddress = staticVirtualNetworkIPAddressValue;
     }
     
     private ArrayList<StoredCertificateSettings> storedCertificateSettings;
@@ -270,6 +316,7 @@ public class ConfigurationSet
     * Optional. Contains a list of service certificates with which to provision
     * to the new role. This element is only used with the
     * WindowsProvisioningConfiguration set.
+    * @return The StoredCertificateSettings value.
     */
     public ArrayList<StoredCertificateSettings> getStoredCertificateSettings()
     {
@@ -280,10 +327,11 @@ public class ConfigurationSet
     * Optional. Contains a list of service certificates with which to provision
     * to the new role. This element is only used with the
     * WindowsProvisioningConfiguration set.
+    * @param storedCertificateSettingsValue The StoredCertificateSettings value.
     */
-    public void setStoredCertificateSettings(ArrayList<StoredCertificateSettings> storedCertificateSettings)
+    public void setStoredCertificateSettings(final ArrayList<StoredCertificateSettings> storedCertificateSettingsValue)
     {
-        this.storedCertificateSettings = storedCertificateSettings;
+        this.storedCertificateSettings = storedCertificateSettingsValue;
     }
     
     private ArrayList<String> subnetNames;
@@ -291,6 +339,7 @@ public class ConfigurationSet
     /**
     * The list of Virtual Network subnet names that the deployment belongs to.
     * This element is only used with the NetworkConfigurationSet type.
+    * @return The SubnetNames value.
     */
     public ArrayList<String> getSubnetNames()
     {
@@ -300,10 +349,11 @@ public class ConfigurationSet
     /**
     * The list of Virtual Network subnet names that the deployment belongs to.
     * This element is only used with the NetworkConfigurationSet type.
+    * @param subnetNamesValue The SubnetNames value.
     */
-    public void setSubnetNames(ArrayList<String> subnetNames)
+    public void setSubnetNames(final ArrayList<String> subnetNamesValue)
     {
-        this.subnetNames = subnetNames;
+        this.subnetNames = subnetNamesValue;
     }
     
     private String timeZone;
@@ -318,6 +368,7 @@ public class ConfigurationSet
     * Server 2008, and Windows Server 2008 R2.  You can use the tzutil
     * command-line tool to list the valid time. The tzutil tool is installed
     * by default on Windows 7, Windows Server 2008, and Windows Server 2008 R2.
+    * @return The TimeZone value.
     */
     public String getTimeZone()
     {
@@ -334,10 +385,11 @@ public class ConfigurationSet
     * Server 2008, and Windows Server 2008 R2.  You can use the tzutil
     * command-line tool to list the valid time. The tzutil tool is installed
     * by default on Windows 7, Windows Server 2008, and Windows Server 2008 R2.
+    * @param timeZoneValue The TimeZone value.
     */
-    public void setTimeZone(String timeZone)
+    public void setTimeZone(final String timeZoneValue)
     {
-        this.timeZone = timeZone;
+        this.timeZone = timeZoneValue;
     }
     
     private String userName;
@@ -347,6 +399,7 @@ public class ConfigurationSet
     * of the virtual machine. User names are ASCII character strings 1 to 32
     * characters in length. This element is only used with the
     * LinuxProvisioningConfiguration set.
+    * @return The UserName value.
     */
     public String getUserName()
     {
@@ -358,10 +411,11 @@ public class ConfigurationSet
     * of the virtual machine. User names are ASCII character strings 1 to 32
     * characters in length. This element is only used with the
     * LinuxProvisioningConfiguration set.
+    * @param userNameValue The UserName value.
     */
-    public void setUserName(String userName)
+    public void setUserName(final String userNameValue)
     {
-        this.userName = userName;
+        this.userName = userNameValue;
     }
     
     private String userPassword;
@@ -370,6 +424,7 @@ public class ConfigurationSet
     * Required. Specifies the password for user name. Passwords are ASCII
     * character strings 6 to 72 characters in length. This element is only
     * used with the LinuxProvisioningConfiguration set.
+    * @return The UserPassword value.
     */
     public String getUserPassword()
     {
@@ -380,10 +435,11 @@ public class ConfigurationSet
     * Required. Specifies the password for user name. Passwords are ASCII
     * character strings 6 to 72 characters in length. This element is only
     * used with the LinuxProvisioningConfiguration set.
+    * @param userPasswordValue The UserPassword value.
     */
-    public void setUserPassword(String userPassword)
+    public void setUserPassword(final String userPasswordValue)
     {
-        this.userPassword = userPassword;
+        this.userPassword = userPasswordValue;
     }
     
     private WindowsRemoteManagementSettings windowsRemoteManagement;
@@ -391,6 +447,7 @@ public class ConfigurationSet
     /**
     * Optional. Configures the Windows Remote Management service on the virtual
     * machine, which enables remote Windows PowerShell.
+    * @return The WindowsRemoteManagement value.
     */
     public WindowsRemoteManagementSettings getWindowsRemoteManagement()
     {
@@ -400,10 +457,11 @@ public class ConfigurationSet
     /**
     * Optional. Configures the Windows Remote Management service on the virtual
     * machine, which enables remote Windows PowerShell.
+    * @param windowsRemoteManagementValue The WindowsRemoteManagement value.
     */
-    public void setWindowsRemoteManagement(WindowsRemoteManagementSettings windowsRemoteManagement)
+    public void setWindowsRemoteManagement(final WindowsRemoteManagementSettings windowsRemoteManagementValue)
     {
-        this.windowsRemoteManagement = windowsRemoteManagement;
+        this.windowsRemoteManagement = windowsRemoteManagementValue;
     }
     
     /**
