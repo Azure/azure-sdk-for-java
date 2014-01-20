@@ -38,6 +38,7 @@ public class MetricsClientImpl extends ServiceClient<MetricsClient> implements M
     
     /**
     * Optional base uri parameter.
+    * @return The BaseUri value.
     */
     public URI getBaseUri()
     {
@@ -48,6 +49,7 @@ public class MetricsClientImpl extends ServiceClient<MetricsClient> implements M
     
     /**
     * Windows Azure subscription id.
+    * @return The Credentials value.
     */
     public SubscriptionCloudCredentials getCredentials()
     {
@@ -56,6 +58,9 @@ public class MetricsClientImpl extends ServiceClient<MetricsClient> implements M
     
     private MetricDefinitionOperations metricDefinitions;
     
+    /**
+    * @return The MetricDefinitionsOperations value.
+    */
     public MetricDefinitionOperations getMetricDefinitionsOperations()
     {
         return this.metricDefinitions;
@@ -63,6 +68,9 @@ public class MetricsClientImpl extends ServiceClient<MetricsClient> implements M
     
     private MetricSettingOperations metricSettings;
     
+    /**
+    * @return The MetricSettingsOperations value.
+    */
     public MetricSettingOperations getMetricSettingsOperations()
     {
         return this.metricSettings;
@@ -70,6 +78,9 @@ public class MetricsClientImpl extends ServiceClient<MetricsClient> implements M
     
     private MetricValueOperations metricValues;
     
+    /**
+    * @return The MetricValuesOperations value.
+    */
     public MetricValueOperations getMetricValuesOperations()
     {
         return this.metricValues;
@@ -119,6 +130,8 @@ public class MetricsClientImpl extends ServiceClient<MetricsClient> implements M
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
     * @param credentials Windows Azure subscription id.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
     */
     @Inject
     public MetricsClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, @Named(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS) SubscriptionCloudCredentials credentials) throws java.net.URISyntaxException

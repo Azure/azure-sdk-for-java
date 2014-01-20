@@ -34,6 +34,7 @@ public class VirtualMachineDiskCreateDiskParameters
     
     /**
     * Required. Specifies the friendly name of the disk.
+    * @return The Label value.
     */
     public String getLabel()
     {
@@ -42,10 +43,11 @@ public class VirtualMachineDiskCreateDiskParameters
     
     /**
     * Required. Specifies the friendly name of the disk.
+    * @param labelValue The Label value.
     */
-    public void setLabel(String label)
+    public void setLabel(final String labelValue)
     {
-        this.label = label;
+        this.label = labelValue;
     }
     
     private URI mediaLinkUri;
@@ -55,6 +57,7 @@ public class VirtualMachineDiskCreateDiskParameters
     * The blob location must belong to a storage account in the subscription
     * specified by the SubscriptionId value in the operation call.  Example:
     * http://example.blob.core.windows.net/disks/mydisk.vhd
+    * @return The MediaLinkUri value.
     */
     public URI getMediaLinkUri()
     {
@@ -66,10 +69,11 @@ public class VirtualMachineDiskCreateDiskParameters
     * The blob location must belong to a storage account in the subscription
     * specified by the SubscriptionId value in the operation call.  Example:
     * http://example.blob.core.windows.net/disks/mydisk.vhd
+    * @param mediaLinkUriValue The MediaLinkUri value.
     */
-    public void setMediaLinkUri(URI mediaLinkUri)
+    public void setMediaLinkUri(final URI mediaLinkUriValue)
     {
-        this.mediaLinkUri = mediaLinkUri;
+        this.mediaLinkUri = mediaLinkUriValue;
     }
     
     private String name;
@@ -77,6 +81,7 @@ public class VirtualMachineDiskCreateDiskParameters
     /**
     * Required. Specifies a name for the disk. Windows Azure uses the name to
     * identify the disk when creating virtual machines from the disk.
+    * @return The Name value.
     */
     public String getName()
     {
@@ -86,10 +91,11 @@ public class VirtualMachineDiskCreateDiskParameters
     /**
     * Required. Specifies a name for the disk. Windows Azure uses the name to
     * identify the disk when creating virtual machines from the disk.
+    * @param nameValue The Name value.
     */
-    public void setName(String name)
+    public void setName(final String nameValue)
     {
-        this.name = name;
+        this.name = nameValue;
     }
     
     private String operatingSystemType;
@@ -97,6 +103,7 @@ public class VirtualMachineDiskCreateDiskParameters
     /**
     * Required. The operating system type of the disk. Possible values are:
     * Linux, Windows.
+    * @return The OperatingSystemType value.
     */
     public String getOperatingSystemType()
     {
@@ -106,9 +113,10 @@ public class VirtualMachineDiskCreateDiskParameters
     /**
     * Required. The operating system type of the disk. Possible values are:
     * Linux, Windows.
+    * @param operatingSystemTypeValue The OperatingSystemType value.
     */
-    public void setOperatingSystemType(String operatingSystemType)
+    public void setOperatingSystemType(final String operatingSystemTypeValue)
     {
-        this.operatingSystemType = operatingSystemType;
+        this.operatingSystemType = operatingSystemTypeValue;
     }
 }

@@ -35,6 +35,7 @@ public class DeploymentCreateParameters
     
     /**
     * Required. The service configuration file for the deployment.
+    * @return The Configuration value.
     */
     public String getConfiguration()
     {
@@ -43,10 +44,11 @@ public class DeploymentCreateParameters
     
     /**
     * Required. The service configuration file for the deployment.
+    * @param configurationValue The Configuration value.
     */
-    public void setConfiguration(String configuration)
+    public void setConfiguration(final String configurationValue)
     {
-        this.configuration = configuration;
+        this.configuration = configurationValue;
     }
     
     private HashMap<String, String> extendedProperties;
@@ -61,6 +63,7 @@ public class DeploymentCreateParameters
     * non-letter character, or entering a name that is identical to that of
     * another extended property owned by the same hosted service, will result
     * in a status code 400 (Bad Request) error.
+    * @return The ExtendedProperties value.
     */
     public HashMap<String, String> getExtendedProperties()
     {
@@ -77,10 +80,11 @@ public class DeploymentCreateParameters
     * non-letter character, or entering a name that is identical to that of
     * another extended property owned by the same hosted service, will result
     * in a status code 400 (Bad Request) error.
+    * @param extendedPropertiesValue The ExtendedProperties value.
     */
-    public void setExtendedProperties(HashMap<String, String> extendedProperties)
+    public void setExtendedProperties(final HashMap<String, String> extendedPropertiesValue)
     {
-        this.extendedProperties = extendedProperties;
+        this.extendedProperties = extendedPropertiesValue;
     }
     
     private ExtensionConfiguration extensionConfiguration;
@@ -92,6 +96,7 @@ public class DeploymentCreateParameters
     * can run as extensions to the cloud service. You must add an extension to
     * the cloud service by using Add Extension before it can be added to the
     * deployment.
+    * @return The ExtensionConfiguration value.
     */
     public ExtensionConfiguration getExtensionConfiguration()
     {
@@ -105,10 +110,11 @@ public class DeploymentCreateParameters
     * can run as extensions to the cloud service. You must add an extension to
     * the cloud service by using Add Extension before it can be added to the
     * deployment.
+    * @param extensionConfigurationValue The ExtensionConfiguration value.
     */
-    public void setExtensionConfiguration(ExtensionConfiguration extensionConfiguration)
+    public void setExtensionConfiguration(final ExtensionConfiguration extensionConfigurationValue)
     {
-        this.extensionConfiguration = extensionConfiguration;
+        this.extensionConfiguration = extensionConfigurationValue;
     }
     
     private String label;
@@ -118,6 +124,7 @@ public class DeploymentCreateParameters
     * characters in length. It is recommended that the label be unique within
     * the subscription. The name can be used identify the hosted service for
     * your tracking purposes.
+    * @return The Label value.
     */
     public String getLabel()
     {
@@ -129,10 +136,11 @@ public class DeploymentCreateParameters
     * characters in length. It is recommended that the label be unique within
     * the subscription. The name can be used identify the hosted service for
     * your tracking purposes.
+    * @param labelValue The Label value.
     */
-    public void setLabel(String label)
+    public void setLabel(final String labelValue)
     {
-        this.label = label;
+        this.label = labelValue;
     }
     
     private String name;
@@ -140,6 +148,7 @@ public class DeploymentCreateParameters
     /**
     * Required. The name for the deployment. The deployment name must be unique
     * among other deployments for the cloud service.
+    * @return The Name value.
     */
     public String getName()
     {
@@ -149,10 +158,11 @@ public class DeploymentCreateParameters
     /**
     * Required. The name for the deployment. The deployment name must be unique
     * among other deployments for the cloud service.
+    * @param nameValue The Name value.
     */
-    public void setName(String name)
+    public void setName(final String nameValue)
     {
-        this.name = name;
+        this.name = nameValue;
     }
     
     private URI packageUri;
@@ -165,6 +175,7 @@ public class DeploymentCreateParameters
     * Signatures, see Delegating Access with a Shared Access Signature (REST
     * API) at
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee395415.aspx.
+    * @return The PackageUri value.
     */
     public URI getPackageUri()
     {
@@ -179,10 +190,11 @@ public class DeploymentCreateParameters
     * Signatures, see Delegating Access with a Shared Access Signature (REST
     * API) at
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee395415.aspx.
+    * @param packageUriValue The PackageUri value.
     */
-    public void setPackageUri(URI packageUri)
+    public void setPackageUri(final URI packageUriValue)
     {
-        this.packageUri = packageUri;
+        this.packageUri = packageUriValue;
     }
     
     private Boolean startDeployment;
@@ -195,8 +207,9 @@ public class DeploymentCreateParameters
     * Deployment Status and set the status toRunning, at which time the
     * service will be started. A deployed service still incurs charges, even
     * if it is suspended.
+    * @return The StartDeployment value.
     */
-    public Boolean getStartDeployment()
+    public Boolean isStartDeployment()
     {
         return this.startDeployment;
     }
@@ -209,10 +222,11 @@ public class DeploymentCreateParameters
     * Deployment Status and set the status toRunning, at which time the
     * service will be started. A deployed service still incurs charges, even
     * if it is suspended.
+    * @param startDeploymentValue The StartDeployment value.
     */
-    public void setStartDeployment(Boolean startDeployment)
+    public void setStartDeployment(final Boolean startDeploymentValue)
     {
-        this.startDeployment = startDeployment;
+        this.startDeployment = startDeploymentValue;
     }
     
     private Boolean treatWarningsAsError;
@@ -222,8 +236,9 @@ public class DeploymentCreateParameters
     * errors. The default value is false. If set to true, the Created
     * Deployment operation fails if there are validation warnings on the
     * service package.
+    * @return The TreatWarningsAsError value.
     */
-    public Boolean getTreatWarningsAsError()
+    public Boolean isTreatWarningsAsError()
     {
         return this.treatWarningsAsError;
     }
@@ -233,10 +248,11 @@ public class DeploymentCreateParameters
     * errors. The default value is false. If set to true, the Created
     * Deployment operation fails if there are validation warnings on the
     * service package.
+    * @param treatWarningsAsErrorValue The TreatWarningsAsError value.
     */
-    public void setTreatWarningsAsError(Boolean treatWarningsAsError)
+    public void setTreatWarningsAsError(final Boolean treatWarningsAsErrorValue)
     {
-        this.treatWarningsAsError = treatWarningsAsError;
+        this.treatWarningsAsError = treatWarningsAsErrorValue;
     }
     
     /**

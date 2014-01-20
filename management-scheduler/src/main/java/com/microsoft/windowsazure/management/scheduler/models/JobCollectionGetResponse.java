@@ -34,6 +34,7 @@ public class JobCollectionGetResponse extends OperationResponse
     
     /**
     * ETag of the Job Collection.
+    * @return The ETag value.
     */
     public String getETag()
     {
@@ -42,16 +43,18 @@ public class JobCollectionGetResponse extends OperationResponse
     
     /**
     * ETag of the Job Collection.
+    * @param eTagValue The ETag value.
     */
-    public void setETag(String eTag)
+    public void setETag(final String eTagValue)
     {
-        this.eTag = eTag;
+        this.eTag = eTagValue;
     }
     
     private JobCollectionIntrinsicSettings intrinsicSettings;
     
     /**
     * Intrinsic settings for the scheduler job collections.
+    * @return The IntrinsicSettings value.
     */
     public JobCollectionIntrinsicSettings getIntrinsicSettings()
     {
@@ -60,16 +63,18 @@ public class JobCollectionGetResponse extends OperationResponse
     
     /**
     * Intrinsic settings for the scheduler job collections.
+    * @param intrinsicSettingsValue The IntrinsicSettings value.
     */
-    public void setIntrinsicSettings(JobCollectionIntrinsicSettings intrinsicSettings)
+    public void setIntrinsicSettings(final JobCollectionIntrinsicSettings intrinsicSettingsValue)
     {
-        this.intrinsicSettings = intrinsicSettings;
+        this.intrinsicSettings = intrinsicSettingsValue;
     }
     
     private String label;
     
     /**
     * Label for the resource.
+    * @return The Label value.
     */
     public String getLabel()
     {
@@ -78,16 +83,18 @@ public class JobCollectionGetResponse extends OperationResponse
     
     /**
     * Label for the resource.
+    * @param labelValue The Label value.
     */
-    public void setLabel(String label)
+    public void setLabel(final String labelValue)
     {
-        this.label = label;
+        this.label = labelValue;
     }
     
     private JobCollectionGetResponse.OperationStatus lastOperationStatus;
     
     /**
     * The promotion code for buying the resource.
+    * @return The LastOperationStatus value.
     */
     public JobCollectionGetResponse.OperationStatus getLastOperationStatus()
     {
@@ -96,16 +103,18 @@ public class JobCollectionGetResponse extends OperationResponse
     
     /**
     * The promotion code for buying the resource.
+    * @param lastOperationStatusValue The LastOperationStatus value.
     */
-    public void setLastOperationStatus(JobCollectionGetResponse.OperationStatus lastOperationStatus)
+    public void setLastOperationStatus(final JobCollectionGetResponse.OperationStatus lastOperationStatusValue)
     {
-        this.lastOperationStatus = lastOperationStatus;
+        this.lastOperationStatus = lastOperationStatusValue;
     }
     
     private String name;
     
     /**
     * Name of the Job Collection.
+    * @return The Name value.
     */
     public String getName()
     {
@@ -114,16 +123,18 @@ public class JobCollectionGetResponse extends OperationResponse
     
     /**
     * Name of the Job Collection.
+    * @param nameValue The Name value.
     */
-    public void setName(String name)
+    public void setName(final String nameValue)
     {
-        this.name = name;
+        this.name = nameValue;
     }
     
     private String plan;
     
     /**
     * The plan of the resource.
+    * @return The Plan value.
     */
     public String getPlan()
     {
@@ -132,16 +143,18 @@ public class JobCollectionGetResponse extends OperationResponse
     
     /**
     * The plan of the resource.
+    * @param planValue The Plan value.
     */
-    public void setPlan(String plan)
+    public void setPlan(final String planValue)
     {
-        this.plan = plan;
+        this.plan = planValue;
     }
     
     private String promotionCode;
     
     /**
     * The promotion code for buying the resource.
+    * @return The PromotionCode value.
     */
     public String getPromotionCode()
     {
@@ -150,10 +163,11 @@ public class JobCollectionGetResponse extends OperationResponse
     
     /**
     * The promotion code for buying the resource.
+    * @param promotionCodeValue The PromotionCode value.
     */
-    public void setPromotionCode(String promotionCode)
+    public void setPromotionCode(final String promotionCodeValue)
     {
-        this.promotionCode = promotionCode;
+        this.promotionCode = promotionCodeValue;
     }
     
     private String schemaVersion;
@@ -162,6 +176,7 @@ public class JobCollectionGetResponse extends OperationResponse
     * The version of the Intrinsic Properties for your Resource. If not
     * specified, you must conform to the contract resource version you
     * registered as default.
+    * @return The SchemaVersion value.
     */
     public String getSchemaVersion()
     {
@@ -172,16 +187,18 @@ public class JobCollectionGetResponse extends OperationResponse
     * The version of the Intrinsic Properties for your Resource. If not
     * specified, you must conform to the contract resource version you
     * registered as default.
+    * @param schemaVersionValue The SchemaVersion value.
     */
-    public void setSchemaVersion(String schemaVersion)
+    public void setSchemaVersion(final String schemaVersionValue)
     {
-        this.schemaVersion = schemaVersion;
+        this.schemaVersion = schemaVersionValue;
     }
     
     private JobCollectionState state;
     
     /**
     * State of the Job Collection.
+    * @return The State value.
     */
     public JobCollectionState getState()
     {
@@ -190,10 +207,11 @@ public class JobCollectionGetResponse extends OperationResponse
     
     /**
     * State of the Job Collection.
+    * @param stateValue The State value.
     */
-    public void setState(JobCollectionState state)
+    public void setState(final JobCollectionState stateValue)
     {
-        this.state = state;
+        this.state = stateValue;
     }
     
     /**
@@ -205,6 +223,7 @@ public class JobCollectionGetResponse extends OperationResponse
         
         /**
         * Details about the last operation.
+        * @return The ResponseDetails value.
         */
         public JobCollectionGetResponse.OperationStatusResponseDetails getResponseDetails()
         {
@@ -213,16 +232,18 @@ public class JobCollectionGetResponse extends OperationResponse
         
         /**
         * Details about the last operation.
+        * @param responseDetailsValue The ResponseDetails value.
         */
-        public void setResponseDetails(JobCollectionGetResponse.OperationStatusResponseDetails responseDetails)
+        public void setResponseDetails(final JobCollectionGetResponse.OperationStatusResponseDetails responseDetailsValue)
         {
-            this.responseDetails = responseDetails;
+            this.responseDetails = responseDetailsValue;
         }
         
         private SchedulerOperationStatus status;
         
         /**
         * Status of the last operation.
+        * @return The Status value.
         */
         public SchedulerOperationStatus getStatus()
         {
@@ -231,10 +252,11 @@ public class JobCollectionGetResponse extends OperationResponse
         
         /**
         * Status of the last operation.
+        * @param statusValue The Status value.
         */
-        public void setStatus(SchedulerOperationStatus status)
+        public void setStatus(final SchedulerOperationStatus statusValue)
         {
-            this.status = status;
+            this.status = statusValue;
         }
     }
     
@@ -247,6 +269,7 @@ public class JobCollectionGetResponse extends OperationResponse
         
         /**
         * Message returned by the operation.
+        * @return The Message value.
         */
         public String getMessage()
         {
@@ -255,16 +278,18 @@ public class JobCollectionGetResponse extends OperationResponse
         
         /**
         * Message returned by the operation.
+        * @param messageValue The Message value.
         */
-        public void setMessage(String message)
+        public void setMessage(final String messageValue)
         {
-            this.message = message;
+            this.message = messageValue;
         }
         
         private Integer statusCode;
         
         /**
         * The HTTP status code of the operation.
+        * @return The StatusCode value.
         */
         public Integer getStatusCode()
         {
@@ -273,10 +298,11 @@ public class JobCollectionGetResponse extends OperationResponse
         
         /**
         * The HTTP status code of the operation.
+        * @param statusCodeValue The StatusCode value.
         */
-        public void setStatusCode(Integer statusCode)
+        public void setStatusCode(final Integer statusCodeValue)
         {
-            this.statusCode = statusCode;
+            this.statusCode = statusCodeValue;
         }
     }
 }

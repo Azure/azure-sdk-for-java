@@ -32,6 +32,7 @@ public class JobCollectionIntrinsicSettings
     
     /**
     * The plan of the resource.
+    * @return The Plan value.
     */
     public JobCollectionPlan getPlan()
     {
@@ -40,16 +41,18 @@ public class JobCollectionIntrinsicSettings
     
     /**
     * The plan of the resource.
+    * @param planValue The Plan value.
     */
-    public void setPlan(JobCollectionPlan plan)
+    public void setPlan(final JobCollectionPlan planValue)
     {
-        this.plan = plan;
+        this.plan = planValue;
     }
     
     private JobCollectionQuota quota;
     
     /**
     * Quota settings for the job collection.
+    * @return The Quota value.
     */
     public JobCollectionQuota getQuota()
     {
@@ -58,9 +61,10 @@ public class JobCollectionIntrinsicSettings
     
     /**
     * Quota settings for the job collection.
+    * @param quotaValue The Quota value.
     */
-    public void setQuota(JobCollectionQuota quota)
+    public void setQuota(final JobCollectionQuota quotaValue)
     {
-        this.quota = quota;
+        this.quota = quotaValue;
     }
 }

@@ -35,6 +35,7 @@ public class LoadBalancerProbe
     /**
     * Specifies the interval for the load balancer probe in seconds. The
     * minimum value is 5 seconds. If not specified, the default is 15 seconds.
+    * @return The IntervalInSeconds value.
     */
     public Integer getIntervalInSeconds()
     {
@@ -44,10 +45,11 @@ public class LoadBalancerProbe
     /**
     * Specifies the interval for the load balancer probe in seconds. The
     * minimum value is 5 seconds. If not specified, the default is 15 seconds.
+    * @param intervalInSecondsValue The IntervalInSeconds value.
     */
-    public void setIntervalInSeconds(Integer intervalInSeconds)
+    public void setIntervalInSeconds(final Integer intervalInSecondsValue)
     {
-        this.intervalInSeconds = intervalInSeconds;
+        this.intervalInSeconds = intervalInSecondsValue;
     }
     
     private String path;
@@ -56,6 +58,7 @@ public class LoadBalancerProbe
     * Specifies the relative path name to inspect to determine the virtual
     * machine availability status. If Protocol is set to TCP, this value must
     * be NULL.
+    * @return The Path value.
     */
     public String getPath()
     {
@@ -66,10 +69,11 @@ public class LoadBalancerProbe
     * Specifies the relative path name to inspect to determine the virtual
     * machine availability status. If Protocol is set to TCP, this value must
     * be NULL.
+    * @param pathValue The Path value.
     */
-    public void setPath(String path)
+    public void setPath(final String pathValue)
     {
-        this.path = path;
+        this.path = pathValue;
     }
     
     private int port;
@@ -77,6 +81,7 @@ public class LoadBalancerProbe
     /**
     * Specifies the port to use to inspect the virtual machine availability
     * status.
+    * @return The Port value.
     */
     public int getPort()
     {
@@ -86,10 +91,11 @@ public class LoadBalancerProbe
     /**
     * Specifies the port to use to inspect the virtual machine availability
     * status.
+    * @param portValue The Port value.
     */
-    public void setPort(int port)
+    public void setPort(final int portValue)
     {
-        this.port = port;
+        this.port = portValue;
     }
     
     private LoadBalancerProbeTransportProtocol protocol;
@@ -97,6 +103,7 @@ public class LoadBalancerProbe
     /**
     * Specifies the protocol to use to inspect the virtual machine availability
     * status.
+    * @return The Protocol value.
     */
     public LoadBalancerProbeTransportProtocol getProtocol()
     {
@@ -106,10 +113,11 @@ public class LoadBalancerProbe
     /**
     * Specifies the protocol to use to inspect the virtual machine availability
     * status.
+    * @param protocolValue The Protocol value.
     */
-    public void setProtocol(LoadBalancerProbeTransportProtocol protocol)
+    public void setProtocol(final LoadBalancerProbeTransportProtocol protocolValue)
     {
-        this.protocol = protocol;
+        this.protocol = protocolValue;
     }
     
     private Integer timeoutInSeconds;
@@ -117,6 +125,7 @@ public class LoadBalancerProbe
     /**
     * Specifies the timeout for the load balancer probe in seconds. The minimum
     * value is 11 seconds. If not specified, the default is 31 seconds.
+    * @return The TimeoutInSeconds value.
     */
     public Integer getTimeoutInSeconds()
     {
@@ -126,9 +135,10 @@ public class LoadBalancerProbe
     /**
     * Specifies the timeout for the load balancer probe in seconds. The minimum
     * value is 11 seconds. If not specified, the default is 31 seconds.
+    * @param timeoutInSecondsValue The TimeoutInSeconds value.
     */
-    public void setTimeoutInSeconds(Integer timeoutInSeconds)
+    public void setTimeoutInSeconds(final Integer timeoutInSecondsValue)
     {
-        this.timeoutInSeconds = timeoutInSeconds;
+        this.timeoutInSeconds = timeoutInSecondsValue;
     }
 }

@@ -35,6 +35,7 @@ public class DeploymentUpgradeParameters
     
     /**
     * Required. The service configuration file for the deployment.
+    * @return The Configuration value.
     */
     public String getConfiguration()
     {
@@ -43,10 +44,11 @@ public class DeploymentUpgradeParameters
     
     /**
     * Required. The service configuration file for the deployment.
+    * @param configurationValue The Configuration value.
     */
-    public void setConfiguration(String configuration)
+    public void setConfiguration(final String configurationValue)
     {
-        this.configuration = configuration;
+        this.configuration = configurationValue;
     }
     
     private HashMap<String, String> extendedProperties;
@@ -61,6 +63,7 @@ public class DeploymentUpgradeParameters
     * non-letter character, or entering a name that is identical to that of
     * another extended property owned by the same hosted service, will result
     * in a status code 400 (Bad Request) error.
+    * @return The ExtendedProperties value.
     */
     public HashMap<String, String> getExtendedProperties()
     {
@@ -77,10 +80,11 @@ public class DeploymentUpgradeParameters
     * non-letter character, or entering a name that is identical to that of
     * another extended property owned by the same hosted service, will result
     * in a status code 400 (Bad Request) error.
+    * @param extendedPropertiesValue The ExtendedProperties value.
     */
-    public void setExtendedProperties(HashMap<String, String> extendedProperties)
+    public void setExtendedProperties(final HashMap<String, String> extendedPropertiesValue)
     {
-        this.extendedProperties = extendedProperties;
+        this.extendedProperties = extendedPropertiesValue;
     }
     
     private ExtensionConfiguration extensionConfiguration;
@@ -92,6 +96,7 @@ public class DeploymentUpgradeParameters
     * can run as extensions to the cloud service. You must add an extension to
     * the cloud service by using Add Extension before it can be added to the
     * deployment.
+    * @return The ExtensionConfiguration value.
     */
     public ExtensionConfiguration getExtensionConfiguration()
     {
@@ -105,10 +110,11 @@ public class DeploymentUpgradeParameters
     * can run as extensions to the cloud service. You must add an extension to
     * the cloud service by using Add Extension before it can be added to the
     * deployment.
+    * @param extensionConfigurationValue The ExtensionConfiguration value.
     */
-    public void setExtensionConfiguration(ExtensionConfiguration extensionConfiguration)
+    public void setExtensionConfiguration(final ExtensionConfiguration extensionConfigurationValue)
     {
-        this.extensionConfiguration = extensionConfiguration;
+        this.extensionConfiguration = extensionConfigurationValue;
     }
     
     private boolean force;
@@ -117,8 +123,9 @@ public class DeploymentUpgradeParameters
     * Required. Specifies whether the rollback should proceed even when it will
     * cause local data to be lost from some role instances. True if the
     * rollback should proceed; otherwise false.
+    * @return The Force value.
     */
-    public boolean getForce()
+    public boolean isForce()
     {
         return this.force;
     }
@@ -127,10 +134,11 @@ public class DeploymentUpgradeParameters
     * Required. Specifies whether the rollback should proceed even when it will
     * cause local data to be lost from some role instances. True if the
     * rollback should proceed; otherwise false.
+    * @param forceValue The Force value.
     */
-    public void setForce(boolean force)
+    public void setForce(final boolean forceValue)
     {
-        this.force = force;
+        this.force = forceValue;
     }
     
     private String label;
@@ -140,6 +148,7 @@ public class DeploymentUpgradeParameters
     * characters in length. It is recommended that the label be unique within
     * the subscription. The name can be used identify the hosted service for
     * your tracking purposes.
+    * @return The Label value.
     */
     public String getLabel()
     {
@@ -151,10 +160,11 @@ public class DeploymentUpgradeParameters
     * characters in length. It is recommended that the label be unique within
     * the subscription. The name can be used identify the hosted service for
     * your tracking purposes.
+    * @param labelValue The Label value.
     */
-    public void setLabel(String label)
+    public void setLabel(final String labelValue)
     {
-        this.label = label;
+        this.label = labelValue;
     }
     
     private DeploymentUpgradeMode mode;
@@ -167,6 +177,7 @@ public class DeploymentUpgradeParameters
     * default value is Auto. If set to Manual, WalkUpgradeDomain must be
     * called to apply the update. If set to Auto, the update is automatically
     * applied to each update domain in sequence.
+    * @return The Mode value.
     */
     public DeploymentUpgradeMode getMode()
     {
@@ -181,10 +192,11 @@ public class DeploymentUpgradeParameters
     * default value is Auto. If set to Manual, WalkUpgradeDomain must be
     * called to apply the update. If set to Auto, the update is automatically
     * applied to each update domain in sequence.
+    * @param modeValue The Mode value.
     */
-    public void setMode(DeploymentUpgradeMode mode)
+    public void setMode(final DeploymentUpgradeMode modeValue)
     {
-        this.mode = mode;
+        this.mode = modeValue;
     }
     
     private URI packageUri;
@@ -197,6 +209,7 @@ public class DeploymentUpgradeParameters
     * Signatures, see Delegating Access with a Shared Access Signature (REST
     * API) at
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee395415.aspx.
+    * @return The PackageUri value.
     */
     public URI getPackageUri()
     {
@@ -211,16 +224,18 @@ public class DeploymentUpgradeParameters
     * Signatures, see Delegating Access with a Shared Access Signature (REST
     * API) at
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee395415.aspx.
+    * @param packageUriValue The PackageUri value.
     */
-    public void setPackageUri(URI packageUri)
+    public void setPackageUri(final URI packageUriValue)
     {
-        this.packageUri = packageUri;
+        this.packageUri = packageUriValue;
     }
     
     private String roleToUpgrade;
     
     /**
     * Optional. The name of the specific role instance to update.
+    * @return The RoleToUpgrade value.
     */
     public String getRoleToUpgrade()
     {
@@ -229,10 +244,11 @@ public class DeploymentUpgradeParameters
     
     /**
     * Optional. The name of the specific role instance to update.
+    * @param roleToUpgradeValue The RoleToUpgrade value.
     */
-    public void setRoleToUpgrade(String roleToUpgrade)
+    public void setRoleToUpgrade(final String roleToUpgradeValue)
     {
-        this.roleToUpgrade = roleToUpgrade;
+        this.roleToUpgrade = roleToUpgradeValue;
     }
     
     /**

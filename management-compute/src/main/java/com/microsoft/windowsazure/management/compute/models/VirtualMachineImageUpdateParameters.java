@@ -35,6 +35,7 @@ public class VirtualMachineImageUpdateParameters
     
     /**
     * Optional. Specifies the description of the OS image.
+    * @return The Description value.
     */
     public String getDescription()
     {
@@ -43,10 +44,11 @@ public class VirtualMachineImageUpdateParameters
     
     /**
     * Optional. Specifies the description of the OS image.
+    * @param descriptionValue The Description value.
     */
-    public void setDescription(String description)
+    public void setDescription(final String descriptionValue)
     {
-        this.description = description;
+        this.description = descriptionValue;
     }
     
     private String eula;
@@ -55,6 +57,7 @@ public class VirtualMachineImageUpdateParameters
     * Optional. Specifies the End User License Agreement that is associated
     * with the image. The value for this element is a string, but it is
     * recommended that the value be a URL that points to a EULA.
+    * @return The Eula value.
     */
     public String getEula()
     {
@@ -65,10 +68,11 @@ public class VirtualMachineImageUpdateParameters
     * Optional. Specifies the End User License Agreement that is associated
     * with the image. The value for this element is a string, but it is
     * recommended that the value be a URL that points to a EULA.
+    * @param eulaValue The Eula value.
     */
-    public void setEula(String eula)
+    public void setEula(final String eulaValue)
     {
-        this.eula = eula;
+        this.eula = eulaValue;
     }
     
     private URI iconUri;
@@ -76,6 +80,7 @@ public class VirtualMachineImageUpdateParameters
     /**
     * Optional. Specifies the Uri to the icon that is displayed for the image
     * in the Management Portal.
+    * @return The IconUri value.
     */
     public URI getIconUri()
     {
@@ -85,16 +90,18 @@ public class VirtualMachineImageUpdateParameters
     /**
     * Optional. Specifies the Uri to the icon that is displayed for the image
     * in the Management Portal.
+    * @param iconUriValue The IconUri value.
     */
-    public void setIconUri(URI iconUri)
+    public void setIconUri(final URI iconUriValue)
     {
-        this.iconUri = iconUri;
+        this.iconUri = iconUriValue;
     }
     
     private String imageFamily;
     
     /**
     * Optional. Specifies a value that can be used to group OS images.
+    * @return The ImageFamily value.
     */
     public String getImageFamily()
     {
@@ -103,10 +110,11 @@ public class VirtualMachineImageUpdateParameters
     
     /**
     * Optional. Specifies a value that can be used to group OS images.
+    * @param imageFamilyValue The ImageFamily value.
     */
-    public void setImageFamily(String imageFamily)
+    public void setImageFamily(final String imageFamilyValue)
     {
-        this.imageFamily = imageFamily;
+        this.imageFamily = imageFamilyValue;
     }
     
     private boolean isPremium;
@@ -114,8 +122,9 @@ public class VirtualMachineImageUpdateParameters
     /**
     * Indicates if the image contains software or associated services that will
     * incur charges above the core price for the virtual machine.
+    * @return The IsPremium value.
     */
-    public boolean getIsPremium()
+    public boolean isPremium()
     {
         return this.isPremium;
     }
@@ -123,10 +132,11 @@ public class VirtualMachineImageUpdateParameters
     /**
     * Indicates if the image contains software or associated services that will
     * incur charges above the core price for the virtual machine.
+    * @param isPremiumValue The IsPremium value.
     */
-    public void setIsPremium(boolean isPremium)
+    public void setIsPremium(final boolean isPremiumValue)
     {
-        this.isPremium = isPremium;
+        this.isPremium = isPremiumValue;
     }
     
     private String label;
@@ -135,6 +145,7 @@ public class VirtualMachineImageUpdateParameters
     * Required. Specifies the friendly name of the image to be updated. You
     * cannot use this operation to update images provided by the Windows Azure
     * platform.
+    * @return The Label value.
     */
     public String getLabel()
     {
@@ -145,10 +156,11 @@ public class VirtualMachineImageUpdateParameters
     * Required. Specifies the friendly name of the image to be updated. You
     * cannot use this operation to update images provided by the Windows Azure
     * platform.
+    * @param labelValue The Label value.
     */
-    public void setLabel(String label)
+    public void setLabel(final String labelValue)
     {
-        this.label = label;
+        this.label = labelValue;
     }
     
     private String language;
@@ -156,6 +168,7 @@ public class VirtualMachineImageUpdateParameters
     /**
     * Specifies the language of the image.  The Language element is only
     * available using version 2013-03-01 or higher.
+    * @return The Language value.
     */
     public String getLanguage()
     {
@@ -165,10 +178,11 @@ public class VirtualMachineImageUpdateParameters
     /**
     * Specifies the language of the image.  The Language element is only
     * available using version 2013-03-01 or higher.
+    * @param languageValue The Language value.
     */
-    public void setLanguage(String language)
+    public void setLanguage(final String languageValue)
     {
-        this.language = language;
+        this.language = languageValue;
     }
     
     private URI privacyUri;
@@ -176,6 +190,7 @@ public class VirtualMachineImageUpdateParameters
     /**
     * Optional. Specifies the URI that points to a document that contains the
     * privacy policy related to the OS image.
+    * @return The PrivacyUri value.
     */
     public URI getPrivacyUri()
     {
@@ -185,10 +200,11 @@ public class VirtualMachineImageUpdateParameters
     /**
     * Optional. Specifies the URI that points to a document that contains the
     * privacy policy related to the OS image.
+    * @param privacyUriValue The PrivacyUri value.
     */
-    public void setPrivacyUri(URI privacyUri)
+    public void setPrivacyUri(final URI privacyUriValue)
     {
-        this.privacyUri = privacyUri;
+        this.privacyUri = privacyUriValue;
     }
     
     private Calendar publishedDate;
@@ -196,6 +212,7 @@ public class VirtualMachineImageUpdateParameters
     /**
     * Optional. Specifies the date when the OS image was added to the image
     * repository.
+    * @return The PublishedDate value.
     */
     public Calendar getPublishedDate()
     {
@@ -205,19 +222,21 @@ public class VirtualMachineImageUpdateParameters
     /**
     * Optional. Specifies the date when the OS image was added to the image
     * repository.
+    * @param publishedDateValue The PublishedDate value.
     */
-    public void setPublishedDate(Calendar publishedDate)
+    public void setPublishedDate(final Calendar publishedDateValue)
     {
-        this.publishedDate = publishedDate;
+        this.publishedDate = publishedDateValue;
     }
     
-    private VirtualMachineRoleSize recommendedVMSize;
+    private String recommendedVMSize;
     
     /**
     * Optional. Specifies the size to use for the virtual machine that is
     * created from the OS image.
+    * @return The RecommendedVMSize value.
     */
-    public VirtualMachineRoleSize getRecommendedVMSize()
+    public String getRecommendedVMSize()
     {
         return this.recommendedVMSize;
     }
@@ -225,10 +244,11 @@ public class VirtualMachineImageUpdateParameters
     /**
     * Optional. Specifies the size to use for the virtual machine that is
     * created from the OS image.
+    * @param recommendedVMSizeValue The RecommendedVMSize value.
     */
-    public void setRecommendedVMSize(VirtualMachineRoleSize recommendedVMSize)
+    public void setRecommendedVMSize(final String recommendedVMSizeValue)
     {
-        this.recommendedVMSize = recommendedVMSize;
+        this.recommendedVMSize = recommendedVMSizeValue;
     }
     
     private URI smallIconUri;
@@ -237,6 +257,7 @@ public class VirtualMachineImageUpdateParameters
     * Specifies the URI to the small icon that is displayed when the image is
     * presented in the Windows Azure Management Portal.  The SmallIconUri
     * element is only available using version 2013-03-01 or higher.
+    * @return The SmallIconUri value.
     */
     public URI getSmallIconUri()
     {
@@ -247,9 +268,10 @@ public class VirtualMachineImageUpdateParameters
     * Specifies the URI to the small icon that is displayed when the image is
     * presented in the Windows Azure Management Portal.  The SmallIconUri
     * element is only available using version 2013-03-01 or higher.
+    * @param smallIconUriValue The SmallIconUri value.
     */
-    public void setSmallIconUri(URI smallIconUri)
+    public void setSmallIconUri(final URI smallIconUriValue)
     {
-        this.smallIconUri = smallIconUri;
+        this.smallIconUri = smallIconUriValue;
     }
 }

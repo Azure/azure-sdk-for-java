@@ -32,6 +32,7 @@ public class ServerChangeAdministratorPasswordParameters
     
     /**
     * Gets or sets new password for the administrator.
+    * @return The NewPassword value.
     */
     public String getNewPassword()
     {
@@ -40,9 +41,10 @@ public class ServerChangeAdministratorPasswordParameters
     
     /**
     * Gets or sets new password for the administrator.
+    * @param newPasswordValue The NewPassword value.
     */
-    public void setNewPassword(String newPassword)
+    public void setNewPassword(final String newPasswordValue)
     {
-        this.newPassword = newPassword;
+        this.newPassword = newPasswordValue;
     }
 }

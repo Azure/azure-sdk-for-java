@@ -34,6 +34,7 @@ public class MetricDefinitionCollection
     
     /**
     * The values for the metric definitions.
+    * @return The Value value.
     */
     public ArrayList<MetricDefinition> getValue()
     {
@@ -42,10 +43,11 @@ public class MetricDefinitionCollection
     
     /**
     * The values for the metric definitions.
+    * @param valueValue The Value value.
     */
-    public void setValue(ArrayList<MetricDefinition> value)
+    public void setValue(final ArrayList<MetricDefinition> valueValue)
     {
-        this.value = value;
+        this.value = valueValue;
     }
     
     /**

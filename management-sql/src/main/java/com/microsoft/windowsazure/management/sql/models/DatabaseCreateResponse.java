@@ -35,6 +35,7 @@ public class DatabaseCreateResponse extends OperationResponse
     
     /**
     * Gets or sets the database resource's collation name.
+    * @return The CollationName value.
     */
     public String getCollationName()
     {
@@ -43,16 +44,18 @@ public class DatabaseCreateResponse extends OperationResponse
     
     /**
     * Gets or sets the database resource's collation name.
+    * @param collationNameValue The CollationName value.
     */
-    public void setCollationName(String collationName)
+    public void setCollationName(final String collationNameValue)
     {
-        this.collationName = collationName;
+        this.collationName = collationNameValue;
     }
     
     private Calendar creationDate;
     
     /**
     * Gets or sets the date this database was created.
+    * @return The CreationDate value.
     */
     public Calendar getCreationDate()
     {
@@ -61,16 +64,18 @@ public class DatabaseCreateResponse extends OperationResponse
     
     /**
     * Gets or sets the date this database was created.
+    * @param creationDateValue The CreationDate value.
     */
-    public void setCreationDate(Calendar creationDate)
+    public void setCreationDate(final Calendar creationDateValue)
     {
-        this.creationDate = creationDate;
+        this.creationDate = creationDateValue;
     }
     
     private String edition;
     
     /**
     * Gets or sets the database resource's edition.
+    * @return The Edition value.
     */
     public String getEdition()
     {
@@ -79,16 +84,18 @@ public class DatabaseCreateResponse extends OperationResponse
     
     /**
     * Gets or sets the database resource's edition.
+    * @param editionValue The Edition value.
     */
-    public void setEdition(String edition)
+    public void setEdition(final String editionValue)
     {
-        this.edition = edition;
+        this.edition = editionValue;
     }
     
     private int id;
     
     /**
     * Gets or sets the id of the database.
+    * @return The Id value.
     */
     public int getId()
     {
@@ -97,16 +104,18 @@ public class DatabaseCreateResponse extends OperationResponse
     
     /**
     * Gets or sets the id of the database.
+    * @param idValue The Id value.
     */
-    public void setId(int id)
+    public void setId(final int idValue)
     {
-        this.id = id;
+        this.id = idValue;
     }
     
     private boolean isFederationRoot;
     
     /**
     * Gets or sets a value indicating whether the database is a federation root.
+    * @return The IsFederationRoot value.
     */
     public boolean isFederationRoot()
     {
@@ -115,16 +124,18 @@ public class DatabaseCreateResponse extends OperationResponse
     
     /**
     * Gets or sets a value indicating whether the database is a federation root.
+    * @param isFederationRootValue The IsFederationRoot value.
     */
-    public void setIsFederationRoot(boolean isFederationRoot)
+    public void setIsFederationRoot(final boolean isFederationRootValue)
     {
-        this.isFederationRoot = isFederationRoot;
+        this.isFederationRoot = isFederationRootValue;
     }
     
     private boolean isSystemObject;
     
     /**
     * Gets or sets a value indicating whether the database is a system object.
+    * @return The IsSystemObject value.
     */
     public boolean isSystemObject()
     {
@@ -133,16 +144,18 @@ public class DatabaseCreateResponse extends OperationResponse
     
     /**
     * Gets or sets a value indicating whether the database is a system object.
+    * @param isSystemObjectValue The IsSystemObject value.
     */
-    public void setIsSystemObject(boolean isSystemObject)
+    public void setIsSystemObject(final boolean isSystemObjectValue)
     {
-        this.isSystemObject = isSystemObject;
+        this.isSystemObject = isSystemObjectValue;
     }
     
     private long maximumDatabaseSizeInGB;
     
     /**
     * Gets or sets the maximum size of this database, in Gigabytes.
+    * @return The MaximumDatabaseSizeInGB value.
     */
     public long getMaximumDatabaseSizeInGB()
     {
@@ -151,16 +164,18 @@ public class DatabaseCreateResponse extends OperationResponse
     
     /**
     * Gets or sets the maximum size of this database, in Gigabytes.
+    * @param maximumDatabaseSizeInGBValue The MaximumDatabaseSizeInGB value.
     */
-    public void setMaximumDatabaseSizeInGB(long maximumDatabaseSizeInGB)
+    public void setMaximumDatabaseSizeInGB(final long maximumDatabaseSizeInGBValue)
     {
-        this.maximumDatabaseSizeInGB = maximumDatabaseSizeInGB;
+        this.maximumDatabaseSizeInGB = maximumDatabaseSizeInGBValue;
     }
     
     private String name;
     
     /**
     * Gets or sets the name of the database.
+    * @return The Name value.
     */
     public String getName()
     {
@@ -169,16 +184,18 @@ public class DatabaseCreateResponse extends OperationResponse
     
     /**
     * Gets or sets the name of the database.
+    * @param nameValue The Name value.
     */
-    public void setName(String name)
+    public void setName(final String nameValue)
     {
-        this.name = name;
+        this.name = nameValue;
     }
     
     private String serviceObjectiveAssignmentErrorCode;
     
     /**
     * Gets or sets the error code for this service objective.
+    * @return The ServiceObjectiveAssignmentErrorCode value.
     */
     public String getServiceObjectiveAssignmentErrorCode()
     {
@@ -187,16 +204,19 @@ public class DatabaseCreateResponse extends OperationResponse
     
     /**
     * Gets or sets the error code for this service objective.
+    * @param serviceObjectiveAssignmentErrorCodeValue The
+    * ServiceObjectiveAssignmentErrorCode value.
     */
-    public void setServiceObjectiveAssignmentErrorCode(String serviceObjectiveAssignmentErrorCode)
+    public void setServiceObjectiveAssignmentErrorCode(final String serviceObjectiveAssignmentErrorCodeValue)
     {
-        this.serviceObjectiveAssignmentErrorCode = serviceObjectiveAssignmentErrorCode;
+        this.serviceObjectiveAssignmentErrorCode = serviceObjectiveAssignmentErrorCodeValue;
     }
     
     private String serviceObjectiveAssignmentErrorDescription;
     
     /**
     * Gets or sets the error description, if any.
+    * @return The ServiceObjectiveAssignmentErrorDescription value.
     */
     public String getServiceObjectiveAssignmentErrorDescription()
     {
@@ -205,16 +225,19 @@ public class DatabaseCreateResponse extends OperationResponse
     
     /**
     * Gets or sets the error description, if any.
+    * @param serviceObjectiveAssignmentErrorDescriptionValue The
+    * ServiceObjectiveAssignmentErrorDescription value.
     */
-    public void setServiceObjectiveAssignmentErrorDescription(String serviceObjectiveAssignmentErrorDescription)
+    public void setServiceObjectiveAssignmentErrorDescription(final String serviceObjectiveAssignmentErrorDescriptionValue)
     {
-        this.serviceObjectiveAssignmentErrorDescription = serviceObjectiveAssignmentErrorDescription;
+        this.serviceObjectiveAssignmentErrorDescription = serviceObjectiveAssignmentErrorDescriptionValue;
     }
     
     private String serviceObjectiveAssignmentState;
     
     /**
     * Gets or sets the state of the current assignment.
+    * @return The ServiceObjectiveAssignmentState value.
     */
     public String getServiceObjectiveAssignmentState()
     {
@@ -223,16 +246,19 @@ public class DatabaseCreateResponse extends OperationResponse
     
     /**
     * Gets or sets the state of the current assignment.
+    * @param serviceObjectiveAssignmentStateValue The
+    * ServiceObjectiveAssignmentState value.
     */
-    public void setServiceObjectiveAssignmentState(String serviceObjectiveAssignmentState)
+    public void setServiceObjectiveAssignmentState(final String serviceObjectiveAssignmentStateValue)
     {
-        this.serviceObjectiveAssignmentState = serviceObjectiveAssignmentState;
+        this.serviceObjectiveAssignmentState = serviceObjectiveAssignmentStateValue;
     }
     
     private String serviceObjectiveAssignmentStateDescription;
     
     /**
     * Gets or sets the state description.
+    * @return The ServiceObjectiveAssignmentStateDescription value.
     */
     public String getServiceObjectiveAssignmentStateDescription()
     {
@@ -241,16 +267,19 @@ public class DatabaseCreateResponse extends OperationResponse
     
     /**
     * Gets or sets the state description.
+    * @param serviceObjectiveAssignmentStateDescriptionValue The
+    * ServiceObjectiveAssignmentStateDescription value.
     */
-    public void setServiceObjectiveAssignmentStateDescription(String serviceObjectiveAssignmentStateDescription)
+    public void setServiceObjectiveAssignmentStateDescription(final String serviceObjectiveAssignmentStateDescriptionValue)
     {
-        this.serviceObjectiveAssignmentStateDescription = serviceObjectiveAssignmentStateDescription;
+        this.serviceObjectiveAssignmentStateDescription = serviceObjectiveAssignmentStateDescriptionValue;
     }
     
     private String serviceObjectiveAssignmentSuccessDate;
     
     /**
     * Gets or sets the date the service's assignment succeeded.
+    * @return The ServiceObjectiveAssignmentSuccessDate value.
     */
     public String getServiceObjectiveAssignmentSuccessDate()
     {
@@ -259,16 +288,19 @@ public class DatabaseCreateResponse extends OperationResponse
     
     /**
     * Gets or sets the date the service's assignment succeeded.
+    * @param serviceObjectiveAssignmentSuccessDateValue The
+    * ServiceObjectiveAssignmentSuccessDate value.
     */
-    public void setServiceObjectiveAssignmentSuccessDate(String serviceObjectiveAssignmentSuccessDate)
+    public void setServiceObjectiveAssignmentSuccessDate(final String serviceObjectiveAssignmentSuccessDateValue)
     {
-        this.serviceObjectiveAssignmentSuccessDate = serviceObjectiveAssignmentSuccessDate;
+        this.serviceObjectiveAssignmentSuccessDate = serviceObjectiveAssignmentSuccessDateValue;
     }
     
     private String serviceObjectiveId;
     
     /**
     * Gets or sets the id of this service objective.
+    * @return The ServiceObjectiveId value.
     */
     public String getServiceObjectiveId()
     {
@@ -277,16 +309,18 @@ public class DatabaseCreateResponse extends OperationResponse
     
     /**
     * Gets or sets the id of this service objective.
+    * @param serviceObjectiveIdValue The ServiceObjectiveId value.
     */
-    public void setServiceObjectiveId(String serviceObjectiveId)
+    public void setServiceObjectiveId(final String serviceObjectiveIdValue)
     {
-        this.serviceObjectiveId = serviceObjectiveId;
+        this.serviceObjectiveId = serviceObjectiveIdValue;
     }
     
     private String sizeMB;
     
     /**
     * Gets or sets the size of this database in megabytes (MB).
+    * @return The SizeMB value.
     */
     public String getSizeMB()
     {
@@ -295,16 +329,18 @@ public class DatabaseCreateResponse extends OperationResponse
     
     /**
     * Gets or sets the size of this database in megabytes (MB).
+    * @param sizeMBValue The SizeMB value.
     */
-    public void setSizeMB(String sizeMB)
+    public void setSizeMB(final String sizeMBValue)
     {
-        this.sizeMB = sizeMB;
+        this.sizeMB = sizeMBValue;
     }
     
     private String state;
     
     /**
     * Gets or sets the state of the database.
+    * @return The State value.
     */
     public String getState()
     {
@@ -313,16 +349,18 @@ public class DatabaseCreateResponse extends OperationResponse
     
     /**
     * Gets or sets the state of the database.
+    * @param stateValue The State value.
     */
-    public void setState(String state)
+    public void setState(final String stateValue)
     {
-        this.state = state;
+        this.state = stateValue;
     }
     
     private String type;
     
     /**
     * Gets or sets the type of resource.
+    * @return The Type value.
     */
     public String getType()
     {
@@ -331,9 +369,10 @@ public class DatabaseCreateResponse extends OperationResponse
     
     /**
     * Gets or sets the type of resource.
+    * @param typeValue The Type value.
     */
-    public void setType(String type)
+    public void setType(final String typeValue)
     {
-        this.type = type;
+        this.type = typeValue;
     }
 }

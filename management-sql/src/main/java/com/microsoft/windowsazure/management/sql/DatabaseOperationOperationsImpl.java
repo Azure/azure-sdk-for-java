@@ -68,6 +68,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
     /**
     * Gets a reference to the
     * microsoft.windowsazure.management.sql.SqlManagementClientImpl.
+    * @return The Client value.
     */
     public SqlManagementClientImpl getClient()
     {
@@ -103,6 +104,16 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
     * executed.
     * @param operationGuid The Guid of the SQL Server database operation to be
     * obtained.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return Response containing the database operation for a given operation
     * Guid.
     */
@@ -142,201 +153,211 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != HttpStatus.SC_OK)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            DatabaseOperationGetResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new DatabaseOperationGetResponse();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document responseDoc = documentBuilder.parse(responseContent);
+            
+            NodeList elements = responseDoc.getElementsByTagName("ServiceResource");
+            Element serviceResourceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            if (serviceResourceElement != null)
+            {
+                NodeList elements2 = serviceResourceElement.getElementsByTagName("Name");
+                Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                if (nameElement != null)
+                {
+                    String nameInstance;
+                    nameInstance = nameElement.getTextContent();
+                    result.setName(nameInstance);
+                }
+                
+                NodeList elements3 = serviceResourceElement.getElementsByTagName("Type");
+                Element typeElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                if (typeElement != null)
+                {
+                    String typeInstance;
+                    typeInstance = typeElement.getTextContent();
+                    result.setType(typeInstance);
+                }
+                
+                NodeList elements4 = serviceResourceElement.getElementsByTagName("State");
+                Element stateElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                if (stateElement != null)
+                {
+                    String stateInstance;
+                    stateInstance = stateElement.getTextContent();
+                    result.setState(stateInstance);
+                }
+                
+                NodeList elements5 = serviceResourceElement.getElementsByTagName("SelfLink");
+                Element selfLinkElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                if (selfLinkElement != null)
+                {
+                    String selfLinkInstance;
+                    selfLinkInstance = selfLinkElement.getTextContent();
+                    result.setSelfLink(selfLinkInstance);
+                }
+                
+                NodeList elements6 = serviceResourceElement.getElementsByTagName("ParentLink");
+                Element parentLinkElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                if (parentLinkElement != null)
+                {
+                    String parentLinkInstance;
+                    parentLinkInstance = parentLinkElement.getTextContent();
+                    result.setParentLink(parentLinkInstance);
+                }
+                
+                NodeList elements7 = serviceResourceElement.getElementsByTagName("Id");
+                Element idElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
+                if (idElement != null)
+                {
+                    String idInstance;
+                    idInstance = idElement.getTextContent();
+                    result.setId(idInstance);
+                }
+                
+                NodeList elements8 = serviceResourceElement.getElementsByTagName("StateId");
+                Element stateIdElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
+                if (stateIdElement != null)
+                {
+                    int stateIdInstance;
+                    stateIdInstance = Integer.parseInt(stateIdElement.getTextContent());
+                    result.setStateId(stateIdInstance);
+                }
+                
+                NodeList elements9 = serviceResourceElement.getElementsByTagName("SessionActivityId");
+                Element sessionActivityIdElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
+                if (sessionActivityIdElement != null)
+                {
+                    String sessionActivityIdInstance;
+                    sessionActivityIdInstance = sessionActivityIdElement.getTextContent();
+                    result.setSessionActivityId(sessionActivityIdInstance);
+                }
+                
+                NodeList elements10 = serviceResourceElement.getElementsByTagName("DatabaseName");
+                Element databaseNameElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
+                if (databaseNameElement != null)
+                {
+                    String databaseNameInstance;
+                    databaseNameInstance = databaseNameElement.getTextContent();
+                    result.setDatabaseName(databaseNameInstance);
+                }
+                
+                NodeList elements11 = serviceResourceElement.getElementsByTagName("PercentComplete");
+                Element percentCompleteElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
+                if (percentCompleteElement != null)
+                {
+                    int percentCompleteInstance;
+                    percentCompleteInstance = Integer.parseInt(percentCompleteElement.getTextContent());
+                    result.setPercentComplete(percentCompleteInstance);
+                }
+                
+                NodeList elements12 = serviceResourceElement.getElementsByTagName("ErrorCode");
+                Element errorCodeElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
+                if (errorCodeElement != null)
+                {
+                    int errorCodeInstance;
+                    errorCodeInstance = Integer.parseInt(errorCodeElement.getTextContent());
+                    result.setErrorCode(errorCodeInstance);
+                }
+                
+                NodeList elements13 = serviceResourceElement.getElementsByTagName("Error");
+                Element errorElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
+                if (errorElement != null)
+                {
+                    String errorInstance;
+                    errorInstance = errorElement.getTextContent();
+                    result.setError(errorInstance);
+                }
+                
+                NodeList elements14 = serviceResourceElement.getElementsByTagName("ErrorSeverity");
+                Element errorSeverityElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
+                if (errorSeverityElement != null)
+                {
+                    int errorSeverityInstance;
+                    errorSeverityInstance = Integer.parseInt(errorSeverityElement.getTextContent());
+                    result.setErrorSeverity(errorSeverityInstance);
+                }
+                
+                NodeList elements15 = serviceResourceElement.getElementsByTagName("ErrorState");
+                Element errorStateElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
+                if (errorStateElement != null)
+                {
+                    int errorStateInstance;
+                    errorStateInstance = Integer.parseInt(errorStateElement.getTextContent());
+                    result.setErrorState(errorStateInstance);
+                }
+                
+                NodeList elements16 = serviceResourceElement.getElementsByTagName("StartTime");
+                Element startTimeElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
+                if (startTimeElement != null)
+                {
+                    Calendar startTimeInstance;
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(simpleDateFormat.parse(startTimeElement.getTextContent()));
+                    startTimeInstance = calendar;
+                    result.setStartTime(startTimeInstance);
+                }
+                
+                NodeList elements17 = serviceResourceElement.getElementsByTagName("LastModifyTime");
+                Element lastModifyTimeElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
+                if (lastModifyTimeElement != null)
+                {
+                    Calendar lastModifyTimeInstance;
+                    SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                    Calendar calendar2 = Calendar.getInstance();
+                    calendar2.setTime(simpleDateFormat2.parse(lastModifyTimeElement.getTextContent()));
+                    lastModifyTimeInstance = calendar2;
+                    result.setLastModifyTime(lastModifyTimeInstance);
+                }
+            }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        // Create Result
-        DatabaseOperationGetResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new DatabaseOperationGetResponse();
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document responseDoc = documentBuilder.parse(responseContent);
-        
-        NodeList elements = responseDoc.getElementsByTagName("ServiceResource");
-        Element serviceResourceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-        if (serviceResourceElement != null)
+        finally
         {
-            NodeList elements2 = serviceResourceElement.getElementsByTagName("Name");
-            Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-            if (nameElement != null)
+            if (httpResponse != null && httpResponse.getEntity() != null)
             {
-                String nameInstance;
-                nameInstance = nameElement.getTextContent();
-                result.setName(nameInstance);
-            }
-            
-            NodeList elements3 = serviceResourceElement.getElementsByTagName("Type");
-            Element typeElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-            if (typeElement != null)
-            {
-                String typeInstance;
-                typeInstance = typeElement.getTextContent();
-                result.setType(typeInstance);
-            }
-            
-            NodeList elements4 = serviceResourceElement.getElementsByTagName("State");
-            Element stateElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-            if (stateElement != null)
-            {
-                String stateInstance;
-                stateInstance = stateElement.getTextContent();
-                result.setState(stateInstance);
-            }
-            
-            NodeList elements5 = serviceResourceElement.getElementsByTagName("SelfLink");
-            Element selfLinkElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-            if (selfLinkElement != null)
-            {
-                String selfLinkInstance;
-                selfLinkInstance = selfLinkElement.getTextContent();
-                result.setSelfLink(selfLinkInstance);
-            }
-            
-            NodeList elements6 = serviceResourceElement.getElementsByTagName("ParentLink");
-            Element parentLinkElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-            if (parentLinkElement != null)
-            {
-                String parentLinkInstance;
-                parentLinkInstance = parentLinkElement.getTextContent();
-                result.setParentLink(parentLinkInstance);
-            }
-            
-            NodeList elements7 = serviceResourceElement.getElementsByTagName("Id");
-            Element idElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-            if (idElement != null)
-            {
-                String idInstance;
-                idInstance = idElement.getTextContent();
-                result.setId(idInstance);
-            }
-            
-            NodeList elements8 = serviceResourceElement.getElementsByTagName("StateId");
-            Element stateIdElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-            if (stateIdElement != null)
-            {
-                int stateIdInstance;
-                stateIdInstance = Integer.parseInt(stateIdElement.getTextContent());
-                result.setStateId(stateIdInstance);
-            }
-            
-            NodeList elements9 = serviceResourceElement.getElementsByTagName("SessionActivityId");
-            Element sessionActivityIdElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-            if (sessionActivityIdElement != null)
-            {
-                String sessionActivityIdInstance;
-                sessionActivityIdInstance = sessionActivityIdElement.getTextContent();
-                result.setSessionActivityId(sessionActivityIdInstance);
-            }
-            
-            NodeList elements10 = serviceResourceElement.getElementsByTagName("DatabaseName");
-            Element databaseNameElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
-            if (databaseNameElement != null)
-            {
-                String databaseNameInstance;
-                databaseNameInstance = databaseNameElement.getTextContent();
-                result.setDatabaseName(databaseNameInstance);
-            }
-            
-            NodeList elements11 = serviceResourceElement.getElementsByTagName("PercentComplete");
-            Element percentCompleteElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
-            if (percentCompleteElement != null)
-            {
-                int percentCompleteInstance;
-                percentCompleteInstance = Integer.parseInt(percentCompleteElement.getTextContent());
-                result.setPercentComplete(percentCompleteInstance);
-            }
-            
-            NodeList elements12 = serviceResourceElement.getElementsByTagName("ErrorCode");
-            Element errorCodeElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
-            if (errorCodeElement != null)
-            {
-                int errorCodeInstance;
-                errorCodeInstance = Integer.parseInt(errorCodeElement.getTextContent());
-                result.setErrorCode(errorCodeInstance);
-            }
-            
-            NodeList elements13 = serviceResourceElement.getElementsByTagName("Error");
-            Element errorElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
-            if (errorElement != null)
-            {
-                String errorInstance;
-                errorInstance = errorElement.getTextContent();
-                result.setError(errorInstance);
-            }
-            
-            NodeList elements14 = serviceResourceElement.getElementsByTagName("ErrorSeverity");
-            Element errorSeverityElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
-            if (errorSeverityElement != null)
-            {
-                int errorSeverityInstance;
-                errorSeverityInstance = Integer.parseInt(errorSeverityElement.getTextContent());
-                result.setErrorSeverity(errorSeverityInstance);
-            }
-            
-            NodeList elements15 = serviceResourceElement.getElementsByTagName("ErrorState");
-            Element errorStateElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
-            if (errorStateElement != null)
-            {
-                int errorStateInstance;
-                errorStateInstance = Integer.parseInt(errorStateElement.getTextContent());
-                result.setErrorState(errorStateInstance);
-            }
-            
-            NodeList elements16 = serviceResourceElement.getElementsByTagName("StartTime");
-            Element startTimeElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
-            if (startTimeElement != null)
-            {
-                Calendar startTimeInstance;
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(simpleDateFormat.parse(startTimeElement.getTextContent()));
-                startTimeInstance = calendar;
-                result.setStartTime(startTimeInstance);
-            }
-            
-            NodeList elements17 = serviceResourceElement.getElementsByTagName("LastModifyTime");
-            Element lastModifyTimeElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
-            if (lastModifyTimeElement != null)
-            {
-                Calendar lastModifyTimeInstance;
-                SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                Calendar calendar2 = Calendar.getInstance();
-                calendar2.setTime(simpleDateFormat2.parse(lastModifyTimeElement.getTextContent()));
-                lastModifyTimeInstance = calendar2;
-                result.setLastModifyTime(lastModifyTimeInstance);
+                httpResponse.getEntity().getContent().close();
             }
         }
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-        {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
-        }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -364,6 +385,16 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
     *
     * @param serverName The name of the SQL Server to be queried.
     * @param databaseName The name of the Database to be queried.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return Response containing the list of database operations for a given
     * server or database.
     */
@@ -403,208 +434,218 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != HttpStatus.SC_OK)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
-        }
-        
-        // Create Result
-        DatabaseOperationListResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new DatabaseOperationListResponse();
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document responseDoc = documentBuilder.parse(responseContent);
-        
-        NodeList elements = responseDoc.getElementsByTagName("ServiceResources");
-        Element serviceResourcesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-        if (serviceResourcesSequenceElement != null)
-        {
-            for (int i1 = 0; i1 < serviceResourcesSequenceElement.getElementsByTagName("ServiceResource").getLength(); i1 = i1 + 1)
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
             {
-                org.w3c.dom.Element serviceResourcesElement = ((org.w3c.dom.Element) serviceResourcesSequenceElement.getElementsByTagName("ServiceResource").item(i1));
-                DatabaseOperationListResponse.DatabaseOperation serviceResourceInstance = new DatabaseOperationListResponse.DatabaseOperation();
-                result.getDatabaseOperations().add(serviceResourceInstance);
-                
-                NodeList elements2 = serviceResourcesElement.getElementsByTagName("Name");
-                Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (nameElement != null)
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
                 {
-                    String nameInstance;
-                    nameInstance = nameElement.getTextContent();
-                    serviceResourceInstance.setName(nameInstance);
+                    CloudTracing.error(invocationId, ex);
                 }
-                
-                NodeList elements3 = serviceResourcesElement.getElementsByTagName("Type");
-                Element typeElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                if (typeElement != null)
+                throw ex;
+            }
+            
+            // Create Result
+            DatabaseOperationListResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new DatabaseOperationListResponse();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document responseDoc = documentBuilder.parse(responseContent);
+            
+            NodeList elements = responseDoc.getElementsByTagName("ServiceResources");
+            Element serviceResourcesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            if (serviceResourcesSequenceElement != null)
+            {
+                for (int i1 = 0; i1 < serviceResourcesSequenceElement.getElementsByTagName("ServiceResource").getLength(); i1 = i1 + 1)
                 {
-                    String typeInstance;
-                    typeInstance = typeElement.getTextContent();
-                    serviceResourceInstance.setType(typeInstance);
-                }
-                
-                NodeList elements4 = serviceResourcesElement.getElementsByTagName("State");
-                Element stateElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                if (stateElement != null)
-                {
-                    String stateInstance;
-                    stateInstance = stateElement.getTextContent();
-                    serviceResourceInstance.setState(stateInstance);
-                }
-                
-                NodeList elements5 = serviceResourcesElement.getElementsByTagName("SelfLink");
-                Element selfLinkElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                if (selfLinkElement != null)
-                {
-                    String selfLinkInstance;
-                    selfLinkInstance = selfLinkElement.getTextContent();
-                    serviceResourceInstance.setSelfLink(selfLinkInstance);
-                }
-                
-                NodeList elements6 = serviceResourcesElement.getElementsByTagName("ParentLink");
-                Element parentLinkElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                if (parentLinkElement != null)
-                {
-                    String parentLinkInstance;
-                    parentLinkInstance = parentLinkElement.getTextContent();
-                    serviceResourceInstance.setParentLink(parentLinkInstance);
-                }
-                
-                NodeList elements7 = serviceResourcesElement.getElementsByTagName("Id");
-                Element idElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                if (idElement != null)
-                {
-                    String idInstance;
-                    idInstance = idElement.getTextContent();
-                    serviceResourceInstance.setId(idInstance);
-                }
-                
-                NodeList elements8 = serviceResourcesElement.getElementsByTagName("StateId");
-                Element stateIdElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                if (stateIdElement != null)
-                {
-                    int stateIdInstance;
-                    stateIdInstance = Integer.parseInt(stateIdElement.getTextContent());
-                    serviceResourceInstance.setStateId(stateIdInstance);
-                }
-                
-                NodeList elements9 = serviceResourcesElement.getElementsByTagName("SessionActivityId");
-                Element sessionActivityIdElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-                if (sessionActivityIdElement != null)
-                {
-                    String sessionActivityIdInstance;
-                    sessionActivityIdInstance = sessionActivityIdElement.getTextContent();
-                    serviceResourceInstance.setSessionActivityId(sessionActivityIdInstance);
-                }
-                
-                NodeList elements10 = serviceResourcesElement.getElementsByTagName("DatabaseName");
-                Element databaseNameElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
-                if (databaseNameElement != null)
-                {
-                    String databaseNameInstance;
-                    databaseNameInstance = databaseNameElement.getTextContent();
-                    serviceResourceInstance.setDatabaseName(databaseNameInstance);
-                }
-                
-                NodeList elements11 = serviceResourcesElement.getElementsByTagName("PercentComplete");
-                Element percentCompleteElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
-                if (percentCompleteElement != null)
-                {
-                    int percentCompleteInstance;
-                    percentCompleteInstance = Integer.parseInt(percentCompleteElement.getTextContent());
-                    serviceResourceInstance.setPercentComplete(percentCompleteInstance);
-                }
-                
-                NodeList elements12 = serviceResourcesElement.getElementsByTagName("ErrorCode");
-                Element errorCodeElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
-                if (errorCodeElement != null)
-                {
-                    int errorCodeInstance;
-                    errorCodeInstance = Integer.parseInt(errorCodeElement.getTextContent());
-                    serviceResourceInstance.setErrorCode(errorCodeInstance);
-                }
-                
-                NodeList elements13 = serviceResourcesElement.getElementsByTagName("Error");
-                Element errorElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
-                if (errorElement != null)
-                {
-                    String errorInstance;
-                    errorInstance = errorElement.getTextContent();
-                    serviceResourceInstance.setError(errorInstance);
-                }
-                
-                NodeList elements14 = serviceResourcesElement.getElementsByTagName("ErrorSeverity");
-                Element errorSeverityElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
-                if (errorSeverityElement != null)
-                {
-                    int errorSeverityInstance;
-                    errorSeverityInstance = Integer.parseInt(errorSeverityElement.getTextContent());
-                    serviceResourceInstance.setErrorSeverity(errorSeverityInstance);
-                }
-                
-                NodeList elements15 = serviceResourcesElement.getElementsByTagName("ErrorState");
-                Element errorStateElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
-                if (errorStateElement != null)
-                {
-                    int errorStateInstance;
-                    errorStateInstance = Integer.parseInt(errorStateElement.getTextContent());
-                    serviceResourceInstance.setErrorState(errorStateInstance);
-                }
-                
-                NodeList elements16 = serviceResourcesElement.getElementsByTagName("StartTime");
-                Element startTimeElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
-                if (startTimeElement != null)
-                {
-                    Calendar startTimeInstance;
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(simpleDateFormat.parse(startTimeElement.getTextContent()));
-                    startTimeInstance = calendar;
-                    serviceResourceInstance.setStartTime(startTimeInstance);
-                }
-                
-                NodeList elements17 = serviceResourcesElement.getElementsByTagName("LastModifyTime");
-                Element lastModifyTimeElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
-                if (lastModifyTimeElement != null)
-                {
-                    Calendar lastModifyTimeInstance;
-                    SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                    Calendar calendar2 = Calendar.getInstance();
-                    calendar2.setTime(simpleDateFormat2.parse(lastModifyTimeElement.getTextContent()));
-                    lastModifyTimeInstance = calendar2;
-                    serviceResourceInstance.setLastModifyTime(lastModifyTimeInstance);
+                    org.w3c.dom.Element serviceResourcesElement = ((org.w3c.dom.Element) serviceResourcesSequenceElement.getElementsByTagName("ServiceResource").item(i1));
+                    DatabaseOperationListResponse.DatabaseOperation serviceResourceInstance = new DatabaseOperationListResponse.DatabaseOperation();
+                    result.getDatabaseOperations().add(serviceResourceInstance);
+                    
+                    NodeList elements2 = serviceResourcesElement.getElementsByTagName("Name");
+                    Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                    if (nameElement != null)
+                    {
+                        String nameInstance;
+                        nameInstance = nameElement.getTextContent();
+                        serviceResourceInstance.setName(nameInstance);
+                    }
+                    
+                    NodeList elements3 = serviceResourcesElement.getElementsByTagName("Type");
+                    Element typeElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                    if (typeElement != null)
+                    {
+                        String typeInstance;
+                        typeInstance = typeElement.getTextContent();
+                        serviceResourceInstance.setType(typeInstance);
+                    }
+                    
+                    NodeList elements4 = serviceResourcesElement.getElementsByTagName("State");
+                    Element stateElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                    if (stateElement != null)
+                    {
+                        String stateInstance;
+                        stateInstance = stateElement.getTextContent();
+                        serviceResourceInstance.setState(stateInstance);
+                    }
+                    
+                    NodeList elements5 = serviceResourcesElement.getElementsByTagName("SelfLink");
+                    Element selfLinkElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                    if (selfLinkElement != null)
+                    {
+                        String selfLinkInstance;
+                        selfLinkInstance = selfLinkElement.getTextContent();
+                        serviceResourceInstance.setSelfLink(selfLinkInstance);
+                    }
+                    
+                    NodeList elements6 = serviceResourcesElement.getElementsByTagName("ParentLink");
+                    Element parentLinkElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                    if (parentLinkElement != null)
+                    {
+                        String parentLinkInstance;
+                        parentLinkInstance = parentLinkElement.getTextContent();
+                        serviceResourceInstance.setParentLink(parentLinkInstance);
+                    }
+                    
+                    NodeList elements7 = serviceResourcesElement.getElementsByTagName("Id");
+                    Element idElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
+                    if (idElement != null)
+                    {
+                        String idInstance;
+                        idInstance = idElement.getTextContent();
+                        serviceResourceInstance.setId(idInstance);
+                    }
+                    
+                    NodeList elements8 = serviceResourcesElement.getElementsByTagName("StateId");
+                    Element stateIdElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
+                    if (stateIdElement != null)
+                    {
+                        int stateIdInstance;
+                        stateIdInstance = Integer.parseInt(stateIdElement.getTextContent());
+                        serviceResourceInstance.setStateId(stateIdInstance);
+                    }
+                    
+                    NodeList elements9 = serviceResourcesElement.getElementsByTagName("SessionActivityId");
+                    Element sessionActivityIdElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
+                    if (sessionActivityIdElement != null)
+                    {
+                        String sessionActivityIdInstance;
+                        sessionActivityIdInstance = sessionActivityIdElement.getTextContent();
+                        serviceResourceInstance.setSessionActivityId(sessionActivityIdInstance);
+                    }
+                    
+                    NodeList elements10 = serviceResourcesElement.getElementsByTagName("DatabaseName");
+                    Element databaseNameElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
+                    if (databaseNameElement != null)
+                    {
+                        String databaseNameInstance;
+                        databaseNameInstance = databaseNameElement.getTextContent();
+                        serviceResourceInstance.setDatabaseName(databaseNameInstance);
+                    }
+                    
+                    NodeList elements11 = serviceResourcesElement.getElementsByTagName("PercentComplete");
+                    Element percentCompleteElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
+                    if (percentCompleteElement != null)
+                    {
+                        int percentCompleteInstance;
+                        percentCompleteInstance = Integer.parseInt(percentCompleteElement.getTextContent());
+                        serviceResourceInstance.setPercentComplete(percentCompleteInstance);
+                    }
+                    
+                    NodeList elements12 = serviceResourcesElement.getElementsByTagName("ErrorCode");
+                    Element errorCodeElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
+                    if (errorCodeElement != null)
+                    {
+                        int errorCodeInstance;
+                        errorCodeInstance = Integer.parseInt(errorCodeElement.getTextContent());
+                        serviceResourceInstance.setErrorCode(errorCodeInstance);
+                    }
+                    
+                    NodeList elements13 = serviceResourcesElement.getElementsByTagName("Error");
+                    Element errorElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
+                    if (errorElement != null)
+                    {
+                        String errorInstance;
+                        errorInstance = errorElement.getTextContent();
+                        serviceResourceInstance.setError(errorInstance);
+                    }
+                    
+                    NodeList elements14 = serviceResourcesElement.getElementsByTagName("ErrorSeverity");
+                    Element errorSeverityElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
+                    if (errorSeverityElement != null)
+                    {
+                        int errorSeverityInstance;
+                        errorSeverityInstance = Integer.parseInt(errorSeverityElement.getTextContent());
+                        serviceResourceInstance.setErrorSeverity(errorSeverityInstance);
+                    }
+                    
+                    NodeList elements15 = serviceResourcesElement.getElementsByTagName("ErrorState");
+                    Element errorStateElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
+                    if (errorStateElement != null)
+                    {
+                        int errorStateInstance;
+                        errorStateInstance = Integer.parseInt(errorStateElement.getTextContent());
+                        serviceResourceInstance.setErrorState(errorStateInstance);
+                    }
+                    
+                    NodeList elements16 = serviceResourcesElement.getElementsByTagName("StartTime");
+                    Element startTimeElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
+                    if (startTimeElement != null)
+                    {
+                        Calendar startTimeInstance;
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.setTime(simpleDateFormat.parse(startTimeElement.getTextContent()));
+                        startTimeInstance = calendar;
+                        serviceResourceInstance.setStartTime(startTimeInstance);
+                    }
+                    
+                    NodeList elements17 = serviceResourcesElement.getElementsByTagName("LastModifyTime");
+                    Element lastModifyTimeElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
+                    if (lastModifyTimeElement != null)
+                    {
+                        Calendar lastModifyTimeInstance;
+                        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                        Calendar calendar2 = Calendar.getInstance();
+                        calendar2.setTime(simpleDateFormat2.parse(lastModifyTimeElement.getTextContent()));
+                        lastModifyTimeInstance = calendar2;
+                        serviceResourceInstance.setLastModifyTime(lastModifyTimeInstance);
+                    }
                 }
             }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -630,6 +671,16 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
     * Returns the list database operations for a given server.
     *
     * @param serverName The name of the SQL Server to be queried.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return Response containing the list of database operations for a given
     * server or database.
     */
@@ -664,207 +715,217 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != HttpStatus.SC_OK)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
-        }
-        
-        // Create Result
-        DatabaseOperationListResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new DatabaseOperationListResponse();
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document responseDoc = documentBuilder.parse(responseContent);
-        
-        NodeList elements = responseDoc.getElementsByTagName("ServiceResources");
-        Element serviceResourcesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-        if (serviceResourcesSequenceElement != null)
-        {
-            for (int i1 = 0; i1 < serviceResourcesSequenceElement.getElementsByTagName("ServiceResource").getLength(); i1 = i1 + 1)
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
             {
-                org.w3c.dom.Element serviceResourcesElement = ((org.w3c.dom.Element) serviceResourcesSequenceElement.getElementsByTagName("ServiceResource").item(i1));
-                DatabaseOperationListResponse.DatabaseOperation serviceResourceInstance = new DatabaseOperationListResponse.DatabaseOperation();
-                result.getDatabaseOperations().add(serviceResourceInstance);
-                
-                NodeList elements2 = serviceResourcesElement.getElementsByTagName("Name");
-                Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (nameElement != null)
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
                 {
-                    String nameInstance;
-                    nameInstance = nameElement.getTextContent();
-                    serviceResourceInstance.setName(nameInstance);
+                    CloudTracing.error(invocationId, ex);
                 }
-                
-                NodeList elements3 = serviceResourcesElement.getElementsByTagName("Type");
-                Element typeElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                if (typeElement != null)
+                throw ex;
+            }
+            
+            // Create Result
+            DatabaseOperationListResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new DatabaseOperationListResponse();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document responseDoc = documentBuilder.parse(responseContent);
+            
+            NodeList elements = responseDoc.getElementsByTagName("ServiceResources");
+            Element serviceResourcesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            if (serviceResourcesSequenceElement != null)
+            {
+                for (int i1 = 0; i1 < serviceResourcesSequenceElement.getElementsByTagName("ServiceResource").getLength(); i1 = i1 + 1)
                 {
-                    String typeInstance;
-                    typeInstance = typeElement.getTextContent();
-                    serviceResourceInstance.setType(typeInstance);
-                }
-                
-                NodeList elements4 = serviceResourcesElement.getElementsByTagName("State");
-                Element stateElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                if (stateElement != null)
-                {
-                    String stateInstance;
-                    stateInstance = stateElement.getTextContent();
-                    serviceResourceInstance.setState(stateInstance);
-                }
-                
-                NodeList elements5 = serviceResourcesElement.getElementsByTagName("SelfLink");
-                Element selfLinkElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                if (selfLinkElement != null)
-                {
-                    String selfLinkInstance;
-                    selfLinkInstance = selfLinkElement.getTextContent();
-                    serviceResourceInstance.setSelfLink(selfLinkInstance);
-                }
-                
-                NodeList elements6 = serviceResourcesElement.getElementsByTagName("ParentLink");
-                Element parentLinkElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                if (parentLinkElement != null)
-                {
-                    String parentLinkInstance;
-                    parentLinkInstance = parentLinkElement.getTextContent();
-                    serviceResourceInstance.setParentLink(parentLinkInstance);
-                }
-                
-                NodeList elements7 = serviceResourcesElement.getElementsByTagName("Id");
-                Element idElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                if (idElement != null)
-                {
-                    String idInstance;
-                    idInstance = idElement.getTextContent();
-                    serviceResourceInstance.setId(idInstance);
-                }
-                
-                NodeList elements8 = serviceResourcesElement.getElementsByTagName("StateId");
-                Element stateIdElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                if (stateIdElement != null)
-                {
-                    int stateIdInstance;
-                    stateIdInstance = Integer.parseInt(stateIdElement.getTextContent());
-                    serviceResourceInstance.setStateId(stateIdInstance);
-                }
-                
-                NodeList elements9 = serviceResourcesElement.getElementsByTagName("SessionActivityId");
-                Element sessionActivityIdElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-                if (sessionActivityIdElement != null)
-                {
-                    String sessionActivityIdInstance;
-                    sessionActivityIdInstance = sessionActivityIdElement.getTextContent();
-                    serviceResourceInstance.setSessionActivityId(sessionActivityIdInstance);
-                }
-                
-                NodeList elements10 = serviceResourcesElement.getElementsByTagName("DatabaseName");
-                Element databaseNameElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
-                if (databaseNameElement != null)
-                {
-                    String databaseNameInstance;
-                    databaseNameInstance = databaseNameElement.getTextContent();
-                    serviceResourceInstance.setDatabaseName(databaseNameInstance);
-                }
-                
-                NodeList elements11 = serviceResourcesElement.getElementsByTagName("PercentComplete");
-                Element percentCompleteElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
-                if (percentCompleteElement != null)
-                {
-                    int percentCompleteInstance;
-                    percentCompleteInstance = Integer.parseInt(percentCompleteElement.getTextContent());
-                    serviceResourceInstance.setPercentComplete(percentCompleteInstance);
-                }
-                
-                NodeList elements12 = serviceResourcesElement.getElementsByTagName("ErrorCode");
-                Element errorCodeElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
-                if (errorCodeElement != null)
-                {
-                    int errorCodeInstance;
-                    errorCodeInstance = Integer.parseInt(errorCodeElement.getTextContent());
-                    serviceResourceInstance.setErrorCode(errorCodeInstance);
-                }
-                
-                NodeList elements13 = serviceResourcesElement.getElementsByTagName("Error");
-                Element errorElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
-                if (errorElement != null)
-                {
-                    String errorInstance;
-                    errorInstance = errorElement.getTextContent();
-                    serviceResourceInstance.setError(errorInstance);
-                }
-                
-                NodeList elements14 = serviceResourcesElement.getElementsByTagName("ErrorSeverity");
-                Element errorSeverityElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
-                if (errorSeverityElement != null)
-                {
-                    int errorSeverityInstance;
-                    errorSeverityInstance = Integer.parseInt(errorSeverityElement.getTextContent());
-                    serviceResourceInstance.setErrorSeverity(errorSeverityInstance);
-                }
-                
-                NodeList elements15 = serviceResourcesElement.getElementsByTagName("ErrorState");
-                Element errorStateElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
-                if (errorStateElement != null)
-                {
-                    int errorStateInstance;
-                    errorStateInstance = Integer.parseInt(errorStateElement.getTextContent());
-                    serviceResourceInstance.setErrorState(errorStateInstance);
-                }
-                
-                NodeList elements16 = serviceResourcesElement.getElementsByTagName("StartTime");
-                Element startTimeElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
-                if (startTimeElement != null)
-                {
-                    Calendar startTimeInstance;
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(simpleDateFormat.parse(startTimeElement.getTextContent()));
-                    startTimeInstance = calendar;
-                    serviceResourceInstance.setStartTime(startTimeInstance);
-                }
-                
-                NodeList elements17 = serviceResourcesElement.getElementsByTagName("LastModifyTime");
-                Element lastModifyTimeElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
-                if (lastModifyTimeElement != null)
-                {
-                    Calendar lastModifyTimeInstance;
-                    SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                    Calendar calendar2 = Calendar.getInstance();
-                    calendar2.setTime(simpleDateFormat2.parse(lastModifyTimeElement.getTextContent()));
-                    lastModifyTimeInstance = calendar2;
-                    serviceResourceInstance.setLastModifyTime(lastModifyTimeInstance);
+                    org.w3c.dom.Element serviceResourcesElement = ((org.w3c.dom.Element) serviceResourcesSequenceElement.getElementsByTagName("ServiceResource").item(i1));
+                    DatabaseOperationListResponse.DatabaseOperation serviceResourceInstance = new DatabaseOperationListResponse.DatabaseOperation();
+                    result.getDatabaseOperations().add(serviceResourceInstance);
+                    
+                    NodeList elements2 = serviceResourcesElement.getElementsByTagName("Name");
+                    Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                    if (nameElement != null)
+                    {
+                        String nameInstance;
+                        nameInstance = nameElement.getTextContent();
+                        serviceResourceInstance.setName(nameInstance);
+                    }
+                    
+                    NodeList elements3 = serviceResourcesElement.getElementsByTagName("Type");
+                    Element typeElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                    if (typeElement != null)
+                    {
+                        String typeInstance;
+                        typeInstance = typeElement.getTextContent();
+                        serviceResourceInstance.setType(typeInstance);
+                    }
+                    
+                    NodeList elements4 = serviceResourcesElement.getElementsByTagName("State");
+                    Element stateElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                    if (stateElement != null)
+                    {
+                        String stateInstance;
+                        stateInstance = stateElement.getTextContent();
+                        serviceResourceInstance.setState(stateInstance);
+                    }
+                    
+                    NodeList elements5 = serviceResourcesElement.getElementsByTagName("SelfLink");
+                    Element selfLinkElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                    if (selfLinkElement != null)
+                    {
+                        String selfLinkInstance;
+                        selfLinkInstance = selfLinkElement.getTextContent();
+                        serviceResourceInstance.setSelfLink(selfLinkInstance);
+                    }
+                    
+                    NodeList elements6 = serviceResourcesElement.getElementsByTagName("ParentLink");
+                    Element parentLinkElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                    if (parentLinkElement != null)
+                    {
+                        String parentLinkInstance;
+                        parentLinkInstance = parentLinkElement.getTextContent();
+                        serviceResourceInstance.setParentLink(parentLinkInstance);
+                    }
+                    
+                    NodeList elements7 = serviceResourcesElement.getElementsByTagName("Id");
+                    Element idElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
+                    if (idElement != null)
+                    {
+                        String idInstance;
+                        idInstance = idElement.getTextContent();
+                        serviceResourceInstance.setId(idInstance);
+                    }
+                    
+                    NodeList elements8 = serviceResourcesElement.getElementsByTagName("StateId");
+                    Element stateIdElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
+                    if (stateIdElement != null)
+                    {
+                        int stateIdInstance;
+                        stateIdInstance = Integer.parseInt(stateIdElement.getTextContent());
+                        serviceResourceInstance.setStateId(stateIdInstance);
+                    }
+                    
+                    NodeList elements9 = serviceResourcesElement.getElementsByTagName("SessionActivityId");
+                    Element sessionActivityIdElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
+                    if (sessionActivityIdElement != null)
+                    {
+                        String sessionActivityIdInstance;
+                        sessionActivityIdInstance = sessionActivityIdElement.getTextContent();
+                        serviceResourceInstance.setSessionActivityId(sessionActivityIdInstance);
+                    }
+                    
+                    NodeList elements10 = serviceResourcesElement.getElementsByTagName("DatabaseName");
+                    Element databaseNameElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
+                    if (databaseNameElement != null)
+                    {
+                        String databaseNameInstance;
+                        databaseNameInstance = databaseNameElement.getTextContent();
+                        serviceResourceInstance.setDatabaseName(databaseNameInstance);
+                    }
+                    
+                    NodeList elements11 = serviceResourcesElement.getElementsByTagName("PercentComplete");
+                    Element percentCompleteElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
+                    if (percentCompleteElement != null)
+                    {
+                        int percentCompleteInstance;
+                        percentCompleteInstance = Integer.parseInt(percentCompleteElement.getTextContent());
+                        serviceResourceInstance.setPercentComplete(percentCompleteInstance);
+                    }
+                    
+                    NodeList elements12 = serviceResourcesElement.getElementsByTagName("ErrorCode");
+                    Element errorCodeElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
+                    if (errorCodeElement != null)
+                    {
+                        int errorCodeInstance;
+                        errorCodeInstance = Integer.parseInt(errorCodeElement.getTextContent());
+                        serviceResourceInstance.setErrorCode(errorCodeInstance);
+                    }
+                    
+                    NodeList elements13 = serviceResourcesElement.getElementsByTagName("Error");
+                    Element errorElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
+                    if (errorElement != null)
+                    {
+                        String errorInstance;
+                        errorInstance = errorElement.getTextContent();
+                        serviceResourceInstance.setError(errorInstance);
+                    }
+                    
+                    NodeList elements14 = serviceResourcesElement.getElementsByTagName("ErrorSeverity");
+                    Element errorSeverityElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
+                    if (errorSeverityElement != null)
+                    {
+                        int errorSeverityInstance;
+                        errorSeverityInstance = Integer.parseInt(errorSeverityElement.getTextContent());
+                        serviceResourceInstance.setErrorSeverity(errorSeverityInstance);
+                    }
+                    
+                    NodeList elements15 = serviceResourcesElement.getElementsByTagName("ErrorState");
+                    Element errorStateElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
+                    if (errorStateElement != null)
+                    {
+                        int errorStateInstance;
+                        errorStateInstance = Integer.parseInt(errorStateElement.getTextContent());
+                        serviceResourceInstance.setErrorState(errorStateInstance);
+                    }
+                    
+                    NodeList elements16 = serviceResourcesElement.getElementsByTagName("StartTime");
+                    Element startTimeElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
+                    if (startTimeElement != null)
+                    {
+                        Calendar startTimeInstance;
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.setTime(simpleDateFormat.parse(startTimeElement.getTextContent()));
+                        startTimeInstance = calendar;
+                        serviceResourceInstance.setStartTime(startTimeInstance);
+                    }
+                    
+                    NodeList elements17 = serviceResourcesElement.getElementsByTagName("LastModifyTime");
+                    Element lastModifyTimeElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
+                    if (lastModifyTimeElement != null)
+                    {
+                        Calendar lastModifyTimeInstance;
+                        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                        Calendar calendar2 = Calendar.getInstance();
+                        calendar2.setTime(simpleDateFormat2.parse(lastModifyTimeElement.getTextContent()));
+                        lastModifyTimeInstance = calendar2;
+                        serviceResourceInstance.setLastModifyTime(lastModifyTimeInstance);
+                    }
                 }
             }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
 }

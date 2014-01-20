@@ -34,6 +34,7 @@ public class DeploymentChangeConfigurationParameters
     
     /**
     * Required. The encoded service configuration file for the deployment.
+    * @return The Configuration value.
     */
     public String getConfiguration()
     {
@@ -42,10 +43,11 @@ public class DeploymentChangeConfigurationParameters
     
     /**
     * Required. The encoded service configuration file for the deployment.
+    * @param configurationValue The Configuration value.
     */
-    public void setConfiguration(String configuration)
+    public void setConfiguration(final String configurationValue)
     {
-        this.configuration = configuration;
+        this.configuration = configurationValue;
     }
     
     private HashMap<String, String> extendedProperties;
@@ -60,6 +62,7 @@ public class DeploymentChangeConfigurationParameters
     * non-letter character, or entering a name that is identical to that of
     * another extended property owned by the same hosted service, will result
     * in a status code 400 (Bad Request) error.
+    * @return The ExtendedProperties value.
     */
     public HashMap<String, String> getExtendedProperties()
     {
@@ -76,10 +79,11 @@ public class DeploymentChangeConfigurationParameters
     * non-letter character, or entering a name that is identical to that of
     * another extended property owned by the same hosted service, will result
     * in a status code 400 (Bad Request) error.
+    * @param extendedPropertiesValue The ExtendedProperties value.
     */
-    public void setExtendedProperties(HashMap<String, String> extendedProperties)
+    public void setExtendedProperties(final HashMap<String, String> extendedPropertiesValue)
     {
-        this.extendedProperties = extendedProperties;
+        this.extendedProperties = extendedPropertiesValue;
     }
     
     private ExtensionConfiguration extensionConfiguration;
@@ -91,6 +95,7 @@ public class DeploymentChangeConfigurationParameters
     * can run as extensions to the cloud service. You must add an extension to
     * the cloud service by using Add Extension before it can be added to the
     * deployment.
+    * @return The ExtensionConfiguration value.
     */
     public ExtensionConfiguration getExtensionConfiguration()
     {
@@ -104,10 +109,11 @@ public class DeploymentChangeConfigurationParameters
     * can run as extensions to the cloud service. You must add an extension to
     * the cloud service by using Add Extension before it can be added to the
     * deployment.
+    * @param extensionConfigurationValue The ExtensionConfiguration value.
     */
-    public void setExtensionConfiguration(ExtensionConfiguration extensionConfiguration)
+    public void setExtensionConfiguration(final ExtensionConfiguration extensionConfigurationValue)
     {
-        this.extensionConfiguration = extensionConfiguration;
+        this.extensionConfiguration = extensionConfigurationValue;
     }
     
     private DeploymentChangeConfigurationMode mode;
@@ -117,6 +123,7 @@ public class DeploymentChangeConfigurationParameters
     * default value is Auto. If set to Manual, WalkUpgradeDomain must be
     * called to apply the update. If set to Auto, the update is automatically
     * applied to each update domain for the service.
+    * @return The Mode value.
     */
     public DeploymentChangeConfigurationMode getMode()
     {
@@ -128,10 +135,11 @@ public class DeploymentChangeConfigurationParameters
     * default value is Auto. If set to Manual, WalkUpgradeDomain must be
     * called to apply the update. If set to Auto, the update is automatically
     * applied to each update domain for the service.
+    * @param modeValue The Mode value.
     */
-    public void setMode(DeploymentChangeConfigurationMode mode)
+    public void setMode(final DeploymentChangeConfigurationMode modeValue)
     {
-        this.mode = mode;
+        this.mode = modeValue;
     }
     
     private Boolean treatWarningsAsError;
@@ -141,8 +149,9 @@ public class DeploymentChangeConfigurationParameters
     * errors. The default value is false. If set to true, the Created
     * Deployment operation fails if there are validation warnings on the
     * service package.
+    * @return The TreatWarningsAsError value.
     */
-    public Boolean getTreatWarningsAsError()
+    public Boolean isTreatWarningsAsError()
     {
         return this.treatWarningsAsError;
     }
@@ -152,10 +161,11 @@ public class DeploymentChangeConfigurationParameters
     * errors. The default value is false. If set to true, the Created
     * Deployment operation fails if there are validation warnings on the
     * service package.
+    * @param treatWarningsAsErrorValue The TreatWarningsAsError value.
     */
-    public void setTreatWarningsAsError(Boolean treatWarningsAsError)
+    public void setTreatWarningsAsError(final Boolean treatWarningsAsErrorValue)
     {
-        this.treatWarningsAsError = treatWarningsAsError;
+        this.treatWarningsAsError = treatWarningsAsErrorValue;
     }
     
     /**

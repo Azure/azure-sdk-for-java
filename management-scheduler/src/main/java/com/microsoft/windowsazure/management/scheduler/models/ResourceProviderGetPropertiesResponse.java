@@ -33,14 +33,20 @@ public class ResourceProviderGetPropertiesResponse extends OperationResponse
 {
     private HashMap<String, String> properties;
     
+    /**
+    * @return The Properties value.
+    */
     public HashMap<String, String> getProperties()
     {
         return this.properties;
     }
     
-    public void setProperties(HashMap<String, String> properties)
+    /**
+    * @param propertiesValue The Properties value.
+    */
+    public void setProperties(final HashMap<String, String> propertiesValue)
     {
-        this.properties = properties;
+        this.properties = propertiesValue;
     }
     
     /**

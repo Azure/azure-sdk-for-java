@@ -37,6 +37,7 @@ public class CloudServiceListResponse extends OperationResponse implements Itera
     
     /**
     * The list of cloud service locations for this subscription.
+    * @return The CloudServices value.
     */
     public ArrayList<CloudServiceListResponse.CloudService> getCloudServices()
     {
@@ -45,10 +46,11 @@ public class CloudServiceListResponse extends OperationResponse implements Itera
     
     /**
     * The list of cloud service locations for this subscription.
+    * @param cloudServicesValue The CloudServices value.
     */
-    public void setCloudServices(ArrayList<CloudServiceListResponse.CloudService> cloudServices)
+    public void setCloudServices(final ArrayList<CloudServiceListResponse.CloudService> cloudServicesValue)
     {
-        this.cloudServices = cloudServices;
+        this.cloudServices = cloudServicesValue;
     }
     
     /**
@@ -80,6 +82,7 @@ public class CloudServiceListResponse extends OperationResponse implements Itera
         
         /**
         * The description of the cloud service region.
+        * @return The Description value.
         */
         public String getDescription()
         {
@@ -88,16 +91,18 @@ public class CloudServiceListResponse extends OperationResponse implements Itera
         
         /**
         * The description of the cloud service region.
+        * @param descriptionValue The Description value.
         */
-        public void setDescription(String description)
+        public void setDescription(final String descriptionValue)
         {
-            this.description = description;
+            this.description = descriptionValue;
         }
         
         private String geoRegion;
         
         /**
         * The geographical region in which this cloud service can run.
+        * @return The GeoRegion value.
         */
         public String getGeoRegion()
         {
@@ -106,16 +111,18 @@ public class CloudServiceListResponse extends OperationResponse implements Itera
         
         /**
         * The geographical region in which this cloud service can run.
+        * @param geoRegionValue The GeoRegion value.
         */
-        public void setGeoRegion(String geoRegion)
+        public void setGeoRegion(final String geoRegionValue)
         {
-            this.geoRegion = geoRegion;
+            this.geoRegion = geoRegionValue;
         }
         
         private String label;
         
         /**
         * The label of the cloud service region.
+        * @return The Label value.
         */
         public String getLabel()
         {
@@ -124,16 +131,18 @@ public class CloudServiceListResponse extends OperationResponse implements Itera
         
         /**
         * The label of the cloud service region.
+        * @param labelValue The Label value.
         */
-        public void setLabel(String label)
+        public void setLabel(final String labelValue)
         {
-            this.label = label;
+            this.label = labelValue;
         }
         
         private String name;
         
         /**
         * The name of the cloud service region.
+        * @return The Name value.
         */
         public String getName()
         {
@@ -142,10 +151,11 @@ public class CloudServiceListResponse extends OperationResponse implements Itera
         
         /**
         * The name of the cloud service region.
+        * @param nameValue The Name value.
         */
-        public void setName(String name)
+        public void setName(final String nameValue)
         {
-            this.name = name;
+            this.name = nameValue;
         }
         
         private ArrayList<CloudServiceListResponse.CloudService.AddOnResource> resources;
@@ -153,6 +163,7 @@ public class CloudServiceListResponse extends OperationResponse implements Itera
         /**
         * A list of existing store resources installed into a cloud service
         * region.
+        * @return The Resources value.
         */
         public ArrayList<CloudServiceListResponse.CloudService.AddOnResource> getResources()
         {
@@ -162,10 +173,11 @@ public class CloudServiceListResponse extends OperationResponse implements Itera
         /**
         * A list of existing store resources installed into a cloud service
         * region.
+        * @param resourcesValue The Resources value.
         */
-        public void setResources(ArrayList<CloudServiceListResponse.CloudService.AddOnResource> resources)
+        public void setResources(final ArrayList<CloudServiceListResponse.CloudService.AddOnResource> resourcesValue)
         {
-            this.resources = resources;
+            this.resources = resourcesValue;
         }
         
         /**
@@ -186,6 +198,7 @@ public class CloudServiceListResponse extends OperationResponse implements Itera
             
             /**
             * The ETag for this store resource.
+            * @return The ETag value.
             */
             public String getETag()
             {
@@ -194,16 +207,18 @@ public class CloudServiceListResponse extends OperationResponse implements Itera
             
             /**
             * The ETag for this store resource.
+            * @param eTagValue The ETag value.
             */
-            public void setETag(String eTag)
+            public void setETag(final String eTagValue)
             {
-                this.eTag = eTag;
+                this.eTag = eTagValue;
             }
             
             private String name;
             
             /**
             * The user-input name of this store item.
+            * @return The Name value.
             */
             public String getName()
             {
@@ -212,16 +227,18 @@ public class CloudServiceListResponse extends OperationResponse implements Itera
             
             /**
             * The user-input name of this store item.
+            * @param nameValue The Name value.
             */
-            public void setName(String name)
+            public void setName(final String nameValue)
             {
-                this.name = name;
+                this.name = nameValue;
             }
             
             private String namespace;
             
             /**
             * The namespace in which this store item resides.
+            * @return The Namespace value.
             */
             public String getNamespace()
             {
@@ -230,16 +247,18 @@ public class CloudServiceListResponse extends OperationResponse implements Itera
             
             /**
             * The namespace in which this store item resides.
+            * @param namespaceValue The Namespace value.
             */
-            public void setNamespace(String namespace)
+            public void setNamespace(final String namespaceValue)
             {
-                this.namespace = namespace;
+                this.namespace = namespaceValue;
             }
             
             private HashMap<String, String> outputItems;
             
             /**
             * Output items associated with an individual store resource.
+            * @return The OutputItems value.
             */
             public HashMap<String, String> getOutputItems()
             {
@@ -248,16 +267,18 @@ public class CloudServiceListResponse extends OperationResponse implements Itera
             
             /**
             * Output items associated with an individual store resource.
+            * @param outputItemsValue The OutputItems value.
             */
-            public void setOutputItems(HashMap<String, String> outputItems)
+            public void setOutputItems(final HashMap<String, String> outputItemsValue)
             {
-                this.outputItems = outputItems;
+                this.outputItems = outputItemsValue;
             }
             
             private String plan;
             
             /**
             * The plan for this store item as selected by the user.
+            * @return The Plan value.
             */
             public String getPlan()
             {
@@ -266,16 +287,18 @@ public class CloudServiceListResponse extends OperationResponse implements Itera
             
             /**
             * The plan for this store item as selected by the user.
+            * @param planValue The Plan value.
             */
-            public void setPlan(String plan)
+            public void setPlan(final String planValue)
             {
-                this.plan = plan;
+                this.plan = planValue;
             }
             
             private String schemaVersion;
             
             /**
             * The schema version for this resource.
+            * @return The SchemaVersion value.
             */
             public String getSchemaVersion()
             {
@@ -284,16 +307,18 @@ public class CloudServiceListResponse extends OperationResponse implements Itera
             
             /**
             * The schema version for this resource.
+            * @param schemaVersionValue The SchemaVersion value.
             */
-            public void setSchemaVersion(String schemaVersion)
+            public void setSchemaVersion(final String schemaVersionValue)
             {
-                this.schemaVersion = schemaVersion;
+                this.schemaVersion = schemaVersionValue;
             }
             
             private String state;
             
             /**
             * The state of this store resource.
+            * @return The State value.
             */
             public String getState()
             {
@@ -302,10 +327,11 @@ public class CloudServiceListResponse extends OperationResponse implements Itera
             
             /**
             * The state of this store resource.
+            * @param stateValue The State value.
             */
-            public void setState(String state)
+            public void setState(final String stateValue)
             {
-                this.state = state;
+                this.state = stateValue;
             }
             
             private CloudServiceListResponse.CloudService.AddOnResource.OperationStatus status;
@@ -313,6 +339,7 @@ public class CloudServiceListResponse extends OperationResponse implements Itera
             /**
             * Operation status items associated with an individual store
             * resource.
+            * @return The Status value.
             */
             public CloudServiceListResponse.CloudService.AddOnResource.OperationStatus getStatus()
             {
@@ -322,16 +349,18 @@ public class CloudServiceListResponse extends OperationResponse implements Itera
             /**
             * Operation status items associated with an individual store
             * resource.
+            * @param statusValue The Status value.
             */
-            public void setStatus(CloudServiceListResponse.CloudService.AddOnResource.OperationStatus status)
+            public void setStatus(final CloudServiceListResponse.CloudService.AddOnResource.OperationStatus statusValue)
             {
-                this.status = status;
+                this.status = statusValue;
             }
             
             private String type;
             
             /**
             * The type of store item.
+            * @return The Type value.
             */
             public String getType()
             {
@@ -340,16 +369,18 @@ public class CloudServiceListResponse extends OperationResponse implements Itera
             
             /**
             * The type of store item.
+            * @param typeValue The Type value.
             */
-            public void setType(String type)
+            public void setType(final String typeValue)
             {
-                this.type = type;
+                this.type = typeValue;
             }
             
             private ArrayList<CloudServiceListResponse.CloudService.AddOnResource.UsageLimit> usageLimits;
             
             /**
             * Usage meters associated with an individual store resource.
+            * @return The UsageLimits value.
             */
             public ArrayList<CloudServiceListResponse.CloudService.AddOnResource.UsageLimit> getUsageLimits()
             {
@@ -358,10 +389,11 @@ public class CloudServiceListResponse extends OperationResponse implements Itera
             
             /**
             * Usage meters associated with an individual store resource.
+            * @param usageLimitsValue The UsageLimits value.
             */
-            public void setUsageLimits(ArrayList<CloudServiceListResponse.CloudService.AddOnResource.UsageLimit> usageLimits)
+            public void setUsageLimits(final ArrayList<CloudServiceListResponse.CloudService.AddOnResource.UsageLimit> usageLimitsValue)
             {
-                this.usageLimits = usageLimits;
+                this.usageLimits = usageLimitsValue;
             }
             
             /**
@@ -383,6 +415,7 @@ public class CloudServiceListResponse extends OperationResponse implements Itera
                 
                 /**
                 * The result of this operation status.
+                * @return The Result value.
                 */
                 public String getResult()
                 {
@@ -391,16 +424,18 @@ public class CloudServiceListResponse extends OperationResponse implements Itera
                 
                 /**
                 * The result of this operation status.
+                * @param resultValue The Result value.
                 */
-                public void setResult(String result)
+                public void setResult(final String resultValue)
                 {
-                    this.result = result;
+                    this.result = resultValue;
                 }
                 
                 private String type;
                 
                 /**
                 * The type of this operation status.
+                * @return The Type value.
                 */
                 public String getType()
                 {
@@ -409,10 +444,11 @@ public class CloudServiceListResponse extends OperationResponse implements Itera
                 
                 /**
                 * The type of this operation status.
+                * @param typeValue The Type value.
                 */
-                public void setType(String type)
+                public void setType(final String typeValue)
                 {
-                    this.type = type;
+                    this.type = typeValue;
                 }
             }
             
@@ -427,6 +463,7 @@ public class CloudServiceListResponse extends OperationResponse implements Itera
                 /**
                 * Defines the limit of this usage included in this store
                 * resource's plan.
+                * @return The AmountIncluded value.
                 */
                 public long getAmountIncluded()
                 {
@@ -436,16 +473,18 @@ public class CloudServiceListResponse extends OperationResponse implements Itera
                 /**
                 * Defines the limit of this usage included in this store
                 * resource's plan.
+                * @param amountIncludedValue The AmountIncluded value.
                 */
-                public void setAmountIncluded(long amountIncluded)
+                public void setAmountIncluded(final long amountIncludedValue)
                 {
-                    this.amountIncluded = amountIncluded;
+                    this.amountIncluded = amountIncludedValue;
                 }
                 
                 private long amountUsed;
                 
                 /**
                 * The amount of this store resource that has already been used.
+                * @return The AmountUsed value.
                 */
                 public long getAmountUsed()
                 {
@@ -454,16 +493,18 @@ public class CloudServiceListResponse extends OperationResponse implements Itera
                 
                 /**
                 * The amount of this store resource that has already been used.
+                * @param amountUsedValue The AmountUsed value.
                 */
-                public void setAmountUsed(long amountUsed)
+                public void setAmountUsed(final long amountUsedValue)
                 {
-                    this.amountUsed = amountUsed;
+                    this.amountUsed = amountUsedValue;
                 }
                 
                 private String name;
                 
                 /**
                 * The name of this usage limit.
+                * @return The Name value.
                 */
                 public String getName()
                 {
@@ -472,16 +513,18 @@ public class CloudServiceListResponse extends OperationResponse implements Itera
                 
                 /**
                 * The name of this usage limit.
+                * @param nameValue The Name value.
                 */
-                public void setName(String name)
+                public void setName(final String nameValue)
                 {
-                    this.name = name;
+                    this.name = nameValue;
                 }
                 
                 private String unit;
                 
                 /**
                 * The unit in which this usage limit is measured.
+                * @return The Unit value.
                 */
                 public String getUnit()
                 {
@@ -490,10 +533,11 @@ public class CloudServiceListResponse extends OperationResponse implements Itera
                 
                 /**
                 * The unit in which this usage limit is measured.
+                * @param unitValue The Unit value.
                 */
-                public void setUnit(String unit)
+                public void setUnit(final String unitValue)
                 {
-                    this.unit = unit;
+                    this.unit = unitValue;
                 }
             }
         }

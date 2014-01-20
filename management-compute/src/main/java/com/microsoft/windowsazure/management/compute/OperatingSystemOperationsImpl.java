@@ -70,6 +70,7 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
     /**
     * Gets a reference to the
     * microsoft.windowsazure.management.compute.ComputeManagementClientImpl.
+    * @return The Client value.
     */
     public ComputeManagementClientImpl getClient()
     {
@@ -114,6 +115,18 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
     * http://msdn.microsoft.com/en-us/library/windowsazure/ff684168.aspx for
     * more information)
     *
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return The List Operating Systems operation response.
     */
     @Override
@@ -142,112 +155,122 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != HttpStatus.SC_OK)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
-        }
-        
-        // Create Result
-        OperatingSystemListResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new OperatingSystemListResponse();
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document responseDoc = documentBuilder.parse(responseContent);
-        
-        NodeList elements = responseDoc.getElementsByTagName("OperatingSystems");
-        Element operatingSystemsSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-        if (operatingSystemsSequenceElement != null)
-        {
-            for (int i1 = 0; i1 < operatingSystemsSequenceElement.getElementsByTagName("OperatingSystem").getLength(); i1 = i1 + 1)
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
             {
-                org.w3c.dom.Element operatingSystemsElement = ((org.w3c.dom.Element) operatingSystemsSequenceElement.getElementsByTagName("OperatingSystem").item(i1));
-                OperatingSystemListResponse.OperatingSystem operatingSystemInstance = new OperatingSystemListResponse.OperatingSystem();
-                result.getOperatingSystems().add(operatingSystemInstance);
-                
-                NodeList elements2 = operatingSystemsElement.getElementsByTagName("Version");
-                Element versionElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (versionElement != null)
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
                 {
-                    String versionInstance;
-                    versionInstance = versionElement.getTextContent();
-                    operatingSystemInstance.setVersion(versionInstance);
+                    CloudTracing.error(invocationId, ex);
                 }
-                
-                NodeList elements3 = operatingSystemsElement.getElementsByTagName("Label");
-                Element labelElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                if (labelElement != null)
+                throw ex;
+            }
+            
+            // Create Result
+            OperatingSystemListResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new OperatingSystemListResponse();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document responseDoc = documentBuilder.parse(responseContent);
+            
+            NodeList elements = responseDoc.getElementsByTagName("OperatingSystems");
+            Element operatingSystemsSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            if (operatingSystemsSequenceElement != null)
+            {
+                for (int i1 = 0; i1 < operatingSystemsSequenceElement.getElementsByTagName("OperatingSystem").getLength(); i1 = i1 + 1)
                 {
-                    String labelInstance;
-                    labelInstance = labelElement.getTextContent() != null ? new String(Base64.decodeBase64(labelElement.getTextContent().getBytes())) : null;
-                    operatingSystemInstance.setLabel(labelInstance);
-                }
-                
-                NodeList elements4 = operatingSystemsElement.getElementsByTagName("IsDefault");
-                Element isDefaultElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                if (isDefaultElement != null)
-                {
-                    boolean isDefaultInstance;
-                    isDefaultInstance = Boolean.parseBoolean(isDefaultElement.getTextContent());
-                    operatingSystemInstance.setIsDefault(isDefaultInstance);
-                }
-                
-                NodeList elements5 = operatingSystemsElement.getElementsByTagName("IsActive");
-                Element isActiveElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                if (isActiveElement != null)
-                {
-                    boolean isActiveInstance;
-                    isActiveInstance = Boolean.parseBoolean(isActiveElement.getTextContent());
-                    operatingSystemInstance.setIsActive(isActiveInstance);
-                }
-                
-                NodeList elements6 = operatingSystemsElement.getElementsByTagName("Family");
-                Element familyElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                if (familyElement != null)
-                {
-                    int familyInstance;
-                    familyInstance = Integer.parseInt(familyElement.getTextContent());
-                    operatingSystemInstance.setFamily(familyInstance);
-                }
-                
-                NodeList elements7 = operatingSystemsElement.getElementsByTagName("FamilyLabel");
-                Element familyLabelElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                if (familyLabelElement != null)
-                {
-                    String familyLabelInstance;
-                    familyLabelInstance = familyLabelElement.getTextContent() != null ? new String(Base64.decodeBase64(familyLabelElement.getTextContent().getBytes())) : null;
-                    operatingSystemInstance.setFamilyLabel(familyLabelInstance);
+                    org.w3c.dom.Element operatingSystemsElement = ((org.w3c.dom.Element) operatingSystemsSequenceElement.getElementsByTagName("OperatingSystem").item(i1));
+                    OperatingSystemListResponse.OperatingSystem operatingSystemInstance = new OperatingSystemListResponse.OperatingSystem();
+                    result.getOperatingSystems().add(operatingSystemInstance);
+                    
+                    NodeList elements2 = operatingSystemsElement.getElementsByTagName("Version");
+                    Element versionElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                    if (versionElement != null)
+                    {
+                        String versionInstance;
+                        versionInstance = versionElement.getTextContent();
+                        operatingSystemInstance.setVersion(versionInstance);
+                    }
+                    
+                    NodeList elements3 = operatingSystemsElement.getElementsByTagName("Label");
+                    Element labelElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                    if (labelElement != null)
+                    {
+                        String labelInstance;
+                        labelInstance = labelElement.getTextContent() != null ? new String(Base64.decodeBase64(labelElement.getTextContent().getBytes())) : null;
+                        operatingSystemInstance.setLabel(labelInstance);
+                    }
+                    
+                    NodeList elements4 = operatingSystemsElement.getElementsByTagName("IsDefault");
+                    Element isDefaultElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                    if (isDefaultElement != null)
+                    {
+                        boolean isDefaultInstance;
+                        isDefaultInstance = Boolean.parseBoolean(isDefaultElement.getTextContent());
+                        operatingSystemInstance.setIsDefault(isDefaultInstance);
+                    }
+                    
+                    NodeList elements5 = operatingSystemsElement.getElementsByTagName("IsActive");
+                    Element isActiveElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                    if (isActiveElement != null)
+                    {
+                        boolean isActiveInstance;
+                        isActiveInstance = Boolean.parseBoolean(isActiveElement.getTextContent());
+                        operatingSystemInstance.setIsActive(isActiveInstance);
+                    }
+                    
+                    NodeList elements6 = operatingSystemsElement.getElementsByTagName("Family");
+                    Element familyElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                    if (familyElement != null)
+                    {
+                        int familyInstance;
+                        familyInstance = Integer.parseInt(familyElement.getTextContent());
+                        operatingSystemInstance.setFamily(familyInstance);
+                    }
+                    
+                    NodeList elements7 = operatingSystemsElement.getElementsByTagName("FamilyLabel");
+                    Element familyLabelElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
+                    if (familyLabelElement != null)
+                    {
+                        String familyLabelInstance;
+                        familyLabelInstance = familyLabelElement.getTextContent() != null ? new String(Base64.decodeBase64(familyLabelElement.getTextContent().getBytes())) : null;
+                        operatingSystemInstance.setFamilyLabel(familyLabelInstance);
+                    }
                 }
             }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -286,6 +309,14 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441291.aspx for
     * more information)
     *
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
     * @return The List Operating System Families operation response.
     */
     @Override
@@ -314,123 +345,133 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != HttpStatus.SC_OK)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
-        }
-        
-        // Create Result
-        OperatingSystemListFamiliesResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new OperatingSystemListFamiliesResponse();
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document responseDoc = documentBuilder.parse(responseContent);
-        
-        NodeList elements = responseDoc.getElementsByTagName("OperatingSystemFamilies");
-        Element operatingSystemFamiliesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-        if (operatingSystemFamiliesSequenceElement != null)
-        {
-            for (int i1 = 0; i1 < operatingSystemFamiliesSequenceElement.getElementsByTagName("OperatingSystemFamily").getLength(); i1 = i1 + 1)
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
             {
-                org.w3c.dom.Element operatingSystemFamiliesElement = ((org.w3c.dom.Element) operatingSystemFamiliesSequenceElement.getElementsByTagName("OperatingSystemFamily").item(i1));
-                OperatingSystemListFamiliesResponse.OperatingSystemFamily operatingSystemFamilyInstance = new OperatingSystemListFamiliesResponse.OperatingSystemFamily();
-                result.getOperatingSystemFamilies().add(operatingSystemFamilyInstance);
-                
-                NodeList elements2 = operatingSystemFamiliesElement.getElementsByTagName("Name");
-                Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (nameElement != null)
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
                 {
-                    int nameInstance;
-                    nameInstance = Integer.parseInt(nameElement.getTextContent());
-                    operatingSystemFamilyInstance.setName(nameInstance);
+                    CloudTracing.error(invocationId, ex);
                 }
-                
-                NodeList elements3 = operatingSystemFamiliesElement.getElementsByTagName("Label");
-                Element labelElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                if (labelElement != null)
+                throw ex;
+            }
+            
+            // Create Result
+            OperatingSystemListFamiliesResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new OperatingSystemListFamiliesResponse();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document responseDoc = documentBuilder.parse(responseContent);
+            
+            NodeList elements = responseDoc.getElementsByTagName("OperatingSystemFamilies");
+            Element operatingSystemFamiliesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            if (operatingSystemFamiliesSequenceElement != null)
+            {
+                for (int i1 = 0; i1 < operatingSystemFamiliesSequenceElement.getElementsByTagName("OperatingSystemFamily").getLength(); i1 = i1 + 1)
                 {
-                    String labelInstance;
-                    labelInstance = labelElement.getTextContent() != null ? new String(Base64.decodeBase64(labelElement.getTextContent().getBytes())) : null;
-                    operatingSystemFamilyInstance.setLabel(labelInstance);
-                }
-                
-                NodeList elements4 = operatingSystemFamiliesElement.getElementsByTagName("OperatingSystems");
-                Element operatingSystemsSequenceElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                if (operatingSystemsSequenceElement != null)
-                {
-                    for (int i2 = 0; i2 < operatingSystemsSequenceElement.getElementsByTagName("OperatingSystem").getLength(); i2 = i2 + 1)
+                    org.w3c.dom.Element operatingSystemFamiliesElement = ((org.w3c.dom.Element) operatingSystemFamiliesSequenceElement.getElementsByTagName("OperatingSystemFamily").item(i1));
+                    OperatingSystemListFamiliesResponse.OperatingSystemFamily operatingSystemFamilyInstance = new OperatingSystemListFamiliesResponse.OperatingSystemFamily();
+                    result.getOperatingSystemFamilies().add(operatingSystemFamilyInstance);
+                    
+                    NodeList elements2 = operatingSystemFamiliesElement.getElementsByTagName("Name");
+                    Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                    if (nameElement != null)
                     {
-                        org.w3c.dom.Element operatingSystemsElement = ((org.w3c.dom.Element) operatingSystemsSequenceElement.getElementsByTagName("OperatingSystem").item(i2));
-                        OperatingSystemListFamiliesResponse.OperatingSystem operatingSystemInstance = new OperatingSystemListFamiliesResponse.OperatingSystem();
-                        operatingSystemFamilyInstance.getOperatingSystems().add(operatingSystemInstance);
-                        
-                        NodeList elements5 = operatingSystemsElement.getElementsByTagName("Version");
-                        Element versionElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                        if (versionElement != null)
+                        int nameInstance;
+                        nameInstance = Integer.parseInt(nameElement.getTextContent());
+                        operatingSystemFamilyInstance.setName(nameInstance);
+                    }
+                    
+                    NodeList elements3 = operatingSystemFamiliesElement.getElementsByTagName("Label");
+                    Element labelElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                    if (labelElement != null)
+                    {
+                        String labelInstance;
+                        labelInstance = labelElement.getTextContent() != null ? new String(Base64.decodeBase64(labelElement.getTextContent().getBytes())) : null;
+                        operatingSystemFamilyInstance.setLabel(labelInstance);
+                    }
+                    
+                    NodeList elements4 = operatingSystemFamiliesElement.getElementsByTagName("OperatingSystems");
+                    Element operatingSystemsSequenceElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                    if (operatingSystemsSequenceElement != null)
+                    {
+                        for (int i2 = 0; i2 < operatingSystemsSequenceElement.getElementsByTagName("OperatingSystem").getLength(); i2 = i2 + 1)
                         {
-                            String versionInstance;
-                            versionInstance = versionElement.getTextContent();
-                            operatingSystemInstance.setVersion(versionInstance);
-                        }
-                        
-                        NodeList elements6 = operatingSystemsElement.getElementsByTagName("Label");
-                        Element labelElement2 = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                        if (labelElement2 != null)
-                        {
-                            String labelInstance2;
-                            labelInstance2 = labelElement2.getTextContent() != null ? new String(Base64.decodeBase64(labelElement2.getTextContent().getBytes())) : null;
-                            operatingSystemInstance.setLabel(labelInstance2);
-                        }
-                        
-                        NodeList elements7 = operatingSystemsElement.getElementsByTagName("IsDefault");
-                        Element isDefaultElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                        if (isDefaultElement != null)
-                        {
-                            boolean isDefaultInstance;
-                            isDefaultInstance = Boolean.parseBoolean(isDefaultElement.getTextContent());
-                            operatingSystemInstance.setIsDefault(isDefaultInstance);
-                        }
-                        
-                        NodeList elements8 = operatingSystemsElement.getElementsByTagName("IsActive");
-                        Element isActiveElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                        if (isActiveElement != null)
-                        {
-                            boolean isActiveInstance;
-                            isActiveInstance = Boolean.parseBoolean(isActiveElement.getTextContent());
-                            operatingSystemInstance.setIsActive(isActiveInstance);
+                            org.w3c.dom.Element operatingSystemsElement = ((org.w3c.dom.Element) operatingSystemsSequenceElement.getElementsByTagName("OperatingSystem").item(i2));
+                            OperatingSystemListFamiliesResponse.OperatingSystem operatingSystemInstance = new OperatingSystemListFamiliesResponse.OperatingSystem();
+                            operatingSystemFamilyInstance.getOperatingSystems().add(operatingSystemInstance);
+                            
+                            NodeList elements5 = operatingSystemsElement.getElementsByTagName("Version");
+                            Element versionElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                            if (versionElement != null)
+                            {
+                                String versionInstance;
+                                versionInstance = versionElement.getTextContent();
+                                operatingSystemInstance.setVersion(versionInstance);
+                            }
+                            
+                            NodeList elements6 = operatingSystemsElement.getElementsByTagName("Label");
+                            Element labelElement2 = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                            if (labelElement2 != null)
+                            {
+                                String labelInstance2;
+                                labelInstance2 = labelElement2.getTextContent() != null ? new String(Base64.decodeBase64(labelElement2.getTextContent().getBytes())) : null;
+                                operatingSystemInstance.setLabel(labelInstance2);
+                            }
+                            
+                            NodeList elements7 = operatingSystemsElement.getElementsByTagName("IsDefault");
+                            Element isDefaultElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
+                            if (isDefaultElement != null)
+                            {
+                                boolean isDefaultInstance;
+                                isDefaultInstance = Boolean.parseBoolean(isDefaultElement.getTextContent());
+                                operatingSystemInstance.setIsDefault(isDefaultInstance);
+                            }
+                            
+                            NodeList elements8 = operatingSystemsElement.getElementsByTagName("IsActive");
+                            Element isActiveElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
+                            if (isActiveElement != null)
+                            {
+                                boolean isActiveInstance;
+                                isActiveInstance = Boolean.parseBoolean(isActiveElement.getTextContent());
+                                operatingSystemInstance.setIsActive(isActiveInstance);
+                            }
                         }
                     }
                 }
             }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
 }

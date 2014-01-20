@@ -32,6 +32,7 @@ public class VirtualMachineShutdownParameters
     
     /**
     * The state of the vm after shotdown (stopped or stopped and deallocated)
+    * @return The PostShutdownAction value.
     */
     public PostShutdownAction getPostShutdownAction()
     {
@@ -40,9 +41,10 @@ public class VirtualMachineShutdownParameters
     
     /**
     * The state of the vm after shotdown (stopped or stopped and deallocated)
+    * @param postShutdownActionValue The PostShutdownAction value.
     */
-    public void setPostShutdownAction(PostShutdownAction postShutdownAction)
+    public void setPostShutdownAction(final PostShutdownAction postShutdownActionValue)
     {
-        this.postShutdownAction = postShutdownAction;
+        this.postShutdownAction = postShutdownActionValue;
     }
 }

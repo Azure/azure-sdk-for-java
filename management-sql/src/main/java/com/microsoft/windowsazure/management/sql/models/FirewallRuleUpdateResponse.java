@@ -35,6 +35,7 @@ public class FirewallRuleUpdateResponse extends OperationResponse
     
     /**
     * Gets or sets the ending IP address applied to this rule.
+    * @return The EndIPAddress value.
     */
     public InetAddress getEndIPAddress()
     {
@@ -43,16 +44,18 @@ public class FirewallRuleUpdateResponse extends OperationResponse
     
     /**
     * Gets or sets the ending IP address applied to this rule.
+    * @param endIPAddressValue The EndIPAddress value.
     */
-    public void setEndIPAddress(InetAddress endIPAddress)
+    public void setEndIPAddress(final InetAddress endIPAddressValue)
     {
-        this.endIPAddress = endIPAddress;
+        this.endIPAddress = endIPAddressValue;
     }
     
     private String name;
     
     /**
     * Gets or sets the name of the Firewall Rule.
+    * @return The Name value.
     */
     public String getName()
     {
@@ -61,16 +64,18 @@ public class FirewallRuleUpdateResponse extends OperationResponse
     
     /**
     * Gets or sets the name of the Firewall Rule.
+    * @param nameValue The Name value.
     */
-    public void setName(String name)
+    public void setName(final String nameValue)
     {
-        this.name = name;
+        this.name = nameValue;
     }
     
     private InetAddress startIPAddress;
     
     /**
     * Gets or sets the beginning IP address applied to this rule.
+    * @return The StartIPAddress value.
     */
     public InetAddress getStartIPAddress()
     {
@@ -79,16 +84,18 @@ public class FirewallRuleUpdateResponse extends OperationResponse
     
     /**
     * Gets or sets the beginning IP address applied to this rule.
+    * @param startIPAddressValue The StartIPAddress value.
     */
-    public void setStartIPAddress(InetAddress startIPAddress)
+    public void setStartIPAddress(final InetAddress startIPAddressValue)
     {
-        this.startIPAddress = startIPAddress;
+        this.startIPAddress = startIPAddressValue;
     }
     
     private String state;
     
     /**
     * Gets or sets the state of the rule.
+    * @return The State value.
     */
     public String getState()
     {
@@ -97,16 +104,18 @@ public class FirewallRuleUpdateResponse extends OperationResponse
     
     /**
     * Gets or sets the state of the rule.
+    * @param stateValue The State value.
     */
-    public void setState(String state)
+    public void setState(final String stateValue)
     {
-        this.state = state;
+        this.state = stateValue;
     }
     
     private String type;
     
     /**
     * Gets or sets the type of resource.
+    * @return The Type value.
     */
     public String getType()
     {
@@ -115,9 +124,10 @@ public class FirewallRuleUpdateResponse extends OperationResponse
     
     /**
     * Gets or sets the type of resource.
+    * @param typeValue The Type value.
     */
-    public void setType(String type)
+    public void setType(final String typeValue)
     {
-        this.type = type;
+        this.type = typeValue;
     }
 }

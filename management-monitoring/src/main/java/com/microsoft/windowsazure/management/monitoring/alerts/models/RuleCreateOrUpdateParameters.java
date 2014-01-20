@@ -32,6 +32,7 @@ public class RuleCreateOrUpdateParameters
     
     /**
     * The rule to create or update.
+    * @return The Rule value.
     */
     public Rule getRule()
     {
@@ -40,9 +41,10 @@ public class RuleCreateOrUpdateParameters
     
     /**
     * The rule to create or update.
+    * @param ruleValue The Rule value.
     */
-    public void setRule(Rule rule)
+    public void setRule(final Rule ruleValue)
     {
-        this.rule = rule;
+        this.rule = ruleValue;
     }
 }

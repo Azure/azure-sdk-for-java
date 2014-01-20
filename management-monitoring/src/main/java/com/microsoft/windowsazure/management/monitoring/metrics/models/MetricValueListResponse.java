@@ -34,6 +34,7 @@ public class MetricValueListResponse extends OperationResponse
     
     /**
     * The retrieved metric value sets.
+    * @return The MetricValueSetCollection value.
     */
     public MetricValueSetCollection getMetricValueSetCollection()
     {
@@ -42,9 +43,10 @@ public class MetricValueListResponse extends OperationResponse
     
     /**
     * The retrieved metric value sets.
+    * @param metricValueSetCollectionValue The MetricValueSetCollection value.
     */
-    public void setMetricValueSetCollection(MetricValueSetCollection metricValueSetCollection)
+    public void setMetricValueSetCollection(final MetricValueSetCollection metricValueSetCollectionValue)
     {
-        this.metricValueSetCollection = metricValueSetCollection;
+        this.metricValueSetCollection = metricValueSetCollectionValue;
     }
 }

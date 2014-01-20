@@ -37,13 +37,11 @@ import com.microsoft.windowsazure.management.compute.models.VirtualMachineStartR
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineUpdateLoadBalancedSetParameters;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineUpdateParameters;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.xml.sax.SAXException;
 
@@ -55,6 +53,62 @@ import org.xml.sax.SAXException;
 */
 public interface VirtualMachineOperations
 {
+    /**
+    * The Capture Role operation creates a copy of the operating system virtual
+    * hard disk (VHD) that is deployed in the virtual machine, saves the VHD
+    * copy in the same storage location as the operating system VHD, and
+    * registers the copy as an image in your image gallery. From the captured
+    * image, you can create additional customized virtual machines. For more
+    * information about images and disks, see Manage Disks and Images. For
+    * more information about capturing images, see How to Capture an Image of
+    * a Virtual Machine Running Windows Server 2008 R2 or How to Capture an
+    * Image of a Virtual Machine Running Linux.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157201.aspx for
+    * more information)
+    *
+    * @param serviceName The name of your service.
+    * @param deploymentName The name of your deployment.
+    * @param virtualMachineName The name of the virtual machine to restart.
+    * @param parameters Parameters supplied to the Capture Virtual Machine
+    * operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    OperationResponse beginCapturing(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineCaptureParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    
+    /**
+    * The Capture Role operation creates a copy of the operating system virtual
+    * hard disk (VHD) that is deployed in the virtual machine, saves the VHD
+    * copy in the same storage location as the operating system VHD, and
+    * registers the copy as an image in your image gallery. From the captured
+    * image, you can create additional customized virtual machines. For more
+    * information about images and disks, see Manage Disks and Images. For
+    * more information about capturing images, see How to Capture an Image of
+    * a Virtual Machine Running Windows Server 2008 R2 or How to Capture an
+    * Image of a Virtual Machine Running Linux.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157201.aspx for
+    * more information)
+    *
+    * @param serviceName The name of your service.
+    * @param deploymentName The name of your deployment.
+    * @param virtualMachineName The name of the virtual machine to restart.
+    * @param parameters Parameters supplied to the Capture Virtual Machine
+    * operation.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    Future<OperationResponse> beginCapturingAsync(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineCaptureParameters parameters);
+    
     /**
     * The Add Role operation adds a virtual machine to an existing deployment.
     * You can refer to the OSDisk in the Add Role operation in the following
@@ -74,10 +128,20 @@ public interface VirtualMachineOperations
     * @param deploymentName The name of your deployment.
     * @param parameters Parameters supplied to the Create Virtual Machine
     * operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse beginCreating(String serviceName, String deploymentName, VirtualMachineCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException;
+    OperationResponse beginCreating(String serviceName, String deploymentName, VirtualMachineCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * The Add Role operation adds a virtual machine to an existing deployment.
@@ -117,10 +181,20 @@ public interface VirtualMachineOperations
     * @param serviceName The name of your service.
     * @param parameters Parameters supplied to the Create Virtual Machine
     * Deployment operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse beginCreatingDeployment(String serviceName, VirtualMachineCreateDeploymentParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException;
+    OperationResponse beginCreatingDeployment(String serviceName, VirtualMachineCreateDeploymentParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * The Create Virtual Machine Deployment operation provisions a virtual
@@ -151,6 +225,10 @@ public interface VirtualMachineOperations
     * @param virtualMachineName The name of the virtual machine to delete.
     * @param deleteFromStorage Optional. Specifies that the source blob(s) for
     * the virtual machine should also be deleted from storage.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -179,10 +257,14 @@ public interface VirtualMachineOperations
     * @param serviceName The name of your service.
     * @param deploymentName The name of your deployment.
     * @param virtualMachineName The name of the virtual machine to restart.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse beginRestarting(String serviceName, String deploymentName, String virtualMachineName) throws UnsupportedEncodingException, IOException, ServiceException;
+    OperationResponse beginRestarting(String serviceName, String deploymentName, String virtualMachineName) throws IOException, ServiceException;
     
     /**
     * The Restart role operation restarts the specified virtual machine.  (see
@@ -206,10 +288,20 @@ public interface VirtualMachineOperations
     * @param deploymentName The name of your deployment.
     * @param virtualMachineName The name of the virtual machine to shutdown.
     * @param parameters The parameters for the shutdown vm operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse beginShutdown(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineShutdownParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException;
+    OperationResponse beginShutdown(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineShutdownParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * The Shutdown Role operation shuts down the specified virtual machine.
@@ -232,10 +324,20 @@ public interface VirtualMachineOperations
     * @param deploymentName The name of your deployment.
     * @param parameters The set of virtual machine roles to shutdown and their
     * post shutdown state.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse beginShuttingDownRoles(String serviceName, String deploymentName, VirtualMachineShutdownRolesParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException;
+    OperationResponse beginShuttingDownRoles(String serviceName, String deploymentName, VirtualMachineShutdownRolesParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * The Shutdown Roles operation stops the specified set of virtual machines.
@@ -257,10 +359,14 @@ public interface VirtualMachineOperations
     * @param serviceName The name of your service.
     * @param deploymentName The name of your deployment.
     * @param virtualMachineName The name of the virtual machine to start.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse beginStarting(String serviceName, String deploymentName, String virtualMachineName) throws UnsupportedEncodingException, IOException, ServiceException;
+    OperationResponse beginStarting(String serviceName, String deploymentName, String virtualMachineName) throws IOException, ServiceException;
     
     /**
     * The Start Role operation starts the specified virtual machine.  (see
@@ -281,10 +387,20 @@ public interface VirtualMachineOperations
     * @param serviceName The name of your service.
     * @param deploymentName The name of your deployment.
     * @param parameters The set of virtual machine roles to start.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse beginStartingRoles(String serviceName, String deploymentName, VirtualMachineStartRolesParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException;
+    OperationResponse beginStartingRoles(String serviceName, String deploymentName, VirtualMachineStartRolesParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * The Start Roles operation starts the specified set of virtual machines.
@@ -308,10 +424,20 @@ public interface VirtualMachineOperations
     * @param virtualMachineName The name of your virtual machine.
     * @param parameters Parameters supplied to the Update Virtual Machine
     * operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse beginUpdating(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException;
+    OperationResponse beginUpdating(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * The Update Role operation adds a virtual machine to an existing
@@ -339,10 +465,20 @@ public interface VirtualMachineOperations
     * @param deploymentName The name of your deployment.
     * @param parameters Parameters supplied to the Update Load Balanced
     * Endpoint Set operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse beginUpdatingLoadBalancedEndpointSet(String serviceName, String deploymentName, VirtualMachineUpdateLoadBalancedSetParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException;
+    OperationResponse beginUpdatingLoadBalancedEndpointSet(String serviceName, String deploymentName, VirtualMachineUpdateLoadBalancedSetParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * The UpdateLoadBalancedEndpointSet operation changes the specified
@@ -377,10 +513,29 @@ public interface VirtualMachineOperations
     * @param virtualMachineName The name of the virtual machine to restart.
     * @param parameters Parameters supplied to the Capture Virtual Machine
     * operation.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
     */
-    OperationResponse capture(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineCaptureParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException;
+    ComputeOperationStatusResponse capture(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineCaptureParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
     
     /**
     * The Capture Role operation creates a copy of the operating system virtual
@@ -400,10 +555,17 @@ public interface VirtualMachineOperations
     * @param virtualMachineName The name of the virtual machine to restart.
     * @param parameters Parameters supplied to the Capture Virtual Machine
     * operation.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
     */
-    Future<OperationResponse> captureAsync(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineCaptureParameters parameters);
+    Future<ComputeOperationStatusResponse> captureAsync(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineCaptureParameters parameters);
     
     /**
     * The Add Role operation adds a virtual machine to an existing deployment.
@@ -424,6 +586,29 @@ public interface VirtualMachineOperations
     * @param deploymentName The name of your deployment.
     * @param parameters Parameters supplied to the Create Virtual Machine
     * operation.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -434,7 +619,7 @@ public interface VirtualMachineOperations
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    ComputeOperationStatusResponse create(String serviceName, String deploymentName, VirtualMachineCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, ServiceException, URISyntaxException, ParseException;
+    ComputeOperationStatusResponse create(String serviceName, String deploymentName, VirtualMachineCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, ServiceException, URISyntaxException, ParseException;
     
     /**
     * The Add Role operation adds a virtual machine to an existing deployment.
@@ -481,6 +666,18 @@ public interface VirtualMachineOperations
     * @param serviceName The name of your service.
     * @param parameters Parameters supplied to the Create Virtual Machine
     * Deployment operation.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -529,6 +726,20 @@ public interface VirtualMachineOperations
     * @param virtualMachineName The name of the virtual machine to delete.
     * @param deleteFromStorage Optional. Specifies that the source blob(s) for
     * the virtual machine should also be deleted from storage.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -572,6 +783,18 @@ public interface VirtualMachineOperations
     * @param serviceName The name of your service.
     * @param deploymentName The name of your deployment.
     * @param virtualMachineName The name of the virtual machine.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return The Get Virtual Machine operation response.
     */
     VirtualMachineGetResponse get(String serviceName, String deploymentName, String virtualMachineName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException, ParseException;
@@ -598,6 +821,10 @@ public interface VirtualMachineOperations
     * @param serviceName The name of your service.
     * @param deploymentName The name of your deployment.
     * @param virtualMachineName The name of the virtual machine.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return The Download RDP file operation response.
     */
     VirtualMachineGetRemoteDesktopFileResponse getRemoteDesktopFile(String serviceName, String deploymentName, String virtualMachineName) throws IOException, ServiceException;
@@ -623,6 +850,18 @@ public interface VirtualMachineOperations
     * @param serviceName The name of your service.
     * @param deploymentName The name of your deployment.
     * @param virtualMachineName The name of the virtual machine to restart.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -664,6 +903,18 @@ public interface VirtualMachineOperations
     * @param deploymentName The name of your deployment.
     * @param virtualMachineName The name of the virtual machine to shutdown.
     * @param parameters The parameters for the shutdown vm operation.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -704,6 +955,18 @@ public interface VirtualMachineOperations
     * @param deploymentName The name of your deployment.
     * @param parameters The set of virtual machine roles to shutdown and their
     * post shutdown state.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -743,6 +1006,18 @@ public interface VirtualMachineOperations
     * @param serviceName The name of your service.
     * @param deploymentName The name of your deployment.
     * @param virtualMachineName The name of the virtual machine to start.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -781,6 +1056,18 @@ public interface VirtualMachineOperations
     * @param serviceName The name of your service.
     * @param deploymentName The name of your deployment.
     * @param parameters The set of virtual machine roles to start.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -822,6 +1109,30 @@ public interface VirtualMachineOperations
     * @param virtualMachineName The name of your virtual machine.
     * @param parameters Parameters supplied to the Update Virtual Machine
     * operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -832,7 +1143,7 @@ public interface VirtualMachineOperations
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    ComputeOperationStatusResponse update(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerConfigurationException, TransformerException, UnsupportedEncodingException, IOException, ServiceException, URISyntaxException, ParseException, InterruptedException, ExecutionException, ServiceException;
+    ComputeOperationStatusResponse update(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException, ParseException, InterruptedException, ExecutionException, ServiceException;
     
     /**
     * The Update Role operation adds a virtual machine to an existing
@@ -867,6 +1178,18 @@ public interface VirtualMachineOperations
     * @param deploymentName The name of your deployment.
     * @param parameters Parameters supplied to the Update Load Balanced
     * Endpoint Set operation.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the

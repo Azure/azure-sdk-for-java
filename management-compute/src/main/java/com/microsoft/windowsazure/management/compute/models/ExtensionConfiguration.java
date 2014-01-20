@@ -35,6 +35,7 @@ public class ExtensionConfiguration
     /**
     * Optional. Specifies a list of extensions that are applied to all roles in
     * a deployment.
+    * @return The AllRoles value.
     */
     public ArrayList<ExtensionConfiguration.Extension> getAllRoles()
     {
@@ -44,10 +45,11 @@ public class ExtensionConfiguration
     /**
     * Optional. Specifies a list of extensions that are applied to all roles in
     * a deployment.
+    * @param allRolesValue The AllRoles value.
     */
-    public void setAllRoles(ArrayList<ExtensionConfiguration.Extension> allRoles)
+    public void setAllRoles(final ArrayList<ExtensionConfiguration.Extension> allRolesValue)
     {
-        this.allRoles = allRoles;
+        this.allRoles = allRolesValue;
     }
     
     private ArrayList<ExtensionConfiguration.NamedRole> namedRoles;
@@ -55,6 +57,7 @@ public class ExtensionConfiguration
     /**
     * Optional. Specifies a list of extensions that are applied to specific
     * roles in a deployment.
+    * @return The NamedRoles value.
     */
     public ArrayList<ExtensionConfiguration.NamedRole> getNamedRoles()
     {
@@ -64,10 +67,11 @@ public class ExtensionConfiguration
     /**
     * Optional. Specifies a list of extensions that are applied to specific
     * roles in a deployment.
+    * @param namedRolesValue The NamedRoles value.
     */
-    public void setNamedRoles(ArrayList<ExtensionConfiguration.NamedRole> namedRoles)
+    public void setNamedRoles(final ArrayList<ExtensionConfiguration.NamedRole> namedRolesValue)
     {
-        this.namedRoles = namedRoles;
+        this.namedRoles = namedRolesValue;
     }
     
     /**
@@ -93,6 +97,7 @@ public class ExtensionConfiguration
         * when the extension is added to the cloud service. You can find the
         * Id of an extension that was added to a cloud service by using List
         * Extensions.
+        * @return The Id value.
         */
         public String getId()
         {
@@ -104,10 +109,11 @@ public class ExtensionConfiguration
         * when the extension is added to the cloud service. You can find the
         * Id of an extension that was added to a cloud service by using List
         * Extensions.
+        * @param idValue The Id value.
         */
-        public void setId(String id)
+        public void setId(final String idValue)
         {
-            this.id = id;
+            this.id = idValue;
         }
     }
     
@@ -122,6 +128,7 @@ public class ExtensionConfiguration
         /**
         * Required. Represents an extension that is to be deployed to a role in
         * a cloud service.
+        * @return The Extensions value.
         */
         public ArrayList<ExtensionConfiguration.Extension> getExtensions()
         {
@@ -131,16 +138,18 @@ public class ExtensionConfiguration
         /**
         * Required. Represents an extension that is to be deployed to a role in
         * a cloud service.
+        * @param extensionsValue The Extensions value.
         */
-        public void setExtensions(ArrayList<ExtensionConfiguration.Extension> extensions)
+        public void setExtensions(final ArrayList<ExtensionConfiguration.Extension> extensionsValue)
         {
-            this.extensions = extensions;
+            this.extensions = extensionsValue;
         }
         
         private String roleName;
         
         /**
         * Required. Specifies the name of the role.
+        * @return The RoleName value.
         */
         public String getRoleName()
         {
@@ -149,10 +158,11 @@ public class ExtensionConfiguration
         
         /**
         * Required. Specifies the name of the role.
+        * @param roleNameValue The RoleName value.
         */
-        public void setRoleName(String roleName)
+        public void setRoleName(final String roleNameValue)
         {
-            this.roleName = roleName;
+            this.roleName = roleNameValue;
         }
         
         /**

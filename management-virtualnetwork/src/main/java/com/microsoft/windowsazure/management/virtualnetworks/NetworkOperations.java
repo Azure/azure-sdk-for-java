@@ -30,7 +30,6 @@ import com.microsoft.windowsazure.management.virtualnetworks.models.NetworkListR
 import com.microsoft.windowsazure.management.virtualnetworks.models.NetworkSetConfigurationParameters;
 import com.microsoft.windowsazure.management.virtualnetworks.models.VirtualNetworkOperationStatusResponse;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -46,10 +45,14 @@ public interface NetworkOperations
     * more information)
     *
     * @param parameters The updated network configuration.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard storage response including an HTTP status code and
     * request ID.
     */
-    OperationResponse beginSettingConfiguration(NetworkSetConfigurationParameters parameters) throws UnsupportedEncodingException, IOException, ServiceException;
+    OperationResponse beginSettingConfiguration(NetworkSetConfigurationParameters parameters) throws IOException, ServiceException;
     
     /**
     * The Set Network Configuration operation asynchronously configures the
@@ -69,6 +72,10 @@ public interface NetworkOperations
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157196.aspx for
     * more information)
     *
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return The Get Network Configuration operation response.
     */
     NetworkGetConfigurationResponse getConfiguration() throws IOException, ServiceException;
@@ -89,6 +96,16 @@ public interface NetworkOperations
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157185.aspx for
     * more information)
     *
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return The response structure for the Server List operation.
     */
     NetworkListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException;
@@ -110,6 +127,18 @@ public interface NetworkOperations
     * more information)
     *
     * @param parameters The updated network configuration.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the

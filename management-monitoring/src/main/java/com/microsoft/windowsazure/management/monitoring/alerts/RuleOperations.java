@@ -29,7 +29,6 @@ import com.microsoft.windowsazure.management.monitoring.alerts.models.RuleCreate
 import com.microsoft.windowsazure.management.monitoring.alerts.models.RuleGetResponse;
 import com.microsoft.windowsazure.management.monitoring.alerts.models.RuleListResponse;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.util.concurrent.Future;
 
@@ -41,10 +40,14 @@ public interface RuleOperations
     /**
     *
     * @param parameters The rule to create or update.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse createOrUpdate(RuleCreateOrUpdateParameters parameters) throws UnsupportedEncodingException, IOException, ServiceException;
+    OperationResponse createOrUpdate(RuleCreateOrUpdateParameters parameters) throws IOException, ServiceException;
     
     /**
     *
@@ -57,6 +60,10 @@ public interface RuleOperations
     /**
     *
     * @param ruleId The id of the rule to delete.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -73,6 +80,12 @@ public interface RuleOperations
     /**
     *
     * @param ruleId The id of the rule to retrieve.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return The Get Rule operation response.
     */
     RuleGetResponse get(String ruleId) throws IOException, ServiceException, ParseException;
@@ -87,6 +100,12 @@ public interface RuleOperations
     /**
     * List the alert rules within a subscription.
     *
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return The List Rules operation response.
     */
     RuleListResponse list() throws IOException, ServiceException, ParseException;

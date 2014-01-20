@@ -34,6 +34,7 @@ public class VirtualMachineStartRolesParameters
     
     /**
     * The set of roles to shut down.
+    * @return The Roles value.
     */
     public ArrayList<String> getRoles()
     {
@@ -42,10 +43,11 @@ public class VirtualMachineStartRolesParameters
     
     /**
     * The set of roles to shut down.
+    * @param rolesValue The Roles value.
     */
-    public void setRoles(ArrayList<String> roles)
+    public void setRoles(final ArrayList<String> rolesValue)
     {
-        this.roles = roles;
+        this.roles = rolesValue;
     }
     
     /**

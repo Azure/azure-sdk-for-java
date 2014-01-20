@@ -32,13 +32,19 @@ public class GatewayOperationResponse extends OperationResponse
 {
     private String operationId;
     
+    /**
+    * @return The OperationId value.
+    */
     public String getOperationId()
     {
         return this.operationId;
     }
     
-    public void setOperationId(String operationId)
+    /**
+    * @param operationIdValue The OperationId value.
+    */
+    public void setOperationId(final String operationIdValue)
     {
-        this.operationId = operationId;
+        this.operationId = operationIdValue;
     }
 }

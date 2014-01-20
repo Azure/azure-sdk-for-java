@@ -37,6 +37,7 @@ public class StoredCertificateSettings
     /**
     * Required. Specifies the name of the certificate store from which retrieve
     * certificate.  For example, “My”.
+    * @return The StoreName value.
     */
     public String getStoreName()
     {
@@ -46,10 +47,11 @@ public class StoredCertificateSettings
     /**
     * Required. Specifies the name of the certificate store from which retrieve
     * certificate.  For example, “My”.
+    * @param storeNameValue The StoreName value.
     */
-    public void setStoreName(String storeName)
+    public void setStoreName(final String storeNameValue)
     {
-        this.storeName = storeName;
+        this.storeName = storeNameValue;
     }
     
     private String thumbprint;
@@ -57,6 +59,7 @@ public class StoredCertificateSettings
     /**
     * Required. Specifies the thumbprint of the certificate to be provisioned.
     * The thumbprint must specify an existing service certificate.
+    * @return The Thumbprint value.
     */
     public String getThumbprint()
     {
@@ -66,9 +69,10 @@ public class StoredCertificateSettings
     /**
     * Required. Specifies the thumbprint of the certificate to be provisioned.
     * The thumbprint must specify an existing service certificate.
+    * @param thumbprintValue The Thumbprint value.
     */
-    public void setThumbprint(String thumbprint)
+    public void setThumbprint(final String thumbprintValue)
     {
-        this.thumbprint = thumbprint;
+        this.thumbprint = thumbprintValue;
     }
 }

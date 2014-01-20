@@ -32,6 +32,7 @@ public class DeploymentSwapParameters
     
     /**
     * The optional  name of the production deployment.
+    * @return The ProductionDeployment value.
     */
     public String getProductionDeployment()
     {
@@ -40,16 +41,18 @@ public class DeploymentSwapParameters
     
     /**
     * The optional  name of the production deployment.
+    * @param productionDeploymentValue The ProductionDeployment value.
     */
-    public void setProductionDeployment(String productionDeployment)
+    public void setProductionDeployment(final String productionDeploymentValue)
     {
-        this.productionDeployment = productionDeployment;
+        this.productionDeployment = productionDeploymentValue;
     }
     
     private String sourceDeployment;
     
     /**
     * Required. The name of the source deployment.
+    * @return The SourceDeployment value.
     */
     public String getSourceDeployment()
     {
@@ -58,9 +61,10 @@ public class DeploymentSwapParameters
     
     /**
     * Required. The name of the source deployment.
+    * @param sourceDeploymentValue The SourceDeployment value.
     */
-    public void setSourceDeployment(String sourceDeployment)
+    public void setSourceDeployment(final String sourceDeploymentValue)
     {
-        this.sourceDeployment = sourceDeployment;
+        this.sourceDeployment = sourceDeploymentValue;
     }
 }

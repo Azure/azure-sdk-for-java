@@ -45,6 +45,14 @@ public interface MetricValueOperations
     * @param timeGrain The time grain of the metrics.
     * @param startTime The start time (in UTC) of the metrics.
     * @param endTime The end time (in UTC) of the metrics.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
     * @return The List Metric values operation response.
     */
     MetricValueListResponse list(String resourceId, ArrayList<String> metricNames, String metricNamespace, Duration timeGrain, Calendar startTime, Calendar endTime) throws IOException, ServiceException, URISyntaxException, ParseException;

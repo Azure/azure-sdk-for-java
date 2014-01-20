@@ -35,6 +35,7 @@ public class VirtualMachineShutdownRolesParameters
     /**
     * The state of the roles after shutdown.  Possible values include Stopped
     * or StoppedDeallocated
+    * @return The PostShutdownAction value.
     */
     public PostShutdownAction getPostShutdownAction()
     {
@@ -44,16 +45,18 @@ public class VirtualMachineShutdownRolesParameters
     /**
     * The state of the roles after shutdown.  Possible values include Stopped
     * or StoppedDeallocated
+    * @param postShutdownActionValue The PostShutdownAction value.
     */
-    public void setPostShutdownAction(PostShutdownAction postShutdownAction)
+    public void setPostShutdownAction(final PostShutdownAction postShutdownActionValue)
     {
-        this.postShutdownAction = postShutdownAction;
+        this.postShutdownAction = postShutdownActionValue;
     }
     
     private ArrayList<String> roles;
     
     /**
     * The set of roles to shut down.
+    * @return The Roles value.
     */
     public ArrayList<String> getRoles()
     {
@@ -62,10 +65,11 @@ public class VirtualMachineShutdownRolesParameters
     
     /**
     * The set of roles to shut down.
+    * @param rolesValue The Roles value.
     */
-    public void setRoles(ArrayList<String> roles)
+    public void setRoles(final ArrayList<String> rolesValue)
     {
-        this.roles = roles;
+        this.roles = rolesValue;
     }
     
     /**

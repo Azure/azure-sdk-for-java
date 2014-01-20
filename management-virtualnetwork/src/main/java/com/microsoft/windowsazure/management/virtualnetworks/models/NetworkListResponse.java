@@ -35,14 +35,20 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
 {
     private ArrayList<NetworkListResponse.VirtualNetworkSite> virtualNetworkSites;
     
+    /**
+    * @return The VirtualNetworkSites value.
+    */
     public ArrayList<NetworkListResponse.VirtualNetworkSite> getVirtualNetworkSites()
     {
         return this.virtualNetworkSites;
     }
     
-    public void setVirtualNetworkSites(ArrayList<NetworkListResponse.VirtualNetworkSite> virtualNetworkSites)
+    /**
+    * @param virtualNetworkSitesValue The VirtualNetworkSites value.
+    */
+    public void setVirtualNetworkSites(final ArrayList<NetworkListResponse.VirtualNetworkSite> virtualNetworkSitesValue)
     {
-        this.virtualNetworkSites = virtualNetworkSites;
+        this.virtualNetworkSites = virtualNetworkSitesValue;
     }
     
     /**
@@ -70,6 +76,7 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         
         /**
         * Address spaces, in CIDR format in the virtual network
+        * @return The AddressPrefixes value.
         */
         public ArrayList<String> getAddressPrefixes()
         {
@@ -78,10 +85,11 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         
         /**
         * Address spaces, in CIDR format in the virtual network
+        * @param addressPrefixesValue The AddressPrefixes value.
         */
-        public void setAddressPrefixes(ArrayList<String> addressPrefixes)
+        public void setAddressPrefixes(final ArrayList<String> addressPrefixesValue)
         {
-            this.addressPrefixes = addressPrefixes;
+            this.addressPrefixes = addressPrefixesValue;
         }
         
         /**
@@ -103,14 +111,20 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
     {
         private LocalNetworkConnectionType type;
         
+        /**
+        * @return The Type value.
+        */
         public LocalNetworkConnectionType getType()
         {
             return this.type;
         }
         
-        public void setType(LocalNetworkConnectionType type)
+        /**
+        * @param typeValue The Type value.
+        */
+        public void setType(final LocalNetworkConnectionType typeValue)
         {
-            this.type = type;
+            this.type = typeValue;
         }
     }
     
@@ -120,6 +134,7 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         
         /**
         * The IPv4 address of the DNS server.
+        * @return The Address value.
         */
         public InetAddress getAddress()
         {
@@ -128,16 +143,18 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         
         /**
         * The IPv4 address of the DNS server.
+        * @param addressValue The Address value.
         */
-        public void setAddress(InetAddress address)
+        public void setAddress(final InetAddress addressValue)
         {
-            this.address = address;
+            this.address = addressValue;
         }
         
         private String name;
         
         /**
         * The name of the DNS server.
+        * @return The Name value.
         */
         public String getName()
         {
@@ -146,10 +163,11 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         
         /**
         * The name of the DNS server.
+        * @param nameValue The Name value.
         */
-        public void setName(String name)
+        public void setName(final String nameValue)
         {
-            this.name = name;
+            this.name = nameValue;
         }
     }
     
@@ -163,6 +181,7 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         
         /**
         * The gateway connection size.
+        * @return The Profile value.
         */
         public GatewayProfile getProfile()
         {
@@ -171,10 +190,11 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         
         /**
         * The gateway connection size.
+        * @param profileValue The Profile value.
         */
-        public void setProfile(GatewayProfile profile)
+        public void setProfile(final GatewayProfile profileValue)
         {
-            this.profile = profile;
+            this.profile = profileValue;
         }
         
         private ArrayList<NetworkListResponse.LocalNetworkSite> sites;
@@ -182,6 +202,7 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         /**
         * The list of local network sites that the virtual network can connect
         * to.
+        * @return The Sites value.
         */
         public ArrayList<NetworkListResponse.LocalNetworkSite> getSites()
         {
@@ -191,10 +212,11 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         /**
         * The list of local network sites that the virtual network can connect
         * to.
+        * @param sitesValue The Sites value.
         */
-        public void setSites(ArrayList<NetworkListResponse.LocalNetworkSite> sites)
+        public void setSites(final ArrayList<NetworkListResponse.LocalNetworkSite> sitesValue)
         {
-            this.sites = sites;
+            this.sites = sitesValue;
         }
         
         private NetworkListResponse.VPNClientAddressPool vPNClientAddressPool;
@@ -202,6 +224,7 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         /**
         * The VPNClientAddressPool reserves a pool of IP addresses for VPN
         * clients. This object is used for point-to-site connectivity.
+        * @return The VPNClientAddressPool value.
         */
         public NetworkListResponse.VPNClientAddressPool getVPNClientAddressPool()
         {
@@ -211,10 +234,11 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         /**
         * The VPNClientAddressPool reserves a pool of IP addresses for VPN
         * clients. This object is used for point-to-site connectivity.
+        * @param vPNClientAddressPoolValue The VPNClientAddressPool value.
         */
-        public void setVPNClientAddressPool(NetworkListResponse.VPNClientAddressPool vPNClientAddressPool)
+        public void setVPNClientAddressPool(final NetworkListResponse.VPNClientAddressPool vPNClientAddressPoolValue)
         {
-            this.vPNClientAddressPool = vPNClientAddressPool;
+            this.vPNClientAddressPool = vPNClientAddressPoolValue;
         }
         
         /**
@@ -236,6 +260,7 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         
         /**
         * The address space of the local network site.
+        * @return The AddressSpace value.
         */
         public NetworkListResponse.AddressSpace getAddressSpace()
         {
@@ -244,16 +269,18 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         
         /**
         * The address space of the local network site.
+        * @param addressSpaceValue The AddressSpace value.
         */
-        public void setAddressSpace(NetworkListResponse.AddressSpace addressSpace)
+        public void setAddressSpace(final NetworkListResponse.AddressSpace addressSpaceValue)
         {
-            this.addressSpace = addressSpace;
+            this.addressSpace = addressSpaceValue;
         }
         
         private ArrayList<NetworkListResponse.Connection> connections;
         
         /**
         * Specifies the types of connections to the local network site.
+        * @return The Connections value.
         */
         public ArrayList<NetworkListResponse.Connection> getConnections()
         {
@@ -262,16 +289,18 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         
         /**
         * Specifies the types of connections to the local network site.
+        * @param connectionsValue The Connections value.
         */
-        public void setConnections(ArrayList<NetworkListResponse.Connection> connections)
+        public void setConnections(final ArrayList<NetworkListResponse.Connection> connectionsValue)
         {
-            this.connections = connections;
+            this.connections = connectionsValue;
         }
         
         private String name;
         
         /**
         * The name of the local network site.
+        * @return The Name value.
         */
         public String getName()
         {
@@ -280,16 +309,18 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         
         /**
         * The name of the local network site.
+        * @param nameValue The Name value.
         */
-        public void setName(String name)
+        public void setName(final String nameValue)
         {
-            this.name = name;
+            this.name = nameValue;
         }
         
         private InetAddress vpnGatewayAddress;
         
         /**
         * The IPv4 address of the local network site.
+        * @return The VpnGatewayAddress value.
         */
         public InetAddress getVpnGatewayAddress()
         {
@@ -298,10 +329,11 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         
         /**
         * The IPv4 address of the local network site.
+        * @param vpnGatewayAddressValue The VpnGatewayAddress value.
         */
-        public void setVpnGatewayAddress(InetAddress vpnGatewayAddress)
+        public void setVpnGatewayAddress(final InetAddress vpnGatewayAddressValue)
         {
-            this.vpnGatewayAddress = vpnGatewayAddress;
+            this.vpnGatewayAddress = vpnGatewayAddressValue;
         }
         
         /**
@@ -320,6 +352,7 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         
         /**
         * Represents an address space, in CIDR format that defines the subnet
+        * @return The AddressPrefix value.
         */
         public String getAddressPrefix()
         {
@@ -328,16 +361,18 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         
         /**
         * Represents an address space, in CIDR format that defines the subnet
+        * @param addressPrefixValue The AddressPrefix value.
         */
-        public void setAddressPrefix(String addressPrefix)
+        public void setAddressPrefix(final String addressPrefixValue)
         {
-            this.addressPrefix = addressPrefix;
+            this.addressPrefix = addressPrefixValue;
         }
         
         private String name;
         
         /**
         * Name for the subnet.
+        * @return The Name value.
         */
         public String getName()
         {
@@ -346,10 +381,11 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         
         /**
         * Name for the subnet.
+        * @param nameValue The Name value.
         */
-        public void setName(String name)
+        public void setName(final String nameValue)
         {
-            this.name = name;
+            this.name = nameValue;
         }
     }
     
@@ -366,6 +402,7 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         * The list of network address spaces for a virtual network site. This
         * represents the overall network space contained within the virtual
         * network site.
+        * @return The AddressSpace value.
         */
         public NetworkListResponse.AddressSpace getAddressSpace()
         {
@@ -376,10 +413,11 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         * The list of network address spaces for a virtual network site. This
         * represents the overall network space contained within the virtual
         * network site.
+        * @param addressSpaceValue The AddressSpace value.
         */
-        public void setAddressSpace(NetworkListResponse.AddressSpace addressSpace)
+        public void setAddressSpace(final NetworkListResponse.AddressSpace addressSpaceValue)
         {
-            this.addressSpace = addressSpace;
+            this.addressSpace = addressSpaceValue;
         }
         
         private String affinityGroup;
@@ -387,6 +425,7 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         /**
         * An affinity group, which indirectly refers to the location where the
         * virtual network exists.
+        * @return The AffinityGroup value.
         */
         public String getAffinityGroup()
         {
@@ -396,16 +435,18 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         /**
         * An affinity group, which indirectly refers to the location where the
         * virtual network exists.
+        * @param affinityGroupValue The AffinityGroup value.
         */
-        public void setAffinityGroup(String affinityGroup)
+        public void setAffinityGroup(final String affinityGroupValue)
         {
-            this.affinityGroup = affinityGroup;
+            this.affinityGroup = affinityGroupValue;
         }
         
         private ArrayList<NetworkListResponse.DnsServer> dnsServers;
         
         /**
         * The list of on DNS Servers associated with the virtual network site.
+        * @return The DnsServers value.
         */
         public ArrayList<NetworkListResponse.DnsServer> getDnsServers()
         {
@@ -414,10 +455,11 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         
         /**
         * The list of on DNS Servers associated with the virtual network site.
+        * @param dnsServersValue The DnsServers value.
         */
-        public void setDnsServers(ArrayList<NetworkListResponse.DnsServer> dnsServers)
+        public void setDnsServers(final ArrayList<NetworkListResponse.DnsServer> dnsServersValue)
         {
-            this.dnsServers = dnsServers;
+            this.dnsServers = dnsServersValue;
         }
         
         private NetworkListResponse.Gateway gateway;
@@ -426,6 +468,7 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         * Gateway that contains a list of Local Network Sites which enables the
         * Virtual network site to communicate with a customer’s on premise
         * networks.
+        * @return The Gateway value.
         */
         public NetworkListResponse.Gateway getGateway()
         {
@@ -436,16 +479,18 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         * Gateway that contains a list of Local Network Sites which enables the
         * Virtual network site to communicate with a customer’s on premise
         * networks.
+        * @param gatewayValue The Gateway value.
         */
-        public void setGateway(NetworkListResponse.Gateway gateway)
+        public void setGateway(final NetworkListResponse.Gateway gatewayValue)
         {
-            this.gateway = gateway;
+            this.gateway = gatewayValue;
         }
         
         private String id;
         
         /**
         * A unique string identifier that represents the virtual network site.
+        * @return The Id value.
         */
         public String getId()
         {
@@ -454,16 +499,18 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         
         /**
         * A unique string identifier that represents the virtual network site.
+        * @param idValue The Id value.
         */
-        public void setId(String id)
+        public void setId(final String idValue)
         {
-            this.id = id;
+            this.id = idValue;
         }
         
         private String label;
         
         /**
         * The friendly identifier of the site.
+        * @return The Label value.
         */
         public String getLabel()
         {
@@ -472,16 +519,18 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         
         /**
         * The friendly identifier of the site.
+        * @param labelValue The Label value.
         */
-        public void setLabel(String label)
+        public void setLabel(final String labelValue)
         {
-            this.label = label;
+            this.label = labelValue;
         }
         
         private String name;
         
         /**
         * Name of the virtual network site.
+        * @return The Name value.
         */
         public String getName()
         {
@@ -490,10 +539,11 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         
         /**
         * Name of the virtual network site.
+        * @param nameValue The Name value.
         */
-        public void setName(String name)
+        public void setName(final String nameValue)
         {
-            this.name = name;
+            this.name = nameValue;
         }
         
         private String state;
@@ -501,6 +551,7 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         /**
         * Current status of the virtual network. (Created, Creating, Updating,
         * Deleting, Unavailable)
+        * @return The State value.
         */
         public String getState()
         {
@@ -510,10 +561,11 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         /**
         * Current status of the virtual network. (Created, Creating, Updating,
         * Deleting, Unavailable)
+        * @param stateValue The State value.
         */
-        public void setState(String state)
+        public void setState(final String stateValue)
         {
-            this.state = state;
+            this.state = stateValue;
         }
         
         private ArrayList<NetworkListResponse.Subnet> subnets;
@@ -522,6 +574,7 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         * The list of network subnets for a virtual network site. All network
         * subnets must be contained within the overall virtual network address
         * spaces.
+        * @return The Subnets value.
         */
         public ArrayList<NetworkListResponse.Subnet> getSubnets()
         {
@@ -532,10 +585,11 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         * The list of network subnets for a virtual network site. All network
         * subnets must be contained within the overall virtual network address
         * spaces.
+        * @param subnetsValue The Subnets value.
         */
-        public void setSubnets(ArrayList<NetworkListResponse.Subnet> subnets)
+        public void setSubnets(final ArrayList<NetworkListResponse.Subnet> subnetsValue)
         {
-            this.subnets = subnets;
+            this.subnets = subnetsValue;
         }
         
         /**
@@ -559,6 +613,7 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         
         /**
         * The CIDR identifiers that identify addresses in the pool.
+        * @return The AddressPrefixes value.
         */
         public ArrayList<String> getAddressPrefixes()
         {
@@ -567,10 +622,11 @@ public class NetworkListResponse extends OperationResponse implements Iterable<N
         
         /**
         * The CIDR identifiers that identify addresses in the pool.
+        * @param addressPrefixesValue The AddressPrefixes value.
         */
-        public void setAddressPrefixes(ArrayList<String> addressPrefixes)
+        public void setAddressPrefixes(final ArrayList<String> addressPrefixesValue)
         {
-            this.addressPrefixes = addressPrefixes;
+            this.addressPrefixes = addressPrefixesValue;
         }
         
         /**

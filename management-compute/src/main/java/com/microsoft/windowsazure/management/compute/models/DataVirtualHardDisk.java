@@ -35,6 +35,7 @@ public class DataVirtualHardDisk
     /**
     * Specifies the friendly name of the VHD to use to create thedata disk for
     * the virtual machine.
+    * @return The DiskLabel value.
     */
     public String getDiskLabel()
     {
@@ -44,10 +45,11 @@ public class DataVirtualHardDisk
     /**
     * Specifies the friendly name of the VHD to use to create thedata disk for
     * the virtual machine.
+    * @param diskLabelValue The DiskLabel value.
     */
-    public void setDiskLabel(String diskLabel)
+    public void setDiskLabel(final String diskLabelValue)
     {
-        this.diskLabel = diskLabel;
+        this.diskLabel = diskLabelValue;
     }
     
     private String diskName;
@@ -55,6 +57,7 @@ public class DataVirtualHardDisk
     /**
     * Specifies the name of the VHD to use to create thedata disk for the
     * virtual machine.
+    * @return The DiskName value.
     */
     public String getDiskName()
     {
@@ -64,10 +67,11 @@ public class DataVirtualHardDisk
     /**
     * Specifies the name of the VHD to use to create thedata disk for the
     * virtual machine.
+    * @param diskNameValue The DiskName value.
     */
-    public void setDiskName(String diskName)
+    public void setDiskName(final String diskNameValue)
     {
-        this.diskName = diskName;
+        this.diskName = diskNameValue;
     }
     
     private VirtualHardDiskHostCaching hostCaching;
@@ -75,6 +79,7 @@ public class DataVirtualHardDisk
     /**
     * Specifies the platform caching behavior of the data disk blob for
     * read/write efficiency. The default vault is ReadOnly.
+    * @return The HostCaching value.
     */
     public VirtualHardDiskHostCaching getHostCaching()
     {
@@ -84,10 +89,11 @@ public class DataVirtualHardDisk
     /**
     * Specifies the platform caching behavior of the data disk blob for
     * read/write efficiency. The default vault is ReadOnly.
+    * @param hostCachingValue The HostCaching value.
     */
-    public void setHostCaching(VirtualHardDiskHostCaching hostCaching)
+    public void setHostCaching(final VirtualHardDiskHostCaching hostCachingValue)
     {
-        this.hostCaching = hostCaching;
+        this.hostCaching = hostCachingValue;
     }
     
     private int logicalDiskSizeInGB;
@@ -98,6 +104,7 @@ public class DataVirtualHardDisk
     * machine call by specifying the value for this property.  Windows Azure
     * creates the empty VHD based on size preference and attaches the newly
     * created VHD to the virtual machine.
+    * @return The LogicalDiskSizeInGB value.
     */
     public int getLogicalDiskSizeInGB()
     {
@@ -110,10 +117,11 @@ public class DataVirtualHardDisk
     * machine call by specifying the value for this property.  Windows Azure
     * creates the empty VHD based on size preference and attaches the newly
     * created VHD to the virtual machine.
+    * @param logicalDiskSizeInGBValue The LogicalDiskSizeInGB value.
     */
-    public void setLogicalDiskSizeInGB(int logicalDiskSizeInGB)
+    public void setLogicalDiskSizeInGB(final int logicalDiskSizeInGBValue)
     {
-        this.logicalDiskSizeInGB = logicalDiskSizeInGB;
+        this.logicalDiskSizeInGB = logicalDiskSizeInGBValue;
     }
     
     private Integer logicalUnitNumber;
@@ -123,6 +131,7 @@ public class DataVirtualHardDisk
     * specifies the slot in which the data drive appears when mounted for
     * usage by the virtual machine. This element is only listed when more than
     * one data disk is attached to a virtual machine.
+    * @return The LogicalUnitNumber value.
     */
     public Integer getLogicalUnitNumber()
     {
@@ -134,16 +143,18 @@ public class DataVirtualHardDisk
     * specifies the slot in which the data drive appears when mounted for
     * usage by the virtual machine. This element is only listed when more than
     * one data disk is attached to a virtual machine.
+    * @param logicalUnitNumberValue The LogicalUnitNumber value.
     */
-    public void setLogicalUnitNumber(Integer logicalUnitNumber)
+    public void setLogicalUnitNumber(final Integer logicalUnitNumberValue)
     {
-        this.logicalUnitNumber = logicalUnitNumber;
+        this.logicalUnitNumber = logicalUnitNumberValue;
     }
     
     private URI mediaLink;
     
     /**
     * Specifies the location of the disk in Windows Azure storage.
+    * @return The MediaLink value.
     */
     public URI getMediaLink()
     {
@@ -152,9 +163,10 @@ public class DataVirtualHardDisk
     
     /**
     * Specifies the location of the disk in Windows Azure storage.
+    * @param mediaLinkValue The MediaLink value.
     */
-    public void setMediaLink(URI mediaLink)
+    public void setMediaLink(final URI mediaLinkValue)
     {
-        this.mediaLink = mediaLink;
+        this.mediaLink = mediaLinkValue;
     }
 }

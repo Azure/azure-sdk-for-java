@@ -38,6 +38,7 @@ public class AutoscaleClientImpl extends ServiceClient<AutoscaleClient> implemen
     
     /**
     * Optional base uri parameter.
+    * @return The BaseUri value.
     */
     public URI getBaseUri()
     {
@@ -53,6 +54,7 @@ public class AutoscaleClientImpl extends ServiceClient<AutoscaleClient> implemen
     * Azure Service ManagementAPI use mutual authentication of management
     * certificates over SSL to ensure that a request made to the service is
     * secure.  No anonymous requests are allowed.
+    * @return The Credentials value.
     */
     public SubscriptionCloudCredentials getCredentials()
     {
@@ -63,6 +65,7 @@ public class AutoscaleClientImpl extends ServiceClient<AutoscaleClient> implemen
     
     /**
     * Operations for managing the autoscale settings.
+    * @return The SettingsOperations value.
     */
     public SettingOperations getSettingsOperations()
     {
@@ -121,6 +124,8 @@ public class AutoscaleClientImpl extends ServiceClient<AutoscaleClient> implemen
     * The Windows Azure Service ManagementAPI use mutual authentication of
     * management certificates over SSL to ensure that a request made to the
     * service is secure.  No anonymous requests are allowed.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
     */
     @Inject
     public AutoscaleClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, @Named(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS) SubscriptionCloudCredentials credentials) throws java.net.URISyntaxException

@@ -27,8 +27,11 @@ public class Exports implements Builder.Exports
     @Override
     public void register(final Builder.Registry registry)
     {
-        // provide contract implementation
+        // provide contract implementations
         registry.add(SchedulerManagementClient.class,
                 SchedulerManagementClientImpl.class);
+      
+        registry.add(CloudServiceManagementClient.class,
+                CloudServiceManagementClientImpl.class);
     }
 }

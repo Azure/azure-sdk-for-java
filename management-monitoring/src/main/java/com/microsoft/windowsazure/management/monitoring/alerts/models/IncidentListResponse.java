@@ -24,27 +24,50 @@
 package com.microsoft.windowsazure.management.monitoring.alerts.models;
 
 import com.microsoft.windowsazure.core.OperationResponse;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
 * The List incidents operation response.
 */
-public class IncidentListResponse extends OperationResponse
+public class IncidentListResponse extends OperationResponse implements Iterable<Incident>
 {
-    private IncidentCollection incidentCollection;
+    private ArrayList<Incident> value;
     
     /**
-    * The retrieved incidents.
+    * Incident collection.
+    * @return The Value value.
     */
-    public IncidentCollection getIncidentCollection()
+    public ArrayList<Incident> getValue()
     {
-        return this.incidentCollection;
+        return this.value;
     }
     
     /**
-    * The retrieved incidents.
+    * Incident collection.
+    * @param valueValue The Value value.
     */
-    public void setIncidentCollection(IncidentCollection incidentCollection)
+    public void setValue(final ArrayList<Incident> valueValue)
     {
-        this.incidentCollection = incidentCollection;
+        this.value = valueValue;
+    }
+    
+    /**
+    * Initializes a new instance of the IncidentListResponse class.
+    *
+    */
+    public IncidentListResponse()
+    {
+        super();
+        this.value = new ArrayList<Incident>();
+    }
+    
+    /**
+    * Gets the sequence of Value.
+    *
+    */
+    public Iterator<Incident> iterator()
+    {
+        return this.getValue().iterator();
     }
 }

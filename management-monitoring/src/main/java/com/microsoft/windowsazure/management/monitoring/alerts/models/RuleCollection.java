@@ -34,6 +34,7 @@ public class RuleCollection
     
     /**
     * Rule collection.
+    * @return The Value value.
     */
     public ArrayList<Rule> getValue()
     {
@@ -42,10 +43,11 @@ public class RuleCollection
     
     /**
     * Rule collection.
+    * @param valueValue The Value value.
     */
-    public void setValue(ArrayList<Rule> value)
+    public void setValue(final ArrayList<Rule> valueValue)
     {
-        this.value = value;
+        this.value = valueValue;
     }
     
     /**

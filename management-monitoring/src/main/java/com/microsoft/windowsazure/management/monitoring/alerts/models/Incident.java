@@ -34,6 +34,7 @@ public class Incident
     
     /**
     * The time at which the incident got activated.
+    * @return The ActivatedTime value.
     */
     public Calendar getActivatedTime()
     {
@@ -42,16 +43,18 @@ public class Incident
     
     /**
     * The time at which the incident got activated.
+    * @param activatedTimeValue The ActivatedTime value.
     */
-    public void setActivatedTime(Calendar activatedTime)
+    public void setActivatedTime(final Calendar activatedTimeValue)
     {
-        this.activatedTime = activatedTime;
+        this.activatedTime = activatedTimeValue;
     }
     
     private String id;
     
     /**
     * Incident identifier.
+    * @return The Id value.
     */
     public String getId()
     {
@@ -60,16 +63,18 @@ public class Incident
     
     /**
     * Incident identifier.
+    * @param idValue The Id value.
     */
-    public void setId(String id)
+    public void setId(final String idValue)
     {
-        this.id = id;
+        this.id = idValue;
     }
     
     private boolean isActive;
     
     /**
     * A boolean to indicate whether the incident is active or resolved.
+    * @return The IsActive value.
     */
     public boolean isActive()
     {
@@ -78,10 +83,11 @@ public class Incident
     
     /**
     * A boolean to indicate whether the incident is active or resolved.
+    * @param isActiveValue The IsActive value.
     */
-    public void setIsActive(boolean isActive)
+    public void setIsActive(final boolean isActiveValue)
     {
-        this.isActive = isActive;
+        this.isActive = isActiveValue;
     }
     
     private Calendar resolvedTime;
@@ -89,6 +95,7 @@ public class Incident
     /**
     * The time at which the incident got resolved. If null, it means the
     * incident is still active.
+    * @return The ResolvedTime value.
     */
     public Calendar getResolvedTime()
     {
@@ -98,16 +105,18 @@ public class Incident
     /**
     * The time at which the incident got resolved. If null, it means the
     * incident is still active.
+    * @param resolvedTimeValue The ResolvedTime value.
     */
-    public void setResolvedTime(Calendar resolvedTime)
+    public void setResolvedTime(final Calendar resolvedTimeValue)
     {
-        this.resolvedTime = resolvedTime;
+        this.resolvedTime = resolvedTimeValue;
     }
     
     private String ruleId;
     
     /**
     * Rule identifier that is associated with the incident.
+    * @return The RuleId value.
     */
     public String getRuleId()
     {
@@ -116,9 +125,10 @@ public class Incident
     
     /**
     * Rule identifier that is associated with the incident.
+    * @param ruleIdValue The RuleId value.
     */
-    public void setRuleId(String ruleId)
+    public void setRuleId(final String ruleIdValue)
     {
-        this.ruleId = ruleId;
+        this.ruleId = ruleIdValue;
     }
 }

@@ -34,6 +34,7 @@ public class RuleEmailAction extends RuleAction
     
     /**
     * The email address of an adminstrative user.
+    * @return The CustomEmails value.
     */
     public ArrayList<String> getCustomEmails()
     {
@@ -42,10 +43,11 @@ public class RuleEmailAction extends RuleAction
     
     /**
     * The email address of an adminstrative user.
+    * @param customEmailsValue The CustomEmails value.
     */
-    public void setCustomEmails(ArrayList<String> customEmails)
+    public void setCustomEmails(final ArrayList<String> customEmailsValue)
     {
-        this.customEmails = customEmails;
+        this.customEmails = customEmailsValue;
     }
     
     private boolean sendToServiceOwners;
@@ -53,6 +55,7 @@ public class RuleEmailAction extends RuleAction
     /**
     * This indicates if email is sent to sevice adminstrator and
     * co-administrators.
+    * @return The SendToServiceOwners value.
     */
     public boolean isSendToServiceOwners()
     {
@@ -62,10 +65,11 @@ public class RuleEmailAction extends RuleAction
     /**
     * This indicates if email is sent to sevice adminstrator and
     * co-administrators.
+    * @param sendToServiceOwnersValue The SendToServiceOwners value.
     */
-    public void setSendToServiceOwners(boolean sendToServiceOwners)
+    public void setSendToServiceOwners(final boolean sendToServiceOwnersValue)
     {
-        this.sendToServiceOwners = sendToServiceOwners;
+        this.sendToServiceOwners = sendToServiceOwnersValue;
     }
     
     /**

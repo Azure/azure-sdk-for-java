@@ -32,6 +32,7 @@ public class MetricSettingsPutParameters
     
     /**
     * Required. The metric setting.
+    * @return The MetricSetting value.
     */
     public MetricSetting getMetricSetting()
     {
@@ -40,9 +41,10 @@ public class MetricSettingsPutParameters
     
     /**
     * Required. The metric setting.
+    * @param metricSettingValue The MetricSetting value.
     */
-    public void setMetricSetting(MetricSetting metricSetting)
+    public void setMetricSetting(final MetricSetting metricSettingValue)
     {
-        this.metricSetting = metricSetting;
+        this.metricSetting = metricSettingValue;
     }
 }

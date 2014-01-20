@@ -34,6 +34,7 @@ public class IncidentGetResponse extends OperationResponse
     
     /**
     * The retrieved incident.
+    * @return The Incident value.
     */
     public Incident getIncident()
     {
@@ -42,9 +43,10 @@ public class IncidentGetResponse extends OperationResponse
     
     /**
     * The retrieved incident.
+    * @param incidentValue The Incident value.
     */
-    public void setIncident(Incident incident)
+    public void setIncident(final Incident incidentValue)
     {
-        this.incident = incident;
+        this.incident = incidentValue;
     }
 }

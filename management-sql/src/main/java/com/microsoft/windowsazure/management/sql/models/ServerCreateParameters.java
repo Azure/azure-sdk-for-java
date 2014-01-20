@@ -32,6 +32,7 @@ public class ServerCreateParameters
     
     /**
     * Gets or sets the administrator password.
+    * @return The AdministratorPassword value.
     */
     public String getAdministratorPassword()
     {
@@ -40,16 +41,18 @@ public class ServerCreateParameters
     
     /**
     * Gets or sets the administrator password.
+    * @param administratorPasswordValue The AdministratorPassword value.
     */
-    public void setAdministratorPassword(String administratorPassword)
+    public void setAdministratorPassword(final String administratorPasswordValue)
     {
-        this.administratorPassword = administratorPassword;
+        this.administratorPassword = administratorPasswordValue;
     }
     
     private String administratorUserName;
     
     /**
     * Gets or sets the administrator username.
+    * @return The AdministratorUserName value.
     */
     public String getAdministratorUserName()
     {
@@ -58,16 +61,18 @@ public class ServerCreateParameters
     
     /**
     * Gets or sets the administrator username.
+    * @param administratorUserNameValue The AdministratorUserName value.
     */
-    public void setAdministratorUserName(String administratorUserName)
+    public void setAdministratorUserName(final String administratorUserNameValue)
     {
-        this.administratorUserName = administratorUserName;
+        this.administratorUserName = administratorUserNameValue;
     }
     
     private String location;
     
     /**
     * Gets or sets the region in which this server will be created.
+    * @return The Location value.
     */
     public String getLocation()
     {
@@ -76,9 +81,10 @@ public class ServerCreateParameters
     
     /**
     * Gets or sets the region in which this server will be created.
+    * @param locationValue The Location value.
     */
-    public void setLocation(String location)
+    public void setLocation(final String locationValue)
     {
-        this.location = location;
+        this.location = locationValue;
     }
 }
