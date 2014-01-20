@@ -39,6 +39,8 @@ public interface RelayOperations
     /**
     * Gets the set of connection strings for a relay.
     *
+    * @param namespaceName The namespace name.
+    * @param relayName The relay name.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -54,6 +56,8 @@ public interface RelayOperations
     /**
     * Gets the set of connection strings for a relay.
     *
+    * @param namespaceName The namespace name.
+    * @param relayName The relay name.
     * @return The set of connection details for a service bus entity.
     */
     Future<ServiceBusConnectionDetailsResponse> getConnectionDetailsAsync(String namespaceName, String relayName);

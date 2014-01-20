@@ -104,7 +104,7 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
     
     /**
     * The Service Bus Management API includes operations for managing Service
-    * Bus queues.
+    * Bus notification hubs.
     * @return The NotificationHubsOperations value.
     */
     public NotificationHubOperations getNotificationHubsOperations()
@@ -322,104 +322,114 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != HttpStatus.SC_OK)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
-        }
-        
-        // Create Result
-        ServiceBusOperationStatusResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new ServiceBusOperationStatusResponse();
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document responseDoc = documentBuilder.parse(responseContent);
-        
-        NodeList elements = responseDoc.getElementsByTagName("Operation");
-        Element operationElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-        if (operationElement != null)
-        {
-            NodeList elements2 = operationElement.getElementsByTagName("ID");
-            Element idElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-            if (idElement != null)
+            httpResponse = this.getHttpClient().execute(httpRequest);
+            if (shouldTrace)
             {
-                String idInstance;
-                idInstance = idElement.getTextContent();
-                result.setId(idInstance);
+                CloudTracing.receiveResponse(invocationId, httpResponse);
             }
-            
-            NodeList elements3 = operationElement.getElementsByTagName("Status");
-            Element statusElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-            if (statusElement != null)
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
             {
-                OperationStatus statusInstance;
-                statusInstance = OperationStatus.valueOf(statusElement.getTextContent());
-                result.setStatus(statusInstance);
-            }
-            
-            NodeList elements4 = operationElement.getElementsByTagName("HttpStatusCode");
-            Element httpStatusCodeElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-            if (httpStatusCodeElement != null)
-            {
-                Integer httpStatusCodeInstance;
-                httpStatusCodeInstance = Integer.valueOf(httpStatusCodeElement.getTextContent());
-                result.setHttpStatusCode(httpStatusCodeInstance);
-            }
-            
-            NodeList elements5 = operationElement.getElementsByTagName("Error");
-            Element errorElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-            if (errorElement != null)
-            {
-                ServiceBusOperationStatusResponse.ErrorDetails errorInstance = new ServiceBusOperationStatusResponse.ErrorDetails();
-                result.setError(errorInstance);
-                
-                NodeList elements6 = errorElement.getElementsByTagName("Code");
-                Element codeElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                if (codeElement != null)
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
                 {
-                    String codeInstance;
-                    codeInstance = codeElement.getTextContent();
-                    errorInstance.setCode(codeInstance);
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            ServiceBusOperationStatusResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new ServiceBusOperationStatusResponse();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document responseDoc = documentBuilder.parse(responseContent);
+            
+            NodeList elements = responseDoc.getElementsByTagName("Operation");
+            Element operationElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            if (operationElement != null)
+            {
+                NodeList elements2 = operationElement.getElementsByTagName("ID");
+                Element idElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                if (idElement != null)
+                {
+                    String idInstance;
+                    idInstance = idElement.getTextContent();
+                    result.setId(idInstance);
                 }
                 
-                NodeList elements7 = errorElement.getElementsByTagName("Message");
-                Element messageElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                if (messageElement != null)
+                NodeList elements3 = operationElement.getElementsByTagName("Status");
+                Element statusElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                if (statusElement != null)
                 {
-                    String messageInstance;
-                    messageInstance = messageElement.getTextContent();
-                    errorInstance.setMessage(messageInstance);
+                    OperationStatus statusInstance;
+                    statusInstance = OperationStatus.valueOf(statusElement.getTextContent());
+                    result.setStatus(statusInstance);
+                }
+                
+                NodeList elements4 = operationElement.getElementsByTagName("HttpStatusCode");
+                Element httpStatusCodeElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                if (httpStatusCodeElement != null)
+                {
+                    Integer httpStatusCodeInstance;
+                    httpStatusCodeInstance = Integer.valueOf(httpStatusCodeElement.getTextContent());
+                    result.setHttpStatusCode(httpStatusCodeInstance);
+                }
+                
+                NodeList elements5 = operationElement.getElementsByTagName("Error");
+                Element errorElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                if (errorElement != null)
+                {
+                    ServiceBusOperationStatusResponse.ErrorDetails errorInstance = new ServiceBusOperationStatusResponse.ErrorDetails();
+                    result.setError(errorInstance);
+                    
+                    NodeList elements6 = errorElement.getElementsByTagName("Code");
+                    Element codeElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                    if (codeElement != null)
+                    {
+                        String codeInstance;
+                        codeInstance = codeElement.getTextContent();
+                        errorInstance.setCode(codeInstance);
+                    }
+                    
+                    NodeList elements7 = errorElement.getElementsByTagName("Message");
+                    Element messageElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
+                    if (messageElement != null)
+                    {
+                        String messageInstance;
+                        messageInstance = messageElement.getTextContent();
+                        errorInstance.setMessage(messageInstance);
+                    }
                 }
             }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
     
     /**
@@ -486,88 +496,98 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
         
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
+        try
         {
-            CloudTracing.sendRequest(invocationId, httpRequest);
-        }
-        httpResponse = this.getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
-            CloudTracing.receiveResponse(invocationId, httpResponse);
-        }
-        int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != HttpStatus.SC_OK)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
             if (shouldTrace)
             {
-                CloudTracing.error(invocationId, ex);
+                CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            throw ex;
-        }
-        
-        // Create Result
-        ServiceBusRegionsResponse result = null;
-        // Deserialize Response
-        InputStream responseContent = httpResponse.getEntity().getContent();
-        result = new ServiceBusRegionsResponse();
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document responseDoc = documentBuilder.parse(responseContent);
-        
-        NodeList elements = responseDoc.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "feed");
-        Element feedElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-        if (feedElement != null)
-        {
+            httpResponse = this.getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            ServiceBusRegionsResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new ServiceBusRegionsResponse();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document responseDoc = documentBuilder.parse(responseContent);
+            
+            NodeList elements = responseDoc.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "feed");
+            Element feedElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (feedElement != null)
             {
-                for (int i1 = 0; i1 < feedElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "entry").getLength(); i1 = i1 + 1)
+                if (feedElement != null)
                 {
-                    org.w3c.dom.Element entriesElement = ((org.w3c.dom.Element) feedElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "entry").item(i1));
-                    ServiceBusLocation entryInstance = new ServiceBusLocation();
-                    result.getRegions().add(entryInstance);
-                    
-                    NodeList elements2 = entriesElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "content");
-                    Element contentElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                    if (contentElement != null)
+                    for (int i1 = 0; i1 < feedElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "entry").getLength(); i1 = i1 + 1)
                     {
-                        NodeList elements3 = contentElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "RegionCodeDescription");
-                        Element regionCodeDescriptionElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                        if (regionCodeDescriptionElement != null)
+                        org.w3c.dom.Element entriesElement = ((org.w3c.dom.Element) feedElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "entry").item(i1));
+                        ServiceBusLocation entryInstance = new ServiceBusLocation();
+                        result.getRegions().add(entryInstance);
+                        
+                        NodeList elements2 = entriesElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "content");
+                        Element contentElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                        if (contentElement != null)
                         {
-                            NodeList elements4 = regionCodeDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Code");
-                            Element codeElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                            if (codeElement != null)
+                            NodeList elements3 = contentElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "RegionCodeDescription");
+                            Element regionCodeDescriptionElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                            if (regionCodeDescriptionElement != null)
                             {
-                                String codeInstance;
-                                codeInstance = codeElement.getTextContent();
-                                entryInstance.setCode(codeInstance);
-                            }
-                            
-                            NodeList elements5 = regionCodeDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "FullName");
-                            Element fullNameElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                            if (fullNameElement != null)
-                            {
-                                String fullNameInstance;
-                                fullNameInstance = fullNameElement.getTextContent();
-                                entryInstance.setFullName(fullNameInstance);
+                                NodeList elements4 = regionCodeDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Code");
+                                Element codeElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                                if (codeElement != null)
+                                {
+                                    String codeInstance;
+                                    codeInstance = codeElement.getTextContent();
+                                    entryInstance.setCode(codeInstance);
+                                }
+                                
+                                NodeList elements5 = regionCodeDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "FullName");
+                                Element fullNameElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                                if (fullNameElement != null)
+                                {
+                                    String fullNameInstance;
+                                    fullNameInstance = fullNameElement.getTextContent();
+                                    entryInstance.setFullName(fullNameInstance);
+                                }
                             }
                         }
                     }
                 }
             }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
         }
-        
-        result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+        finally
         {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
         }
-        
-        if (shouldTrace)
-        {
-            CloudTracing.exit(invocationId, result);
-        }
-        return result;
     }
 }

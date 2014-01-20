@@ -34,7 +34,7 @@ public class ServiceBusSharedAccessAuthorizationRule
     private String claimType;
     
     /**
-    * The type of the claim
+    * The type of the claim.
     * @return The ClaimType value.
     */
     public String getClaimType()
@@ -43,7 +43,7 @@ public class ServiceBusSharedAccessAuthorizationRule
     }
     
     /**
-    * The type of the claim
+    * The type of the claim.
     * @param claimTypeValue The ClaimType value.
     */
     public void setClaimType(final String claimTypeValue)
@@ -54,7 +54,7 @@ public class ServiceBusSharedAccessAuthorizationRule
     private String claimValue;
     
     /**
-    * The value of the claim
+    * The value of the claim.
     * @return The ClaimValue value.
     */
     public String getClaimValue()
@@ -63,7 +63,7 @@ public class ServiceBusSharedAccessAuthorizationRule
     }
     
     /**
-    * The value of the claim
+    * The value of the claim.
     * @param claimValueValue The ClaimValue value.
     */
     public void setClaimValue(final String claimValueValue)
@@ -74,7 +74,7 @@ public class ServiceBusSharedAccessAuthorizationRule
     private Calendar createdTime;
     
     /**
-    * The time at which the authorization rule was created
+    * The time at which the authorization rule was created.
     * @return The CreatedTime value.
     */
     public Calendar getCreatedTime()
@@ -83,7 +83,7 @@ public class ServiceBusSharedAccessAuthorizationRule
     }
     
     /**
-    * The time at which the authorization rule was created
+    * The time at which the authorization rule was created.
     * @param createdTimeValue The CreatedTime value.
     */
     public void setCreatedTime(final Calendar createdTimeValue)
@@ -94,7 +94,7 @@ public class ServiceBusSharedAccessAuthorizationRule
     private String keyName;
     
     /**
-    * The name of the key that was used
+    * The name of the key that was used.
     * @return The KeyName value.
     */
     public String getKeyName()
@@ -103,7 +103,7 @@ public class ServiceBusSharedAccessAuthorizationRule
     }
     
     /**
-    * The name of the key that was used
+    * The name of the key that was used.
     * @param keyNameValue The KeyName value.
     */
     public void setKeyName(final String keyNameValue)
@@ -114,7 +114,7 @@ public class ServiceBusSharedAccessAuthorizationRule
     private Calendar modifiedTime;
     
     /**
-    * The most recent time the rule was updated
+    * The most recent time the rule was updated.
     * @return The ModifiedTime value.
     */
     public Calendar getModifiedTime()
@@ -123,7 +123,7 @@ public class ServiceBusSharedAccessAuthorizationRule
     }
     
     /**
-    * The most recent time the rule was updated
+    * The most recent time the rule was updated.
     * @param modifiedTimeValue The ModifiedTime value.
     */
     public void setModifiedTime(final Calendar modifiedTimeValue)
@@ -134,7 +134,7 @@ public class ServiceBusSharedAccessAuthorizationRule
     private String primaryKey;
     
     /**
-    * The primary key that was used
+    * The primary key that was used.
     * @return The PrimaryKey value.
     */
     public String getPrimaryKey()
@@ -143,7 +143,7 @@ public class ServiceBusSharedAccessAuthorizationRule
     }
     
     /**
-    * The primary key that was used
+    * The primary key that was used.
     * @param primaryKeyValue The PrimaryKey value.
     */
     public void setPrimaryKey(final String primaryKeyValue)
@@ -174,7 +174,7 @@ public class ServiceBusSharedAccessAuthorizationRule
     private ArrayList<AccessRight> rights;
     
     /**
-    * The rights associated with the rule
+    * The rights associated with the rule.
     * @return The Rights value.
     */
     public ArrayList<AccessRight> getRights()
@@ -183,7 +183,7 @@ public class ServiceBusSharedAccessAuthorizationRule
     }
     
     /**
-    * The rights associated with the rule
+    * The rights associated with the rule.
     * @param rightsValue The Rights value.
     */
     public void setRights(final ArrayList<AccessRight> rightsValue)
@@ -194,7 +194,7 @@ public class ServiceBusSharedAccessAuthorizationRule
     private String secondaryKey;
     
     /**
-    * The secondary key that was used
+    * The secondary key that was used.
     * @return The SecondaryKey value.
     */
     public String getSecondaryKey()
@@ -203,7 +203,7 @@ public class ServiceBusSharedAccessAuthorizationRule
     }
     
     /**
-    * The secondary key that was used
+    * The secondary key that was used.
     * @param secondaryKeyValue The SecondaryKey value.
     */
     public void setSecondaryKey(final String secondaryKeyValue)

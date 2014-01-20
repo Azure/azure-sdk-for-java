@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
-* The response to the request for a listing of namespaces
+* The response to the request for a listing of namespaces.
 */
 public class ServiceBusNamespacesResponse extends OperationResponse implements Iterable<ServiceBusNamespace>
 {
