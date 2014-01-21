@@ -22,54 +22,54 @@
 //
 def hydraSpecs = [
     [
-        spec: "Microsoft.WindowsAzure.Management.Compute.Specification.dll",
+        specificationDllFileName: "Microsoft.WindowsAzure.Management.Compute.Specification.dll",
         clientType: "Microsoft.WindowsAzure.Management.Compute.ComputeManagementClient",
-        destDir: "management-compute"
+        generatedCodeDestinationRootDirectoryName: "management-compute"
     ],
     [
-        spec: "Microsoft.WindowsAzure.Management.Specification.dll",
+        specificationDllFileName: "Microsoft.WindowsAzure.Management.Specification.dll",
         clientType: 'Microsoft.WindowsAzure.Management.ManagementClient',
-        destDir: 'management'
+        generatedCodeDestinationRootDirectoryName: 'management'
     ],
     [
-        spec: "Microsoft.WindowsAzure.Management.Network.Specification.dll",
+        specificationDllFileName: "Microsoft.WindowsAzure.Management.Network.Specification.dll",
         clientType: "Microsoft.WindowsAzure.Management.VirtualNetworks.VirtualNetworkManagementClient",
-        destDir: 'management-virtualnetwork'
+        generatedCodeDestinationRootDirectoryName: 'management-virtualnetwork'
     ],
     [
-        spec: "Microsoft.WindowsAzure.Management.Scheduler.Specification.dll",
+        specificationDllFileName: "Microsoft.WindowsAzure.Management.Scheduler.Specification.dll",
         clientType: 'Microsoft.WindowsAzure.Management.Scheduler.SchedulerManagementClient',
-        destDir: 'management-scheduler'
+        generatedCodeDestinationRootDirectoryName: 'management-scheduler'
     ],
     [
-        spec: "Microsoft.WindowsAzure.Management.Scheduler.Specification.dll",
+        specificationDllFileName: "Microsoft.WindowsAzure.Management.Scheduler.Specification.dll",
         clientType: 'Microsoft.WindowsAzure.Scheduler.SchedulerManagementClient',
-        destDir: 'scheduler'
+        generatedCodeDestinationRootDirectoryName: 'scheduler'
     ],
     [
-        spec: "Microsoft.WindowsAzure.Management.ServiceBus.Specification.dll",
+        specificationDllFileName: "Microsoft.WindowsAzure.Management.ServiceBus.Specification.dll",
         clientType: 'Microsoft.WindowsAzure.Management.ServiceBus.ServiceBusManagementClient',
-        destDir: 'management-serviceBus'
+        generatedCodeDestinationRootDirectoryName: 'management-serviceBus'
     ],
     [
-        spec: "Microsoft.WindowsAzure.Management.Sql.Specification.dll",
+        specificationDllFileName: "Microsoft.WindowsAzure.Management.Sql.Specification.dll",
         clientType: "Microsoft.WindowsAzure.Management.Sql.SqlManagementClient",
-        destDir: "management-sql"
+        generatedCodeDestinationRootDirectoryName: "management-sql"
     ],
     [
-        spec: "Microsoft.WindowsAzure.Management.Storage.Specification.dll",
+        specificationDllFileName: "Microsoft.WindowsAzure.Management.Storage.Specification.dll",
         clientType: "Microsoft.WindowsAzure.Management.Storage.StorageManagementClient",
-        destDir: "management-storage"
+        generatedCodeDestinationRootDirectoryName: "management-storage"
     ],
     [
-        spec: "Microsoft.WindowsAzure.Management.Store.Specification.dll",
+        specificationDllFileName: "Microsoft.WindowsAzure.Management.Store.Specification.dll",
         clientType: "Microsoft.WindowsAzure.Management.Store.StoreManagementClient",
-        destDir: "management-store"
+        generatedCodeDestinationRootDirectoryName: "management-store"
     ],
     [
-        spec: "Microsoft.WindowsAzure.Management.WebSites.Specification.dll",
+        specificationDllFileName: "Microsoft.WindowsAzure.Management.WebSites.Specification.dll",
         clientType: "Microsoft.WindowsAzure.Management.WebSites.WebSiteManagementClient",
-        destDir: "management-website"
+        generatedCodeDestinationRootDirectoryName: "management-website"
     ]
 ]
 
@@ -130,10 +130,10 @@ def hydra(String hydraExePath, String... args)
 // Generate code for the given specInfo
 def generate(hydraExePath, specInfo)
 {
-    def specDLL = findFile(specInfo.spec)
+    def specDLL = findFileInPackagesDirectory(specInfo.specificationDllFileName)
     hydra(hydraExePath, '-f', 'java', '-s', 'namespace',
         '-c', specInfo.clientType,
-        '-d', "../${specInfo.destDir}/src/main/java/com",
+        '-d', "../${specInfo.generatedCodeDestinationRootDirectoryName}/src/main/java/com",
         specDLL)
 }
 
@@ -142,19 +142,28 @@ def restorePackages()
 {
     def env = System.getenv()
     try {
-        nuget('sources', 'add', '-name', 'download', '-source', env['PRIVATE_FEED_URL'], '-configfile', './restore.config')
-        nuget('sources', 'update', '-name', 'download', '-username', env['PRIVATE_FEED_USER_NAME'], '-configfile', './restore.config')
-        nuget('restore', 'packages.config', '-packagesdirectory', './packages', '-configfile', './restore.config')
+        nuget('sources', 'add',
+            '-name', 'download',
+            '-source', env['PRIVATE_FEED_URL'],
+            '-configfile', './restore.config')
+        nuget('sources', 'update',
+            '-name', 'download',
+            '-username', env['PRIVATE_FEED_USER_NAME'],
+            '-password', env['PRIVATE_FEED_PASSWORD'],
+            '-configfile', './restore.config')
+        nuget('restore', 'packages.config',
+            '-packagesdirectory', './packages',
+            '-configfile', './restore.config')
     }
     finally {
         // Need to wait a bit, config file stays open while nuget.exe shuts down
-        Thread.sleep(500)
+        Thread.sleep(1000)
         new File('./restore.config').delete()
     }
 }
 
 // Find a file with the given file name (case insensitive match) somewhere under packages
-def findFile(pattern)
+def findFileInPackagesDirectory(pattern)
 {
     def path
     new File('packages').traverse([nameFilter: ~"(?i)${pattern}\$"], { path = it.toString() })
@@ -168,8 +177,8 @@ def findFile(pattern)
 ensureEnvironment()
 download("http://www.nuget.org/nuget.exe")
 restorePackages()
-def hydraPath = findFile('hydra.exe')
+def hydraPath = findFileInPackagesDirectory('hydra.exe')
 hydraSpecs.each {
-    System.out.println("generating code for ${it.spec}")
+    System.out.println("generating code for ${it.specificationDllFileName}")
     generate hydraPath, it
 }
