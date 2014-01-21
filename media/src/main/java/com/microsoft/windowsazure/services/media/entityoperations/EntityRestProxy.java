@@ -239,6 +239,7 @@ public abstract class EntityRestProxy implements EntityContract
                 .queryParams(entityTypeActionOperation.getQueryParameters())
                 .accept(entityTypeActionOperation.getAcceptType())
                 .accept(MediaType.APPLICATION_XML_TYPE)
+                .type(MediaType.APPLICATION_XML_TYPE)
                 .entity(entityTypeActionOperation.getRequestContents(),
                         MediaType.APPLICATION_XML_TYPE);
 
@@ -277,7 +278,8 @@ public abstract class EntityRestProxy implements EntityContract
         Builder webResource = getResource(entityActionOperation.getUri())
                 .queryParams(entityActionOperation.getQueryParameters())
                 .accept(entityActionOperation.getAcceptType())
-                .accept(MediaType.APPLICATION_XML_TYPE);
+                .accept(MediaType.APPLICATION_XML_TYPE)
+                .type(MediaType.APPLICATION_XML_TYPE);
         if (entityActionOperation.getRequestContents() != null)
         {
             webResource = webResource.entity(
