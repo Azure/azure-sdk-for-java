@@ -63,9 +63,17 @@ public class MediaBlobContainerWriter implements WritableBlobContainerContract
         this.blobService = new BlobExceptionProcessor(this.restProxy);
     }
 
+    private MediaBlobContainerWriter(MediaBlobContainerWriter baseWriter, ServiceFilter filter)
+    {
+        this.containerName = baseWriter.containerName;
+        this.restProxy = baseWriter.restProxy.withFilter(filter);
+        this.blobService = new BlobExceptionProcessor(this.restProxy);
+    }
+    
     private MediaBlobContainerWriter(MediaBlobContainerWriter baseWriter)
     {
         this.containerName = baseWriter.containerName;
+        this.restProxy = baseWriter.restProxy;
         this.blobService = new BlobExceptionProcessor(this.restProxy);
     }
 
@@ -80,9 +88,7 @@ public class MediaBlobContainerWriter implements WritableBlobContainerContract
     public WritableBlobContainerContract withFilter(ServiceFilter filter)
     {
         MediaBlobContainerWriter mediaBlobContainerWriter = new MediaBlobContainerWriter(
-                this);
-        mediaBlobContainerWriter.setBlobContract(mediaBlobContainerWriter
-                .getBlobContract().withFilter(filter));
+                this, filter);
         return mediaBlobContainerWriter;
     }
 
