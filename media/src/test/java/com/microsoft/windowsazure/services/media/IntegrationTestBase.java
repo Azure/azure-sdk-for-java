@@ -218,6 +218,12 @@ public abstract class IntegrationTestBase
                     {
                         // Delete the temp assets associated with Job results.
                         service.delete(Asset.delete(assetInfo.getId()));
+                    } else if (assetInfo.getName().startsWith("Output"))
+                    {
+                    	service.delete(Asset.delete(assetInfo.getId()));
+                    } else if (assetInfo.getName().isEmpty())
+                    {
+                    	service.delete(Asset.delete(assetInfo.getId()));
                     }
                 } catch (Exception e)
                 {
