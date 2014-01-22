@@ -39,7 +39,7 @@ public class DefaultActionOperation implements EntityActionOperation
     protected String name;
 
     /** The content type. */
-    private MediaType contentType = MediaType.APPLICATION_ATOM_XML_TYPE;
+    private MediaType contentType = MediaType.APPLICATION_XML_TYPE;
 
     /** The accept type. */
     private MediaType acceptType = MediaType.APPLICATION_ATOM_XML_TYPE;
