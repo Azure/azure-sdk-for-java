@@ -23,7 +23,6 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 import com.microsoft.windowsazure.services.core.storage.utils.Utility;
-import com.microsoft.windowsazure.services.queue.client.CloudQueueClient;
 
 /**
  * Represents a Windows Azure storage account.
@@ -645,31 +644,6 @@ public final class CloudStorageAccount
                 this.getCredentials());
     }
 
-    /**
-     * Creates a new queue service client.
-     * 
-     * @return A client object that uses the Queue service endpoint.
-     */
-    public CloudQueueClient createCloudQueueClient()
-    {
-        if (this.getQueueEndpoint() == null)
-        {
-            throw new IllegalArgumentException("No queue endpoint configured.");
-        }
-
-        if (this.credentials == null)
-        {
-            throw new IllegalArgumentException("No credentials provided.");
-        }
-
-        if (!this.credentials.canCredentialsSignRequest())
-        {
-            throw new IllegalArgumentException(
-                    "CloudQueueClient requires a credential that can sign request");
-        }
-        return new CloudQueueClient(this.getQueueEndpoint(),
-                this.getCredentials());
-    }
 
     /**
      * Returns the endpoint for the Blob service, as configured for the storage

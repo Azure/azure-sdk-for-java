@@ -27,7 +27,6 @@ import com.microsoft.windowsazure.services.core.storage.StorageCredentialsShared
 import com.microsoft.windowsazure.services.core.storage.StorageException;
 import com.microsoft.windowsazure.services.core.storage.utils.UriQueryBuilder;
 import com.microsoft.windowsazure.services.core.storage.utils.Utility;
-import com.microsoft.windowsazure.services.queue.client.SharedAccessQueuePolicy;
 
 /**
  * RESERVED FOR INTERNAL USE. Contains helper methods for implementing shared
@@ -110,76 +109,7 @@ public class SharedAccessSignatureHelper
         return builder;
     }
 
-    /**
-     * Get the complete query builder for creating the Shared Access Signature
-     * query.
-     * 
-     * @param policy
-     *            The shared access policy to hash.
-     * @param groupPolicyIdentifier
-     *            An optional identifier for the policy.
-     * @param signature
-     *            The signature to use.
-     * @return The finished query builder
-     * @throws IllegalArgumentException
-     * @throws StorageException
-     */
-    public static UriQueryBuilder generateSharedAccessSignature(
-            final SharedAccessQueuePolicy policy,
-            final String groupPolicyIdentifier, final String signature)
-            throws StorageException
-    {
-        Utility.assertNotNull("signature", signature);
-
-        final UriQueryBuilder builder = new UriQueryBuilder();
-        builder.add(Constants.QueryConstants.SIGNED_VERSION,
-                Constants.HeaderConstants.TARGET_STORAGE_VERSION);
-
-        if (policy != null)
-        {
-            String permissions = SharedAccessQueuePolicy
-                    .permissionsToString(policy.getPermissions());
-
-            if (Utility.isNullOrEmpty(permissions))
-            {
-                permissions = null;
-            }
-
-            final String startString = Utility.getUTCTimeOrEmpty(policy
-                    .getSharedAccessStartTime());
-            if (!Utility.isNullOrEmpty(startString))
-            {
-                builder.add(Constants.QueryConstants.SIGNED_START, startString);
-            }
-
-            final String stopString = Utility.getUTCTimeOrEmpty(policy
-                    .getSharedAccessExpiryTime());
-            if (!Utility.isNullOrEmpty(stopString))
-            {
-                builder.add(Constants.QueryConstants.SIGNED_EXPIRY, stopString);
-            }
-
-            if (!Utility.isNullOrEmpty(permissions))
-            {
-                builder.add(Constants.QueryConstants.SIGNED_PERMISSIONS,
-                        permissions);
-            }
-        }
-
-        if (!Utility.isNullOrEmpty(groupPolicyIdentifier))
-        {
-            builder.add(Constants.QueryConstants.SIGNED_IDENTIFIER,
-                    groupPolicyIdentifier);
-        }
-
-        if (!Utility.isNullOrEmpty(signature))
-        {
-            builder.add(Constants.QueryConstants.SIGNATURE, signature);
-        }
-
-        return builder;
-    }
-
+  
     /**
      * Get the complete query builder for creating the Shared Access Signature
      * query.
@@ -317,48 +247,6 @@ public class SharedAccessSignatureHelper
 
     }
 
-    /**
-     * Get the signature hash embedded inside the Shared Access Signature for
-     * queue service.
-     * 
-     * @param policy
-     *            The shared access policy to hash.
-     * @param accessPolicyIdentifier
-     *            An optional identifier for the policy.
-     * @param resourceName
-     *            the resource name.
-     * @param client
-     *            the ServiceClient associated with the object.
-     * @param opContext
-     *            an object used to track the execution of the operation
-     * @return the signature hash embedded inside the Shared Access Signature.
-     * @throws InvalidKeyException
-     * @throws StorageException
-     */
-
-    public static String generateSharedAccessSignatureHash(
-            final SharedAccessQueuePolicy policy,
-            final String accessPolicyIdentifier, final String resourceName,
-            final ServiceClient client, final OperationContext opContext)
-            throws InvalidKeyException, StorageException
-    {
-
-        String permissionString = null;
-        Date startTime = null;
-        Date expiryTime = null;
-
-        if (policy != null)
-        {
-            permissionString = SharedAccessQueuePolicy
-                    .permissionsToString(policy.getPermissions());
-            startTime = policy.getSharedAccessStartTime();
-            expiryTime = policy.getSharedAccessExpiryTime();
-        }
-
-        return generateSharedAccessSignatureHash(permissionString, startTime,
-                expiryTime, resourceName, accessPolicyIdentifier, false, null,
-                null, null, null, client, opContext);
-    }
 
     /**
      * Get the signature hash embedded inside the Shared Access Signature for
