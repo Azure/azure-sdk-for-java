@@ -60,7 +60,16 @@ public class ManagementResourceStepdefs
         String[] parts = propertyName.split("\\.");
         Object object = getObject(parts);
  
-        Method method = object.getClass().getMethod("get" + TextUtility.ToPascalCase(parts[parts.length - 1]));
+        Method method;
+        if (parts[parts.length - 1].toLowerCase().equals("length"))
+        {
+            method = object.getClass().getMethod("length");
+        }
+        else
+        {
+            method = object.getClass().getMethod("get" + TextUtility.ToPascalCase(parts[parts.length - 1]));
+        }
+        
         Object result = method.invoke(object);
         
         // Assert
@@ -137,7 +146,8 @@ public class ManagementResourceStepdefs
         Object object = objects.get(parts[0]);
         for (int i = 1; i < (parts.length - 1); i++)
         {
-            if (parts[i].endsWith("]")) {
+            if (parts[i].endsWith("]"))
+            {
                 String propertyName = parts[i].substring(0, parts[i].lastIndexOf("["));
                 Method method = object.getClass().getMethod("get" + TextUtility.ToPascalCase(propertyName));
                 object = method.invoke(object);
@@ -145,7 +155,9 @@ public class ManagementResourceStepdefs
                 int index = Integer.parseInt(parts[i].substring(parts[i].lastIndexOf("[") + 1, parts[i].length() - 1));
                 Method indexMethod = object.getClass().getMethod("get", int.class);
                 object = indexMethod.invoke(object, index);
-            } else {
+            }
+            else
+            {
                 Method method = object.getClass().getMethod("get" + TextUtility.ToPascalCase(parts[i]));
                 object = method.invoke(object);   
             }
@@ -156,11 +168,16 @@ public class ManagementResourceStepdefs
     
     private String getJavaType(String csharpType)
     {
-        if (csharpType.equals("System.Int32")) {
+        if (csharpType.equals("System.Int32"))
+        {
             return "java.lang.Integer";
-        } else if (csharpType.equals("System.String")) {
+        }
+        else if (csharpType.equals("System.String"))
+        {
             return "java.lang.String";
-        } else {
+        }
+        else
+        {
             return csharpType
                     .replace("Microsoft.WindowsAzure.Management.Models",
                             "com.microsoft.windowsazure.management.models");

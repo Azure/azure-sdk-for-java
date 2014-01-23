@@ -33,5 +33,6 @@ Scenario: List AffinityGroups
     When I invoke "management.AffinityGroupsOperations.List" I get the result into "operationResponse"
     Then property with type "System.Int32" and path "operationResponse.StatusCode" should equal "200"
     And property with type "System.String" and path "operationResponse.RequestId" should not equal "null"
+    And property with type "System.Int32" and path "operationResponse.AffinityGroups.Length" should equal "1"
     And property with type "System.String" and path "operationResponse.AffinityGroups[0].Name" should equal "AF3"
     Then invoke "management.AffinityGroupsOperations.Delete" with parameter value "AF3" of type "System.String"
