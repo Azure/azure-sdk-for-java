@@ -19,7 +19,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-import com.microsoft.windowsazure.services.blob.client.SharedAccessBlobPolicy;
 import com.microsoft.windowsazure.services.core.storage.Constants;
 import com.microsoft.windowsazure.services.core.storage.OperationContext;
 import com.microsoft.windowsazure.services.core.storage.ServiceClient;
@@ -34,80 +33,6 @@ import com.microsoft.windowsazure.services.core.storage.utils.Utility;
  */
 public class SharedAccessSignatureHelper
 {
-    /**
-     * Get the complete query builder for creating the Shared Access Signature
-     * query.
-     * 
-     * @param policy
-     *            The shared access policy to hash.
-     * @param groupPolicyIdentifier
-     *            An optional identifier for the policy.
-     * @param resourceType
-     *            Either "b" for blobs or "c" for containers.
-     * @param signature
-     *            The signature to use.
-     * @return The finished query builder
-     * @throws IllegalArgumentException
-     * @throws StorageException
-     */
-    public static UriQueryBuilder generateSharedAccessSignature(
-            final SharedAccessBlobPolicy policy,
-            final String groupPolicyIdentifier, final String resourceType,
-            final String signature) throws StorageException
-    {
-        Utility.assertNotNullOrEmpty("resourceType", resourceType);
-        Utility.assertNotNull("signature", signature);
-
-        final UriQueryBuilder builder = new UriQueryBuilder();
-        builder.add(Constants.QueryConstants.SIGNED_VERSION,
-                Constants.HeaderConstants.TARGET_STORAGE_VERSION);
-
-        if (policy != null)
-        {
-            String permissions = SharedAccessBlobPolicy
-                    .permissionsToString(policy.getPermissions());
-
-            if (Utility.isNullOrEmpty(permissions))
-            {
-                permissions = null;
-            }
-
-            final String startString = Utility.getUTCTimeOrEmpty(policy
-                    .getSharedAccessStartTime());
-            if (!Utility.isNullOrEmpty(startString))
-            {
-                builder.add(Constants.QueryConstants.SIGNED_START, startString);
-            }
-
-            final String stopString = Utility.getUTCTimeOrEmpty(policy
-                    .getSharedAccessExpiryTime());
-            if (!Utility.isNullOrEmpty(stopString))
-            {
-                builder.add(Constants.QueryConstants.SIGNED_EXPIRY, stopString);
-            }
-
-            if (!Utility.isNullOrEmpty(permissions))
-            {
-                builder.add(Constants.QueryConstants.SIGNED_PERMISSIONS,
-                        permissions);
-            }
-        }
-
-        builder.add(Constants.QueryConstants.SIGNED_RESOURCE, resourceType);
-
-        if (!Utility.isNullOrEmpty(groupPolicyIdentifier))
-        {
-            builder.add(Constants.QueryConstants.SIGNED_IDENTIFIER,
-                    groupPolicyIdentifier);
-        }
-
-        if (!Utility.isNullOrEmpty(signature))
-        {
-            builder.add(Constants.QueryConstants.SIGNATURE, signature);
-        }
-
-        return builder;
-    }
 
   
     /**
@@ -204,49 +129,6 @@ public class SharedAccessSignatureHelper
 
         return builder;
     }
-
-    /**
-     * Get the signature hash embedded inside the Shared Access Signature for
-     * blob service.
-     * 
-     * @param policy
-     *            The shared access policy to hash.
-     * @param accessPolicyIdentifier
-     *            An optional identifier for the policy.
-     * @param resourceName
-     *            the resource name.
-     * @param client
-     *            the ServiceClient associated with the object.
-     * @param opContext
-     *            an object used to track the execution of the operation
-     * @return the signature hash embedded inside the Shared Access Signature.
-     * @throws InvalidKeyException
-     * @throws StorageException
-     */
-    public static String generateSharedAccessSignatureHash(
-            final SharedAccessBlobPolicy policy,
-            final String accessPolicyIdentifier, final String resourceName,
-            final ServiceClient client, final OperationContext opContext)
-            throws InvalidKeyException, StorageException
-    {
-        String permissionString = null;
-        Date startTime = null;
-        Date expiryTime = null;
-
-        if (policy != null)
-        {
-            permissionString = SharedAccessBlobPolicy
-                    .permissionsToString(policy.getPermissions());
-            startTime = policy.getSharedAccessStartTime();
-            expiryTime = policy.getSharedAccessExpiryTime();
-        }
-
-        return generateSharedAccessSignatureHash(permissionString, startTime,
-                expiryTime, resourceName, accessPolicyIdentifier, false, null,
-                null, null, null, client, opContext);
-
-    }
-
 
     /**
      * Get the signature hash embedded inside the Shared Access Signature for

@@ -14,7 +14,6 @@
  */
 package com.microsoft.windowsazure.services.core.storage;
 
-import com.microsoft.windowsazure.services.blob.client.CloudBlobClient;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
@@ -615,33 +614,6 @@ public final class CloudStorageAccount
                         : Constants.HTTP, storageCredentials.getAccountName())),
                 new URI(getDefaultTableEndpoint(useHttps ? Constants.HTTPS
                         : Constants.HTTP, storageCredentials.getAccountName())));
-    }
-
-    /**
-     * Creates a new Blob service client.
-     * 
-     * @return A {@link CloudBlobClient} that represents the cloud blob client.
-     * 
-     */
-    public CloudBlobClient createCloudBlobClient()
-    {
-        if (this.getBlobEndpoint() == null)
-        {
-            throw new IllegalArgumentException("No blob endpoint configured.");
-        }
-
-        if (this.credentials == null)
-        {
-            throw new IllegalArgumentException("No credentials provided.");
-        }
-
-        if (!this.credentials.canCredentialsSignRequest())
-        {
-            throw new IllegalArgumentException(
-                    "CloudBlobClient requires a credential that can sign request");
-        }
-        return new CloudBlobClient(this.getBlobEndpoint(),
-                this.getCredentials());
     }
 
 
