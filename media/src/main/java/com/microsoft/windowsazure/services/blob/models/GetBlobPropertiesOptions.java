@@ -15,7 +15,6 @@
 package com.microsoft.windowsazure.services.blob.models;
 
 import com.microsoft.windowsazure.services.blob.BlobContract;
-import com.microsoft.windowsazure.services.core.storage.AccessCondition;
 import com.microsoft.windowsazure.core.utils.AccessConditionHeader;
 
 /**

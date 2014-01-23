@@ -12,13 +12,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.microsoft.windowsazure.services.core.storage;
+package com.microsoft.windowsazure.services.blob.models;
 
 import java.net.HttpURLConnection;
 import java.util.Date;
 
-import com.microsoft.windowsazure.services.core.storage.utils.Utility;
-import com.microsoft.windowsazure.services.core.storage.utils.implementation.BaseRequest;
+import com.microsoft.windowsazure.core.utils.Utility;
+
 
 /**
  * Represents a set of access conditions to be used for operations against the
@@ -281,7 +281,8 @@ public final class AccessCondition
         {
             if (!Utility.isNullOrEmpty(this.leaseID))
             {
-                BaseRequest.addLeaseId(request, this.leaseID);
+                addOptionalHeader(request, "x-ms-lease-id", this.leaseID);
+                
             }
 
             if (this.ifModifiedSinceDate != null)
@@ -470,6 +471,25 @@ public final class AccessCondition
         } else
         {
             return String.format("\"%s\"", inTag);
+        }
+    }
+    
+    /**
+     * Adds the optional header.
+     * 
+     * @param request
+     *            a HttpURLConnection for the operation.
+     * @param name
+     *            the metadata name.
+     * @param value
+     *            the metadata value.
+     */
+    public static void addOptionalHeader(final HttpURLConnection request,
+            final String name, final String value)
+    {
+        if (value != null && !value.equals(Constants.EMPTY_STRING))
+        {
+            request.setRequestProperty(name, value);
         }
     }
 }

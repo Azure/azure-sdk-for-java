@@ -34,7 +34,7 @@ import javax.crypto.CipherInputStream;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
-import com.microsoft.windowsazure.services.core.storage.utils.Base64;
+import com.microsoft.windowsazure.core.utils.Base64;
 
 class EncryptionHelper
 {
