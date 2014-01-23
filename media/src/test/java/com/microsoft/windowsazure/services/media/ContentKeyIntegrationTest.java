@@ -30,8 +30,8 @@ import java.util.UUID;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.microsoft.windowsazure.core.utils.Base64;
 import com.microsoft.windowsazure.exception.ServiceException;
-import com.microsoft.windowsazure.services.core.storage.utils.Base64;
 import com.microsoft.windowsazure.services.media.models.ContentKey;
 import com.microsoft.windowsazure.services.media.models.ContentKeyInfo;
 import com.microsoft.windowsazure.services.media.models.ContentKeyType;

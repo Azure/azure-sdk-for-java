@@ -20,6 +20,7 @@ import com.microsoft.windowsazure.core.pipeline.filter.ServiceResponseFilter;
 import com.microsoft.windowsazure.core.pipeline.jersey.ClientFilterAdapter;
 import com.microsoft.windowsazure.core.pipeline.jersey.ClientFilterRequestAdapter;
 import com.microsoft.windowsazure.core.pipeline.jersey.ClientFilterResponseAdapter;
+
 import java.util.Arrays;
 
 import javax.inject.Inject;
@@ -123,4 +124,5 @@ public class BlobRestProxy extends BlobOperationRestProxy implements
         return new BlobRestProxy(getChannel(), newFilters, getAccountName(),
                 getUrl(), this.sharedKeyFilter, getDateMapper());
     }
+
 }

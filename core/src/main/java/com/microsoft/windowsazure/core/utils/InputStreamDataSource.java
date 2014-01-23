@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.microsoft.windowsazure.services.core.storage.utils.implementation;
+package com.microsoft.windowsazure.core.utils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,39 +20,33 @@ import java.io.OutputStream;
 
 import javax.activation.DataSource;
 
-public class InputStreamDataSource implements DataSource
-{
+public class InputStreamDataSource implements DataSource {
     private final InputStream stream;
     private final String contentType;
 
-    public InputStreamDataSource(InputStream stream, String contentType)
-    {
+    public InputStreamDataSource(InputStream stream, String contentType) {
         this.stream = stream;
         this.contentType = contentType;
 
     }
 
     @Override
-    public String getContentType()
-    {
+    public String getContentType() {
         return contentType;
     }
 
     @Override
-    public InputStream getInputStream() throws IOException
-    {
+    public InputStream getInputStream() throws IOException {
         return stream;
     }
 
     @Override
-    public String getName()
-    {
+    public String getName() {
         return null;
     }
 
     @Override
-    public OutputStream getOutputStream() throws IOException
-    {
+    public OutputStream getOutputStream() throws IOException {
         return null;
     }
 }
