@@ -73,6 +73,152 @@ import com.microsoft.windowsazure.exception.ServiceException;
  */
 public interface BlobContract extends JerseyFilterableService<BlobContract>
 {
+
+    /**
+     * Marks a blob for deletion.
+     * <p>
+     * This method marks the properties, metadata, and content of the blob specified by the <em>blob</em> and
+     * <em>container</em> parameters for deletion.
+     * <p>
+     * When a blob is successfully deleted, it is immediately removed from the storage account's index and is no longer
+     * accessible to clients. The blob's data is later removed from the service during garbage collection.
+     * <p>
+     * Note that in order to delete a blob, you must delete all of its snapshots. You can delete an individual snapshot,
+     * only the snapshots, or both the blob and its snapshots with the
+     * {@link #deleteBlob(String, String, DeleteBlobOptions)} method.
+     * 
+     * @param container
+     *            A {@link String} containing the name of the blob's container.
+     * @param blob
+     *            A {@link String} containing the name of the blob to delete.
+     * @throws ServiceException
+     *             if an error occurs accessing the storage service.
+     */
+    void deleteBlob(String container, String blob) throws ServiceException;
+
+    /**
+     * Marks a blob or snapshot for deletion, using the specified options.
+     * <p>
+     * This method marks the properties, metadata, and content of the blob or snapshot specified by the <em>blob</em>
+     * and <em>container</em> parameters for deletion. Use the {@link DeleteBlobOptions options} parameter to set an
+     * optional server timeout for the operation, a snapshot timestamp to specify an individual snapshot to delete, a
+     * blob lease ID to delete a blob with an active lease, a flag indicating whether to delete all snapshots but not
+     * the blob, or both the blob and all snapshots, and any access conditions to satisfy.
+     * <p>
+     * When a blob is successfully deleted, it is immediately removed from the storage account's index and is no longer
+     * accessible to clients. The blob's data is later removed from the service during garbage collection.
+     * <p>
+     * If the blob has an active lease, the client must specify a valid lease ID in the <em>options</em> parameter in
+     * order to delete it.
+     * <p>
+     * If a blob has a large number of snapshots, it's possible that the delete blob operation will time out. If this
+     * happens, the client should retry the request.
+     * 
+     * 
+     * @param container
+     *            A {@link String} containing the name of the blob's container.
+     * @param blob
+     *            A {@link String} containing the name of the blob to delete.
+     * @param options
+     *            A {@link DeleteBlobOptions} instance containing options for the request.
+     * @throws ServiceException
+     *             if an error occurs accessing the storage service.
+     */
+    void deleteBlob(String container, String blob, DeleteBlobOptions options) throws ServiceException;
+	
+    /**
+     * Gets a list of the containers in the blob storage account.
+     * 
+     * @return
+     *         A {@link ListContainersResult} reference to the result of the list containers operation.
+     * @throws ServiceException
+     *             if an error occurs accessing the storage service.
+     */
+    ListContainersResult listContainers() throws ServiceException;
+
+    /**
+     * Gets a list of the containers in the blob storage account using the specified options.
+     * <p>
+     * Use the {@link ListContainersOptions options} parameter to specify options, including a server response timeout
+     * for the request, a container name prefix filter, a marker for continuing requests, the maximum number of results
+     * to return in a request, and whether to include container metadata in the results.
+     * 
+     * @param options
+     *            A {@link ListContainersOptions} instance containing options for the request.
+     * @return
+     *         A {@link ListContainersResult} reference to the result of the list containers operation.
+     * @throws ServiceException
+     *             if an error occurs accessing the storage service.
+     */
+    ListContainersResult listContainers(ListContainersOptions options) throws ServiceException;
+
+    /**
+     * Creates a container with the specified name.
+     * <p>
+     * Container names must be unique within a storage account, and must follow the naming rules specified in <a
+     * href="http://msdn.microsoft.com/en-us/library/windowsazure/dd135715.aspx">Naming and Referencing Containers,
+     * Blobs, and Metadata</a>.
+     * 
+     * @param container
+     *            A {@link String} containing the name of the container to create.
+     * @throws ServiceException
+     *             if an error occurs accessing the storage service.
+     */
+    void createContainer(String container) throws ServiceException;
+
+    /**
+     * Creates a container with the specified name, using the specified options.
+     * <p>
+     * Use the {@link CreateContainerOptions options} parameter to specify options, including a server response timeout
+     * for the request, metadata to set on the container, and the public access level for container and blob data.
+     * Container names must be unique within a storage account, and must follow the naming rules specified in <a
+     * href="http://msdn.microsoft.com/en-us/library/windowsazure/dd135715.aspx">Naming and Referencing Containers,
+     * Blobs, and Metadata</a>.
+     * 
+     * @param container
+     *            A {@link String} containing the name of the container to create.
+     * @param options
+     *            A {@link CreateContainerOptions} instance containing options for the request.
+     * @throws ServiceException
+     *             if an error occurs accessing the storage service.
+     */
+    void createContainer(String container, CreateContainerOptions options) throws ServiceException;
+
+    /**
+     * Marks a container for deletion. The container and any blobs contained within it are later deleted during garbage
+     * collection.
+     * <p>
+     * When a container is deleted, a container with the same name cannot be created for at least 30 seconds; the
+     * container may not be available for more than 30 seconds if the service is still processing the request.
+     * 
+     * @param container
+     *            A {@link String} containing the name of the container to delete.
+     * @throws ServiceException
+     *             if an error occurs accessing the storage service.
+     */
+    void deleteContainer(String container) throws ServiceException;
+
+    /**
+     * Marks a container for deletion, using the specified options. The container and any blobs contained within it are
+     * later deleted during garbage collection.
+     * <p>
+     * Use the {@link DeleteContainerOptions options} parameter to specify the server response timeout and any access
+     * conditions for the container deletion operation. Access conditions can be used to make the operation conditional
+     * on the value of the Etag or last modified time of the container.
+     * <p>
+     * When a container is deleted, a container with the same name cannot be created for at least 30 seconds; the
+     * container may not be available for more than 30 seconds if the service is still processing the request.
+     * 
+     * @param container
+     *            A {@link String} containing the name of the container to delete.
+     * @param options
+     *            A {@link DeleteContainerOptions} instance containing options for the request.
+     * @throws ServiceException
+     *             if an error occurs accessing the storage service.
+     */
+    void deleteContainer(String container, DeleteContainerOptions options) throws ServiceException;
+
+	
     /**
      * Creates a block blob from a content stream.
      * 
@@ -274,5 +420,126 @@ public interface BlobContract extends JerseyFilterableService<BlobContract>
      */
     void commitBlobBlocks(String container, String blob, BlockList blockList,
             CommitBlobBlocksOptions options) throws ServiceException;
+
+
+    /**
+     * Lists the blocks of a blob.
+     * <p>
+     * This method lists the committed blocks of the block blob specified by the <em>blob</em> and <em>container</em>
+     * parameters.
+     * 
+     * @param container
+     *            A {@link String} containing the name of the blob's container.
+     * @param blob
+     *            A {@link String} containing the name of the block blob to list.
+     * @return
+     *         A {@link ListBlobBlocksResult} instance containing the list of blocks returned for the request.
+     * @throws ServiceException
+     *             if an error occurs accessing the storage service.
+     */
+    ListBlobBlocksResult listBlobBlocks(String container, String blob) throws ServiceException;
+
+    /**
+     * Lists the blocks of a blob, using the specified options.
+     * <p>
+     * This method lists the committed blocks, uncommitted blocks, or both, of the block blob specified by the
+     * <em>blob</em> and <em>container</em> parameters. Use the {@link ListBlobBlocksOptions options} parameter to
+     * specify an optional server timeout for the operation, the lease ID if the blob has an active lease, the snapshot
+     * timestamp to get the committed blocks of a snapshot, whether to return the committed block list, and whether to
+     * return the uncommitted block list. By default, only the committed blocks of the blob are returned.
+     * 
+     * @param container
+     *            A {@link String} containing the name of the blob's container.
+     * @param blob
+     *            A {@link String} containing the name of the block blob to list.
+     * @param options
+     *            A {@link ListBlobBlocksOptions} instance containing options for the request.
+     * @return
+     *         A {@link ListBlobBlocksResult} instance containing the list of blocks returned for the request.
+     * @throws ServiceException
+     *             if an error occurs accessing the storage service.
+     */
+    ListBlobBlocksResult listBlobBlocks(String container, String blob, ListBlobBlocksOptions options)
+            throws ServiceException;
+
+
+    /**
+     * Gets the properties of a blob.
+     * <p>
+     * This method lists the properties of the blob specified by the <em>blob</em> and <em>container</em> parameters.
+     * 
+     * @param container
+     *            A {@link String} containing the name of the blob's container.
+     * @param blob
+     *            A {@link String} containing the name of the blob to get properties for.
+     * @return
+     *         A {@link GetBlobPropertiesResult} instance containing the blob properties returned for the request.
+     * @throws ServiceException
+     *             if an error occurs accessing the storage service.
+     */
+    GetBlobPropertiesResult getBlobProperties(String container, String blob) throws ServiceException;
+
+    /**
+     * Gets the properties of a blob, using the specified options.
+     * <p>
+     * This method lists the properties of the blob specified by the <em>blob</em> and <em>container</em> parameters.
+     * Use the {@link GetBlobPropertiesOptions options} parameter to set an optional server timeout for the operation,
+     * the lease ID if the blob has an active lease, the snapshot timestamp to get the properties of a snapshot, and any
+     * access conditions for the request.
+     * 
+     * @param container
+     *            A {@link String} containing the name of the blob's container.
+     * @param blob
+     *            A {@link String} containing the name of the blob to get properties for.
+     * @param options
+     *            A {@link GetBlobPropertiesOptions} instance containing options for the request.
+     * @return
+     *         A {@link GetBlobPropertiesResult} instance containing the blob properties returned for the request.
+     * @throws ServiceException
+     *             if an error occurs accessing the storage service.
+     */
+    GetBlobPropertiesResult getBlobProperties(String container, String blob, GetBlobPropertiesOptions options)
+            throws ServiceException;
+
+
+    /**
+     * Gets the properties, metadata, and content of a blob.
+     * <p>
+     * This method gets the properties, metadata, and content of the blob specified by the <em>blob</em> and
+     * <em>container</em> parameters.
+     * 
+     * @param container
+     *            A {@link String} containing the name of the blob's container.
+     * @param blob
+     *            A {@link String} containing the name of the blob to get.
+     * @return
+     *         A {@link GetBlobResult} instance containing the properties, metadata, and content of the blob from the
+     *         server response to the request.
+     * @throws ServiceException
+     *             if an error occurs accessing the storage service.
+     */
+    GetBlobResult getBlob(String container, String blob) throws ServiceException;
+
+    /**
+     * Gets the properties, metadata, and content of a blob or blob snapshot, using the specified options.
+     * <p>
+     * This method gets the properties, metadata, and content of the blob specified by the <em>blob</em> and
+     * <em>container</em> parameters. Use the {@link GetBlobOptions options} parameter to set an optional server timeout
+     * for the operation, a snapshot timestamp to specify a snapshot, a blob lease ID to get a blob with an active
+     * lease, an optional start and end range for blob content to return, and any access conditions to satisfy.
+     * 
+     * @param container
+     *            A {@link String} containing the name of the blob's container.
+     * @param blob
+     *            A {@link String} containing the name of the blob to get.
+     * @param options
+     *            A {@link GetBlobOptions} instance containing options for the request.
+     * @return
+     *         A {@link GetBlobResult} instance containing the properties, metadata, and content of the blob from the
+     *         server response to the request.
+     * @throws ServiceException
+     *             if an error occurs accessing the storage service.
+     */
+    GetBlobResult getBlob(String container, String blob, GetBlobOptions options) throws ServiceException;
 
 }

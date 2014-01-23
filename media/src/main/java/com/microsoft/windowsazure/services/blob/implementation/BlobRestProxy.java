@@ -28,9 +28,21 @@ import javax.inject.Named;
 
 import com.microsoft.windowsazure.services.blob.BlobConfiguration;
 import com.microsoft.windowsazure.services.blob.BlobContract;
+import com.microsoft.windowsazure.services.blob.models.CreateContainerOptions;
+import com.microsoft.windowsazure.services.blob.models.DeleteBlobOptions;
+import com.microsoft.windowsazure.services.blob.models.DeleteContainerOptions;
+import com.microsoft.windowsazure.services.blob.models.GetBlobOptions;
+import com.microsoft.windowsazure.services.blob.models.GetBlobPropertiesOptions;
+import com.microsoft.windowsazure.services.blob.models.GetBlobPropertiesResult;
+import com.microsoft.windowsazure.services.blob.models.GetBlobResult;
+import com.microsoft.windowsazure.services.blob.models.ListBlobBlocksOptions;
+import com.microsoft.windowsazure.services.blob.models.ListBlobBlocksResult;
+import com.microsoft.windowsazure.services.blob.models.ListContainersOptions;
+import com.microsoft.windowsazure.services.blob.models.ListContainersResult;
 import com.microsoft.windowsazure.core.RFC1123DateConverter;
 import com.microsoft.windowsazure.core.pipeline.jersey.ServiceFilter;
 import com.microsoft.windowsazure.core.pipeline.jersey.HttpURLConnectionClient;
+import com.microsoft.windowsazure.exception.ServiceException;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.filter.ClientFilter;
 

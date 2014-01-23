@@ -234,5 +234,189 @@ public class BlobExceptionProcessor implements BlobContract
             throw processCatch(new ServiceException(e));
         }
     }
-  
+
+    @Override
+    public void deleteBlob(String container, String blob) throws ServiceException {
+        try {
+            service.deleteBlob(container, blob);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public void deleteBlob(String container, String blob, DeleteBlobOptions options) throws ServiceException {
+        try {
+            service.deleteBlob(container, blob, options);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public ListContainersResult listContainers() throws ServiceException {
+        try {
+            return service.listContainers();
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public ListContainersResult listContainers(ListContainersOptions options) throws ServiceException {
+        try {
+            return service.listContainers(options);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public void createContainer(String container) throws ServiceException {
+        try {
+            service.createContainer(container);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public void createContainer(String container, CreateContainerOptions options) throws ServiceException {
+        try {
+            service.createContainer(container, options);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public void deleteContainer(String container) throws ServiceException {
+        try {
+            service.deleteContainer(container);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public void deleteContainer(String container, DeleteContainerOptions options) throws ServiceException {
+        try {
+            service.deleteContainer(container, options);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public ListBlobBlocksResult listBlobBlocks(String container, String blob) throws ServiceException {
+        try {
+            return service.listBlobBlocks(container, blob);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public ListBlobBlocksResult listBlobBlocks(String container, String blob, ListBlobBlocksOptions options)
+            throws ServiceException {
+        try {
+            return service.listBlobBlocks(container, blob, options);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public GetBlobPropertiesResult getBlobProperties(String container, String blob) throws ServiceException {
+        try {
+            return service.getBlobProperties(container, blob);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public GetBlobPropertiesResult getBlobProperties(String container, String blob, GetBlobPropertiesOptions options)
+            throws ServiceException {
+        try {
+            return service.getBlobProperties(container, blob, options);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public GetBlobResult getBlob(String container, String blob) throws ServiceException {
+        try {
+            return service.getBlob(container, blob);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
+    @Override
+    public GetBlobResult getBlob(String container, String blob, GetBlobOptions options) throws ServiceException {
+        try {
+            return service.getBlob(container, blob, options);
+        }
+        catch (UniformInterfaceException e) {
+            throw processCatch(new ServiceException(e));
+        }
+        catch (ClientHandlerException e) {
+            throw processCatch(new ServiceException(e));
+        }
+    }
+
 }
