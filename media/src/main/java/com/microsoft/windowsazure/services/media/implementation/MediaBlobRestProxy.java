@@ -151,4 +151,5 @@ class MediaBlobRestProxy extends BlobOperationRestProxy
         return new MediaBlobRestProxy(getChannel(), newFilters,
                 getAccountName(), getUrl(), this.tokenFilter, getDateMapper());
     }
+
 }

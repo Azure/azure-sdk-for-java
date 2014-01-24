@@ -15,7 +15,6 @@
 
 package com.microsoft.windowsazure.services.media.implementation;
 
-import com.microsoft.windowsazure.services.core.storage.utils.implementation.InputStreamDataSource;
 import static org.junit.Assert.*;
 
 import java.io.ByteArrayInputStream;
@@ -23,6 +22,8 @@ import java.io.ByteArrayInputStream;
 import javax.activation.DataSource;
 
 import org.junit.Test;
+
+import com.microsoft.windowsazure.core.utils.InputStreamDataSource;
 
 public class StatusLineTest
 {

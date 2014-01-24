@@ -64,7 +64,7 @@ public class ODataSerializationFromJerseyTest extends IntegrationTestBase
 
         ODataAtomMarshaller m = new ODataAtomMarshaller();
         AssetType requestData = new AssetType();
-        requestData.setName("firstTestAsset");
+        requestData.setName(testAssetPrefix + "firstTestAsset");
         requestData.setAlternateId("some external id");
 
         AssetInfo newAsset = assetResource.type(MediaType.APPLICATION_ATOM_XML)
@@ -72,7 +72,7 @@ public class ODataSerializationFromJerseyTest extends IntegrationTestBase
                 .post(AssetInfo.class, m.marshalEntry(requestData));
 
         Assert.assertNotNull(newAsset);
-        Assert.assertEquals("firstTestAsset", newAsset.getName());
+        Assert.assertEquals(testAssetPrefix + "firstTestAsset", newAsset.getName());
         Assert.assertEquals("some external id", newAsset.getAlternateId());
     }
 
@@ -105,9 +105,9 @@ public class ODataSerializationFromJerseyTest extends IntegrationTestBase
     {
         MediaContract client = createService();
         AssetInfo newAsset = client.create(Asset.create().setName(
-                "secondTestAsset"));
+                testAssetPrefix + "secondTestAsset"));
 
-        Assert.assertEquals("secondTestAsset", newAsset.getName());
+        Assert.assertEquals(testAssetPrefix + "secondTestAsset", newAsset.getName());
     }
 
     @Test

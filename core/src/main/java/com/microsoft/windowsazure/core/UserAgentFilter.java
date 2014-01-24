@@ -92,7 +92,7 @@ public class UserAgentFilter implements ServiceRequestFilter
             InputStream inputStream = getClass()
                     .getClassLoader()
                     .getResourceAsStream(
-                            "META-INF/maven/com.microsoft.windowsazure/microsoft-windowsazure-api/pom.properties");
+                            "META-INF/maven/com.microsoft.windowsazure/microsoft-windowsazure-api-core/pom.properties");
             if (inputStream != null)
             {
                 properties.load(inputStream);
