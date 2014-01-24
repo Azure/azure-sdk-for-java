@@ -252,6 +252,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new DatabaseCreateResponse();
             DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory2.setNamespaceAware(true);
             DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
             Document responseDoc = documentBuilder2.parse(responseContent);
             
@@ -659,6 +660,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new DatabaseGetResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
@@ -899,7 +901,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/sqlservers/servers/" + serverName + "/databases?contentview=generic";
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/sqlservers/servers/" + serverName + "/databases" + "?" + "contentview=generic";
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -937,6 +939,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new DatabaseListResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
@@ -1299,6 +1302,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new DatabaseUpdateResponse();
             DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory2.setNamespaceAware(true);
             DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
             Document responseDoc = documentBuilder2.parse(responseContent);
             

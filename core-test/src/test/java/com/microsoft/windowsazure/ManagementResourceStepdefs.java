@@ -79,9 +79,11 @@ public class ManagementResourceStepdefs
         	if (propertyValue.equals(TextUtility.convertStringTo(value, propertyType)))
         	{
         		objects.put(objectName, arrayObject.get(i));
-        		break;
+        		return;
         	}
         }
+        
+        throw new NullPointerException();
     }
     
     private Object getPropertyValue(Object parent, String propertyName) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException

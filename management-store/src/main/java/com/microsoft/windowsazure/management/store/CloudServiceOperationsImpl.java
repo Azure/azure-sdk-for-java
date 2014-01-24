@@ -481,6 +481,7 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new CloudServiceListResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             

@@ -342,6 +342,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new WebSiteOperationStatusResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
@@ -369,7 +370,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
                     Attr nilAttribute = errorsSequenceElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                     if (nilAttribute != null)
                     {
-                        isNil = nilAttribute.getValue() == "true";
+                        isNil = "true".equals(nilAttribute.getValue());
                     }
                     if (isNil == false)
                     {
@@ -387,7 +388,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
                                 Attr nilAttribute2 = codeElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                                 if (nilAttribute2 != null)
                                 {
-                                    isNil2 = nilAttribute2.getValue() == "true";
+                                    isNil2 = "true".equals(nilAttribute2.getValue());
                                 }
                                 if (isNil2 == false)
                                 {
@@ -405,7 +406,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
                                 Attr nilAttribute3 = messageElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                                 if (nilAttribute3 != null)
                                 {
-                                    isNil3 = nilAttribute3.getValue() == "true";
+                                    isNil3 = "true".equals(nilAttribute3.getValue());
                                 }
                                 if (isNil3 == false)
                                 {
@@ -423,7 +424,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
                                 Attr nilAttribute4 = extendedCodeElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                                 if (nilAttribute4 != null)
                                 {
-                                    isNil4 = nilAttribute4.getValue() == "true";
+                                    isNil4 = "true".equals(nilAttribute4.getValue());
                                 }
                                 if (isNil4 == false)
                                 {
@@ -441,7 +442,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
                                 Attr nilAttribute5 = messageTemplateElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                                 if (nilAttribute5 != null)
                                 {
-                                    isNil5 = nilAttribute5.getValue() == "true";
+                                    isNil5 = "true".equals(nilAttribute5.getValue());
                                 }
                                 if (isNil5 == false)
                                 {
@@ -459,7 +460,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
                                 Attr nilAttribute6 = parametersSequenceElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                                 if (nilAttribute6 != null)
                                 {
-                                    isNil6 = nilAttribute6.getValue() == "true";
+                                    isNil6 = "true".equals(nilAttribute6.getValue());
                                 }
                                 if (isNil6 == false)
                                 {
@@ -479,7 +480,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
                                 Attr nilAttribute7 = innerErrorsElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                                 if (nilAttribute7 != null)
                                 {
-                                    isNil7 = nilAttribute7.getValue() == "true";
+                                    isNil7 = "true".equals(nilAttribute7.getValue());
                                 }
                                 if (isNil7 == false)
                                 {
@@ -512,7 +513,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
                     Attr nilAttribute8 = geoMasterOperationIdElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                     if (nilAttribute8 != null)
                     {
-                        isNil8 = nilAttribute8.getValue() == "true";
+                        isNil8 = "true".equals(nilAttribute8.getValue());
                     }
                     if (isNil8 == false)
                     {
@@ -530,7 +531,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
                     Attr nilAttribute9 = idElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                     if (nilAttribute9 != null)
                     {
-                        isNil9 = nilAttribute9.getValue() == "true";
+                        isNil9 = "true".equals(nilAttribute9.getValue());
                     }
                     if (isNil9 == false)
                     {
@@ -560,7 +561,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
                     Attr nilAttribute10 = nameElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                     if (nilAttribute10 != null)
                     {
-                        isNil10 = nilAttribute10.getValue() == "true";
+                        isNil10 = "true".equals(nilAttribute10.getValue());
                     }
                     if (isNil10 == false)
                     {
@@ -645,7 +646,8 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
         }
         
         // Construct URL
-        String url = this.getBaseUri() + "/" + this.getCredentials().getSubscriptionId() + "/services?service=website&action=register";
+        String url = this.getBaseUri() + "/" + this.getCredentials().getSubscriptionId() + "/services" + "?" + "&" + "action=register";
+        url = url + "service=website";
         
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
@@ -746,7 +748,8 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
         }
         
         // Construct URL
-        String url = this.getBaseUri() + "/" + this.getCredentials().getSubscriptionId() + "/services?service=website&action=unregister";
+        String url = this.getBaseUri() + "/" + this.getCredentials().getSubscriptionId() + "/services" + "?" + "&" + "action=unregister";
+        url = url + "service=website";
         
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);

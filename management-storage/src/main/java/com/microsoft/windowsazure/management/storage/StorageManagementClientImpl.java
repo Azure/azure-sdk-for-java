@@ -301,6 +301,7 @@ public class StorageManagementClientImpl extends ServiceClient<StorageManagement
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new StorageOperationStatusResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             

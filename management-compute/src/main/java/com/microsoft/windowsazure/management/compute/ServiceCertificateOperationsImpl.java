@@ -805,6 +805,7 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new ServiceCertificateGetResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
@@ -945,6 +946,7 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new ServiceCertificateListResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             

@@ -485,6 +485,7 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new ManagementCertificateGetResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
@@ -651,6 +652,7 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new ManagementCertificateListResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             

@@ -270,6 +270,7 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new ServerFarmCreateResponse();
             DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory2.setNamespaceAware(true);
             DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
             Document responseDoc = documentBuilder2.parse(responseContent);
             
@@ -602,6 +603,7 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new ServerFarmGetResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
@@ -796,6 +798,7 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new ServerFarmListResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
@@ -1064,6 +1067,7 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new ServerFarmUpdateResponse();
             DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory2.setNamespaceAware(true);
             DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
             Document responseDoc = documentBuilder2.parse(responseContent);
             

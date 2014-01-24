@@ -79,18 +79,6 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
         return this.dac;
     }
     
-    private DatabaseCopyOperations databaseCopies;
-    
-    /**
-    * The SQL Database Management API includes operations for managing SQL
-    * Database Copies for a subscription.
-    * @return The DatabaseCopiesOperations value.
-    */
-    public DatabaseCopyOperations getDatabaseCopiesOperations()
-    {
-        return this.databaseCopies;
-    }
-    
     private DatabaseOperationOperations databaseOperations;
     
     /**
@@ -169,7 +157,6 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
     {
         super(httpBuilder, executorService);
         this.dac = new DacOperationsImpl(this);
-        this.databaseCopies = new DatabaseCopyOperationsImpl(this);
         this.databaseOperations = new DatabaseOperationOperationsImpl(this);
         this.databases = new DatabaseOperationsImpl(this);
         this.firewallRules = new FirewallRuleOperationsImpl(this);

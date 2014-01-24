@@ -165,7 +165,7 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/sqlservers/servers/" + serverName + "?op=ResetPassword";
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/sqlservers/servers/" + serverName + "?" + "op=ResetPassword";
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
@@ -388,6 +388,7 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new ServerCreateResponse();
             DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory2.setNamespaceAware(true);
             DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
             Document responseDoc = documentBuilder2.parse(responseContent);
             
@@ -620,6 +621,7 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new ServerListResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             

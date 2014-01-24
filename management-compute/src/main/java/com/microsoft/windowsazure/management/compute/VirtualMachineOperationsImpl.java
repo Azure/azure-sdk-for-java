@@ -42,6 +42,8 @@ import com.microsoft.windowsazure.management.compute.models.LoadBalancerProbe;
 import com.microsoft.windowsazure.management.compute.models.LoadBalancerProbeTransportProtocol;
 import com.microsoft.windowsazure.management.compute.models.OSVirtualHardDisk;
 import com.microsoft.windowsazure.management.compute.models.OperationStatus;
+import com.microsoft.windowsazure.management.compute.models.ResourceExtensionParameterValue;
+import com.microsoft.windowsazure.management.compute.models.ResourceExtensionReference;
 import com.microsoft.windowsazure.management.compute.models.Role;
 import com.microsoft.windowsazure.management.compute.models.SshSettingKeyPair;
 import com.microsoft.windowsazure.management.compute.models.SshSettingPublicKey;
@@ -1422,6 +1424,84 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             persistentVMRoleElement.appendChild(availabilitySetNameElement);
         }
         
+        if (parameters.getResourceExtensionReferences() != null)
+        {
+            Element resourceExtensionReferencesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionReferences");
+            for (ResourceExtensionReference resourceExtensionReferencesItem : parameters.getResourceExtensionReferences())
+            {
+                Element resourceExtensionReferenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionReference");
+                resourceExtensionReferencesSequenceElement.appendChild(resourceExtensionReferenceElement);
+                
+                if (resourceExtensionReferencesItem.getReferenceName() != null)
+                {
+                    Element referenceNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ReferenceName");
+                    referenceNameElement.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getReferenceName()));
+                    resourceExtensionReferenceElement.appendChild(referenceNameElement);
+                }
+                
+                if (resourceExtensionReferencesItem.getPublisher() != null)
+                {
+                    Element publisherElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Publisher");
+                    publisherElement.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getPublisher()));
+                    resourceExtensionReferenceElement.appendChild(publisherElement);
+                }
+                
+                if (resourceExtensionReferencesItem.getName() != null)
+                {
+                    Element nameElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                    nameElement2.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getName()));
+                    resourceExtensionReferenceElement.appendChild(nameElement2);
+                }
+                
+                if (resourceExtensionReferencesItem.getVersion() != null)
+                {
+                    Element versionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Version");
+                    versionElement.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getVersion()));
+                    resourceExtensionReferenceElement.appendChild(versionElement);
+                }
+                
+                if (resourceExtensionReferencesItem.getState() != null)
+                {
+                    Element stateElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "State");
+                    stateElement.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getState().toString()));
+                    resourceExtensionReferenceElement.appendChild(stateElement);
+                }
+                
+                if (resourceExtensionReferencesItem.getResourceExtensionParameterValues() != null)
+                {
+                    Element resourceExtensionParameterValuesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValues");
+                    for (ResourceExtensionParameterValue resourceExtensionParameterValuesItem : resourceExtensionReferencesItem.getResourceExtensionParameterValues())
+                    {
+                        Element resourceExtensionParameterValueElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValue");
+                        resourceExtensionParameterValuesSequenceElement.appendChild(resourceExtensionParameterValueElement);
+                        
+                        if (resourceExtensionParameterValuesItem.getKey() != null)
+                        {
+                            Element keyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Key");
+                            keyElement.appendChild(requestDoc.createTextNode(resourceExtensionParameterValuesItem.getKey()));
+                            resourceExtensionParameterValueElement.appendChild(keyElement);
+                        }
+                        
+                        if (resourceExtensionParameterValuesItem.getValue() != null)
+                        {
+                            Element valueElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Value");
+                            valueElement.appendChild(requestDoc.createTextNode(new String(Base64.encodeBase64(resourceExtensionParameterValuesItem.getValue().getBytes()))));
+                            resourceExtensionParameterValueElement.appendChild(valueElement);
+                        }
+                        
+                        if (resourceExtensionParameterValuesItem.getType() != null)
+                        {
+                            Element typeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Type");
+                            typeElement.appendChild(requestDoc.createTextNode(resourceExtensionParameterValuesItem.getType().toString()));
+                            resourceExtensionParameterValueElement.appendChild(typeElement);
+                        }
+                    }
+                    resourceExtensionReferenceElement.appendChild(resourceExtensionParameterValuesSequenceElement);
+                }
+            }
+            persistentVMRoleElement.appendChild(resourceExtensionReferencesSequenceElement);
+        }
+        
         if (parameters.getDataVirtualHardDisks() != null)
         {
             Element dataVirtualHardDisksSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisks");
@@ -1525,6 +1605,13 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             Element roleSizeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RoleSize");
             roleSizeElement.appendChild(requestDoc.createTextNode(parameters.getRoleSize()));
             persistentVMRoleElement.appendChild(roleSizeElement);
+        }
+        
+        if (parameters.isProvisionGuestAgent() != null)
+        {
+            Element provisionGuestAgentElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ProvisionGuestAgent");
+            provisionGuestAgentElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.isProvisionGuestAgent()).toLowerCase()));
+            persistentVMRoleElement.appendChild(provisionGuestAgentElement);
         }
         
         DOMSource domSource = new DOMSource(requestDoc);
@@ -2232,6 +2319,84 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 roleElement.appendChild(configurationSetsSequenceElement);
             }
             
+            if (roleListItem.getResourceExtensionReferences() != null)
+            {
+                Element resourceExtensionReferencesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionReferences");
+                for (ResourceExtensionReference resourceExtensionReferencesItem : roleListItem.getResourceExtensionReferences())
+                {
+                    Element resourceExtensionReferenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionReference");
+                    resourceExtensionReferencesSequenceElement.appendChild(resourceExtensionReferenceElement);
+                    
+                    if (resourceExtensionReferencesItem.getReferenceName() != null)
+                    {
+                        Element referenceNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ReferenceName");
+                        referenceNameElement.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getReferenceName()));
+                        resourceExtensionReferenceElement.appendChild(referenceNameElement);
+                    }
+                    
+                    if (resourceExtensionReferencesItem.getPublisher() != null)
+                    {
+                        Element publisherElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Publisher");
+                        publisherElement.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getPublisher()));
+                        resourceExtensionReferenceElement.appendChild(publisherElement);
+                    }
+                    
+                    if (resourceExtensionReferencesItem.getName() != null)
+                    {
+                        Element nameElement3 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                        nameElement3.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getName()));
+                        resourceExtensionReferenceElement.appendChild(nameElement3);
+                    }
+                    
+                    if (resourceExtensionReferencesItem.getVersion() != null)
+                    {
+                        Element versionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Version");
+                        versionElement.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getVersion()));
+                        resourceExtensionReferenceElement.appendChild(versionElement);
+                    }
+                    
+                    if (resourceExtensionReferencesItem.getState() != null)
+                    {
+                        Element stateElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "State");
+                        stateElement.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getState().toString()));
+                        resourceExtensionReferenceElement.appendChild(stateElement);
+                    }
+                    
+                    if (resourceExtensionReferencesItem.getResourceExtensionParameterValues() != null)
+                    {
+                        Element resourceExtensionParameterValuesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValues");
+                        for (ResourceExtensionParameterValue resourceExtensionParameterValuesItem : resourceExtensionReferencesItem.getResourceExtensionParameterValues())
+                        {
+                            Element resourceExtensionParameterValueElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValue");
+                            resourceExtensionParameterValuesSequenceElement.appendChild(resourceExtensionParameterValueElement);
+                            
+                            if (resourceExtensionParameterValuesItem.getKey() != null)
+                            {
+                                Element keyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Key");
+                                keyElement.appendChild(requestDoc.createTextNode(resourceExtensionParameterValuesItem.getKey()));
+                                resourceExtensionParameterValueElement.appendChild(keyElement);
+                            }
+                            
+                            if (resourceExtensionParameterValuesItem.getValue() != null)
+                            {
+                                Element valueElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Value");
+                                valueElement.appendChild(requestDoc.createTextNode(new String(Base64.encodeBase64(resourceExtensionParameterValuesItem.getValue().getBytes()))));
+                                resourceExtensionParameterValueElement.appendChild(valueElement);
+                            }
+                            
+                            if (resourceExtensionParameterValuesItem.getType() != null)
+                            {
+                                Element typeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Type");
+                                typeElement.appendChild(requestDoc.createTextNode(resourceExtensionParameterValuesItem.getType().toString()));
+                                resourceExtensionParameterValueElement.appendChild(typeElement);
+                            }
+                        }
+                        resourceExtensionReferenceElement.appendChild(resourceExtensionParameterValuesSequenceElement);
+                    }
+                }
+                roleElement.appendChild(resourceExtensionReferencesSequenceElement);
+            }
+            
             if (roleListItem.getAvailabilitySetName() != null)
             {
                 Element availabilitySetNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AvailabilitySetName");
@@ -2351,6 +2516,13 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 roleElement.appendChild(roleSizeElement);
             }
             
+            if (roleListItem.isProvisionGuestAgent() != null)
+            {
+                Element provisionGuestAgentElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ProvisionGuestAgent");
+                provisionGuestAgentElement.appendChild(requestDoc.createTextNode(Boolean.toString(roleListItem.isProvisionGuestAgent()).toLowerCase()));
+                roleElement.appendChild(provisionGuestAgentElement);
+            }
+            
             if (roleListItem.getDefaultWinRmCertificateThumbprint() != null)
             {
                 Element defaultWinRmCertificateThumbprintElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DefaultWinRmCertificateThumbprint");
@@ -2382,9 +2554,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     
                     if (dnsServersItem.getName() != null)
                     {
-                        Element nameElement3 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
-                        nameElement3.appendChild(requestDoc.createTextNode(dnsServersItem.getName()));
-                        dnsServerElement.appendChild(nameElement3);
+                        Element nameElement4 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                        nameElement4.appendChild(requestDoc.createTextNode(dnsServersItem.getName()));
+                        dnsServerElement.appendChild(nameElement4);
                     }
                     
                     if (dnsServersItem.getAddress() != null)
@@ -2538,7 +2710,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "/roles/" + virtualMachineName + "?comp=" + deleteFromStorage;
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "/roles/" + virtualMachineName + "?";
+        if (deleteFromStorage == true)
+        {
+            url = url + "comp=" + "media";
+        }
         
         // Create HTTP transport objects
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
@@ -3976,6 +4152,84 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             persistentVMRoleElement.appendChild(availabilitySetNameElement);
         }
         
+        if (parameters.getResourceExtensionReferences() != null)
+        {
+            Element resourceExtensionReferencesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionReferences");
+            for (ResourceExtensionReference resourceExtensionReferencesItem : parameters.getResourceExtensionReferences())
+            {
+                Element resourceExtensionReferenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionReference");
+                resourceExtensionReferencesSequenceElement.appendChild(resourceExtensionReferenceElement);
+                
+                if (resourceExtensionReferencesItem.getReferenceName() != null)
+                {
+                    Element referenceNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ReferenceName");
+                    referenceNameElement.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getReferenceName()));
+                    resourceExtensionReferenceElement.appendChild(referenceNameElement);
+                }
+                
+                if (resourceExtensionReferencesItem.getPublisher() != null)
+                {
+                    Element publisherElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Publisher");
+                    publisherElement.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getPublisher()));
+                    resourceExtensionReferenceElement.appendChild(publisherElement);
+                }
+                
+                if (resourceExtensionReferencesItem.getName() != null)
+                {
+                    Element nameElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                    nameElement2.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getName()));
+                    resourceExtensionReferenceElement.appendChild(nameElement2);
+                }
+                
+                if (resourceExtensionReferencesItem.getVersion() != null)
+                {
+                    Element versionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Version");
+                    versionElement.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getVersion()));
+                    resourceExtensionReferenceElement.appendChild(versionElement);
+                }
+                
+                if (resourceExtensionReferencesItem.getState() != null)
+                {
+                    Element stateElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "State");
+                    stateElement.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getState().toString()));
+                    resourceExtensionReferenceElement.appendChild(stateElement);
+                }
+                
+                if (resourceExtensionReferencesItem.getResourceExtensionParameterValues() != null)
+                {
+                    Element resourceExtensionParameterValuesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValues");
+                    for (ResourceExtensionParameterValue resourceExtensionParameterValuesItem : resourceExtensionReferencesItem.getResourceExtensionParameterValues())
+                    {
+                        Element resourceExtensionParameterValueElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValue");
+                        resourceExtensionParameterValuesSequenceElement.appendChild(resourceExtensionParameterValueElement);
+                        
+                        if (resourceExtensionParameterValuesItem.getKey() != null)
+                        {
+                            Element keyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Key");
+                            keyElement.appendChild(requestDoc.createTextNode(resourceExtensionParameterValuesItem.getKey()));
+                            resourceExtensionParameterValueElement.appendChild(keyElement);
+                        }
+                        
+                        if (resourceExtensionParameterValuesItem.getValue() != null)
+                        {
+                            Element valueElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Value");
+                            valueElement.appendChild(requestDoc.createTextNode(new String(Base64.encodeBase64(resourceExtensionParameterValuesItem.getValue().getBytes()))));
+                            resourceExtensionParameterValueElement.appendChild(valueElement);
+                        }
+                        
+                        if (resourceExtensionParameterValuesItem.getType() != null)
+                        {
+                            Element typeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Type");
+                            typeElement.appendChild(requestDoc.createTextNode(resourceExtensionParameterValuesItem.getType().toString()));
+                            resourceExtensionParameterValueElement.appendChild(typeElement);
+                        }
+                    }
+                    resourceExtensionReferenceElement.appendChild(resourceExtensionParameterValuesSequenceElement);
+                }
+            }
+            persistentVMRoleElement.appendChild(resourceExtensionReferencesSequenceElement);
+        }
+        
         if (parameters.getDataVirtualHardDisks() != null)
         {
             Element dataVirtualHardDisksSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisks");
@@ -4076,6 +4330,13 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             Element roleSizeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RoleSize");
             roleSizeElement.appendChild(requestDoc.createTextNode(parameters.getRoleSize()));
             persistentVMRoleElement.appendChild(roleSizeElement);
+        }
+        
+        if (parameters.isProvisionGuestAgent() != null)
+        {
+            Element provisionGuestAgentElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ProvisionGuestAgent");
+            provisionGuestAgentElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.isProvisionGuestAgent()).toLowerCase()));
+            persistentVMRoleElement.appendChild(provisionGuestAgentElement);
         }
         
         DOMSource domSource = new DOMSource(requestDoc);
@@ -4226,7 +4487,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "?comp=UpdateLbSet";
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "?" + "comp=UpdateLbSet";
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
@@ -5150,6 +5411,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new VirtualMachineGetResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
@@ -5251,7 +5513,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                 
                                 NodeList elements12 = inputEndpointsElement.getElementsByTagName("LocalPort");
                                 Element localPortElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
-                                if (localPortElement != null && (localPortElement.getTextContent() != null && localPortElement.getTextContent().isEmpty() != true) == false)
+                                if (localPortElement != null && (localPortElement.getTextContent() == null || localPortElement.getTextContent().isEmpty() == true) == false)
                                 {
                                     int localPortInstance;
                                     localPortInstance = Integer.parseInt(localPortElement.getTextContent());
@@ -5269,7 +5531,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                 
                                 NodeList elements14 = inputEndpointsElement.getElementsByTagName("Port");
                                 Element portElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
-                                if (portElement != null && (portElement.getTextContent() != null && portElement.getTextContent().isEmpty() != true) == false)
+                                if (portElement != null && (portElement.getTextContent() == null || portElement.getTextContent().isEmpty() == true) == false)
                                 {
                                     int portInstance;
                                     portInstance = Integer.parseInt(portElement.getTextContent());
@@ -5312,7 +5574,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                     
                                     NodeList elements19 = loadBalancerProbeElement.getElementsByTagName("IntervalInSeconds");
                                     Element intervalInSecondsElement = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
-                                    if (intervalInSecondsElement != null && (intervalInSecondsElement.getTextContent() != null && intervalInSecondsElement.getTextContent().isEmpty() != true) == false)
+                                    if (intervalInSecondsElement != null && (intervalInSecondsElement.getTextContent() == null || intervalInSecondsElement.getTextContent().isEmpty() == true) == false)
                                     {
                                         int intervalInSecondsInstance;
                                         intervalInSecondsInstance = Integer.parseInt(intervalInSecondsElement.getTextContent());
@@ -5321,7 +5583,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                     
                                     NodeList elements20 = loadBalancerProbeElement.getElementsByTagName("TimeoutInSeconds");
                                     Element timeoutInSecondsElement = elements20.getLength() > 0 ? ((Element) elements20.item(0)) : null;
-                                    if (timeoutInSecondsElement != null && (timeoutInSecondsElement.getTextContent() != null && timeoutInSecondsElement.getTextContent().isEmpty() != true) == false)
+                                    if (timeoutInSecondsElement != null && (timeoutInSecondsElement.getTextContent() == null || timeoutInSecondsElement.getTextContent().isEmpty() == true) == false)
                                     {
                                         int timeoutInSecondsInstance;
                                         timeoutInSecondsInstance = Integer.parseInt(timeoutInSecondsElement.getTextContent());
@@ -5349,7 +5611,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                 
                                 NodeList elements23 = inputEndpointsElement.getElementsByTagName("EnableDirectServerReturn");
                                 Element enableDirectServerReturnElement = elements23.getLength() > 0 ? ((Element) elements23.item(0)) : null;
-                                if (enableDirectServerReturnElement != null && (enableDirectServerReturnElement.getTextContent() != null && enableDirectServerReturnElement.getTextContent().isEmpty() != true) == false)
+                                if (enableDirectServerReturnElement != null && (enableDirectServerReturnElement.getTextContent() == null || enableDirectServerReturnElement.getTextContent().isEmpty() == true) == false)
                                 {
                                     boolean enableDirectServerReturnInstance;
                                     enableDirectServerReturnInstance = Boolean.parseBoolean(enableDirectServerReturnElement.getTextContent());
@@ -5375,7 +5637,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                             
                                             NodeList elements26 = rulesElement.getElementsByTagName("Order");
                                             Element orderElement = elements26.getLength() > 0 ? ((Element) elements26.item(0)) : null;
-                                            if (orderElement != null && (orderElement.getTextContent() != null && orderElement.getTextContent().isEmpty() != true) == false)
+                                            if (orderElement != null && (orderElement.getTextContent() == null || orderElement.getTextContent().isEmpty() == true) == false)
                                             {
                                                 int orderInstance;
                                                 orderInstance = Integer.parseInt(orderElement.getTextContent());
@@ -5454,7 +5716,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         
                         NodeList elements34 = configurationSetsElement.getElementsByTagName("ResetPasswordOnFirstLogon");
                         Element resetPasswordOnFirstLogonElement = elements34.getLength() > 0 ? ((Element) elements34.item(0)) : null;
-                        if (resetPasswordOnFirstLogonElement != null && (resetPasswordOnFirstLogonElement.getTextContent() != null && resetPasswordOnFirstLogonElement.getTextContent().isEmpty() != true) == false)
+                        if (resetPasswordOnFirstLogonElement != null && (resetPasswordOnFirstLogonElement.getTextContent() == null || resetPasswordOnFirstLogonElement.getTextContent().isEmpty() == true) == false)
                         {
                             boolean resetPasswordOnFirstLogonInstance;
                             resetPasswordOnFirstLogonInstance = Boolean.parseBoolean(resetPasswordOnFirstLogonElement.getTextContent());
@@ -5463,7 +5725,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         
                         NodeList elements35 = configurationSetsElement.getElementsByTagName("EnableAutomaticUpdates");
                         Element enableAutomaticUpdatesElement = elements35.getLength() > 0 ? ((Element) elements35.item(0)) : null;
-                        if (enableAutomaticUpdatesElement != null && (enableAutomaticUpdatesElement.getTextContent() != null && enableAutomaticUpdatesElement.getTextContent().isEmpty() != true) == false)
+                        if (enableAutomaticUpdatesElement != null && (enableAutomaticUpdatesElement.getTextContent() == null || enableAutomaticUpdatesElement.getTextContent().isEmpty() == true) == false)
                         {
                             boolean enableAutomaticUpdatesInstance;
                             enableAutomaticUpdatesInstance = Boolean.parseBoolean(enableAutomaticUpdatesElement.getTextContent());
@@ -5669,7 +5931,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         
                         NodeList elements58 = configurationSetsElement.getElementsByTagName("DisableSshPasswordAuthentication");
                         Element disableSshPasswordAuthenticationElement = elements58.getLength() > 0 ? ((Element) elements58.item(0)) : null;
-                        if (disableSshPasswordAuthenticationElement != null && (disableSshPasswordAuthenticationElement.getTextContent() != null && disableSshPasswordAuthenticationElement.getTextContent().isEmpty() != true) == false)
+                        if (disableSshPasswordAuthenticationElement != null && (disableSshPasswordAuthenticationElement.getTextContent() == null || disableSshPasswordAuthenticationElement.getTextContent().isEmpty() == true) == false)
                         {
                             boolean disableSshPasswordAuthenticationInstance;
                             disableSshPasswordAuthenticationInstance = Boolean.parseBoolean(disableSshPasswordAuthenticationElement.getTextContent());
@@ -5758,7 +6020,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         
                         NodeList elements67 = dataVirtualHardDisksElement.getElementsByTagName("HostCaching");
                         Element hostCachingElement = elements67.getLength() > 0 ? ((Element) elements67.item(0)) : null;
-                        if (hostCachingElement != null && (hostCachingElement.getTextContent() != null && hostCachingElement.getTextContent().isEmpty() != true) == false)
+                        if (hostCachingElement != null && (hostCachingElement.getTextContent() == null || hostCachingElement.getTextContent().isEmpty() == true) == false)
                         {
                             VirtualHardDiskHostCaching hostCachingInstance;
                             hostCachingInstance = VirtualHardDiskHostCaching.valueOf(hostCachingElement.getTextContent());
@@ -5785,7 +6047,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         
                         NodeList elements70 = dataVirtualHardDisksElement.getElementsByTagName("Lun");
                         Element lunElement = elements70.getLength() > 0 ? ((Element) elements70.item(0)) : null;
-                        if (lunElement != null && (lunElement.getTextContent() != null && lunElement.getTextContent().isEmpty() != true) == false)
+                        if (lunElement != null && (lunElement.getTextContent() == null || lunElement.getTextContent().isEmpty() == true) == false)
                         {
                             int lunInstance;
                             lunInstance = Integer.parseInt(lunElement.getTextContent());
@@ -5821,7 +6083,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     
                     NodeList elements74 = oSVirtualHardDiskElement.getElementsByTagName("HostCaching");
                     Element hostCachingElement2 = elements74.getLength() > 0 ? ((Element) elements74.item(0)) : null;
-                    if (hostCachingElement2 != null && (hostCachingElement2.getTextContent() != null && hostCachingElement2.getTextContent().isEmpty() != true) == false)
+                    if (hostCachingElement2 != null && (hostCachingElement2.getTextContent() == null || hostCachingElement2.getTextContent().isEmpty() == true) == false)
                     {
                         VirtualHardDiskHostCaching hostCachingInstance2;
                         hostCachingInstance2 = VirtualHardDiskHostCaching.valueOf(hostCachingElement2.getTextContent());
@@ -5965,7 +6227,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "/roleinstances/" + virtualMachineName + "/ModelFile?FileType=RDP";
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "/roleinstances/" + virtualMachineName + "/ModelFile" + "?" + "FileType=RDP";
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);

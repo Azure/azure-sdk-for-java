@@ -178,6 +178,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new SubscriptionGetResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
@@ -429,20 +430,20 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
         simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
         simpleDateFormat2.setTimeZone(TimeZone.getTimeZone("UTC"));
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/operations?";
-        url = url + "&StartTime=" + URLEncoder.encode(simpleDateFormat.format(parameters.getStartTime().getTime()), "UTF-8");
-        url = url + "&EndTime=" + URLEncoder.encode(simpleDateFormat2.format(parameters.getEndTime().getTime()), "UTF-8");
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/operations" + "?";
+        url = url + "&" + "StartTime=" + URLEncoder.encode(simpleDateFormat.format(parameters.getStartTime().getTime()), "UTF-8");
+        url = url + "&" + "EndTime=" + URLEncoder.encode(simpleDateFormat2.format(parameters.getEndTime().getTime()), "UTF-8");
         if (parameters.getObjectIdFilter() != null)
         {
-            url = url + "&ObjectIdFilter=" + URLEncoder.encode(parameters.getObjectIdFilter(), "UTF-8");
+            url = url + "&" + "ObjectIdFilter=" + URLEncoder.encode(parameters.getObjectIdFilter(), "UTF-8");
         }
         if (parameters.getOperationStatus() != null)
         {
-            url = url + "&OperationResultFilter=" + URLEncoder.encode(parameters.getOperationStatus().toString(), "UTF-8");
+            url = url + "&" + "OperationResultFilter=" + URLEncoder.encode(parameters.getOperationStatus().toString(), "UTF-8");
         }
         if (parameters.getContinuationToken() != null)
         {
-            url = url + "&ContinuationToken=" + URLEncoder.encode(parameters.getContinuationToken(), "UTF-8");
+            url = url + "&" + "ContinuationToken=" + URLEncoder.encode(parameters.getContinuationToken(), "UTF-8");
         }
         
         // Create HTTP transport objects
@@ -481,6 +482,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new SubscriptionListOperationsResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
@@ -701,7 +703,8 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services?service=" + resourceName + "&action=register";
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services" + "?" + "&" + "action=register";
+        url = url + "service=" + URLEncoder.encode(resourceName, "UTF-8");
         
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
@@ -809,7 +812,8 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services?service=" + resourceName + "&action=unregister";
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services" + "?" + "&" + "action=unregister";
+        url = url + "service=" + URLEncoder.encode(resourceName, "UTF-8");
         
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);

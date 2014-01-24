@@ -183,6 +183,7 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new OperatingSystemListResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
@@ -373,6 +374,7 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new OperatingSystemListFamiliesResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             

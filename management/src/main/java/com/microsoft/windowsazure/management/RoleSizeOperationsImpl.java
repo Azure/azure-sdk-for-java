@@ -25,7 +25,7 @@ package com.microsoft.windowsazure.management;
 
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.exception.ServiceException;
-import com.microsoft.windowsazure.management.models.LocationsListResponse;
+import com.microsoft.windowsazure.management.models.RoleSizeListResponse;
 import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
@@ -45,19 +45,17 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
-* The Service Management API includes operations for listing the available data
-* center locations for a hosted service in your subscription.  (see
-* http://msdn.microsoft.com/en-us/library/windowsazure/gg441299.aspx for more
-* information)
+* The Service Management API includes operations for listing the available role
+* sizes for VMs in your subscription.
 */
-public class LocationOperationsImpl implements ServiceOperations<ManagementClientImpl>, LocationOperations
+public class RoleSizeOperationsImpl implements ServiceOperations<ManagementClientImpl>, RoleSizeOperations
 {
     /**
-    * Initializes a new instance of the LocationOperationsImpl class.
+    * Initializes a new instance of the RoleSizeOperationsImpl class.
     *
     * @param client Reference to the service client.
     */
-    LocationOperationsImpl(ManagementClientImpl client)
+    RoleSizeOperationsImpl(ManagementClientImpl client)
     {
         this.client = client;
     }
@@ -75,19 +73,17 @@ public class LocationOperationsImpl implements ServiceOperations<ManagementClien
     }
     
     /**
-    * The List Locations operation lists all of the data center locations that
-    * are valid for your subscription.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/gg441293.aspx for
-    * more information)
+    * The List Role Sizes operation lists all of the role sizes that are valid
+    * for your subscription.
     *
-    * @return The List Locations operation response.
+    * @return The List Role Sizes operation response.
     */
     @Override
-    public Future<LocationsListResponse> listAsync()
+    public Future<RoleSizeListResponse> listAsync()
     {
-        return this.getClient().getExecutorService().submit(new Callable<LocationsListResponse>() { 
+        return this.getClient().getExecutorService().submit(new Callable<RoleSizeListResponse>() { 
             @Override
-            public LocationsListResponse call() throws Exception
+            public RoleSizeListResponse call() throws Exception
             {
                 return list();
             }
@@ -95,10 +91,8 @@ public class LocationOperationsImpl implements ServiceOperations<ManagementClien
     }
     
     /**
-    * The List Locations operation lists all of the data center locations that
-    * are valid for your subscription.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/gg441293.aspx for
-    * more information)
+    * The List Role Sizes operation lists all of the role sizes that are valid
+    * for your subscription.
     *
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
@@ -110,10 +104,10 @@ public class LocationOperationsImpl implements ServiceOperations<ManagementClien
     * response.
     * @throws ParseException Thrown if there was an error parsing a string in
     * the response.
-    * @return The List Locations operation response.
+    * @return The List Role Sizes operation response.
     */
     @Override
-    public LocationsListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException
+    public RoleSizeListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException
     {
         // Validate
         
@@ -128,7 +122,7 @@ public class LocationOperationsImpl implements ServiceOperations<ManagementClien
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/locations";
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/rolesizes";
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -161,52 +155,77 @@ public class LocationOperationsImpl implements ServiceOperations<ManagementClien
             }
             
             // Create Result
-            LocationsListResponse result = null;
+            RoleSizeListResponse result = null;
             // Deserialize Response
             InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new LocationsListResponse();
+            result = new RoleSizeListResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagName("Locations");
-            Element locationsSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (locationsSequenceElement != null)
+            NodeList elements = responseDoc.getElementsByTagName("RoleSizes");
+            Element roleSizesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            if (roleSizesSequenceElement != null)
             {
-                for (int i1 = 0; i1 < locationsSequenceElement.getElementsByTagName("Location").getLength(); i1 = i1 + 1)
+                for (int i1 = 0; i1 < roleSizesSequenceElement.getElementsByTagName("RoleSize").getLength(); i1 = i1 + 1)
                 {
-                    org.w3c.dom.Element locationsElement = ((org.w3c.dom.Element) locationsSequenceElement.getElementsByTagName("Location").item(i1));
-                    LocationsListResponse.Location locationInstance = new LocationsListResponse.Location();
-                    result.getLocations().add(locationInstance);
+                    org.w3c.dom.Element roleSizesElement = ((org.w3c.dom.Element) roleSizesSequenceElement.getElementsByTagName("RoleSize").item(i1));
+                    RoleSizeListResponse.RoleSize roleSizeInstance = new RoleSizeListResponse.RoleSize();
+                    result.getRoleSizes().add(roleSizeInstance);
                     
-                    NodeList elements2 = locationsElement.getElementsByTagName("Name");
+                    NodeList elements2 = roleSizesElement.getElementsByTagName("Name");
                     Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                     if (nameElement != null)
                     {
                         String nameInstance;
                         nameInstance = nameElement.getTextContent();
-                        locationInstance.setName(nameInstance);
+                        roleSizeInstance.setName(nameInstance);
                     }
                     
-                    NodeList elements3 = locationsElement.getElementsByTagName("DisplayName");
-                    Element displayNameElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                    if (displayNameElement != null)
+                    NodeList elements3 = roleSizesElement.getElementsByTagName("Label");
+                    Element labelElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                    if (labelElement != null)
                     {
-                        String displayNameInstance;
-                        displayNameInstance = displayNameElement.getTextContent();
-                        locationInstance.setDisplayName(displayNameInstance);
+                        String labelInstance;
+                        labelInstance = labelElement.getTextContent();
+                        roleSizeInstance.setLabel(labelInstance);
                     }
                     
-                    NodeList elements4 = locationsElement.getElementsByTagName("AvailableServices");
-                    Element availableServicesSequenceElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                    if (availableServicesSequenceElement != null)
+                    NodeList elements4 = roleSizesElement.getElementsByTagName("Cores");
+                    Element coresElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                    if (coresElement != null)
                     {
-                        for (int i2 = 0; i2 < availableServicesSequenceElement.getElementsByTagName("AvailableService").getLength(); i2 = i2 + 1)
-                        {
-                            org.w3c.dom.Element availableServicesElement = ((org.w3c.dom.Element) availableServicesSequenceElement.getElementsByTagName("AvailableService").item(i2));
-                            locationInstance.getAvailableServices().add(availableServicesElement.getTextContent());
-                        }
+                        int coresInstance;
+                        coresInstance = Integer.parseInt(coresElement.getTextContent());
+                        roleSizeInstance.setCores(coresInstance);
+                    }
+                    
+                    NodeList elements5 = roleSizesElement.getElementsByTagName("MemoryInMb");
+                    Element memoryInMbElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                    if (memoryInMbElement != null)
+                    {
+                        int memoryInMbInstance;
+                        memoryInMbInstance = Integer.parseInt(memoryInMbElement.getTextContent());
+                        roleSizeInstance.setMemoryInMb(memoryInMbInstance);
+                    }
+                    
+                    NodeList elements6 = roleSizesElement.getElementsByTagName("SupportedByWebWorkerRoles");
+                    Element supportedByWebWorkerRolesElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                    if (supportedByWebWorkerRolesElement != null)
+                    {
+                        boolean supportedByWebWorkerRolesInstance;
+                        supportedByWebWorkerRolesInstance = Boolean.parseBoolean(supportedByWebWorkerRolesElement.getTextContent());
+                        roleSizeInstance.setSupportedByWebWorkerRoles(supportedByWebWorkerRolesInstance);
+                    }
+                    
+                    NodeList elements7 = roleSizesElement.getElementsByTagName("SupportedByVirtualMachines");
+                    Element supportedByVirtualMachinesElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
+                    if (supportedByVirtualMachinesElement != null)
+                    {
+                        boolean supportedByVirtualMachinesInstance;
+                        supportedByVirtualMachinesInstance = Boolean.parseBoolean(supportedByVirtualMachinesElement.getTextContent());
+                        roleSizeInstance.setSupportedByVirtualMachines(supportedByVirtualMachinesInstance);
                     }
                 }
             }

@@ -44,6 +44,7 @@ import com.microsoft.windowsazure.management.websites.models.WebSiteGetPublishPr
 import com.microsoft.windowsazure.management.websites.models.WebSiteGetRepositoryResponse;
 import com.microsoft.windowsazure.management.websites.models.WebSiteGetResponse;
 import com.microsoft.windowsazure.management.websites.models.WebSiteGetUsageMetricsResponse;
+import com.microsoft.windowsazure.management.websites.models.WebSiteIsHostnameAvailableResponse;
 import com.microsoft.windowsazure.management.websites.models.WebSiteMode;
 import com.microsoft.windowsazure.management.websites.models.WebSiteOperationStatus;
 import com.microsoft.windowsazure.management.websites.models.WebSiteOperationStatusResponse;
@@ -63,6 +64,7 @@ import java.io.StringWriter;
 import java.net.InetAddress;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -201,7 +203,9 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/WebSpaces/" + webSpaceName + "/sites/" + webSiteName + "/slots?Command=swap&targetSlot=" + slotName;
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/WebSpaces/" + webSpaceName + "/sites/" + webSiteName + "/slots" + "?";
+        url = url + "Command=swap";
+        url = url + "&" + "targetSlot=" + URLEncoder.encode(slotName, "UTF-8");
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
@@ -240,6 +244,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new WebSiteOperationStatusResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
@@ -267,7 +272,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     Attr nilAttribute = errorsSequenceElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                     if (nilAttribute != null)
                     {
-                        isNil = nilAttribute.getValue() == "true";
+                        isNil = "true".equals(nilAttribute.getValue());
                     }
                     if (isNil == false)
                     {
@@ -285,7 +290,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 Attr nilAttribute2 = codeElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                                 if (nilAttribute2 != null)
                                 {
-                                    isNil2 = nilAttribute2.getValue() == "true";
+                                    isNil2 = "true".equals(nilAttribute2.getValue());
                                 }
                                 if (isNil2 == false)
                                 {
@@ -303,7 +308,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 Attr nilAttribute3 = messageElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                                 if (nilAttribute3 != null)
                                 {
-                                    isNil3 = nilAttribute3.getValue() == "true";
+                                    isNil3 = "true".equals(nilAttribute3.getValue());
                                 }
                                 if (isNil3 == false)
                                 {
@@ -321,7 +326,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 Attr nilAttribute4 = extendedCodeElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                                 if (nilAttribute4 != null)
                                 {
-                                    isNil4 = nilAttribute4.getValue() == "true";
+                                    isNil4 = "true".equals(nilAttribute4.getValue());
                                 }
                                 if (isNil4 == false)
                                 {
@@ -339,7 +344,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 Attr nilAttribute5 = messageTemplateElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                                 if (nilAttribute5 != null)
                                 {
-                                    isNil5 = nilAttribute5.getValue() == "true";
+                                    isNil5 = "true".equals(nilAttribute5.getValue());
                                 }
                                 if (isNil5 == false)
                                 {
@@ -357,7 +362,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 Attr nilAttribute6 = parametersSequenceElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                                 if (nilAttribute6 != null)
                                 {
-                                    isNil6 = nilAttribute6.getValue() == "true";
+                                    isNil6 = "true".equals(nilAttribute6.getValue());
                                 }
                                 if (isNil6 == false)
                                 {
@@ -377,7 +382,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 Attr nilAttribute7 = innerErrorsElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                                 if (nilAttribute7 != null)
                                 {
-                                    isNil7 = nilAttribute7.getValue() == "true";
+                                    isNil7 = "true".equals(nilAttribute7.getValue());
                                 }
                                 if (isNil7 == false)
                                 {
@@ -410,7 +415,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     Attr nilAttribute8 = geoMasterOperationIdElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                     if (nilAttribute8 != null)
                     {
-                        isNil8 = nilAttribute8.getValue() == "true";
+                        isNil8 = "true".equals(nilAttribute8.getValue());
                     }
                     if (isNil8 == false)
                     {
@@ -428,7 +433,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     Attr nilAttribute9 = idElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                     if (nilAttribute9 != null)
                     {
-                        isNil9 = nilAttribute9.getValue() == "true";
+                        isNil9 = "true".equals(nilAttribute9.getValue());
                     }
                     if (isNil9 == false)
                     {
@@ -458,7 +463,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     Attr nilAttribute10 = nameElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                     if (nilAttribute10 != null)
                     {
-                        isNil10 = nilAttribute10.getValue() == "true";
+                        isNil10 = "true".equals(nilAttribute10.getValue());
                     }
                     if (isNil10 == false)
                     {
@@ -712,6 +717,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new WebSiteCreateResponse();
             DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory2.setNamespaceAware(true);
             DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
             Document responseDoc = documentBuilder2.parse(responseContent);
             
@@ -805,7 +811,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             Attr nilAttribute = thumbprintElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                             if (nilAttribute != null)
                             {
-                                isNil = nilAttribute.getValue() == "true";
+                                isNil = "true".equals(nilAttribute.getValue());
                             }
                             if (isNil == false)
                             {
@@ -823,7 +829,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             Attr nilAttribute2 = virtualIPElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                             if (nilAttribute2 != null)
                             {
-                                isNil2 = nilAttribute2.getValue() == "true";
+                                isNil2 = "true".equals(nilAttribute2.getValue());
                             }
                             if (isNil2 == false)
                             {
@@ -875,7 +881,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     Attr nilAttribute3 = ownerElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                     if (nilAttribute3 != null)
                     {
-                        isNil3 = nilAttribute3.getValue() == "true";
+                        isNil3 = "true".equals(nilAttribute3.getValue());
                     }
                     if (isNil3 == false)
                     {
@@ -911,7 +917,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     Attr nilAttribute4 = sSLCertificatesSequenceElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                     if (nilAttribute4 != null)
                     {
-                        isNil4 = nilAttribute4.getValue() == "true";
+                        isNil4 = "true".equals(nilAttribute4.getValue());
                     }
                     if (isNil4 == false)
                     {
@@ -923,13 +929,13 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             
                             NodeList elements19 = sSLCertificatesElement.getElementsByTagName("ExpirationDate");
                             Element expirationDateElement = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
-                            if (expirationDateElement != null && (expirationDateElement.getTextContent() != null && expirationDateElement.getTextContent().isEmpty() != true) == false)
+                            if (expirationDateElement != null && (expirationDateElement.getTextContent() == null || expirationDateElement.getTextContent().isEmpty() == true) == false)
                             {
                                 boolean isNil5 = false;
                                 Attr nilAttribute5 = expirationDateElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                                 if (nilAttribute5 != null)
                                 {
-                                    isNil5 = nilAttribute5.getValue() == "true";
+                                    isNil5 = "true".equals(nilAttribute5.getValue());
                                 }
                                 if (isNil5 == false)
                                 {
@@ -950,7 +956,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 Attr nilAttribute6 = friendlyNameElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                                 if (nilAttribute6 != null)
                                 {
-                                    isNil6 = nilAttribute6.getValue() == "true";
+                                    isNil6 = "true".equals(nilAttribute6.getValue());
                                 }
                                 if (isNil6 == false)
                                 {
@@ -968,7 +974,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 Attr nilAttribute7 = hostNamesSequenceElement3.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                                 if (nilAttribute7 != null)
                                 {
-                                    isNil7 = nilAttribute7.getValue() == "true";
+                                    isNil7 = "true".equals(nilAttribute7.getValue());
                                 }
                                 if (isNil7 == false)
                                 {
@@ -982,13 +988,13 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             
                             NodeList elements22 = sSLCertificatesElement.getElementsByTagName("IssueDate");
                             Element issueDateElement = elements22.getLength() > 0 ? ((Element) elements22.item(0)) : null;
-                            if (issueDateElement != null && (issueDateElement.getTextContent() != null && issueDateElement.getTextContent().isEmpty() != true) == false)
+                            if (issueDateElement != null && (issueDateElement.getTextContent() == null || issueDateElement.getTextContent().isEmpty() == true) == false)
                             {
                                 boolean isNil8 = false;
                                 Attr nilAttribute8 = issueDateElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                                 if (nilAttribute8 != null)
                                 {
-                                    isNil8 = nilAttribute8.getValue() == "true";
+                                    isNil8 = "true".equals(nilAttribute8.getValue());
                                 }
                                 if (isNil8 == false)
                                 {
@@ -1009,7 +1015,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 Attr nilAttribute9 = issuerElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                                 if (nilAttribute9 != null)
                                 {
-                                    isNil9 = nilAttribute9.getValue() == "true";
+                                    isNil9 = "true".equals(nilAttribute9.getValue());
                                 }
                                 if (isNil9 == false)
                                 {
@@ -1027,7 +1033,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 Attr nilAttribute10 = passwordElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                                 if (nilAttribute10 != null)
                                 {
-                                    isNil10 = nilAttribute10.getValue() == "true";
+                                    isNil10 = "true".equals(nilAttribute10.getValue());
                                 }
                                 if (isNil10 == false)
                                 {
@@ -1045,7 +1051,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 Attr nilAttribute11 = pfxBlobElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                                 if (nilAttribute11 != null)
                                 {
-                                    isNil11 = nilAttribute11.getValue() == "true";
+                                    isNil11 = "true".equals(nilAttribute11.getValue());
                                 }
                                 if (isNil11 == false)
                                 {
@@ -1063,7 +1069,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 Attr nilAttribute12 = selfLinkElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                                 if (nilAttribute12 != null)
                                 {
-                                    isNil12 = nilAttribute12.getValue() == "true";
+                                    isNil12 = "true".equals(nilAttribute12.getValue());
                                 }
                                 if (isNil12 == false)
                                 {
@@ -1081,7 +1087,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 Attr nilAttribute13 = siteNameElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                                 if (nilAttribute13 != null)
                                 {
-                                    isNil13 = nilAttribute13.getValue() == "true";
+                                    isNil13 = "true".equals(nilAttribute13.getValue());
                                 }
                                 if (isNil13 == false)
                                 {
@@ -1099,7 +1105,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 Attr nilAttribute14 = subjectNameElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                                 if (nilAttribute14 != null)
                                 {
-                                    isNil14 = nilAttribute14.getValue() == "true";
+                                    isNil14 = "true".equals(nilAttribute14.getValue());
                                 }
                                 if (isNil14 == false)
                                 {
@@ -1117,7 +1123,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 Attr nilAttribute15 = thumbprintElement2.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                                 if (nilAttribute15 != null)
                                 {
-                                    isNil15 = nilAttribute15.getValue() == "true";
+                                    isNil15 = "true".equals(nilAttribute15.getValue());
                                 }
                                 if (isNil15 == false)
                                 {
@@ -1129,13 +1135,13 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             
                             NodeList elements30 = sSLCertificatesElement.getElementsByTagName("ToDelete");
                             Element toDeleteElement = elements30.getLength() > 0 ? ((Element) elements30.item(0)) : null;
-                            if (toDeleteElement != null && (toDeleteElement.getTextContent() != null && toDeleteElement.getTextContent().isEmpty() != true) == false)
+                            if (toDeleteElement != null && (toDeleteElement.getTextContent() == null || toDeleteElement.getTextContent().isEmpty() == true) == false)
                             {
                                 boolean isNil16 = false;
                                 Attr nilAttribute16 = toDeleteElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                                 if (nilAttribute16 != null)
                                 {
-                                    isNil16 = nilAttribute16.getValue() == "true";
+                                    isNil16 = "true".equals(nilAttribute16.getValue());
                                 }
                                 if (isNil16 == false)
                                 {
@@ -1147,13 +1153,13 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             
                             NodeList elements31 = sSLCertificatesElement.getElementsByTagName("Valid");
                             Element validElement = elements31.getLength() > 0 ? ((Element) elements31.item(0)) : null;
-                            if (validElement != null && (validElement.getTextContent() != null && validElement.getTextContent().isEmpty() != true) == false)
+                            if (validElement != null && (validElement.getTextContent() == null || validElement.getTextContent().isEmpty() == true) == false)
                             {
                                 boolean isNil17 = false;
                                 Attr nilAttribute17 = validElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                                 if (nilAttribute17 != null)
                                 {
-                                    isNil17 = nilAttribute17.getValue() == "true";
+                                    isNil17 = "true".equals(nilAttribute17.getValue());
                                 }
                                 if (isNil17 == false)
                                 {
@@ -1497,7 +1503,10 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/WebSpaces/" + webSpaceName + "/sites/" + webSiteName + "?deleteEmptyServerFarm=" + parameters.isDeleteEmptyServerFarm() + "&deleteMetrics=" + parameters.isDeleteMetrics() + "&deleteAllSlots=" + parameters.isDeleteAllSlots();
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/WebSpaces/" + webSpaceName + "/sites/" + webSiteName + "?";
+        url = url + "deleteEmptyServerFarm=" + URLEncoder.encode(Boolean.toString(parameters.isDeleteEmptyServerFarm()).toLowerCase(), "UTF-8");
+        url = url + "&" + "deleteMetrics=" + URLEncoder.encode(Boolean.toString(parameters.isDeleteMetrics()).toLowerCase(), "UTF-8");
+        url = url + "&" + "deleteAllSlots=" + URLEncoder.encode(Boolean.toString(parameters.isDeleteAllSlots()).toLowerCase(), "UTF-8");
         
         // Create HTTP transport objects
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
@@ -1665,6 +1674,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new WebSiteDeleteRepositoryResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
@@ -1898,7 +1908,11 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/WebSpaces/" + webSpaceName + "/sites/" + webSiteName + "?propertiesToInclude=" + CommaStringBuilder.join(parameters.getPropertiesToInclude());
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/WebSpaces/" + webSpaceName + "/sites/" + webSiteName + "?";
+        if (parameters != null && parameters.getPropertiesToInclude() != null && parameters.getPropertiesToInclude().size() > 0)
+        {
+            url = url + "propertiesToInclude=" + URLEncoder.encode(CommaStringBuilder.join(parameters.getPropertiesToInclude()), "UTF-8");
+        }
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -1936,6 +1950,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new WebSiteGetResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
@@ -2029,7 +2044,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             Attr nilAttribute = thumbprintElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                             if (nilAttribute != null)
                             {
-                                isNil = nilAttribute.getValue() == "true";
+                                isNil = "true".equals(nilAttribute.getValue());
                             }
                             if (isNil == false)
                             {
@@ -2047,7 +2062,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             Attr nilAttribute2 = virtualIPElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                             if (nilAttribute2 != null)
                             {
-                                isNil2 = nilAttribute2.getValue() == "true";
+                                isNil2 = "true".equals(nilAttribute2.getValue());
                             }
                             if (isNil2 == false)
                             {
@@ -2099,7 +2114,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     Attr nilAttribute3 = ownerElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                     if (nilAttribute3 != null)
                     {
-                        isNil3 = nilAttribute3.getValue() == "true";
+                        isNil3 = "true".equals(nilAttribute3.getValue());
                     }
                     if (isNil3 == false)
                     {
@@ -2135,7 +2150,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     Attr nilAttribute4 = sSLCertificatesSequenceElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                     if (nilAttribute4 != null)
                     {
-                        isNil4 = nilAttribute4.getValue() == "true";
+                        isNil4 = "true".equals(nilAttribute4.getValue());
                     }
                     if (isNil4 == false)
                     {
@@ -2147,13 +2162,13 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             
                             NodeList elements19 = sSLCertificatesElement.getElementsByTagName("ExpirationDate");
                             Element expirationDateElement = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
-                            if (expirationDateElement != null && (expirationDateElement.getTextContent() != null && expirationDateElement.getTextContent().isEmpty() != true) == false)
+                            if (expirationDateElement != null && (expirationDateElement.getTextContent() == null || expirationDateElement.getTextContent().isEmpty() == true) == false)
                             {
                                 boolean isNil5 = false;
                                 Attr nilAttribute5 = expirationDateElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                                 if (nilAttribute5 != null)
                                 {
-                                    isNil5 = nilAttribute5.getValue() == "true";
+                                    isNil5 = "true".equals(nilAttribute5.getValue());
                                 }
                                 if (isNil5 == false)
                                 {
@@ -2174,7 +2189,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 Attr nilAttribute6 = friendlyNameElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                                 if (nilAttribute6 != null)
                                 {
-                                    isNil6 = nilAttribute6.getValue() == "true";
+                                    isNil6 = "true".equals(nilAttribute6.getValue());
                                 }
                                 if (isNil6 == false)
                                 {
@@ -2192,7 +2207,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 Attr nilAttribute7 = hostNamesSequenceElement2.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                                 if (nilAttribute7 != null)
                                 {
-                                    isNil7 = nilAttribute7.getValue() == "true";
+                                    isNil7 = "true".equals(nilAttribute7.getValue());
                                 }
                                 if (isNil7 == false)
                                 {
@@ -2206,13 +2221,13 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             
                             NodeList elements22 = sSLCertificatesElement.getElementsByTagName("IssueDate");
                             Element issueDateElement = elements22.getLength() > 0 ? ((Element) elements22.item(0)) : null;
-                            if (issueDateElement != null && (issueDateElement.getTextContent() != null && issueDateElement.getTextContent().isEmpty() != true) == false)
+                            if (issueDateElement != null && (issueDateElement.getTextContent() == null || issueDateElement.getTextContent().isEmpty() == true) == false)
                             {
                                 boolean isNil8 = false;
                                 Attr nilAttribute8 = issueDateElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                                 if (nilAttribute8 != null)
                                 {
-                                    isNil8 = nilAttribute8.getValue() == "true";
+                                    isNil8 = "true".equals(nilAttribute8.getValue());
                                 }
                                 if (isNil8 == false)
                                 {
@@ -2233,7 +2248,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 Attr nilAttribute9 = issuerElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                                 if (nilAttribute9 != null)
                                 {
-                                    isNil9 = nilAttribute9.getValue() == "true";
+                                    isNil9 = "true".equals(nilAttribute9.getValue());
                                 }
                                 if (isNil9 == false)
                                 {
@@ -2251,7 +2266,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 Attr nilAttribute10 = passwordElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                                 if (nilAttribute10 != null)
                                 {
-                                    isNil10 = nilAttribute10.getValue() == "true";
+                                    isNil10 = "true".equals(nilAttribute10.getValue());
                                 }
                                 if (isNil10 == false)
                                 {
@@ -2269,7 +2284,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 Attr nilAttribute11 = pfxBlobElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                                 if (nilAttribute11 != null)
                                 {
-                                    isNil11 = nilAttribute11.getValue() == "true";
+                                    isNil11 = "true".equals(nilAttribute11.getValue());
                                 }
                                 if (isNil11 == false)
                                 {
@@ -2287,7 +2302,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 Attr nilAttribute12 = selfLinkElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                                 if (nilAttribute12 != null)
                                 {
-                                    isNil12 = nilAttribute12.getValue() == "true";
+                                    isNil12 = "true".equals(nilAttribute12.getValue());
                                 }
                                 if (isNil12 == false)
                                 {
@@ -2305,7 +2320,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 Attr nilAttribute13 = siteNameElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                                 if (nilAttribute13 != null)
                                 {
-                                    isNil13 = nilAttribute13.getValue() == "true";
+                                    isNil13 = "true".equals(nilAttribute13.getValue());
                                 }
                                 if (isNil13 == false)
                                 {
@@ -2323,7 +2338,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 Attr nilAttribute14 = subjectNameElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                                 if (nilAttribute14 != null)
                                 {
-                                    isNil14 = nilAttribute14.getValue() == "true";
+                                    isNil14 = "true".equals(nilAttribute14.getValue());
                                 }
                                 if (isNil14 == false)
                                 {
@@ -2341,7 +2356,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 Attr nilAttribute15 = thumbprintElement2.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                                 if (nilAttribute15 != null)
                                 {
-                                    isNil15 = nilAttribute15.getValue() == "true";
+                                    isNil15 = "true".equals(nilAttribute15.getValue());
                                 }
                                 if (isNil15 == false)
                                 {
@@ -2353,13 +2368,13 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             
                             NodeList elements30 = sSLCertificatesElement.getElementsByTagName("ToDelete");
                             Element toDeleteElement = elements30.getLength() > 0 ? ((Element) elements30.item(0)) : null;
-                            if (toDeleteElement != null && (toDeleteElement.getTextContent() != null && toDeleteElement.getTextContent().isEmpty() != true) == false)
+                            if (toDeleteElement != null && (toDeleteElement.getTextContent() == null || toDeleteElement.getTextContent().isEmpty() == true) == false)
                             {
                                 boolean isNil16 = false;
                                 Attr nilAttribute16 = toDeleteElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                                 if (nilAttribute16 != null)
                                 {
-                                    isNil16 = nilAttribute16.getValue() == "true";
+                                    isNil16 = "true".equals(nilAttribute16.getValue());
                                 }
                                 if (isNil16 == false)
                                 {
@@ -2371,13 +2386,13 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             
                             NodeList elements31 = sSLCertificatesElement.getElementsByTagName("Valid");
                             Element validElement = elements31.getLength() > 0 ? ((Element) elements31.item(0)) : null;
-                            if (validElement != null && (validElement.getTextContent() != null && validElement.getTextContent().isEmpty() != true) == false)
+                            if (validElement != null && (validElement.getTextContent() == null || validElement.getTextContent().isEmpty() == true) == false)
                             {
                                 boolean isNil17 = false;
                                 Attr nilAttribute17 = validElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                                 if (nilAttribute17 != null)
                                 {
-                                    isNil17 = nilAttribute17.getValue() == "true";
+                                    isNil17 = "true".equals(nilAttribute17.getValue());
                                 }
                                 if (isNil17 == false)
                                 {
@@ -2627,6 +2642,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new WebSiteGetConfigurationResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
@@ -2701,7 +2717,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 
                 NodeList elements10 = siteConfigElement.getElementsByTagName("DetailedErrorLoggingEnabled");
                 Element detailedErrorLoggingEnabledElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
-                if (detailedErrorLoggingEnabledElement != null && (detailedErrorLoggingEnabledElement.getTextContent() != null && detailedErrorLoggingEnabledElement.getTextContent().isEmpty() != true) == false)
+                if (detailedErrorLoggingEnabledElement != null && (detailedErrorLoggingEnabledElement.getTextContent() == null || detailedErrorLoggingEnabledElement.getTextContent().isEmpty() == true) == false)
                 {
                     boolean detailedErrorLoggingEnabledInstance;
                     detailedErrorLoggingEnabledInstance = Boolean.parseBoolean(detailedErrorLoggingEnabledElement.getTextContent());
@@ -2758,7 +2774,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 
                 NodeList elements16 = siteConfigElement.getElementsByTagName("HttpLoggingEnabled");
                 Element httpLoggingEnabledElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
-                if (httpLoggingEnabledElement != null && (httpLoggingEnabledElement.getTextContent() != null && httpLoggingEnabledElement.getTextContent().isEmpty() != true) == false)
+                if (httpLoggingEnabledElement != null && (httpLoggingEnabledElement.getTextContent() == null || httpLoggingEnabledElement.getTextContent().isEmpty() == true) == false)
                 {
                     boolean httpLoggingEnabledInstance;
                     httpLoggingEnabledInstance = Boolean.parseBoolean(httpLoggingEnabledElement.getTextContent());
@@ -2767,7 +2783,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 
                 NodeList elements17 = siteConfigElement.getElementsByTagName("LogsDirectorySizeLimit");
                 Element logsDirectorySizeLimitElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
-                if (logsDirectorySizeLimitElement != null && (logsDirectorySizeLimitElement.getTextContent() != null && logsDirectorySizeLimitElement.getTextContent().isEmpty() != true) == false)
+                if (logsDirectorySizeLimitElement != null && (logsDirectorySizeLimitElement.getTextContent() == null || logsDirectorySizeLimitElement.getTextContent().isEmpty() == true) == false)
                 {
                     int logsDirectorySizeLimitInstance;
                     logsDirectorySizeLimitInstance = Integer.parseInt(logsDirectorySizeLimitElement.getTextContent());
@@ -2776,7 +2792,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 
                 NodeList elements18 = siteConfigElement.getElementsByTagName("ManagedPipelineMode");
                 Element managedPipelineModeElement = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
-                if (managedPipelineModeElement != null && (managedPipelineModeElement.getTextContent() != null && managedPipelineModeElement.getTextContent().isEmpty() != true) == false)
+                if (managedPipelineModeElement != null && (managedPipelineModeElement.getTextContent() == null || managedPipelineModeElement.getTextContent().isEmpty() == true) == false)
                 {
                     ManagedPipelineMode managedPipelineModeInstance;
                     managedPipelineModeInstance = ManagedPipelineMode.valueOf(managedPipelineModeElement.getTextContent());
@@ -2809,7 +2825,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 
                 NodeList elements23 = siteConfigElement.getElementsByTagName("NumberOfWorkers");
                 Element numberOfWorkersElement = elements23.getLength() > 0 ? ((Element) elements23.item(0)) : null;
-                if (numberOfWorkersElement != null && (numberOfWorkersElement.getTextContent() != null && numberOfWorkersElement.getTextContent().isEmpty() != true) == false)
+                if (numberOfWorkersElement != null && (numberOfWorkersElement.getTextContent() == null || numberOfWorkersElement.getTextContent().isEmpty() == true) == false)
                 {
                     int numberOfWorkersInstance;
                     numberOfWorkersInstance = Integer.parseInt(numberOfWorkersElement.getTextContent());
@@ -2845,7 +2861,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 
                 NodeList elements27 = siteConfigElement.getElementsByTagName("RemoteDebuggingEnabled");
                 Element remoteDebuggingEnabledElement = elements27.getLength() > 0 ? ((Element) elements27.item(0)) : null;
-                if (remoteDebuggingEnabledElement != null && (remoteDebuggingEnabledElement.getTextContent() != null && remoteDebuggingEnabledElement.getTextContent().isEmpty() != true) == false)
+                if (remoteDebuggingEnabledElement != null && (remoteDebuggingEnabledElement.getTextContent() == null || remoteDebuggingEnabledElement.getTextContent().isEmpty() == true) == false)
                 {
                     boolean remoteDebuggingEnabledInstance;
                     remoteDebuggingEnabledInstance = Boolean.parseBoolean(remoteDebuggingEnabledElement.getTextContent());
@@ -2860,7 +2876,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     Attr nilAttribute = remoteDebuggingVersionElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                     if (nilAttribute != null)
                     {
-                        isNil = nilAttribute.getValue() == "true";
+                        isNil = "true".equals(nilAttribute.getValue());
                     }
                     if (isNil == false)
                     {
@@ -2872,7 +2888,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 
                 NodeList elements29 = siteConfigElement.getElementsByTagName("RequestTracingEnabled");
                 Element requestTracingEnabledElement = elements29.getLength() > 0 ? ((Element) elements29.item(0)) : null;
-                if (requestTracingEnabledElement != null && (requestTracingEnabledElement.getTextContent() != null && requestTracingEnabledElement.getTextContent().isEmpty() != true) == false)
+                if (requestTracingEnabledElement != null && (requestTracingEnabledElement.getTextContent() == null || requestTracingEnabledElement.getTextContent().isEmpty() == true) == false)
                 {
                     boolean requestTracingEnabledInstance;
                     requestTracingEnabledInstance = Boolean.parseBoolean(requestTracingEnabledElement.getTextContent());
@@ -2881,13 +2897,13 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 
                 NodeList elements30 = siteConfigElement.getElementsByTagName("RequestTracingExpirationTime");
                 Element requestTracingExpirationTimeElement = elements30.getLength() > 0 ? ((Element) elements30.item(0)) : null;
-                if (requestTracingExpirationTimeElement != null && (requestTracingExpirationTimeElement.getTextContent() != null && requestTracingExpirationTimeElement.getTextContent().isEmpty() != true) == false)
+                if (requestTracingExpirationTimeElement != null && (requestTracingExpirationTimeElement.getTextContent() == null || requestTracingExpirationTimeElement.getTextContent().isEmpty() == true) == false)
                 {
                     boolean isNil2 = false;
                     Attr nilAttribute2 = requestTracingExpirationTimeElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                     if (nilAttribute2 != null)
                     {
-                        isNil2 = nilAttribute2.getValue() == "true";
+                        isNil2 = "true".equals(nilAttribute2.getValue());
                     }
                     if (isNil2 == false)
                     {
@@ -2911,7 +2927,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 
                 NodeList elements32 = siteConfigElement.getElementsByTagName("Use32BitWorkerProcess");
                 Element use32BitWorkerProcessElement = elements32.getLength() > 0 ? ((Element) elements32.item(0)) : null;
-                if (use32BitWorkerProcessElement != null && (use32BitWorkerProcessElement.getTextContent() != null && use32BitWorkerProcessElement.getTextContent().isEmpty() != true) == false)
+                if (use32BitWorkerProcessElement != null && (use32BitWorkerProcessElement.getTextContent() == null || use32BitWorkerProcessElement.getTextContent().isEmpty() == true) == false)
                 {
                     boolean use32BitWorkerProcessInstance;
                     use32BitWorkerProcessInstance = Boolean.parseBoolean(use32BitWorkerProcessElement.getTextContent());
@@ -2920,7 +2936,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 
                 NodeList elements33 = siteConfigElement.getElementsByTagName("WebSocketsEnabled");
                 Element webSocketsEnabledElement = elements33.getLength() > 0 ? ((Element) elements33.item(0)) : null;
-                if (webSocketsEnabledElement != null && (webSocketsEnabledElement.getTextContent() != null && webSocketsEnabledElement.getTextContent().isEmpty() != true) == false)
+                if (webSocketsEnabledElement != null && (webSocketsEnabledElement.getTextContent() == null || webSocketsEnabledElement.getTextContent().isEmpty() == true) == false)
                 {
                     boolean webSocketsEnabledInstance;
                     webSocketsEnabledInstance = Boolean.parseBoolean(webSocketsEnabledElement.getTextContent());
@@ -3024,7 +3040,23 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/WebSpaces/" + webSpaceName + "/sites/" + webSiteName + "/metrics?&names=" + CommaStringBuilder.join(parameters.getMetricNames()) + "&StartTime=" + parameters.getStartTime() + "&EndTime=" + parameters.getEndTime();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+        simpleDateFormat2.setTimeZone(TimeZone.getTimeZone("UTC"));
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/WebSpaces/" + webSpaceName + "/sites/" + webSiteName + "/metrics" + "?";
+        if (parameters.getMetricNames() != null && parameters.getMetricNames().size() > 0)
+        {
+            url = url + "&" + "names=" + URLEncoder.encode(CommaStringBuilder.join(parameters.getMetricNames()), "UTF-8");
+        }
+        if (parameters.getStartTime() != null)
+        {
+            url = url + "&" + "StartTime=" + URLEncoder.encode(simpleDateFormat.format(parameters.getStartTime().getTime()), "UTF-8");
+        }
+        if (parameters.getEndTime() != null)
+        {
+            url = url + "&" + "EndTime=" + URLEncoder.encode(simpleDateFormat2.format(parameters.getEndTime().getTime()), "UTF-8");
+        }
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -3062,6 +3094,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new WebSiteGetHistoricalUsageMetricsResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
@@ -3107,9 +3140,9 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             if (endTimeElement != null)
                             {
                                 Calendar endTimeInstance;
-                                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                                SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
                                 Calendar calendar = Calendar.getInstance();
-                                calendar.setTime(simpleDateFormat.parse(endTimeElement.getTextContent()));
+                                calendar.setTime(simpleDateFormat3.parse(endTimeElement.getTextContent()));
                                 endTimeInstance = calendar;
                                 dataInstance.setEndTime(endTimeInstance);
                             }
@@ -3137,9 +3170,9 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             if (startTimeElement != null)
                             {
                                 Calendar startTimeInstance;
-                                SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                                SimpleDateFormat simpleDateFormat4 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
                                 Calendar calendar2 = Calendar.getInstance();
-                                calendar2.setTime(simpleDateFormat2.parse(startTimeElement.getTextContent()));
+                                calendar2.setTime(simpleDateFormat4.parse(startTimeElement.getTextContent()));
                                 startTimeInstance = calendar2;
                                 dataInstance.setStartTime(startTimeInstance);
                             }
@@ -3189,7 +3222,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                         Attr nilAttribute = maximumElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                                         if (nilAttribute != null)
                                         {
-                                            isNil = nilAttribute.getValue() == "true";
+                                            isNil = "true".equals(nilAttribute.getValue());
                                         }
                                         if (isNil == false)
                                         {
@@ -3207,7 +3240,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                         Attr nilAttribute2 = minimumElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                                         if (nilAttribute2 != null)
                                         {
-                                            isNil2 = nilAttribute2.getValue() == "true";
+                                            isNil2 = "true".equals(nilAttribute2.getValue());
                                         }
                                         if (isNil2 == false)
                                         {
@@ -3222,9 +3255,9 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                     if (timeCreatedElement != null)
                                     {
                                         Calendar timeCreatedInstance;
-                                        SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                                        SimpleDateFormat simpleDateFormat5 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
                                         Calendar calendar3 = Calendar.getInstance();
-                                        calendar3.setTime(simpleDateFormat3.parse(timeCreatedElement.getTextContent()));
+                                        calendar3.setTime(simpleDateFormat5.parse(timeCreatedElement.getTextContent()));
                                         timeCreatedInstance = calendar3;
                                         metricSampleInstance.setTimeCreated(timeCreatedInstance);
                                     }
@@ -3380,6 +3413,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new WebSiteGetPublishProfileResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
@@ -3639,6 +3673,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new WebSiteGetRepositoryResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
@@ -3782,6 +3817,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new WebSiteGetUsageMetricsResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
@@ -3882,6 +3918,132 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                         }
                     }
                 }
+            }
+            
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace)
+            {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
+    * Determines if a hostname is available
+    *
+    * @param webSiteName The name of the web site.
+    * @return The Is Hostname Available operation response.
+    */
+    @Override
+    public Future<WebSiteIsHostnameAvailableResponse> isHostnameAvailableAsync(final String webSiteName)
+    {
+        return this.getClient().getExecutorService().submit(new Callable<WebSiteIsHostnameAvailableResponse>() { 
+            @Override
+            public WebSiteIsHostnameAvailableResponse call() throws Exception
+            {
+                return isHostnameAvailable(webSiteName);
+            }
+         });
+    }
+    
+    /**
+    * Determines if a hostname is available
+    *
+    * @param webSiteName The name of the web site.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return The Is Hostname Available operation response.
+    */
+    @Override
+    public WebSiteIsHostnameAvailableResponse isHostnameAvailable(String webSiteName) throws IOException, ServiceException, ParserConfigurationException, SAXException
+    {
+        // Validate
+        if (webSiteName == null)
+        {
+            throw new NullPointerException("webSiteName");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace)
+        {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("webSiteName", webSiteName);
+            CloudTracing.enter(invocationId, this, "isHostnameAvailableAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/WebSpaces" + "?";
+        url = url + "ishostnameavailable=" + URLEncoder.encode(webSiteName, "UTF-8");
+        
+        // Create HTTP transport objects
+        HttpGet httpRequest = new HttpGet(url);
+        
+        // Set Headers
+        httpRequest.setHeader("x-ms-version", "2013-08-01");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try
+        {
+            if (shouldTrace)
+            {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            WebSiteIsHostnameAvailableResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new WebSiteIsHostnameAvailableResponse();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document responseDoc = documentBuilder.parse(responseContent);
+            
+            NodeList elements = responseDoc.getElementsByTagNameNS("", "boolean");
+            Element booleanElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            if (booleanElement != null)
+            {
+                boolean booleanInstance;
+                booleanInstance = Boolean.parseBoolean(booleanElement.getTextContent());
+                result.setIsAvailable(booleanInstance);
             }
             
             result.setStatusCode(statusCode);
@@ -4216,7 +4378,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/WebSpaces/" + webSpaceName + "/sites/" + webSiteName + "/repository?action=sync";
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/WebSpaces/" + webSpaceName + "/sites/" + webSiteName + "/repository" + "?" + "action=sync";
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
@@ -4551,6 +4713,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new WebSiteUpdateResponse();
             DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory2.setNamespaceAware(true);
             DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
             Document responseDoc = documentBuilder2.parse(responseContent);
             
@@ -4644,7 +4807,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             Attr nilAttribute2 = thumbprintElement3.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                             if (nilAttribute2 != null)
                             {
-                                isNil = nilAttribute2.getValue() == "true";
+                                isNil = "true".equals(nilAttribute2.getValue());
                             }
                             if (isNil == false)
                             {
@@ -4662,7 +4825,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             Attr nilAttribute3 = virtualIPElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                             if (nilAttribute3 != null)
                             {
-                                isNil2 = nilAttribute3.getValue() == "true";
+                                isNil2 = "true".equals(nilAttribute3.getValue());
                             }
                             if (isNil2 == false)
                             {
@@ -4714,7 +4877,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     Attr nilAttribute4 = ownerElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                     if (nilAttribute4 != null)
                     {
-                        isNil3 = nilAttribute4.getValue() == "true";
+                        isNil3 = "true".equals(nilAttribute4.getValue());
                     }
                     if (isNil3 == false)
                     {
@@ -4750,7 +4913,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     Attr nilAttribute5 = sSLCertificatesSequenceElement2.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                     if (nilAttribute5 != null)
                     {
-                        isNil4 = nilAttribute5.getValue() == "true";
+                        isNil4 = "true".equals(nilAttribute5.getValue());
                     }
                     if (isNil4 == false)
                     {
@@ -4762,13 +4925,13 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             
                             NodeList elements19 = sSLCertificatesElement.getElementsByTagName("ExpirationDate");
                             Element expirationDateElement = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
-                            if (expirationDateElement != null && (expirationDateElement.getTextContent() != null && expirationDateElement.getTextContent().isEmpty() != true) == false)
+                            if (expirationDateElement != null && (expirationDateElement.getTextContent() == null || expirationDateElement.getTextContent().isEmpty() == true) == false)
                             {
                                 boolean isNil5 = false;
                                 Attr nilAttribute6 = expirationDateElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                                 if (nilAttribute6 != null)
                                 {
-                                    isNil5 = nilAttribute6.getValue() == "true";
+                                    isNil5 = "true".equals(nilAttribute6.getValue());
                                 }
                                 if (isNil5 == false)
                                 {
@@ -4789,7 +4952,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 Attr nilAttribute7 = friendlyNameElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                                 if (nilAttribute7 != null)
                                 {
-                                    isNil6 = nilAttribute7.getValue() == "true";
+                                    isNil6 = "true".equals(nilAttribute7.getValue());
                                 }
                                 if (isNil6 == false)
                                 {
@@ -4807,7 +4970,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 Attr nilAttribute8 = hostNamesSequenceElement3.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                                 if (nilAttribute8 != null)
                                 {
-                                    isNil7 = nilAttribute8.getValue() == "true";
+                                    isNil7 = "true".equals(nilAttribute8.getValue());
                                 }
                                 if (isNil7 == false)
                                 {
@@ -4821,13 +4984,13 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             
                             NodeList elements22 = sSLCertificatesElement.getElementsByTagName("IssueDate");
                             Element issueDateElement = elements22.getLength() > 0 ? ((Element) elements22.item(0)) : null;
-                            if (issueDateElement != null && (issueDateElement.getTextContent() != null && issueDateElement.getTextContent().isEmpty() != true) == false)
+                            if (issueDateElement != null && (issueDateElement.getTextContent() == null || issueDateElement.getTextContent().isEmpty() == true) == false)
                             {
                                 boolean isNil8 = false;
                                 Attr nilAttribute9 = issueDateElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                                 if (nilAttribute9 != null)
                                 {
-                                    isNil8 = nilAttribute9.getValue() == "true";
+                                    isNil8 = "true".equals(nilAttribute9.getValue());
                                 }
                                 if (isNil8 == false)
                                 {
@@ -4848,7 +5011,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 Attr nilAttribute10 = issuerElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                                 if (nilAttribute10 != null)
                                 {
-                                    isNil9 = nilAttribute10.getValue() == "true";
+                                    isNil9 = "true".equals(nilAttribute10.getValue());
                                 }
                                 if (isNil9 == false)
                                 {
@@ -4866,7 +5029,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 Attr nilAttribute11 = passwordElement2.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                                 if (nilAttribute11 != null)
                                 {
-                                    isNil10 = nilAttribute11.getValue() == "true";
+                                    isNil10 = "true".equals(nilAttribute11.getValue());
                                 }
                                 if (isNil10 == false)
                                 {
@@ -4884,7 +5047,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 Attr nilAttribute12 = pfxBlobElement2.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                                 if (nilAttribute12 != null)
                                 {
-                                    isNil11 = nilAttribute12.getValue() == "true";
+                                    isNil11 = "true".equals(nilAttribute12.getValue());
                                 }
                                 if (isNil11 == false)
                                 {
@@ -4902,7 +5065,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 Attr nilAttribute13 = selfLinkElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                                 if (nilAttribute13 != null)
                                 {
-                                    isNil12 = nilAttribute13.getValue() == "true";
+                                    isNil12 = "true".equals(nilAttribute13.getValue());
                                 }
                                 if (isNil12 == false)
                                 {
@@ -4920,7 +5083,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 Attr nilAttribute14 = siteNameElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                                 if (nilAttribute14 != null)
                                 {
-                                    isNil13 = nilAttribute14.getValue() == "true";
+                                    isNil13 = "true".equals(nilAttribute14.getValue());
                                 }
                                 if (isNil13 == false)
                                 {
@@ -4938,7 +5101,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 Attr nilAttribute15 = subjectNameElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                                 if (nilAttribute15 != null)
                                 {
-                                    isNil14 = nilAttribute15.getValue() == "true";
+                                    isNil14 = "true".equals(nilAttribute15.getValue());
                                 }
                                 if (isNil14 == false)
                                 {
@@ -4956,7 +5119,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 Attr nilAttribute16 = thumbprintElement4.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                                 if (nilAttribute16 != null)
                                 {
-                                    isNil15 = nilAttribute16.getValue() == "true";
+                                    isNil15 = "true".equals(nilAttribute16.getValue());
                                 }
                                 if (isNil15 == false)
                                 {
@@ -4968,13 +5131,13 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             
                             NodeList elements30 = sSLCertificatesElement.getElementsByTagName("ToDelete");
                             Element toDeleteElement2 = elements30.getLength() > 0 ? ((Element) elements30.item(0)) : null;
-                            if (toDeleteElement2 != null && (toDeleteElement2.getTextContent() != null && toDeleteElement2.getTextContent().isEmpty() != true) == false)
+                            if (toDeleteElement2 != null && (toDeleteElement2.getTextContent() == null || toDeleteElement2.getTextContent().isEmpty() == true) == false)
                             {
                                 boolean isNil16 = false;
                                 Attr nilAttribute17 = toDeleteElement2.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                                 if (nilAttribute17 != null)
                                 {
-                                    isNil16 = nilAttribute17.getValue() == "true";
+                                    isNil16 = "true".equals(nilAttribute17.getValue());
                                 }
                                 if (isNil16 == false)
                                 {
@@ -4986,13 +5149,13 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             
                             NodeList elements31 = sSLCertificatesElement.getElementsByTagName("Valid");
                             Element validElement = elements31.getLength() > 0 ? ((Element) elements31.item(0)) : null;
-                            if (validElement != null && (validElement.getTextContent() != null && validElement.getTextContent().isEmpty() != true) == false)
+                            if (validElement != null && (validElement.getTextContent() == null || validElement.getTextContent().isEmpty() == true) == false)
                             {
                                 boolean isNil17 = false;
                                 Attr nilAttribute18 = validElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                                 if (nilAttribute18 != null)
                                 {
-                                    isNil17 = nilAttribute18.getValue() == "true";
+                                    isNil17 = "true".equals(nilAttribute18.getValue());
                                 }
                                 if (isNil17 == false)
                                 {

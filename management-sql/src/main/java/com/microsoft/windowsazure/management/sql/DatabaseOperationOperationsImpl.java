@@ -30,6 +30,7 @@ import com.microsoft.windowsazure.management.sql.models.DatabaseOperationListRes
 import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -181,6 +182,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new DatabaseOperationGetResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
@@ -424,7 +426,8 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + this.getClient().getCredentials().getSubscriptionId() + "/services/sqlservers/servers/" + serverName + "/databaseoperations?databaseName=" + databaseName;
+        String url = this.getClient().getBaseUri() + this.getClient().getCredentials().getSubscriptionId() + "/services/sqlservers/servers/" + serverName + "/databaseoperations" + "?";
+        url = url + "databaseName=" + URLEncoder.encode(databaseName, "UTF-8");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -462,6 +465,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new DatabaseOperationListResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
@@ -705,7 +709,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + this.getClient().getCredentials().getSubscriptionId() + "/services/sqlservers/servers/" + serverName + "/databaseoperations?contentview=generic";
+        String url = this.getClient().getBaseUri() + this.getClient().getCredentials().getSubscriptionId() + "/services/sqlservers/servers/" + serverName + "/databaseoperations" + "?" + "contentview=generic";
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -743,6 +747,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new DatabaseOperationListResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             

@@ -43,6 +43,7 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -161,7 +162,8 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/ServiceBus/CheckNamespaceAvailability?namespace=" + namespaceName;
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/ServiceBus/CheckNamespaceAvailability" + "?";
+        url = url + "namespace=" + URLEncoder.encode(namespaceName, "UTF-8");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -201,6 +203,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new CheckNamespaceAvailabilityResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
@@ -404,6 +407,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new ServiceBusNamespaceResponse();
             DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory2.setNamespaceAware(true);
             DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
             Document responseDoc = documentBuilder2.parse(responseContent);
             
@@ -714,6 +718,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new ServiceBusAuthorizationRuleResponse();
             DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory2.setNamespaceAware(true);
             DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
             Document responseDoc = documentBuilder2.parse(responseContent);
             
@@ -1179,6 +1184,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new ServiceBusNamespaceResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
@@ -1400,6 +1406,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new ServiceBusAuthorizationRuleResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
@@ -1632,6 +1639,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new ServiceBusNamespaceDescriptionResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
@@ -1822,6 +1830,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new ServiceBusNamespacesResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
@@ -2043,6 +2052,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new ServiceBusAuthorizationRulesResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
@@ -2374,6 +2384,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new ServiceBusAuthorizationRuleResponse();
             DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory2.setNamespaceAware(true);
             DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
             Document responseDoc = documentBuilder2.parse(responseContent);
             

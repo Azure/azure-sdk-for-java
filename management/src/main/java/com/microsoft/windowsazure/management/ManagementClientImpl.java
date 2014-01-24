@@ -129,6 +129,18 @@ public class ManagementClientImpl extends ServiceClient<ManagementClient> implem
         return this.managementCertificates;
     }
     
+    private RoleSizeOperations roleSizes;
+    
+    /**
+    * The Service Management API includes operations for listing the available
+    * role sizes for VMs in your subscription.
+    * @return The RoleSizesOperations value.
+    */
+    public RoleSizeOperations getRoleSizesOperations()
+    {
+        return this.roleSizes;
+    }
+    
     private SubscriptionOperations subscriptions;
     
     /**
@@ -154,6 +166,7 @@ public class ManagementClientImpl extends ServiceClient<ManagementClient> implem
         this.affinityGroups = new AffinityGroupOperationsImpl(this);
         this.locations = new LocationOperationsImpl(this);
         this.managementCertificates = new ManagementCertificateOperationsImpl(this);
+        this.roleSizes = new RoleSizeOperationsImpl(this);
         this.subscriptions = new SubscriptionOperationsImpl(this);
     }
     
@@ -344,6 +357,7 @@ public class ManagementClientImpl extends ServiceClient<ManagementClient> implem
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new OperationStatusResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             

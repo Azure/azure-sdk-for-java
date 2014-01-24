@@ -185,6 +185,7 @@ public class NotificationHubOperationsImpl implements ServiceOperations<ServiceB
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new ServiceBusNotificationHubResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
@@ -432,6 +433,7 @@ public class NotificationHubOperationsImpl implements ServiceOperations<ServiceB
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new ServiceBusConnectionDetailsResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
@@ -616,6 +618,7 @@ public class NotificationHubOperationsImpl implements ServiceOperations<ServiceB
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new ServiceBusNotificationHubsResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             

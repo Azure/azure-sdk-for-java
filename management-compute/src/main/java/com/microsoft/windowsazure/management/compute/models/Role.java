@@ -181,6 +181,55 @@ public class Role
         this.oSVirtualHardDisk = oSVirtualHardDiskValue;
     }
     
+    private Boolean provisionGuestAgent;
+    
+    /**
+    * Optional. Indicates whether the WindowsAzureGuestAgent service is
+    * installed on the Virtual Machine. To run a resource extension in
+    * aVirtual Machine, this service must be installed.
+    * @return The ProvisionGuestAgent value.
+    */
+    public Boolean isProvisionGuestAgent()
+    {
+        return this.provisionGuestAgent;
+    }
+    
+    /**
+    * Optional. Indicates whether the WindowsAzureGuestAgent service is
+    * installed on the Virtual Machine. To run a resource extension in
+    * aVirtual Machine, this service must be installed.
+    * @param provisionGuestAgentValue The ProvisionGuestAgent value.
+    */
+    public void setProvisionGuestAgent(final Boolean provisionGuestAgentValue)
+    {
+        this.provisionGuestAgent = provisionGuestAgentValue;
+    }
+    
+    private ArrayList<ResourceExtensionReference> resourceExtensionReferences;
+    
+    /**
+    * Optional. Contains a collection of resource extensions that are to be
+    * installed on the Virtual Machine. This element is used if
+    * ProvisionGuestAgent is set to true.
+    * @return The ResourceExtensionReferences value.
+    */
+    public ArrayList<ResourceExtensionReference> getResourceExtensionReferences()
+    {
+        return this.resourceExtensionReferences;
+    }
+    
+    /**
+    * Optional. Contains a collection of resource extensions that are to be
+    * installed on the Virtual Machine. This element is used if
+    * ProvisionGuestAgent is set to true.
+    * @param resourceExtensionReferencesValue The ResourceExtensionReferences
+    * value.
+    */
+    public void setResourceExtensionReferences(final ArrayList<ResourceExtensionReference> resourceExtensionReferencesValue)
+    {
+        this.resourceExtensionReferences = resourceExtensionReferencesValue;
+    }
+    
     private String roleName;
     
     /**
@@ -251,5 +300,6 @@ public class Role
     {
         this.configurationSets = new ArrayList<ConfigurationSet>();
         this.dataVirtualHardDisks = new ArrayList<DataVirtualHardDisk>();
+        this.resourceExtensionReferences = new ArrayList<ResourceExtensionReference>();
     }
 }

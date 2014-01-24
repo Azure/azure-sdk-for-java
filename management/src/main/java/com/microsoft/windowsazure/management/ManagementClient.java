@@ -88,6 +88,13 @@ public interface ManagementClient extends FilterableService<ManagementClient>
     ManagementCertificateOperations getManagementCertificatesOperations(); 
     
     /**
+    * The Service Management API includes operations for listing the available
+    * role sizes for VMs in your subscription.
+    * @return The RoleSizesOperations value.
+    */
+    RoleSizeOperations getRoleSizesOperations(); 
+    
+    /**
     * Operation for listing subscription operations and details.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715315.aspx for
     * more information)

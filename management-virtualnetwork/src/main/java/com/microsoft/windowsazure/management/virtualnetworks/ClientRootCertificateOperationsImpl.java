@@ -211,6 +211,7 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Vi
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new GatewayOperationResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
@@ -368,6 +369,7 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Vi
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new GatewayOperationResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
@@ -644,6 +646,7 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Vi
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new ClientRootCertificateListResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             

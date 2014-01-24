@@ -160,6 +160,20 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
         return this.virtualMachineDisks;
     }
     
+    private VirtualMachineExtensionOperations virtualMachineExtensions;
+    
+    /**
+    * The Service Management API includes operations for managing the virtual
+    * machine extensions in your subscription.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157206.aspx for
+    * more information)
+    * @return The VirtualMachineExtensionsOperations value.
+    */
+    public VirtualMachineExtensionOperations getVirtualMachineExtensionsOperations()
+    {
+        return this.virtualMachineExtensions;
+    }
+    
     private VirtualMachineImageOperations virtualMachineImages;
     
     /**
@@ -202,6 +216,7 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
         this.operatingSystems = new OperatingSystemOperationsImpl(this);
         this.serviceCertificates = new ServiceCertificateOperationsImpl(this);
         this.virtualMachineDisks = new VirtualMachineDiskOperationsImpl(this);
+        this.virtualMachineExtensions = new VirtualMachineExtensionOperationsImpl(this);
         this.virtualMachineImages = new VirtualMachineImageOperationsImpl(this);
         this.virtualMachines = new VirtualMachineOperationsImpl(this);
     }
@@ -393,6 +408,7 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new ComputeOperationStatusResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
