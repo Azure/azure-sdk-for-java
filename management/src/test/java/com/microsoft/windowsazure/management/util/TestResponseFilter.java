@@ -26,6 +26,8 @@ public class TestResponseFilter implements ServiceResponseFilter
     
     public int getCalled() { return this.called; }
     
+    public String getIdentifier() { return this.identifier; }
+    
     public TestResponseFilter(String identifier)
     {
         this.called = 0;

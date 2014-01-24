@@ -25,6 +25,8 @@ public class TestRequestFilter implements ServiceRequestFilter
     
     public int getCalled() { return this.called; }
     
+    public String getIdentifier() { return this.identifier; }
+    
     public TestRequestFilter(String identifier)
     {
         this.called = 0;
