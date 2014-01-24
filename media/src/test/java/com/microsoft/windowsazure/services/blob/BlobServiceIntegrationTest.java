@@ -18,7 +18,6 @@ import static org.junit.Assert.*;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,14 +25,8 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-
-import junit.framework.Assert;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -41,37 +34,16 @@ import org.junit.Test;
 
 import com.microsoft.windowsazure.services.blob.models.BlobProperties;
 import com.microsoft.windowsazure.services.blob.models.BlockList;
-import com.microsoft.windowsazure.services.blob.models.BreakLeaseResult;
-import com.microsoft.windowsazure.services.blob.models.ContainerACL;
-import com.microsoft.windowsazure.services.blob.models.ContainerACL.PublicAccessType;
-import com.microsoft.windowsazure.services.blob.models.CopyBlobResult;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobOptions;
-import com.microsoft.windowsazure.services.blob.models.CreateBlobPagesResult;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobResult;
-import com.microsoft.windowsazure.services.blob.models.CreateBlobSnapshotOptions;
-import com.microsoft.windowsazure.services.blob.models.CreateBlobSnapshotResult;
 import com.microsoft.windowsazure.services.blob.models.CreateContainerOptions;
-import com.microsoft.windowsazure.services.blob.models.DeleteBlobOptions;
-import com.microsoft.windowsazure.services.blob.models.GetBlobMetadataResult;
-import com.microsoft.windowsazure.services.blob.models.GetBlobOptions;
-import com.microsoft.windowsazure.services.blob.models.GetBlobPropertiesOptions;
 import com.microsoft.windowsazure.services.blob.models.GetBlobPropertiesResult;
 import com.microsoft.windowsazure.services.blob.models.GetBlobResult;
-import com.microsoft.windowsazure.services.blob.models.GetContainerPropertiesResult;
 import com.microsoft.windowsazure.services.blob.models.ListBlobBlocksOptions;
 import com.microsoft.windowsazure.services.blob.models.ListBlobBlocksResult;
-import com.microsoft.windowsazure.services.blob.models.ListBlobRegionsResult;
-import com.microsoft.windowsazure.services.blob.models.ListBlobsOptions;
-import com.microsoft.windowsazure.services.blob.models.ListBlobsResult;
-import com.microsoft.windowsazure.services.blob.models.ListBlobsResult.BlobEntry;
 import com.microsoft.windowsazure.services.blob.models.ListContainersOptions;
 import com.microsoft.windowsazure.services.blob.models.ListContainersResult;
 import com.microsoft.windowsazure.services.blob.models.ListContainersResult.Container;
-import com.microsoft.windowsazure.services.blob.models.PageRange;
-import com.microsoft.windowsazure.services.blob.models.ServiceProperties;
-import com.microsoft.windowsazure.services.blob.models.SetBlobMetadataResult;
-import com.microsoft.windowsazure.services.blob.models.SetBlobPropertiesOptions;
-import com.microsoft.windowsazure.services.blob.models.SetBlobPropertiesResult;
 import com.microsoft.windowsazure.Configuration;
 import com.microsoft.windowsazure.core.pipeline.filter.ServiceRequestContext;
 import com.microsoft.windowsazure.core.pipeline.filter.ServiceResponseContext;
@@ -79,19 +51,13 @@ import com.microsoft.windowsazure.core.pipeline.jersey.ExponentialRetryPolicy;
 import com.microsoft.windowsazure.core.pipeline.jersey.RetryPolicyFilter;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.core.pipeline.jersey.ServiceFilter;
-import com.microsoft.windowsazure.core.utils.AccessConditionHeader;
 
 public class BlobServiceIntegrationTest extends IntegrationTestBase
 {
     private static final String testContainersPrefix = "sdktest-";
     private static final String createableContainersPrefix = "csdktest-";
-    private static final String BLOB_FOR_ROOT_CONTAINER = "sdktestroot";
     private static String CREATEABLE_CONTAINER_1;
-    private static String CREATEABLE_CONTAINER_2;
-    private static String CREATEABLE_CONTAINER_3;
-    private static String CREATEABLE_CONTAINER_4;
     private static String TEST_CONTAINER_FOR_BLOBS;
-    private static String TEST_CONTAINER_FOR_LISTING;
     private static String[] creatableContainers;
     private static String[] testContainers;
     private static boolean createdRoot;
@@ -116,13 +82,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase
         }
 
         CREATEABLE_CONTAINER_1 = creatableContainers[0];
-        CREATEABLE_CONTAINER_2 = creatableContainers[1];
-        CREATEABLE_CONTAINER_3 = creatableContainers[2];
-        CREATEABLE_CONTAINER_4 = creatableContainers[3];
-
         TEST_CONTAINER_FOR_BLOBS = testContainers[0];
-        TEST_CONTAINER_FOR_LISTING = testContainers[2];
-
         // Create all test containers and their content
         Configuration config = createConfiguration();
         BlobContract service = BlobService.create(config);
