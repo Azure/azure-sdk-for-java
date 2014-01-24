@@ -18,12 +18,13 @@ package com.microsoft.windowsazure;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import org.junit.Assert;
 
 import com.microsoft.windowsazure.management.ManagementConfiguration;
-import com.microsoft.windowsazure.management.ManagementService;
 
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
@@ -37,14 +38,23 @@ public class ManagementResourceStepdefs
     public void i_create_a_with_name(String objectType, String name) throws Exception
     {
         if (objectType.equals("ManagementClient")) {
-            objects.put(name, ManagementService.create(createConfiguration()));   
-        } else {
+        	Class<?> serviceClass = Class.forName("com.microsoft.windowsazure.management.ManagementService");
+        	Method method = serviceClass.getMethod("create", Configuration.class);
+            objects.put(name, method.invoke(null, createConfiguration()));   
+        }
+        else if (objectType.equals("WebSiteManagementClient")) {
+        	Class<?> serviceClass = Class.forName("com.microsoft.windowsazure.management.websites.WebSiteManagementService");
+        	Method method = serviceClass.getMethod("create", Configuration.class);
+            objects.put(name, method.invoke(null, createConfiguration()));   
+        }
+        else
+        {
             Class<?> objectClass = Class.forName(getJavaType(objectType));
             objects.put(name, objectClass.newInstance());
         }
     }
     
-    @Given("^set property \"([^\"]*)\" with value \"([^\"]*)\"$")
+    @Given("^set \"([^\"]*)\" with value \"([^\"]*)\"$")
     public void set_property(String propertyName, String propertyValue) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
     {
         String[] parts = propertyName.split("\\.");
@@ -54,23 +64,48 @@ public class ManagementResourceStepdefs
         method.invoke(object, propertyValue);
     }
 
+    @And("^set \"([^\"]*)\" with value from list \"([^\"]*)\" where \"([^\"]*)\" of type \"([^\"]*)\" equals \"([^\"]*)\"$")
+    public void set_value_where_equals(String objectName, String path, String propertyPath, String propertyType, String value) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
+    {
+        String[] parts = path.split("\\.");
+        Object parent = getObject(parts);
+        ArrayList<?> arrayObject = (ArrayList<?>) getPropertyValue(parent, parts[parts.length - 1]);
+        
+        for (int i = 0; i < arrayObject.size(); i++)
+        {
+        	String[] propertyParts = propertyPath.split("\\.");
+        	Object propertyParent = getObject(arrayObject.get(i), propertyParts);
+            Object propertyValue = getPropertyValue(propertyParent, propertyParts[propertyParts.length - 1]);
+        	if (propertyValue.equals(TextUtility.convertStringTo(value, propertyType)))
+        	{
+        		objects.put(objectName, arrayObject.get(i));
+        		break;
+        	}
+        }
+    }
+    
+    private Object getPropertyValue(Object parent, String propertyName) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
+    {
+        Method method;
+        if (propertyName.toLowerCase().equals("length"))
+        {
+            method = parent.getClass().getMethod("size");
+        }
+        else
+        {
+            method = parent.getClass().getMethod("get" + TextUtility.ToPascalCase(propertyName));
+        }
+        
+        return method.invoke(parent);
+    }
+    
     @And("^property with type \"([^\"]*)\" and path \"([^\"]*)\" should equal \"([^\"]*)\"$")
     public void and_get_property_equals(String propertyType, String propertyName, String propertyValue) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
     {
         String[] parts = propertyName.split("\\.");
         Object object = getObject(parts);
  
-        Method method;
-        if (parts[parts.length - 1].toLowerCase().equals("length"))
-        {
-            method = object.getClass().getMethod("length");
-        }
-        else
-        {
-            method = object.getClass().getMethod("get" + TextUtility.ToPascalCase(parts[parts.length - 1]));
-        }
-        
-        Object result = method.invoke(object);
+        Object result = getPropertyValue(object, parts[parts.length - 1]);
         
         // Assert
         Assert.assertEquals(TextUtility.convertStringTo(propertyValue, propertyType), result);
@@ -144,26 +179,33 @@ public class ManagementResourceStepdefs
     private Object getObject(String[] parts) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
     {
         Object object = objects.get(parts[0]);
-        for (int i = 1; i < (parts.length - 1); i++)
+        
+        String[] memberParts = Arrays.copyOfRange(parts, 1, parts.length);
+        return getObject(object, memberParts);
+    }
+    
+    private Object getObject(Object parent, String[] parts) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
+    {
+        for (int i = 0; i < (parts.length - 1); i++)
         {
             if (parts[i].endsWith("]"))
             {
                 String propertyName = parts[i].substring(0, parts[i].lastIndexOf("["));
-                Method method = object.getClass().getMethod("get" + TextUtility.ToPascalCase(propertyName));
-                object = method.invoke(object);
+                Method method = parent.getClass().getMethod("get" + TextUtility.ToPascalCase(propertyName));
+                parent = method.invoke(parent);
                 
                 int index = Integer.parseInt(parts[i].substring(parts[i].lastIndexOf("[") + 1, parts[i].length() - 1));
-                Method indexMethod = object.getClass().getMethod("get", int.class);
-                object = indexMethod.invoke(object, index);
+                Method indexMethod = parent.getClass().getMethod("get", int.class);
+                parent = indexMethod.invoke(parent, index);
             }
             else
             {
-                Method method = object.getClass().getMethod("get" + TextUtility.ToPascalCase(parts[i]));
-                object = method.invoke(object);   
+                Method method = parent.getClass().getMethod("get" + TextUtility.ToPascalCase(parts[i]));
+                parent = method.invoke(parent);   
             }
         }
         
-        return object;
+        return parent;
     }
     
     private String getJavaType(String csharpType)
@@ -187,9 +229,9 @@ public class ManagementResourceStepdefs
     protected static Configuration createConfiguration() throws Exception
     {
         return ManagementConfiguration.configure(
-                System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
-                System.getenv(ManagementConfiguration.KEYSTORE_PATH),
-                System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD)
+                "db1ab6f0-4769-4b27-930e-01e2ef9c123c",
+                "C:\\sources\\certificates\\WindowsAzureKeyStore.jks",
+                "test123"
         );
     }
 }
