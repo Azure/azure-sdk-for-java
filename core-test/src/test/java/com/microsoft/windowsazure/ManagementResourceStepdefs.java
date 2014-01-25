@@ -155,6 +155,16 @@ public class ManagementResourceStepdefs
         return method.invoke(object);
     }
     
+    @When("^I invoke \"([^\"]*)\" with parameter values \"([^\"]*)\" of type \"([^\"]*)\" and \"([^\"]*)\" of type \"([^\"]*)\"$")
+    public Object when_invoke_with_parameter_values(String methodName, Object parameter1, String parameter1Type, Object parameter2, String parameter2Type) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException
+    {
+        String[] parts = methodName.split("\\.");
+        Object object = getObject(parts);
+        
+        Method method = object.getClass().getMethod(TextUtility.ToCamelCase(parts[parts.length - 1]), Class.forName(getJavaType(parameter1Type)), Class.forName(getJavaType(parameter2Type)));
+        return method.invoke(object, parameter1, parameter2);
+    }
+    
     @When("^I invoke \"([^\"]*)\" with parameter value \"([^\"]*)\" of type \"([^\"]*)\"$")
     public Object when_invoke_with_parameter_value(String methodName, Object parameter, String parameterType) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException
     {
@@ -171,11 +181,26 @@ public class ManagementResourceStepdefs
         Object parameter = objects.get(parameterName);
         return when_invoke_with_parameter_value(methodName, parameter, parameter.getClass().getName());
     }
+
+    @When("^I invoke \"([^\"]*)\" with parameters \"([^\"]*)\" and \"([^\"]*)\"$")
+    public Object when_invoke_with_parameter(String methodName, String parameter1Name, String parameter2Name) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException
+    {
+        Object parameter1 = objects.get(parameter1Name);
+        Object parameter2 = objects.get(parameter2Name);
+        return when_invoke_with_parameter_values(methodName, parameter1, parameter1.getClass().getName(), parameter2, parameter2.getClass().getName());
+    }
     
+
     @When("^invoke \"([^\"]*)\" with parameter value \"([^\"]*)\" of type \"([^\"]*)\"$")
     public Object then_invoke_with_parameter_value(String methodName, Object parameter, String parameterType) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException
     {
         return when_invoke_with_parameter_value(methodName, parameter, parameterType);
+    }
+    
+    @When("^invoke \"([^\"]*)\" with parameter values \"([^\"]*)\" of type \"([^\"]*)\" and \"([^\"]*)\" of type \"([^\"]*)\"$")
+    public Object then_invoke_with_parameter_values(String methodName, Object parameter1, String parameter1Type, Object parameter2, String parameter2Type) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException
+    {
+        return when_invoke_with_parameter_values(methodName, parameter1, parameter1Type, parameter2, parameter2Type);
     }
     
     private Object getObject(String[] parts) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
