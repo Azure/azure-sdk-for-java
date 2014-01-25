@@ -49,23 +49,29 @@ public class ManagementResourceStepdefs
         }
         else
         {
-            Class<?> objectClass = Class.forName(getJavaType(objectType));
+            Class<?> objectClass = TextUtility.getJavaType(objectType);
             objects.put(name, objectClass.newInstance());
         }
     }
     
-    @Given("^set \"([^\"]*)\" with value \"([^\"]*)\"$")
-    public void set_property(String propertyName, String propertyValue) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
+    @Given("^set \"([^\"]*)\" with value \"([^\"]*)\" of type \"([^\"]*)\"$")
+    public void set_property(String propertyName, String propertyValue, String propertyType) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException
     {
         String[] parts = propertyName.split("\\.");
         Object object = getObject(parts);
-        
-        Method method = object.getClass().getMethod("set" + TextUtility.ToPascalCase(parts[parts.length - 1]), propertyValue.getClass());
-        method.invoke(object, propertyValue);
+        if (parts.length > 1)
+        {
+	        Method method = object.getClass().getMethod("set" + TextUtility.ToPascalCase(parts[parts.length - 1]), TextUtility.getJavaType(propertyType));
+	        method.invoke(object, TextUtility.convertStringTo(propertyValue, propertyType));
+        }
+        else
+        {
+        	objects.put(propertyName, TextUtility.convertStringTo(propertyValue, propertyType));
+        }
     }
 
     @And("^set \"([^\"]*)\" with value from list \"([^\"]*)\" where \"([^\"]*)\" of type \"([^\"]*)\" equals \"([^\"]*)\"$")
-    public void set_value_where_equals(String objectName, String path, String propertyPath, String propertyType, String value) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
+    public void set_value_where_equals(String objectName, String path, String propertyPath, String propertyType, String value) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException
     {
         String[] parts = path.split("\\.");
         Object parent = getObject(parts);
@@ -102,7 +108,7 @@ public class ManagementResourceStepdefs
     }
     
     @And("^property with type \"([^\"]*)\" and path \"([^\"]*)\" should equal \"([^\"]*)\"$")
-    public void and_get_property_equals(String propertyType, String propertyName, String propertyValue) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
+    public void and_get_property_equals(String propertyType, String propertyName, String propertyValue) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException
     {
         String[] parts = propertyName.split("\\.");
         Object object = getObject(parts);
@@ -114,7 +120,7 @@ public class ManagementResourceStepdefs
     }
 
     @And("^property with type \"([^\"]*)\" and path \"([^\"]*)\" should not equal \"([^\"]*)\"$")
-    public void and_get_property_not_equals(String propertyType, String propertyName, String propertyValue) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
+    public void and_get_property_not_equals(String propertyType, String propertyName, String propertyValue) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException
     {
         String[] parts = propertyName.split("\\.");
         Object object = getObject(parts);
@@ -161,7 +167,7 @@ public class ManagementResourceStepdefs
         String[] parts = methodName.split("\\.");
         Object object = getObject(parts);
         
-        Method method = object.getClass().getMethod(TextUtility.ToCamelCase(parts[parts.length - 1]), Class.forName(getJavaType(parameter1Type)), Class.forName(getJavaType(parameter2Type)));
+        Method method = object.getClass().getMethod(TextUtility.ToCamelCase(parts[parts.length - 1]), TextUtility.getJavaType(parameter1Type), TextUtility.getJavaType(parameter2Type));
         return method.invoke(object, parameter1, parameter2);
     }
     
@@ -171,7 +177,7 @@ public class ManagementResourceStepdefs
         String[] parts = methodName.split("\\.");
         Object object = getObject(parts);
         
-        Method method = object.getClass().getMethod(TextUtility.ToCamelCase(parts[parts.length - 1]), Class.forName(getJavaType(parameterType)));
+        Method method = object.getClass().getMethod(TextUtility.ToCamelCase(parts[parts.length - 1]), TextUtility.getJavaType(parameterType));
         return method.invoke(object, parameter);
     }
 
@@ -190,6 +196,11 @@ public class ManagementResourceStepdefs
         return when_invoke_with_parameter_values(methodName, parameter1, parameter1.getClass().getName(), parameter2, parameter2.getClass().getName());
     }
     
+    @When("^I invoke \"([^\"]*)\" with parameters \"([^\"]*)\" and \"([^\"]*)\" I get the result into \"([^\"]*)\"$")
+    public void  when_invoke_with_parameters_get_result(String methodName, String parameter1Name, String parameter2Name, String resultName) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException
+    {
+    	objects.put(resultName, when_invoke_with_parameter(methodName, parameter1Name, parameter2Name));
+    }
 
     @When("^invoke \"([^\"]*)\" with parameter value \"([^\"]*)\" of type \"([^\"]*)\"$")
     public Object then_invoke_with_parameter_value(String methodName, Object parameter, String parameterType) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException
@@ -205,10 +216,15 @@ public class ManagementResourceStepdefs
     
     private Object getObject(String[] parts) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
     {
-        Object object = objects.get(parts[0]);
-        
-        String[] memberParts = Arrays.copyOfRange(parts, 1, parts.length);
-        return getObject(object, memberParts);
+    	if (objects.containsKey(parts[0]))
+    	{
+	        Object object = objects.get(parts[0]);
+	
+	        String[] memberParts = Arrays.copyOfRange(parts, 1, parts.length);
+	        return getObject(object, memberParts);
+    	}
+    	
+    	return null;
     }
     
     private Object getObject(Object parent, String[] parts) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
@@ -235,30 +251,12 @@ public class ManagementResourceStepdefs
         return parent;
     }
     
-    private String getJavaType(String csharpType)
-    {
-        if (csharpType.equals("System.Int32"))
-        {
-            return "java.lang.Integer";
-        }
-        else if (csharpType.equals("System.String"))
-        {
-            return "java.lang.String";
-        }
-        else
-        {
-            return csharpType
-                    .replace("Microsoft.WindowsAzure.Management.Models",
-                            "com.microsoft.windowsazure.management.models");
-        }
-    }
-    
     protected static Configuration createConfiguration() throws Exception
     {
         return ManagementConfiguration.configure(
-	        System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
-	        System.getenv(ManagementConfiguration.KEYSTORE_PATH),
-	        System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD)
+            System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
+            System.getenv(ManagementConfiguration.KEYSTORE_PATH),
+            System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD)
         );
     }
 }

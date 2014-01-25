@@ -5,9 +5,22 @@ Background:
 
 Scenario: Create Server Farm
     Given I create a "Microsoft.WindowsAzure.Management.WebSites.Models.ServerFarmCreateParameters" with name "parameters"
-    And set "parameters.Name" with value "AF1"
-    And set "parameters.Location" with value "West US"
-    And set "parameters.Label" with value "Great AF"
+    And set "parameters.NumberOfWorkers" with value "1" of type "System.Int32"
+    And set "parameters.WorkerSize" with value "Small" of type "Microsoft.WindowsAzure.Management.WebSites.Models.ServerFarmWorkerSize"
     And I create a "System.String" with name "param1"
-    And set "param1" with value "newserverfarm"
-    And I invoke "management.ServerFarmsOperations.Create" with parameters "param1" and "parameters"
+    And set "param1" with value "eastuswebspace" of type "System.String"
+    And I invoke "management.ServerFarmsOperations.Create" with parameters "param1" and "parameters" I get the result into "operationResponse"
+    Then property with type "System.Int32" and path "operationResponse.StatusCode" should equal "200"
+    And property with type "System.String" and path "operationResponse.RequestId" should not equal "null"
+
+Scenario: List Server Farm
+    When I invoke "management.ServerFarmsOperations.List" with parameter value "eastuswebspace" of type "System.String" I get the result into "operationResponse" 
+    Then property with type "System.Int32" and path "operationResponse.StatusCode" should equal "200" 
+    And property with type "System.String" and path "operationResponse.RequestId" should not equal "null" 
+    And set "element1" with value from list "operationResponse.ServerFarms" where "Name" of type "System.String" equals "DefaultServerFarm" 
+    And property with type "System.String" and path "element1.Name" should equal "DefaultServerFarm"
+
+Scenario: Delete Server Farm
+    When I invoke "management.ServerFarmsOperations.Delete" with parameter value "eastuswebspace" of type "System.String" I get the result into "operationResponse"
+    Then property with type "System.Int32" and path "operationResponse.StatusCode" should equal "200"
+    And property with type "System.String" and path "operationResponse.RequestId" should not equal "null"
