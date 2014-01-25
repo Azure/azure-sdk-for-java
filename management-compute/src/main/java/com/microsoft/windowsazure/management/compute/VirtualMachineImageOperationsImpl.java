@@ -39,7 +39,6 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -47,6 +46,7 @@ import java.util.TimeZone;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import javax.xml.bind.DatatypeConverter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -148,13 +148,11 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
     * @throws ServiceException Thrown if an unexpected response is found.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return Parameters returned from the Create Virtual Machine Image
     * operation.
     */
     @Override
-    public VirtualMachineImageCreateResponse create(VirtualMachineImageCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, ServiceException, URISyntaxException, ParseException
+    public VirtualMachineImageCreateResponse create(VirtualMachineImageCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, ServiceException, URISyntaxException
     {
         // Validate
         if (parameters == null)
@@ -378,7 +376,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                 if (logicalSizeInGBElement != null)
                 {
                     double logicalSizeInGBInstance;
-                    logicalSizeInGBInstance = Double.parseDouble(logicalSizeInGBElement.getTextContent());
+                    logicalSizeInGBInstance = DatatypeConverter.parseDouble(logicalSizeInGBElement.getTextContent());
                     result.setLogicalSizeInGB(logicalSizeInGBInstance);
                 }
                 
@@ -441,10 +439,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                 if (publishedDateElement2 != null && (publishedDateElement2.getTextContent() == null || publishedDateElement2.getTextContent().isEmpty() == true) == false)
                 {
                     Calendar publishedDateInstance;
-                    SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(simpleDateFormat2.parse(publishedDateElement2.getTextContent()));
-                    publishedDateInstance = calendar;
+                    publishedDateInstance = DatatypeConverter.parseDateTime(publishedDateElement2.getTextContent());
                     result.setPublishedDate(publishedDateInstance);
                 }
                 
@@ -462,7 +457,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                 if (isPremiumElement2 != null && (isPremiumElement2.getTextContent() == null || isPremiumElement2.getTextContent().isEmpty() == true) == false)
                 {
                     boolean isPremiumInstance;
-                    isPremiumInstance = Boolean.parseBoolean(isPremiumElement2.getTextContent());
+                    isPremiumInstance = DatatypeConverter.parseBoolean(isPremiumElement2.getTextContent());
                     result.setIsPremium(isPremiumInstance);
                 }
                 
@@ -471,7 +466,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                 if (showInGuiElement2 != null && (showInGuiElement2.getTextContent() == null || showInGuiElement2.getTextContent().isEmpty() == true) == false)
                 {
                     boolean showInGuiInstance;
-                    showInGuiInstance = Boolean.parseBoolean(showInGuiElement2.getTextContent());
+                    showInGuiInstance = DatatypeConverter.parseBoolean(showInGuiElement2.getTextContent());
                     result.setShowInGui(showInGuiInstance);
                 }
                 
@@ -712,12 +707,10 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
     * response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return A virtual machine image associated with your subscription.
     */
     @Override
-    public VirtualMachineImageGetResponse get(String imageName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException, ParseException
+    public VirtualMachineImageGetResponse get(String imageName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
     {
         // Validate
         if (imageName == null)
@@ -824,7 +817,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                 if (logicalSizeInGBElement != null)
                 {
                     double logicalSizeInGBInstance;
-                    logicalSizeInGBInstance = Double.parseDouble(logicalSizeInGBElement.getTextContent());
+                    logicalSizeInGBInstance = DatatypeConverter.parseDouble(logicalSizeInGBElement.getTextContent());
                     result.setLogicalSizeInGB(logicalSizeInGBInstance);
                 }
                 
@@ -887,7 +880,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                 if (showInGuiElement != null && (showInGuiElement.getTextContent() == null || showInGuiElement.getTextContent().isEmpty() == true) == false)
                 {
                     boolean showInGuiInstance;
-                    showInGuiInstance = Boolean.parseBoolean(showInGuiElement.getTextContent());
+                    showInGuiInstance = DatatypeConverter.parseBoolean(showInGuiElement.getTextContent());
                     result.setShowInGui(showInGuiInstance);
                 }
                 
@@ -896,10 +889,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                 if (publishedDateElement != null)
                 {
                     Calendar publishedDateInstance;
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(simpleDateFormat.parse(publishedDateElement.getTextContent()));
-                    publishedDateInstance = calendar;
+                    publishedDateInstance = DatatypeConverter.parseDateTime(publishedDateElement.getTextContent());
                     result.setPublishedDate(publishedDateInstance);
                 }
                 
@@ -908,7 +898,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                 if (isPremiumElement != null && (isPremiumElement.getTextContent() == null || isPremiumElement.getTextContent().isEmpty() == true) == false)
                 {
                     boolean isPremiumInstance;
-                    isPremiumInstance = Boolean.parseBoolean(isPremiumElement.getTextContent());
+                    isPremiumInstance = DatatypeConverter.parseBoolean(isPremiumElement.getTextContent());
                     result.setIsPremium(isPremiumInstance);
                 }
                 
@@ -1024,12 +1014,10 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
     * response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return The List OS Images operation response.
     */
     @Override
-    public VirtualMachineImageListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException, ParseException
+    public VirtualMachineImageListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
     {
         // Validate
         
@@ -1137,7 +1125,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                     if (logicalSizeInGBElement != null)
                     {
                         double logicalSizeInGBInstance;
-                        logicalSizeInGBInstance = Double.parseDouble(logicalSizeInGBElement.getTextContent());
+                        logicalSizeInGBInstance = DatatypeConverter.parseDouble(logicalSizeInGBElement.getTextContent());
                         oSImageInstance.setLogicalSizeInGB(logicalSizeInGBInstance);
                     }
                     
@@ -1200,10 +1188,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                     if (publishedDateElement != null)
                     {
                         Calendar publishedDateInstance;
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.setTime(simpleDateFormat.parse(publishedDateElement.getTextContent()));
-                        publishedDateInstance = calendar;
+                        publishedDateInstance = DatatypeConverter.parseDateTime(publishedDateElement.getTextContent());
                         oSImageInstance.setPublishedDate(publishedDateInstance);
                     }
                     
@@ -1212,7 +1197,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                     if (isPremiumElement != null && (isPremiumElement.getTextContent() == null || isPremiumElement.getTextContent().isEmpty() == true) == false)
                     {
                         boolean isPremiumInstance;
-                        isPremiumInstance = Boolean.parseBoolean(isPremiumElement.getTextContent());
+                        isPremiumInstance = DatatypeConverter.parseBoolean(isPremiumElement.getTextContent());
                         oSImageInstance.setIsPremium(isPremiumInstance);
                     }
                     
@@ -1338,8 +1323,6 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
     * @throws ServiceException Thrown if an unexpected response is found.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -1354,7 +1337,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
     * operation.
     */
     @Override
-    public VirtualMachineImageUpdateResponse update(String imageName, VirtualMachineImageUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException, ParseException, InterruptedException, ExecutionException, ServiceException
+    public VirtualMachineImageUpdateResponse update(String imageName, VirtualMachineImageUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException, InterruptedException, ExecutionException, ServiceException
     {
         // Validate
         if (imageName == null)
@@ -1555,7 +1538,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                 if (logicalSizeInGBElement != null)
                 {
                     double logicalSizeInGBInstance;
-                    logicalSizeInGBInstance = Double.parseDouble(logicalSizeInGBElement.getTextContent());
+                    logicalSizeInGBInstance = DatatypeConverter.parseDouble(logicalSizeInGBElement.getTextContent());
                     result.setLogicalSizeInGB(logicalSizeInGBInstance);
                 }
                 
@@ -1618,10 +1601,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                 if (publishedDateElement2 != null && (publishedDateElement2.getTextContent() == null || publishedDateElement2.getTextContent().isEmpty() == true) == false)
                 {
                     Calendar publishedDateInstance;
-                    SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(simpleDateFormat2.parse(publishedDateElement2.getTextContent()));
-                    publishedDateInstance = calendar;
+                    publishedDateInstance = DatatypeConverter.parseDateTime(publishedDateElement2.getTextContent());
                     result.setPublishedDate(publishedDateInstance);
                 }
                 
@@ -1639,7 +1619,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                 if (isPremiumElement2 != null && (isPremiumElement2.getTextContent() == null || isPremiumElement2.getTextContent().isEmpty() == true) == false)
                 {
                     boolean isPremiumInstance;
-                    isPremiumInstance = Boolean.parseBoolean(isPremiumElement2.getTextContent());
+                    isPremiumInstance = DatatypeConverter.parseBoolean(isPremiumElement2.getTextContent());
                     result.setIsPremium(isPremiumInstance);
                 }
                 
@@ -1648,7 +1628,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                 if (showInGuiElement != null && (showInGuiElement.getTextContent() == null || showInGuiElement.getTextContent().isEmpty() == true) == false)
                 {
                     boolean showInGuiInstance;
-                    showInGuiInstance = Boolean.parseBoolean(showInGuiElement.getTextContent());
+                    showInGuiInstance = DatatypeConverter.parseBoolean(showInGuiElement.getTextContent());
                     result.setShowInGui(showInGuiInstance);
                 }
                 

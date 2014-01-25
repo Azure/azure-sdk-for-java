@@ -36,13 +36,13 @@ import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.TimeZone;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
+import javax.xml.bind.DatatypeConverter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -120,12 +120,10 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
     * response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return The Get Subscription operation response.
     */
     @Override
-    public SubscriptionGetResponse get() throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException, ParseException
+    public SubscriptionGetResponse get() throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
     {
         // Validate
         
@@ -236,7 +234,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
                 if (maxCoreCountElement != null)
                 {
                     int maxCoreCountInstance;
-                    maxCoreCountInstance = Integer.parseInt(maxCoreCountElement.getTextContent());
+                    maxCoreCountInstance = DatatypeConverter.parseInt(maxCoreCountElement.getTextContent());
                     result.setMaximumCoreCount(maxCoreCountInstance);
                 }
                 
@@ -245,7 +243,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
                 if (maxStorageAccountsElement != null)
                 {
                     int maxStorageAccountsInstance;
-                    maxStorageAccountsInstance = Integer.parseInt(maxStorageAccountsElement.getTextContent());
+                    maxStorageAccountsInstance = DatatypeConverter.parseInt(maxStorageAccountsElement.getTextContent());
                     result.setMaximumStorageAccounts(maxStorageAccountsInstance);
                 }
                 
@@ -254,7 +252,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
                 if (maxHostedServicesElement != null)
                 {
                     int maxHostedServicesInstance;
-                    maxHostedServicesInstance = Integer.parseInt(maxHostedServicesElement.getTextContent());
+                    maxHostedServicesInstance = DatatypeConverter.parseInt(maxHostedServicesElement.getTextContent());
                     result.setMaximumHostedServices(maxHostedServicesInstance);
                 }
                 
@@ -263,7 +261,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
                 if (currentCoreCountElement != null)
                 {
                     int currentCoreCountInstance;
-                    currentCoreCountInstance = Integer.parseInt(currentCoreCountElement.getTextContent());
+                    currentCoreCountInstance = DatatypeConverter.parseInt(currentCoreCountElement.getTextContent());
                     result.setCurrentCoreCount(currentCoreCountInstance);
                 }
                 
@@ -272,7 +270,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
                 if (currentStorageAccountsElement != null)
                 {
                     int currentStorageAccountsInstance;
-                    currentStorageAccountsInstance = Integer.parseInt(currentStorageAccountsElement.getTextContent());
+                    currentStorageAccountsInstance = DatatypeConverter.parseInt(currentStorageAccountsElement.getTextContent());
                     result.setCurrentStorageAccounts(currentStorageAccountsInstance);
                 }
                 
@@ -281,7 +279,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
                 if (currentHostedServicesElement != null)
                 {
                     int currentHostedServicesInstance;
-                    currentHostedServicesInstance = Integer.parseInt(currentHostedServicesElement.getTextContent());
+                    currentHostedServicesInstance = DatatypeConverter.parseInt(currentHostedServicesElement.getTextContent());
                     result.setCurrentHostedServices(currentHostedServicesInstance);
                 }
                 
@@ -290,7 +288,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
                 if (maxVirtualNetworkSitesElement != null)
                 {
                     int maxVirtualNetworkSitesInstance;
-                    maxVirtualNetworkSitesInstance = Integer.parseInt(maxVirtualNetworkSitesElement.getTextContent());
+                    maxVirtualNetworkSitesInstance = DatatypeConverter.parseInt(maxVirtualNetworkSitesElement.getTextContent());
                     result.setMaximumVirtualNetworkSites(maxVirtualNetworkSitesInstance);
                 }
                 
@@ -299,7 +297,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
                 if (currentVirtualNetworkSitesElement != null)
                 {
                     int currentVirtualNetworkSitesInstance;
-                    currentVirtualNetworkSitesInstance = Integer.parseInt(currentVirtualNetworkSitesElement.getTextContent());
+                    currentVirtualNetworkSitesInstance = DatatypeConverter.parseInt(currentVirtualNetworkSitesElement.getTextContent());
                     result.setCurrentVirtualNetworkSites(currentVirtualNetworkSitesInstance);
                 }
                 
@@ -308,7 +306,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
                 if (maxLocalNetworkSitesElement != null)
                 {
                     int maxLocalNetworkSitesInstance;
-                    maxLocalNetworkSitesInstance = Integer.parseInt(maxLocalNetworkSitesElement.getTextContent());
+                    maxLocalNetworkSitesInstance = DatatypeConverter.parseInt(maxLocalNetworkSitesElement.getTextContent());
                     result.setMaximumLocalNetworkSites(maxLocalNetworkSitesInstance);
                 }
                 
@@ -317,7 +315,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
                 if (maxDnsServersElement != null)
                 {
                     int maxDnsServersInstance;
-                    maxDnsServersInstance = Integer.parseInt(maxDnsServersElement.getTextContent());
+                    maxDnsServersInstance = DatatypeConverter.parseInt(maxDnsServersElement.getTextContent());
                     result.setMaximumDnsServers(maxDnsServersInstance);
                 }
                 
@@ -326,7 +324,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
                 if (currentLocalNetworkSitesElement != null)
                 {
                     int currentLocalNetworkSitesInstance;
-                    currentLocalNetworkSitesInstance = Integer.parseInt(currentLocalNetworkSitesElement.getTextContent());
+                    currentLocalNetworkSitesInstance = DatatypeConverter.parseInt(currentLocalNetworkSitesElement.getTextContent());
                     result.setCurrentLocalNetworkSites(currentLocalNetworkSitesInstance);
                 }
                 
@@ -335,7 +333,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
                 if (currentDnsServersElement != null)
                 {
                     int currentDnsServersInstance;
-                    currentDnsServersInstance = Integer.parseInt(currentDnsServersElement.getTextContent());
+                    currentDnsServersInstance = DatatypeConverter.parseInt(currentDnsServersElement.getTextContent());
                     result.setCurrentDnsServers(currentDnsServersInstance);
                 }
             }
@@ -401,12 +399,10 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return The List Subscription Operations operation response.
     */
     @Override
-    public SubscriptionListOperationsResponse listOperations(SubscriptionListOperationsParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException
+    public SubscriptionListOperationsResponse listOperations(SubscriptionListOperationsParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException
     {
         // Validate
         if (parameters == null)
@@ -426,9 +422,9 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
         }
         
         // Construct URL
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
         simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
         simpleDateFormat2.setTimeZone(TimeZone.getTimeZone("UTC"));
         String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/operations" + "?";
         url = url + "&" + "StartTime=" + URLEncoder.encode(simpleDateFormat.format(parameters.getStartTime().getTime()), "UTF-8");
@@ -563,7 +559,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
                             if (usedServiceManagementApiElement != null)
                             {
                                 boolean usedServiceManagementApiInstance;
-                                usedServiceManagementApiInstance = Boolean.parseBoolean(usedServiceManagementApiElement.getTextContent());
+                                usedServiceManagementApiInstance = DatatypeConverter.parseBoolean(usedServiceManagementApiElement.getTextContent());
                                 operationCallerInstance.setUsedServiceManagementApi(usedServiceManagementApiInstance);
                             }
                             
@@ -609,10 +605,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
                         if (operationStartedTimeElement != null)
                         {
                             Calendar operationStartedTimeInstance;
-                            SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                            Calendar calendar = Calendar.getInstance();
-                            calendar.setTime(simpleDateFormat3.parse(operationStartedTimeElement.getTextContent()));
-                            operationStartedTimeInstance = calendar;
+                            operationStartedTimeInstance = DatatypeConverter.parseDateTime(operationStartedTimeElement.getTextContent());
                             subscriptionOperationInstance.setOperationStartedTime(operationStartedTimeInstance);
                         }
                         
@@ -621,10 +614,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
                         if (operationCompletedTimeElement != null)
                         {
                             Calendar operationCompletedTimeInstance;
-                            SimpleDateFormat simpleDateFormat4 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                            Calendar calendar2 = Calendar.getInstance();
-                            calendar2.setTime(simpleDateFormat4.parse(operationCompletedTimeElement.getTextContent()));
-                            operationCompletedTimeInstance = calendar2;
+                            operationCompletedTimeInstance = DatatypeConverter.parseDateTime(operationCompletedTimeElement.getTextContent());
                             subscriptionOperationInstance.setOperationCompletedTime(operationCompletedTimeInstance);
                         }
                     }

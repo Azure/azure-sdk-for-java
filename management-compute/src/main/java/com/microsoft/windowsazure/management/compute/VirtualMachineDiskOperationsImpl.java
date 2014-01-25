@@ -50,6 +50,7 @@ import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import javax.xml.bind.DatatypeConverter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -679,7 +680,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 if (logicalDiskSizeInGBElement != null)
                 {
                     double logicalDiskSizeInGBInstance;
-                    logicalDiskSizeInGBInstance = Double.parseDouble(logicalDiskSizeInGBElement.getTextContent());
+                    logicalDiskSizeInGBInstance = DatatypeConverter.parseDouble(logicalDiskSizeInGBElement.getTextContent());
                     result.setLogicalSizeInGB(logicalDiskSizeInGBInstance);
                 }
                 
@@ -750,7 +751,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 if (isPremiumElement != null && (isPremiumElement.getTextContent() == null || isPremiumElement.getTextContent().isEmpty() == true) == false)
                 {
                     boolean isPremiumInstance;
-                    isPremiumInstance = Boolean.parseBoolean(isPremiumElement.getTextContent());
+                    isPremiumInstance = DatatypeConverter.parseBoolean(isPremiumElement.getTextContent());
                     result.setIsPremium(isPremiumInstance);
                 }
             }
@@ -1196,7 +1197,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 if (lunElement != null && (lunElement.getTextContent() == null || lunElement.getTextContent().isEmpty() == true) == false)
                 {
                     int lunInstance;
-                    lunInstance = Integer.parseInt(lunElement.getTextContent());
+                    lunInstance = DatatypeConverter.parseInt(lunElement.getTextContent());
                     result.setLogicalUnitNumber(lunInstance);
                 }
                 
@@ -1205,7 +1206,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 if (logicalDiskSizeInGBElement != null)
                 {
                     double logicalDiskSizeInGBInstance;
-                    logicalDiskSizeInGBInstance = Double.parseDouble(logicalDiskSizeInGBElement.getTextContent());
+                    logicalDiskSizeInGBInstance = DatatypeConverter.parseDouble(logicalDiskSizeInGBElement.getTextContent());
                     result.setLogicalDiskSizeInGB(logicalDiskSizeInGBInstance);
                 }
                 
@@ -1379,7 +1380,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 if (logicalDiskSizeInGBElement != null)
                 {
                     double logicalDiskSizeInGBInstance;
-                    logicalDiskSizeInGBInstance = Double.parseDouble(logicalDiskSizeInGBElement.getTextContent());
+                    logicalDiskSizeInGBInstance = DatatypeConverter.parseDouble(logicalDiskSizeInGBElement.getTextContent());
                     result.setLogicalSizeInGB(logicalDiskSizeInGBInstance);
                 }
                 
@@ -1459,7 +1460,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 if (isCorruptedElement != null && (isCorruptedElement.getTextContent() == null || isCorruptedElement.getTextContent().isEmpty() == true) == false)
                 {
                     boolean isCorruptedInstance;
-                    isCorruptedInstance = Boolean.parseBoolean(isCorruptedElement.getTextContent());
+                    isCorruptedInstance = DatatypeConverter.parseBoolean(isCorruptedElement.getTextContent());
                     result.setIsCorrupted(isCorruptedInstance);
                 }
                 
@@ -1468,7 +1469,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 if (isPremiumElement != null && (isPremiumElement.getTextContent() == null || isPremiumElement.getTextContent().isEmpty() == true) == false)
                 {
                     boolean isPremiumInstance;
-                    isPremiumInstance = Boolean.parseBoolean(isPremiumElement.getTextContent());
+                    isPremiumInstance = DatatypeConverter.parseBoolean(isPremiumElement.getTextContent());
                     result.setIsPremium(isPremiumInstance);
                 }
             }
@@ -1632,7 +1633,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                     if (logicalDiskSizeInGBElement != null)
                     {
                         double logicalDiskSizeInGBInstance;
-                        logicalDiskSizeInGBInstance = Double.parseDouble(logicalDiskSizeInGBElement.getTextContent());
+                        logicalDiskSizeInGBInstance = DatatypeConverter.parseDouble(logicalDiskSizeInGBElement.getTextContent());
                         diskInstance.setLogicalSizeInGB(logicalDiskSizeInGBInstance);
                     }
                     
@@ -1712,7 +1713,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                     if (isCorruptedElement != null && (isCorruptedElement.getTextContent() == null || isCorruptedElement.getTextContent().isEmpty() == true) == false)
                     {
                         boolean isCorruptedInstance;
-                        isCorruptedInstance = Boolean.parseBoolean(isCorruptedElement.getTextContent());
+                        isCorruptedInstance = DatatypeConverter.parseBoolean(isCorruptedElement.getTextContent());
                         diskInstance.setIsCorrupted(isCorruptedInstance);
                     }
                     
@@ -1721,7 +1722,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                     if (isPremiumElement != null && (isPremiumElement.getTextContent() == null || isPremiumElement.getTextContent().isEmpty() == true) == false)
                     {
                         boolean isPremiumInstance;
-                        isPremiumInstance = Boolean.parseBoolean(isPremiumElement.getTextContent());
+                        isPremiumInstance = DatatypeConverter.parseBoolean(isPremiumElement.getTextContent());
                         diskInstance.setIsPremium(isPremiumInstance);
                     }
                 }
@@ -2168,7 +2169,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 if (logicalDiskSizeInGBElement != null)
                 {
                     double logicalDiskSizeInGBInstance;
-                    logicalDiskSizeInGBInstance = Double.parseDouble(logicalDiskSizeInGBElement.getTextContent());
+                    logicalDiskSizeInGBInstance = DatatypeConverter.parseDouble(logicalDiskSizeInGBElement.getTextContent());
                     result.setLogicalSizeInGB(logicalDiskSizeInGBInstance);
                 }
                 
@@ -2195,7 +2196,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 if (isPremiumElement != null && (isPremiumElement.getTextContent() == null || isPremiumElement.getTextContent().isEmpty() == true) == false)
                 {
                     boolean isPremiumInstance;
-                    isPremiumInstance = Boolean.parseBoolean(isPremiumElement.getTextContent());
+                    isPremiumInstance = DatatypeConverter.parseBoolean(isPremiumElement.getTextContent());
                     result.setIsPremium(isPremiumInstance);
                 }
             }

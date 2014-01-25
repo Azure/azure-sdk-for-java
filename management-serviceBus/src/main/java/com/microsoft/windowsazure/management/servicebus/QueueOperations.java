@@ -30,7 +30,6 @@ import com.microsoft.windowsazure.management.servicebus.models.ServiceBusQueueRe
 import com.microsoft.windowsazure.management.servicebus.models.ServiceBusQueuesResponse;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.text.ParseException;
 import java.util.concurrent.Future;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -62,13 +61,11 @@ public interface QueueOperations
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
     * @return A response to a request for a particular queue.
     */
-    ServiceBusQueueResponse create(String namespaceName, ServiceBusQueue queue) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, ParseException, URISyntaxException;
+    ServiceBusQueueResponse create(String namespaceName, ServiceBusQueue queue) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException;
     
     /**
     * Creates a new queue. Once created, this queue’s resource manifest is
@@ -102,13 +99,11 @@ public interface QueueOperations
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
     * @return A response to a request for a particular queue.
     */
-    ServiceBusQueueResponse get(String namespaceName, String queueName) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException, URISyntaxException;
+    ServiceBusQueueResponse get(String namespaceName, String queueName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException;
     
     /**
     * The queue description is an XML AtomPub document that defines the desired
@@ -167,13 +162,11 @@ public interface QueueOperations
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
     * @return A response to a request for a list of queues.
     */
-    ServiceBusQueuesResponse list(String namespaceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException, URISyntaxException;
+    ServiceBusQueuesResponse list(String namespaceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException;
     
     /**
     * Enumerates the queues in the service namespace. The result is returned in
@@ -206,11 +199,9 @@ public interface QueueOperations
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return A response to a request for a particular queue.
     */
-    ServiceBusQueueResponse update(String namespaceName, ServiceBusQueue queue) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, ParseException;
+    ServiceBusQueueResponse update(String namespaceName, ServiceBusQueue queue) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * Updates the queue description and makes a call to update corresponding DB

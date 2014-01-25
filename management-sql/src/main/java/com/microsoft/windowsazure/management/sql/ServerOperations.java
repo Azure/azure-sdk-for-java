@@ -30,7 +30,6 @@ import com.microsoft.windowsazure.management.sql.models.ServerCreateParameters;
 import com.microsoft.windowsazure.management.sql.models.ServerCreateResponse;
 import com.microsoft.windowsazure.management.sql.models.ServerListResponse;
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.concurrent.Future;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -100,11 +99,9 @@ public interface ServerOperations
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return The response returned from the Create Server operation.
     */
-    ServerCreateResponse create(ServerCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, ParseException;
+    ServerCreateResponse create(ServerCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * Adds a new SQL Database server to a subscription.  (see
@@ -155,11 +152,9 @@ public interface ServerOperations
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return The response structure for the Server List operation.
     */
-    ServerListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException;
+    ServerListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException;
     
     /**
     * Returns all SQL Database servers that are provisioned for a subscription.

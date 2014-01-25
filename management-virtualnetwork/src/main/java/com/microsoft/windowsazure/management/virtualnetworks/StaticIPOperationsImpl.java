@@ -34,6 +34,7 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
+import javax.xml.bind.DatatypeConverter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -186,7 +187,7 @@ public class StaticIPOperationsImpl implements ServiceOperations<VirtualNetworkM
                 if (isAvailableElement != null)
                 {
                     boolean isAvailableInstance;
-                    isAvailableInstance = Boolean.parseBoolean(isAvailableElement.getTextContent());
+                    isAvailableInstance = DatatypeConverter.parseBoolean(isAvailableElement.getTextContent());
                     result.setIsAvailable(isAvailableInstance);
                 }
                 

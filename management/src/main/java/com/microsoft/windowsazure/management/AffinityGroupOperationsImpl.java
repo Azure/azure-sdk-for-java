@@ -37,7 +37,6 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.text.ParseException;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
@@ -424,12 +423,10 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
     * response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return The Get Affinity Group operation response.
     */
     @Override
-    public AffinityGroupGetResponse get(String affinityGroupName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException, ParseException
+    public AffinityGroupGetResponse get(String affinityGroupName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
     {
         // Validate
         if (affinityGroupName == null)
@@ -658,12 +655,10 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return The List Affinity Groups operation response.
     */
     @Override
-    public AffinityGroupListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException
+    public AffinityGroupListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException
     {
         // Validate
         

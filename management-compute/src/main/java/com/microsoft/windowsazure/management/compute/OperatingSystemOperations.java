@@ -28,7 +28,6 @@ import com.microsoft.windowsazure.management.compute.models.OperatingSystemListF
 import com.microsoft.windowsazure.management.compute.models.OperatingSystemListResponse;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.text.ParseException;
 import java.util.concurrent.Future;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
@@ -63,11 +62,9 @@ public interface OperatingSystemOperations
     * response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return The List Operating Systems operation response.
     */
-    OperatingSystemListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException, ParseException;
+    OperatingSystemListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException;
     
     /**
     * The List Operating Systems operation lists the versions of the guest

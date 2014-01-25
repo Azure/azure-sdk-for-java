@@ -52,7 +52,7 @@ public abstract class CloudTracing
      * Gets a value indicating whether tracing is enabled. Tracing can be
      * disabled for performance.
      */
-    private static boolean isEnabled;
+	private static boolean isEnabled;
 
     /**
      * Gets the value indicating whether tracing is enabled.
@@ -70,7 +70,7 @@ public abstract class CloudTracing
      * @param enabled
      *            Boolean value indicating if tracing is enabled.
      */
-    public static void setIsEnabled(final boolean enabled)
+	public static void setIsEnabled(final boolean enabled)
     {
         isEnabled = enabled;
     }

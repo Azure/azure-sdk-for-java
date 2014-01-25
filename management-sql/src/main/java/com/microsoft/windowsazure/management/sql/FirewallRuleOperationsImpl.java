@@ -37,7 +37,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.InetAddress;
-import java.text.ParseException;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
@@ -136,13 +135,11 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
     @Override
-    public FirewallRuleCreateResponse create(String serverName, FirewallRuleCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, ParseException
+    public FirewallRuleCreateResponse create(String serverName, FirewallRuleCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
     {
         // Validate
         if (serverName == null)
@@ -484,13 +481,11 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
     @Override
-    public FirewallRuleListResponse list(String serverName) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException
+    public FirewallRuleListResponse list(String serverName) throws IOException, ServiceException, ParserConfigurationException, SAXException
     {
         // Validate
         if (serverName == null)
@@ -666,13 +661,11 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
     @Override
-    public FirewallRuleUpdateResponse update(String serverName, String ruleName, FirewallRuleUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, ParseException
+    public FirewallRuleUpdateResponse update(String serverName, String ruleName, FirewallRuleUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
     {
         // Validate
         if (serverName == null)

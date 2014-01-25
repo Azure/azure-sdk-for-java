@@ -44,7 +44,6 @@ import com.microsoft.windowsazure.management.websites.models.WebSiteUpdateParame
 import com.microsoft.windowsazure.management.websites.models.WebSiteUpdateResponse;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.text.ParseException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import javax.xml.parsers.ParserConfigurationException;
@@ -71,8 +70,6 @@ public interface WebSiteOperations
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return The response body contains the status of the specified
     * long-running operation, indicating whether it has succeeded, is
     * inprogress, has time dout, or has failed. Note that this status is
@@ -80,7 +77,7 @@ public interface WebSiteOperations
     * operation itself.  If the long-running operation failed, the response
     * body includes error information regarding the failure.
     */
-    WebSiteOperationStatusResponse beginSwapingSlots(String webSpaceName, String webSiteName, String slotName) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException;
+    WebSiteOperationStatusResponse beginSwapingSlots(String webSpaceName, String webSiteName, String slotName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
     
     /**
     * You can swap a web site from one slot to the production slot.
@@ -116,13 +113,11 @@ public interface WebSiteOperations
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
     * @return The Create Web Space operation response.
     */
-    WebSiteCreateResponse create(String webSpaceName, WebSiteCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, ParseException, URISyntaxException;
+    WebSiteCreateResponse create(String webSpaceName, WebSiteCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException;
     
     /**
     * You can create a web site by using a POST request that includes the name
@@ -304,13 +299,11 @@ public interface WebSiteOperations
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
     * @return The Get Web Site Details operation response.
     */
-    WebSiteGetResponse get(String webSpaceName, String webSiteName, WebSiteGetParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException, URISyntaxException;
+    WebSiteGetResponse get(String webSpaceName, String webSiteName, WebSiteGetParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException;
     
     /**
     * You can retrieve details for a web site by issuing an HTTP GET request.
@@ -341,11 +334,9 @@ public interface WebSiteOperations
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return The Get Web Site Configuration operation response.
     */
-    WebSiteGetConfigurationResponse getConfiguration(String webSpaceName, String webSiteName) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException;
+    WebSiteGetConfigurationResponse getConfiguration(String webSpaceName, String webSiteName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
     
     /**
     * You can retrieve the config settings for a web site by issuing an HTTP
@@ -377,11 +368,9 @@ public interface WebSiteOperations
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return The Get Web Site Historical Usage Metrics operation response.
     */
-    WebSiteGetHistoricalUsageMetricsResponse getHistoricalUsageMetrics(String webSpaceName, String webSiteName, WebSiteGetHistoricalUsageMetricsParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException;
+    WebSiteGetHistoricalUsageMetricsResponse getHistoricalUsageMetrics(String webSpaceName, String webSiteName, WebSiteGetHistoricalUsageMetricsParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException;
     
     /**
     * You can retrieve historical usage metrics for a site by issuing an HTTP
@@ -489,11 +478,9 @@ public interface WebSiteOperations
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return The Get Web Site Usage Metrics operation response.
     */
-    WebSiteGetUsageMetricsResponse getUsageMetrics(String webSpaceName, String webSiteName) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException;
+    WebSiteGetUsageMetricsResponse getUsageMetrics(String webSpaceName, String webSiteName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
     
     /**
     * You can retrieve a site's current usage metrics by issuing an HTTP GET
@@ -659,13 +646,11 @@ public interface WebSiteOperations
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
     * @return The Update Web Site operation response.
     */
-    WebSiteUpdateResponse update(String webSpaceName, String webSiteName, WebSiteUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, ParseException, URISyntaxException;
+    WebSiteUpdateResponse update(String webSpaceName, String webSiteName, WebSiteUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException;
     
     /**
     * You can update the settings for a web site by using the HTTP PUT method

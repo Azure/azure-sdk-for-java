@@ -35,7 +35,6 @@ import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
-import java.text.ParseException;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
@@ -280,12 +279,10 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return The response returned from the Create Server operation.
     */
     @Override
-    public ServerCreateResponse create(ServerCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, ParseException
+    public ServerCreateResponse create(ServerCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
     {
         // Validate
         if (parameters == null)
@@ -563,12 +560,10 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return The response structure for the Server List operation.
     */
     @Override
-    public ServerListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException
+    public ServerListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException
     {
         // Validate
         

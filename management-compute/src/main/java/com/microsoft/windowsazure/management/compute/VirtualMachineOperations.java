@@ -38,7 +38,6 @@ import com.microsoft.windowsazure.management.compute.models.VirtualMachineUpdate
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineUpdateParameters;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.text.ParseException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import javax.xml.parsers.ParserConfigurationException;
@@ -607,8 +606,6 @@ public interface VirtualMachineOperations
     * @throws ServiceException Thrown if an unexpected response is found.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -619,7 +616,7 @@ public interface VirtualMachineOperations
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    ComputeOperationStatusResponse create(String serviceName, String deploymentName, VirtualMachineCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, ServiceException, URISyntaxException, ParseException;
+    ComputeOperationStatusResponse create(String serviceName, String deploymentName, VirtualMachineCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, ServiceException, URISyntaxException;
     
     /**
     * The Add Role operation adds a virtual machine to an existing deployment.
@@ -793,11 +790,9 @@ public interface VirtualMachineOperations
     * response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return The Get Virtual Machine operation response.
     */
-    VirtualMachineGetResponse get(String serviceName, String deploymentName, String virtualMachineName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException, ParseException;
+    VirtualMachineGetResponse get(String serviceName, String deploymentName, String virtualMachineName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException;
     
     /**
     * The Get Role operation retrieves information about the specified virtual
@@ -1121,8 +1116,6 @@ public interface VirtualMachineOperations
     * @throws ServiceException Thrown if an unexpected response is found.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -1143,7 +1136,7 @@ public interface VirtualMachineOperations
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    ComputeOperationStatusResponse update(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException, ParseException, InterruptedException, ExecutionException, ServiceException;
+    ComputeOperationStatusResponse update(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException, InterruptedException, ExecutionException, ServiceException;
     
     /**
     * The Update Role operation adds a virtual machine to an existing

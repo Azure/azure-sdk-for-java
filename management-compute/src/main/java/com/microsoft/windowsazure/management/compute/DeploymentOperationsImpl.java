@@ -84,14 +84,13 @@ import java.net.InetAddress;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import javax.xml.bind.DatatypeConverter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -3827,8 +3826,6 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * @throws ServiceException Thrown if an unexpected response is found.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -3840,7 +3837,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse create(String serviceName, DeploymentSlot deploymentSlot, DeploymentCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, ServiceException, URISyntaxException, ParseException
+    public ComputeOperationStatusResponse create(String serviceName, DeploymentSlot deploymentSlot, DeploymentCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, ServiceException, URISyntaxException
     {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
@@ -4230,12 +4227,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return A deployment that exists in the cloud service.
     */
     @Override
-    public DeploymentGetResponse getByName(String serviceName, String deploymentName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException, ParseException
+    public DeploymentGetResponse getByName(String serviceName, String deploymentName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
     {
         // Validate
         if (serviceName == null)
@@ -4411,7 +4406,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         if (instanceUpgradeDomainElement != null && (instanceUpgradeDomainElement.getTextContent() == null || instanceUpgradeDomainElement.getTextContent().isEmpty() == true) == false)
                         {
                             int instanceUpgradeDomainInstance;
-                            instanceUpgradeDomainInstance = Integer.parseInt(instanceUpgradeDomainElement.getTextContent());
+                            instanceUpgradeDomainInstance = DatatypeConverter.parseInt(instanceUpgradeDomainElement.getTextContent());
                             roleInstanceInstance.setInstanceUpgradeDomain(instanceUpgradeDomainInstance);
                         }
                         
@@ -4420,7 +4415,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         if (instanceFaultDomainElement != null && (instanceFaultDomainElement.getTextContent() == null || instanceFaultDomainElement.getTextContent().isEmpty() == true) == false)
                         {
                             int instanceFaultDomainInstance;
-                            instanceFaultDomainInstance = Integer.parseInt(instanceFaultDomainElement.getTextContent());
+                            instanceFaultDomainInstance = DatatypeConverter.parseInt(instanceFaultDomainElement.getTextContent());
                             roleInstanceInstance.setInstanceFaultDomain(instanceFaultDomainInstance);
                         }
                         
@@ -4475,7 +4470,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                 if (localPortElement != null && (localPortElement.getTextContent() == null || localPortElement.getTextContent().isEmpty() == true) == false)
                                 {
                                     int localPortInstance;
-                                    localPortInstance = Integer.parseInt(localPortElement.getTextContent());
+                                    localPortInstance = DatatypeConverter.parseInt(localPortElement.getTextContent());
                                     instanceEndpointInstance.setLocalPort(localPortInstance);
                                 }
                                 
@@ -4493,7 +4488,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                 if (publicPortElement != null)
                                 {
                                     int publicPortInstance;
-                                    publicPortInstance = Integer.parseInt(publicPortElement.getTextContent());
+                                    publicPortInstance = DatatypeConverter.parseInt(publicPortElement.getTextContent());
                                     instanceEndpointInstance.setPort(publicPortInstance);
                                 }
                                 
@@ -4576,7 +4571,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     if (currentUpgradeDomainElement != null)
                     {
                         int currentUpgradeDomainInstance;
-                        currentUpgradeDomainInstance = Integer.parseInt(currentUpgradeDomainElement.getTextContent());
+                        currentUpgradeDomainInstance = DatatypeConverter.parseInt(currentUpgradeDomainElement.getTextContent());
                         upgradeStatusInstance.setCurrentUpgradeDomain(currentUpgradeDomainInstance);
                     }
                 }
@@ -4586,7 +4581,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 if (upgradeDomainCountElement != null)
                 {
                     int upgradeDomainCountInstance;
-                    upgradeDomainCountInstance = Integer.parseInt(upgradeDomainCountElement.getTextContent());
+                    upgradeDomainCountInstance = DatatypeConverter.parseInt(upgradeDomainCountElement.getTextContent());
                     result.setUpgradeDomainCount(upgradeDomainCountInstance);
                 }
                 
@@ -4670,7 +4665,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                         if (localPortElement2 != null && (localPortElement2.getTextContent() == null || localPortElement2.getTextContent().isEmpty() == true) == false)
                                         {
                                             int localPortInstance2;
-                                            localPortInstance2 = Integer.parseInt(localPortElement2.getTextContent());
+                                            localPortInstance2 = DatatypeConverter.parseInt(localPortElement2.getTextContent());
                                             inputEndpointInstance.setLocalPort(localPortInstance2);
                                         }
                                         
@@ -4688,7 +4683,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                         if (portElement != null && (portElement.getTextContent() == null || portElement.getTextContent().isEmpty() == true) == false)
                                         {
                                             int portInstance;
-                                            portInstance = Integer.parseInt(portElement.getTextContent());
+                                            portInstance = DatatypeConverter.parseInt(portElement.getTextContent());
                                             inputEndpointInstance.setPort(portInstance);
                                         }
                                         
@@ -4713,7 +4708,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                             if (portElement2 != null)
                                             {
                                                 int portInstance2;
-                                                portInstance2 = Integer.parseInt(portElement2.getTextContent());
+                                                portInstance2 = DatatypeConverter.parseInt(portElement2.getTextContent());
                                                 loadBalancerProbeInstance.setPort(portInstance2);
                                             }
                                             
@@ -4731,7 +4726,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                             if (intervalInSecondsElement != null && (intervalInSecondsElement.getTextContent() == null || intervalInSecondsElement.getTextContent().isEmpty() == true) == false)
                                             {
                                                 int intervalInSecondsInstance;
-                                                intervalInSecondsInstance = Integer.parseInt(intervalInSecondsElement.getTextContent());
+                                                intervalInSecondsInstance = DatatypeConverter.parseInt(intervalInSecondsElement.getTextContent());
                                                 loadBalancerProbeInstance.setIntervalInSeconds(intervalInSecondsInstance);
                                             }
                                             
@@ -4740,7 +4735,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                             if (timeoutInSecondsElement != null && (timeoutInSecondsElement.getTextContent() == null || timeoutInSecondsElement.getTextContent().isEmpty() == true) == false)
                                             {
                                                 int timeoutInSecondsInstance;
-                                                timeoutInSecondsInstance = Integer.parseInt(timeoutInSecondsElement.getTextContent());
+                                                timeoutInSecondsInstance = DatatypeConverter.parseInt(timeoutInSecondsElement.getTextContent());
                                                 loadBalancerProbeInstance.setTimeoutInSeconds(timeoutInSecondsInstance);
                                             }
                                         }
@@ -4768,7 +4763,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                         if (enableDirectServerReturnElement != null && (enableDirectServerReturnElement.getTextContent() == null || enableDirectServerReturnElement.getTextContent().isEmpty() == true) == false)
                                         {
                                             boolean enableDirectServerReturnInstance;
-                                            enableDirectServerReturnInstance = Boolean.parseBoolean(enableDirectServerReturnElement.getTextContent());
+                                            enableDirectServerReturnInstance = DatatypeConverter.parseBoolean(enableDirectServerReturnElement.getTextContent());
                                             inputEndpointInstance.setEnableDirectServerReturn(enableDirectServerReturnInstance);
                                         }
                                         
@@ -4794,7 +4789,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                                     if (orderElement != null && (orderElement.getTextContent() == null || orderElement.getTextContent().isEmpty() == true) == false)
                                                     {
                                                         int orderInstance;
-                                                        orderInstance = Integer.parseInt(orderElement.getTextContent());
+                                                        orderInstance = DatatypeConverter.parseInt(orderElement.getTextContent());
                                                         ruleInstance.setOrder(orderInstance);
                                                     }
                                                     
@@ -4873,7 +4868,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                 if (resetPasswordOnFirstLogonElement != null && (resetPasswordOnFirstLogonElement.getTextContent() == null || resetPasswordOnFirstLogonElement.getTextContent().isEmpty() == true) == false)
                                 {
                                     boolean resetPasswordOnFirstLogonInstance;
-                                    resetPasswordOnFirstLogonInstance = Boolean.parseBoolean(resetPasswordOnFirstLogonElement.getTextContent());
+                                    resetPasswordOnFirstLogonInstance = DatatypeConverter.parseBoolean(resetPasswordOnFirstLogonElement.getTextContent());
                                     configurationSetInstance.setResetPasswordOnFirstLogon(resetPasswordOnFirstLogonInstance);
                                 }
                                 
@@ -4882,7 +4877,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                 if (enableAutomaticUpdatesElement != null && (enableAutomaticUpdatesElement.getTextContent() == null || enableAutomaticUpdatesElement.getTextContent().isEmpty() == true) == false)
                                 {
                                     boolean enableAutomaticUpdatesInstance;
-                                    enableAutomaticUpdatesInstance = Boolean.parseBoolean(enableAutomaticUpdatesElement.getTextContent());
+                                    enableAutomaticUpdatesInstance = DatatypeConverter.parseBoolean(enableAutomaticUpdatesElement.getTextContent());
                                     configurationSetInstance.setEnableAutomaticUpdates(enableAutomaticUpdatesInstance);
                                 }
                                 
@@ -5088,7 +5083,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                 if (disableSshPasswordAuthenticationElement != null && (disableSshPasswordAuthenticationElement.getTextContent() == null || disableSshPasswordAuthenticationElement.getTextContent().isEmpty() == true) == false)
                                 {
                                     boolean disableSshPasswordAuthenticationInstance;
-                                    disableSshPasswordAuthenticationInstance = Boolean.parseBoolean(disableSshPasswordAuthenticationElement.getTextContent());
+                                    disableSshPasswordAuthenticationInstance = DatatypeConverter.parseBoolean(disableSshPasswordAuthenticationElement.getTextContent());
                                     configurationSetInstance.setDisableSshPasswordAuthentication(disableSshPasswordAuthenticationInstance);
                                 }
                                 
@@ -5309,7 +5304,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                 if (lunElement != null && (lunElement.getTextContent() == null || lunElement.getTextContent().isEmpty() == true) == false)
                                 {
                                     int lunInstance;
-                                    lunInstance = Integer.parseInt(lunElement.getTextContent());
+                                    lunInstance = DatatypeConverter.parseInt(lunElement.getTextContent());
                                     dataVirtualHardDiskInstance.setLogicalUnitNumber(lunInstance);
                                 }
                                 
@@ -5318,7 +5313,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                 if (logicalDiskSizeInGBElement != null)
                                 {
                                     int logicalDiskSizeInGBInstance;
-                                    logicalDiskSizeInGBInstance = Integer.parseInt(logicalDiskSizeInGBElement.getTextContent());
+                                    logicalDiskSizeInGBInstance = DatatypeConverter.parseInt(logicalDiskSizeInGBElement.getTextContent());
                                     dataVirtualHardDiskInstance.setLogicalDiskSizeInGB(logicalDiskSizeInGBInstance);
                                 }
                                 
@@ -5418,7 +5413,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         if (provisionGuestAgentElement != null && (provisionGuestAgentElement.getTextContent() == null || provisionGuestAgentElement.getTextContent().isEmpty() == true) == false)
                         {
                             boolean provisionGuestAgentInstance;
-                            provisionGuestAgentInstance = Boolean.parseBoolean(provisionGuestAgentElement.getTextContent());
+                            provisionGuestAgentInstance = DatatypeConverter.parseBoolean(provisionGuestAgentElement.getTextContent());
                             roleInstance.setProvisionGuestAgent(provisionGuestAgentInstance);
                         }
                         
@@ -5447,7 +5442,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 if (lockedElement != null)
                 {
                     boolean lockedInstance;
-                    lockedInstance = Boolean.parseBoolean(lockedElement.getTextContent());
+                    lockedInstance = DatatypeConverter.parseBoolean(lockedElement.getTextContent());
                     result.setLocked(lockedInstance);
                 }
                 
@@ -5465,10 +5460,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 if (createdTimeElement != null)
                 {
                     Calendar createdTimeInstance;
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(simpleDateFormat.parse(createdTimeElement.getTextContent()));
-                    createdTimeInstance = calendar;
+                    createdTimeInstance = DatatypeConverter.parseDateTime(createdTimeElement.getTextContent());
                     result.setCreatedTime(createdTimeInstance);
                 }
                 
@@ -5477,10 +5469,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 if (lastModifiedTimeElement != null)
                 {
                     Calendar lastModifiedTimeInstance;
-                    SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                    Calendar calendar2 = Calendar.getInstance();
-                    calendar2.setTime(simpleDateFormat2.parse(lastModifiedTimeElement.getTextContent()));
-                    lastModifiedTimeInstance = calendar2;
+                    lastModifiedTimeInstance = DatatypeConverter.parseDateTime(lastModifiedTimeElement.getTextContent());
                     result.setLastModifiedTime(lastModifiedTimeInstance);
                 }
                 
@@ -5520,10 +5509,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     if (startTimeElement != null)
                     {
                         Calendar startTimeInstance;
-                        SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                        Calendar calendar3 = Calendar.getInstance();
-                        calendar3.setTime(simpleDateFormat3.parse(startTimeElement.getTextContent()));
-                        startTimeInstance = calendar3;
+                        startTimeInstance = DatatypeConverter.parseDateTime(startTimeElement.getTextContent());
                         persistentVMDowntimeInstance.setStartTime(startTimeInstance);
                     }
                     
@@ -5532,10 +5518,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     if (endTimeElement != null)
                     {
                         Calendar endTimeInstance;
-                        SimpleDateFormat simpleDateFormat4 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                        Calendar calendar4 = Calendar.getInstance();
-                        calendar4.setTime(simpleDateFormat4.parse(endTimeElement.getTextContent()));
-                        endTimeInstance = calendar4;
+                        endTimeInstance = DatatypeConverter.parseDateTime(endTimeElement.getTextContent());
                         persistentVMDowntimeInstance.setEndTime(endTimeInstance);
                     }
                     
@@ -5582,7 +5565,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         if (isDnsProgrammedElement != null && (isDnsProgrammedElement.getTextContent() == null || isDnsProgrammedElement.getTextContent().isEmpty() == true) == false)
                         {
                             boolean isDnsProgrammedInstance;
-                            isDnsProgrammedInstance = Boolean.parseBoolean(isDnsProgrammedElement.getTextContent());
+                            isDnsProgrammedInstance = DatatypeConverter.parseBoolean(isDnsProgrammedElement.getTextContent());
                             virtualIPInstance.setIsDnsProgrammed(isDnsProgrammedInstance);
                         }
                     }
@@ -5768,12 +5751,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return A deployment that exists in the cloud service.
     */
     @Override
-    public DeploymentGetResponse getBySlot(String serviceName, DeploymentSlot deploymentSlot) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException, ParseException
+    public DeploymentGetResponse getBySlot(String serviceName, DeploymentSlot deploymentSlot) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
     {
         // Validate
         if (serviceName == null)
@@ -5945,7 +5926,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         if (instanceUpgradeDomainElement != null && (instanceUpgradeDomainElement.getTextContent() == null || instanceUpgradeDomainElement.getTextContent().isEmpty() == true) == false)
                         {
                             int instanceUpgradeDomainInstance;
-                            instanceUpgradeDomainInstance = Integer.parseInt(instanceUpgradeDomainElement.getTextContent());
+                            instanceUpgradeDomainInstance = DatatypeConverter.parseInt(instanceUpgradeDomainElement.getTextContent());
                             roleInstanceInstance.setInstanceUpgradeDomain(instanceUpgradeDomainInstance);
                         }
                         
@@ -5954,7 +5935,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         if (instanceFaultDomainElement != null && (instanceFaultDomainElement.getTextContent() == null || instanceFaultDomainElement.getTextContent().isEmpty() == true) == false)
                         {
                             int instanceFaultDomainInstance;
-                            instanceFaultDomainInstance = Integer.parseInt(instanceFaultDomainElement.getTextContent());
+                            instanceFaultDomainInstance = DatatypeConverter.parseInt(instanceFaultDomainElement.getTextContent());
                             roleInstanceInstance.setInstanceFaultDomain(instanceFaultDomainInstance);
                         }
                         
@@ -6009,7 +5990,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                 if (localPortElement != null && (localPortElement.getTextContent() == null || localPortElement.getTextContent().isEmpty() == true) == false)
                                 {
                                     int localPortInstance;
-                                    localPortInstance = Integer.parseInt(localPortElement.getTextContent());
+                                    localPortInstance = DatatypeConverter.parseInt(localPortElement.getTextContent());
                                     instanceEndpointInstance.setLocalPort(localPortInstance);
                                 }
                                 
@@ -6027,7 +6008,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                 if (publicPortElement != null)
                                 {
                                     int publicPortInstance;
-                                    publicPortInstance = Integer.parseInt(publicPortElement.getTextContent());
+                                    publicPortInstance = DatatypeConverter.parseInt(publicPortElement.getTextContent());
                                     instanceEndpointInstance.setPort(publicPortInstance);
                                 }
                                 
@@ -6110,7 +6091,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     if (currentUpgradeDomainElement != null)
                     {
                         int currentUpgradeDomainInstance;
-                        currentUpgradeDomainInstance = Integer.parseInt(currentUpgradeDomainElement.getTextContent());
+                        currentUpgradeDomainInstance = DatatypeConverter.parseInt(currentUpgradeDomainElement.getTextContent());
                         upgradeStatusInstance.setCurrentUpgradeDomain(currentUpgradeDomainInstance);
                     }
                 }
@@ -6120,7 +6101,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 if (upgradeDomainCountElement != null)
                 {
                     int upgradeDomainCountInstance;
-                    upgradeDomainCountInstance = Integer.parseInt(upgradeDomainCountElement.getTextContent());
+                    upgradeDomainCountInstance = DatatypeConverter.parseInt(upgradeDomainCountElement.getTextContent());
                     result.setUpgradeDomainCount(upgradeDomainCountInstance);
                 }
                 
@@ -6204,7 +6185,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                         if (localPortElement2 != null && (localPortElement2.getTextContent() == null || localPortElement2.getTextContent().isEmpty() == true) == false)
                                         {
                                             int localPortInstance2;
-                                            localPortInstance2 = Integer.parseInt(localPortElement2.getTextContent());
+                                            localPortInstance2 = DatatypeConverter.parseInt(localPortElement2.getTextContent());
                                             inputEndpointInstance.setLocalPort(localPortInstance2);
                                         }
                                         
@@ -6222,7 +6203,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                         if (portElement != null && (portElement.getTextContent() == null || portElement.getTextContent().isEmpty() == true) == false)
                                         {
                                             int portInstance;
-                                            portInstance = Integer.parseInt(portElement.getTextContent());
+                                            portInstance = DatatypeConverter.parseInt(portElement.getTextContent());
                                             inputEndpointInstance.setPort(portInstance);
                                         }
                                         
@@ -6247,7 +6228,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                             if (portElement2 != null)
                                             {
                                                 int portInstance2;
-                                                portInstance2 = Integer.parseInt(portElement2.getTextContent());
+                                                portInstance2 = DatatypeConverter.parseInt(portElement2.getTextContent());
                                                 loadBalancerProbeInstance.setPort(portInstance2);
                                             }
                                             
@@ -6265,7 +6246,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                             if (intervalInSecondsElement != null && (intervalInSecondsElement.getTextContent() == null || intervalInSecondsElement.getTextContent().isEmpty() == true) == false)
                                             {
                                                 int intervalInSecondsInstance;
-                                                intervalInSecondsInstance = Integer.parseInt(intervalInSecondsElement.getTextContent());
+                                                intervalInSecondsInstance = DatatypeConverter.parseInt(intervalInSecondsElement.getTextContent());
                                                 loadBalancerProbeInstance.setIntervalInSeconds(intervalInSecondsInstance);
                                             }
                                             
@@ -6274,7 +6255,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                             if (timeoutInSecondsElement != null && (timeoutInSecondsElement.getTextContent() == null || timeoutInSecondsElement.getTextContent().isEmpty() == true) == false)
                                             {
                                                 int timeoutInSecondsInstance;
-                                                timeoutInSecondsInstance = Integer.parseInt(timeoutInSecondsElement.getTextContent());
+                                                timeoutInSecondsInstance = DatatypeConverter.parseInt(timeoutInSecondsElement.getTextContent());
                                                 loadBalancerProbeInstance.setTimeoutInSeconds(timeoutInSecondsInstance);
                                             }
                                         }
@@ -6302,7 +6283,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                         if (enableDirectServerReturnElement != null && (enableDirectServerReturnElement.getTextContent() == null || enableDirectServerReturnElement.getTextContent().isEmpty() == true) == false)
                                         {
                                             boolean enableDirectServerReturnInstance;
-                                            enableDirectServerReturnInstance = Boolean.parseBoolean(enableDirectServerReturnElement.getTextContent());
+                                            enableDirectServerReturnInstance = DatatypeConverter.parseBoolean(enableDirectServerReturnElement.getTextContent());
                                             inputEndpointInstance.setEnableDirectServerReturn(enableDirectServerReturnInstance);
                                         }
                                         
@@ -6328,7 +6309,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                                     if (orderElement != null && (orderElement.getTextContent() == null || orderElement.getTextContent().isEmpty() == true) == false)
                                                     {
                                                         int orderInstance;
-                                                        orderInstance = Integer.parseInt(orderElement.getTextContent());
+                                                        orderInstance = DatatypeConverter.parseInt(orderElement.getTextContent());
                                                         ruleInstance.setOrder(orderInstance);
                                                     }
                                                     
@@ -6407,7 +6388,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                 if (resetPasswordOnFirstLogonElement != null && (resetPasswordOnFirstLogonElement.getTextContent() == null || resetPasswordOnFirstLogonElement.getTextContent().isEmpty() == true) == false)
                                 {
                                     boolean resetPasswordOnFirstLogonInstance;
-                                    resetPasswordOnFirstLogonInstance = Boolean.parseBoolean(resetPasswordOnFirstLogonElement.getTextContent());
+                                    resetPasswordOnFirstLogonInstance = DatatypeConverter.parseBoolean(resetPasswordOnFirstLogonElement.getTextContent());
                                     configurationSetInstance.setResetPasswordOnFirstLogon(resetPasswordOnFirstLogonInstance);
                                 }
                                 
@@ -6416,7 +6397,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                 if (enableAutomaticUpdatesElement != null && (enableAutomaticUpdatesElement.getTextContent() == null || enableAutomaticUpdatesElement.getTextContent().isEmpty() == true) == false)
                                 {
                                     boolean enableAutomaticUpdatesInstance;
-                                    enableAutomaticUpdatesInstance = Boolean.parseBoolean(enableAutomaticUpdatesElement.getTextContent());
+                                    enableAutomaticUpdatesInstance = DatatypeConverter.parseBoolean(enableAutomaticUpdatesElement.getTextContent());
                                     configurationSetInstance.setEnableAutomaticUpdates(enableAutomaticUpdatesInstance);
                                 }
                                 
@@ -6622,7 +6603,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                 if (disableSshPasswordAuthenticationElement != null && (disableSshPasswordAuthenticationElement.getTextContent() == null || disableSshPasswordAuthenticationElement.getTextContent().isEmpty() == true) == false)
                                 {
                                     boolean disableSshPasswordAuthenticationInstance;
-                                    disableSshPasswordAuthenticationInstance = Boolean.parseBoolean(disableSshPasswordAuthenticationElement.getTextContent());
+                                    disableSshPasswordAuthenticationInstance = DatatypeConverter.parseBoolean(disableSshPasswordAuthenticationElement.getTextContent());
                                     configurationSetInstance.setDisableSshPasswordAuthentication(disableSshPasswordAuthenticationInstance);
                                 }
                                 
@@ -6843,7 +6824,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                 if (lunElement != null && (lunElement.getTextContent() == null || lunElement.getTextContent().isEmpty() == true) == false)
                                 {
                                     int lunInstance;
-                                    lunInstance = Integer.parseInt(lunElement.getTextContent());
+                                    lunInstance = DatatypeConverter.parseInt(lunElement.getTextContent());
                                     dataVirtualHardDiskInstance.setLogicalUnitNumber(lunInstance);
                                 }
                                 
@@ -6852,7 +6833,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                 if (logicalDiskSizeInGBElement != null)
                                 {
                                     int logicalDiskSizeInGBInstance;
-                                    logicalDiskSizeInGBInstance = Integer.parseInt(logicalDiskSizeInGBElement.getTextContent());
+                                    logicalDiskSizeInGBInstance = DatatypeConverter.parseInt(logicalDiskSizeInGBElement.getTextContent());
                                     dataVirtualHardDiskInstance.setLogicalDiskSizeInGB(logicalDiskSizeInGBInstance);
                                 }
                                 
@@ -6952,7 +6933,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         if (provisionGuestAgentElement != null && (provisionGuestAgentElement.getTextContent() == null || provisionGuestAgentElement.getTextContent().isEmpty() == true) == false)
                         {
                             boolean provisionGuestAgentInstance;
-                            provisionGuestAgentInstance = Boolean.parseBoolean(provisionGuestAgentElement.getTextContent());
+                            provisionGuestAgentInstance = DatatypeConverter.parseBoolean(provisionGuestAgentElement.getTextContent());
                             roleInstance.setProvisionGuestAgent(provisionGuestAgentInstance);
                         }
                         
@@ -6981,7 +6962,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 if (lockedElement != null)
                 {
                     boolean lockedInstance;
-                    lockedInstance = Boolean.parseBoolean(lockedElement.getTextContent());
+                    lockedInstance = DatatypeConverter.parseBoolean(lockedElement.getTextContent());
                     result.setLocked(lockedInstance);
                 }
                 
@@ -6999,10 +6980,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 if (createdTimeElement != null)
                 {
                     Calendar createdTimeInstance;
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(simpleDateFormat.parse(createdTimeElement.getTextContent()));
-                    createdTimeInstance = calendar;
+                    createdTimeInstance = DatatypeConverter.parseDateTime(createdTimeElement.getTextContent());
                     result.setCreatedTime(createdTimeInstance);
                 }
                 
@@ -7011,10 +6989,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 if (lastModifiedTimeElement != null)
                 {
                     Calendar lastModifiedTimeInstance;
-                    SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                    Calendar calendar2 = Calendar.getInstance();
-                    calendar2.setTime(simpleDateFormat2.parse(lastModifiedTimeElement.getTextContent()));
-                    lastModifiedTimeInstance = calendar2;
+                    lastModifiedTimeInstance = DatatypeConverter.parseDateTime(lastModifiedTimeElement.getTextContent());
                     result.setLastModifiedTime(lastModifiedTimeInstance);
                 }
                 
@@ -7054,10 +7029,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     if (startTimeElement != null)
                     {
                         Calendar startTimeInstance;
-                        SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                        Calendar calendar3 = Calendar.getInstance();
-                        calendar3.setTime(simpleDateFormat3.parse(startTimeElement.getTextContent()));
-                        startTimeInstance = calendar3;
+                        startTimeInstance = DatatypeConverter.parseDateTime(startTimeElement.getTextContent());
                         persistentVMDowntimeInstance.setStartTime(startTimeInstance);
                     }
                     
@@ -7066,10 +7038,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     if (endTimeElement != null)
                     {
                         Calendar endTimeInstance;
-                        SimpleDateFormat simpleDateFormat4 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                        Calendar calendar4 = Calendar.getInstance();
-                        calendar4.setTime(simpleDateFormat4.parse(endTimeElement.getTextContent()));
-                        endTimeInstance = calendar4;
+                        endTimeInstance = DatatypeConverter.parseDateTime(endTimeElement.getTextContent());
                         persistentVMDowntimeInstance.setEndTime(endTimeInstance);
                     }
                     
@@ -7116,7 +7085,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         if (isDnsProgrammedElement != null && (isDnsProgrammedElement.getTextContent() == null || isDnsProgrammedElement.getTextContent().isEmpty() == true) == false)
                         {
                             boolean isDnsProgrammedInstance;
-                            isDnsProgrammedInstance = Boolean.parseBoolean(isDnsProgrammedElement.getTextContent());
+                            isDnsProgrammedInstance = DatatypeConverter.parseBoolean(isDnsProgrammedElement.getTextContent());
                             virtualIPInstance.setIsDnsProgrammed(isDnsProgrammedInstance);
                         }
                     }

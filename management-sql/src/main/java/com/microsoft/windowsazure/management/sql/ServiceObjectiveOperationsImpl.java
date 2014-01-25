@@ -30,10 +30,10 @@ import com.microsoft.windowsazure.management.sql.models.ServiceObjectiveListResp
 import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.ParseException;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
+import javax.xml.bind.DatatypeConverter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -106,13 +106,11 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return Response containing the service objective for a given server and
     * service objective Id.
     */
     @Override
-    public ServiceObjectiveGetResponse get(String serverName, String serviceObjectiveId) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException
+    public ServiceObjectiveGetResponse get(String serverName, String serviceObjectiveId) throws IOException, ServiceException, ParserConfigurationException, SAXException
     {
         // Validate
         if (serverName == null)
@@ -242,7 +240,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                 if (isDefaultElement != null)
                 {
                     boolean isDefaultInstance;
-                    isDefaultInstance = Boolean.parseBoolean(isDefaultElement.getTextContent());
+                    isDefaultInstance = DatatypeConverter.parseBoolean(isDefaultElement.getTextContent());
                     result.setIsDefault(isDefaultInstance);
                 }
                 
@@ -251,7 +249,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                 if (isSystemElement != null)
                 {
                     boolean isSystemInstance;
-                    isSystemInstance = Boolean.parseBoolean(isSystemElement.getTextContent());
+                    isSystemInstance = DatatypeConverter.parseBoolean(isSystemElement.getTextContent());
                     result.setIsSystem(isSystemInstance);
                 }
                 
@@ -269,7 +267,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                 if (enabledElement != null)
                 {
                     boolean enabledInstance;
-                    enabledInstance = Boolean.parseBoolean(enabledElement.getTextContent());
+                    enabledInstance = DatatypeConverter.parseBoolean(enabledElement.getTextContent());
                     result.setEnabled(enabledInstance);
                 }
                 
@@ -351,7 +349,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                         if (ordinalElement != null)
                         {
                             byte ordinalInstance;
-                            ordinalInstance = Byte.valueOf(ordinalElement.getTextContent());
+                            ordinalInstance = DatatypeConverter.parseByte(ordinalElement.getTextContent());
                             serviceResourceInstance.setOrdinal(ordinalInstance);
                         }
                         
@@ -360,7 +358,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                         if (isDefaultElement2 != null)
                         {
                             boolean isDefaultInstance2;
-                            isDefaultInstance2 = Boolean.parseBoolean(isDefaultElement2.getTextContent());
+                            isDefaultInstance2 = DatatypeConverter.parseBoolean(isDefaultElement2.getTextContent());
                             serviceResourceInstance.setIsDefault(isDefaultInstance2);
                         }
                     }
@@ -419,13 +417,11 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return Response containing the list of service objective for a given
     * server.
     */
     @Override
-    public ServiceObjectiveListResponse list(String serverName) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException
+    public ServiceObjectiveListResponse list(String serverName) throws IOException, ServiceException, ParserConfigurationException, SAXException
     {
         // Validate
         if (serverName == null)
@@ -556,7 +552,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                     if (isDefaultElement != null)
                     {
                         boolean isDefaultInstance;
-                        isDefaultInstance = Boolean.parseBoolean(isDefaultElement.getTextContent());
+                        isDefaultInstance = DatatypeConverter.parseBoolean(isDefaultElement.getTextContent());
                         serviceResourceInstance.setIsDefault(isDefaultInstance);
                     }
                     
@@ -565,7 +561,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                     if (isSystemElement != null)
                     {
                         boolean isSystemInstance;
-                        isSystemInstance = Boolean.parseBoolean(isSystemElement.getTextContent());
+                        isSystemInstance = DatatypeConverter.parseBoolean(isSystemElement.getTextContent());
                         serviceResourceInstance.setIsSystem(isSystemInstance);
                     }
                     
@@ -583,7 +579,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                     if (enabledElement != null)
                     {
                         boolean enabledInstance;
-                        enabledInstance = Boolean.parseBoolean(enabledElement.getTextContent());
+                        enabledInstance = DatatypeConverter.parseBoolean(enabledElement.getTextContent());
                         serviceResourceInstance.setEnabled(enabledInstance);
                     }
                     
@@ -665,7 +661,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                             if (ordinalElement != null)
                             {
                                 byte ordinalInstance;
-                                ordinalInstance = Byte.valueOf(ordinalElement.getTextContent());
+                                ordinalInstance = DatatypeConverter.parseByte(ordinalElement.getTextContent());
                                 serviceResourceInstance2.setOrdinal(ordinalInstance);
                             }
                             
@@ -674,7 +670,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                             if (isDefaultElement2 != null)
                             {
                                 boolean isDefaultInstance2;
-                                isDefaultInstance2 = Boolean.parseBoolean(isDefaultElement2.getTextContent());
+                                isDefaultInstance2 = DatatypeConverter.parseBoolean(isDefaultElement2.getTextContent());
                                 serviceResourceInstance2.setIsDefault(isDefaultInstance2);
                             }
                         }

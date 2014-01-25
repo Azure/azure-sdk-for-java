@@ -36,7 +36,6 @@ import com.microsoft.windowsazure.management.storage.models.StorageServiceGetRes
 import com.microsoft.windowsazure.management.storage.models.StorageServiceListResponse;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.text.ParseException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import javax.xml.parsers.ParserConfigurationException;
@@ -216,11 +215,9 @@ public interface StorageAccountOperations
     * response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return The Get Storage Account Properties operation response.
     */
-    StorageServiceGetResponse get(String serviceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException, ParseException;
+    StorageServiceGetResponse get(String serviceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException;
     
     /**
     * The Get Storage Account Properties operation returns system properties
@@ -281,11 +278,9 @@ public interface StorageAccountOperations
     * response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return The List Storage Accounts operation response.
     */
-    StorageServiceListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException, ParseException;
+    StorageServiceListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException;
     
     /**
     * The List Storage Accounts operation lists the storage accounts available

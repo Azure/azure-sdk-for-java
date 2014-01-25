@@ -36,12 +36,11 @@ import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
+import javax.xml.bind.DatatypeConverter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -114,15 +113,13 @@ public class NotificationHubOperationsImpl implements ServiceOperations<ServiceB
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
     * @return A standard storage response including an HTTP status code and
     * request ID.
     */
     @Override
-    public ServiceBusNotificationHubResponse get(String namespaceName, String notificationHubName) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException, URISyntaxException
+    public ServiceBusNotificationHubResponse get(String namespaceName, String notificationHubName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
     {
         // Validate
         if (namespaceName == null)
@@ -263,10 +260,7 @@ public class NotificationHubOperationsImpl implements ServiceOperations<ServiceB
                                 if (createdTimeElement != null)
                                 {
                                     Calendar createdTimeInstance;
-                                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                                    Calendar calendar = Calendar.getInstance();
-                                    calendar.setTime(simpleDateFormat.parse(createdTimeElement.getTextContent()));
-                                    createdTimeInstance = calendar;
+                                    createdTimeInstance = DatatypeConverter.parseDateTime(createdTimeElement.getTextContent());
                                     authorizationRuleInstance.setCreatedTime(createdTimeInstance);
                                 }
                                 
@@ -284,10 +278,7 @@ public class NotificationHubOperationsImpl implements ServiceOperations<ServiceB
                                 if (modifiedTimeElement != null)
                                 {
                                     Calendar modifiedTimeInstance;
-                                    SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                                    Calendar calendar2 = Calendar.getInstance();
-                                    calendar2.setTime(simpleDateFormat2.parse(modifiedTimeElement.getTextContent()));
-                                    modifiedTimeInstance = calendar2;
+                                    modifiedTimeInstance = DatatypeConverter.parseDateTime(modifiedTimeElement.getTextContent());
                                     authorizationRuleInstance.setModifiedTime(modifiedTimeInstance);
                                 }
                                 
@@ -552,15 +543,13 @@ public class NotificationHubOperationsImpl implements ServiceOperations<ServiceB
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
     * @return A standard storage response including an HTTP status code and
     * request ID.
     */
     @Override
-    public ServiceBusNotificationHubsResponse list(String namespaceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException, URISyntaxException
+    public ServiceBusNotificationHubsResponse list(String namespaceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
     {
         // Validate
         if (namespaceName == null)
@@ -704,10 +693,7 @@ public class NotificationHubOperationsImpl implements ServiceOperations<ServiceB
                                         if (createdTimeElement != null)
                                         {
                                             Calendar createdTimeInstance;
-                                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                                            Calendar calendar = Calendar.getInstance();
-                                            calendar.setTime(simpleDateFormat.parse(createdTimeElement.getTextContent()));
-                                            createdTimeInstance = calendar;
+                                            createdTimeInstance = DatatypeConverter.parseDateTime(createdTimeElement.getTextContent());
                                             authorizationRuleInstance.setCreatedTime(createdTimeInstance);
                                         }
                                         
@@ -725,10 +711,7 @@ public class NotificationHubOperationsImpl implements ServiceOperations<ServiceB
                                         if (modifiedTimeElement != null)
                                         {
                                             Calendar modifiedTimeInstance;
-                                            SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                                            Calendar calendar2 = Calendar.getInstance();
-                                            calendar2.setTime(simpleDateFormat2.parse(modifiedTimeElement.getTextContent()));
-                                            modifiedTimeInstance = calendar2;
+                                            modifiedTimeInstance = DatatypeConverter.parseDateTime(modifiedTimeElement.getTextContent());
                                             authorizationRuleInstance.setModifiedTime(modifiedTimeInstance);
                                         }
                                         

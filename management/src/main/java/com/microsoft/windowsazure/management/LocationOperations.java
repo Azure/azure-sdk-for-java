@@ -26,7 +26,6 @@ package com.microsoft.windowsazure.management;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.models.LocationsListResponse;
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.concurrent.Future;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
@@ -53,11 +52,9 @@ public interface LocationOperations
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return The List Locations operation response.
     */
-    LocationsListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException;
+    LocationsListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException;
     
     /**
     * The List Locations operation lists all of the data center locations that

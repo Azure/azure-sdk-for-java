@@ -35,12 +35,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.URISyntaxException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
+import javax.xml.bind.DatatypeConverter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -422,12 +421,10 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
     * response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return The Get Management Certificate operation response.
     */
     @Override
-    public ManagementCertificateGetResponse get(String thumbprint) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException, ParseException
+    public ManagementCertificateGetResponse get(String thumbprint) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
     {
         // Validate
         if (thumbprint == null)
@@ -525,10 +522,7 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
                 if (createdElement != null)
                 {
                     Calendar createdInstance;
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(simpleDateFormat.parse(createdElement.getTextContent()));
-                    createdInstance = calendar;
+                    createdInstance = DatatypeConverter.parseDateTime(createdElement.getTextContent());
                     result.setCreated(createdInstance);
                 }
             }
@@ -594,12 +588,10 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return The List Management Certificates operation response.
     */
     @Override
-    public ManagementCertificateListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException
+    public ManagementCertificateListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException
     {
         // Validate
         
@@ -698,10 +690,7 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
                     if (createdElement != null)
                     {
                         Calendar createdInstance;
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.setTime(simpleDateFormat.parse(createdElement.getTextContent()));
-                        createdInstance = calendar;
+                        createdInstance = DatatypeConverter.parseDateTime(createdElement.getTextContent());
                         subscriptionCertificateInstance.setCreated(createdInstance);
                     }
                 }

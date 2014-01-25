@@ -31,7 +31,6 @@ import com.microsoft.windowsazure.management.models.AffinityGroupListResponse;
 import com.microsoft.windowsazure.management.models.AffinityGroupUpdateParameters;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.text.ParseException;
 import java.util.concurrent.Future;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -126,11 +125,9 @@ public interface AffinityGroupOperations
     * response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return The Get Affinity Group operation response.
     */
-    AffinityGroupGetResponse get(String affinityGroupName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException, ParseException;
+    AffinityGroupGetResponse get(String affinityGroupName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException;
     
     /**
     * The Get Affinity Group Properties operation returns the system properties
@@ -158,11 +155,9 @@ public interface AffinityGroupOperations
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return The List Affinity Groups operation response.
     */
-    AffinityGroupListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException;
+    AffinityGroupListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException;
     
     /**
     * The List Affinity Groups operation lists the affinity groups associated

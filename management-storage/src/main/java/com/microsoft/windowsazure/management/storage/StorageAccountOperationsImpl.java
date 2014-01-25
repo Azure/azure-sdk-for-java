@@ -47,14 +47,13 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import javax.xml.bind.DatatypeConverter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -459,7 +458,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                 if (resultElement != null)
                 {
                     boolean resultInstance;
-                    resultInstance = Boolean.parseBoolean(resultElement.getTextContent());
+                    resultInstance = DatatypeConverter.parseBoolean(resultElement.getTextContent());
                     result.setIsAvailable(resultInstance);
                 }
                 
@@ -566,7 +565,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     @Override
     public StorageOperationStatusResponse create(StorageAccountCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException
     {
-        StorageManagementClient client2 = this.getClient();
+        StorageManagementClient client2	 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
         if (shouldTrace)
@@ -784,12 +783,10 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     * response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return The Get Storage Account Properties operation response.
     */
     @Override
-    public StorageServiceGetResponse get(String serviceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException, ParseException
+    public StorageServiceGetResponse get(String serviceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
     {
         // Validate
         if (serviceName == null)
@@ -950,7 +947,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                     if (geoReplicationEnabledElement != null)
                     {
                         boolean geoReplicationEnabledInstance;
-                        geoReplicationEnabledInstance = Boolean.parseBoolean(geoReplicationEnabledElement.getTextContent());
+                        geoReplicationEnabledInstance = DatatypeConverter.parseBoolean(geoReplicationEnabledElement.getTextContent());
                         storageServicePropertiesInstance.setGeoReplicationEnabled(geoReplicationEnabledInstance);
                     }
                     
@@ -977,10 +974,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                     if (lastGeoFailoverTimeElement != null && (lastGeoFailoverTimeElement.getTextContent() == null || lastGeoFailoverTimeElement.getTextContent().isEmpty() == true) == false)
                     {
                         Calendar lastGeoFailoverTimeInstance;
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.setTime(simpleDateFormat.parse(lastGeoFailoverTimeElement.getTextContent()));
-                        lastGeoFailoverTimeInstance = calendar;
+                        lastGeoFailoverTimeInstance = DatatypeConverter.parseDateTime(lastGeoFailoverTimeElement.getTextContent());
                         storageServicePropertiesInstance.setLastGeoFailoverTime(lastGeoFailoverTimeInstance);
                     }
                     
@@ -1248,12 +1242,10 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     * response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return The List Storage Accounts operation response.
     */
     @Override
-    public StorageServiceListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException, ParseException
+    public StorageServiceListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
     {
         // Validate
         
@@ -1415,7 +1407,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                         if (geoReplicationEnabledElement != null)
                         {
                             boolean geoReplicationEnabledInstance;
-                            geoReplicationEnabledInstance = Boolean.parseBoolean(geoReplicationEnabledElement.getTextContent());
+                            geoReplicationEnabledInstance = DatatypeConverter.parseBoolean(geoReplicationEnabledElement.getTextContent());
                             storageServicePropertiesInstance.setGeoReplicationEnabled(geoReplicationEnabledInstance);
                         }
                         
@@ -1442,10 +1434,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                         if (lastGeoFailoverTimeElement != null && (lastGeoFailoverTimeElement.getTextContent() == null || lastGeoFailoverTimeElement.getTextContent().isEmpty() == true) == false)
                         {
                             Calendar lastGeoFailoverTimeInstance;
-                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                            Calendar calendar = Calendar.getInstance();
-                            calendar.setTime(simpleDateFormat.parse(lastGeoFailoverTimeElement.getTextContent()));
-                            lastGeoFailoverTimeInstance = calendar;
+                            lastGeoFailoverTimeInstance = DatatypeConverter.parseDateTime(lastGeoFailoverTimeElement.getTextContent());
                             storageServicePropertiesInstance.setLastGeoFailoverTime(lastGeoFailoverTimeInstance);
                         }
                         

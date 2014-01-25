@@ -31,12 +31,11 @@ import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLEncoder;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
+import javax.xml.bind.DatatypeConverter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -113,13 +112,11 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return Response containing the database operation for a given operation
     * Guid.
     */
     @Override
-    public DatabaseOperationGetResponse get(String serverName, String operationGuid) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException
+    public DatabaseOperationGetResponse get(String serverName, String operationGuid) throws IOException, ServiceException, ParserConfigurationException, SAXException
     {
         // Validate
         if (serverName == null)
@@ -249,7 +246,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                 if (stateIdElement != null)
                 {
                     int stateIdInstance;
-                    stateIdInstance = Integer.parseInt(stateIdElement.getTextContent());
+                    stateIdInstance = DatatypeConverter.parseInt(stateIdElement.getTextContent());
                     result.setStateId(stateIdInstance);
                 }
                 
@@ -276,7 +273,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                 if (percentCompleteElement != null)
                 {
                     int percentCompleteInstance;
-                    percentCompleteInstance = Integer.parseInt(percentCompleteElement.getTextContent());
+                    percentCompleteInstance = DatatypeConverter.parseInt(percentCompleteElement.getTextContent());
                     result.setPercentComplete(percentCompleteInstance);
                 }
                 
@@ -285,7 +282,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                 if (errorCodeElement != null)
                 {
                     int errorCodeInstance;
-                    errorCodeInstance = Integer.parseInt(errorCodeElement.getTextContent());
+                    errorCodeInstance = DatatypeConverter.parseInt(errorCodeElement.getTextContent());
                     result.setErrorCode(errorCodeInstance);
                 }
                 
@@ -303,7 +300,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                 if (errorSeverityElement != null)
                 {
                     int errorSeverityInstance;
-                    errorSeverityInstance = Integer.parseInt(errorSeverityElement.getTextContent());
+                    errorSeverityInstance = DatatypeConverter.parseInt(errorSeverityElement.getTextContent());
                     result.setErrorSeverity(errorSeverityInstance);
                 }
                 
@@ -312,7 +309,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                 if (errorStateElement != null)
                 {
                     int errorStateInstance;
-                    errorStateInstance = Integer.parseInt(errorStateElement.getTextContent());
+                    errorStateInstance = DatatypeConverter.parseInt(errorStateElement.getTextContent());
                     result.setErrorState(errorStateInstance);
                 }
                 
@@ -321,10 +318,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                 if (startTimeElement != null)
                 {
                     Calendar startTimeInstance;
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(simpleDateFormat.parse(startTimeElement.getTextContent()));
-                    startTimeInstance = calendar;
+                    startTimeInstance = DatatypeConverter.parseDateTime(startTimeElement.getTextContent());
                     result.setStartTime(startTimeInstance);
                 }
                 
@@ -333,10 +327,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                 if (lastModifyTimeElement != null)
                 {
                     Calendar lastModifyTimeInstance;
-                    SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                    Calendar calendar2 = Calendar.getInstance();
-                    calendar2.setTime(simpleDateFormat2.parse(lastModifyTimeElement.getTextContent()));
-                    lastModifyTimeInstance = calendar2;
+                    lastModifyTimeInstance = DatatypeConverter.parseDateTime(lastModifyTimeElement.getTextContent());
                     result.setLastModifyTime(lastModifyTimeInstance);
                 }
             }
@@ -395,13 +386,11 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return Response containing the list of database operations for a given
     * server or database.
     */
     @Override
-    public DatabaseOperationListResponse listByDatabase(String serverName, String databaseName) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException
+    public DatabaseOperationListResponse listByDatabase(String serverName, String databaseName) throws IOException, ServiceException, ParserConfigurationException, SAXException
     {
         // Validate
         if (serverName == null)
@@ -538,7 +527,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     if (stateIdElement != null)
                     {
                         int stateIdInstance;
-                        stateIdInstance = Integer.parseInt(stateIdElement.getTextContent());
+                        stateIdInstance = DatatypeConverter.parseInt(stateIdElement.getTextContent());
                         serviceResourceInstance.setStateId(stateIdInstance);
                     }
                     
@@ -565,7 +554,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     if (percentCompleteElement != null)
                     {
                         int percentCompleteInstance;
-                        percentCompleteInstance = Integer.parseInt(percentCompleteElement.getTextContent());
+                        percentCompleteInstance = DatatypeConverter.parseInt(percentCompleteElement.getTextContent());
                         serviceResourceInstance.setPercentComplete(percentCompleteInstance);
                     }
                     
@@ -574,7 +563,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     if (errorCodeElement != null)
                     {
                         int errorCodeInstance;
-                        errorCodeInstance = Integer.parseInt(errorCodeElement.getTextContent());
+                        errorCodeInstance = DatatypeConverter.parseInt(errorCodeElement.getTextContent());
                         serviceResourceInstance.setErrorCode(errorCodeInstance);
                     }
                     
@@ -592,7 +581,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     if (errorSeverityElement != null)
                     {
                         int errorSeverityInstance;
-                        errorSeverityInstance = Integer.parseInt(errorSeverityElement.getTextContent());
+                        errorSeverityInstance = DatatypeConverter.parseInt(errorSeverityElement.getTextContent());
                         serviceResourceInstance.setErrorSeverity(errorSeverityInstance);
                     }
                     
@@ -601,7 +590,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     if (errorStateElement != null)
                     {
                         int errorStateInstance;
-                        errorStateInstance = Integer.parseInt(errorStateElement.getTextContent());
+                        errorStateInstance = DatatypeConverter.parseInt(errorStateElement.getTextContent());
                         serviceResourceInstance.setErrorState(errorStateInstance);
                     }
                     
@@ -610,10 +599,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     if (startTimeElement != null)
                     {
                         Calendar startTimeInstance;
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.setTime(simpleDateFormat.parse(startTimeElement.getTextContent()));
-                        startTimeInstance = calendar;
+                        startTimeInstance = DatatypeConverter.parseDateTime(startTimeElement.getTextContent());
                         serviceResourceInstance.setStartTime(startTimeInstance);
                     }
                     
@@ -622,10 +608,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     if (lastModifyTimeElement != null)
                     {
                         Calendar lastModifyTimeInstance;
-                        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                        Calendar calendar2 = Calendar.getInstance();
-                        calendar2.setTime(simpleDateFormat2.parse(lastModifyTimeElement.getTextContent()));
-                        lastModifyTimeInstance = calendar2;
+                        lastModifyTimeInstance = DatatypeConverter.parseDateTime(lastModifyTimeElement.getTextContent());
                         serviceResourceInstance.setLastModifyTime(lastModifyTimeInstance);
                     }
                 }
@@ -683,13 +666,11 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return Response containing the list of database operations for a given
     * server or database.
     */
     @Override
-    public DatabaseOperationListResponse listByServer(String serverName) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException
+    public DatabaseOperationListResponse listByServer(String serverName) throws IOException, ServiceException, ParserConfigurationException, SAXException
     {
         // Validate
         if (serverName == null)
@@ -820,7 +801,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     if (stateIdElement != null)
                     {
                         int stateIdInstance;
-                        stateIdInstance = Integer.parseInt(stateIdElement.getTextContent());
+                        stateIdInstance = DatatypeConverter.parseInt(stateIdElement.getTextContent());
                         serviceResourceInstance.setStateId(stateIdInstance);
                     }
                     
@@ -847,7 +828,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     if (percentCompleteElement != null)
                     {
                         int percentCompleteInstance;
-                        percentCompleteInstance = Integer.parseInt(percentCompleteElement.getTextContent());
+                        percentCompleteInstance = DatatypeConverter.parseInt(percentCompleteElement.getTextContent());
                         serviceResourceInstance.setPercentComplete(percentCompleteInstance);
                     }
                     
@@ -856,7 +837,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     if (errorCodeElement != null)
                     {
                         int errorCodeInstance;
-                        errorCodeInstance = Integer.parseInt(errorCodeElement.getTextContent());
+                        errorCodeInstance = DatatypeConverter.parseInt(errorCodeElement.getTextContent());
                         serviceResourceInstance.setErrorCode(errorCodeInstance);
                     }
                     
@@ -874,7 +855,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     if (errorSeverityElement != null)
                     {
                         int errorSeverityInstance;
-                        errorSeverityInstance = Integer.parseInt(errorSeverityElement.getTextContent());
+                        errorSeverityInstance = DatatypeConverter.parseInt(errorSeverityElement.getTextContent());
                         serviceResourceInstance.setErrorSeverity(errorSeverityInstance);
                     }
                     
@@ -883,7 +864,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     if (errorStateElement != null)
                     {
                         int errorStateInstance;
-                        errorStateInstance = Integer.parseInt(errorStateElement.getTextContent());
+                        errorStateInstance = DatatypeConverter.parseInt(errorStateElement.getTextContent());
                         serviceResourceInstance.setErrorState(errorStateInstance);
                     }
                     
@@ -892,10 +873,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     if (startTimeElement != null)
                     {
                         Calendar startTimeInstance;
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.setTime(simpleDateFormat.parse(startTimeElement.getTextContent()));
-                        startTimeInstance = calendar;
+                        startTimeInstance = DatatypeConverter.parseDateTime(startTimeElement.getTextContent());
                         serviceResourceInstance.setStartTime(startTimeInstance);
                     }
                     
@@ -904,10 +882,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     if (lastModifyTimeElement != null)
                     {
                         Calendar lastModifyTimeInstance;
-                        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                        Calendar calendar2 = Calendar.getInstance();
-                        calendar2.setTime(simpleDateFormat2.parse(lastModifyTimeElement.getTextContent()));
-                        lastModifyTimeInstance = calendar2;
+                        lastModifyTimeInstance = DatatypeConverter.parseDateTime(lastModifyTimeElement.getTextContent());
                         serviceResourceInstance.setLastModifyTime(lastModifyTimeInstance);
                     }
                 }

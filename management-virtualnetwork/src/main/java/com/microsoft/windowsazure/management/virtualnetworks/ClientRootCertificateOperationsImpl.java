@@ -34,13 +34,12 @@ import com.microsoft.windowsazure.management.virtualnetworks.models.GatewayOpera
 import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import javax.xml.bind.DatatypeConverter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -451,13 +450,11 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Vi
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return A standard storage response including an HTTP status code and
     * request ID.
     */
     @Override
-    public ClientRootCertificateGetResponse get(String virtualNetworkName, String certificateThumbprint) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException
+    public ClientRootCertificateGetResponse get(String virtualNetworkName, String certificateThumbprint) throws IOException, ServiceException, ParserConfigurationException, SAXException
     {
         // Validate
         if (virtualNetworkName == null)
@@ -582,12 +579,10 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Vi
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return The response to the list client root certificates request.
     */
     @Override
-    public ClientRootCertificateListResponse list(String virtualNetworkName) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException
+    public ClientRootCertificateListResponse list(String virtualNetworkName) throws IOException, ServiceException, ParserConfigurationException, SAXException
     {
         // Validate
         if (virtualNetworkName == null)
@@ -665,10 +660,7 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Vi
                     if (expirationTimeElement != null)
                     {
                         Calendar expirationTimeInstance;
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.setTime(simpleDateFormat.parse(expirationTimeElement.getTextContent()));
-                        expirationTimeInstance = calendar;
+                        expirationTimeInstance = DatatypeConverter.parseDateTime(expirationTimeElement.getTextContent());
                         clientRootCertificateInstance.setExpirationTime(expirationTimeInstance);
                     }
                     

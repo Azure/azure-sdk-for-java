@@ -41,7 +41,6 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.text.ParseException;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -468,8 +467,6 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
     * @throws ServiceException Thrown if an unexpected response is found.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -481,7 +478,7 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse create(String serviceName, ServiceCertificateCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, ServiceException, URISyntaxException, ParseException
+    public ComputeOperationStatusResponse create(String serviceName, ServiceCertificateCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, ServiceException, URISyntaxException
     {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
@@ -729,12 +726,10 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
     * response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return The Get Service Certificate operation response.
     */
     @Override
-    public ServiceCertificateGetResponse get(ServiceCertificateGetParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException, ParseException
+    public ServiceCertificateGetResponse get(ServiceCertificateGetParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
     {
         // Validate
         if (parameters == null)
@@ -882,12 +877,10 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
     * response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return The List Service Certificates operation response.
     */
     @Override
-    public ServiceCertificateListResponse list(String serviceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException, ParseException
+    public ServiceCertificateListResponse list(String serviceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
     {
         // Validate
         if (serviceName == null)

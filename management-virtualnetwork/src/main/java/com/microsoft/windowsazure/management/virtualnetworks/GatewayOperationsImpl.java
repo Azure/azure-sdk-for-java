@@ -50,13 +50,12 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.InetAddress;
 import java.net.URLEncoder;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import javax.xml.bind.DatatypeConverter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -1701,13 +1700,11 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return A standard storage response including an HTTP status code and
     * request ID.
     */
     @Override
-    public GatewayGetResponse get(String virtualNetworkName) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException
+    public GatewayGetResponse get(String virtualNetworkName) throws IOException, ServiceException, ParserConfigurationException, SAXException
     {
         // Validate
         if (virtualNetworkName == null)
@@ -1803,10 +1800,7 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
                     if (timestampElement != null)
                     {
                         Calendar timestampInstance;
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.setTime(simpleDateFormat.parse(timestampElement.getTextContent()));
-                        timestampInstance = calendar;
+                        timestampInstance = DatatypeConverter.parseDateTime(timestampElement.getTextContent());
                         lastEventInstance.setTimestamp(timestampInstance);
                     }
                     
@@ -2391,13 +2385,11 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return The response to a ListConnections request to a Virtual Network
     * Gateway.
     */
     @Override
-    public GatewayListConnectionsResponse listConnections(String virtualNetworkName) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException
+    public GatewayListConnectionsResponse listConnections(String virtualNetworkName) throws IOException, ServiceException, ParserConfigurationException, SAXException
     {
         // Validate
         if (virtualNetworkName == null)
@@ -2499,10 +2491,7 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
                         if (timestampElement != null)
                         {
                             Calendar timestampInstance;
-                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                            Calendar calendar = Calendar.getInstance();
-                            calendar.setTime(simpleDateFormat.parse(timestampElement.getTextContent()));
-                            timestampInstance = calendar;
+                            timestampInstance = DatatypeConverter.parseDateTime(timestampElement.getTextContent());
                             lastEventInstance.setTimestamp(timestampInstance);
                         }
                         
@@ -2539,7 +2528,7 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
                     if (ingressBytesTransferredElement != null)
                     {
                         long ingressBytesTransferredInstance;
-                        ingressBytesTransferredInstance = Long.parseLong(ingressBytesTransferredElement.getTextContent());
+                        ingressBytesTransferredInstance = DatatypeConverter.parseLong(ingressBytesTransferredElement.getTextContent());
                         connectionInstance.setIngressBytesTransferred(ingressBytesTransferredInstance);
                     }
                     
@@ -2548,7 +2537,7 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
                     if (egressBytesTransferredElement != null)
                     {
                         long egressBytesTransferredInstance;
-                        egressBytesTransferredInstance = Long.parseLong(egressBytesTransferredElement.getTextContent());
+                        egressBytesTransferredInstance = DatatypeConverter.parseLong(egressBytesTransferredElement.getTextContent());
                         connectionInstance.setEgressBytesTransferred(egressBytesTransferredInstance);
                     }
                     
@@ -2557,10 +2546,7 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
                     if (lastConnectionEstablishedElement != null)
                     {
                         Calendar lastConnectionEstablishedInstance;
-                        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                        Calendar calendar2 = Calendar.getInstance();
-                        calendar2.setTime(simpleDateFormat2.parse(lastConnectionEstablishedElement.getTextContent()));
-                        lastConnectionEstablishedInstance = calendar2;
+                        lastConnectionEstablishedInstance = DatatypeConverter.parseDateTime(lastConnectionEstablishedElement.getTextContent());
                         connectionInstance.setLastConnectionEstablished(lastConnectionEstablishedInstance);
                     }
                     

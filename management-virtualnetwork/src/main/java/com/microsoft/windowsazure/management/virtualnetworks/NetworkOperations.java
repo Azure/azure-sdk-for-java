@@ -30,7 +30,6 @@ import com.microsoft.windowsazure.management.virtualnetworks.models.NetworkListR
 import com.microsoft.windowsazure.management.virtualnetworks.models.NetworkSetConfigurationParameters;
 import com.microsoft.windowsazure.management.virtualnetworks.models.VirtualNetworkOperationStatusResponse;
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import javax.xml.parsers.ParserConfigurationException;
@@ -104,11 +103,9 @@ public interface NetworkOperations
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return The response structure for the Server List operation.
     */
-    NetworkListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException;
+    NetworkListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException;
     
     /**
     * The List Virtual network sites operation retrieves the virtual networks

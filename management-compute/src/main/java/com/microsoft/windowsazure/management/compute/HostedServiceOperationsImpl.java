@@ -86,14 +86,13 @@ import java.io.StringWriter;
 import java.net.InetAddress;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import javax.xml.bind.DatatypeConverter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -837,7 +836,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                 if (resultElement != null)
                 {
                     boolean resultInstance;
-                    resultInstance = Boolean.parseBoolean(resultElement.getTextContent());
+                    resultInstance = DatatypeConverter.parseBoolean(resultElement.getTextContent());
                     result.setIsAvailable(resultInstance);
                 }
                 
@@ -924,13 +923,11 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     * @throws ServiceException Thrown if an unexpected response is found.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
     @Override
-    public OperationResponse create(HostedServiceCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, ServiceException, URISyntaxException, ParseException
+    public OperationResponse create(HostedServiceCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, ServiceException, URISyntaxException
     {
         // Validate
         if (parameters == null)
@@ -1521,12 +1518,10 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     * response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return The Get Hosted Service operation response.
     */
     @Override
-    public HostedServiceGetResponse get(String serviceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException, ParseException
+    public HostedServiceGetResponse get(String serviceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
     {
         // Validate
         if (serviceName == null)
@@ -1667,10 +1662,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                     if (dateCreatedElement != null)
                     {
                         Calendar dateCreatedInstance;
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.setTime(simpleDateFormat.parse(dateCreatedElement.getTextContent()));
-                        dateCreatedInstance = calendar;
+                        dateCreatedInstance = DatatypeConverter.parseDateTime(dateCreatedElement.getTextContent());
                         hostedServicePropertiesInstance.setDateCreated(dateCreatedInstance);
                     }
                     
@@ -1679,10 +1671,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                     if (dateLastModifiedElement != null)
                     {
                         Calendar dateLastModifiedInstance;
-                        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                        Calendar calendar2 = Calendar.getInstance();
-                        calendar2.setTime(simpleDateFormat2.parse(dateLastModifiedElement.getTextContent()));
-                        dateLastModifiedInstance = calendar2;
+                        dateLastModifiedInstance = DatatypeConverter.parseDateTime(dateLastModifiedElement.getTextContent());
                         hostedServicePropertiesInstance.setDateLastModified(dateLastModifiedInstance);
                     }
                     
@@ -1768,12 +1757,10 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     * response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return The detailed Get Hosted Service operation response.
     */
     @Override
-    public HostedServiceGetDetailedResponse getDetailed(String serviceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException, ParseException
+    public HostedServiceGetDetailedResponse getDetailed(String serviceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
     {
         // Validate
         if (serviceName == null)
@@ -1954,7 +1941,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                 if (instanceUpgradeDomainElement != null && (instanceUpgradeDomainElement.getTextContent() == null || instanceUpgradeDomainElement.getTextContent().isEmpty() == true) == false)
                                 {
                                     int instanceUpgradeDomainInstance;
-                                    instanceUpgradeDomainInstance = Integer.parseInt(instanceUpgradeDomainElement.getTextContent());
+                                    instanceUpgradeDomainInstance = DatatypeConverter.parseInt(instanceUpgradeDomainElement.getTextContent());
                                     roleInstanceInstance.setInstanceUpgradeDomain(instanceUpgradeDomainInstance);
                                 }
                                 
@@ -1963,7 +1950,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                 if (instanceFaultDomainElement != null && (instanceFaultDomainElement.getTextContent() == null || instanceFaultDomainElement.getTextContent().isEmpty() == true) == false)
                                 {
                                     int instanceFaultDomainInstance;
-                                    instanceFaultDomainInstance = Integer.parseInt(instanceFaultDomainElement.getTextContent());
+                                    instanceFaultDomainInstance = DatatypeConverter.parseInt(instanceFaultDomainElement.getTextContent());
                                     roleInstanceInstance.setInstanceFaultDomain(instanceFaultDomainInstance);
                                 }
                                 
@@ -2018,7 +2005,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                         if (localPortElement != null && (localPortElement.getTextContent() == null || localPortElement.getTextContent().isEmpty() == true) == false)
                                         {
                                             int localPortInstance;
-                                            localPortInstance = Integer.parseInt(localPortElement.getTextContent());
+                                            localPortInstance = DatatypeConverter.parseInt(localPortElement.getTextContent());
                                             instanceEndpointInstance.setLocalPort(localPortInstance);
                                         }
                                         
@@ -2036,7 +2023,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                         if (publicPortElement != null)
                                         {
                                             int publicPortInstance;
-                                            publicPortInstance = Integer.parseInt(publicPortElement.getTextContent());
+                                            publicPortInstance = DatatypeConverter.parseInt(publicPortElement.getTextContent());
                                             instanceEndpointInstance.setPort(publicPortInstance);
                                         }
                                         
@@ -2119,7 +2106,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                             if (currentUpgradeDomainElement != null)
                             {
                                 int currentUpgradeDomainInstance;
-                                currentUpgradeDomainInstance = Integer.parseInt(currentUpgradeDomainElement.getTextContent());
+                                currentUpgradeDomainInstance = DatatypeConverter.parseInt(currentUpgradeDomainElement.getTextContent());
                                 upgradeStatusInstance.setCurrentUpgradeDomain(currentUpgradeDomainInstance);
                             }
                         }
@@ -2129,7 +2116,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                         if (upgradeDomainCountElement != null)
                         {
                             int upgradeDomainCountInstance;
-                            upgradeDomainCountInstance = Integer.parseInt(upgradeDomainCountElement.getTextContent());
+                            upgradeDomainCountInstance = DatatypeConverter.parseInt(upgradeDomainCountElement.getTextContent());
                             deploymentInstance.setUpgradeDomainCount(upgradeDomainCountInstance);
                         }
                         
@@ -2213,7 +2200,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                                 if (localPortElement2 != null && (localPortElement2.getTextContent() == null || localPortElement2.getTextContent().isEmpty() == true) == false)
                                                 {
                                                     int localPortInstance2;
-                                                    localPortInstance2 = Integer.parseInt(localPortElement2.getTextContent());
+                                                    localPortInstance2 = DatatypeConverter.parseInt(localPortElement2.getTextContent());
                                                     inputEndpointInstance.setLocalPort(localPortInstance2);
                                                 }
                                                 
@@ -2231,7 +2218,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                                 if (portElement != null && (portElement.getTextContent() == null || portElement.getTextContent().isEmpty() == true) == false)
                                                 {
                                                     int portInstance;
-                                                    portInstance = Integer.parseInt(portElement.getTextContent());
+                                                    portInstance = DatatypeConverter.parseInt(portElement.getTextContent());
                                                     inputEndpointInstance.setPort(portInstance);
                                                 }
                                                 
@@ -2256,7 +2243,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                                     if (portElement2 != null)
                                                     {
                                                         int portInstance2;
-                                                        portInstance2 = Integer.parseInt(portElement2.getTextContent());
+                                                        portInstance2 = DatatypeConverter.parseInt(portElement2.getTextContent());
                                                         loadBalancerProbeInstance.setPort(portInstance2);
                                                     }
                                                     
@@ -2274,7 +2261,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                                     if (intervalInSecondsElement != null && (intervalInSecondsElement.getTextContent() == null || intervalInSecondsElement.getTextContent().isEmpty() == true) == false)
                                                     {
                                                         int intervalInSecondsInstance;
-                                                        intervalInSecondsInstance = Integer.parseInt(intervalInSecondsElement.getTextContent());
+                                                        intervalInSecondsInstance = DatatypeConverter.parseInt(intervalInSecondsElement.getTextContent());
                                                         loadBalancerProbeInstance.setIntervalInSeconds(intervalInSecondsInstance);
                                                     }
                                                     
@@ -2283,7 +2270,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                                     if (timeoutInSecondsElement != null && (timeoutInSecondsElement.getTextContent() == null || timeoutInSecondsElement.getTextContent().isEmpty() == true) == false)
                                                     {
                                                         int timeoutInSecondsInstance;
-                                                        timeoutInSecondsInstance = Integer.parseInt(timeoutInSecondsElement.getTextContent());
+                                                        timeoutInSecondsInstance = DatatypeConverter.parseInt(timeoutInSecondsElement.getTextContent());
                                                         loadBalancerProbeInstance.setTimeoutInSeconds(timeoutInSecondsInstance);
                                                     }
                                                 }
@@ -2311,7 +2298,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                                 if (enableDirectServerReturnElement != null && (enableDirectServerReturnElement.getTextContent() == null || enableDirectServerReturnElement.getTextContent().isEmpty() == true) == false)
                                                 {
                                                     boolean enableDirectServerReturnInstance;
-                                                    enableDirectServerReturnInstance = Boolean.parseBoolean(enableDirectServerReturnElement.getTextContent());
+                                                    enableDirectServerReturnInstance = DatatypeConverter.parseBoolean(enableDirectServerReturnElement.getTextContent());
                                                     inputEndpointInstance.setEnableDirectServerReturn(enableDirectServerReturnInstance);
                                                 }
                                                 
@@ -2337,7 +2324,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                                             if (orderElement != null && (orderElement.getTextContent() == null || orderElement.getTextContent().isEmpty() == true) == false)
                                                             {
                                                                 int orderInstance;
-                                                                orderInstance = Integer.parseInt(orderElement.getTextContent());
+                                                                orderInstance = DatatypeConverter.parseInt(orderElement.getTextContent());
                                                                 ruleInstance.setOrder(orderInstance);
                                                             }
                                                             
@@ -2416,7 +2403,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                         if (resetPasswordOnFirstLogonElement != null && (resetPasswordOnFirstLogonElement.getTextContent() == null || resetPasswordOnFirstLogonElement.getTextContent().isEmpty() == true) == false)
                                         {
                                             boolean resetPasswordOnFirstLogonInstance;
-                                            resetPasswordOnFirstLogonInstance = Boolean.parseBoolean(resetPasswordOnFirstLogonElement.getTextContent());
+                                            resetPasswordOnFirstLogonInstance = DatatypeConverter.parseBoolean(resetPasswordOnFirstLogonElement.getTextContent());
                                             configurationSetInstance.setResetPasswordOnFirstLogon(resetPasswordOnFirstLogonInstance);
                                         }
                                         
@@ -2425,7 +2412,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                         if (enableAutomaticUpdatesElement != null && (enableAutomaticUpdatesElement.getTextContent() == null || enableAutomaticUpdatesElement.getTextContent().isEmpty() == true) == false)
                                         {
                                             boolean enableAutomaticUpdatesInstance;
-                                            enableAutomaticUpdatesInstance = Boolean.parseBoolean(enableAutomaticUpdatesElement.getTextContent());
+                                            enableAutomaticUpdatesInstance = DatatypeConverter.parseBoolean(enableAutomaticUpdatesElement.getTextContent());
                                             configurationSetInstance.setEnableAutomaticUpdates(enableAutomaticUpdatesInstance);
                                         }
                                         
@@ -2631,7 +2618,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                         if (disableSshPasswordAuthenticationElement != null && (disableSshPasswordAuthenticationElement.getTextContent() == null || disableSshPasswordAuthenticationElement.getTextContent().isEmpty() == true) == false)
                                         {
                                             boolean disableSshPasswordAuthenticationInstance;
-                                            disableSshPasswordAuthenticationInstance = Boolean.parseBoolean(disableSshPasswordAuthenticationElement.getTextContent());
+                                            disableSshPasswordAuthenticationInstance = DatatypeConverter.parseBoolean(disableSshPasswordAuthenticationElement.getTextContent());
                                             configurationSetInstance.setDisableSshPasswordAuthentication(disableSshPasswordAuthenticationInstance);
                                         }
                                         
@@ -2852,7 +2839,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                         if (lunElement != null && (lunElement.getTextContent() == null || lunElement.getTextContent().isEmpty() == true) == false)
                                         {
                                             int lunInstance;
-                                            lunInstance = Integer.parseInt(lunElement.getTextContent());
+                                            lunInstance = DatatypeConverter.parseInt(lunElement.getTextContent());
                                             dataVirtualHardDiskInstance.setLogicalUnitNumber(lunInstance);
                                         }
                                         
@@ -2861,7 +2848,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                         if (logicalDiskSizeInGBElement != null)
                                         {
                                             int logicalDiskSizeInGBInstance;
-                                            logicalDiskSizeInGBInstance = Integer.parseInt(logicalDiskSizeInGBElement.getTextContent());
+                                            logicalDiskSizeInGBInstance = DatatypeConverter.parseInt(logicalDiskSizeInGBElement.getTextContent());
                                             dataVirtualHardDiskInstance.setLogicalDiskSizeInGB(logicalDiskSizeInGBInstance);
                                         }
                                         
@@ -2961,7 +2948,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                 if (provisionGuestAgentElement != null && (provisionGuestAgentElement.getTextContent() == null || provisionGuestAgentElement.getTextContent().isEmpty() == true) == false)
                                 {
                                     boolean provisionGuestAgentInstance;
-                                    provisionGuestAgentInstance = Boolean.parseBoolean(provisionGuestAgentElement.getTextContent());
+                                    provisionGuestAgentInstance = DatatypeConverter.parseBoolean(provisionGuestAgentElement.getTextContent());
                                     roleInstance.setProvisionGuestAgent(provisionGuestAgentInstance);
                                 }
                                 
@@ -2990,7 +2977,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                         if (lockedElement != null)
                         {
                             boolean lockedInstance;
-                            lockedInstance = Boolean.parseBoolean(lockedElement.getTextContent());
+                            lockedInstance = DatatypeConverter.parseBoolean(lockedElement.getTextContent());
                             deploymentInstance.setLocked(lockedInstance);
                         }
                         
@@ -3008,10 +2995,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                         if (createdTimeElement != null)
                         {
                             Calendar createdTimeInstance;
-                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                            Calendar calendar = Calendar.getInstance();
-                            calendar.setTime(simpleDateFormat.parse(createdTimeElement.getTextContent()));
-                            createdTimeInstance = calendar;
+                            createdTimeInstance = DatatypeConverter.parseDateTime(createdTimeElement.getTextContent());
                             deploymentInstance.setCreatedTime(createdTimeInstance);
                         }
                         
@@ -3060,10 +3044,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                             if (startTimeElement != null)
                             {
                                 Calendar startTimeInstance;
-                                SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                                Calendar calendar2 = Calendar.getInstance();
-                                calendar2.setTime(simpleDateFormat2.parse(startTimeElement.getTextContent()));
-                                startTimeInstance = calendar2;
+                                startTimeInstance = DatatypeConverter.parseDateTime(startTimeElement.getTextContent());
                                 persistentVMDowntimeInstance.setStartTime(startTimeInstance);
                             }
                             
@@ -3072,10 +3053,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                             if (endTimeElement != null)
                             {
                                 Calendar endTimeInstance;
-                                SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                                Calendar calendar3 = Calendar.getInstance();
-                                calendar3.setTime(simpleDateFormat3.parse(endTimeElement.getTextContent()));
-                                endTimeInstance = calendar3;
+                                endTimeInstance = DatatypeConverter.parseDateTime(endTimeElement.getTextContent());
                                 persistentVMDowntimeInstance.setEndTime(endTimeInstance);
                             }
                             
@@ -3122,7 +3100,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                 if (isDnsProgrammedElement != null && (isDnsProgrammedElement.getTextContent() == null || isDnsProgrammedElement.getTextContent().isEmpty() == true) == false)
                                 {
                                     boolean isDnsProgrammedInstance;
-                                    isDnsProgrammedInstance = Boolean.parseBoolean(isDnsProgrammedElement.getTextContent());
+                                    isDnsProgrammedInstance = DatatypeConverter.parseBoolean(isDnsProgrammedElement.getTextContent());
                                     virtualIPInstance.setIsDnsProgrammed(isDnsProgrammedInstance);
                                 }
                             }
@@ -3243,10 +3221,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                     if (dateCreatedElement != null)
                     {
                         Calendar dateCreatedInstance;
-                        SimpleDateFormat simpleDateFormat4 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                        Calendar calendar4 = Calendar.getInstance();
-                        calendar4.setTime(simpleDateFormat4.parse(dateCreatedElement.getTextContent()));
-                        dateCreatedInstance = calendar4;
+                        dateCreatedInstance = DatatypeConverter.parseDateTime(dateCreatedElement.getTextContent());
                         hostedServicePropertiesInstance.setDateCreated(dateCreatedInstance);
                     }
                     
@@ -3255,10 +3230,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                     if (dateLastModifiedElement != null)
                     {
                         Calendar dateLastModifiedInstance;
-                        SimpleDateFormat simpleDateFormat5 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                        Calendar calendar5 = Calendar.getInstance();
-                        calendar5.setTime(simpleDateFormat5.parse(dateLastModifiedElement.getTextContent()));
-                        dateLastModifiedInstance = calendar5;
+                        dateLastModifiedInstance = DatatypeConverter.parseDateTime(dateLastModifiedElement.getTextContent());
                         hostedServicePropertiesInstance.setDateLastModified(dateLastModifiedInstance);
                     }
                     
@@ -3536,12 +3508,10 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     * response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return The Get Hosted Service operation response.
     */
     @Override
-    public HostedServiceListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException, ParseException
+    public HostedServiceListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
     {
         // Validate
         
@@ -3683,10 +3653,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                         if (dateCreatedElement != null)
                         {
                             Calendar dateCreatedInstance;
-                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                            Calendar calendar = Calendar.getInstance();
-                            calendar.setTime(simpleDateFormat.parse(dateCreatedElement.getTextContent()));
-                            dateCreatedInstance = calendar;
+                            dateCreatedInstance = DatatypeConverter.parseDateTime(dateCreatedElement.getTextContent());
                             hostedServicePropertiesInstance.setDateCreated(dateCreatedInstance);
                         }
                         
@@ -3695,10 +3662,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                         if (dateLastModifiedElement != null)
                         {
                             Calendar dateLastModifiedInstance;
-                            SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                            Calendar calendar2 = Calendar.getInstance();
-                            calendar2.setTime(simpleDateFormat2.parse(dateLastModifiedElement.getTextContent()));
-                            dateLastModifiedInstance = calendar2;
+                            dateLastModifiedInstance = DatatypeConverter.parseDateTime(dateLastModifiedElement.getTextContent());
                             hostedServicePropertiesInstance.setDateLastModified(dateLastModifiedInstance);
                         }
                         
@@ -4426,8 +4390,6 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     * @throws ServiceException Thrown if an unexpected response is found.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -4442,7 +4404,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     * request ID.
     */
     @Override
-    public OperationResponse update(String serviceName, HostedServiceUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException, ParseException, InterruptedException, ExecutionException, ServiceException
+    public OperationResponse update(String serviceName, HostedServiceUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException, InterruptedException, ExecutionException, ServiceException
     {
         // Validate
         if (serviceName == null)

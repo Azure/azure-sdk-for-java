@@ -30,7 +30,6 @@ import com.microsoft.windowsazure.management.servicebus.models.ServiceBusTopicRe
 import com.microsoft.windowsazure.management.servicebus.models.ServiceBusTopicsResponse;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.text.ParseException;
 import java.util.concurrent.Future;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -62,13 +61,11 @@ public interface TopicOperations
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
     * @return A response to a request for a particular topic.
     */
-    ServiceBusTopicResponse create(String namespaceName, ServiceBusTopic topic) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, ParseException, URISyntaxException;
+    ServiceBusTopicResponse create(String namespaceName, ServiceBusTopic topic) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException;
     
     /**
     * Creates a new topic. Once created, this topic resource manifest is
@@ -102,13 +99,11 @@ public interface TopicOperations
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
     * @return A response to a request for a particular topic.
     */
-    ServiceBusTopicResponse get(String namespaceName, String topicName) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException, URISyntaxException;
+    ServiceBusTopicResponse get(String namespaceName, String topicName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException;
     
     /**
     * The topic description is an XML AtomPub document that defines the desired
@@ -165,13 +160,11 @@ public interface TopicOperations
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
     * @return A response to a request for a list of topics.
     */
-    ServiceBusTopicsResponse list(String namespaceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException, URISyntaxException;
+    ServiceBusTopicsResponse list(String namespaceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException;
     
     /**
     * Enumerates the topics in the service namespace. An empty feed is returned
@@ -201,11 +194,9 @@ public interface TopicOperations
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return A response to a request for a particular topic.
     */
-    ServiceBusTopicResponse update(String namespaceName, ServiceBusTopic topic) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, ParseException;
+    ServiceBusTopicResponse update(String namespaceName, ServiceBusTopic topic) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * Updates a topic.  (see

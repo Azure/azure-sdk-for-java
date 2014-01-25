@@ -38,7 +38,6 @@ import com.microsoft.windowsazure.management.compute.models.HostedServiceListRes
 import com.microsoft.windowsazure.management.compute.models.HostedServiceUpdateParameters;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.text.ParseException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import javax.xml.parsers.ParserConfigurationException;
@@ -276,12 +275,10 @@ public interface HostedServiceOperations
     * @throws ServiceException Thrown if an unexpected response is found.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse create(HostedServiceCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, ServiceException, URISyntaxException, ParseException;
+    OperationResponse create(HostedServiceCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, ServiceException, URISyntaxException;
     
     /**
     * The Create Hosted Service operation creates a new cloud service in
@@ -457,11 +454,9 @@ public interface HostedServiceOperations
     * response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return The Get Hosted Service operation response.
     */
-    HostedServiceGetResponse get(String serviceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException, ParseException;
+    HostedServiceGetResponse get(String serviceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException;
     
     /**
     * The Get Hosted Service Properties operation retrieves system properties
@@ -496,11 +491,9 @@ public interface HostedServiceOperations
     * response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return The detailed Get Hosted Service operation response.
     */
-    HostedServiceGetDetailedResponse getDetailed(String serviceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException, ParseException;
+    HostedServiceGetDetailedResponse getDetailed(String serviceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException;
     
     /**
     * The Get Hosted Service Properties operation retrieves system properties
@@ -566,11 +559,9 @@ public interface HostedServiceOperations
     * response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return The Get Hosted Service operation response.
     */
-    HostedServiceListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException, ParseException;
+    HostedServiceListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException;
     
     /**
     * The List Hosted Services operation lists the cloud services available
@@ -705,8 +696,6 @@ public interface HostedServiceOperations
     * @throws ServiceException Thrown if an unexpected response is found.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -720,7 +709,7 @@ public interface HostedServiceOperations
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse update(String serviceName, HostedServiceUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException, ParseException, InterruptedException, ExecutionException, ServiceException;
+    OperationResponse update(String serviceName, HostedServiceUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException, InterruptedException, ExecutionException, ServiceException;
     
     /**
     * The Update Hosted Service operation can update the label or description

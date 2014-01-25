@@ -30,7 +30,6 @@ import com.microsoft.windowsazure.management.models.SubscriptionListOperationsPa
 import com.microsoft.windowsazure.management.models.SubscriptionListOperationsResponse;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.text.ParseException;
 import java.util.concurrent.Future;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
@@ -58,11 +57,9 @@ public interface SubscriptionOperations
     * response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return The Get Subscription operation response.
     */
-    SubscriptionGetResponse get() throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException, ParseException;
+    SubscriptionGetResponse get() throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException;
     
     /**
     * The Get Subscription operation returns account and resource allocation
@@ -91,11 +88,9 @@ public interface SubscriptionOperations
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return The List Subscription Operations operation response.
     */
-    SubscriptionListOperationsResponse listOperations(SubscriptionListOperationsParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException;
+    SubscriptionListOperationsResponse listOperations(SubscriptionListOperationsParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException;
     
     /**
     * The List Subscription Operations operation returns a list of create,

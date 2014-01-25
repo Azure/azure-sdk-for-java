@@ -30,7 +30,6 @@ import com.microsoft.windowsazure.management.models.ManagementCertificateGetResp
 import com.microsoft.windowsazure.management.models.ManagementCertificateListResponse;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.text.ParseException;
 import java.util.concurrent.Future;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -138,11 +137,9 @@ public interface ManagementCertificateOperations
     * response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return The Get Management Certificate operation response.
     */
-    ManagementCertificateGetResponse get(String thumbprint) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException, ParseException;
+    ManagementCertificateGetResponse get(String thumbprint) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException;
     
     /**
     * The Get Management Certificate operation retrieves information about the
@@ -176,11 +173,9 @@ public interface ManagementCertificateOperations
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return The List Management Certificates operation response.
     */
-    ManagementCertificateListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException;
+    ManagementCertificateListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException;
     
     /**
     * The List Management Certificates operation lists and returns basic

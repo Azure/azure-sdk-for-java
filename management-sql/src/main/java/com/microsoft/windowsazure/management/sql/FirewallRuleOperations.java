@@ -31,7 +31,6 @@ import com.microsoft.windowsazure.management.sql.models.FirewallRuleListResponse
 import com.microsoft.windowsazure.management.sql.models.FirewallRuleUpdateParameters;
 import com.microsoft.windowsazure.management.sql.models.FirewallRuleUpdateResponse;
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.concurrent.Future;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -67,12 +66,10 @@ public interface FirewallRuleOperations
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    FirewallRuleCreateResponse create(String serverName, FirewallRuleCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, ParseException;
+    FirewallRuleCreateResponse create(String serverName, FirewallRuleCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * Adds a new server-level firewall rule for a SQL Database server that
@@ -135,12 +132,10 @@ public interface FirewallRuleOperations
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    FirewallRuleListResponse list(String serverName) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException;
+    FirewallRuleListResponse list(String serverName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
     
     /**
     * Returns a list of all the server-level firewall rules for a SQL Database
@@ -174,12 +169,10 @@ public interface FirewallRuleOperations
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    FirewallRuleUpdateResponse update(String serverName, String ruleName, FirewallRuleUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, ParseException;
+    FirewallRuleUpdateResponse update(String serverName, String ruleName, FirewallRuleUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * Updates an existing server-level firewall rule for a SQL Database server
