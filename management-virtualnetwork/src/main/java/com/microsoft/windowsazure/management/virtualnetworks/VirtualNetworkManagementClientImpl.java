@@ -343,6 +343,7 @@ public class VirtualNetworkManagementClientImpl extends ServiceClient<VirtualNet
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new VirtualNetworkOperationStatusResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             

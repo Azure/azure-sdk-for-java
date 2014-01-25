@@ -271,6 +271,7 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new SchedulerOperationStatusResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
@@ -401,7 +402,8 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
         }
         
         // Construct URL
-        String url = this.getBaseUri() + this.getCredentials().getSubscriptionId() + "/resourceproviders/" + "scheduler" + "/Properties?resourceType=" + "JobCollections";
+        String url = this.getBaseUri() + this.getCredentials().getSubscriptionId() + "/resourceproviders/" + "scheduler" + "/Properties" + "?";
+        url = url + "resourceType=" + "JobCollections";
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -439,6 +441,7 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new ResourceProviderGetPropertiesResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
@@ -522,7 +525,8 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
         }
         
         // Construct URL
-        String url = this.getBaseUri() + this.getCredentials().getSubscriptionId() + "/services?service=" + "scheduler" + "." + "JobCollections" + "&action=register";
+        String url = this.getBaseUri() + this.getCredentials().getSubscriptionId() + "/services" + "?" + "&" + "action=register";
+        url = url + "service=" + "scheduler" + "." + "JobCollections";
         
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
@@ -622,7 +626,8 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
         }
         
         // Construct URL
-        String url = this.getBaseUri() + this.getCredentials().getSubscriptionId() + "/services?service=" + "scheduler" + "." + "JobCollections" + "&action=unregister";
+        String url = this.getBaseUri() + this.getCredentials().getSubscriptionId() + "/services" + "?" + "&" + "action=unregister";
+        url = url + "service=" + "scheduler" + "." + "JobCollections";
         
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);

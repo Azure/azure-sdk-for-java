@@ -35,6 +35,7 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -281,6 +282,7 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new DacImportExportResponse();
             DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory2.setNamespaceAware(true);
             DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
             Document responseDoc = documentBuilder2.parse(responseContent);
             
@@ -397,7 +399,11 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/sqlservers/servers/" + serverName + "/DacOperations/Status?servername=" + fullyQualifiedServerName + "&username=" + username + "&password=" + password + "&reqId=" + requestId;
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/sqlservers/servers/" + serverName + "/DacOperations/Status" + "?";
+        url = url + "servername=" + URLEncoder.encode(fullyQualifiedServerName, "UTF-8");
+        url = url + "&" + "username=" + URLEncoder.encode(username, "UTF-8");
+        url = url + "&" + "password=" + URLEncoder.encode(password, "UTF-8");
+        url = url + "&" + "reqId=" + URLEncoder.encode(requestId, "UTF-8");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -435,6 +441,7 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new DacGetStatusResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
@@ -476,7 +483,7 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
                             Attr nilAttribute = errorMessageElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                             if (nilAttribute != null)
                             {
-                                isNil = nilAttribute.getValue() == "true";
+                                isNil = "true".equals(nilAttribute.getValue());
                             }
                             if (isNil == false)
                             {
@@ -681,6 +688,13 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
             Element importInputElement = requestDoc.createElementNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "ImportInput");
             requestDoc.appendChild(importInputElement);
             
+            if (parameters.getAzureEdition() != null)
+            {
+                Element azureEditionElement = requestDoc.createElementNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "AzureEdition");
+                azureEditionElement.appendChild(requestDoc.createTextNode(parameters.getAzureEdition()));
+                importInputElement.appendChild(azureEditionElement);
+            }
+            
             if (parameters.getBlobCredentials() != null)
             {
                 Element blobCredentialsElement = requestDoc.createElementNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "BlobCredentials");
@@ -767,6 +781,7 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new DacImportExportResponse();
             DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory2.setNamespaceAware(true);
             DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
             Document responseDoc = documentBuilder2.parse(responseContent);
             

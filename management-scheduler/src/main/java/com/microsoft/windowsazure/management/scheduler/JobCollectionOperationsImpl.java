@@ -46,6 +46,7 @@ import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -717,7 +718,9 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + this.getClient().getCredentials().getSubscriptionId() + "/cloudservices/" + cloudServiceName + "/resources/" + "scheduler" + "/" + "JobCollections" + "/?op=checknameavailability&resourceName=" + jobCollectionName;
+        String url = this.getClient().getBaseUri() + this.getClient().getCredentials().getSubscriptionId() + "/cloudservices/" + cloudServiceName + "/resources/" + "scheduler" + "/" + "JobCollections" + "/" + "?";
+        url = url + "op=checknameavailability";
+        url = url + "&" + "resourceName=" + URLEncoder.encode(jobCollectionName, "UTF-8");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -755,6 +758,7 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new JobCollectionCheckNameAvailabilityResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
@@ -1149,6 +1153,7 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new JobCollectionGetResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
@@ -1235,7 +1240,7 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
                         
                         NodeList elements11 = quotaElement.getElementsByTagName("MaxJobCount");
                         Element maxJobCountElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
-                        if (maxJobCountElement != null && (maxJobCountElement.getTextContent() != null && maxJobCountElement.getTextContent().isEmpty() != true) == false)
+                        if (maxJobCountElement != null && (maxJobCountElement.getTextContent() == null || maxJobCountElement.getTextContent().isEmpty() == true) == false)
                         {
                             int maxJobCountInstance;
                             maxJobCountInstance = Integer.parseInt(maxJobCountElement.getTextContent());
@@ -1244,7 +1249,7 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
                         
                         NodeList elements12 = quotaElement.getElementsByTagName("MaxJobOccurrence");
                         Element maxJobOccurrenceElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
-                        if (maxJobOccurrenceElement != null && (maxJobOccurrenceElement.getTextContent() != null && maxJobOccurrenceElement.getTextContent().isEmpty() != true) == false)
+                        if (maxJobOccurrenceElement != null && (maxJobOccurrenceElement.getTextContent() == null || maxJobOccurrenceElement.getTextContent().isEmpty() == true) == false)
                         {
                             int maxJobOccurrenceInstance;
                             maxJobOccurrenceInstance = Integer.parseInt(maxJobOccurrenceElement.getTextContent());

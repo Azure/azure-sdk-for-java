@@ -350,6 +350,7 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new ServiceBusOperationStatusResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
@@ -524,6 +525,7 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new ServiceBusRegionsResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             

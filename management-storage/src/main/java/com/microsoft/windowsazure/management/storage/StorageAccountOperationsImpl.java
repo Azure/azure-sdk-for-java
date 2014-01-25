@@ -446,6 +446,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new CheckNameAvailabilityResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
@@ -470,7 +471,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                     Attr nilAttribute = reasonElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                     if (nilAttribute != null)
                     {
-                        isNil = nilAttribute.getValue() == "true";
+                        isNil = "true".equals(nilAttribute.getValue());
                     }
                     if (isNil == false)
                     {
@@ -846,6 +847,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new StorageServiceGetResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
@@ -886,7 +888,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                         Attr nilAttribute = descriptionElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                         if (nilAttribute != null)
                         {
-                            isNil = nilAttribute.getValue() == "true";
+                            isNil = "true".equals(nilAttribute.getValue());
                         }
                         if (isNil == false)
                         {
@@ -963,7 +965,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                     
                     NodeList elements13 = storageServicePropertiesElement.getElementsByTagName("StatusOfPrimary");
                     Element statusOfPrimaryElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
-                    if (statusOfPrimaryElement != null && (statusOfPrimaryElement.getTextContent() != null && statusOfPrimaryElement.getTextContent().isEmpty() != true) == false)
+                    if (statusOfPrimaryElement != null && (statusOfPrimaryElement.getTextContent() == null || statusOfPrimaryElement.getTextContent().isEmpty() == true) == false)
                     {
                         GeoRegionStatus statusOfPrimaryInstance;
                         statusOfPrimaryInstance = GeoRegionStatus.valueOf(statusOfPrimaryElement.getTextContent());
@@ -972,7 +974,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                     
                     NodeList elements14 = storageServicePropertiesElement.getElementsByTagName("LastGeoFailoverTime");
                     Element lastGeoFailoverTimeElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
-                    if (lastGeoFailoverTimeElement != null && (lastGeoFailoverTimeElement.getTextContent() != null && lastGeoFailoverTimeElement.getTextContent().isEmpty() != true) == false)
+                    if (lastGeoFailoverTimeElement != null && (lastGeoFailoverTimeElement.getTextContent() == null || lastGeoFailoverTimeElement.getTextContent().isEmpty() == true) == false)
                     {
                         Calendar lastGeoFailoverTimeInstance;
                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
@@ -993,7 +995,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                     
                     NodeList elements16 = storageServicePropertiesElement.getElementsByTagName("StatusOfSecondary");
                     Element statusOfSecondaryElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
-                    if (statusOfSecondaryElement != null && (statusOfSecondaryElement.getTextContent() != null && statusOfSecondaryElement.getTextContent().isEmpty() != true) == false)
+                    if (statusOfSecondaryElement != null && (statusOfSecondaryElement.getTextContent() == null || statusOfSecondaryElement.getTextContent().isEmpty() == true) == false)
                     {
                         GeoRegionStatus statusOfSecondaryInstance;
                         statusOfSecondaryInstance = GeoRegionStatus.valueOf(statusOfSecondaryElement.getTextContent());
@@ -1148,6 +1150,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new StorageAccountGetKeysResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
@@ -1303,6 +1306,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new StorageServiceListResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
@@ -1349,7 +1353,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                             Attr nilAttribute = descriptionElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                             if (nilAttribute != null)
                             {
-                                isNil = nilAttribute.getValue() == "true";
+                                isNil = "true".equals(nilAttribute.getValue());
                             }
                             if (isNil == false)
                             {
@@ -1426,7 +1430,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                         
                         NodeList elements13 = storageServicePropertiesElement.getElementsByTagName("StatusOfPrimary");
                         Element statusOfPrimaryElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
-                        if (statusOfPrimaryElement != null && (statusOfPrimaryElement.getTextContent() != null && statusOfPrimaryElement.getTextContent().isEmpty() != true) == false)
+                        if (statusOfPrimaryElement != null && (statusOfPrimaryElement.getTextContent() == null || statusOfPrimaryElement.getTextContent().isEmpty() == true) == false)
                         {
                             GeoRegionStatus statusOfPrimaryInstance;
                             statusOfPrimaryInstance = GeoRegionStatus.valueOf(statusOfPrimaryElement.getTextContent());
@@ -1435,7 +1439,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                         
                         NodeList elements14 = storageServicePropertiesElement.getElementsByTagName("LastGeoFailoverTime");
                         Element lastGeoFailoverTimeElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
-                        if (lastGeoFailoverTimeElement != null && (lastGeoFailoverTimeElement.getTextContent() != null && lastGeoFailoverTimeElement.getTextContent().isEmpty() != true) == false)
+                        if (lastGeoFailoverTimeElement != null && (lastGeoFailoverTimeElement.getTextContent() == null || lastGeoFailoverTimeElement.getTextContent().isEmpty() == true) == false)
                         {
                             Calendar lastGeoFailoverTimeInstance;
                             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
@@ -1456,7 +1460,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                         
                         NodeList elements16 = storageServicePropertiesElement.getElementsByTagName("StatusOfSecondary");
                         Element statusOfSecondaryElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
-                        if (statusOfSecondaryElement != null && (statusOfSecondaryElement.getTextContent() != null && statusOfSecondaryElement.getTextContent().isEmpty() != true) == false)
+                        if (statusOfSecondaryElement != null && (statusOfSecondaryElement.getTextContent() == null || statusOfSecondaryElement.getTextContent().isEmpty() == true) == false)
                         {
                             GeoRegionStatus statusOfSecondaryInstance;
                             statusOfSecondaryInstance = GeoRegionStatus.valueOf(statusOfSecondaryElement.getTextContent());
@@ -1569,7 +1573,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/storageservices/" + parameters.getServiceName() + "/keys?action=regenerate";
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/storageservices/" + parameters.getServiceName() + "/keys" + "?" + "action=regenerate";
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
@@ -1632,6 +1636,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new StorageAccountRegenerateKeysResponse();
             DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory2.setNamespaceAware(true);
             DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
             Document responseDoc = documentBuilder2.parse(responseContent);
             

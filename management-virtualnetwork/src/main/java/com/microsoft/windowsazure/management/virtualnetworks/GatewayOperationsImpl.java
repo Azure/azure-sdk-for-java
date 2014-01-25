@@ -49,6 +49,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.InetAddress;
+import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -255,6 +256,7 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new GatewayOperationResponse();
             DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory2.setNamespaceAware(true);
             DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
             Document responseDoc = documentBuilder2.parse(responseContent);
             
@@ -430,6 +432,7 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new GatewayOperationResponse();
             DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory2.setNamespaceAware(true);
             DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
             Document responseDoc = documentBuilder2.parse(responseContent);
             
@@ -568,6 +571,7 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new GatewayOperationResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
@@ -678,7 +682,7 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
         
         // Serialize Request
         String requestContent = null;
-        requestContent = "<?xml version=\"1.0\" encoding=\"utf-8\"?><UpdateGateway xmlns=\"http://schemas.microsoft.com/windowsazure\"><UpdateGatewayOperation>Failover</UpdateGatewayOperation></UpdateGateway>";
+        requestContent = "<" + "?" + "xml version=\"1.0\" encoding=\"utf-8\"" + "?" + "><UpdateGateway xmlns=\"http://schemas.microsoft.com/windowsazure\"><UpdateGatewayOperation>Failover</UpdateGatewayOperation></UpdateGateway>";
         StringEntity entity = new StringEntity(requestContent);
         httpRequest.setEntity(entity);
         httpRequest.setHeader("Content-Type", "application/xml");
@@ -713,6 +717,7 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new GatewayOperationResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
@@ -897,6 +902,7 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new GatewayOperationResponse();
             DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory2.setNamespaceAware(true);
             DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
             Document responseDoc = documentBuilder2.parse(responseContent);
             
@@ -1617,6 +1623,7 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new GatewayOperationResponse();
             DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory2.setNamespaceAware(true);
             DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
             Document responseDoc = documentBuilder2.parse(responseContent);
             
@@ -1758,6 +1765,7 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new GatewayGetResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
@@ -1929,7 +1937,19 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/networking/" + virtualNetworkName + "/gateway/vpndeviceconfigurationscript?vendor=" + parameters.getVendor() + "&platform=" + parameters.getPlatform() + "&OSfamily=" + parameters.getOSFamily();
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/networking/" + virtualNetworkName + "/gateway/vpndeviceconfigurationscript" + "?";
+        if (parameters.getVendor() != null)
+        {
+            url = url + "vendor=" + URLEncoder.encode(parameters.getVendor(), "UTF-8");
+        }
+        if (parameters.getPlatform() != null)
+        {
+            url = url + "&" + "platform=" + URLEncoder.encode(parameters.getPlatform(), "UTF-8");
+        }
+        if (parameters.getOSFamily() != null)
+        {
+            url = url + "&" + "OSfamily=" + URLEncoder.encode(parameters.getOSFamily(), "UTF-8");
+        }
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -2102,6 +2122,7 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new GatewayGetOperationStatusResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
@@ -2292,6 +2313,7 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new GatewayGetSharedKeyResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
@@ -2433,6 +2455,7 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new GatewayListConnectionsResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
@@ -2665,6 +2688,7 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new GatewayListSupportedDevicesResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             

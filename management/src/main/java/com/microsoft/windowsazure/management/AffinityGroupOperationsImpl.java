@@ -487,6 +487,7 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new AffinityGroupGetResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
@@ -715,6 +716,7 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new AffinityGroupListResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             

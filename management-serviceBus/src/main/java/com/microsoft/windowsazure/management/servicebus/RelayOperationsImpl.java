@@ -172,6 +172,7 @@ public class RelayOperationsImpl implements ServiceOperations<ServiceBusManageme
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new ServiceBusConnectionDetailsResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             

@@ -743,6 +743,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new NetworkReservedIPGetResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
@@ -941,6 +942,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new NetworkReservedIPListResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             

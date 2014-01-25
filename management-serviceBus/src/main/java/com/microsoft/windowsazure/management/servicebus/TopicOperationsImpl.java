@@ -424,6 +424,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new ServiceBusTopicResponse();
             DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory2.setNamespaceAware(true);
             DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
             Document responseDoc = documentBuilder2.parse(responseContent);
             
@@ -838,6 +839,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new ServiceBusTopicResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
@@ -1238,6 +1240,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new ServiceBusConnectionDetailsResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
@@ -1427,6 +1430,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new ServiceBusTopicsResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
@@ -2063,6 +2067,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new ServiceBusTopicResponse();
             DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory2.setNamespaceAware(true);
             DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
             Document responseDoc = documentBuilder2.parse(responseContent);
             

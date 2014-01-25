@@ -166,6 +166,7 @@ public class LocationOperationsImpl implements ServiceOperations<ManagementClien
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new LocationsListResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             

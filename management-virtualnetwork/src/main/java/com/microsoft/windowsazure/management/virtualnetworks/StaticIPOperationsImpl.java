@@ -30,6 +30,7 @@ import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetAddress;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
@@ -132,7 +133,9 @@ public class StaticIPOperationsImpl implements ServiceOperations<VirtualNetworkM
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/networking/" + virtualNetworkName + "?op=checkavailability&address=" + ipAddress;
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/networking/" + virtualNetworkName + "?";
+        url = url + "op=checkavailability";
+        url = url + "&" + "address=" + URLEncoder.encode(ipAddress.toString(), "UTF-8");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -170,6 +173,7 @@ public class StaticIPOperationsImpl implements ServiceOperations<VirtualNetworkM
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new NetworkStaticIPAvailabilityResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             

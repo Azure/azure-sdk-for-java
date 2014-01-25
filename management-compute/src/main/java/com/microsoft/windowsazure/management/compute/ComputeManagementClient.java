@@ -105,6 +105,15 @@ public interface ComputeManagementClient extends FilterableService<ComputeManage
     VirtualMachineDiskOperations getVirtualMachineDisksOperations(); 
     
     /**
+    * The Service Management API includes operations for managing the virtual
+    * machine extensions in your subscription.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157206.aspx for
+    * more information)
+    * @return The VirtualMachineExtensionsOperations value.
+    */
+    VirtualMachineExtensionOperations getVirtualMachineExtensionsOperations(); 
+    
+    /**
     * The Service Management API includes operations for managing the OS images
     * in your subscription.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157175.aspx for

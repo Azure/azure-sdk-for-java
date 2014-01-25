@@ -307,6 +307,7 @@ public class StoreManagementClientImpl extends ServiceClient<StoreManagementClie
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new AddOnOperationStatusResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             

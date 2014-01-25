@@ -60,13 +60,6 @@ public interface SqlManagementClient extends FilterableService<SqlManagementClie
     DacOperations getDacOperations(); 
     
     /**
-    * The SQL Database Management API includes operations for managing SQL
-    * Database Copies for a subscription.
-    * @return The DatabaseCopiesOperations value.
-    */
-    DatabaseCopyOperations getDatabaseCopiesOperations(); 
-    
-    /**
     * The SQL Database Management API includes operations for get/stop SQL
     * Databases' operations for a subscription.
     * @return The DatabaseOperationsOperations value.

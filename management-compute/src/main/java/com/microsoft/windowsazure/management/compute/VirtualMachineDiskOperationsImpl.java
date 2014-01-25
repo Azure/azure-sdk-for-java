@@ -178,7 +178,11 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "/roles/" + roleName + "/DataDisks/" + logicalUnitNumber + "?comp=" + deleteFromStorage;
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "/roles/" + roleName + "/DataDisks/" + logicalUnitNumber + "?";
+        if (deleteFromStorage == true)
+        {
+            url = url + "comp=" + "media";
+        }
         
         // Create HTTP transport objects
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
@@ -626,6 +630,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new VirtualMachineDiskCreateDiskResponse();
             DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory2.setNamespaceAware(true);
             DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
             Document responseDoc = documentBuilder2.parse(responseContent);
             
@@ -742,7 +747,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 
                 NodeList elements14 = diskElement2.getElementsByTagName("IsPremium");
                 Element isPremiumElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
-                if (isPremiumElement != null && (isPremiumElement.getTextContent() != null && isPremiumElement.getTextContent().isEmpty() != true) == false)
+                if (isPremiumElement != null && (isPremiumElement.getTextContent() == null || isPremiumElement.getTextContent().isEmpty() == true) == false)
                 {
                     boolean isPremiumInstance;
                     isPremiumInstance = Boolean.parseBoolean(isPremiumElement.getTextContent());
@@ -975,7 +980,11 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/disks/" + diskName + "?comp=" + deleteFromStorage;
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/disks/" + diskName + "?";
+        if (deleteFromStorage == true)
+        {
+            url = url + "comp=" + "media";
+        }
         
         // Create HTTP transport objects
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
@@ -1147,6 +1156,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new VirtualMachineDiskGetDataDiskResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
@@ -1183,7 +1193,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 
                 NodeList elements5 = dataVirtualHardDiskElement.getElementsByTagName("Lun");
                 Element lunElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                if (lunElement != null && (lunElement.getTextContent() != null && lunElement.getTextContent().isEmpty() != true) == false)
+                if (lunElement != null && (lunElement.getTextContent() == null || lunElement.getTextContent().isEmpty() == true) == false)
                 {
                     int lunInstance;
                     lunInstance = Integer.parseInt(lunElement.getTextContent());
@@ -1329,6 +1339,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new VirtualMachineDiskGetDiskResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
@@ -1445,7 +1456,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 
                 NodeList elements14 = diskElement.getElementsByTagName("IsCorrupted");
                 Element isCorruptedElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
-                if (isCorruptedElement != null && (isCorruptedElement.getTextContent() != null && isCorruptedElement.getTextContent().isEmpty() != true) == false)
+                if (isCorruptedElement != null && (isCorruptedElement.getTextContent() == null || isCorruptedElement.getTextContent().isEmpty() == true) == false)
                 {
                     boolean isCorruptedInstance;
                     isCorruptedInstance = Boolean.parseBoolean(isCorruptedElement.getTextContent());
@@ -1454,7 +1465,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 
                 NodeList elements15 = diskElement.getElementsByTagName("IsPremium");
                 Element isPremiumElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
-                if (isPremiumElement != null && (isPremiumElement.getTextContent() != null && isPremiumElement.getTextContent().isEmpty() != true) == false)
+                if (isPremiumElement != null && (isPremiumElement.getTextContent() == null || isPremiumElement.getTextContent().isEmpty() == true) == false)
                 {
                     boolean isPremiumInstance;
                     isPremiumInstance = Boolean.parseBoolean(isPremiumElement.getTextContent());
@@ -1575,6 +1586,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new VirtualMachineDiskListResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
@@ -1697,7 +1709,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                     
                     NodeList elements14 = disksElement.getElementsByTagName("IsCorrupted");
                     Element isCorruptedElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
-                    if (isCorruptedElement != null && (isCorruptedElement.getTextContent() != null && isCorruptedElement.getTextContent().isEmpty() != true) == false)
+                    if (isCorruptedElement != null && (isCorruptedElement.getTextContent() == null || isCorruptedElement.getTextContent().isEmpty() == true) == false)
                     {
                         boolean isCorruptedInstance;
                         isCorruptedInstance = Boolean.parseBoolean(isCorruptedElement.getTextContent());
@@ -1706,7 +1718,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                     
                     NodeList elements15 = disksElement.getElementsByTagName("IsPremium");
                     Element isPremiumElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
-                    if (isPremiumElement != null && (isPremiumElement.getTextContent() != null && isPremiumElement.getTextContent().isEmpty() != true) == false)
+                    if (isPremiumElement != null && (isPremiumElement.getTextContent() == null || isPremiumElement.getTextContent().isEmpty() == true) == false)
                     {
                         boolean isPremiumInstance;
                         isPremiumInstance = Boolean.parseBoolean(isPremiumElement.getTextContent());
@@ -2107,6 +2119,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new VirtualMachineDiskUpdateDiskResponse();
             DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory2.setNamespaceAware(true);
             DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
             Document responseDoc = documentBuilder2.parse(responseContent);
             
@@ -2179,7 +2192,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 
                 NodeList elements9 = diskElement2.getElementsByTagName("IsPremium");
                 Element isPremiumElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-                if (isPremiumElement != null && (isPremiumElement.getTextContent() != null && isPremiumElement.getTextContent().isEmpty() != true) == false)
+                if (isPremiumElement != null && (isPremiumElement.getTextContent() == null || isPremiumElement.getTextContent().isEmpty() == true) == false)
                 {
                     boolean isPremiumInstance;
                     isPremiumInstance = Boolean.parseBoolean(isPremiumElement.getTextContent());

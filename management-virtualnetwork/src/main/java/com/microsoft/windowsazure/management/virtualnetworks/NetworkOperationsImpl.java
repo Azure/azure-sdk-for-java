@@ -406,6 +406,7 @@ public class NetworkOperationsImpl implements ServiceOperations<VirtualNetworkMa
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new NetworkListResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             

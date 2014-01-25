@@ -1,0 +1,63 @@
+package com.microsoft.windowsazure;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
+import com.microsoft.windowsazure.management.websites.models.ServerFarmWorkerSize;
+
+public final class TextUtility
+{
+    public static String ToPascalCase(String input)
+    {
+        return input.substring(0, 1).toUpperCase() +
+                input.substring(1);
+    }
+    
+    public static String ToCamelCase(String input)
+    {
+        return input.substring(0, 1).toLowerCase() +
+                input.substring(1);
+    }
+    
+    public static Object convertStringTo(String input, String type) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException
+    {
+        if (type.equals("System.Int32"))
+        {
+            return Integer.parseInt(input);
+        }
+        else if (type.equals("System.String"))
+        {
+            return input;
+        }
+        else if (Enum.class.isAssignableFrom(getJavaType(type)))
+        {
+            Class<?> enumType = getJavaType(type);
+            Method method = enumType.getMethod("valueOf", String.class);
+            return method.invoke(null, input);
+        }
+        else
+        {
+            throw new UnsupportedOperationException();
+        }
+    }
+    
+    public static Class<?> getJavaType(String csharpType) throws ClassNotFoundException
+    {
+        if (csharpType.equals("System.Int32"))
+        {
+            return int.class;
+        }
+        else if (csharpType.equals("System.String"))
+        {
+            return String.class;
+        }
+        else
+        {
+            return Class.forName(csharpType
+                    .replace("Microsoft.WindowsAzure.Management",
+                            "com.microsoft.windowsazure.management")
+                    .replace(".Models", ".models")
+                    .replace(".WebSites", ".websites"));
+        }
+    }
+}

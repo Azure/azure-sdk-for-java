@@ -338,6 +338,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new VirtualMachineImageCreateResponse();
             DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory2.setNamespaceAware(true);
             DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
             Document responseDoc = documentBuilder2.parse(responseContent);
             
@@ -437,7 +438,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                 
                 NodeList elements12 = oSImageElement2.getElementsByTagName("PublishedDate");
                 Element publishedDateElement2 = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
-                if (publishedDateElement2 != null && (publishedDateElement2.getTextContent() != null && publishedDateElement2.getTextContent().isEmpty() != true) == false)
+                if (publishedDateElement2 != null && (publishedDateElement2.getTextContent() == null || publishedDateElement2.getTextContent().isEmpty() == true) == false)
                 {
                     Calendar publishedDateInstance;
                     SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
@@ -458,7 +459,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                 
                 NodeList elements14 = oSImageElement2.getElementsByTagName("IsPremium");
                 Element isPremiumElement2 = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
-                if (isPremiumElement2 != null && (isPremiumElement2.getTextContent() != null && isPremiumElement2.getTextContent().isEmpty() != true) == false)
+                if (isPremiumElement2 != null && (isPremiumElement2.getTextContent() == null || isPremiumElement2.getTextContent().isEmpty() == true) == false)
                 {
                     boolean isPremiumInstance;
                     isPremiumInstance = Boolean.parseBoolean(isPremiumElement2.getTextContent());
@@ -467,7 +468,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                 
                 NodeList elements15 = oSImageElement2.getElementsByTagName("ShowInGui");
                 Element showInGuiElement2 = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
-                if (showInGuiElement2 != null && (showInGuiElement2.getTextContent() != null && showInGuiElement2.getTextContent().isEmpty() != true) == false)
+                if (showInGuiElement2 != null && (showInGuiElement2.getTextContent() == null || showInGuiElement2.getTextContent().isEmpty() == true) == false)
                 {
                     boolean showInGuiInstance;
                     showInGuiInstance = Boolean.parseBoolean(showInGuiElement2.getTextContent());
@@ -613,7 +614,11 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/images/" + imageName + "?comp=" + deleteFromStorage;
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/images/" + imageName + "?";
+        if (deleteFromStorage == true)
+        {
+            url = url + "comp=" + "media";
+        }
         
         // Create HTTP transport objects
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
@@ -770,6 +775,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new VirtualMachineImageGetResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
@@ -878,7 +884,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                 
                 NodeList elements13 = oSImageElement.getElementsByTagName("ShowInGui");
                 Element showInGuiElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
-                if (showInGuiElement != null && (showInGuiElement.getTextContent() != null && showInGuiElement.getTextContent().isEmpty() != true) == false)
+                if (showInGuiElement != null && (showInGuiElement.getTextContent() == null || showInGuiElement.getTextContent().isEmpty() == true) == false)
                 {
                     boolean showInGuiInstance;
                     showInGuiInstance = Boolean.parseBoolean(showInGuiElement.getTextContent());
@@ -899,7 +905,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                 
                 NodeList elements15 = oSImageElement.getElementsByTagName("IsPremium");
                 Element isPremiumElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
-                if (isPremiumElement != null && (isPremiumElement.getTextContent() != null && isPremiumElement.getTextContent().isEmpty() != true) == false)
+                if (isPremiumElement != null && (isPremiumElement.getTextContent() == null || isPremiumElement.getTextContent().isEmpty() == true) == false)
                 {
                     boolean isPremiumInstance;
                     isPremiumInstance = Boolean.parseBoolean(isPremiumElement.getTextContent());
@@ -1076,6 +1082,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new VirtualMachineImageListResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
@@ -1202,7 +1209,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                     
                     NodeList elements14 = imagesElement.getElementsByTagName("IsPremium");
                     Element isPremiumElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
-                    if (isPremiumElement != null && (isPremiumElement.getTextContent() != null && isPremiumElement.getTextContent().isEmpty() != true) == false)
+                    if (isPremiumElement != null && (isPremiumElement.getTextContent() == null || isPremiumElement.getTextContent().isEmpty() == true) == false)
                     {
                         boolean isPremiumInstance;
                         isPremiumInstance = Boolean.parseBoolean(isPremiumElement.getTextContent());
@@ -1508,6 +1515,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new VirtualMachineImageUpdateResponse();
             DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory2.setNamespaceAware(true);
             DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
             Document responseDoc = documentBuilder2.parse(responseContent);
             
@@ -1607,7 +1615,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                 
                 NodeList elements12 = oSImageElement2.getElementsByTagName("PublishedDate");
                 Element publishedDateElement2 = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
-                if (publishedDateElement2 != null && (publishedDateElement2.getTextContent() != null && publishedDateElement2.getTextContent().isEmpty() != true) == false)
+                if (publishedDateElement2 != null && (publishedDateElement2.getTextContent() == null || publishedDateElement2.getTextContent().isEmpty() == true) == false)
                 {
                     Calendar publishedDateInstance;
                     SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
@@ -1628,7 +1636,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                 
                 NodeList elements14 = oSImageElement2.getElementsByTagName("IsPremium");
                 Element isPremiumElement2 = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
-                if (isPremiumElement2 != null && (isPremiumElement2.getTextContent() != null && isPremiumElement2.getTextContent().isEmpty() != true) == false)
+                if (isPremiumElement2 != null && (isPremiumElement2.getTextContent() == null || isPremiumElement2.getTextContent().isEmpty() == true) == false)
                 {
                     boolean isPremiumInstance;
                     isPremiumInstance = Boolean.parseBoolean(isPremiumElement2.getTextContent());
@@ -1637,7 +1645,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                 
                 NodeList elements15 = oSImageElement2.getElementsByTagName("ShowInGui");
                 Element showInGuiElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
-                if (showInGuiElement != null && (showInGuiElement.getTextContent() != null && showInGuiElement.getTextContent().isEmpty() != true) == false)
+                if (showInGuiElement != null && (showInGuiElement.getTextContent() == null || showInGuiElement.getTextContent().isEmpty() == true) == false)
                 {
                     boolean showInGuiInstance;
                     showInGuiInstance = Boolean.parseBoolean(showInGuiElement.getTextContent());

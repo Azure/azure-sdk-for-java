@@ -647,6 +647,44 @@ public interface HostedServiceOperations
     Future<HostedServiceListExtensionsResponse> listExtensionsAsync(String serviceName);
     
     /**
+    * The List Extension Versions operation lists the versions of an extension
+    * that are available to add to a cloud service. In Windows Azure, a
+    * process can run as an extension of a cloud service. For example, Remote
+    * Desktop Access or the Windows Azure Diagnostics Agent can run as
+    * extensions to the cloud service.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/dn495437.aspx for
+    * more information)
+    *
+    * @param providerNamespace The provider namespace.
+    * @param extensionType The extension type name.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return The List Available Extensions operation response.
+    */
+    HostedServiceListAvailableExtensionsResponse listExtensionVersions(String providerNamespace, String extensionType) throws IOException, ServiceException, ParserConfigurationException, SAXException;
+    
+    /**
+    * The List Extension Versions operation lists the versions of an extension
+    * that are available to add to a cloud service. In Windows Azure, a
+    * process can run as an extension of a cloud service. For example, Remote
+    * Desktop Access or the Windows Azure Diagnostics Agent can run as
+    * extensions to the cloud service.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/dn495437.aspx for
+    * more information)
+    *
+    * @param providerNamespace The provider namespace.
+    * @param extensionType The extension type name.
+    * @return The List Available Extensions operation response.
+    */
+    Future<HostedServiceListAvailableExtensionsResponse> listExtensionVersionsAsync(String providerNamespace, String extensionType);
+    
+    /**
     * The Update Hosted Service operation can update the label or description
     * of a cloud service in Windows Azure.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441303.aspx for

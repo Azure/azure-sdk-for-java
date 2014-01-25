@@ -30,6 +30,26 @@ import java.net.URI;
 */
 public class DacImportParameters
 {
+    private String azureEdition;
+    
+    /**
+    * The edition of this database.
+    * @return The AzureEdition value.
+    */
+    public String getAzureEdition()
+    {
+        return this.azureEdition;
+    }
+    
+    /**
+    * The edition of this database.
+    * @param azureEditionValue The AzureEdition value.
+    */
+    public void setAzureEdition(final String azureEditionValue)
+    {
+        this.azureEdition = azureEditionValue;
+    }
+    
     private DacImportParameters.BlobCredentialsParameter blobCredentials;
     
     /**

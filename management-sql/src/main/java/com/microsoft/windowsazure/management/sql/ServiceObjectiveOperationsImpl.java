@@ -175,6 +175,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new ServiceObjectiveGetResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
@@ -482,6 +483,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new ServiceObjectiveListResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             

@@ -37,6 +37,7 @@ import com.microsoft.windowsazure.management.websites.models.WebSiteGetPublishPr
 import com.microsoft.windowsazure.management.websites.models.WebSiteGetRepositoryResponse;
 import com.microsoft.windowsazure.management.websites.models.WebSiteGetResponse;
 import com.microsoft.windowsazure.management.websites.models.WebSiteGetUsageMetricsResponse;
+import com.microsoft.windowsazure.management.websites.models.WebSiteIsHostnameAvailableResponse;
 import com.microsoft.windowsazure.management.websites.models.WebSiteOperationStatusResponse;
 import com.microsoft.windowsazure.management.websites.models.WebSiteUpdateConfigurationParameters;
 import com.microsoft.windowsazure.management.websites.models.WebSiteUpdateParameters;
@@ -508,6 +509,30 @@ public interface WebSiteOperations
     * @return The Get Web Site Usage Metrics operation response.
     */
     Future<WebSiteGetUsageMetricsResponse> getUsageMetricsAsync(String webSpaceName, String webSiteName);
+    
+    /**
+    * Determines if a hostname is available
+    *
+    * @param webSiteName The name of the web site.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return The Is Hostname Available operation response.
+    */
+    WebSiteIsHostnameAvailableResponse isHostnameAvailable(String webSiteName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
+    
+    /**
+    * Determines if a hostname is available
+    *
+    * @param webSiteName The name of the web site.
+    * @return The Is Hostname Available operation response.
+    */
+    Future<WebSiteIsHostnameAvailableResponse> isHostnameAvailableAsync(String webSiteName);
     
     /**
     * You can restart a web site by issuing an HTTP POST request.  (see

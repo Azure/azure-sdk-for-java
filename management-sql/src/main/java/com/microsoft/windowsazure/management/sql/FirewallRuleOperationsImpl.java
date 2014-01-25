@@ -250,6 +250,7 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new FirewallRuleCreateResponse();
             DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory2.setNamespaceAware(true);
             DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
             Document responseDoc = documentBuilder2.parse(responseContent);
             
@@ -547,6 +548,7 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new FirewallRuleListResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
@@ -783,6 +785,7 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new FirewallRuleUpdateResponse();
             DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory2.setNamespaceAware(true);
             DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
             Document responseDoc = documentBuilder2.parse(responseContent);
             
