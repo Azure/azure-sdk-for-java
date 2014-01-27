@@ -24,11 +24,11 @@ public final class TextUtility
     
     public static Object convertStringTo(String input, String type) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException
     {
-    	if (input.equals("null"))
-    	{
-    		return null;
-    	}
-    	
+        if (input.equals("null"))
+        {
+            return null;
+        }
+
         if (type.equals("System.Int32"))
         {
             return DatatypeConverter.parseInt(input);
