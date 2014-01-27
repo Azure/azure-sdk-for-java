@@ -14,6 +14,7 @@
  */
 package com.microsoft.windowsazure.management;
 
+import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
 import java.util.Map;
 
 import com.microsoft.windowsazure.core.Builder;

@@ -25,7 +25,7 @@ package com.microsoft.windowsazure.management.monitoring.metrics;
 
 import com.microsoft.windowsazure.core.ServiceClient;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
-import com.microsoft.windowsazure.management.ManagementConfiguration;
+import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
 import java.net.URI;
 import java.util.concurrent.ExecutorService;
 import javax.inject.Inject;

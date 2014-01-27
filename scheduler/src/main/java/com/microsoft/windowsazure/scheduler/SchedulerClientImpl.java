@@ -25,7 +25,7 @@ package com.microsoft.windowsazure.scheduler;
 
 import com.microsoft.windowsazure.core.ServiceClient;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
-import com.microsoft.windowsazure.management.ManagementConfiguration;
+import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
 import com.microsoft.windowsazure.scheduler.models.JobActionType;
 import com.microsoft.windowsazure.scheduler.models.JobHistoryActionName;
 import com.microsoft.windowsazure.scheduler.models.JobHistoryStatus;

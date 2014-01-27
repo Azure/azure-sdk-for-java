@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.microsoft.windowsazure.management;
+package com.microsoft.windowsazure.management.configuration;
 
 import com.microsoft.windowsazure.core.utils.KeyStoreCredential;
 import com.microsoft.windowsazure.credentials.CertificateCloudCredentials;

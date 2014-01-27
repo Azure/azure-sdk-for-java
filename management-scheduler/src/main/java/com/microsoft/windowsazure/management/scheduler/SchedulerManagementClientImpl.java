@@ -27,7 +27,7 @@ import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.ServiceClient;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.exception.ServiceException;
-import com.microsoft.windowsazure.management.ManagementConfiguration;
+import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
 import com.microsoft.windowsazure.management.scheduler.models.ResourceProviderGetPropertiesResponse;
 import com.microsoft.windowsazure.management.scheduler.models.SchedulerOperationStatus;
 import com.microsoft.windowsazure.management.scheduler.models.SchedulerOperationStatusResponse;
