@@ -37,12 +37,11 @@ import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
+import javax.xml.bind.DatatypeConverter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -127,13 +126,11 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
     @Override
-    public DatabaseCreateResponse create(String serverName, DatabaseCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, ParseException
+    public DatabaseCreateResponse create(String serverName, DatabaseCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
     {
         // Validate
         if (serverName == null)
@@ -274,7 +271,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 if (idElement != null)
                 {
                     int idInstance;
-                    idInstance = Integer.parseInt(idElement.getTextContent());
+                    idInstance = DatatypeConverter.parseInt(idElement.getTextContent());
                     result.setId(idInstance);
                 }
                 
@@ -310,7 +307,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 if (maxSizeGBElement2 != null)
                 {
                     long maxSizeGBInstance;
-                    maxSizeGBInstance = Long.parseLong(maxSizeGBElement2.getTextContent());
+                    maxSizeGBInstance = DatatypeConverter.parseLong(maxSizeGBElement2.getTextContent());
                     result.setMaximumDatabaseSizeInGB(maxSizeGBInstance);
                 }
                 
@@ -328,10 +325,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 if (creationDateElement != null)
                 {
                     Calendar creationDateInstance;
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(simpleDateFormat.parse(creationDateElement.getTextContent()));
-                    creationDateInstance = calendar;
+                    creationDateInstance = DatatypeConverter.parseDateTime(creationDateElement.getTextContent());
                     result.setCreationDate(creationDateInstance);
                 }
                 
@@ -340,7 +334,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 if (isFederationRootElement != null)
                 {
                     boolean isFederationRootInstance;
-                    isFederationRootInstance = Boolean.parseBoolean(isFederationRootElement.getTextContent());
+                    isFederationRootInstance = DatatypeConverter.parseBoolean(isFederationRootElement.getTextContent());
                     result.setIsFederationRoot(isFederationRootInstance);
                 }
                 
@@ -349,7 +343,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 if (isSystemObjectElement != null)
                 {
                     boolean isSystemObjectInstance;
-                    isSystemObjectInstance = Boolean.parseBoolean(isSystemObjectElement.getTextContent());
+                    isSystemObjectInstance = DatatypeConverter.parseBoolean(isSystemObjectElement.getTextContent());
                     result.setIsSystemObject(isSystemObjectInstance);
                 }
                 
@@ -591,13 +585,11 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
     @Override
-    public DatabaseGetResponse get(String serverName, String databaseName) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException
+    public DatabaseGetResponse get(String serverName, String databaseName) throws IOException, ServiceException, ParserConfigurationException, SAXException
     {
         // Validate
         if (serverName == null)
@@ -682,7 +674,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 if (idElement != null)
                 {
                     int idInstance;
-                    idInstance = Integer.parseInt(idElement.getTextContent());
+                    idInstance = DatatypeConverter.parseInt(idElement.getTextContent());
                     result.setId(idInstance);
                 }
                 
@@ -718,7 +710,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 if (maxSizeGBElement != null)
                 {
                     long maxSizeGBInstance;
-                    maxSizeGBInstance = Long.parseLong(maxSizeGBElement.getTextContent());
+                    maxSizeGBInstance = DatatypeConverter.parseLong(maxSizeGBElement.getTextContent());
                     result.setMaximumDatabaseSizeInGB(maxSizeGBInstance);
                 }
                 
@@ -736,10 +728,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 if (creationDateElement != null)
                 {
                     Calendar creationDateInstance;
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(simpleDateFormat.parse(creationDateElement.getTextContent()));
-                    creationDateInstance = calendar;
+                    creationDateInstance = DatatypeConverter.parseDateTime(creationDateElement.getTextContent());
                     result.setCreationDate(creationDateInstance);
                 }
                 
@@ -748,7 +737,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 if (isFederationRootElement != null)
                 {
                     boolean isFederationRootInstance;
-                    isFederationRootInstance = Boolean.parseBoolean(isFederationRootElement.getTextContent());
+                    isFederationRootInstance = DatatypeConverter.parseBoolean(isFederationRootElement.getTextContent());
                     result.setIsFederationRoot(isFederationRootInstance);
                 }
                 
@@ -757,7 +746,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 if (isSystemObjectElement != null)
                 {
                     boolean isSystemObjectInstance;
-                    isSystemObjectInstance = Boolean.parseBoolean(isSystemObjectElement.getTextContent());
+                    isSystemObjectInstance = DatatypeConverter.parseBoolean(isSystemObjectElement.getTextContent());
                     result.setIsSystemObject(isSystemObjectInstance);
                 }
                 
@@ -876,12 +865,10 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return Response containing the list of databases for a given server.
     */
     @Override
-    public DatabaseListResponse list(String serverName) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException
+    public DatabaseListResponse list(String serverName) throws IOException, ServiceException, ParserConfigurationException, SAXException
     {
         // Validate
         if (serverName == null)
@@ -967,7 +954,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     if (idElement != null)
                     {
                         int idInstance;
-                        idInstance = Integer.parseInt(idElement.getTextContent());
+                        idInstance = DatatypeConverter.parseInt(idElement.getTextContent());
                         serviceResourceInstance.setId(idInstance);
                     }
                     
@@ -1003,7 +990,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     if (maxSizeGBElement != null)
                     {
                         long maxSizeGBInstance;
-                        maxSizeGBInstance = Long.parseLong(maxSizeGBElement.getTextContent());
+                        maxSizeGBInstance = DatatypeConverter.parseLong(maxSizeGBElement.getTextContent());
                         serviceResourceInstance.setMaximumDatabaseSizeInGB(maxSizeGBInstance);
                     }
                     
@@ -1021,10 +1008,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     if (creationDateElement != null)
                     {
                         Calendar creationDateInstance;
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.setTime(simpleDateFormat.parse(creationDateElement.getTextContent()));
-                        creationDateInstance = calendar;
+                        creationDateInstance = DatatypeConverter.parseDateTime(creationDateElement.getTextContent());
                         serviceResourceInstance.setCreationDate(creationDateInstance);
                     }
                     
@@ -1033,7 +1017,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     if (isFederationRootElement != null)
                     {
                         boolean isFederationRootInstance;
-                        isFederationRootInstance = Boolean.parseBoolean(isFederationRootElement.getTextContent());
+                        isFederationRootInstance = DatatypeConverter.parseBoolean(isFederationRootElement.getTextContent());
                         serviceResourceInstance.setIsFederationRoot(isFederationRootInstance);
                     }
                     
@@ -1042,7 +1026,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     if (isSystemObjectElement != null)
                     {
                         boolean isSystemObjectInstance;
-                        isSystemObjectInstance = Boolean.parseBoolean(isSystemObjectElement.getTextContent());
+                        isSystemObjectInstance = DatatypeConverter.parseBoolean(isSystemObjectElement.getTextContent());
                         serviceResourceInstance.setIsSystemObject(isSystemObjectInstance);
                     }
                     
@@ -1169,13 +1153,11 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
     @Override
-    public DatabaseUpdateResponse update(String serverName, String databaseName, DatabaseUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, ParseException
+    public DatabaseUpdateResponse update(String serverName, String databaseName, DatabaseUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
     {
         // Validate
         if (serverName == null)
@@ -1324,7 +1306,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 if (idElement2 != null)
                 {
                     int idInstance;
-                    idInstance = Integer.parseInt(idElement2.getTextContent());
+                    idInstance = DatatypeConverter.parseInt(idElement2.getTextContent());
                     result.setId(idInstance);
                 }
                 
@@ -1360,7 +1342,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 if (maxSizeGBElement2 != null)
                 {
                     long maxSizeGBInstance;
-                    maxSizeGBInstance = Long.parseLong(maxSizeGBElement2.getTextContent());
+                    maxSizeGBInstance = DatatypeConverter.parseLong(maxSizeGBElement2.getTextContent());
                     result.setMaximumDatabaseSizeInGB(maxSizeGBInstance);
                 }
                 
@@ -1378,10 +1360,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 if (creationDateElement != null)
                 {
                     Calendar creationDateInstance;
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(simpleDateFormat.parse(creationDateElement.getTextContent()));
-                    creationDateInstance = calendar;
+                    creationDateInstance = DatatypeConverter.parseDateTime(creationDateElement.getTextContent());
                     result.setCreationDate(creationDateInstance);
                 }
                 
@@ -1390,7 +1369,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 if (isFederationRootElement != null)
                 {
                     boolean isFederationRootInstance;
-                    isFederationRootInstance = Boolean.parseBoolean(isFederationRootElement.getTextContent());
+                    isFederationRootInstance = DatatypeConverter.parseBoolean(isFederationRootElement.getTextContent());
                     result.setIsFederationRoot(isFederationRootInstance);
                 }
                 
@@ -1399,7 +1378,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 if (isSystemObjectElement != null)
                 {
                     boolean isSystemObjectInstance;
-                    isSystemObjectInstance = Boolean.parseBoolean(isSystemObjectElement.getTextContent());
+                    isSystemObjectInstance = DatatypeConverter.parseBoolean(isSystemObjectElement.getTextContent());
                     result.setIsSystemObject(isSystemObjectInstance);
                 }
                 

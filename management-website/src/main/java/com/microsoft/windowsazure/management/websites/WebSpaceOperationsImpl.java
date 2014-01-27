@@ -53,12 +53,11 @@ import java.net.InetAddress;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
+import javax.xml.bind.DatatypeConverter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -354,14 +353,12 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
     * @return The Get Web Space Details operation response.
     */
     @Override
-    public WebSpacesGetResponse get(String webSpaceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException, URISyntaxException
+    public WebSpacesGetResponse get(String webSpaceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
     {
         // Validate
         if (webSpaceName == null)
@@ -449,7 +446,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                     if (isNil == false)
                     {
                         int currentNumberOfWorkersInstance;
-                        currentNumberOfWorkersInstance = Integer.parseInt(currentNumberOfWorkersElement.getTextContent());
+                        currentNumberOfWorkersInstance = DatatypeConverter.parseInt(currentNumberOfWorkersElement.getTextContent());
                         result.setCurrentNumberOfWorkers(currentNumberOfWorkersInstance);
                     }
                 }
@@ -799,7 +796,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                         if (isNil == false)
                         {
                             int currentNumberOfWorkersInstance;
-                            currentNumberOfWorkersInstance = Integer.parseInt(currentNumberOfWorkersElement.getTextContent());
+                            currentNumberOfWorkersInstance = DatatypeConverter.parseInt(currentNumberOfWorkersElement.getTextContent());
                             webSpaceInstance.setCurrentNumberOfWorkers(currentNumberOfWorkersInstance);
                         }
                     }
@@ -1037,7 +1034,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                         if (isNil == false)
                         {
                             int sortOrderInstance;
-                            sortOrderInstance = Integer.parseInt(sortOrderElement.getTextContent());
+                            sortOrderInstance = DatatypeConverter.parseInt(sortOrderElement.getTextContent());
                             geoRegionInstance.setSortOrder(sortOrderInstance);
                         }
                     }
@@ -1228,14 +1225,12 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
     * @return The List Web Sites operation response.
     */
     @Override
-    public WebSpacesListWebSitesResponse listWebSites(String webSpaceName, WebSiteListParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException, URISyntaxException
+    public WebSpacesListWebSitesResponse listWebSites(String webSpaceName, WebSiteListParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
     {
         // Validate
         if (webSpaceName == null)
@@ -1317,7 +1312,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                     if (adminEnabledElement != null)
                     {
                         boolean adminEnabledInstance;
-                        adminEnabledInstance = Boolean.parseBoolean(adminEnabledElement.getTextContent());
+                        adminEnabledInstance = DatatypeConverter.parseBoolean(adminEnabledElement.getTextContent());
                         siteInstance.setAdminEnabled(adminEnabledInstance);
                     }
                     
@@ -1344,7 +1339,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                     if (enabledElement != null)
                     {
                         boolean enabledInstance;
-                        enabledInstance = Boolean.parseBoolean(enabledElement.getTextContent());
+                        enabledInstance = DatatypeConverter.parseBoolean(enabledElement.getTextContent());
                         siteInstance.setEnabled(enabledInstance);
                     }
                     
@@ -1441,10 +1436,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                     if (lastModifiedTimeUtcElement != null)
                     {
                         Calendar lastModifiedTimeUtcInstance;
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.setTime(simpleDateFormat.parse(lastModifiedTimeUtcElement.getTextContent()));
-                        lastModifiedTimeUtcInstance = calendar;
+                        lastModifiedTimeUtcInstance = DatatypeConverter.parseDateTime(lastModifiedTimeUtcElement.getTextContent());
                         siteInstance.setLastModifiedTimeUtc(lastModifiedTimeUtcInstance);
                     }
                     
@@ -1524,10 +1516,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                                     if (isNil5 == false)
                                     {
                                         Calendar expirationDateInstance;
-                                        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                                        Calendar calendar2 = Calendar.getInstance();
-                                        calendar2.setTime(simpleDateFormat2.parse(expirationDateElement.getTextContent()));
-                                        expirationDateInstance = calendar2;
+                                        expirationDateInstance = DatatypeConverter.parseDateTime(expirationDateElement.getTextContent());
                                         certificateInstance.setExpirationDate(expirationDateInstance);
                                     }
                                 }
@@ -1583,10 +1572,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                                     if (isNil8 == false)
                                     {
                                         Calendar issueDateInstance;
-                                        SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                                        Calendar calendar3 = Calendar.getInstance();
-                                        calendar3.setTime(simpleDateFormat3.parse(issueDateElement.getTextContent()));
-                                        issueDateInstance = calendar3;
+                                        issueDateInstance = DatatypeConverter.parseDateTime(issueDateElement.getTextContent());
                                         certificateInstance.setIssueDate(issueDateInstance);
                                     }
                                 }
@@ -1730,7 +1716,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                                     if (isNil16 == false)
                                     {
                                         boolean toDeleteInstance;
-                                        toDeleteInstance = Boolean.parseBoolean(toDeleteElement.getTextContent());
+                                        toDeleteInstance = DatatypeConverter.parseBoolean(toDeleteElement.getTextContent());
                                         certificateInstance.setIsToBeDeleted(toDeleteInstance);
                                     }
                                 }
@@ -1748,7 +1734,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                                     if (isNil17 == false)
                                     {
                                         boolean validInstance;
-                                        validInstance = Boolean.parseBoolean(validElement.getTextContent());
+                                        validInstance = DatatypeConverter.parseBoolean(validElement.getTextContent());
                                         certificateInstance.setIsValid(validInstance);
                                     }
                                 }

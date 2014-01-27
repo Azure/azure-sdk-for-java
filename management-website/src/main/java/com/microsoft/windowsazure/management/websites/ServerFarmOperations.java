@@ -33,7 +33,6 @@ import com.microsoft.windowsazure.management.websites.models.ServerFarmUpdatePar
 import com.microsoft.windowsazure.management.websites.models.ServerFarmUpdateResponse;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.text.ParseException;
 import java.util.concurrent.Future;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -71,13 +70,11 @@ public interface ServerFarmOperations
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
     * @return The Create Server Farm operation response.
     */
-    ServerFarmCreateResponse create(String webSpaceName, ServerFarmCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, ParseException, URISyntaxException;
+    ServerFarmCreateResponse create(String webSpaceName, ServerFarmCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException;
     
     /**
     * You can create a server farm by issuing an HTTP POST request. Only one
@@ -163,13 +160,11 @@ public interface ServerFarmOperations
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
     * @return The Get Server Farm operation response.
     */
-    ServerFarmGetResponse get(String webSpaceName, String serverFarmName) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException, URISyntaxException;
+    ServerFarmGetResponse get(String webSpaceName, String serverFarmName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException;
     
     /**
     * You can create a server farm by issuing an HTTP POST request. Only one
@@ -259,13 +254,11 @@ public interface ServerFarmOperations
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
     * @return The Update Server Farm operation response.
     */
-    ServerFarmUpdateResponse update(String webSpaceName, ServerFarmUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, ParseException, URISyntaxException;
+    ServerFarmUpdateResponse update(String webSpaceName, ServerFarmUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException;
     
     /**
     * You can create a server farm by issuing an HTTP POST request. Only one

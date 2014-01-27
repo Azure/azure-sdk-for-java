@@ -38,13 +38,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.URISyntaxException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.TimeZone;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
+import javax.xml.bind.DatatypeConverter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -136,14 +136,12 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
     * @return A response to a request for a particular topic.
     */
     @Override
-    public ServiceBusTopicResponse create(String namespaceName, ServiceBusTopic topic) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, ParseException, URISyntaxException
+    public ServiceBusTopicResponse create(String namespaceName, ServiceBusTopic topic) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException
     {
         // Validate
         if (namespaceName == null)
@@ -463,7 +461,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (maxSizeInMegabytesElement2 != null)
                         {
                             int maxSizeInMegabytesInstance;
-                            maxSizeInMegabytesInstance = Integer.parseInt(maxSizeInMegabytesElement2.getTextContent());
+                            maxSizeInMegabytesInstance = DatatypeConverter.parseInt(maxSizeInMegabytesElement2.getTextContent());
                             topicDescriptionInstance.setMaxSizeInMegabytes(maxSizeInMegabytesInstance);
                         }
                         
@@ -472,7 +470,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (requiresDuplicateDetectionElement2 != null)
                         {
                             boolean requiresDuplicateDetectionInstance;
-                            requiresDuplicateDetectionInstance = Boolean.parseBoolean(requiresDuplicateDetectionElement2.getTextContent());
+                            requiresDuplicateDetectionInstance = DatatypeConverter.parseBoolean(requiresDuplicateDetectionElement2.getTextContent());
                             topicDescriptionInstance.setRequiresDuplicateDetection(requiresDuplicateDetectionInstance);
                         }
                         
@@ -490,7 +488,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (enableBatchedOperationsElement2 != null)
                         {
                             boolean enableBatchedOperationsInstance;
-                            enableBatchedOperationsInstance = Boolean.parseBoolean(enableBatchedOperationsElement2.getTextContent());
+                            enableBatchedOperationsInstance = DatatypeConverter.parseBoolean(enableBatchedOperationsElement2.getTextContent());
                             topicDescriptionInstance.setEnableBatchedOperations(enableBatchedOperationsInstance);
                         }
                         
@@ -499,7 +497,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (sizeInBytesElement2 != null)
                         {
                             int sizeInBytesInstance;
-                            sizeInBytesInstance = Integer.parseInt(sizeInBytesElement2.getTextContent());
+                            sizeInBytesInstance = DatatypeConverter.parseInt(sizeInBytesElement2.getTextContent());
                             topicDescriptionInstance.setSizeInBytes(sizeInBytesInstance);
                         }
                         
@@ -508,7 +506,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (filteringMessagesBeforePublishingElement2 != null)
                         {
                             boolean filteringMessagesBeforePublishingInstance;
-                            filteringMessagesBeforePublishingInstance = Boolean.parseBoolean(filteringMessagesBeforePublishingElement2.getTextContent());
+                            filteringMessagesBeforePublishingInstance = DatatypeConverter.parseBoolean(filteringMessagesBeforePublishingElement2.getTextContent());
                             topicDescriptionInstance.setFilteringMessagesBeforePublishing(filteringMessagesBeforePublishingInstance);
                         }
                         
@@ -517,7 +515,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (isAnonymousAccessibleElement2 != null)
                         {
                             boolean isAnonymousAccessibleInstance;
-                            isAnonymousAccessibleInstance = Boolean.parseBoolean(isAnonymousAccessibleElement2.getTextContent());
+                            isAnonymousAccessibleInstance = DatatypeConverter.parseBoolean(isAnonymousAccessibleElement2.getTextContent());
                             topicDescriptionInstance.setIsAnonymousAccessible(isAnonymousAccessibleInstance);
                         }
                         
@@ -565,10 +563,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 if (createdTimeElement2 != null)
                                 {
                                     Calendar createdTimeInstance;
-                                    SimpleDateFormat simpleDateFormat6 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                                    Calendar calendar = Calendar.getInstance();
-                                    calendar.setTime(simpleDateFormat6.parse(createdTimeElement2.getTextContent()));
-                                    createdTimeInstance = calendar;
+                                    createdTimeInstance = DatatypeConverter.parseDateTime(createdTimeElement2.getTextContent());
                                     authorizationRuleInstance.setCreatedTime(createdTimeInstance);
                                 }
                                 
@@ -586,10 +581,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 if (modifiedTimeElement2 != null)
                                 {
                                     Calendar modifiedTimeInstance;
-                                    SimpleDateFormat simpleDateFormat7 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                                    Calendar calendar2 = Calendar.getInstance();
-                                    calendar2.setTime(simpleDateFormat7.parse(modifiedTimeElement2.getTextContent()));
-                                    modifiedTimeInstance = calendar2;
+                                    modifiedTimeInstance = DatatypeConverter.parseDateTime(modifiedTimeElement2.getTextContent());
                                     authorizationRuleInstance.setModifiedTime(modifiedTimeInstance);
                                 }
                                 
@@ -627,10 +619,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (createdAtElement2 != null)
                         {
                             Calendar createdAtInstance;
-                            SimpleDateFormat simpleDateFormat8 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                            Calendar calendar3 = Calendar.getInstance();
-                            calendar3.setTime(simpleDateFormat8.parse(createdAtElement2.getTextContent()));
-                            createdAtInstance = calendar3;
+                            createdAtInstance = DatatypeConverter.parseDateTime(createdAtElement2.getTextContent());
                             topicDescriptionInstance.setCreatedAt(createdAtInstance);
                         }
                         
@@ -639,10 +628,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (updatedAtElement2 != null)
                         {
                             Calendar updatedAtInstance;
-                            SimpleDateFormat simpleDateFormat9 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                            Calendar calendar4 = Calendar.getInstance();
-                            calendar4.setTime(simpleDateFormat9.parse(updatedAtElement2.getTextContent()));
-                            updatedAtInstance = calendar4;
+                            updatedAtInstance = DatatypeConverter.parseDateTime(updatedAtElement2.getTextContent());
                             topicDescriptionInstance.setUpdatedAt(updatedAtInstance);
                         }
                         
@@ -651,10 +637,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (accessedAtElement2 != null)
                         {
                             Calendar accessedAtInstance;
-                            SimpleDateFormat simpleDateFormat10 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                            Calendar calendar5 = Calendar.getInstance();
-                            calendar5.setTime(simpleDateFormat10.parse(accessedAtElement2.getTextContent()));
-                            accessedAtInstance = calendar5;
+                            accessedAtInstance = DatatypeConverter.parseDateTime(accessedAtElement2.getTextContent());
                             topicDescriptionInstance.setAccessedAt(accessedAtInstance);
                         }
                         
@@ -663,7 +646,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (supportOrderingElement2 != null)
                         {
                             boolean supportOrderingInstance;
-                            supportOrderingInstance = Boolean.parseBoolean(supportOrderingElement2.getTextContent());
+                            supportOrderingInstance = DatatypeConverter.parseBoolean(supportOrderingElement2.getTextContent());
                             topicDescriptionInstance.setSupportOrdering(supportOrderingInstance);
                         }
                         
@@ -680,7 +663,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (subscriptionCountElement2 != null)
                         {
                             int subscriptionCountInstance;
-                            subscriptionCountInstance = Integer.parseInt(subscriptionCountElement2.getTextContent());
+                            subscriptionCountInstance = DatatypeConverter.parseInt(subscriptionCountElement2.getTextContent());
                             topicDescriptionInstance.setSubscriptionCount(subscriptionCountInstance);
                         }
                         
@@ -768,14 +751,12 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
     * @return A response to a request for a particular topic.
     */
     @Override
-    public ServiceBusTopicResponse get(String namespaceName, String topicName) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException, URISyntaxException
+    public ServiceBusTopicResponse get(String namespaceName, String topicName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
     {
         // Validate
         if (namespaceName == null)
@@ -878,7 +859,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (maxSizeInMegabytesElement != null)
                         {
                             int maxSizeInMegabytesInstance;
-                            maxSizeInMegabytesInstance = Integer.parseInt(maxSizeInMegabytesElement.getTextContent());
+                            maxSizeInMegabytesInstance = DatatypeConverter.parseInt(maxSizeInMegabytesElement.getTextContent());
                             topicDescriptionInstance.setMaxSizeInMegabytes(maxSizeInMegabytesInstance);
                         }
                         
@@ -887,7 +868,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (requiresDuplicateDetectionElement != null)
                         {
                             boolean requiresDuplicateDetectionInstance;
-                            requiresDuplicateDetectionInstance = Boolean.parseBoolean(requiresDuplicateDetectionElement.getTextContent());
+                            requiresDuplicateDetectionInstance = DatatypeConverter.parseBoolean(requiresDuplicateDetectionElement.getTextContent());
                             topicDescriptionInstance.setRequiresDuplicateDetection(requiresDuplicateDetectionInstance);
                         }
                         
@@ -905,7 +886,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (enableBatchedOperationsElement != null)
                         {
                             boolean enableBatchedOperationsInstance;
-                            enableBatchedOperationsInstance = Boolean.parseBoolean(enableBatchedOperationsElement.getTextContent());
+                            enableBatchedOperationsInstance = DatatypeConverter.parseBoolean(enableBatchedOperationsElement.getTextContent());
                             topicDescriptionInstance.setEnableBatchedOperations(enableBatchedOperationsInstance);
                         }
                         
@@ -914,7 +895,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (sizeInBytesElement != null)
                         {
                             int sizeInBytesInstance;
-                            sizeInBytesInstance = Integer.parseInt(sizeInBytesElement.getTextContent());
+                            sizeInBytesInstance = DatatypeConverter.parseInt(sizeInBytesElement.getTextContent());
                             topicDescriptionInstance.setSizeInBytes(sizeInBytesInstance);
                         }
                         
@@ -923,7 +904,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (filteringMessagesBeforePublishingElement != null)
                         {
                             boolean filteringMessagesBeforePublishingInstance;
-                            filteringMessagesBeforePublishingInstance = Boolean.parseBoolean(filteringMessagesBeforePublishingElement.getTextContent());
+                            filteringMessagesBeforePublishingInstance = DatatypeConverter.parseBoolean(filteringMessagesBeforePublishingElement.getTextContent());
                             topicDescriptionInstance.setFilteringMessagesBeforePublishing(filteringMessagesBeforePublishingInstance);
                         }
                         
@@ -932,7 +913,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (isAnonymousAccessibleElement != null)
                         {
                             boolean isAnonymousAccessibleInstance;
-                            isAnonymousAccessibleInstance = Boolean.parseBoolean(isAnonymousAccessibleElement.getTextContent());
+                            isAnonymousAccessibleInstance = DatatypeConverter.parseBoolean(isAnonymousAccessibleElement.getTextContent());
                             topicDescriptionInstance.setIsAnonymousAccessible(isAnonymousAccessibleInstance);
                         }
                         
@@ -980,10 +961,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 if (createdTimeElement != null)
                                 {
                                     Calendar createdTimeInstance;
-                                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                                    Calendar calendar = Calendar.getInstance();
-                                    calendar.setTime(simpleDateFormat.parse(createdTimeElement.getTextContent()));
-                                    createdTimeInstance = calendar;
+                                    createdTimeInstance = DatatypeConverter.parseDateTime(createdTimeElement.getTextContent());
                                     authorizationRuleInstance.setCreatedTime(createdTimeInstance);
                                 }
                                 
@@ -1001,10 +979,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 if (modifiedTimeElement != null)
                                 {
                                     Calendar modifiedTimeInstance;
-                                    SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                                    Calendar calendar2 = Calendar.getInstance();
-                                    calendar2.setTime(simpleDateFormat2.parse(modifiedTimeElement.getTextContent()));
-                                    modifiedTimeInstance = calendar2;
+                                    modifiedTimeInstance = DatatypeConverter.parseDateTime(modifiedTimeElement.getTextContent());
                                     authorizationRuleInstance.setModifiedTime(modifiedTimeInstance);
                                 }
                                 
@@ -1042,10 +1017,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (createdAtElement != null)
                         {
                             Calendar createdAtInstance;
-                            SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                            Calendar calendar3 = Calendar.getInstance();
-                            calendar3.setTime(simpleDateFormat3.parse(createdAtElement.getTextContent()));
-                            createdAtInstance = calendar3;
+                            createdAtInstance = DatatypeConverter.parseDateTime(createdAtElement.getTextContent());
                             topicDescriptionInstance.setCreatedAt(createdAtInstance);
                         }
                         
@@ -1054,10 +1026,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (updatedAtElement != null)
                         {
                             Calendar updatedAtInstance;
-                            SimpleDateFormat simpleDateFormat4 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                            Calendar calendar4 = Calendar.getInstance();
-                            calendar4.setTime(simpleDateFormat4.parse(updatedAtElement.getTextContent()));
-                            updatedAtInstance = calendar4;
+                            updatedAtInstance = DatatypeConverter.parseDateTime(updatedAtElement.getTextContent());
                             topicDescriptionInstance.setUpdatedAt(updatedAtInstance);
                         }
                         
@@ -1066,10 +1035,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (accessedAtElement != null)
                         {
                             Calendar accessedAtInstance;
-                            SimpleDateFormat simpleDateFormat5 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                            Calendar calendar5 = Calendar.getInstance();
-                            calendar5.setTime(simpleDateFormat5.parse(accessedAtElement.getTextContent()));
-                            accessedAtInstance = calendar5;
+                            accessedAtInstance = DatatypeConverter.parseDateTime(accessedAtElement.getTextContent());
                             topicDescriptionInstance.setAccessedAt(accessedAtInstance);
                         }
                         
@@ -1078,7 +1044,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (supportOrderingElement != null)
                         {
                             boolean supportOrderingInstance;
-                            supportOrderingInstance = Boolean.parseBoolean(supportOrderingElement.getTextContent());
+                            supportOrderingInstance = DatatypeConverter.parseBoolean(supportOrderingElement.getTextContent());
                             topicDescriptionInstance.setSupportOrdering(supportOrderingInstance);
                         }
                         
@@ -1095,7 +1061,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (subscriptionCountElement != null)
                         {
                             int subscriptionCountInstance;
-                            subscriptionCountInstance = Integer.parseInt(subscriptionCountElement.getTextContent());
+                            subscriptionCountInstance = DatatypeConverter.parseInt(subscriptionCountElement.getTextContent());
                             topicDescriptionInstance.setSubscriptionCount(subscriptionCountInstance);
                         }
                         
@@ -1364,14 +1330,12 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
     * @return A response to a request for a list of topics.
     */
     @Override
-    public ServiceBusTopicsResponse list(String namespaceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException, URISyntaxException
+    public ServiceBusTopicsResponse list(String namespaceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
     {
         // Validate
         if (namespaceName == null)
@@ -1477,7 +1441,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 if (maxSizeInMegabytesElement != null)
                                 {
                                     int maxSizeInMegabytesInstance;
-                                    maxSizeInMegabytesInstance = Integer.parseInt(maxSizeInMegabytesElement.getTextContent());
+                                    maxSizeInMegabytesInstance = DatatypeConverter.parseInt(maxSizeInMegabytesElement.getTextContent());
                                     entryInstance.setMaxSizeInMegabytes(maxSizeInMegabytesInstance);
                                 }
                                 
@@ -1486,7 +1450,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 if (requiresDuplicateDetectionElement != null)
                                 {
                                     boolean requiresDuplicateDetectionInstance;
-                                    requiresDuplicateDetectionInstance = Boolean.parseBoolean(requiresDuplicateDetectionElement.getTextContent());
+                                    requiresDuplicateDetectionInstance = DatatypeConverter.parseBoolean(requiresDuplicateDetectionElement.getTextContent());
                                     entryInstance.setRequiresDuplicateDetection(requiresDuplicateDetectionInstance);
                                 }
                                 
@@ -1504,7 +1468,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 if (enableBatchedOperationsElement != null)
                                 {
                                     boolean enableBatchedOperationsInstance;
-                                    enableBatchedOperationsInstance = Boolean.parseBoolean(enableBatchedOperationsElement.getTextContent());
+                                    enableBatchedOperationsInstance = DatatypeConverter.parseBoolean(enableBatchedOperationsElement.getTextContent());
                                     entryInstance.setEnableBatchedOperations(enableBatchedOperationsInstance);
                                 }
                                 
@@ -1513,7 +1477,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 if (sizeInBytesElement != null)
                                 {
                                     int sizeInBytesInstance;
-                                    sizeInBytesInstance = Integer.parseInt(sizeInBytesElement.getTextContent());
+                                    sizeInBytesInstance = DatatypeConverter.parseInt(sizeInBytesElement.getTextContent());
                                     entryInstance.setSizeInBytes(sizeInBytesInstance);
                                 }
                                 
@@ -1522,7 +1486,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 if (filteringMessagesBeforePublishingElement != null)
                                 {
                                     boolean filteringMessagesBeforePublishingInstance;
-                                    filteringMessagesBeforePublishingInstance = Boolean.parseBoolean(filteringMessagesBeforePublishingElement.getTextContent());
+                                    filteringMessagesBeforePublishingInstance = DatatypeConverter.parseBoolean(filteringMessagesBeforePublishingElement.getTextContent());
                                     entryInstance.setFilteringMessagesBeforePublishing(filteringMessagesBeforePublishingInstance);
                                 }
                                 
@@ -1531,7 +1495,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 if (isAnonymousAccessibleElement != null)
                                 {
                                     boolean isAnonymousAccessibleInstance;
-                                    isAnonymousAccessibleInstance = Boolean.parseBoolean(isAnonymousAccessibleElement.getTextContent());
+                                    isAnonymousAccessibleInstance = DatatypeConverter.parseBoolean(isAnonymousAccessibleElement.getTextContent());
                                     entryInstance.setIsAnonymousAccessible(isAnonymousAccessibleInstance);
                                 }
                                 
@@ -1579,10 +1543,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                         if (createdTimeElement != null)
                                         {
                                             Calendar createdTimeInstance;
-                                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                                            Calendar calendar = Calendar.getInstance();
-                                            calendar.setTime(simpleDateFormat.parse(createdTimeElement.getTextContent()));
-                                            createdTimeInstance = calendar;
+                                            createdTimeInstance = DatatypeConverter.parseDateTime(createdTimeElement.getTextContent());
                                             authorizationRuleInstance.setCreatedTime(createdTimeInstance);
                                         }
                                         
@@ -1600,10 +1561,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                         if (modifiedTimeElement != null)
                                         {
                                             Calendar modifiedTimeInstance;
-                                            SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                                            Calendar calendar2 = Calendar.getInstance();
-                                            calendar2.setTime(simpleDateFormat2.parse(modifiedTimeElement.getTextContent()));
-                                            modifiedTimeInstance = calendar2;
+                                            modifiedTimeInstance = DatatypeConverter.parseDateTime(modifiedTimeElement.getTextContent());
                                             authorizationRuleInstance.setModifiedTime(modifiedTimeInstance);
                                         }
                                         
@@ -1641,10 +1599,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 if (createdAtElement != null)
                                 {
                                     Calendar createdAtInstance;
-                                    SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                                    Calendar calendar3 = Calendar.getInstance();
-                                    calendar3.setTime(simpleDateFormat3.parse(createdAtElement.getTextContent()));
-                                    createdAtInstance = calendar3;
+                                    createdAtInstance = DatatypeConverter.parseDateTime(createdAtElement.getTextContent());
                                     entryInstance.setCreatedAt(createdAtInstance);
                                 }
                                 
@@ -1653,10 +1608,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 if (updatedAtElement != null)
                                 {
                                     Calendar updatedAtInstance;
-                                    SimpleDateFormat simpleDateFormat4 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                                    Calendar calendar4 = Calendar.getInstance();
-                                    calendar4.setTime(simpleDateFormat4.parse(updatedAtElement.getTextContent()));
-                                    updatedAtInstance = calendar4;
+                                    updatedAtInstance = DatatypeConverter.parseDateTime(updatedAtElement.getTextContent());
                                     entryInstance.setUpdatedAt(updatedAtInstance);
                                 }
                                 
@@ -1665,10 +1617,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 if (accessedAtElement != null)
                                 {
                                     Calendar accessedAtInstance;
-                                    SimpleDateFormat simpleDateFormat5 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                                    Calendar calendar5 = Calendar.getInstance();
-                                    calendar5.setTime(simpleDateFormat5.parse(accessedAtElement.getTextContent()));
-                                    accessedAtInstance = calendar5;
+                                    accessedAtInstance = DatatypeConverter.parseDateTime(accessedAtElement.getTextContent());
                                     entryInstance.setAccessedAt(accessedAtInstance);
                                 }
                                 
@@ -1677,7 +1626,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 if (supportOrderingElement != null)
                                 {
                                     boolean supportOrderingInstance;
-                                    supportOrderingInstance = Boolean.parseBoolean(supportOrderingElement.getTextContent());
+                                    supportOrderingInstance = DatatypeConverter.parseBoolean(supportOrderingElement.getTextContent());
                                     entryInstance.setSupportOrdering(supportOrderingInstance);
                                 }
                                 
@@ -1694,7 +1643,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 if (subscriptionCountElement != null)
                                 {
                                     int subscriptionCountInstance;
-                                    subscriptionCountInstance = Integer.parseInt(subscriptionCountElement.getTextContent());
+                                    subscriptionCountInstance = DatatypeConverter.parseInt(subscriptionCountElement.getTextContent());
                                     entryInstance.setSubscriptionCount(subscriptionCountInstance);
                                 }
                                 
@@ -1780,12 +1729,10 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return A response to a request for a particular topic.
     */
     @Override
-    public ServiceBusTopicResponse update(String namespaceName, ServiceBusTopic topic) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, ParseException
+    public ServiceBusTopicResponse update(String namespaceName, ServiceBusTopic topic) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
     {
         // Validate
         if (namespaceName == null)
@@ -2106,7 +2053,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (maxSizeInMegabytesElement2 != null)
                         {
                             int maxSizeInMegabytesInstance;
-                            maxSizeInMegabytesInstance = Integer.parseInt(maxSizeInMegabytesElement2.getTextContent());
+                            maxSizeInMegabytesInstance = DatatypeConverter.parseInt(maxSizeInMegabytesElement2.getTextContent());
                             topicDescriptionInstance.setMaxSizeInMegabytes(maxSizeInMegabytesInstance);
                         }
                         
@@ -2115,7 +2062,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (requiresDuplicateDetectionElement2 != null)
                         {
                             boolean requiresDuplicateDetectionInstance;
-                            requiresDuplicateDetectionInstance = Boolean.parseBoolean(requiresDuplicateDetectionElement2.getTextContent());
+                            requiresDuplicateDetectionInstance = DatatypeConverter.parseBoolean(requiresDuplicateDetectionElement2.getTextContent());
                             topicDescriptionInstance.setRequiresDuplicateDetection(requiresDuplicateDetectionInstance);
                         }
                         
@@ -2133,7 +2080,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (enableBatchedOperationsElement2 != null)
                         {
                             boolean enableBatchedOperationsInstance;
-                            enableBatchedOperationsInstance = Boolean.parseBoolean(enableBatchedOperationsElement2.getTextContent());
+                            enableBatchedOperationsInstance = DatatypeConverter.parseBoolean(enableBatchedOperationsElement2.getTextContent());
                             topicDescriptionInstance.setEnableBatchedOperations(enableBatchedOperationsInstance);
                         }
                         
@@ -2142,7 +2089,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (sizeInBytesElement2 != null)
                         {
                             int sizeInBytesInstance;
-                            sizeInBytesInstance = Integer.parseInt(sizeInBytesElement2.getTextContent());
+                            sizeInBytesInstance = DatatypeConverter.parseInt(sizeInBytesElement2.getTextContent());
                             topicDescriptionInstance.setSizeInBytes(sizeInBytesInstance);
                         }
                         
@@ -2151,7 +2098,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (filteringMessagesBeforePublishingElement2 != null)
                         {
                             boolean filteringMessagesBeforePublishingInstance;
-                            filteringMessagesBeforePublishingInstance = Boolean.parseBoolean(filteringMessagesBeforePublishingElement2.getTextContent());
+                            filteringMessagesBeforePublishingInstance = DatatypeConverter.parseBoolean(filteringMessagesBeforePublishingElement2.getTextContent());
                             topicDescriptionInstance.setFilteringMessagesBeforePublishing(filteringMessagesBeforePublishingInstance);
                         }
                         
@@ -2160,7 +2107,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (isAnonymousAccessibleElement2 != null)
                         {
                             boolean isAnonymousAccessibleInstance;
-                            isAnonymousAccessibleInstance = Boolean.parseBoolean(isAnonymousAccessibleElement2.getTextContent());
+                            isAnonymousAccessibleInstance = DatatypeConverter.parseBoolean(isAnonymousAccessibleElement2.getTextContent());
                             topicDescriptionInstance.setIsAnonymousAccessible(isAnonymousAccessibleInstance);
                         }
                         
@@ -2208,10 +2155,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 if (createdTimeElement2 != null)
                                 {
                                     Calendar createdTimeInstance;
-                                    SimpleDateFormat simpleDateFormat6 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                                    Calendar calendar = Calendar.getInstance();
-                                    calendar.setTime(simpleDateFormat6.parse(createdTimeElement2.getTextContent()));
-                                    createdTimeInstance = calendar;
+                                    createdTimeInstance = DatatypeConverter.parseDateTime(createdTimeElement2.getTextContent());
                                     authorizationRuleInstance.setCreatedTime(createdTimeInstance);
                                 }
                                 
@@ -2229,10 +2173,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 if (modifiedTimeElement2 != null)
                                 {
                                     Calendar modifiedTimeInstance;
-                                    SimpleDateFormat simpleDateFormat7 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                                    Calendar calendar2 = Calendar.getInstance();
-                                    calendar2.setTime(simpleDateFormat7.parse(modifiedTimeElement2.getTextContent()));
-                                    modifiedTimeInstance = calendar2;
+                                    modifiedTimeInstance = DatatypeConverter.parseDateTime(modifiedTimeElement2.getTextContent());
                                     authorizationRuleInstance.setModifiedTime(modifiedTimeInstance);
                                 }
                                 
@@ -2270,10 +2211,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (createdAtElement2 != null)
                         {
                             Calendar createdAtInstance;
-                            SimpleDateFormat simpleDateFormat8 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                            Calendar calendar3 = Calendar.getInstance();
-                            calendar3.setTime(simpleDateFormat8.parse(createdAtElement2.getTextContent()));
-                            createdAtInstance = calendar3;
+                            createdAtInstance = DatatypeConverter.parseDateTime(createdAtElement2.getTextContent());
                             topicDescriptionInstance.setCreatedAt(createdAtInstance);
                         }
                         
@@ -2282,10 +2220,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (updatedAtElement2 != null)
                         {
                             Calendar updatedAtInstance;
-                            SimpleDateFormat simpleDateFormat9 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                            Calendar calendar4 = Calendar.getInstance();
-                            calendar4.setTime(simpleDateFormat9.parse(updatedAtElement2.getTextContent()));
-                            updatedAtInstance = calendar4;
+                            updatedAtInstance = DatatypeConverter.parseDateTime(updatedAtElement2.getTextContent());
                             topicDescriptionInstance.setUpdatedAt(updatedAtInstance);
                         }
                         
@@ -2294,10 +2229,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (accessedAtElement2 != null)
                         {
                             Calendar accessedAtInstance;
-                            SimpleDateFormat simpleDateFormat10 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                            Calendar calendar5 = Calendar.getInstance();
-                            calendar5.setTime(simpleDateFormat10.parse(accessedAtElement2.getTextContent()));
-                            accessedAtInstance = calendar5;
+                            accessedAtInstance = DatatypeConverter.parseDateTime(accessedAtElement2.getTextContent());
                             topicDescriptionInstance.setAccessedAt(accessedAtInstance);
                         }
                         
@@ -2306,7 +2238,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (supportOrderingElement2 != null)
                         {
                             boolean supportOrderingInstance;
-                            supportOrderingInstance = Boolean.parseBoolean(supportOrderingElement2.getTextContent());
+                            supportOrderingInstance = DatatypeConverter.parseBoolean(supportOrderingElement2.getTextContent());
                             topicDescriptionInstance.setSupportOrdering(supportOrderingInstance);
                         }
                         
@@ -2323,7 +2255,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (subscriptionCountElement2 != null)
                         {
                             int subscriptionCountInstance;
-                            subscriptionCountInstance = Integer.parseInt(subscriptionCountElement2.getTextContent());
+                            subscriptionCountInstance = DatatypeConverter.parseInt(subscriptionCountElement2.getTextContent());
                             topicDescriptionInstance.setSubscriptionCount(subscriptionCountInstance);
                         }
                         

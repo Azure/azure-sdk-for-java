@@ -2,6 +2,9 @@ package com.microsoft.windowsazure;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Calendar;
+
+import javax.xml.bind.DatatypeConverter;
 
 import com.microsoft.windowsazure.management.websites.models.ServerFarmWorkerSize;
 
@@ -21,13 +24,27 @@ public final class TextUtility
     
     public static Object convertStringTo(String input, String type) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException
     {
+        if (input.equals("null"))
+        {
+            return null;
+        }
+
         if (type.equals("System.Int32"))
         {
-            return Integer.parseInt(input);
+            return DatatypeConverter.parseInt(input);
         }
         else if (type.equals("System.String"))
         {
             return input;
+        }
+        else if (type.equals("System.DateTime"))
+        {
+            if (input.equals("DateTime.Now"))
+            {
+            	return Calendar.getInstance();
+            }
+
+            return DatatypeConverter.parseDateTime(input);
         }
         else if (Enum.class.isAssignableFrom(getJavaType(type)))
         {
@@ -51,13 +68,18 @@ public final class TextUtility
         {
             return String.class;
         }
+        else if (csharpType.equals("System.DateTime"))
+        {
+            return Calendar.class;
+        }
         else
         {
             return Class.forName(csharpType
                     .replace("Microsoft.WindowsAzure.Management",
                             "com.microsoft.windowsazure.management")
                     .replace(".Models", ".models")
-                    .replace(".WebSites", ".websites"));
+                    .replace(".WebSites.", ".websites.")
+                    .replace(".Storage.", ".storage."));
         }
     }
 }

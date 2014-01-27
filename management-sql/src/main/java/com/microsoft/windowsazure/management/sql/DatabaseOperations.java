@@ -32,7 +32,6 @@ import com.microsoft.windowsazure.management.sql.models.DatabaseListResponse;
 import com.microsoft.windowsazure.management.sql.models.DatabaseUpdateParameters;
 import com.microsoft.windowsazure.management.sql.models.DatabaseUpdateResponse;
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.concurrent.Future;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -60,12 +59,10 @@ public interface DatabaseOperations
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    DatabaseCreateResponse create(String serverName, DatabaseCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, ParseException;
+    DatabaseCreateResponse create(String serverName, DatabaseCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * Creates a database in a SQL Server database server.
@@ -120,12 +117,10 @@ public interface DatabaseOperations
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    DatabaseGetResponse get(String serverName, String databaseName) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException;
+    DatabaseGetResponse get(String serverName, String databaseName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
     
     /**
     * Returns information about a SQL Server database.
@@ -150,11 +145,9 @@ public interface DatabaseOperations
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return Response containing the list of databases for a given server.
     */
-    DatabaseListResponse list(String serverName) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException;
+    DatabaseListResponse list(String serverName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
     
     /**
     * Returns the list SQL Server databases.
@@ -180,12 +173,10 @@ public interface DatabaseOperations
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    DatabaseUpdateResponse update(String serverName, String databaseName, DatabaseUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, ParseException;
+    DatabaseUpdateResponse update(String serverName, String databaseName, DatabaseUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * Updates SQL Server database information.

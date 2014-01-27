@@ -51,6 +51,7 @@ import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import javax.xml.bind.DatatypeConverter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -771,7 +772,7 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
                 if (isAvailableElement != null)
                 {
                     boolean isAvailableInstance;
-                    isAvailableInstance = Boolean.parseBoolean(isAvailableElement.getTextContent());
+                    isAvailableInstance = DatatypeConverter.parseBoolean(isAvailableElement.getTextContent());
                     result.setIsAvailable(isAvailableInstance);
                 }
             }
@@ -1243,7 +1244,7 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
                         if (maxJobCountElement != null && (maxJobCountElement.getTextContent() == null || maxJobCountElement.getTextContent().isEmpty() == true) == false)
                         {
                             int maxJobCountInstance;
-                            maxJobCountInstance = Integer.parseInt(maxJobCountElement.getTextContent());
+                            maxJobCountInstance = DatatypeConverter.parseInt(maxJobCountElement.getTextContent());
                             quotaInstance.setMaxJobCount(maxJobCountInstance);
                         }
                         
@@ -1252,7 +1253,7 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
                         if (maxJobOccurrenceElement != null && (maxJobOccurrenceElement.getTextContent() == null || maxJobOccurrenceElement.getTextContent().isEmpty() == true) == false)
                         {
                             int maxJobOccurrenceInstance;
-                            maxJobOccurrenceInstance = Integer.parseInt(maxJobOccurrenceElement.getTextContent());
+                            maxJobOccurrenceInstance = DatatypeConverter.parseInt(maxJobOccurrenceElement.getTextContent());
                             quotaInstance.setMaxJobOccurrence(maxJobOccurrenceInstance);
                         }
                         
@@ -1277,7 +1278,7 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
                             if (intervalElement != null)
                             {
                                 int intervalInstance;
-                                intervalInstance = Integer.parseInt(intervalElement.getTextContent());
+                                intervalInstance = DatatypeConverter.parseInt(intervalElement.getTextContent());
                                 maxRecurrenceInstance.setInterval(intervalInstance);
                             }
                         }

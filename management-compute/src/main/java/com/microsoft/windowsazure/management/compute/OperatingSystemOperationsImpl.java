@@ -31,10 +31,10 @@ import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
-import java.text.ParseException;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
+import javax.xml.bind.DatatypeConverter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -125,12 +125,10 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
     * response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return The List Operating Systems operation response.
     */
     @Override
-    public OperatingSystemListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException, ParseException
+    public OperatingSystemListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
     {
         // Validate
         
@@ -220,7 +218,7 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
                     if (isDefaultElement != null)
                     {
                         boolean isDefaultInstance;
-                        isDefaultInstance = Boolean.parseBoolean(isDefaultElement.getTextContent());
+                        isDefaultInstance = DatatypeConverter.parseBoolean(isDefaultElement.getTextContent());
                         operatingSystemInstance.setIsDefault(isDefaultInstance);
                     }
                     
@@ -229,7 +227,7 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
                     if (isActiveElement != null)
                     {
                         boolean isActiveInstance;
-                        isActiveInstance = Boolean.parseBoolean(isActiveElement.getTextContent());
+                        isActiveInstance = DatatypeConverter.parseBoolean(isActiveElement.getTextContent());
                         operatingSystemInstance.setIsActive(isActiveInstance);
                     }
                     
@@ -238,7 +236,7 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
                     if (familyElement != null)
                     {
                         int familyInstance;
-                        familyInstance = Integer.parseInt(familyElement.getTextContent());
+                        familyInstance = DatatypeConverter.parseInt(familyElement.getTextContent());
                         operatingSystemInstance.setFamily(familyInstance);
                     }
                     
@@ -393,7 +391,7 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
                     if (nameElement != null)
                     {
                         int nameInstance;
-                        nameInstance = Integer.parseInt(nameElement.getTextContent());
+                        nameInstance = DatatypeConverter.parseInt(nameElement.getTextContent());
                         operatingSystemFamilyInstance.setName(nameInstance);
                     }
                     
@@ -439,7 +437,7 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
                             if (isDefaultElement != null)
                             {
                                 boolean isDefaultInstance;
-                                isDefaultInstance = Boolean.parseBoolean(isDefaultElement.getTextContent());
+                                isDefaultInstance = DatatypeConverter.parseBoolean(isDefaultElement.getTextContent());
                                 operatingSystemInstance.setIsDefault(isDefaultInstance);
                             }
                             
@@ -448,7 +446,7 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
                             if (isActiveElement != null)
                             {
                                 boolean isActiveInstance;
-                                isActiveInstance = Boolean.parseBoolean(isActiveElement.getTextContent());
+                                isActiveInstance = DatatypeConverter.parseBoolean(isActiveElement.getTextContent());
                                 operatingSystemInstance.setIsActive(isActiveInstance);
                             }
                         }

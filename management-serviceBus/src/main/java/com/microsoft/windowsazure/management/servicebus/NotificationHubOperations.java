@@ -29,7 +29,6 @@ import com.microsoft.windowsazure.management.servicebus.models.ServiceBusNotific
 import com.microsoft.windowsazure.management.servicebus.models.ServiceBusNotificationHubsResponse;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.text.ParseException;
 import java.util.concurrent.Future;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
@@ -53,14 +52,12 @@ public interface NotificationHubOperations
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
     * @return A standard storage response including an HTTP status code and
     * request ID.
     */
-    ServiceBusNotificationHubResponse get(String namespaceName, String notificationHubName) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException, URISyntaxException;
+    ServiceBusNotificationHubResponse get(String namespaceName, String notificationHubName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException;
     
     /**
     * Lists the notification hubs associated with a namespace.
@@ -110,14 +107,12 @@ public interface NotificationHubOperations
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
     * @return A standard storage response including an HTTP status code and
     * request ID.
     */
-    ServiceBusNotificationHubsResponse list(String namespaceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException, URISyntaxException;
+    ServiceBusNotificationHubsResponse list(String namespaceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException;
     
     /**
     * Lists the notification hubs associated with a namespace.

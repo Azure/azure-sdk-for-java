@@ -37,13 +37,21 @@ public class ManagementResourceStepdefs
     @Given("^I create a \"([^\"]*)\" with name \"([^\"]*)\"$")
     public void i_create_a_with_name(String objectType, String name) throws Exception
     {
-        if (objectType.equals("ManagementClient")) {
+        if (objectType.equals("ManagementClient"))
+        {
         	Class<?> serviceClass = Class.forName("com.microsoft.windowsazure.management.ManagementService");
         	Method method = serviceClass.getMethod("create", Configuration.class);
             objects.put(name, method.invoke(null, createConfiguration()));   
         }
-        else if (objectType.equals("WebSiteManagementClient")) {
+        else if (objectType.equals("WebSiteManagementClient"))
+        {
         	Class<?> serviceClass = Class.forName("com.microsoft.windowsazure.management.websites.WebSiteManagementService");
+        	Method method = serviceClass.getMethod("create", Configuration.class);
+            objects.put(name, method.invoke(null, createConfiguration()));   
+        }
+        else if (objectType.equals("StorageManagementClient"))
+        {
+        	Class<?> serviceClass = Class.forName("com.microsoft.windowsazure.management.storage.StorageManagementService");
         	Method method = serviceClass.getMethod("create", Configuration.class);
             objects.put(name, method.invoke(null, createConfiguration()));   
         }
@@ -133,16 +141,16 @@ public class ManagementResourceStepdefs
     }
     
     @When("^I invoke \"([^\"]*)\" with parameter value \"([^\"]*)\" of type \"([^\"]*)\" I get the result into \"([^\"]*)\"$")
-    public void when_invoke_with_parameter_value_get_result(String methodName, Object parameter, String parameterType, String resultName) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException
+    public void when_invoke_with_parameter_value_get_result(String methodName, String parameterValue, String parameterType, String resultName) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException
     {
-        objects.put(resultName, when_invoke_with_parameter_value(methodName, parameter, parameterType));
+        objects.put(resultName, when_invoke_with_parameter_converted_value(methodName, TextUtility.convertStringTo(parameterValue, parameterType), parameterType));
     }
     
     @When("^I invoke \"([^\"]*)\" with parameter \"([^\"]*)\" I get the result into \"([^\"]*)\"$")
     public void when_invoke_with_parameter_get_result(String methodName, String parameterName, String resultName) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException
     {
         Object parameter = objects.get(parameterName);
-        objects.put(resultName, when_invoke_with_parameter_value(methodName, parameter, parameter.getClass().getName()));
+        objects.put(resultName, when_invoke_with_parameter_converted_value(methodName, parameter, parameter.getClass().getName()));
     }
 
     @When("^I invoke \"([^\"]*)\" I get the result into \"([^\"]*)\"$")
@@ -172,20 +180,25 @@ public class ManagementResourceStepdefs
     }
     
     @When("^I invoke \"([^\"]*)\" with parameter value \"([^\"]*)\" of type \"([^\"]*)\"$")
-    public Object when_invoke_with_parameter_value(String methodName, Object parameter, String parameterType) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException
+    public Object when_invoke_with_parameter_value(String methodName, String parameterValue, String parameterType) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException
+    {
+    	return when_invoke_with_parameter_converted_value(methodName, TextUtility.convertStringTo(parameterValue, parameterType), parameterType);
+    }
+
+    public Object when_invoke_with_parameter_converted_value(String methodName, Object parameterValue, String parameterType) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException
     {
         String[] parts = methodName.split("\\.");
         Object object = getObject(parts);
         
         Method method = object.getClass().getMethod(TextUtility.ToCamelCase(parts[parts.length - 1]), TextUtility.getJavaType(parameterType));
-        return method.invoke(object, parameter);
+        return method.invoke(object, parameterValue);
     }
 
     @When("^I invoke \"([^\"]*)\" with parameter \"([^\"]*)\"$")
     public Object when_invoke_with_parameter(String methodName, String parameterName) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException
     {
         Object parameter = objects.get(parameterName);
-        return when_invoke_with_parameter_value(methodName, parameter, parameter.getClass().getName());
+        return when_invoke_with_parameter_converted_value(methodName, parameter, parameter.getClass().getName());
     }
 
     @When("^I invoke \"([^\"]*)\" with parameters \"([^\"]*)\" and \"([^\"]*)\"$")
@@ -205,7 +218,7 @@ public class ManagementResourceStepdefs
     @When("^invoke \"([^\"]*)\" with parameter value \"([^\"]*)\" of type \"([^\"]*)\"$")
     public Object then_invoke_with_parameter_value(String methodName, Object parameter, String parameterType) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException
     {
-        return when_invoke_with_parameter_value(methodName, parameter, parameterType);
+        return when_invoke_with_parameter_converted_value(methodName, parameter, parameterType);
     }
     
     @When("^invoke \"([^\"]*)\" with parameter values \"([^\"]*)\" of type \"([^\"]*)\" and \"([^\"]*)\" of type \"([^\"]*)\"$")

@@ -35,7 +35,6 @@ import com.microsoft.windowsazure.management.websites.models.WebSpacesListRespon
 import com.microsoft.windowsazure.management.websites.models.WebSpacesListWebSitesResponse;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.text.ParseException;
 import java.util.concurrent.Future;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -93,13 +92,11 @@ public interface WebSpaceOperations
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
     * @return The Get Web Space Details operation response.
     */
-    WebSpacesGetResponse get(String webSpaceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException, URISyntaxException;
+    WebSpacesGetResponse get(String webSpaceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException;
     
     /**
     * You can retrieve details for a specified webspace name by issuing an HTTP
@@ -222,13 +219,11 @@ public interface WebSpaceOperations
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
     * @return The List Web Sites operation response.
     */
-    WebSpacesListWebSitesResponse listWebSites(String webSpaceName, WebSiteListParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException, URISyntaxException;
+    WebSpacesListWebSitesResponse listWebSites(String webSpaceName, WebSiteListParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException;
     
     /**
     * You can retrieve a list of all web sites in a web space by issuing an

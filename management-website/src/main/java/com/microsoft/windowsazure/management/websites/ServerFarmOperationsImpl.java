@@ -40,10 +40,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.URISyntaxException;
-import java.text.ParseException;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
+import javax.xml.bind.DatatypeConverter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -146,14 +146,12 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
     * @return The Create Server Farm operation response.
     */
     @Override
-    public ServerFarmCreateResponse create(String webSpaceName, ServerFarmCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, ParseException, URISyntaxException
+    public ServerFarmCreateResponse create(String webSpaceName, ServerFarmCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException
     {
         // Validate
         if (webSpaceName == null)
@@ -283,7 +281,7 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
                 if (currentNumberOfWorkersElement2 != null)
                 {
                     int currentNumberOfWorkersInstance;
-                    currentNumberOfWorkersInstance = Integer.parseInt(currentNumberOfWorkersElement2.getTextContent());
+                    currentNumberOfWorkersInstance = DatatypeConverter.parseInt(currentNumberOfWorkersElement2.getTextContent());
                     result.setCurrentNumberOfWorkers(currentNumberOfWorkersInstance);
                 }
                 
@@ -310,7 +308,7 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
                 if (numberOfWorkersElement2 != null)
                 {
                     int numberOfWorkersInstance;
-                    numberOfWorkersInstance = Integer.parseInt(numberOfWorkersElement2.getTextContent());
+                    numberOfWorkersInstance = DatatypeConverter.parseInt(numberOfWorkersElement2.getTextContent());
                     result.setNumberOfWorkers(numberOfWorkersInstance);
                 }
                 
@@ -533,14 +531,12 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
     * @return The Get Server Farm operation response.
     */
     @Override
-    public ServerFarmGetResponse get(String webSpaceName, String serverFarmName) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException, URISyntaxException
+    public ServerFarmGetResponse get(String webSpaceName, String serverFarmName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
     {
         // Validate
         if (webSpaceName == null)
@@ -616,7 +612,7 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
                 if (currentNumberOfWorkersElement != null)
                 {
                     int currentNumberOfWorkersInstance;
-                    currentNumberOfWorkersInstance = Integer.parseInt(currentNumberOfWorkersElement.getTextContent());
+                    currentNumberOfWorkersInstance = DatatypeConverter.parseInt(currentNumberOfWorkersElement.getTextContent());
                     result.setCurrentNumberOfWorkers(currentNumberOfWorkersInstance);
                 }
                 
@@ -643,7 +639,7 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
                 if (numberOfWorkersElement != null)
                 {
                     int numberOfWorkersInstance;
-                    numberOfWorkersInstance = Integer.parseInt(numberOfWorkersElement.getTextContent());
+                    numberOfWorkersInstance = DatatypeConverter.parseInt(numberOfWorkersElement.getTextContent());
                     result.setNumberOfWorkers(numberOfWorkersInstance);
                 }
                 
@@ -817,7 +813,7 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
                     if (currentNumberOfWorkersElement != null)
                     {
                         int currentNumberOfWorkersInstance;
-                        currentNumberOfWorkersInstance = Integer.parseInt(currentNumberOfWorkersElement.getTextContent());
+                        currentNumberOfWorkersInstance = DatatypeConverter.parseInt(currentNumberOfWorkersElement.getTextContent());
                         serverFarmInstance.setCurrentNumberOfWorkers(currentNumberOfWorkersInstance);
                     }
                     
@@ -844,7 +840,7 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
                     if (numberOfWorkersElement != null)
                     {
                         int numberOfWorkersInstance;
-                        numberOfWorkersInstance = Integer.parseInt(numberOfWorkersElement.getTextContent());
+                        numberOfWorkersInstance = DatatypeConverter.parseInt(numberOfWorkersElement.getTextContent());
                         serverFarmInstance.setNumberOfWorkers(numberOfWorkersInstance);
                     }
                     
@@ -943,14 +939,12 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
     * @return The Update Server Farm operation response.
     */
     @Override
-    public ServerFarmUpdateResponse update(String webSpaceName, ServerFarmUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, ParseException, URISyntaxException
+    public ServerFarmUpdateResponse update(String webSpaceName, ServerFarmUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException
     {
         // Validate
         if (webSpaceName == null)
@@ -1080,7 +1074,7 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
                 if (currentNumberOfWorkersElement2 != null)
                 {
                     int currentNumberOfWorkersInstance;
-                    currentNumberOfWorkersInstance = Integer.parseInt(currentNumberOfWorkersElement2.getTextContent());
+                    currentNumberOfWorkersInstance = DatatypeConverter.parseInt(currentNumberOfWorkersElement2.getTextContent());
                     result.setCurrentNumberOfWorkers(currentNumberOfWorkersInstance);
                 }
                 
@@ -1107,7 +1101,7 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
                 if (numberOfWorkersElement2 != null)
                 {
                     int numberOfWorkersInstance;
-                    numberOfWorkersInstance = Integer.parseInt(numberOfWorkersElement2.getTextContent());
+                    numberOfWorkersInstance = DatatypeConverter.parseInt(numberOfWorkersElement2.getTextContent());
                     result.setNumberOfWorkers(numberOfWorkersInstance);
                 }
                 

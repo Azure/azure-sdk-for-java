@@ -30,7 +30,6 @@ import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.websites.models.WebSiteOperationStatusResponse;
 import java.io.IOException;
 import java.net.URI;
-import java.text.ParseException;
 import java.util.concurrent.Future;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
@@ -104,8 +103,6 @@ public interface WebSiteManagementClient extends FilterableService<WebSiteManage
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return The response body contains the status of the specified
     * long-running operation, indicating whether it has succeeded, is
     * inprogress, has time dout, or has failed. Note that this status is
@@ -113,7 +110,7 @@ public interface WebSiteManagementClient extends FilterableService<WebSiteManage
     * operation itself.  If the long-running operation failed, the response
     * body includes error information regarding the failure.
     */
-    WebSiteOperationStatusResponse getOperationStatus(String webSpaceName, String siteName, String operationId) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException;
+    WebSiteOperationStatusResponse getOperationStatus(String webSpaceName, String siteName, String operationId) throws IOException, ServiceException, ParserConfigurationException, SAXException;
     
     /**
     * The Get Operation Status operation returns the status of thespecified

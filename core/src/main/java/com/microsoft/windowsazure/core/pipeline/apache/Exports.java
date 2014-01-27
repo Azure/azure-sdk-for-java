@@ -19,7 +19,7 @@ import java.util.Map;
 import com.microsoft.windowsazure.core.Builder;
 import com.microsoft.windowsazure.core.Builder.Registry;
 import com.microsoft.windowsazure.credentials.CloudCredentials;
-import com.microsoft.windowsazure.management.ManagementConfiguration;
+import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import org.apache.http.impl.client.HttpClientBuilder;

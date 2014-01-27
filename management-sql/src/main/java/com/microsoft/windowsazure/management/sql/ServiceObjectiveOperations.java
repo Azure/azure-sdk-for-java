@@ -27,7 +27,6 @@ import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.sql.models.ServiceObjectiveGetResponse;
 import com.microsoft.windowsazure.management.sql.models.ServiceObjectiveListResponse;
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.concurrent.Future;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
@@ -51,12 +50,10 @@ public interface ServiceObjectiveOperations
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return Response containing the service objective for a given server and
     * service objective Id.
     */
-    ServiceObjectiveGetResponse get(String serverName, String serviceObjectiveId) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException;
+    ServiceObjectiveGetResponse get(String serverName, String serviceObjectiveId) throws IOException, ServiceException, ParserConfigurationException, SAXException;
     
     /**
     * Returns information about a certain Service Objective on a given Id.
@@ -80,12 +77,10 @@ public interface ServiceObjectiveOperations
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return Response containing the list of service objective for a given
     * server.
     */
-    ServiceObjectiveListResponse list(String serverName) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException;
+    ServiceObjectiveListResponse list(String serverName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
     
     /**
     * Returns information about all Service Objectives on a database server.

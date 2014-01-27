@@ -33,7 +33,6 @@ import com.microsoft.windowsazure.management.compute.models.VirtualMachineImageU
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineImageUpdateResponse;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.text.ParseException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import javax.xml.parsers.ParserConfigurationException;
@@ -77,12 +76,10 @@ public interface VirtualMachineImageOperations
     * @throws ServiceException Thrown if an unexpected response is found.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return Parameters returned from the Create Virtual Machine Image
     * operation.
     */
-    VirtualMachineImageCreateResponse create(VirtualMachineImageCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, ServiceException, URISyntaxException, ParseException;
+    VirtualMachineImageCreateResponse create(VirtualMachineImageCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, ServiceException, URISyntaxException;
     
     /**
     * The Add OS Image operation adds an operating system image that is stored
@@ -156,11 +153,9 @@ public interface VirtualMachineImageOperations
     * response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return A virtual machine image associated with your subscription.
     */
-    VirtualMachineImageGetResponse get(String imageName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException, ParseException;
+    VirtualMachineImageGetResponse get(String imageName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException;
     
     /**
     * The Get OS Image operation retrieves the details for an operating system
@@ -189,11 +184,9 @@ public interface VirtualMachineImageOperations
     * response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return The List OS Images operation response.
     */
-    VirtualMachineImageListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException, ParseException;
+    VirtualMachineImageListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException;
     
     /**
     * The List OS Images operation retrieves a list of the operating system
@@ -226,8 +219,6 @@ public interface VirtualMachineImageOperations
     * @throws ServiceException Thrown if an unexpected response is found.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -241,7 +232,7 @@ public interface VirtualMachineImageOperations
     * @return Parameters returned from the Create Virtual Machine Image
     * operation.
     */
-    VirtualMachineImageUpdateResponse update(String imageName, VirtualMachineImageUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException, ParseException, InterruptedException, ExecutionException, ServiceException;
+    VirtualMachineImageUpdateResponse update(String imageName, VirtualMachineImageUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException, InterruptedException, ExecutionException, ServiceException;
     
     /**
     * The Update OS Image operation updates an OS image that in your image

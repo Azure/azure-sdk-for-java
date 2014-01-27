@@ -38,6 +38,7 @@ import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import javax.xml.bind.DatatypeConverter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -637,7 +638,7 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
                                     if (includedElement != null)
                                     {
                                         long includedInstance;
-                                        includedInstance = Long.parseLong(includedElement.getTextContent());
+                                        includedInstance = DatatypeConverter.parseLong(includedElement.getTextContent());
                                         usageMeterInstance.setAmountIncluded(includedInstance);
                                     }
                                     
@@ -646,7 +647,7 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
                                     if (usedElement != null)
                                     {
                                         long usedInstance;
-                                        usedInstance = Long.parseLong(usedElement.getTextContent());
+                                        usedInstance = DatatypeConverter.parseLong(usedElement.getTextContent());
                                         usageMeterInstance.setAmountUsed(usedInstance);
                                     }
                                 }

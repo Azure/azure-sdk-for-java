@@ -37,7 +37,6 @@ import com.microsoft.windowsazure.management.virtualnetworks.models.GatewayListS
 import com.microsoft.windowsazure.management.virtualnetworks.models.GatewayOperationResponse;
 import com.microsoft.windowsazure.management.virtualnetworks.models.GatewayResetSharedKeyParameters;
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import javax.xml.parsers.ParserConfigurationException;
@@ -526,12 +525,10 @@ public interface GatewayOperations
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return A standard storage response including an HTTP status code and
     * request ID.
     */
-    GatewayGetResponse get(String virtualNetworkName) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException;
+    GatewayGetResponse get(String virtualNetworkName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
     
     /**
     * The Get Virtual network Gateway operation gets information on the network
@@ -678,12 +675,10 @@ public interface GatewayOperations
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return The response to a ListConnections request to a Virtual Network
     * Gateway.
     */
-    GatewayListConnectionsResponse listConnections(String virtualNetworkName) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException;
+    GatewayListConnectionsResponse listConnections(String virtualNetworkName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
     
     /**
     * The List Connections operation returns a list of the local network

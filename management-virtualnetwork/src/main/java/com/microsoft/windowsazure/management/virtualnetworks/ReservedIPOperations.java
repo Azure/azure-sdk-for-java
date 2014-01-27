@@ -30,7 +30,6 @@ import com.microsoft.windowsazure.management.virtualnetworks.models.NetworkReser
 import com.microsoft.windowsazure.management.virtualnetworks.models.NetworkReservedIPListResponse;
 import com.microsoft.windowsazure.management.virtualnetworks.models.VirtualNetworkOperationStatusResponse;
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import javax.xml.parsers.ParserConfigurationException;
@@ -232,11 +231,9 @@ public interface ReservedIPOperations
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return Preview Only. A reserved IP associated with your subscription.
     */
-    NetworkReservedIPGetResponse get(String ipName) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException;
+    NetworkReservedIPGetResponse get(String ipName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
     
     /**
     * Preview Only. The Get Reserved IP operation retrieves the details for
@@ -259,11 +256,9 @@ public interface ReservedIPOperations
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return Preview Only. The response structure for the Server List operation
     */
-    NetworkReservedIPListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException;
+    NetworkReservedIPListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException;
     
     /**
     * Preview Only. The List Reserved IP operation retrieves the virtual IPs

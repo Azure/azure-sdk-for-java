@@ -26,7 +26,6 @@ package com.microsoft.windowsazure.management;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.models.RoleSizeListResponse;
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.concurrent.Future;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
@@ -49,11 +48,9 @@ public interface RoleSizeOperations
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return The List Role Sizes operation response.
     */
-    RoleSizeListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException;
+    RoleSizeListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException;
     
     /**
     * The List Role Sizes operation lists all of the role sizes that are valid

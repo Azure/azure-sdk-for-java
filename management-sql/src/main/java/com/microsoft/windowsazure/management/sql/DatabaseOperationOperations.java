@@ -27,7 +27,6 @@ import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.sql.models.DatabaseOperationGetResponse;
 import com.microsoft.windowsazure.management.sql.models.DatabaseOperationListResponse;
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.concurrent.Future;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
@@ -53,12 +52,10 @@ public interface DatabaseOperationOperations
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return Response containing the database operation for a given operation
     * Guid.
     */
-    DatabaseOperationGetResponse get(String serverName, String operationGuid) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException;
+    DatabaseOperationGetResponse get(String serverName, String operationGuid) throws IOException, ServiceException, ParserConfigurationException, SAXException;
     
     /**
     * Returns information about one operation on a given operation Guid.
@@ -85,12 +82,10 @@ public interface DatabaseOperationOperations
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return Response containing the list of database operations for a given
     * server or database.
     */
-    DatabaseOperationListResponse listByDatabase(String serverName, String databaseName) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException;
+    DatabaseOperationListResponse listByDatabase(String serverName, String databaseName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
     
     /**
     * Returns the list database operations for a given server and database.
@@ -114,12 +109,10 @@ public interface DatabaseOperationOperations
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return Response containing the list of database operations for a given
     * server or database.
     */
-    DatabaseOperationListResponse listByServer(String serverName) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException;
+    DatabaseOperationListResponse listByServer(String serverName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
     
     /**
     * Returns the list database operations for a given server.

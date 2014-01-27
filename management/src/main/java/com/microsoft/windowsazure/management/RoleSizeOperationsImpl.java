@@ -29,10 +29,10 @@ import com.microsoft.windowsazure.management.models.RoleSizeListResponse;
 import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.ParseException;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
+import javax.xml.bind.DatatypeConverter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -102,12 +102,10 @@ public class RoleSizeOperationsImpl implements ServiceOperations<ManagementClien
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return The List Role Sizes operation response.
     */
     @Override
-    public RoleSizeListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException
+    public RoleSizeListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException
     {
         // Validate
         
@@ -197,7 +195,7 @@ public class RoleSizeOperationsImpl implements ServiceOperations<ManagementClien
                     if (coresElement != null)
                     {
                         int coresInstance;
-                        coresInstance = Integer.parseInt(coresElement.getTextContent());
+                        coresInstance = DatatypeConverter.parseInt(coresElement.getTextContent());
                         roleSizeInstance.setCores(coresInstance);
                     }
                     
@@ -206,7 +204,7 @@ public class RoleSizeOperationsImpl implements ServiceOperations<ManagementClien
                     if (memoryInMbElement != null)
                     {
                         int memoryInMbInstance;
-                        memoryInMbInstance = Integer.parseInt(memoryInMbElement.getTextContent());
+                        memoryInMbInstance = DatatypeConverter.parseInt(memoryInMbElement.getTextContent());
                         roleSizeInstance.setMemoryInMb(memoryInMbInstance);
                     }
                     
@@ -215,7 +213,7 @@ public class RoleSizeOperationsImpl implements ServiceOperations<ManagementClien
                     if (supportedByWebWorkerRolesElement != null)
                     {
                         boolean supportedByWebWorkerRolesInstance;
-                        supportedByWebWorkerRolesInstance = Boolean.parseBoolean(supportedByWebWorkerRolesElement.getTextContent());
+                        supportedByWebWorkerRolesInstance = DatatypeConverter.parseBoolean(supportedByWebWorkerRolesElement.getTextContent());
                         roleSizeInstance.setSupportedByWebWorkerRoles(supportedByWebWorkerRolesInstance);
                     }
                     
@@ -224,7 +222,7 @@ public class RoleSizeOperationsImpl implements ServiceOperations<ManagementClien
                     if (supportedByVirtualMachinesElement != null)
                     {
                         boolean supportedByVirtualMachinesInstance;
-                        supportedByVirtualMachinesInstance = Boolean.parseBoolean(supportedByVirtualMachinesElement.getTextContent());
+                        supportedByVirtualMachinesInstance = DatatypeConverter.parseBoolean(supportedByVirtualMachinesElement.getTextContent());
                         roleSizeInstance.setSupportedByVirtualMachines(supportedByVirtualMachinesInstance);
                     }
                 }

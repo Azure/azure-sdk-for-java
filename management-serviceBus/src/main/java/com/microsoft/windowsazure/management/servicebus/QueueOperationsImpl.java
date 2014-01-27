@@ -38,13 +38,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.URISyntaxException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.TimeZone;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
+import javax.xml.bind.DatatypeConverter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -136,14 +136,12 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
     * @return A response to a request for a particular queue.
     */
     @Override
-    public ServiceBusQueueResponse create(String namespaceName, ServiceBusQueue queue) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, ParseException, URISyntaxException
+    public ServiceBusQueueResponse create(String namespaceName, ServiceBusQueue queue) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException
     {
         // Validate
         if (namespaceName == null)
@@ -478,7 +476,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (maxSizeInMegabytesElement2 != null)
                         {
                             int maxSizeInMegabytesInstance;
-                            maxSizeInMegabytesInstance = Integer.parseInt(maxSizeInMegabytesElement2.getTextContent());
+                            maxSizeInMegabytesInstance = DatatypeConverter.parseInt(maxSizeInMegabytesElement2.getTextContent());
                             queueDescriptionInstance.setMaxSizeInMegabytes(maxSizeInMegabytesInstance);
                         }
                         
@@ -487,7 +485,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (requiresDuplicateDetectionElement2 != null)
                         {
                             boolean requiresDuplicateDetectionInstance;
-                            requiresDuplicateDetectionInstance = Boolean.parseBoolean(requiresDuplicateDetectionElement2.getTextContent());
+                            requiresDuplicateDetectionInstance = DatatypeConverter.parseBoolean(requiresDuplicateDetectionElement2.getTextContent());
                             queueDescriptionInstance.setRequiresDuplicateDetection(requiresDuplicateDetectionInstance);
                         }
                         
@@ -496,7 +494,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (requiresSessionElement2 != null)
                         {
                             boolean requiresSessionInstance;
-                            requiresSessionInstance = Boolean.parseBoolean(requiresSessionElement2.getTextContent());
+                            requiresSessionInstance = DatatypeConverter.parseBoolean(requiresSessionElement2.getTextContent());
                             queueDescriptionInstance.setRequiresSession(requiresSessionInstance);
                         }
                         
@@ -514,7 +512,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (deadLetteringOnMessageExpirationElement2 != null)
                         {
                             boolean deadLetteringOnMessageExpirationInstance;
-                            deadLetteringOnMessageExpirationInstance = Boolean.parseBoolean(deadLetteringOnMessageExpirationElement2.getTextContent());
+                            deadLetteringOnMessageExpirationInstance = DatatypeConverter.parseBoolean(deadLetteringOnMessageExpirationElement2.getTextContent());
                             queueDescriptionInstance.setDeadLetteringOnMessageExpiration(deadLetteringOnMessageExpirationInstance);
                         }
                         
@@ -532,7 +530,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (maxDeliveryCountElement2 != null)
                         {
                             int maxDeliveryCountInstance;
-                            maxDeliveryCountInstance = Integer.parseInt(maxDeliveryCountElement2.getTextContent());
+                            maxDeliveryCountInstance = DatatypeConverter.parseInt(maxDeliveryCountElement2.getTextContent());
                             queueDescriptionInstance.setMaxDeliveryCount(maxDeliveryCountInstance);
                         }
                         
@@ -541,7 +539,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (enableBatchedOperationsElement2 != null)
                         {
                             boolean enableBatchedOperationsInstance;
-                            enableBatchedOperationsInstance = Boolean.parseBoolean(enableBatchedOperationsElement2.getTextContent());
+                            enableBatchedOperationsInstance = DatatypeConverter.parseBoolean(enableBatchedOperationsElement2.getTextContent());
                             queueDescriptionInstance.setEnableBatchedOperations(enableBatchedOperationsInstance);
                         }
                         
@@ -550,7 +548,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (sizeInBytesElement2 != null)
                         {
                             int sizeInBytesInstance;
-                            sizeInBytesInstance = Integer.parseInt(sizeInBytesElement2.getTextContent());
+                            sizeInBytesInstance = DatatypeConverter.parseInt(sizeInBytesElement2.getTextContent());
                             queueDescriptionInstance.setSizeInBytes(sizeInBytesInstance);
                         }
                         
@@ -559,7 +557,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (messageCountElement2 != null)
                         {
                             int messageCountInstance;
-                            messageCountInstance = Integer.parseInt(messageCountElement2.getTextContent());
+                            messageCountInstance = DatatypeConverter.parseInt(messageCountElement2.getTextContent());
                             queueDescriptionInstance.setMessageCount(messageCountInstance);
                         }
                         
@@ -568,7 +566,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (isAnonymousAccessibleElement2 != null)
                         {
                             boolean isAnonymousAccessibleInstance;
-                            isAnonymousAccessibleInstance = Boolean.parseBoolean(isAnonymousAccessibleElement2.getTextContent());
+                            isAnonymousAccessibleInstance = DatatypeConverter.parseBoolean(isAnonymousAccessibleElement2.getTextContent());
                             queueDescriptionInstance.setIsAnonymousAccessible(isAnonymousAccessibleInstance);
                         }
                         
@@ -616,10 +614,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 if (createdTimeElement2 != null)
                                 {
                                     Calendar createdTimeInstance;
-                                    SimpleDateFormat simpleDateFormat6 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                                    Calendar calendar = Calendar.getInstance();
-                                    calendar.setTime(simpleDateFormat6.parse(createdTimeElement2.getTextContent()));
-                                    createdTimeInstance = calendar;
+                                    createdTimeInstance = DatatypeConverter.parseDateTime(createdTimeElement2.getTextContent());
                                     authorizationRuleInstance.setCreatedTime(createdTimeInstance);
                                 }
                                 
@@ -637,10 +632,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 if (modifiedTimeElement2 != null)
                                 {
                                     Calendar modifiedTimeInstance;
-                                    SimpleDateFormat simpleDateFormat7 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                                    Calendar calendar2 = Calendar.getInstance();
-                                    calendar2.setTime(simpleDateFormat7.parse(modifiedTimeElement2.getTextContent()));
-                                    modifiedTimeInstance = calendar2;
+                                    modifiedTimeInstance = DatatypeConverter.parseDateTime(modifiedTimeElement2.getTextContent());
                                     authorizationRuleInstance.setModifiedTime(modifiedTimeInstance);
                                 }
                                 
@@ -678,10 +670,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (createdAtElement2 != null)
                         {
                             Calendar createdAtInstance;
-                            SimpleDateFormat simpleDateFormat8 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                            Calendar calendar3 = Calendar.getInstance();
-                            calendar3.setTime(simpleDateFormat8.parse(createdAtElement2.getTextContent()));
-                            createdAtInstance = calendar3;
+                            createdAtInstance = DatatypeConverter.parseDateTime(createdAtElement2.getTextContent());
                             queueDescriptionInstance.setCreatedAt(createdAtInstance);
                         }
                         
@@ -690,10 +679,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (updatedAtElement2 != null)
                         {
                             Calendar updatedAtInstance;
-                            SimpleDateFormat simpleDateFormat9 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                            Calendar calendar4 = Calendar.getInstance();
-                            calendar4.setTime(simpleDateFormat9.parse(updatedAtElement2.getTextContent()));
-                            updatedAtInstance = calendar4;
+                            updatedAtInstance = DatatypeConverter.parseDateTime(updatedAtElement2.getTextContent());
                             queueDescriptionInstance.setUpdatedAt(updatedAtInstance);
                         }
                         
@@ -702,10 +688,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (accessedAtElement2 != null)
                         {
                             Calendar accessedAtInstance;
-                            SimpleDateFormat simpleDateFormat10 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                            Calendar calendar5 = Calendar.getInstance();
-                            calendar5.setTime(simpleDateFormat10.parse(accessedAtElement2.getTextContent()));
-                            accessedAtInstance = calendar5;
+                            accessedAtInstance = DatatypeConverter.parseDateTime(accessedAtElement2.getTextContent());
                             queueDescriptionInstance.setAccessedAt(accessedAtInstance);
                         }
                         
@@ -714,7 +697,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (supportOrderingElement2 != null)
                         {
                             boolean supportOrderingInstance;
-                            supportOrderingInstance = Boolean.parseBoolean(supportOrderingElement2.getTextContent());
+                            supportOrderingInstance = DatatypeConverter.parseBoolean(supportOrderingElement2.getTextContent());
                             queueDescriptionInstance.setSupportOrdering(supportOrderingInstance);
                         }
                         
@@ -730,7 +713,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                             if (activeMessageCountElement2 != null)
                             {
                                 int activeMessageCountInstance;
-                                activeMessageCountInstance = Integer.parseInt(activeMessageCountElement2.getTextContent());
+                                activeMessageCountInstance = DatatypeConverter.parseInt(activeMessageCountElement2.getTextContent());
                                 countDetailsInstance.setActiveMessageCount(activeMessageCountInstance);
                             }
                             
@@ -739,7 +722,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                             if (deadLetterMessageCountElement2 != null)
                             {
                                 int deadLetterMessageCountInstance;
-                                deadLetterMessageCountInstance = Integer.parseInt(deadLetterMessageCountElement2.getTextContent());
+                                deadLetterMessageCountInstance = DatatypeConverter.parseInt(deadLetterMessageCountElement2.getTextContent());
                                 countDetailsInstance.setDeadLetterMessageCount(deadLetterMessageCountInstance);
                             }
                             
@@ -748,7 +731,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                             if (scheduledMessageCountElement2 != null)
                             {
                                 int scheduledMessageCountInstance;
-                                scheduledMessageCountInstance = Integer.parseInt(scheduledMessageCountElement2.getTextContent());
+                                scheduledMessageCountInstance = DatatypeConverter.parseInt(scheduledMessageCountElement2.getTextContent());
                                 countDetailsInstance.setScheduledMessageCount(scheduledMessageCountInstance);
                             }
                             
@@ -757,7 +740,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                             if (transferDeadLetterMessageCountElement2 != null)
                             {
                                 int transferDeadLetterMessageCountInstance;
-                                transferDeadLetterMessageCountInstance = Integer.parseInt(transferDeadLetterMessageCountElement2.getTextContent());
+                                transferDeadLetterMessageCountInstance = DatatypeConverter.parseInt(transferDeadLetterMessageCountElement2.getTextContent());
                                 countDetailsInstance.setTransferDeadLetterMessageCount(transferDeadLetterMessageCountInstance);
                             }
                             
@@ -766,7 +749,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                             if (transferMessageCountElement2 != null)
                             {
                                 int transferMessageCountInstance;
-                                transferMessageCountInstance = Integer.parseInt(transferMessageCountElement2.getTextContent());
+                                transferMessageCountInstance = DatatypeConverter.parseInt(transferMessageCountElement2.getTextContent());
                                 countDetailsInstance.setTransferMessageCount(transferMessageCountInstance);
                             }
                         }
@@ -855,14 +838,12 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
     * @return A response to a request for a particular queue.
     */
     @Override
-    public ServiceBusQueueResponse get(String namespaceName, String queueName) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException, URISyntaxException
+    public ServiceBusQueueResponse get(String namespaceName, String queueName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
     {
         // Validate
         if (namespaceName == null)
@@ -965,7 +946,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (maxSizeInMegabytesElement != null)
                         {
                             int maxSizeInMegabytesInstance;
-                            maxSizeInMegabytesInstance = Integer.parseInt(maxSizeInMegabytesElement.getTextContent());
+                            maxSizeInMegabytesInstance = DatatypeConverter.parseInt(maxSizeInMegabytesElement.getTextContent());
                             queueDescriptionInstance.setMaxSizeInMegabytes(maxSizeInMegabytesInstance);
                         }
                         
@@ -974,7 +955,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (requiresDuplicateDetectionElement != null)
                         {
                             boolean requiresDuplicateDetectionInstance;
-                            requiresDuplicateDetectionInstance = Boolean.parseBoolean(requiresDuplicateDetectionElement.getTextContent());
+                            requiresDuplicateDetectionInstance = DatatypeConverter.parseBoolean(requiresDuplicateDetectionElement.getTextContent());
                             queueDescriptionInstance.setRequiresDuplicateDetection(requiresDuplicateDetectionInstance);
                         }
                         
@@ -983,7 +964,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (requiresSessionElement != null)
                         {
                             boolean requiresSessionInstance;
-                            requiresSessionInstance = Boolean.parseBoolean(requiresSessionElement.getTextContent());
+                            requiresSessionInstance = DatatypeConverter.parseBoolean(requiresSessionElement.getTextContent());
                             queueDescriptionInstance.setRequiresSession(requiresSessionInstance);
                         }
                         
@@ -1001,7 +982,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (deadLetteringOnMessageExpirationElement != null)
                         {
                             boolean deadLetteringOnMessageExpirationInstance;
-                            deadLetteringOnMessageExpirationInstance = Boolean.parseBoolean(deadLetteringOnMessageExpirationElement.getTextContent());
+                            deadLetteringOnMessageExpirationInstance = DatatypeConverter.parseBoolean(deadLetteringOnMessageExpirationElement.getTextContent());
                             queueDescriptionInstance.setDeadLetteringOnMessageExpiration(deadLetteringOnMessageExpirationInstance);
                         }
                         
@@ -1019,7 +1000,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (maxDeliveryCountElement != null)
                         {
                             int maxDeliveryCountInstance;
-                            maxDeliveryCountInstance = Integer.parseInt(maxDeliveryCountElement.getTextContent());
+                            maxDeliveryCountInstance = DatatypeConverter.parseInt(maxDeliveryCountElement.getTextContent());
                             queueDescriptionInstance.setMaxDeliveryCount(maxDeliveryCountInstance);
                         }
                         
@@ -1028,7 +1009,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (enableBatchedOperationsElement != null)
                         {
                             boolean enableBatchedOperationsInstance;
-                            enableBatchedOperationsInstance = Boolean.parseBoolean(enableBatchedOperationsElement.getTextContent());
+                            enableBatchedOperationsInstance = DatatypeConverter.parseBoolean(enableBatchedOperationsElement.getTextContent());
                             queueDescriptionInstance.setEnableBatchedOperations(enableBatchedOperationsInstance);
                         }
                         
@@ -1037,7 +1018,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (sizeInBytesElement != null)
                         {
                             int sizeInBytesInstance;
-                            sizeInBytesInstance = Integer.parseInt(sizeInBytesElement.getTextContent());
+                            sizeInBytesInstance = DatatypeConverter.parseInt(sizeInBytesElement.getTextContent());
                             queueDescriptionInstance.setSizeInBytes(sizeInBytesInstance);
                         }
                         
@@ -1046,7 +1027,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (messageCountElement != null)
                         {
                             int messageCountInstance;
-                            messageCountInstance = Integer.parseInt(messageCountElement.getTextContent());
+                            messageCountInstance = DatatypeConverter.parseInt(messageCountElement.getTextContent());
                             queueDescriptionInstance.setMessageCount(messageCountInstance);
                         }
                         
@@ -1055,7 +1036,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (isAnonymousAccessibleElement != null)
                         {
                             boolean isAnonymousAccessibleInstance;
-                            isAnonymousAccessibleInstance = Boolean.parseBoolean(isAnonymousAccessibleElement.getTextContent());
+                            isAnonymousAccessibleInstance = DatatypeConverter.parseBoolean(isAnonymousAccessibleElement.getTextContent());
                             queueDescriptionInstance.setIsAnonymousAccessible(isAnonymousAccessibleInstance);
                         }
                         
@@ -1103,10 +1084,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 if (createdTimeElement != null)
                                 {
                                     Calendar createdTimeInstance;
-                                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                                    Calendar calendar = Calendar.getInstance();
-                                    calendar.setTime(simpleDateFormat.parse(createdTimeElement.getTextContent()));
-                                    createdTimeInstance = calendar;
+                                    createdTimeInstance = DatatypeConverter.parseDateTime(createdTimeElement.getTextContent());
                                     authorizationRuleInstance.setCreatedTime(createdTimeInstance);
                                 }
                                 
@@ -1124,10 +1102,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 if (modifiedTimeElement != null)
                                 {
                                     Calendar modifiedTimeInstance;
-                                    SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                                    Calendar calendar2 = Calendar.getInstance();
-                                    calendar2.setTime(simpleDateFormat2.parse(modifiedTimeElement.getTextContent()));
-                                    modifiedTimeInstance = calendar2;
+                                    modifiedTimeInstance = DatatypeConverter.parseDateTime(modifiedTimeElement.getTextContent());
                                     authorizationRuleInstance.setModifiedTime(modifiedTimeInstance);
                                 }
                                 
@@ -1165,10 +1140,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (createdAtElement != null)
                         {
                             Calendar createdAtInstance;
-                            SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                            Calendar calendar3 = Calendar.getInstance();
-                            calendar3.setTime(simpleDateFormat3.parse(createdAtElement.getTextContent()));
-                            createdAtInstance = calendar3;
+                            createdAtInstance = DatatypeConverter.parseDateTime(createdAtElement.getTextContent());
                             queueDescriptionInstance.setCreatedAt(createdAtInstance);
                         }
                         
@@ -1177,10 +1149,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (updatedAtElement != null)
                         {
                             Calendar updatedAtInstance;
-                            SimpleDateFormat simpleDateFormat4 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                            Calendar calendar4 = Calendar.getInstance();
-                            calendar4.setTime(simpleDateFormat4.parse(updatedAtElement.getTextContent()));
-                            updatedAtInstance = calendar4;
+                            updatedAtInstance = DatatypeConverter.parseDateTime(updatedAtElement.getTextContent());
                             queueDescriptionInstance.setUpdatedAt(updatedAtInstance);
                         }
                         
@@ -1189,10 +1158,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (accessedAtElement != null)
                         {
                             Calendar accessedAtInstance;
-                            SimpleDateFormat simpleDateFormat5 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                            Calendar calendar5 = Calendar.getInstance();
-                            calendar5.setTime(simpleDateFormat5.parse(accessedAtElement.getTextContent()));
-                            accessedAtInstance = calendar5;
+                            accessedAtInstance = DatatypeConverter.parseDateTime(accessedAtElement.getTextContent());
                             queueDescriptionInstance.setAccessedAt(accessedAtInstance);
                         }
                         
@@ -1201,7 +1167,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (supportOrderingElement != null)
                         {
                             boolean supportOrderingInstance;
-                            supportOrderingInstance = Boolean.parseBoolean(supportOrderingElement.getTextContent());
+                            supportOrderingInstance = DatatypeConverter.parseBoolean(supportOrderingElement.getTextContent());
                             queueDescriptionInstance.setSupportOrdering(supportOrderingInstance);
                         }
                         
@@ -1217,7 +1183,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                             if (activeMessageCountElement != null)
                             {
                                 int activeMessageCountInstance;
-                                activeMessageCountInstance = Integer.parseInt(activeMessageCountElement.getTextContent());
+                                activeMessageCountInstance = DatatypeConverter.parseInt(activeMessageCountElement.getTextContent());
                                 countDetailsInstance.setActiveMessageCount(activeMessageCountInstance);
                             }
                             
@@ -1226,7 +1192,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                             if (deadLetterMessageCountElement != null)
                             {
                                 int deadLetterMessageCountInstance;
-                                deadLetterMessageCountInstance = Integer.parseInt(deadLetterMessageCountElement.getTextContent());
+                                deadLetterMessageCountInstance = DatatypeConverter.parseInt(deadLetterMessageCountElement.getTextContent());
                                 countDetailsInstance.setDeadLetterMessageCount(deadLetterMessageCountInstance);
                             }
                             
@@ -1235,7 +1201,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                             if (scheduledMessageCountElement != null)
                             {
                                 int scheduledMessageCountInstance;
-                                scheduledMessageCountInstance = Integer.parseInt(scheduledMessageCountElement.getTextContent());
+                                scheduledMessageCountInstance = DatatypeConverter.parseInt(scheduledMessageCountElement.getTextContent());
                                 countDetailsInstance.setScheduledMessageCount(scheduledMessageCountInstance);
                             }
                             
@@ -1244,7 +1210,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                             if (transferDeadLetterMessageCountElement != null)
                             {
                                 int transferDeadLetterMessageCountInstance;
-                                transferDeadLetterMessageCountInstance = Integer.parseInt(transferDeadLetterMessageCountElement.getTextContent());
+                                transferDeadLetterMessageCountInstance = DatatypeConverter.parseInt(transferDeadLetterMessageCountElement.getTextContent());
                                 countDetailsInstance.setTransferDeadLetterMessageCount(transferDeadLetterMessageCountInstance);
                             }
                             
@@ -1253,7 +1219,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                             if (transferMessageCountElement != null)
                             {
                                 int transferMessageCountInstance;
-                                transferMessageCountInstance = Integer.parseInt(transferMessageCountElement.getTextContent());
+                                transferMessageCountInstance = DatatypeConverter.parseInt(transferMessageCountElement.getTextContent());
                                 countDetailsInstance.setTransferMessageCount(transferMessageCountInstance);
                             }
                         }
@@ -1527,14 +1493,12 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
     * @return A response to a request for a list of queues.
     */
     @Override
-    public ServiceBusQueuesResponse list(String namespaceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException, URISyntaxException
+    public ServiceBusQueuesResponse list(String namespaceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
     {
         // Validate
         if (namespaceName == null)
@@ -1640,7 +1604,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 if (maxSizeInMegabytesElement != null)
                                 {
                                     int maxSizeInMegabytesInstance;
-                                    maxSizeInMegabytesInstance = Integer.parseInt(maxSizeInMegabytesElement.getTextContent());
+                                    maxSizeInMegabytesInstance = DatatypeConverter.parseInt(maxSizeInMegabytesElement.getTextContent());
                                     entryInstance.setMaxSizeInMegabytes(maxSizeInMegabytesInstance);
                                 }
                                 
@@ -1649,7 +1613,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 if (requiresDuplicateDetectionElement != null)
                                 {
                                     boolean requiresDuplicateDetectionInstance;
-                                    requiresDuplicateDetectionInstance = Boolean.parseBoolean(requiresDuplicateDetectionElement.getTextContent());
+                                    requiresDuplicateDetectionInstance = DatatypeConverter.parseBoolean(requiresDuplicateDetectionElement.getTextContent());
                                     entryInstance.setRequiresDuplicateDetection(requiresDuplicateDetectionInstance);
                                 }
                                 
@@ -1658,7 +1622,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 if (requiresSessionElement != null)
                                 {
                                     boolean requiresSessionInstance;
-                                    requiresSessionInstance = Boolean.parseBoolean(requiresSessionElement.getTextContent());
+                                    requiresSessionInstance = DatatypeConverter.parseBoolean(requiresSessionElement.getTextContent());
                                     entryInstance.setRequiresSession(requiresSessionInstance);
                                 }
                                 
@@ -1676,7 +1640,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 if (deadLetteringOnMessageExpirationElement != null)
                                 {
                                     boolean deadLetteringOnMessageExpirationInstance;
-                                    deadLetteringOnMessageExpirationInstance = Boolean.parseBoolean(deadLetteringOnMessageExpirationElement.getTextContent());
+                                    deadLetteringOnMessageExpirationInstance = DatatypeConverter.parseBoolean(deadLetteringOnMessageExpirationElement.getTextContent());
                                     entryInstance.setDeadLetteringOnMessageExpiration(deadLetteringOnMessageExpirationInstance);
                                 }
                                 
@@ -1694,7 +1658,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 if (maxDeliveryCountElement != null)
                                 {
                                     int maxDeliveryCountInstance;
-                                    maxDeliveryCountInstance = Integer.parseInt(maxDeliveryCountElement.getTextContent());
+                                    maxDeliveryCountInstance = DatatypeConverter.parseInt(maxDeliveryCountElement.getTextContent());
                                     entryInstance.setMaxDeliveryCount(maxDeliveryCountInstance);
                                 }
                                 
@@ -1703,7 +1667,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 if (enableBatchedOperationsElement != null)
                                 {
                                     boolean enableBatchedOperationsInstance;
-                                    enableBatchedOperationsInstance = Boolean.parseBoolean(enableBatchedOperationsElement.getTextContent());
+                                    enableBatchedOperationsInstance = DatatypeConverter.parseBoolean(enableBatchedOperationsElement.getTextContent());
                                     entryInstance.setEnableBatchedOperations(enableBatchedOperationsInstance);
                                 }
                                 
@@ -1712,7 +1676,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 if (sizeInBytesElement != null)
                                 {
                                     int sizeInBytesInstance;
-                                    sizeInBytesInstance = Integer.parseInt(sizeInBytesElement.getTextContent());
+                                    sizeInBytesInstance = DatatypeConverter.parseInt(sizeInBytesElement.getTextContent());
                                     entryInstance.setSizeInBytes(sizeInBytesInstance);
                                 }
                                 
@@ -1721,7 +1685,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 if (messageCountElement != null)
                                 {
                                     int messageCountInstance;
-                                    messageCountInstance = Integer.parseInt(messageCountElement.getTextContent());
+                                    messageCountInstance = DatatypeConverter.parseInt(messageCountElement.getTextContent());
                                     entryInstance.setMessageCount(messageCountInstance);
                                 }
                                 
@@ -1730,7 +1694,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 if (isAnonymousAccessibleElement != null)
                                 {
                                     boolean isAnonymousAccessibleInstance;
-                                    isAnonymousAccessibleInstance = Boolean.parseBoolean(isAnonymousAccessibleElement.getTextContent());
+                                    isAnonymousAccessibleInstance = DatatypeConverter.parseBoolean(isAnonymousAccessibleElement.getTextContent());
                                     entryInstance.setIsAnonymousAccessible(isAnonymousAccessibleInstance);
                                 }
                                 
@@ -1778,10 +1742,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                                         if (createdTimeElement != null)
                                         {
                                             Calendar createdTimeInstance;
-                                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                                            Calendar calendar = Calendar.getInstance();
-                                            calendar.setTime(simpleDateFormat.parse(createdTimeElement.getTextContent()));
-                                            createdTimeInstance = calendar;
+                                            createdTimeInstance = DatatypeConverter.parseDateTime(createdTimeElement.getTextContent());
                                             authorizationRuleInstance.setCreatedTime(createdTimeInstance);
                                         }
                                         
@@ -1799,10 +1760,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                                         if (modifiedTimeElement != null)
                                         {
                                             Calendar modifiedTimeInstance;
-                                            SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                                            Calendar calendar2 = Calendar.getInstance();
-                                            calendar2.setTime(simpleDateFormat2.parse(modifiedTimeElement.getTextContent()));
-                                            modifiedTimeInstance = calendar2;
+                                            modifiedTimeInstance = DatatypeConverter.parseDateTime(modifiedTimeElement.getTextContent());
                                             authorizationRuleInstance.setModifiedTime(modifiedTimeInstance);
                                         }
                                         
@@ -1840,10 +1798,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 if (createdAtElement != null)
                                 {
                                     Calendar createdAtInstance;
-                                    SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                                    Calendar calendar3 = Calendar.getInstance();
-                                    calendar3.setTime(simpleDateFormat3.parse(createdAtElement.getTextContent()));
-                                    createdAtInstance = calendar3;
+                                    createdAtInstance = DatatypeConverter.parseDateTime(createdAtElement.getTextContent());
                                     entryInstance.setCreatedAt(createdAtInstance);
                                 }
                                 
@@ -1852,10 +1807,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 if (updatedAtElement != null)
                                 {
                                     Calendar updatedAtInstance;
-                                    SimpleDateFormat simpleDateFormat4 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                                    Calendar calendar4 = Calendar.getInstance();
-                                    calendar4.setTime(simpleDateFormat4.parse(updatedAtElement.getTextContent()));
-                                    updatedAtInstance = calendar4;
+                                    updatedAtInstance = DatatypeConverter.parseDateTime(updatedAtElement.getTextContent());
                                     entryInstance.setUpdatedAt(updatedAtInstance);
                                 }
                                 
@@ -1864,10 +1816,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 if (accessedAtElement != null)
                                 {
                                     Calendar accessedAtInstance;
-                                    SimpleDateFormat simpleDateFormat5 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                                    Calendar calendar5 = Calendar.getInstance();
-                                    calendar5.setTime(simpleDateFormat5.parse(accessedAtElement.getTextContent()));
-                                    accessedAtInstance = calendar5;
+                                    accessedAtInstance = DatatypeConverter.parseDateTime(accessedAtElement.getTextContent());
                                     entryInstance.setAccessedAt(accessedAtInstance);
                                 }
                                 
@@ -1876,7 +1825,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 if (supportOrderingElement != null)
                                 {
                                     boolean supportOrderingInstance;
-                                    supportOrderingInstance = Boolean.parseBoolean(supportOrderingElement.getTextContent());
+                                    supportOrderingInstance = DatatypeConverter.parseBoolean(supportOrderingElement.getTextContent());
                                     entryInstance.setSupportOrdering(supportOrderingInstance);
                                 }
                                 
@@ -1892,7 +1841,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                                     if (activeMessageCountElement != null)
                                     {
                                         int activeMessageCountInstance;
-                                        activeMessageCountInstance = Integer.parseInt(activeMessageCountElement.getTextContent());
+                                        activeMessageCountInstance = DatatypeConverter.parseInt(activeMessageCountElement.getTextContent());
                                         countDetailsInstance.setActiveMessageCount(activeMessageCountInstance);
                                     }
                                     
@@ -1901,7 +1850,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                                     if (deadLetterMessageCountElement != null)
                                     {
                                         int deadLetterMessageCountInstance;
-                                        deadLetterMessageCountInstance = Integer.parseInt(deadLetterMessageCountElement.getTextContent());
+                                        deadLetterMessageCountInstance = DatatypeConverter.parseInt(deadLetterMessageCountElement.getTextContent());
                                         countDetailsInstance.setDeadLetterMessageCount(deadLetterMessageCountInstance);
                                     }
                                     
@@ -1910,7 +1859,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                                     if (scheduledMessageCountElement != null)
                                     {
                                         int scheduledMessageCountInstance;
-                                        scheduledMessageCountInstance = Integer.parseInt(scheduledMessageCountElement.getTextContent());
+                                        scheduledMessageCountInstance = DatatypeConverter.parseInt(scheduledMessageCountElement.getTextContent());
                                         countDetailsInstance.setScheduledMessageCount(scheduledMessageCountInstance);
                                     }
                                     
@@ -1919,7 +1868,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                                     if (transferDeadLetterMessageCountElement != null)
                                     {
                                         int transferDeadLetterMessageCountInstance;
-                                        transferDeadLetterMessageCountInstance = Integer.parseInt(transferDeadLetterMessageCountElement.getTextContent());
+                                        transferDeadLetterMessageCountInstance = DatatypeConverter.parseInt(transferDeadLetterMessageCountElement.getTextContent());
                                         countDetailsInstance.setTransferDeadLetterMessageCount(transferDeadLetterMessageCountInstance);
                                     }
                                     
@@ -1928,7 +1877,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                                     if (transferMessageCountElement != null)
                                     {
                                         int transferMessageCountInstance;
-                                        transferMessageCountInstance = Integer.parseInt(transferMessageCountElement.getTextContent());
+                                        transferMessageCountInstance = DatatypeConverter.parseInt(transferMessageCountElement.getTextContent());
                                         countDetailsInstance.setTransferMessageCount(transferMessageCountInstance);
                                     }
                                 }
@@ -2017,12 +1966,10 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return A response to a request for a particular queue.
     */
     @Override
-    public ServiceBusQueueResponse update(String namespaceName, ServiceBusQueue queue) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, ParseException
+    public ServiceBusQueueResponse update(String namespaceName, ServiceBusQueue queue) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
     {
         // Validate
         if (namespaceName == null)
@@ -2358,7 +2305,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (maxSizeInMegabytesElement2 != null)
                         {
                             int maxSizeInMegabytesInstance;
-                            maxSizeInMegabytesInstance = Integer.parseInt(maxSizeInMegabytesElement2.getTextContent());
+                            maxSizeInMegabytesInstance = DatatypeConverter.parseInt(maxSizeInMegabytesElement2.getTextContent());
                             queueDescriptionInstance.setMaxSizeInMegabytes(maxSizeInMegabytesInstance);
                         }
                         
@@ -2367,7 +2314,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (requiresDuplicateDetectionElement2 != null)
                         {
                             boolean requiresDuplicateDetectionInstance;
-                            requiresDuplicateDetectionInstance = Boolean.parseBoolean(requiresDuplicateDetectionElement2.getTextContent());
+                            requiresDuplicateDetectionInstance = DatatypeConverter.parseBoolean(requiresDuplicateDetectionElement2.getTextContent());
                             queueDescriptionInstance.setRequiresDuplicateDetection(requiresDuplicateDetectionInstance);
                         }
                         
@@ -2376,7 +2323,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (requiresSessionElement2 != null)
                         {
                             boolean requiresSessionInstance;
-                            requiresSessionInstance = Boolean.parseBoolean(requiresSessionElement2.getTextContent());
+                            requiresSessionInstance = DatatypeConverter.parseBoolean(requiresSessionElement2.getTextContent());
                             queueDescriptionInstance.setRequiresSession(requiresSessionInstance);
                         }
                         
@@ -2394,7 +2341,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (deadLetteringOnMessageExpirationElement2 != null)
                         {
                             boolean deadLetteringOnMessageExpirationInstance;
-                            deadLetteringOnMessageExpirationInstance = Boolean.parseBoolean(deadLetteringOnMessageExpirationElement2.getTextContent());
+                            deadLetteringOnMessageExpirationInstance = DatatypeConverter.parseBoolean(deadLetteringOnMessageExpirationElement2.getTextContent());
                             queueDescriptionInstance.setDeadLetteringOnMessageExpiration(deadLetteringOnMessageExpirationInstance);
                         }
                         
@@ -2412,7 +2359,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (maxDeliveryCountElement2 != null)
                         {
                             int maxDeliveryCountInstance;
-                            maxDeliveryCountInstance = Integer.parseInt(maxDeliveryCountElement2.getTextContent());
+                            maxDeliveryCountInstance = DatatypeConverter.parseInt(maxDeliveryCountElement2.getTextContent());
                             queueDescriptionInstance.setMaxDeliveryCount(maxDeliveryCountInstance);
                         }
                         
@@ -2421,7 +2368,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (enableBatchedOperationsElement2 != null)
                         {
                             boolean enableBatchedOperationsInstance;
-                            enableBatchedOperationsInstance = Boolean.parseBoolean(enableBatchedOperationsElement2.getTextContent());
+                            enableBatchedOperationsInstance = DatatypeConverter.parseBoolean(enableBatchedOperationsElement2.getTextContent());
                             queueDescriptionInstance.setEnableBatchedOperations(enableBatchedOperationsInstance);
                         }
                         
@@ -2430,7 +2377,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (sizeInBytesElement2 != null)
                         {
                             int sizeInBytesInstance;
-                            sizeInBytesInstance = Integer.parseInt(sizeInBytesElement2.getTextContent());
+                            sizeInBytesInstance = DatatypeConverter.parseInt(sizeInBytesElement2.getTextContent());
                             queueDescriptionInstance.setSizeInBytes(sizeInBytesInstance);
                         }
                         
@@ -2439,7 +2386,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (messageCountElement2 != null)
                         {
                             int messageCountInstance;
-                            messageCountInstance = Integer.parseInt(messageCountElement2.getTextContent());
+                            messageCountInstance = DatatypeConverter.parseInt(messageCountElement2.getTextContent());
                             queueDescriptionInstance.setMessageCount(messageCountInstance);
                         }
                         
@@ -2448,7 +2395,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (isAnonymousAccessibleElement2 != null)
                         {
                             boolean isAnonymousAccessibleInstance;
-                            isAnonymousAccessibleInstance = Boolean.parseBoolean(isAnonymousAccessibleElement2.getTextContent());
+                            isAnonymousAccessibleInstance = DatatypeConverter.parseBoolean(isAnonymousAccessibleElement2.getTextContent());
                             queueDescriptionInstance.setIsAnonymousAccessible(isAnonymousAccessibleInstance);
                         }
                         
@@ -2496,10 +2443,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 if (createdTimeElement2 != null)
                                 {
                                     Calendar createdTimeInstance;
-                                    SimpleDateFormat simpleDateFormat6 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                                    Calendar calendar = Calendar.getInstance();
-                                    calendar.setTime(simpleDateFormat6.parse(createdTimeElement2.getTextContent()));
-                                    createdTimeInstance = calendar;
+                                    createdTimeInstance = DatatypeConverter.parseDateTime(createdTimeElement2.getTextContent());
                                     authorizationRuleInstance.setCreatedTime(createdTimeInstance);
                                 }
                                 
@@ -2517,10 +2461,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 if (modifiedTimeElement2 != null)
                                 {
                                     Calendar modifiedTimeInstance;
-                                    SimpleDateFormat simpleDateFormat7 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                                    Calendar calendar2 = Calendar.getInstance();
-                                    calendar2.setTime(simpleDateFormat7.parse(modifiedTimeElement2.getTextContent()));
-                                    modifiedTimeInstance = calendar2;
+                                    modifiedTimeInstance = DatatypeConverter.parseDateTime(modifiedTimeElement2.getTextContent());
                                     authorizationRuleInstance.setModifiedTime(modifiedTimeInstance);
                                 }
                                 
@@ -2558,10 +2499,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (createdAtElement2 != null)
                         {
                             Calendar createdAtInstance;
-                            SimpleDateFormat simpleDateFormat8 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                            Calendar calendar3 = Calendar.getInstance();
-                            calendar3.setTime(simpleDateFormat8.parse(createdAtElement2.getTextContent()));
-                            createdAtInstance = calendar3;
+                            createdAtInstance = DatatypeConverter.parseDateTime(createdAtElement2.getTextContent());
                             queueDescriptionInstance.setCreatedAt(createdAtInstance);
                         }
                         
@@ -2570,10 +2508,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (updatedAtElement2 != null)
                         {
                             Calendar updatedAtInstance;
-                            SimpleDateFormat simpleDateFormat9 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                            Calendar calendar4 = Calendar.getInstance();
-                            calendar4.setTime(simpleDateFormat9.parse(updatedAtElement2.getTextContent()));
-                            updatedAtInstance = calendar4;
+                            updatedAtInstance = DatatypeConverter.parseDateTime(updatedAtElement2.getTextContent());
                             queueDescriptionInstance.setUpdatedAt(updatedAtInstance);
                         }
                         
@@ -2582,10 +2517,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (accessedAtElement2 != null)
                         {
                             Calendar accessedAtInstance;
-                            SimpleDateFormat simpleDateFormat10 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                            Calendar calendar5 = Calendar.getInstance();
-                            calendar5.setTime(simpleDateFormat10.parse(accessedAtElement2.getTextContent()));
-                            accessedAtInstance = calendar5;
+                            accessedAtInstance = DatatypeConverter.parseDateTime(accessedAtElement2.getTextContent());
                             queueDescriptionInstance.setAccessedAt(accessedAtInstance);
                         }
                         
@@ -2594,7 +2526,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                         if (supportOrderingElement2 != null)
                         {
                             boolean supportOrderingInstance;
-                            supportOrderingInstance = Boolean.parseBoolean(supportOrderingElement2.getTextContent());
+                            supportOrderingInstance = DatatypeConverter.parseBoolean(supportOrderingElement2.getTextContent());
                             queueDescriptionInstance.setSupportOrdering(supportOrderingInstance);
                         }
                         
@@ -2610,7 +2542,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                             if (activeMessageCountElement2 != null)
                             {
                                 int activeMessageCountInstance;
-                                activeMessageCountInstance = Integer.parseInt(activeMessageCountElement2.getTextContent());
+                                activeMessageCountInstance = DatatypeConverter.parseInt(activeMessageCountElement2.getTextContent());
                                 countDetailsInstance.setActiveMessageCount(activeMessageCountInstance);
                             }
                             
@@ -2619,7 +2551,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                             if (deadLetterMessageCountElement2 != null)
                             {
                                 int deadLetterMessageCountInstance;
-                                deadLetterMessageCountInstance = Integer.parseInt(deadLetterMessageCountElement2.getTextContent());
+                                deadLetterMessageCountInstance = DatatypeConverter.parseInt(deadLetterMessageCountElement2.getTextContent());
                                 countDetailsInstance.setDeadLetterMessageCount(deadLetterMessageCountInstance);
                             }
                             
@@ -2628,7 +2560,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                             if (scheduledMessageCountElement2 != null)
                             {
                                 int scheduledMessageCountInstance;
-                                scheduledMessageCountInstance = Integer.parseInt(scheduledMessageCountElement2.getTextContent());
+                                scheduledMessageCountInstance = DatatypeConverter.parseInt(scheduledMessageCountElement2.getTextContent());
                                 countDetailsInstance.setScheduledMessageCount(scheduledMessageCountInstance);
                             }
                             
@@ -2637,7 +2569,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                             if (transferDeadLetterMessageCountElement2 != null)
                             {
                                 int transferDeadLetterMessageCountInstance;
-                                transferDeadLetterMessageCountInstance = Integer.parseInt(transferDeadLetterMessageCountElement2.getTextContent());
+                                transferDeadLetterMessageCountInstance = DatatypeConverter.parseInt(transferDeadLetterMessageCountElement2.getTextContent());
                                 countDetailsInstance.setTransferDeadLetterMessageCount(transferDeadLetterMessageCountInstance);
                             }
                             
@@ -2646,7 +2578,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                             if (transferMessageCountElement2 != null)
                             {
                                 int transferMessageCountInstance;
-                                transferMessageCountInstance = Integer.parseInt(transferMessageCountElement2.getTextContent());
+                                transferMessageCountInstance = DatatypeConverter.parseInt(transferMessageCountElement2.getTextContent());
                                 countDetailsInstance.setTransferMessageCount(transferMessageCountInstance);
                             }
                         }

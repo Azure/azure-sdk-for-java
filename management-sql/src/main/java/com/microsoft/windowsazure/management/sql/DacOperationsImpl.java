@@ -36,12 +36,11 @@ import java.io.StringWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
+import javax.xml.bind.DatatypeConverter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -354,12 +353,10 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
     * response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return The response structure for the DAC GetStatus operation.
     */
     @Override
-    public DacGetStatusResponse getStatus(String serverName, String fullyQualifiedServerName, String username, String password, String requestId) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException, ParseException
+    public DacGetStatusResponse getStatus(String serverName, String fullyQualifiedServerName, String username, String password, String requestId) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
     {
         // Validate
         if (serverName == null)
@@ -498,10 +495,7 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
                         if (lastModifiedTimeElement != null)
                         {
                             Calendar lastModifiedTimeInstance;
-                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                            Calendar calendar = Calendar.getInstance();
-                            calendar.setTime(simpleDateFormat.parse(lastModifiedTimeElement.getTextContent()));
-                            lastModifiedTimeInstance = calendar;
+                            lastModifiedTimeInstance = DatatypeConverter.parseDateTime(lastModifiedTimeElement.getTextContent());
                             statusInfoInstance.setLastModifiedTime(lastModifiedTimeInstance);
                         }
                         
@@ -510,10 +504,7 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
                         if (queuedTimeElement != null)
                         {
                             Calendar queuedTimeInstance;
-                            SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                            Calendar calendar2 = Calendar.getInstance();
-                            calendar2.setTime(simpleDateFormat2.parse(queuedTimeElement.getTextContent()));
-                            queuedTimeInstance = calendar2;
+                            queuedTimeInstance = DatatypeConverter.parseDateTime(queuedTimeElement.getTextContent());
                             statusInfoInstance.setQueuedTime(queuedTimeInstance);
                         }
                         

@@ -29,7 +29,6 @@ import com.microsoft.windowsazure.management.virtualnetworks.models.ClientRootCe
 import com.microsoft.windowsazure.management.virtualnetworks.models.ClientRootCertificateListResponse;
 import com.microsoft.windowsazure.management.virtualnetworks.models.GatewayOperationResponse;
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import javax.xml.parsers.ParserConfigurationException;
@@ -149,12 +148,10 @@ public interface ClientRootCertificateOperations
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return A standard storage response including an HTTP status code and
     * request ID.
     */
-    ClientRootCertificateGetResponse get(String virtualNetworkName, String certificateThumbprint) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException;
+    ClientRootCertificateGetResponse get(String virtualNetworkName, String certificateThumbprint) throws IOException, ServiceException, ParserConfigurationException, SAXException;
     
     /**
     * The Get Client Root Certificate operation returns the public portion of a
@@ -188,11 +185,9 @@ public interface ClientRootCertificateOperations
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return The response to the list client root certificates request.
     */
-    ClientRootCertificateListResponse list(String virtualNetworkName) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException;
+    ClientRootCertificateListResponse list(String virtualNetworkName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
     
     /**
     * The List Client Root Certificates operation returns a list of all the

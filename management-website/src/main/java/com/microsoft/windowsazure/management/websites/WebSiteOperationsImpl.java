@@ -65,7 +65,6 @@ import java.net.InetAddress;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -74,6 +73,7 @@ import java.util.TimeZone;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import javax.xml.bind.DatatypeConverter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -163,8 +163,6 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return The response body contains the status of the specified
     * long-running operation, indicating whether it has succeeded, is
     * inprogress, has time dout, or has failed. Note that this status is
@@ -173,7 +171,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * body includes error information regarding the failure.
     */
     @Override
-    public WebSiteOperationStatusResponse beginSwapingSlots(String webSpaceName, String webSiteName, String slotName) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException
+    public WebSiteOperationStatusResponse beginSwapingSlots(String webSpaceName, String webSiteName, String slotName) throws IOException, ServiceException, ParserConfigurationException, SAXException
     {
         // Validate
         if (webSpaceName == null)
@@ -257,10 +255,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 if (createdTimeElement != null)
                 {
                     Calendar createdTimeInstance;
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(simpleDateFormat.parse(createdTimeElement.getTextContent()));
-                    createdTimeInstance = calendar;
+                    createdTimeInstance = DatatypeConverter.parseDateTime(createdTimeElement.getTextContent());
                     result.setCreatedTime(createdTimeInstance);
                 }
                 
@@ -400,10 +395,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 if (expirationTimeElement != null)
                 {
                     Calendar expirationTimeInstance;
-                    SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                    Calendar calendar2 = Calendar.getInstance();
-                    calendar2.setTime(simpleDateFormat2.parse(expirationTimeElement.getTextContent()));
-                    expirationTimeInstance = calendar2;
+                    expirationTimeInstance = DatatypeConverter.parseDateTime(expirationTimeElement.getTextContent());
                     result.setExpirationTime(expirationTimeInstance);
                 }
                 
@@ -448,10 +440,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 if (modifiedTimeElement != null)
                 {
                     Calendar modifiedTimeInstance;
-                    SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                    Calendar calendar3 = Calendar.getInstance();
-                    calendar3.setTime(simpleDateFormat3.parse(modifiedTimeElement.getTextContent()));
-                    modifiedTimeInstance = calendar3;
+                    modifiedTimeInstance = DatatypeConverter.parseDateTime(modifiedTimeElement.getTextContent());
                     result.setModifiedTime(modifiedTimeInstance);
                 }
                 
@@ -544,14 +533,12 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
     * @return The Create Web Space operation response.
     */
     @Override
-    public WebSiteCreateResponse create(String webSpaceName, WebSiteCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, ParseException, URISyntaxException
+    public WebSiteCreateResponse create(String webSpaceName, WebSiteCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException
     {
         // Validate
         if (webSpaceName == null)
@@ -733,7 +720,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 if (adminEnabledElement != null)
                 {
                     boolean adminEnabledInstance;
-                    adminEnabledInstance = Boolean.parseBoolean(adminEnabledElement.getTextContent());
+                    adminEnabledInstance = DatatypeConverter.parseBoolean(adminEnabledElement.getTextContent());
                     webSiteInstance.setAdminEnabled(adminEnabledInstance);
                 }
                 
@@ -760,7 +747,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 if (enabledElement != null)
                 {
                     boolean enabledInstance;
-                    enabledInstance = Boolean.parseBoolean(enabledElement.getTextContent());
+                    enabledInstance = DatatypeConverter.parseBoolean(enabledElement.getTextContent());
                     webSiteInstance.setEnabled(enabledInstance);
                 }
                 
@@ -857,10 +844,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 if (lastModifiedTimeUtcElement != null)
                 {
                     Calendar lastModifiedTimeUtcInstance;
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(simpleDateFormat.parse(lastModifiedTimeUtcElement.getTextContent()));
-                    lastModifiedTimeUtcInstance = calendar;
+                    lastModifiedTimeUtcInstance = DatatypeConverter.parseDateTime(lastModifiedTimeUtcElement.getTextContent());
                     webSiteInstance.setLastModifiedTimeUtc(lastModifiedTimeUtcInstance);
                 }
                 
@@ -940,10 +924,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 if (isNil5 == false)
                                 {
                                     Calendar expirationDateInstance;
-                                    SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                                    Calendar calendar2 = Calendar.getInstance();
-                                    calendar2.setTime(simpleDateFormat2.parse(expirationDateElement.getTextContent()));
-                                    expirationDateInstance = calendar2;
+                                    expirationDateInstance = DatatypeConverter.parseDateTime(expirationDateElement.getTextContent());
                                     certificateInstance.setExpirationDate(expirationDateInstance);
                                 }
                             }
@@ -999,10 +980,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 if (isNil8 == false)
                                 {
                                     Calendar issueDateInstance;
-                                    SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                                    Calendar calendar3 = Calendar.getInstance();
-                                    calendar3.setTime(simpleDateFormat3.parse(issueDateElement.getTextContent()));
-                                    issueDateInstance = calendar3;
+                                    issueDateInstance = DatatypeConverter.parseDateTime(issueDateElement.getTextContent());
                                     certificateInstance.setIssueDate(issueDateInstance);
                                 }
                             }
@@ -1146,7 +1124,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 if (isNil16 == false)
                                 {
                                     boolean toDeleteInstance;
-                                    toDeleteInstance = Boolean.parseBoolean(toDeleteElement.getTextContent());
+                                    toDeleteInstance = DatatypeConverter.parseBoolean(toDeleteElement.getTextContent());
                                     certificateInstance.setIsToBeDeleted(toDeleteInstance);
                                 }
                             }
@@ -1164,7 +1142,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 if (isNil17 == false)
                                 {
                                     boolean validInstance;
-                                    validInstance = Boolean.parseBoolean(validElement.getTextContent());
+                                    validInstance = DatatypeConverter.parseBoolean(validElement.getTextContent());
                                     certificateInstance.setIsValid(validInstance);
                                 }
                             }
@@ -1875,14 +1853,12 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
     * @return The Get Web Site Details operation response.
     */
     @Override
-    public WebSiteGetResponse get(String webSpaceName, String webSiteName, WebSiteGetParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException, URISyntaxException
+    public WebSiteGetResponse get(String webSpaceName, String webSiteName, WebSiteGetParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
     {
         // Validate
         if (webSpaceName == null)
@@ -1966,7 +1942,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 if (adminEnabledElement != null)
                 {
                     boolean adminEnabledInstance;
-                    adminEnabledInstance = Boolean.parseBoolean(adminEnabledElement.getTextContent());
+                    adminEnabledInstance = DatatypeConverter.parseBoolean(adminEnabledElement.getTextContent());
                     webSiteInstance.setAdminEnabled(adminEnabledInstance);
                 }
                 
@@ -1993,7 +1969,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 if (enabledElement != null)
                 {
                     boolean enabledInstance;
-                    enabledInstance = Boolean.parseBoolean(enabledElement.getTextContent());
+                    enabledInstance = DatatypeConverter.parseBoolean(enabledElement.getTextContent());
                     webSiteInstance.setEnabled(enabledInstance);
                 }
                 
@@ -2090,10 +2066,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 if (lastModifiedTimeUtcElement != null)
                 {
                     Calendar lastModifiedTimeUtcInstance;
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(simpleDateFormat.parse(lastModifiedTimeUtcElement.getTextContent()));
-                    lastModifiedTimeUtcInstance = calendar;
+                    lastModifiedTimeUtcInstance = DatatypeConverter.parseDateTime(lastModifiedTimeUtcElement.getTextContent());
                     webSiteInstance.setLastModifiedTimeUtc(lastModifiedTimeUtcInstance);
                 }
                 
@@ -2173,10 +2146,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 if (isNil5 == false)
                                 {
                                     Calendar expirationDateInstance;
-                                    SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                                    Calendar calendar2 = Calendar.getInstance();
-                                    calendar2.setTime(simpleDateFormat2.parse(expirationDateElement.getTextContent()));
-                                    expirationDateInstance = calendar2;
+                                    expirationDateInstance = DatatypeConverter.parseDateTime(expirationDateElement.getTextContent());
                                     certificateInstance.setExpirationDate(expirationDateInstance);
                                 }
                             }
@@ -2232,10 +2202,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 if (isNil8 == false)
                                 {
                                     Calendar issueDateInstance;
-                                    SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                                    Calendar calendar3 = Calendar.getInstance();
-                                    calendar3.setTime(simpleDateFormat3.parse(issueDateElement.getTextContent()));
-                                    issueDateInstance = calendar3;
+                                    issueDateInstance = DatatypeConverter.parseDateTime(issueDateElement.getTextContent());
                                     certificateInstance.setIssueDate(issueDateInstance);
                                 }
                             }
@@ -2379,7 +2346,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 if (isNil16 == false)
                                 {
                                     boolean toDeleteInstance;
-                                    toDeleteInstance = Boolean.parseBoolean(toDeleteElement.getTextContent());
+                                    toDeleteInstance = DatatypeConverter.parseBoolean(toDeleteElement.getTextContent());
                                     certificateInstance.setIsToBeDeleted(toDeleteInstance);
                                 }
                             }
@@ -2397,7 +2364,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 if (isNil17 == false)
                                 {
                                     boolean validInstance;
-                                    validInstance = Boolean.parseBoolean(validElement.getTextContent());
+                                    validInstance = DatatypeConverter.parseBoolean(validElement.getTextContent());
                                     certificateInstance.setIsValid(validInstance);
                                 }
                             }
@@ -2574,12 +2541,10 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return The Get Web Site Configuration operation response.
     */
     @Override
-    public WebSiteGetConfigurationResponse getConfiguration(String webSpaceName, String webSiteName) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException
+    public WebSiteGetConfigurationResponse getConfiguration(String webSpaceName, String webSiteName) throws IOException, ServiceException, ParserConfigurationException, SAXException
     {
         // Validate
         if (webSpaceName == null)
@@ -2720,7 +2685,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 if (detailedErrorLoggingEnabledElement != null && (detailedErrorLoggingEnabledElement.getTextContent() == null || detailedErrorLoggingEnabledElement.getTextContent().isEmpty() == true) == false)
                 {
                     boolean detailedErrorLoggingEnabledInstance;
-                    detailedErrorLoggingEnabledInstance = Boolean.parseBoolean(detailedErrorLoggingEnabledElement.getTextContent());
+                    detailedErrorLoggingEnabledInstance = DatatypeConverter.parseBoolean(detailedErrorLoggingEnabledElement.getTextContent());
                     result.setDetailedErrorLoggingEnabled(detailedErrorLoggingEnabledInstance);
                 }
                 
@@ -2777,7 +2742,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 if (httpLoggingEnabledElement != null && (httpLoggingEnabledElement.getTextContent() == null || httpLoggingEnabledElement.getTextContent().isEmpty() == true) == false)
                 {
                     boolean httpLoggingEnabledInstance;
-                    httpLoggingEnabledInstance = Boolean.parseBoolean(httpLoggingEnabledElement.getTextContent());
+                    httpLoggingEnabledInstance = DatatypeConverter.parseBoolean(httpLoggingEnabledElement.getTextContent());
                     result.setHttpLoggingEnabled(httpLoggingEnabledInstance);
                 }
                 
@@ -2786,7 +2751,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 if (logsDirectorySizeLimitElement != null && (logsDirectorySizeLimitElement.getTextContent() == null || logsDirectorySizeLimitElement.getTextContent().isEmpty() == true) == false)
                 {
                     int logsDirectorySizeLimitInstance;
-                    logsDirectorySizeLimitInstance = Integer.parseInt(logsDirectorySizeLimitElement.getTextContent());
+                    logsDirectorySizeLimitInstance = DatatypeConverter.parseInt(logsDirectorySizeLimitElement.getTextContent());
                     result.setLogsDirectorySizeLimit(logsDirectorySizeLimitInstance);
                 }
                 
@@ -2828,7 +2793,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 if (numberOfWorkersElement != null && (numberOfWorkersElement.getTextContent() == null || numberOfWorkersElement.getTextContent().isEmpty() == true) == false)
                 {
                     int numberOfWorkersInstance;
-                    numberOfWorkersInstance = Integer.parseInt(numberOfWorkersElement.getTextContent());
+                    numberOfWorkersInstance = DatatypeConverter.parseInt(numberOfWorkersElement.getTextContent());
                     result.setNumberOfWorkers(numberOfWorkersInstance);
                 }
                 
@@ -2864,7 +2829,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 if (remoteDebuggingEnabledElement != null && (remoteDebuggingEnabledElement.getTextContent() == null || remoteDebuggingEnabledElement.getTextContent().isEmpty() == true) == false)
                 {
                     boolean remoteDebuggingEnabledInstance;
-                    remoteDebuggingEnabledInstance = Boolean.parseBoolean(remoteDebuggingEnabledElement.getTextContent());
+                    remoteDebuggingEnabledInstance = DatatypeConverter.parseBoolean(remoteDebuggingEnabledElement.getTextContent());
                     result.setRemoteDebuggingEnabled(remoteDebuggingEnabledInstance);
                 }
                 
@@ -2891,7 +2856,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 if (requestTracingEnabledElement != null && (requestTracingEnabledElement.getTextContent() == null || requestTracingEnabledElement.getTextContent().isEmpty() == true) == false)
                 {
                     boolean requestTracingEnabledInstance;
-                    requestTracingEnabledInstance = Boolean.parseBoolean(requestTracingEnabledElement.getTextContent());
+                    requestTracingEnabledInstance = DatatypeConverter.parseBoolean(requestTracingEnabledElement.getTextContent());
                     result.setRequestTracingEnabled(requestTracingEnabledInstance);
                 }
                 
@@ -2908,10 +2873,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     if (isNil2 == false)
                     {
                         Calendar requestTracingExpirationTimeInstance;
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.setTime(simpleDateFormat.parse(requestTracingExpirationTimeElement.getTextContent()));
-                        requestTracingExpirationTimeInstance = calendar;
+                        requestTracingExpirationTimeInstance = DatatypeConverter.parseDateTime(requestTracingExpirationTimeElement.getTextContent());
                         result.setRequestTracingExpirationTime(requestTracingExpirationTimeInstance);
                     }
                 }
@@ -2930,7 +2892,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 if (use32BitWorkerProcessElement != null && (use32BitWorkerProcessElement.getTextContent() == null || use32BitWorkerProcessElement.getTextContent().isEmpty() == true) == false)
                 {
                     boolean use32BitWorkerProcessInstance;
-                    use32BitWorkerProcessInstance = Boolean.parseBoolean(use32BitWorkerProcessElement.getTextContent());
+                    use32BitWorkerProcessInstance = DatatypeConverter.parseBoolean(use32BitWorkerProcessElement.getTextContent());
                     result.setUse32BitWorkerProcess(use32BitWorkerProcessInstance);
                 }
                 
@@ -2939,7 +2901,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 if (webSocketsEnabledElement != null && (webSocketsEnabledElement.getTextContent() == null || webSocketsEnabledElement.getTextContent().isEmpty() == true) == false)
                 {
                     boolean webSocketsEnabledInstance;
-                    webSocketsEnabledInstance = Boolean.parseBoolean(webSocketsEnabledElement.getTextContent());
+                    webSocketsEnabledInstance = DatatypeConverter.parseBoolean(webSocketsEnabledElement.getTextContent());
                     result.setWebSocketsEnabled(webSocketsEnabledInstance);
                 }
             }
@@ -3005,12 +2967,10 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return The Get Web Site Historical Usage Metrics operation response.
     */
     @Override
-    public WebSiteGetHistoricalUsageMetricsResponse getHistoricalUsageMetrics(String webSpaceName, String webSiteName, WebSiteGetHistoricalUsageMetricsParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException
+    public WebSiteGetHistoricalUsageMetricsResponse getHistoricalUsageMetrics(String webSpaceName, String webSiteName, WebSiteGetHistoricalUsageMetricsParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException
     {
         // Validate
         if (webSpaceName == null)
@@ -3140,10 +3100,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             if (endTimeElement != null)
                             {
                                 Calendar endTimeInstance;
-                                SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                                Calendar calendar = Calendar.getInstance();
-                                calendar.setTime(simpleDateFormat3.parse(endTimeElement.getTextContent()));
-                                endTimeInstance = calendar;
+                                endTimeInstance = DatatypeConverter.parseDateTime(endTimeElement.getTextContent());
                                 dataInstance.setEndTime(endTimeInstance);
                             }
                             
@@ -3170,10 +3127,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             if (startTimeElement != null)
                             {
                                 Calendar startTimeInstance;
-                                SimpleDateFormat simpleDateFormat4 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                                Calendar calendar2 = Calendar.getInstance();
-                                calendar2.setTime(simpleDateFormat4.parse(startTimeElement.getTextContent()));
-                                startTimeInstance = calendar2;
+                                startTimeInstance = DatatypeConverter.parseDateTime(startTimeElement.getTextContent());
                                 dataInstance.setStartTime(startTimeInstance);
                             }
                             
@@ -3210,7 +3164,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                     if (countElement != null)
                                     {
                                         int countInstance;
-                                        countInstance = Integer.parseInt(countElement.getTextContent());
+                                        countInstance = DatatypeConverter.parseInt(countElement.getTextContent());
                                         metricSampleInstance.setCount(countInstance);
                                     }
                                     
@@ -3255,10 +3209,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                     if (timeCreatedElement != null)
                                     {
                                         Calendar timeCreatedInstance;
-                                        SimpleDateFormat simpleDateFormat5 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                                        Calendar calendar3 = Calendar.getInstance();
-                                        calendar3.setTime(simpleDateFormat5.parse(timeCreatedElement.getTextContent()));
-                                        timeCreatedInstance = calendar3;
+                                        timeCreatedInstance = DatatypeConverter.parseDateTime(timeCreatedElement.getTextContent());
                                         metricSampleInstance.setTimeCreated(timeCreatedInstance);
                                     }
                                     
@@ -3456,7 +3407,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                         Attr ftpPassiveModeAttribute = publishProfilesElement.getAttributeNodeNS("", "ftpPassiveMode");
                         if (ftpPassiveModeAttribute != null)
                         {
-                            publishProfileInstance.setFtpPassiveMode(Boolean.parseBoolean(ftpPassiveModeAttribute.getValue()));
+                            publishProfileInstance.setFtpPassiveMode(DatatypeConverter.parseBoolean(ftpPassiveModeAttribute.getValue()));
                         }
                         
                         Attr userNameAttribute = publishProfilesElement.getAttributeNodeNS("", "userName");
@@ -3749,12 +3700,10 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return The Get Web Site Usage Metrics operation response.
     */
     @Override
-    public WebSiteGetUsageMetricsResponse getUsageMetrics(String webSpaceName, String webSiteName) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException
+    public WebSiteGetUsageMetricsResponse getUsageMetrics(String webSpaceName, String webSiteName) throws IOException, ServiceException, ParserConfigurationException, SAXException
     {
         // Validate
         if (webSpaceName == null)
@@ -3883,10 +3832,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                         if (nextResetTimeElement != null)
                         {
                             Calendar nextResetTimeInstance;
-                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                            Calendar calendar = Calendar.getInstance();
-                            calendar.setTime(simpleDateFormat.parse(nextResetTimeElement.getTextContent()));
-                            nextResetTimeInstance = calendar;
+                            nextResetTimeInstance = DatatypeConverter.parseDateTime(nextResetTimeElement.getTextContent());
                             usageInstance.setNextResetTime(nextResetTimeInstance);
                         }
                         
@@ -4042,7 +3988,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             if (booleanElement != null)
             {
                 boolean booleanInstance;
-                booleanInstance = Boolean.parseBoolean(booleanElement.getTextContent());
+                booleanInstance = DatatypeConverter.parseBoolean(booleanElement.getTextContent());
                 result.setIsAvailable(booleanInstance);
             }
             
@@ -4477,14 +4423,12 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
     * @return The Update Web Site operation response.
     */
     @Override
-    public WebSiteUpdateResponse update(String webSpaceName, String webSiteName, WebSiteUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, ParseException, URISyntaxException
+    public WebSiteUpdateResponse update(String webSpaceName, String webSiteName, WebSiteUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException
     {
         // Validate
         if (webSpaceName == null)
@@ -4729,7 +4673,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 if (adminEnabledElement != null)
                 {
                     boolean adminEnabledInstance;
-                    adminEnabledInstance = Boolean.parseBoolean(adminEnabledElement.getTextContent());
+                    adminEnabledInstance = DatatypeConverter.parseBoolean(adminEnabledElement.getTextContent());
                     webSiteInstance.setAdminEnabled(adminEnabledInstance);
                 }
                 
@@ -4756,7 +4700,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 if (enabledElement2 != null)
                 {
                     boolean enabledInstance;
-                    enabledInstance = Boolean.parseBoolean(enabledElement2.getTextContent());
+                    enabledInstance = DatatypeConverter.parseBoolean(enabledElement2.getTextContent());
                     webSiteInstance.setEnabled(enabledInstance);
                 }
                 
@@ -4853,10 +4797,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 if (lastModifiedTimeUtcElement != null)
                 {
                     Calendar lastModifiedTimeUtcInstance;
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(simpleDateFormat.parse(lastModifiedTimeUtcElement.getTextContent()));
-                    lastModifiedTimeUtcInstance = calendar;
+                    lastModifiedTimeUtcInstance = DatatypeConverter.parseDateTime(lastModifiedTimeUtcElement.getTextContent());
                     webSiteInstance.setLastModifiedTimeUtc(lastModifiedTimeUtcInstance);
                 }
                 
@@ -4936,10 +4877,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 if (isNil5 == false)
                                 {
                                     Calendar expirationDateInstance;
-                                    SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                                    Calendar calendar2 = Calendar.getInstance();
-                                    calendar2.setTime(simpleDateFormat2.parse(expirationDateElement.getTextContent()));
-                                    expirationDateInstance = calendar2;
+                                    expirationDateInstance = DatatypeConverter.parseDateTime(expirationDateElement.getTextContent());
                                     certificateInstance.setExpirationDate(expirationDateInstance);
                                 }
                             }
@@ -4995,10 +4933,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 if (isNil8 == false)
                                 {
                                     Calendar issueDateInstance;
-                                    SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                                    Calendar calendar3 = Calendar.getInstance();
-                                    calendar3.setTime(simpleDateFormat3.parse(issueDateElement.getTextContent()));
-                                    issueDateInstance = calendar3;
+                                    issueDateInstance = DatatypeConverter.parseDateTime(issueDateElement.getTextContent());
                                     certificateInstance.setIssueDate(issueDateInstance);
                                 }
                             }
@@ -5142,7 +5077,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 if (isNil16 == false)
                                 {
                                     boolean toDeleteInstance;
-                                    toDeleteInstance = Boolean.parseBoolean(toDeleteElement2.getTextContent());
+                                    toDeleteInstance = DatatypeConverter.parseBoolean(toDeleteElement2.getTextContent());
                                     certificateInstance.setIsToBeDeleted(toDeleteInstance);
                                 }
                             }
@@ -5160,7 +5095,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 if (isNil17 == false)
                                 {
                                     boolean validInstance;
-                                    validInstance = Boolean.parseBoolean(validElement.getTextContent());
+                                    validInstance = DatatypeConverter.parseBoolean(validElement.getTextContent());
                                     certificateInstance.setIsValid(validInstance);
                                 }
                             }

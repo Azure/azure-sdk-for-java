@@ -44,13 +44,13 @@ import java.io.StringWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.TimeZone;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
+import javax.xml.bind.DatatypeConverter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -224,7 +224,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                         if (resultElement != null)
                         {
                             boolean resultInstance;
-                            resultInstance = Boolean.parseBoolean(resultElement.getTextContent());
+                            resultInstance = DatatypeConverter.parseBoolean(resultElement.getTextContent());
                             result.setIsAvailable(resultInstance);
                         }
                         
@@ -301,14 +301,12 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
     * @return The response to a request for a particular namespace.
     */
     @Override
-    public ServiceBusNamespaceResponse create(String namespaceName, String region) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, ParseException, URISyntaxException
+    public ServiceBusNamespaceResponse create(String namespaceName, String region) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException
     {
         // Validate
         if (namespaceName == null)
@@ -458,10 +456,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                         if (createdAtElement != null)
                         {
                             Calendar createdAtInstance;
-                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                            Calendar calendar = Calendar.getInstance();
-                            calendar.setTime(simpleDateFormat.parse(createdAtElement.getTextContent()));
-                            createdAtInstance = calendar;
+                            createdAtInstance = DatatypeConverter.parseDateTime(createdAtElement.getTextContent());
                             namespaceDescriptionInstance.setCreatedAt(createdAtInstance);
                         }
                         
@@ -497,7 +492,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                         if (enabledElement != null)
                         {
                             boolean enabledInstance;
-                            enabledInstance = Boolean.parseBoolean(enabledElement.getTextContent());
+                            enabledInstance = DatatypeConverter.parseBoolean(enabledElement.getTextContent());
                             namespaceDescriptionInstance.setEnabled(enabledInstance);
                         }
                     }
@@ -561,12 +556,10 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return A response to a request for a particular authorization rule.
     */
     @Override
-    public ServiceBusAuthorizationRuleResponse createAuthorizationRule(String namespaceName, ServiceBusSharedAccessAuthorizationRule rule) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, ParseException
+    public ServiceBusAuthorizationRuleResponse createAuthorizationRule(String namespaceName, ServiceBusSharedAccessAuthorizationRule rule) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
     {
         // Validate
         if (namespaceName == null)
@@ -771,10 +764,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                         if (createdTimeElement2 != null)
                         {
                             Calendar createdTimeInstance;
-                            SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                            Calendar calendar = Calendar.getInstance();
-                            calendar.setTime(simpleDateFormat3.parse(createdTimeElement2.getTextContent()));
-                            createdTimeInstance = calendar;
+                            createdTimeInstance = DatatypeConverter.parseDateTime(createdTimeElement2.getTextContent());
                             sharedAccessAuthorizationRuleInstance.setCreatedTime(createdTimeInstance);
                         }
                         
@@ -783,10 +773,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                         if (modifiedTimeElement2 != null)
                         {
                             Calendar modifiedTimeInstance;
-                            SimpleDateFormat simpleDateFormat4 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                            Calendar calendar2 = Calendar.getInstance();
-                            calendar2.setTime(simpleDateFormat4.parse(modifiedTimeElement2.getTextContent()));
-                            modifiedTimeInstance = calendar2;
+                            modifiedTimeInstance = DatatypeConverter.parseDateTime(modifiedTimeElement2.getTextContent());
                             sharedAccessAuthorizationRuleInstance.setModifiedTime(modifiedTimeInstance);
                         }
                         
@@ -822,7 +809,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                         if (revisionElement2 != null)
                         {
                             int revisionInstance;
-                            revisionInstance = Integer.parseInt(revisionElement2.getTextContent());
+                            revisionInstance = DatatypeConverter.parseInt(revisionElement2.getTextContent());
                             sharedAccessAuthorizationRuleInstance.setRevision(revisionInstance);
                         }
                     }
@@ -1117,14 +1104,12 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
     * @return The response to a request for a particular namespace.
     */
     @Override
-    public ServiceBusNamespaceResponse get(String namespaceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException, URISyntaxException
+    public ServiceBusNamespaceResponse get(String namespaceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
     {
         // Validate
         if (namespaceName == null)
@@ -1235,10 +1220,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                         if (createdAtElement != null)
                         {
                             Calendar createdAtInstance;
-                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                            Calendar calendar = Calendar.getInstance();
-                            calendar.setTime(simpleDateFormat.parse(createdAtElement.getTextContent()));
-                            createdAtInstance = calendar;
+                            createdAtInstance = DatatypeConverter.parseDateTime(createdAtElement.getTextContent());
                             namespaceDescriptionInstance.setCreatedAt(createdAtInstance);
                         }
                         
@@ -1274,7 +1256,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                         if (enabledElement != null)
                         {
                             boolean enabledInstance;
-                            enabledInstance = Boolean.parseBoolean(enabledElement.getTextContent());
+                            enabledInstance = DatatypeConverter.parseBoolean(enabledElement.getTextContent());
                             namespaceDescriptionInstance.setEnabled(enabledInstance);
                         }
                     }
@@ -1336,12 +1318,10 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return A response to a request for a particular authorization rule.
     */
     @Override
-    public ServiceBusAuthorizationRuleResponse getAuthorizationRule(String namespaceName, String entityName) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException
+    public ServiceBusAuthorizationRuleResponse getAuthorizationRule(String namespaceName, String entityName) throws IOException, ServiceException, ParserConfigurationException, SAXException
     {
         // Validate
         if (namespaceName == null)
@@ -1459,10 +1439,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                         if (createdTimeElement != null)
                         {
                             Calendar createdTimeInstance;
-                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                            Calendar calendar = Calendar.getInstance();
-                            calendar.setTime(simpleDateFormat.parse(createdTimeElement.getTextContent()));
-                            createdTimeInstance = calendar;
+                            createdTimeInstance = DatatypeConverter.parseDateTime(createdTimeElement.getTextContent());
                             sharedAccessAuthorizationRuleInstance.setCreatedTime(createdTimeInstance);
                         }
                         
@@ -1471,10 +1448,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                         if (modifiedTimeElement != null)
                         {
                             Calendar modifiedTimeInstance;
-                            SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                            Calendar calendar2 = Calendar.getInstance();
-                            calendar2.setTime(simpleDateFormat2.parse(modifiedTimeElement.getTextContent()));
-                            modifiedTimeInstance = calendar2;
+                            modifiedTimeInstance = DatatypeConverter.parseDateTime(modifiedTimeElement.getTextContent());
                             sharedAccessAuthorizationRuleInstance.setModifiedTime(modifiedTimeInstance);
                         }
                         
@@ -1510,7 +1484,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                         if (revisionElement != null)
                         {
                             int revisionInstance;
-                            revisionInstance = Integer.parseInt(revisionElement.getTextContent());
+                            revisionInstance = DatatypeConverter.parseInt(revisionElement.getTextContent());
                             sharedAccessAuthorizationRuleInstance.setRevision(revisionInstance);
                         }
                     }
@@ -1768,14 +1742,12 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
     * @return The response to the request for a listing of namespaces.
     */
     @Override
-    public ServiceBusNamespacesResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException, URISyntaxException
+    public ServiceBusNamespacesResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
     {
         // Validate
         
@@ -1886,10 +1858,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                                 if (createdAtElement != null)
                                 {
                                     Calendar createdAtInstance;
-                                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                                    Calendar calendar = Calendar.getInstance();
-                                    calendar.setTime(simpleDateFormat.parse(createdAtElement.getTextContent()));
-                                    createdAtInstance = calendar;
+                                    createdAtInstance = DatatypeConverter.parseDateTime(createdAtElement.getTextContent());
                                     entryInstance.setCreatedAt(createdAtInstance);
                                 }
                                 
@@ -1925,7 +1894,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                                 if (enabledElement != null)
                                 {
                                     boolean enabledInstance;
-                                    enabledInstance = Boolean.parseBoolean(enabledElement.getTextContent());
+                                    enabledInstance = DatatypeConverter.parseBoolean(enabledElement.getTextContent());
                                     entryInstance.setEnabled(enabledInstance);
                                 }
                             }
@@ -1987,12 +1956,10 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return A response to a request for a list of authorization rules.
     */
     @Override
-    public ServiceBusAuthorizationRulesResponse listAuthorizationRules(String namespaceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException
+    public ServiceBusAuthorizationRulesResponse listAuthorizationRules(String namespaceName) throws IOException, ServiceException, ParserConfigurationException, SAXException
     {
         // Validate
         if (namespaceName == null)
@@ -2110,10 +2077,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                                 if (createdTimeElement != null)
                                 {
                                     Calendar createdTimeInstance;
-                                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                                    Calendar calendar = Calendar.getInstance();
-                                    calendar.setTime(simpleDateFormat.parse(createdTimeElement.getTextContent()));
-                                    createdTimeInstance = calendar;
+                                    createdTimeInstance = DatatypeConverter.parseDateTime(createdTimeElement.getTextContent());
                                     entryInstance.setCreatedTime(createdTimeInstance);
                                 }
                                 
@@ -2122,10 +2086,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                                 if (modifiedTimeElement != null)
                                 {
                                     Calendar modifiedTimeInstance;
-                                    SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                                    Calendar calendar2 = Calendar.getInstance();
-                                    calendar2.setTime(simpleDateFormat2.parse(modifiedTimeElement.getTextContent()));
-                                    modifiedTimeInstance = calendar2;
+                                    modifiedTimeInstance = DatatypeConverter.parseDateTime(modifiedTimeElement.getTextContent());
                                     entryInstance.setModifiedTime(modifiedTimeInstance);
                                 }
                                 
@@ -2161,7 +2122,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                                 if (revisionElement != null)
                                 {
                                     int revisionInstance;
-                                    revisionInstance = Integer.parseInt(revisionElement.getTextContent());
+                                    revisionInstance = DatatypeConverter.parseInt(revisionElement.getTextContent());
                                     entryInstance.setRevision(revisionInstance);
                                 }
                             }
@@ -2227,12 +2188,10 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return A response to a request for a particular authorization rule.
     */
     @Override
-    public ServiceBusAuthorizationRuleResponse updateAuthorizationRule(String namespaceName, ServiceBusSharedAccessAuthorizationRule rule) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, ParseException
+    public ServiceBusAuthorizationRuleResponse updateAuthorizationRule(String namespaceName, ServiceBusSharedAccessAuthorizationRule rule) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
     {
         // Validate
         if (namespaceName == null)
@@ -2437,10 +2396,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                         if (createdTimeElement2 != null)
                         {
                             Calendar createdTimeInstance;
-                            SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                            Calendar calendar = Calendar.getInstance();
-                            calendar.setTime(simpleDateFormat3.parse(createdTimeElement2.getTextContent()));
-                            createdTimeInstance = calendar;
+                            createdTimeInstance = DatatypeConverter.parseDateTime(createdTimeElement2.getTextContent());
                             sharedAccessAuthorizationRuleInstance.setCreatedTime(createdTimeInstance);
                         }
                         
@@ -2449,10 +2405,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                         if (modifiedTimeElement2 != null)
                         {
                             Calendar modifiedTimeInstance;
-                            SimpleDateFormat simpleDateFormat4 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                            Calendar calendar2 = Calendar.getInstance();
-                            calendar2.setTime(simpleDateFormat4.parse(modifiedTimeElement2.getTextContent()));
-                            modifiedTimeInstance = calendar2;
+                            modifiedTimeInstance = DatatypeConverter.parseDateTime(modifiedTimeElement2.getTextContent());
                             sharedAccessAuthorizationRuleInstance.setModifiedTime(modifiedTimeInstance);
                         }
                         
@@ -2488,7 +2441,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                         if (revisionElement2 != null)
                         {
                             int revisionInstance;
-                            revisionInstance = Integer.parseInt(revisionElement2.getTextContent());
+                            revisionInstance = DatatypeConverter.parseInt(revisionElement2.getTextContent());
                             sharedAccessAuthorizationRuleInstance.setRevision(revisionInstance);
                         }
                     }

@@ -27,15 +27,13 @@ import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.ServiceClient;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.exception.ServiceException;
-import com.microsoft.windowsazure.management.ManagementConfiguration;
+import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
 import com.microsoft.windowsazure.management.websites.models.WebSiteOperationStatus;
 import com.microsoft.windowsazure.management.websites.models.WebSiteOperationStatusResponse;
 import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
@@ -43,6 +41,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.xml.bind.DatatypeConverter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -264,8 +263,6 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return The response body contains the status of the specified
     * long-running operation, indicating whether it has succeeded, is
     * inprogress, has time dout, or has failed. Note that this status is
@@ -274,7 +271,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     * body includes error information regarding the failure.
     */
     @Override
-    public WebSiteOperationStatusResponse getOperationStatus(String webSpaceName, String siteName, String operationId) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException
+    public WebSiteOperationStatusResponse getOperationStatus(String webSpaceName, String siteName, String operationId) throws IOException, ServiceException, ParserConfigurationException, SAXException
     {
         // Validate
         if (webSpaceName == null)
@@ -355,10 +352,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
                 if (createdTimeElement != null)
                 {
                     Calendar createdTimeInstance;
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(simpleDateFormat.parse(createdTimeElement.getTextContent()));
-                    createdTimeInstance = calendar;
+                    createdTimeInstance = DatatypeConverter.parseDateTime(createdTimeElement.getTextContent());
                     result.setCreatedTime(createdTimeInstance);
                 }
                 
@@ -498,10 +492,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
                 if (expirationTimeElement != null)
                 {
                     Calendar expirationTimeInstance;
-                    SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                    Calendar calendar2 = Calendar.getInstance();
-                    calendar2.setTime(simpleDateFormat2.parse(expirationTimeElement.getTextContent()));
-                    expirationTimeInstance = calendar2;
+                    expirationTimeInstance = DatatypeConverter.parseDateTime(expirationTimeElement.getTextContent());
                     result.setExpirationTime(expirationTimeInstance);
                 }
                 
@@ -546,10 +537,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
                 if (modifiedTimeElement != null)
                 {
                     Calendar modifiedTimeInstance;
-                    SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                    Calendar calendar3 = Calendar.getInstance();
-                    calendar3.setTime(simpleDateFormat3.parse(modifiedTimeElement.getTextContent()));
-                    modifiedTimeInstance = calendar3;
+                    modifiedTimeInstance = DatatypeConverter.parseDateTime(modifiedTimeElement.getTextContent());
                     result.setModifiedTime(modifiedTimeInstance);
                 }
                 

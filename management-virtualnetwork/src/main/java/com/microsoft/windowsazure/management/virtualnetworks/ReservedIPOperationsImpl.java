@@ -38,11 +38,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.InetAddress;
-import java.text.ParseException;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import javax.xml.bind.DatatypeConverter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -680,12 +680,10 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return Preview Only. A reserved IP associated with your subscription.
     */
     @Override
-    public NetworkReservedIPGetResponse get(String ipName) throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException
+    public NetworkReservedIPGetResponse get(String ipName) throws IOException, ServiceException, ParserConfigurationException, SAXException
     {
         // Validate
         if (ipName == null)
@@ -810,7 +808,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
                 if (inUseElement != null)
                 {
                     boolean inUseInstance;
-                    inUseInstance = Boolean.parseBoolean(inUseElement.getTextContent());
+                    inUseInstance = DatatypeConverter.parseBoolean(inUseElement.getTextContent());
                     result.setInUse(inUseInstance);
                 }
                 
@@ -884,12 +882,10 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return Preview Only. The response structure for the Server List operation
     */
     @Override
-    public NetworkReservedIPListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException
+    public NetworkReservedIPListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException
     {
         // Validate
         
@@ -1015,7 +1011,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
                     if (inUseElement != null)
                     {
                         boolean inUseInstance;
-                        inUseInstance = Boolean.parseBoolean(inUseElement.getTextContent());
+                        inUseInstance = DatatypeConverter.parseBoolean(inUseElement.getTextContent());
                         reservedIPInstance.setInUse(inUseInstance);
                     }
                     

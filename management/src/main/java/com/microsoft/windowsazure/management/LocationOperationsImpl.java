@@ -29,7 +29,6 @@ import com.microsoft.windowsazure.management.models.LocationsListResponse;
 import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.ParseException;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
@@ -108,12 +107,10 @@ public class LocationOperationsImpl implements ServiceOperations<ManagementClien
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return The List Locations operation response.
     */
     @Override
-    public LocationsListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, ParseException
+    public LocationsListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException
     {
         // Validate
         

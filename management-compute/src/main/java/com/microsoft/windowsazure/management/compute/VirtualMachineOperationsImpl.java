@@ -72,11 +72,11 @@ import java.io.StringWriter;
 import java.net.InetAddress;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.text.ParseException;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import javax.xml.bind.DatatypeConverter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -4930,8 +4930,6 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * @throws ServiceException Thrown if an unexpected response is found.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -4943,7 +4941,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse create(String serviceName, String deploymentName, VirtualMachineCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, ServiceException, URISyntaxException, ParseException
+    public ComputeOperationStatusResponse create(String serviceName, String deploymentName, VirtualMachineCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, ServiceException, URISyntaxException
     {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
@@ -5338,12 +5336,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * response.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @return The Get Virtual Machine operation response.
     */
     @Override
-    public VirtualMachineGetResponse get(String serviceName, String deploymentName, String virtualMachineName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException, ParseException
+    public VirtualMachineGetResponse get(String serviceName, String deploymentName, String virtualMachineName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
     {
         // Validate
         if (serviceName == null)
@@ -5516,7 +5512,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                 if (localPortElement != null && (localPortElement.getTextContent() == null || localPortElement.getTextContent().isEmpty() == true) == false)
                                 {
                                     int localPortInstance;
-                                    localPortInstance = Integer.parseInt(localPortElement.getTextContent());
+                                    localPortInstance = DatatypeConverter.parseInt(localPortElement.getTextContent());
                                     inputEndpointInstance.setLocalPort(localPortInstance);
                                 }
                                 
@@ -5534,7 +5530,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                 if (portElement != null && (portElement.getTextContent() == null || portElement.getTextContent().isEmpty() == true) == false)
                                 {
                                     int portInstance;
-                                    portInstance = Integer.parseInt(portElement.getTextContent());
+                                    portInstance = DatatypeConverter.parseInt(portElement.getTextContent());
                                     inputEndpointInstance.setPort(portInstance);
                                 }
                                 
@@ -5559,7 +5555,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                     if (portElement2 != null)
                                     {
                                         int portInstance2;
-                                        portInstance2 = Integer.parseInt(portElement2.getTextContent());
+                                        portInstance2 = DatatypeConverter.parseInt(portElement2.getTextContent());
                                         loadBalancerProbeInstance.setPort(portInstance2);
                                     }
                                     
@@ -5577,7 +5573,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                     if (intervalInSecondsElement != null && (intervalInSecondsElement.getTextContent() == null || intervalInSecondsElement.getTextContent().isEmpty() == true) == false)
                                     {
                                         int intervalInSecondsInstance;
-                                        intervalInSecondsInstance = Integer.parseInt(intervalInSecondsElement.getTextContent());
+                                        intervalInSecondsInstance = DatatypeConverter.parseInt(intervalInSecondsElement.getTextContent());
                                         loadBalancerProbeInstance.setIntervalInSeconds(intervalInSecondsInstance);
                                     }
                                     
@@ -5586,7 +5582,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                     if (timeoutInSecondsElement != null && (timeoutInSecondsElement.getTextContent() == null || timeoutInSecondsElement.getTextContent().isEmpty() == true) == false)
                                     {
                                         int timeoutInSecondsInstance;
-                                        timeoutInSecondsInstance = Integer.parseInt(timeoutInSecondsElement.getTextContent());
+                                        timeoutInSecondsInstance = DatatypeConverter.parseInt(timeoutInSecondsElement.getTextContent());
                                         loadBalancerProbeInstance.setTimeoutInSeconds(timeoutInSecondsInstance);
                                     }
                                 }
@@ -5614,7 +5610,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                 if (enableDirectServerReturnElement != null && (enableDirectServerReturnElement.getTextContent() == null || enableDirectServerReturnElement.getTextContent().isEmpty() == true) == false)
                                 {
                                     boolean enableDirectServerReturnInstance;
-                                    enableDirectServerReturnInstance = Boolean.parseBoolean(enableDirectServerReturnElement.getTextContent());
+                                    enableDirectServerReturnInstance = DatatypeConverter.parseBoolean(enableDirectServerReturnElement.getTextContent());
                                     inputEndpointInstance.setEnableDirectServerReturn(enableDirectServerReturnInstance);
                                 }
                                 
@@ -5640,7 +5636,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                             if (orderElement != null && (orderElement.getTextContent() == null || orderElement.getTextContent().isEmpty() == true) == false)
                                             {
                                                 int orderInstance;
-                                                orderInstance = Integer.parseInt(orderElement.getTextContent());
+                                                orderInstance = DatatypeConverter.parseInt(orderElement.getTextContent());
                                                 ruleInstance.setOrder(orderInstance);
                                             }
                                             
@@ -5719,7 +5715,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         if (resetPasswordOnFirstLogonElement != null && (resetPasswordOnFirstLogonElement.getTextContent() == null || resetPasswordOnFirstLogonElement.getTextContent().isEmpty() == true) == false)
                         {
                             boolean resetPasswordOnFirstLogonInstance;
-                            resetPasswordOnFirstLogonInstance = Boolean.parseBoolean(resetPasswordOnFirstLogonElement.getTextContent());
+                            resetPasswordOnFirstLogonInstance = DatatypeConverter.parseBoolean(resetPasswordOnFirstLogonElement.getTextContent());
                             configurationSetInstance.setResetPasswordOnFirstLogon(resetPasswordOnFirstLogonInstance);
                         }
                         
@@ -5728,7 +5724,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         if (enableAutomaticUpdatesElement != null && (enableAutomaticUpdatesElement.getTextContent() == null || enableAutomaticUpdatesElement.getTextContent().isEmpty() == true) == false)
                         {
                             boolean enableAutomaticUpdatesInstance;
-                            enableAutomaticUpdatesInstance = Boolean.parseBoolean(enableAutomaticUpdatesElement.getTextContent());
+                            enableAutomaticUpdatesInstance = DatatypeConverter.parseBoolean(enableAutomaticUpdatesElement.getTextContent());
                             configurationSetInstance.setEnableAutomaticUpdates(enableAutomaticUpdatesInstance);
                         }
                         
@@ -5934,7 +5930,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         if (disableSshPasswordAuthenticationElement != null && (disableSshPasswordAuthenticationElement.getTextContent() == null || disableSshPasswordAuthenticationElement.getTextContent().isEmpty() == true) == false)
                         {
                             boolean disableSshPasswordAuthenticationInstance;
-                            disableSshPasswordAuthenticationInstance = Boolean.parseBoolean(disableSshPasswordAuthenticationElement.getTextContent());
+                            disableSshPasswordAuthenticationInstance = DatatypeConverter.parseBoolean(disableSshPasswordAuthenticationElement.getTextContent());
                             configurationSetInstance.setDisableSshPasswordAuthentication(disableSshPasswordAuthenticationInstance);
                         }
                         
@@ -6050,7 +6046,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         if (lunElement != null && (lunElement.getTextContent() == null || lunElement.getTextContent().isEmpty() == true) == false)
                         {
                             int lunInstance;
-                            lunInstance = Integer.parseInt(lunElement.getTextContent());
+                            lunInstance = DatatypeConverter.parseInt(lunElement.getTextContent());
                             dataVirtualHardDiskInstance.setLogicalUnitNumber(lunInstance);
                         }
                         
@@ -6059,7 +6055,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         if (logicalDiskSizeInGBElement != null)
                         {
                             int logicalDiskSizeInGBInstance;
-                            logicalDiskSizeInGBInstance = Integer.parseInt(logicalDiskSizeInGBElement.getTextContent());
+                            logicalDiskSizeInGBInstance = DatatypeConverter.parseInt(logicalDiskSizeInGBElement.getTextContent());
                             dataVirtualHardDiskInstance.setLogicalDiskSizeInGB(logicalDiskSizeInGBInstance);
                         }
                         
@@ -7000,8 +6996,6 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * @throws ServiceException Thrown if an unexpected response is found.
     * @throws URISyntaxException Thrown if there was an error parsing a URI in
     * the response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -7023,7 +7017,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse update(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException, ParseException, InterruptedException, ExecutionException, ServiceException
+    public ComputeOperationStatusResponse update(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException, InterruptedException, ExecutionException, ServiceException
     {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
