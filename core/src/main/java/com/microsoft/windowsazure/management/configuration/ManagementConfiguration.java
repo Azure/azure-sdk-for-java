@@ -15,6 +15,7 @@
 package com.microsoft.windowsazure.management.configuration;
 
 import com.microsoft.windowsazure.core.utils.KeyStoreCredential;
+import com.microsoft.windowsazure.core.utils.KeyStoreType;
 import com.microsoft.windowsazure.credentials.CertificateCloudCredentials;
 import com.microsoft.windowsazure.Configuration;
 import java.io.IOException;
@@ -90,6 +91,35 @@ public final class ManagementConfiguration
                 keyStoreLocation, keyStorePassword);
     }
 
+	/**
+	 * Creates a service management configuration using specified URI, and
+	 * subscription ID.
+	 *
+	 * @param subscriptionId
+	 *            A <code>String</code> object that represents the subscription
+	 *            ID.
+	 * @param keyStoreLocation
+	 *            A <code>String</code> object that represents the key store
+	 *            location.
+	 * @param keyStorePassword
+	 *            A <code>String</code> object that represents the key store
+	 *            password.
+	 * @param type
+	 *            Type of key store.
+	 * @return the configuration A <code>Configuration</code> object that can be
+	 *         used when creating an instance of the
+	 *         <code>ManagementContract</code> class.
+	 * @throws java.io.IOException
+	 *             If the key store location or its contents is invalid.
+	 */
+	public static Configuration configure(String subscriptionId,
+	                                      String keyStoreLocation, String keyStorePassword, KeyStoreType type)
+			throws IOException
+	{
+		return configure(null, Configuration.getInstance(), subscriptionId,
+				                keyStoreLocation, keyStorePassword, type);
+	}
+
     /**
      * Creates a service management configuration with specified parameters.
      * 
@@ -137,4 +167,50 @@ public final class ManagementConfiguration
 
         return configuration;
     }
+
+	/**
+	 * Creates a service management configuration with specified parameters.
+	 *
+	 * @param profile
+	 *            A <code>String</code> object that represents the profile.
+	 * @param configuration
+	 *            A previously instantiated <code>Configuration</code> object.
+	 * @param subscriptionId
+	 *            A <code>String</code> object that represents the subscription
+	 *            ID.
+	 * @param keyStoreLocation
+	 *            the key store location
+	 * @param keyStorePassword
+	 *            A <code>String</code> object that represents the password of
+	 *            the keystore.
+	 * @param type
+	 *            Type of key store.
+	 * @return A <code>Configuration</code> object that can be used when
+	 *         creating an instance of the <code>ManagementContract</code>
+	 *         class.
+	 * @throws java.io.IOException
+	 *             If the key store location or its contents is invalid.
+	 */
+	public static Configuration configure(String profile,
+	                                      Configuration configuration, String subscriptionId,
+	                                      String keyStoreLocation, String keyStorePassword, KeyStoreType type)
+			throws IOException {
+
+		if (profile == null) {
+			profile = "";
+		} else if (profile.length() != 0 && !profile.endsWith(".")) {
+			profile = profile + ".";
+		}
+
+		configuration.setProperty(profile + SUBSCRIPTION_ID, subscriptionId);
+		configuration.setProperty(profile + KEYSTORE_PATH, keyStoreLocation);
+		configuration.setProperty(profile + KEYSTORE_PASSWORD, keyStorePassword);
+
+		KeyStoreCredential keyStoreCredential = new KeyStoreCredential(keyStoreLocation, keyStorePassword, type);
+		CertificateCloudCredentials cloudCredentials = new CertificateCloudCredentials(subscriptionId, keyStoreCredential);
+		configuration.setProperty(profile + SUBSCRIPTION_CLOUD_CREDENTIALS, cloudCredentials);
+
+		return configuration;
+	}
+
 }
