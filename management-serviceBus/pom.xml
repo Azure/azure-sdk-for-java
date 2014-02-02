@@ -22,7 +22,7 @@
     <relativePath>../parent/pom.xml</relativePath>
   </parent>
 
-  <artifactId>microsoft-azure-api-management-serviceBus</artifactId>
+  <artifactId>microsoft-azure-api-management-servicebus</artifactId>
   <packaging>jar</packaging>
 
   <name>Microsoft Windows Azure Service Bus Management Client API</name>
