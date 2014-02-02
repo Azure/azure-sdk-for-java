@@ -24,7 +24,7 @@ import java.util.HashMap;
 
 import org.junit.Assert;
 
-import com.microsoft.windowsazure.management.ManagementConfiguration;
+import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
 
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;

@@ -100,6 +100,9 @@ public abstract class ServiceClient<TClient> implements
     @Override
     public void close() throws IOException
     {
-        httpClient.close();
+    	if (httpClient != null)
+    	{
+    		httpClient.close();
+    	}
     }
 }

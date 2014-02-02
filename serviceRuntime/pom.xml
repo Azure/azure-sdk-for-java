@@ -22,7 +22,7 @@
     <relativePath>../parent/pom.xml</relativePath>
   </parent>
 
-  <artifactId>microsoft-azure-api-serviceRuntime</artifactId>
+  <artifactId>microsoft-azure-api-serviceruntime</artifactId>
   <packaging>jar</packaging>
 
   <name>Microsoft Windows Azure Service Runtime Client API</name>
