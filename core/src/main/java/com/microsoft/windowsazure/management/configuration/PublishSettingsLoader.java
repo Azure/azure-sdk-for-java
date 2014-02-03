@@ -15,6 +15,7 @@
 package com.microsoft.windowsazure.management.configuration;
 
 import java.io.*;
+import java.lang.IllegalArgumentException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -31,8 +32,14 @@ import com.microsoft.windowsazure.Configuration;
 import com.microsoft.windowsazure.core.utils.KeyStoreType;
 
 /**
- * Load on how to load publish settings file. Tried to avoid introducing BouncyCastle
- * as a dependency by using a random password (BouncyCastle supports KeyStores without a password).
+ * Loading a publish settings file to create a service management configuration. Supports both
+ * schema version 1.0 (deprecated) and 2.0. To get different schema versions, use the
+ * 'SchemaVersion' query parameter when downloading the file:
+ * <ul>
+ *     <li>https://manage.windowsazure.com/publishsettings/Index?client=vs&SchemaVersion=1.0</li>
+ *     <li>https://manage.windowsazure.com/publishsettings/Index?client=vs&SchemaVersion=2.0</li>
+ * </ul>
+ *
  */
 public final class PublishSettingsLoader {
 
@@ -51,24 +58,39 @@ public final class PublishSettingsLoader {
 	 *              website
 	 * @param subscriptionId
 	 *              subscription ID
-	 * @return a valid
-	 * @throws IOException
+	 * @return a valid service management configuration
+	 * @throws IOException if any error occurs when handling the specified file or the keystore
+	 * @throws IllegalArgumentException if the file is not of the expected format
 	 */
 	public static Configuration createManagementConfiguration(String publishSettingsFile,
 	                                                          String subscriptionId) throws IOException {
 		File file = new File(publishSettingsFile);
 		String outStore = "keystore.out";
-		String certificate;
+		String certificate = null;
 		try {
 			DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 			Document doc = db.parse(file);
 			doc.getDocumentElement().normalize();
 			NodeList ndPublishProfile = doc.getElementsByTagName("PublishProfile");
-			Element publishProfileElement = (Element) ndPublishProfile.item(0);
-			certificate = publishProfileElement.getAttribute("ManagementCertificate");
+			Element ppElement = (Element) ndPublishProfile.item(0);
+			if(ppElement.hasAttribute("SchemaVersion") && ppElement.getAttribute("SchemaVersion").equals("2.0")) {
+				NodeList subs = ppElement.getElementsByTagName("Subscription");
+				for (int i = 0; i < subs.getLength(); i++) {
+					Element subscription = (Element) subs.item(i);
+					String id = subscription.getAttribute("Id");
+					if(id.equals(subscriptionId)) {
+						certificate = subscription.getAttribute("ManagementCertificate");
+						break;
+					}
+				}
+			} else {
+				certificate = ppElement.getAttribute("ManagementCertificate");
+			}
 		} catch (ParserConfigurationException e) {
 			throw new IllegalArgumentException("could not parse publishsettings file", e);
 		} catch (SAXException e) {
+			throw new IllegalArgumentException("could not parse publishsettings file", e);
+		} catch (NullPointerException e) {
 			throw new IllegalArgumentException("could not parse publishsettings file", e);
 		}
 
