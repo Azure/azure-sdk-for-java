@@ -305,5 +305,6 @@
     <module>../scheduler</module>
     <module>../serviceBus</module>
     <module>../serviceRuntime</module>
+    <module>../tracing-util</module>
   </modules>
 </project>
