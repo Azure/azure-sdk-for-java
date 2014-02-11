@@ -75,7 +75,7 @@ public abstract class IntegrationTestBase
     protected static final String validButNonexistAccessPolicyId = "nb:pid:UUID:38dcb3a0-ef64-4ad0-bbb5-67a14c6df2f7";
     protected static final String validButNonexistLocatorId = "nb:lid:UUID:92a70402-fca9-4aa3-80d7-d4de3792a27a";
     
-    protected static String MEDIA_ENCODER_MEDIA_PROCESSOR_2_2_0_0_ID = "nb:mpid:UUID:2e7aa8f3-4961-4e0c-b4db-0e0439e524f5";
+    protected static String MEDIA_ENCODER_MEDIA_PROCESSOR_ID = "nb:mpid:UUID:2e7aa8f3-4961-4e0c-b4db-0e0439e524f5";
     protected static final String invalidId = "notAValidId";
 
     @Rule
@@ -119,7 +119,7 @@ public abstract class IntegrationTestBase
         
         if (position != -1)
         {
-            MEDIA_ENCODER_MEDIA_PROCESSOR_2_2_0_0_ID = ps.get(position).getId();
+            MEDIA_ENCODER_MEDIA_PROCESSOR_ID = ps.get(position).getId();
         }      
     }
 
