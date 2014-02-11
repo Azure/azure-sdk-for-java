@@ -19,17 +19,12 @@ package com.microsoft.windowsazure.management;
 import com.microsoft.windowsazure.Configuration;
 import com.microsoft.windowsazure.core.Builder;
 import com.microsoft.windowsazure.management.models.AffinityGroupListResponse;
-import com.microsoft.windowsazure.credentials.*;
 import com.microsoft.windowsazure.management.util.TestRequestFilter;
 import com.microsoft.windowsazure.management.util.TestResponseFilter;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.filter.LoggingFilter;
-
-import java.net.URI;
 import java.util.Map;
-
 import junit.framework.Assert;
-
 import org.junit.Test;
 
 public class ManagementClientTests extends ManagementIntegrationTestBase { 
@@ -212,50 +207,5 @@ public class ManagementClientTests extends ManagementIntegrationTestBase {
         Assert.assertEquals(200, response.getStatusCode());
         Assert.assertEquals(2, testFilter1.getCalled());
         Assert.assertEquals(0, testFilter2.getCalled());
-    }
-    
-    @Test
-    public void getCredential() throws Exception {
-        // reinitialize configuration from known state
-        Configuration config = createConfiguration();
-
-        // add LoggingFilter to any pipeline that is created
-        Builder.Registry builder = (Builder.Registry) config.getBuilder();
-        builder.alter(ManagementClient.class, Client.class, new Builder.Alteration<Client>() {
-            @Override
-            public Client alter(String profile, Client client, Builder builder, Map<String, Object> properties) {
-                client.addFilter(new LoggingFilter());
-                return client;
-            }
-        });
-
-        managementClient = ManagementService.create(config);
-        
-        SubscriptionCloudCredentials subscriptionCloudCredentials = managementClient.getCredentials();      
-        
-        Assert.assertNotNull(subscriptionCloudCredentials.getSubscriptionId());          
-    }
-    
-    @Test
-    public void getUri() throws Exception {
-        // reinitialize configuration from known state
-        Configuration config = createConfiguration();
-
-        // add LoggingFilter to any pipeline that is created
-        Builder.Registry builder = (Builder.Registry) config.getBuilder();
-        builder.alter(ManagementClient.class, Client.class, new Builder.Alteration<Client>() {
-            @Override
-            public Client alter(String profile, Client client, Builder builder, Map<String, Object> properties) {
-                client.addFilter(new LoggingFilter());
-                return client;
-            }
-        });
-
-        managementClient = ManagementService.create(config);
-        
-        URI uri = managementClient.getBaseUri(); 
-        URI expectUri = new URI("https://management.core.windows.net");
-        
-        Assert.assertEquals(expectUri.getHost(), uri.getHost());     
     }
 }
