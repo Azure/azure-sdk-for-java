@@ -47,13 +47,10 @@ public abstract class StorageManagementIntegrationTestBase {
     }
   
     protected static Configuration createConfiguration() throws Exception {
-//        return ManagementConfiguration.configure(
-//                System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
-//                System.getenv(ManagementConfiguration.KEYSTORE_PATH),
-//                System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD)
-//        ); 
-		// Act
-		Configuration config = PublishSettingsLoader.createManagementConfiguration("C:\\Users\\xuezhain\\Downloads\\Azure SDK sandbox-1-25-2014-credentials.publishsettings", "db1ab6f0-4769-4b27-930e-01e2ef9c123c");
-		return config;
+        return ManagementConfiguration.configure(
+                System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
+                System.getenv(ManagementConfiguration.KEYSTORE_PATH),
+                System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD)
+        ); 
     }
 }
