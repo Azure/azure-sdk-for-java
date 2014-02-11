@@ -49,6 +49,8 @@ import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.microsoft.windowsazure.services.media.models.Locator;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 import com.microsoft.windowsazure.services.media.models.LocatorType;
+import com.microsoft.windowsazure.services.media.models.MediaProcessorInfo;
+import com.microsoft.windowsazure.services.media.models.MediaProcessor;
 import com.microsoft.windowsazure.services.queue.QueueConfiguration;
 import com.microsoft.windowsazure.services.queue.QueueContract;
 import com.microsoft.windowsazure.services.queue.QueueService;
@@ -72,9 +74,8 @@ public abstract class IntegrationTestBase
     protected static final String validButNonexistAssetId = "nb:cid:UUID:0239f11f-2d36-4e5f-aa35-44d58ccc0973";
     protected static final String validButNonexistAccessPolicyId = "nb:pid:UUID:38dcb3a0-ef64-4ad0-bbb5-67a14c6df2f7";
     protected static final String validButNonexistLocatorId = "nb:lid:UUID:92a70402-fca9-4aa3-80d7-d4de3792a27a";
-
-    protected static final String MEDIA_ENCODER_MEDIA_PROCESSOR_2_2_0_0_ID = "nb:mpid:UUID:70bdc2c3-ebf4-42a9-8542-5afc1e55d217";
-
+    
+    protected static String MEDIA_ENCODER_MEDIA_PROCESSOR_ID = "nb:mpid:UUID:2e7aa8f3-4961-4e0c-b4db-0e0439e524f5";
     protected static final String invalidId = "notAValidId";
 
     @Rule
@@ -100,6 +101,26 @@ public abstract class IntegrationTestBase
         queueService = QueueService.create(config);
 
         cleanupEnvironment();
+    }
+    
+    protected static void getLatestMediaProcessorID() throws Exception {
+        ListResult<MediaProcessorInfo> listMediaProcessorsResult = service.list(MediaProcessor.list());
+        List<MediaProcessorInfo> ps = listMediaProcessorsResult;
+        double latestVersion = 0.0;
+        int position = -1;
+        for (int i = 0; i < ps.size(); i++) {
+            MediaProcessorInfo mediaProcessorInfo = ps.get(i);
+            double d = Double.parseDouble(mediaProcessorInfo.getVersion());
+            if (d > latestVersion) {
+                latestVersion = d;
+                position = i;
+            }
+        }
+        
+        if (position != -1)
+        {
+            MEDIA_ENCODER_MEDIA_PROCESSOR_ID = ps.get(position).getId();
+        }      
     }
 
     protected static void overrideWithEnv(Configuration config, String key)

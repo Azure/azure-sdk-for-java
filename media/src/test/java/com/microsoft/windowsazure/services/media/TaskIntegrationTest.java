@@ -71,7 +71,7 @@ public class TaskIntegrationTest extends IntegrationTestBase
         // Arrange
 
         // Required
-        String mediaProcessorId = MEDIA_ENCODER_MEDIA_PROCESSOR_2_2_0_0_ID;
+        String mediaProcessorId = MEDIA_ENCODER_MEDIA_PROCESSOR_ID;
         String taskBody = constructTaskBody(0);
 
         // Optional parameters
@@ -116,7 +116,7 @@ public class TaskIntegrationTest extends IntegrationTestBase
         // Arrange
 
         // Required
-        String mediaProcessorId = MEDIA_ENCODER_MEDIA_PROCESSOR_2_2_0_0_ID;
+        String mediaProcessorId = MEDIA_ENCODER_MEDIA_PROCESSOR_ID;
         String[] taskBodies = new String[] { constructTaskBody(0),
                 constructTaskBody(1) };
 
@@ -157,7 +157,7 @@ public class TaskIntegrationTest extends IntegrationTestBase
     public void canListTasksWithOptions() throws ServiceException
     {
         // Arrange
-        String mediaProcessorId = MEDIA_ENCODER_MEDIA_PROCESSOR_2_2_0_0_ID;
+        String mediaProcessorId = MEDIA_ENCODER_MEDIA_PROCESSOR_ID;
         String configuration = commonConfiguration;
         String[] taskNameSuffixes = new String[] { "A", "B", "C", "D" };
         String baseName = "My encoding Task " + UUID.randomUUID().toString();
@@ -189,7 +189,7 @@ public class TaskIntegrationTest extends IntegrationTestBase
             InterruptedException
     {
         // Arrange
-        String mediaProcessorId = MEDIA_ENCODER_MEDIA_PROCESSOR_2_2_0_0_ID;
+        String mediaProcessorId = MEDIA_ENCODER_MEDIA_PROCESSOR_ID;
         String taskBody = constructTaskBody(0);
         String configuration = commonConfiguration;
         String name = "My encoding Task " + UUID.randomUUID().toString();

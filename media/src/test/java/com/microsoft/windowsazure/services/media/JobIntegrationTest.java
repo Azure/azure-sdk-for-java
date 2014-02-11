@@ -117,7 +117,7 @@ public class JobIntegrationTest extends IntegrationTestBase
     private CreateBatchOperation getTaskCreator(int outputAssetPosition)
     {
         return Task
-                .create(MEDIA_ENCODER_MEDIA_PROCESSOR_2_2_0_0_ID,
+                .create(MEDIA_ENCODER_MEDIA_PROCESSOR_ID,
                         "<taskBody>"
                                 + "<inputAsset>JobInputAsset(0)</inputAsset>"
                                 + "<outputAsset>JobOutputAsset("

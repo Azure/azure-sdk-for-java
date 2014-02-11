@@ -417,7 +417,7 @@ public class AssetIntegrationTest extends IntegrationTestBase
 
         String jobName = testJobPrefix + "createJobSuccess";
         CreateBatchOperation taskCreator = Task
-                .create(MEDIA_ENCODER_MEDIA_PROCESSOR_2_2_0_0_ID,
+                .create(MEDIA_ENCODER_MEDIA_PROCESSOR_ID,
                         "<taskBody>"
                                 + "<inputAsset>JobInputAsset(0)</inputAsset>"
                                 + "<outputAsset>JobOutputAsset(0)</outputAsset>"
