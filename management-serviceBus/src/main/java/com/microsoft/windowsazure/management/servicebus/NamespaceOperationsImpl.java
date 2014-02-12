@@ -641,13 +641,13 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
         }
         
         Element createdTimeElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CreatedTime");
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
         simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         createdTimeElement.appendChild(requestDoc.createTextNode(simpleDateFormat.format(rule.getCreatedTime().getTime())));
         sharedAccessAuthorizationRuleElement.appendChild(createdTimeElement);
         
         Element modifiedTimeElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ModifiedTime");
-        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
         simpleDateFormat2.setTimeZone(TimeZone.getTimeZone("UTC"));
         modifiedTimeElement.appendChild(requestDoc.createTextNode(simpleDateFormat2.format(rule.getModifiedTime().getTime())));
         sharedAccessAuthorizationRuleElement.appendChild(modifiedTimeElement);
@@ -2272,13 +2272,13 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
             }
             
             Element createdTimeElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CreatedTime");
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
             simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
             createdTimeElement.appendChild(requestDoc.createTextNode(simpleDateFormat.format(rule.getCreatedTime().getTime())));
             sharedAccessAuthorizationRuleElement.appendChild(createdTimeElement);
             
             Element modifiedTimeElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ModifiedTime");
-            SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+            SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
             simpleDateFormat2.setTimeZone(TimeZone.getTimeZone("UTC"));
             modifiedTimeElement.appendChild(requestDoc.createTextNode(simpleDateFormat2.format(rule.getModifiedTime().getTime())));
             sharedAccessAuthorizationRuleElement.appendChild(modifiedTimeElement);

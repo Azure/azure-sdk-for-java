@@ -31,7 +31,7 @@ import java.util.HashMap;
 /**
 * The Get Storage Account Properties operation response.
 */
-public class StorageServiceGetResponse extends OperationResponse
+public class StorageAccountGetResponse extends OperationResponse
 {
     private ArrayList<String> capabilities;
     
@@ -166,10 +166,10 @@ public class StorageServiceGetResponse extends OperationResponse
     }
     
     /**
-    * Initializes a new instance of the StorageServiceGetResponse class.
+    * Initializes a new instance of the StorageAccountGetResponse class.
     *
     */
-    public StorageServiceGetResponse()
+    public StorageAccountGetResponse()
     {
         super();
         this.capabilities = new ArrayList<String>();

@@ -26,7 +26,7 @@ package com.microsoft.windowsazure.management.compute;
 import com.microsoft.windowsazure.core.ServiceClient;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.exception.ServiceException;
-import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
+import com.microsoft.windowsazure.management.ManagementConfiguration;
 import com.microsoft.windowsazure.management.compute.models.CertificateFormat;
 import com.microsoft.windowsazure.management.compute.models.ComputeOperationStatusResponse;
 import com.microsoft.windowsazure.management.compute.models.HostingResources;
@@ -499,11 +499,11 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     */
      static CertificateFormat parseCertificateFormat(String value)
     {
-        if (value == "pfx")
+        if ("pfx".equals(value))
         {
             return CertificateFormat.Pfx;
         }
-        if (value == "cer")
+        if ("cer".equals(value))
         {
             return CertificateFormat.Cer;
         }
@@ -537,15 +537,15 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     */
      static HostingResources parseHostingResources(String value)
     {
-        if (value == "WebRole")
+        if ("WebRole".equals(value))
         {
             return HostingResources.WebRole;
         }
-        if (value == "WorkerRole")
+        if ("WorkerRole".equals(value))
         {
             return HostingResources.WorkerRole;
         }
-        if (value == "WebRole|WorkerRole")
+        if ("WebRole|WorkerRole".equals(value))
         {
             return HostingResources.WebOrWorkerRole;
         }
@@ -583,11 +583,11 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     */
      static LoadBalancerProbeTransportProtocol parseLoadBalancerProbeTransportProtocol(String value)
     {
-        if (value == "tcp")
+        if ("tcp".equals(value))
         {
             return LoadBalancerProbeTransportProtocol.Tcp;
         }
-        if (value == "http")
+        if ("http".equals(value))
         {
             return LoadBalancerProbeTransportProtocol.Http;
         }

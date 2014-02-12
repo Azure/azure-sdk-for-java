@@ -7,6 +7,7 @@ import java.util.Calendar;
 import javax.xml.bind.DatatypeConverter;
 
 import com.microsoft.windowsazure.management.websites.models.ServerFarmWorkerSize;
+import com.microsoft.windowsazure.management.websites.models.WebSiteCreateParameters;
 
 public final class TextUtility
 {
@@ -71,6 +72,10 @@ public final class TextUtility
         else if (csharpType.equals("System.DateTime"))
         {
             return Calendar.class;
+        }
+        else if (csharpType.equals("Microsoft.WindowsAzure.Management.WebSites.Models.WebSiteCreateParameters.WebSpaceDetails"))
+        {
+            return WebSiteCreateParameters.WebSpaceDetails.class;   
         }
         else
         {

@@ -32,7 +32,6 @@ import com.microsoft.windowsazure.management.websites.models.WebSiteListParamete
 import com.microsoft.windowsazure.management.websites.models.WebSiteMode;
 import com.microsoft.windowsazure.management.websites.models.WebSiteRuntimeAvailabilityState;
 import com.microsoft.windowsazure.management.websites.models.WebSiteSslState;
-import com.microsoft.windowsazure.management.websites.models.WebSiteState;
 import com.microsoft.windowsazure.management.websites.models.WebSiteUsageState;
 import com.microsoft.windowsazure.management.websites.models.WebSpaceAvailabilityState;
 import com.microsoft.windowsazure.management.websites.models.WebSpaceStatus;
@@ -1826,8 +1825,8 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                     Element stateElement = elements45.getLength() > 0 ? ((Element) elements45.item(0)) : null;
                     if (stateElement != null)
                     {
-                        WebSiteState stateInstance;
-                        stateInstance = WebSiteState.valueOf(stateElement.getTextContent());
+                        String stateInstance;
+                        stateInstance = stateElement.getTextContent();
                         siteInstance.setState(stateInstance);
                     }
                     

@@ -32,14 +32,14 @@ import java.util.Iterator;
 /**
 * The List Storage Accounts operation response.
 */
-public class StorageServiceListResponse extends OperationResponse implements Iterable<StorageServiceListResponse.StorageService>
+public class StorageAccountListResponse extends OperationResponse implements Iterable<StorageAccountListResponse.StorageService>
 {
-    private ArrayList<StorageServiceListResponse.StorageService> storageServices;
+    private ArrayList<StorageAccountListResponse.StorageService> storageServices;
     
     /**
     * @return The StorageServices value.
     */
-    public ArrayList<StorageServiceListResponse.StorageService> getStorageServices()
+    public ArrayList<StorageAccountListResponse.StorageService> getStorageServices()
     {
         return this.storageServices;
     }
@@ -47,26 +47,26 @@ public class StorageServiceListResponse extends OperationResponse implements Ite
     /**
     * @param storageServicesValue The StorageServices value.
     */
-    public void setStorageServices(final ArrayList<StorageServiceListResponse.StorageService> storageServicesValue)
+    public void setStorageServices(final ArrayList<StorageAccountListResponse.StorageService> storageServicesValue)
     {
         this.storageServices = storageServicesValue;
     }
     
     /**
-    * Initializes a new instance of the StorageServiceListResponse class.
+    * Initializes a new instance of the StorageAccountListResponse class.
     *
     */
-    public StorageServiceListResponse()
+    public StorageAccountListResponse()
     {
         super();
-        this.storageServices = new ArrayList<StorageServiceListResponse.StorageService>();
+        this.storageServices = new ArrayList<StorageAccountListResponse.StorageService>();
     }
     
     /**
     * Gets the sequence of StorageServices.
     *
     */
-    public Iterator<StorageServiceListResponse.StorageService> iterator()
+    public Iterator<StorageAccountListResponse.StorageService> iterator()
     {
         return this.getStorageServices().iterator();
     }

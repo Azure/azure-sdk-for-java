@@ -32,12 +32,12 @@ import com.microsoft.windowsazure.management.storage.models.GeoRegionStatus;
 import com.microsoft.windowsazure.management.storage.models.OperationStatus;
 import com.microsoft.windowsazure.management.storage.models.StorageAccountCreateParameters;
 import com.microsoft.windowsazure.management.storage.models.StorageAccountGetKeysResponse;
+import com.microsoft.windowsazure.management.storage.models.StorageAccountGetResponse;
+import com.microsoft.windowsazure.management.storage.models.StorageAccountListResponse;
 import com.microsoft.windowsazure.management.storage.models.StorageAccountRegenerateKeysParameters;
 import com.microsoft.windowsazure.management.storage.models.StorageAccountRegenerateKeysResponse;
 import com.microsoft.windowsazure.management.storage.models.StorageAccountUpdateParameters;
 import com.microsoft.windowsazure.management.storage.models.StorageOperationStatusResponse;
-import com.microsoft.windowsazure.management.storage.models.StorageServiceGetResponse;
-import com.microsoft.windowsazure.management.storage.models.StorageServiceListResponse;
 import com.microsoft.windowsazure.management.storage.models.StorageServiceProperties;
 import com.microsoft.windowsazure.management.storage.models.StorageServiceStatus;
 import com.microsoft.windowsazure.tracing.ClientRequestTrackingHandler;
@@ -565,7 +565,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     @Override
     public StorageOperationStatusResponse create(StorageAccountCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException
     {
-        StorageManagementClient client2	 = this.getClient();
+        StorageManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
         if (shouldTrace)
@@ -755,11 +755,11 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     * @return The Get Storage Account Properties operation response.
     */
     @Override
-    public Future<StorageServiceGetResponse> getAsync(final String serviceName)
+    public Future<StorageAccountGetResponse> getAsync(final String serviceName)
     {
-        return this.getClient().getExecutorService().submit(new Callable<StorageServiceGetResponse>() { 
+        return this.getClient().getExecutorService().submit(new Callable<StorageAccountGetResponse>() { 
             @Override
-            public StorageServiceGetResponse call() throws Exception
+            public StorageAccountGetResponse call() throws Exception
             {
                 return get(serviceName);
             }
@@ -786,7 +786,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     * @return The Get Storage Account Properties operation response.
     */
     @Override
-    public StorageServiceGetResponse get(String serviceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
+    public StorageAccountGetResponse get(String serviceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
     {
         // Validate
         if (serviceName == null)
@@ -839,10 +839,10 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             }
             
             // Create Result
-            StorageServiceGetResponse result = null;
+            StorageAccountGetResponse result = null;
             // Deserialize Response
             InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new StorageServiceGetResponse();
+            result = new StorageAccountGetResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -1215,11 +1215,11 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     * @return The List Storage Accounts operation response.
     */
     @Override
-    public Future<StorageServiceListResponse> listAsync()
+    public Future<StorageAccountListResponse> listAsync()
     {
-        return this.getClient().getExecutorService().submit(new Callable<StorageServiceListResponse>() { 
+        return this.getClient().getExecutorService().submit(new Callable<StorageAccountListResponse>() { 
             @Override
-            public StorageServiceListResponse call() throws Exception
+            public StorageAccountListResponse call() throws Exception
             {
                 return list();
             }
@@ -1245,7 +1245,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     * @return The List Storage Accounts operation response.
     */
     @Override
-    public StorageServiceListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
+    public StorageAccountListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
     {
         // Validate
         
@@ -1293,10 +1293,10 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             }
             
             // Create Result
-            StorageServiceListResponse result = null;
+            StorageAccountListResponse result = null;
             // Deserialize Response
             InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new StorageServiceListResponse();
+            result = new StorageAccountListResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -1309,7 +1309,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                 for (int i1 = 0; i1 < storageServicesSequenceElement.getElementsByTagName("StorageService").getLength(); i1 = i1 + 1)
                 {
                     org.w3c.dom.Element storageServicesElement = ((org.w3c.dom.Element) storageServicesSequenceElement.getElementsByTagName("StorageService").item(i1));
-                    StorageServiceListResponse.StorageService storageServiceInstance = new StorageServiceListResponse.StorageService();
+                    StorageAccountListResponse.StorageService storageServiceInstance = new StorageAccountListResponse.StorageService();
                     result.getStorageServices().add(storageServiceInstance);
                     
                     NodeList elements2 = storageServicesElement.getElementsByTagName("Url");

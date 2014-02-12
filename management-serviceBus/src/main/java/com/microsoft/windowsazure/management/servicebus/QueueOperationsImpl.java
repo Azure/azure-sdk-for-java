@@ -233,10 +233,6 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
             queueDescriptionElement.appendChild(duplicateDetectionHistoryTimeWindowElement);
         }
         
-        Element maxDeliveryCountElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "MaxDeliveryCount");
-        maxDeliveryCountElement.appendChild(requestDoc.createTextNode(Integer.toString(queue.getMaxDeliveryCount())));
-        queueDescriptionElement.appendChild(maxDeliveryCountElement);
-        
         Element enableBatchedOperationsElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "EnableBatchedOperations");
         enableBatchedOperationsElement.appendChild(requestDoc.createTextNode(Boolean.toString(queue.isEnableBatchedOperations()).toLowerCase()));
         queueDescriptionElement.appendChild(enableBatchedOperationsElement);
@@ -292,7 +288,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                 }
                 
                 Element createdTimeElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CreatedTime");
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
                 simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
                 createdTimeElement.appendChild(requestDoc.createTextNode(simpleDateFormat.format(authorizationRulesItem.getCreatedTime().getTime())));
                 authorizationRuleElement.appendChild(createdTimeElement);
@@ -305,7 +301,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                 }
                 
                 Element modifiedTimeElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ModifiedTime");
-                SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+                SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
                 simpleDateFormat2.setTimeZone(TimeZone.getTimeZone("UTC"));
                 modifiedTimeElement.appendChild(requestDoc.createTextNode(simpleDateFormat2.format(authorizationRulesItem.getModifiedTime().getTime())));
                 authorizationRuleElement.appendChild(modifiedTimeElement);
@@ -333,24 +329,6 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
             statusElement.appendChild(requestDoc.createTextNode(queue.getStatus()));
             queueDescriptionElement.appendChild(statusElement);
         }
-        
-        Element createdAtElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CreatedAt");
-        SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
-        simpleDateFormat3.setTimeZone(TimeZone.getTimeZone("UTC"));
-        createdAtElement.appendChild(requestDoc.createTextNode(simpleDateFormat3.format(queue.getCreatedAt().getTime())));
-        queueDescriptionElement.appendChild(createdAtElement);
-        
-        Element updatedAtElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "UpdatedAt");
-        SimpleDateFormat simpleDateFormat4 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
-        simpleDateFormat4.setTimeZone(TimeZone.getTimeZone("UTC"));
-        updatedAtElement.appendChild(requestDoc.createTextNode(simpleDateFormat4.format(queue.getUpdatedAt().getTime())));
-        queueDescriptionElement.appendChild(updatedAtElement);
-        
-        Element accessedAtElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessedAt");
-        SimpleDateFormat simpleDateFormat5 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
-        simpleDateFormat5.setTimeZone(TimeZone.getTimeZone("UTC"));
-        accessedAtElement.appendChild(requestDoc.createTextNode(simpleDateFormat5.format(queue.getAccessedAt().getTime())));
-        queueDescriptionElement.appendChild(accessedAtElement);
         
         Element supportOrderingElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SupportOrdering");
         supportOrderingElement.appendChild(requestDoc.createTextNode(Boolean.toString(queue.isSupportOrdering()).toLowerCase()));
@@ -526,11 +504,11 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                         }
                         
                         NodeList elements12 = queueDescriptionElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "MaxDeliveryCount");
-                        Element maxDeliveryCountElement2 = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
-                        if (maxDeliveryCountElement2 != null)
+                        Element maxDeliveryCountElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
+                        if (maxDeliveryCountElement != null)
                         {
                             int maxDeliveryCountInstance;
-                            maxDeliveryCountInstance = DatatypeConverter.parseInt(maxDeliveryCountElement2.getTextContent());
+                            maxDeliveryCountInstance = DatatypeConverter.parseInt(maxDeliveryCountElement.getTextContent());
                             queueDescriptionInstance.setMaxDeliveryCount(maxDeliveryCountInstance);
                         }
                         
@@ -666,29 +644,29 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                         }
                         
                         NodeList elements27 = queueDescriptionElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CreatedAt");
-                        Element createdAtElement2 = elements27.getLength() > 0 ? ((Element) elements27.item(0)) : null;
-                        if (createdAtElement2 != null)
+                        Element createdAtElement = elements27.getLength() > 0 ? ((Element) elements27.item(0)) : null;
+                        if (createdAtElement != null)
                         {
                             Calendar createdAtInstance;
-                            createdAtInstance = DatatypeConverter.parseDateTime(createdAtElement2.getTextContent());
+                            createdAtInstance = DatatypeConverter.parseDateTime(createdAtElement.getTextContent());
                             queueDescriptionInstance.setCreatedAt(createdAtInstance);
                         }
                         
                         NodeList elements28 = queueDescriptionElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "UpdatedAt");
-                        Element updatedAtElement2 = elements28.getLength() > 0 ? ((Element) elements28.item(0)) : null;
-                        if (updatedAtElement2 != null)
+                        Element updatedAtElement = elements28.getLength() > 0 ? ((Element) elements28.item(0)) : null;
+                        if (updatedAtElement != null)
                         {
                             Calendar updatedAtInstance;
-                            updatedAtInstance = DatatypeConverter.parseDateTime(updatedAtElement2.getTextContent());
+                            updatedAtInstance = DatatypeConverter.parseDateTime(updatedAtElement.getTextContent());
                             queueDescriptionInstance.setUpdatedAt(updatedAtInstance);
                         }
                         
                         NodeList elements29 = queueDescriptionElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessedAt");
-                        Element accessedAtElement2 = elements29.getLength() > 0 ? ((Element) elements29.item(0)) : null;
-                        if (accessedAtElement2 != null)
+                        Element accessedAtElement = elements29.getLength() > 0 ? ((Element) elements29.item(0)) : null;
+                        if (accessedAtElement != null)
                         {
                             Calendar accessedAtInstance;
-                            accessedAtInstance = DatatypeConverter.parseDateTime(accessedAtElement2.getTextContent());
+                            accessedAtInstance = DatatypeConverter.parseDateTime(accessedAtElement.getTextContent());
                             queueDescriptionInstance.setAccessedAt(accessedAtInstance);
                         }
                         
@@ -2062,10 +2040,6 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
             queueDescriptionElement.appendChild(duplicateDetectionHistoryTimeWindowElement);
         }
         
-        Element maxDeliveryCountElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "MaxDeliveryCount");
-        maxDeliveryCountElement.appendChild(requestDoc.createTextNode(Integer.toString(queue.getMaxDeliveryCount())));
-        queueDescriptionElement.appendChild(maxDeliveryCountElement);
-        
         Element enableBatchedOperationsElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "EnableBatchedOperations");
         enableBatchedOperationsElement.appendChild(requestDoc.createTextNode(Boolean.toString(queue.isEnableBatchedOperations()).toLowerCase()));
         queueDescriptionElement.appendChild(enableBatchedOperationsElement);
@@ -2121,7 +2095,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                 }
                 
                 Element createdTimeElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CreatedTime");
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
                 simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
                 createdTimeElement.appendChild(requestDoc.createTextNode(simpleDateFormat.format(authorizationRulesItem.getCreatedTime().getTime())));
                 authorizationRuleElement.appendChild(createdTimeElement);
@@ -2134,7 +2108,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                 }
                 
                 Element modifiedTimeElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ModifiedTime");
-                SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+                SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
                 simpleDateFormat2.setTimeZone(TimeZone.getTimeZone("UTC"));
                 modifiedTimeElement.appendChild(requestDoc.createTextNode(simpleDateFormat2.format(authorizationRulesItem.getModifiedTime().getTime())));
                 authorizationRuleElement.appendChild(modifiedTimeElement);
@@ -2162,24 +2136,6 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
             statusElement.appendChild(requestDoc.createTextNode(queue.getStatus()));
             queueDescriptionElement.appendChild(statusElement);
         }
-        
-        Element createdAtElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CreatedAt");
-        SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
-        simpleDateFormat3.setTimeZone(TimeZone.getTimeZone("UTC"));
-        createdAtElement.appendChild(requestDoc.createTextNode(simpleDateFormat3.format(queue.getCreatedAt().getTime())));
-        queueDescriptionElement.appendChild(createdAtElement);
-        
-        Element updatedAtElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "UpdatedAt");
-        SimpleDateFormat simpleDateFormat4 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
-        simpleDateFormat4.setTimeZone(TimeZone.getTimeZone("UTC"));
-        updatedAtElement.appendChild(requestDoc.createTextNode(simpleDateFormat4.format(queue.getUpdatedAt().getTime())));
-        queueDescriptionElement.appendChild(updatedAtElement);
-        
-        Element accessedAtElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessedAt");
-        SimpleDateFormat simpleDateFormat5 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
-        simpleDateFormat5.setTimeZone(TimeZone.getTimeZone("UTC"));
-        accessedAtElement.appendChild(requestDoc.createTextNode(simpleDateFormat5.format(queue.getAccessedAt().getTime())));
-        queueDescriptionElement.appendChild(accessedAtElement);
         
         Element supportOrderingElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SupportOrdering");
         supportOrderingElement.appendChild(requestDoc.createTextNode(Boolean.toString(queue.isSupportOrdering()).toLowerCase()));
@@ -2355,11 +2311,11 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                         }
                         
                         NodeList elements12 = queueDescriptionElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "MaxDeliveryCount");
-                        Element maxDeliveryCountElement2 = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
-                        if (maxDeliveryCountElement2 != null)
+                        Element maxDeliveryCountElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
+                        if (maxDeliveryCountElement != null)
                         {
                             int maxDeliveryCountInstance;
-                            maxDeliveryCountInstance = DatatypeConverter.parseInt(maxDeliveryCountElement2.getTextContent());
+                            maxDeliveryCountInstance = DatatypeConverter.parseInt(maxDeliveryCountElement.getTextContent());
                             queueDescriptionInstance.setMaxDeliveryCount(maxDeliveryCountInstance);
                         }
                         
@@ -2495,29 +2451,29 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                         }
                         
                         NodeList elements27 = queueDescriptionElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CreatedAt");
-                        Element createdAtElement2 = elements27.getLength() > 0 ? ((Element) elements27.item(0)) : null;
-                        if (createdAtElement2 != null)
+                        Element createdAtElement = elements27.getLength() > 0 ? ((Element) elements27.item(0)) : null;
+                        if (createdAtElement != null)
                         {
                             Calendar createdAtInstance;
-                            createdAtInstance = DatatypeConverter.parseDateTime(createdAtElement2.getTextContent());
+                            createdAtInstance = DatatypeConverter.parseDateTime(createdAtElement.getTextContent());
                             queueDescriptionInstance.setCreatedAt(createdAtInstance);
                         }
                         
                         NodeList elements28 = queueDescriptionElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "UpdatedAt");
-                        Element updatedAtElement2 = elements28.getLength() > 0 ? ((Element) elements28.item(0)) : null;
-                        if (updatedAtElement2 != null)
+                        Element updatedAtElement = elements28.getLength() > 0 ? ((Element) elements28.item(0)) : null;
+                        if (updatedAtElement != null)
                         {
                             Calendar updatedAtInstance;
-                            updatedAtInstance = DatatypeConverter.parseDateTime(updatedAtElement2.getTextContent());
+                            updatedAtInstance = DatatypeConverter.parseDateTime(updatedAtElement.getTextContent());
                             queueDescriptionInstance.setUpdatedAt(updatedAtInstance);
                         }
                         
                         NodeList elements29 = queueDescriptionElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessedAt");
-                        Element accessedAtElement2 = elements29.getLength() > 0 ? ((Element) elements29.item(0)) : null;
-                        if (accessedAtElement2 != null)
+                        Element accessedAtElement = elements29.getLength() > 0 ? ((Element) elements29.item(0)) : null;
+                        if (accessedAtElement != null)
                         {
                             Calendar accessedAtInstance;
-                            accessedAtInstance = DatatypeConverter.parseDateTime(accessedAtElement2.getTextContent());
+                            accessedAtInstance = DatatypeConverter.parseDateTime(accessedAtElement.getTextContent());
                             queueDescriptionInstance.setAccessedAt(accessedAtInstance);
                         }
                         

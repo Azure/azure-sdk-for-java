@@ -191,13 +191,13 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
             this.location = locationValue;
         }
         
-        private double logicalSizeInGB;
+        private int logicalSizeInGB;
         
         /**
         * The size, in GB, of the disk.
         * @return The LogicalSizeInGB value.
         */
-        public double getLogicalSizeInGB()
+        public int getLogicalSizeInGB()
         {
             return this.logicalSizeInGB;
         }
@@ -206,7 +206,7 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         * The size, in GB, of the disk.
         * @param logicalSizeInGBValue The LogicalSizeInGB value.
         */
-        public void setLogicalSizeInGB(final double logicalSizeInGBValue)
+        public void setLogicalSizeInGB(final int logicalSizeInGBValue)
         {
             this.logicalSizeInGB = logicalSizeInGBValue;
         }

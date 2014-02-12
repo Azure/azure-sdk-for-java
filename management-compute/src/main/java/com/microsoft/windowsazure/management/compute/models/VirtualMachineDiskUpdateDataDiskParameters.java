@@ -106,7 +106,7 @@ public class VirtualMachineDiskUpdateDataDiskParameters
         this.hostCaching = hostCachingValue;
     }
     
-    private double logicalDiskSizeInGB;
+    private int logicalDiskSizeInGB;
     
     /**
     * Optional. Specifies the size, in GB, of an empty disk to be attached to
@@ -116,7 +116,7 @@ public class VirtualMachineDiskUpdateDataDiskParameters
     * created disk to the Role.
     * @return The LogicalDiskSizeInGB value.
     */
-    public double getLogicalDiskSizeInGB()
+    public int getLogicalDiskSizeInGB()
     {
         return this.logicalDiskSizeInGB;
     }
@@ -129,7 +129,7 @@ public class VirtualMachineDiskUpdateDataDiskParameters
     * created disk to the Role.
     * @param logicalDiskSizeInGBValue The LogicalDiskSizeInGB value.
     */
-    public void setLogicalDiskSizeInGB(final double logicalDiskSizeInGBValue)
+    public void setLogicalDiskSizeInGB(final int logicalDiskSizeInGBValue)
     {
         this.logicalDiskSizeInGB = logicalDiskSizeInGBValue;
     }

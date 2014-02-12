@@ -403,7 +403,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         }
         
         Element logicalDiskSizeInGBElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LogicalDiskSizeInGB");
-        logicalDiskSizeInGBElement.appendChild(requestDoc.createTextNode(Double.toString(parameters.getLogicalDiskSizeInGB())));
+        logicalDiskSizeInGBElement.appendChild(requestDoc.createTextNode(Integer.toString(parameters.getLogicalDiskSizeInGB())));
         dataVirtualHardDiskElement.appendChild(logicalDiskSizeInGBElement);
         
         Element mediaLinkElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "MediaLink");
@@ -679,8 +679,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 Element logicalDiskSizeInGBElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                 if (logicalDiskSizeInGBElement != null)
                 {
-                    double logicalDiskSizeInGBInstance;
-                    logicalDiskSizeInGBInstance = DatatypeConverter.parseDouble(logicalDiskSizeInGBElement.getTextContent());
+                    int logicalDiskSizeInGBInstance;
+                    logicalDiskSizeInGBInstance = DatatypeConverter.parseInt(logicalDiskSizeInGBElement.getTextContent());
                     result.setLogicalSizeInGB(logicalDiskSizeInGBInstance);
                 }
                 
@@ -1205,8 +1205,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 Element logicalDiskSizeInGBElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                 if (logicalDiskSizeInGBElement != null)
                 {
-                    double logicalDiskSizeInGBInstance;
-                    logicalDiskSizeInGBInstance = DatatypeConverter.parseDouble(logicalDiskSizeInGBElement.getTextContent());
+                    int logicalDiskSizeInGBInstance;
+                    logicalDiskSizeInGBInstance = DatatypeConverter.parseInt(logicalDiskSizeInGBElement.getTextContent());
                     result.setLogicalDiskSizeInGB(logicalDiskSizeInGBInstance);
                 }
                 
@@ -1379,8 +1379,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 Element logicalDiskSizeInGBElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                 if (logicalDiskSizeInGBElement != null)
                 {
-                    double logicalDiskSizeInGBInstance;
-                    logicalDiskSizeInGBInstance = DatatypeConverter.parseDouble(logicalDiskSizeInGBElement.getTextContent());
+                    int logicalDiskSizeInGBInstance;
+                    logicalDiskSizeInGBInstance = DatatypeConverter.parseInt(logicalDiskSizeInGBElement.getTextContent());
                     result.setLogicalSizeInGB(logicalDiskSizeInGBInstance);
                 }
                 
@@ -1632,8 +1632,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                     Element logicalDiskSizeInGBElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                     if (logicalDiskSizeInGBElement != null)
                     {
-                        double logicalDiskSizeInGBInstance;
-                        logicalDiskSizeInGBInstance = DatatypeConverter.parseDouble(logicalDiskSizeInGBElement.getTextContent());
+                        int logicalDiskSizeInGBInstance;
+                        logicalDiskSizeInGBInstance = DatatypeConverter.parseInt(logicalDiskSizeInGBElement.getTextContent());
                         diskInstance.setLogicalSizeInGB(logicalDiskSizeInGBInstance);
                     }
                     
@@ -1886,7 +1886,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         }
         
         Element logicalDiskSizeInGBElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LogicalDiskSizeInGB");
-        logicalDiskSizeInGBElement.appendChild(requestDoc.createTextNode(Double.toString(parameters.getLogicalDiskSizeInGB())));
+        logicalDiskSizeInGBElement.appendChild(requestDoc.createTextNode(Integer.toString(parameters.getLogicalDiskSizeInGB())));
         dataVirtualHardDiskElement.appendChild(logicalDiskSizeInGBElement);
         
         Element mediaLinkElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "MediaLink");
@@ -2168,8 +2168,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 Element logicalDiskSizeInGBElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                 if (logicalDiskSizeInGBElement != null)
                 {
-                    double logicalDiskSizeInGBInstance;
-                    logicalDiskSizeInGBInstance = DatatypeConverter.parseDouble(logicalDiskSizeInGBElement.getTextContent());
+                    int logicalDiskSizeInGBInstance;
+                    logicalDiskSizeInGBInstance = DatatypeConverter.parseInt(logicalDiskSizeInGBElement.getTextContent());
                     result.setLogicalSizeInGB(logicalDiskSizeInGBInstance);
                 }
                 

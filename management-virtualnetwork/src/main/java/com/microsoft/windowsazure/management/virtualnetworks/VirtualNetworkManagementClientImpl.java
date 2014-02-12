@@ -26,7 +26,7 @@ package com.microsoft.windowsazure.management.virtualnetworks;
 import com.microsoft.windowsazure.core.ServiceClient;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.exception.ServiceException;
-import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
+import com.microsoft.windowsazure.management.ManagementConfiguration;
 import com.microsoft.windowsazure.management.virtualnetworks.models.LocalNetworkConnectionType;
 import com.microsoft.windowsazure.management.virtualnetworks.models.OperationStatus;
 import com.microsoft.windowsazure.management.virtualnetworks.models.VirtualNetworkOperationStatusResponse;
@@ -434,11 +434,11 @@ public class VirtualNetworkManagementClientImpl extends ServiceClient<VirtualNet
     */
      static LocalNetworkConnectionType parseLocalNetworkConnectionType(String value)
     {
-        if (value == "IPsec")
+        if ("IPsec".equals(value))
         {
             return LocalNetworkConnectionType.IPSecurity;
         }
-        if (value == "Dedicated")
+        if ("Dedicated".equals(value))
         {
             return LocalNetworkConnectionType.Dedicated;
         }
