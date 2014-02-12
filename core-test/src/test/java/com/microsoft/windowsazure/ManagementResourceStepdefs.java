@@ -25,7 +25,6 @@ import java.util.HashMap;
 import org.junit.Assert;
 
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
-import com.microsoft.windowsazure.management.websites.models.WebSiteCreateParameters;
 
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
@@ -40,20 +39,20 @@ public class ManagementResourceStepdefs
     {
         if (objectType.equals("ManagementClient"))
         {
-        	Class<?> serviceClass = Class.forName("com.microsoft.windowsazure.management.ManagementService");
-        	Method method = serviceClass.getMethod("create", Configuration.class);
+            Class<?> serviceClass = Class.forName("com.microsoft.windowsazure.management.ManagementService");
+            Method method = serviceClass.getMethod("create", Configuration.class);
             objects.put(name, method.invoke(null, createConfiguration()));   
         }
         else if (objectType.equals("WebSiteManagementClient"))
         {
-        	Class<?> serviceClass = Class.forName("com.microsoft.windowsazure.management.websites.WebSiteManagementService");
-        	Method method = serviceClass.getMethod("create", Configuration.class);
+            Class<?> serviceClass = Class.forName("com.microsoft.windowsazure.management.websites.WebSiteManagementService");
+            Method method = serviceClass.getMethod("create", Configuration.class);
             objects.put(name, method.invoke(null, createConfiguration()));   
         }
         else if (objectType.equals("StorageManagementClient"))
         {
-        	Class<?> serviceClass = Class.forName("com.microsoft.windowsazure.management.storage.StorageManagementService");
-        	Method method = serviceClass.getMethod("create", Configuration.class);
+            Class<?> serviceClass = Class.forName("com.microsoft.windowsazure.management.storage.StorageManagementService");
+            Method method = serviceClass.getMethod("create", Configuration.class);
             objects.put(name, method.invoke(null, createConfiguration()));   
         }
         else
@@ -76,7 +75,7 @@ public class ManagementResourceStepdefs
         }
         else
         {
-        	objects.put(propertyName, objects.get(propertyObj));
+            objects.put(propertyName, objects.get(propertyObj));
         }
     }
     
@@ -92,7 +91,7 @@ public class ManagementResourceStepdefs
         }
         else
         {
-        	objects.put(propertyName, TextUtility.convertStringTo(propertyValue, propertyType));
+            objects.put(propertyName, TextUtility.convertStringTo(propertyValue, propertyType));
         }
     }
 
@@ -105,19 +104,19 @@ public class ManagementResourceStepdefs
         
         for (int i = 0; i < arrayObject.size(); i++)
         {
-        	String[] propertyParts = propertyPath.split("\\.");
-        	Object propertyParent = getObject(arrayObject.get(i), propertyParts);
+            String[] propertyParts = propertyPath.split("\\.");
+            Object propertyParent = getObject(arrayObject.get(i), propertyParts);
             Object propertyValue = getPropertyValue(propertyParent, propertyParts[propertyParts.length - 1]);
-        	if (propertyValue.equals(TextUtility.convertStringTo(value, propertyType)))
-        	{
-        		objects.put(objectName, arrayObject.get(i));
-        		return;
-        	}
+            if (propertyValue.equals(TextUtility.convertStringTo(value, propertyType)))
+            {
+                objects.put(objectName, arrayObject.get(i));
+                return;
+            }
         }
-        
+
         throw new NullPointerException();
     }
-    
+
     private Object getPropertyValue(Object parent, String propertyName) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
     {
         Method method;
@@ -140,7 +139,7 @@ public class ManagementResourceStepdefs
         Object object = getObject(parts);
  
         Object result = getPropertyValue(object, parts[parts.length - 1]);
-        
+
         // Assert
         Assert.assertEquals(TextUtility.convertStringTo(propertyValue, propertyType), result);
     }
@@ -163,7 +162,7 @@ public class ManagementResourceStepdefs
     {
         objects.put(resultName, when_invoke_with_parameter_converted_value(methodName, TextUtility.convertStringTo(parameterValue, parameterType), parameterType));
     }
-    
+
     @When("^I invoke \"([^\"]*)\" with parameter \"([^\"]*)\" I get the result into \"([^\"]*)\"$")
     public void when_invoke_with_parameter_get_result(String methodName, String parameterName, String resultName) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException
     {
@@ -176,13 +175,13 @@ public class ManagementResourceStepdefs
     {
         objects.put(resultName, when_invoke(methodName));
     }
-    
+
     @When("^I invoke \"([^\"]*)\"$")
     public Object when_invoke(String methodName) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
     {
         String[] parts = methodName.split("\\.");
         Object object = getObject(parts);
-        
+
         Method method = object.getClass().getMethod(TextUtility.ToCamelCase(parts[parts.length - 1]));
         return method.invoke(object);
     }
@@ -192,11 +191,11 @@ public class ManagementResourceStepdefs
     {
         String[] parts = methodName.split("\\.");
         Object object = getObject(parts);
-        
+
         Method method = object.getClass().getMethod(TextUtility.ToCamelCase(parts[parts.length - 1]), TextUtility.getJavaType(parameter1Type), TextUtility.getJavaType(parameter2Type));
         return method.invoke(object, parameter1, parameter2);
     }
-    
+
     @When("^I invoke \"([^\"]*)\" with parameter value \"([^\"]*)\" of type \"([^\"]*)\"$")
     public Object when_invoke_with_parameter_value(String methodName, String parameterValue, String parameterType) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException
     {
@@ -226,11 +225,11 @@ public class ManagementResourceStepdefs
         Object parameter2 = objects.get(parameter2Name);
         return when_invoke_with_parameter_values(methodName, parameter1, parameter1.getClass().getName(), parameter2, parameter2.getClass().getName());
     }
-    
+
     @When("^I invoke \"([^\"]*)\" with parameters \"([^\"]*)\" and \"([^\"]*)\" I get the result into \"([^\"]*)\"$")
     public void  when_invoke_with_parameters_get_result(String methodName, String parameter1Name, String parameter2Name, String resultName) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException
     {
-    	objects.put(resultName, when_invoke_with_parameter(methodName, parameter1Name, parameter2Name));
+        objects.put(resultName, when_invoke_with_parameter(methodName, parameter1Name, parameter2Name));
     }
 
     @When("^invoke \"([^\"]*)\" with parameter value \"([^\"]*)\" of type \"([^\"]*)\"$")
@@ -247,17 +246,17 @@ public class ManagementResourceStepdefs
     
     private Object getObject(String[] parts) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
     {
-    	if (objects.containsKey(parts[0]))
-    	{
-	        Object object = objects.get(parts[0]);
-	
-	        String[] memberParts = Arrays.copyOfRange(parts, 1, parts.length);
-	        return getObject(object, memberParts);
-    	}
-    	
-    	return null;
+        if (objects.containsKey(parts[0]))
+        {
+            Object object = objects.get(parts[0]);
+
+            String[] memberParts = Arrays.copyOfRange(parts, 1, parts.length);
+            return getObject(object, memberParts);
+        }
+
+        return null;
     }
-    
+
     private Object getObject(Object parent, String[] parts) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
     {
         for (int i = 0; i < (parts.length - 1); i++)
