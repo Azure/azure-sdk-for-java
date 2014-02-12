@@ -26,7 +26,7 @@ package com.microsoft.windowsazure.management.store;
 import com.microsoft.windowsazure.core.ServiceClient;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.exception.ServiceException;
-import com.microsoft.windowsazure.management.ManagementConfiguration;
+import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
 import com.microsoft.windowsazure.management.store.models.AddOnOperationStatusResponse;
 import com.microsoft.windowsazure.management.store.models.OperationStatus;
 import com.microsoft.windowsazure.tracing.CloudTracing;
