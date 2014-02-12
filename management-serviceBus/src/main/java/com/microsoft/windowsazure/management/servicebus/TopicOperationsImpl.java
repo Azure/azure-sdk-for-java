@@ -273,7 +273,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                 }
                 
                 Element createdTimeElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CreatedTime");
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
                 simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
                 createdTimeElement.appendChild(requestDoc.createTextNode(simpleDateFormat.format(authorizationRulesItem.getCreatedTime().getTime())));
                 authorizationRuleElement.appendChild(createdTimeElement);
@@ -286,7 +286,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                 }
                 
                 Element modifiedTimeElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ModifiedTime");
-                SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+                SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
                 simpleDateFormat2.setTimeZone(TimeZone.getTimeZone("UTC"));
                 modifiedTimeElement.appendChild(requestDoc.createTextNode(simpleDateFormat2.format(authorizationRulesItem.getModifiedTime().getTime())));
                 authorizationRuleElement.appendChild(modifiedTimeElement);
@@ -316,19 +316,19 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
         }
         
         Element createdAtElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CreatedAt");
-        SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+        SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
         simpleDateFormat3.setTimeZone(TimeZone.getTimeZone("UTC"));
         createdAtElement.appendChild(requestDoc.createTextNode(simpleDateFormat3.format(topic.getCreatedAt().getTime())));
         topicDescriptionElement.appendChild(createdAtElement);
         
         Element updatedAtElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "UpdatedAt");
-        SimpleDateFormat simpleDateFormat4 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+        SimpleDateFormat simpleDateFormat4 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
         simpleDateFormat4.setTimeZone(TimeZone.getTimeZone("UTC"));
         updatedAtElement.appendChild(requestDoc.createTextNode(simpleDateFormat4.format(topic.getUpdatedAt().getTime())));
         topicDescriptionElement.appendChild(updatedAtElement);
         
         Element accessedAtElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessedAt");
-        SimpleDateFormat simpleDateFormat5 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+        SimpleDateFormat simpleDateFormat5 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
         simpleDateFormat5.setTimeZone(TimeZone.getTimeZone("UTC"));
         accessedAtElement.appendChild(requestDoc.createTextNode(simpleDateFormat5.format(topic.getAccessedAt().getTime())));
         topicDescriptionElement.appendChild(accessedAtElement);
@@ -1865,7 +1865,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                 }
                 
                 Element createdTimeElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CreatedTime");
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
                 simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
                 createdTimeElement.appendChild(requestDoc.createTextNode(simpleDateFormat.format(authorizationRulesItem.getCreatedTime().getTime())));
                 authorizationRuleElement.appendChild(createdTimeElement);
@@ -1878,7 +1878,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                 }
                 
                 Element modifiedTimeElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ModifiedTime");
-                SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+                SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
                 simpleDateFormat2.setTimeZone(TimeZone.getTimeZone("UTC"));
                 modifiedTimeElement.appendChild(requestDoc.createTextNode(simpleDateFormat2.format(authorizationRulesItem.getModifiedTime().getTime())));
                 authorizationRuleElement.appendChild(modifiedTimeElement);
@@ -1908,19 +1908,19 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
         }
         
         Element createdAtElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CreatedAt");
-        SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+        SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
         simpleDateFormat3.setTimeZone(TimeZone.getTimeZone("UTC"));
         createdAtElement.appendChild(requestDoc.createTextNode(simpleDateFormat3.format(topic.getCreatedAt().getTime())));
         topicDescriptionElement.appendChild(createdAtElement);
         
         Element updatedAtElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "UpdatedAt");
-        SimpleDateFormat simpleDateFormat4 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+        SimpleDateFormat simpleDateFormat4 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
         simpleDateFormat4.setTimeZone(TimeZone.getTimeZone("UTC"));
         updatedAtElement.appendChild(requestDoc.createTextNode(simpleDateFormat4.format(topic.getUpdatedAt().getTime())));
         topicDescriptionElement.appendChild(updatedAtElement);
         
         Element accessedAtElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessedAt");
-        SimpleDateFormat simpleDateFormat5 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+        SimpleDateFormat simpleDateFormat5 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
         simpleDateFormat5.setTimeZone(TimeZone.getTimeZone("UTC"));
         accessedAtElement.appendChild(requestDoc.createTextNode(simpleDateFormat5.format(topic.getAccessedAt().getTime())));
         topicDescriptionElement.appendChild(accessedAtElement);

@@ -565,7 +565,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     @Override
     public StorageOperationStatusResponse create(StorageAccountCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException
     {
-        StorageManagementClient client2	 = this.getClient();
+        StorageManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
         if (shouldTrace)
