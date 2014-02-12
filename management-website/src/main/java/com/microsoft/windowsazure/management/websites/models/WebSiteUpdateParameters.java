@@ -246,24 +246,24 @@ public class WebSiteUpdateParameters
         this.sslCertificates = sslCertificatesValue;
     }
     
-    private WebSiteState state;
+    private String state;
     
     /**
-    * A string that describes the state of the web site. Possible values are
-    * Stopped or Running.
+    * A string that describes the state of the web site. Possible values
+    * include Stopped, Running or QuotaExceeded.
     * @return The State value.
     */
-    public WebSiteState getState()
+    public String getState()
     {
         return this.state;
     }
     
     /**
-    * A string that describes the state of the web site. Possible values are
-    * Stopped or Running.
+    * A string that describes the state of the web site. Possible values
+    * include Stopped, Running or QuotaExceeded.
     * @param stateValue The State value.
     */
-    public void setState(final WebSiteState stateValue)
+    public void setState(final String stateValue)
     {
         this.state = stateValue;
     }

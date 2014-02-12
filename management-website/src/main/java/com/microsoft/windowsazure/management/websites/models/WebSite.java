@@ -396,14 +396,14 @@ public class WebSite
         this.sslCertificates = sslCertificatesValue;
     }
     
-    private WebSiteState state;
+    private String state;
     
     /**
     * A string that describes the state of the web site. Possible values are
     * Stopped or Running.
     * @return The State value.
     */
-    public WebSiteState getState()
+    public String getState()
     {
         return this.state;
     }
@@ -413,7 +413,7 @@ public class WebSite
     * Stopped or Running.
     * @param stateValue The State value.
     */
-    public void setState(final WebSiteState stateValue)
+    public void setState(final String stateValue)
     {
         this.state = stateValue;
     }
