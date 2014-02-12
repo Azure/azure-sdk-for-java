@@ -26,8 +26,7 @@ import org.junit.rules.ExpectedException;
 
 import com.microsoft.windowsazure.core.DefaultBuilder;
 
-public class DefaultBuilderTest
-{
+public class DefaultBuilderTest {
 
     Map<String, Object> properties;
     DefaultBuilder builder;
@@ -36,15 +35,13 @@ public class DefaultBuilderTest
     public ExpectedException thrown = ExpectedException.none();
 
     @Before
-    public void init()
-    {
+    public void init() {
         properties = new HashMap<String, Object>();
         builder = new DefaultBuilder();
     }
 
     @Test
-    public void namedAnnotationsComeFromBuildProperties() throws Exception
-    {
+    public void namedAnnotationsComeFromBuildProperties() throws Exception {
         // Arrange
         builder.add(ClassWithNamedParameter.class);
 
@@ -60,8 +57,7 @@ public class DefaultBuilderTest
     }
 
     @Test
-    public void namedAnnotationReportsMissingProperty() throws Exception
-    {
+    public void namedAnnotationReportsMissingProperty() throws Exception {
         // Arrange
         thrown.expect(RuntimeException.class);
 
@@ -77,8 +73,7 @@ public class DefaultBuilderTest
     }
 
     @Test
-    public void singleCtorWithNoInjectShouldBeUsed() throws Exception
-    {
+    public void singleCtorWithNoInjectShouldBeUsed() throws Exception {
         // Arrange
         builder.add(ClassWithSingleCtorNoInject.class);
 
@@ -92,8 +87,7 @@ public class DefaultBuilderTest
     }
 
     @Test
-    public void multipleCtorWithNoInjectShouldFail() throws Exception
-    {
+    public void multipleCtorWithNoInjectShouldFail() throws Exception {
         // Arrange
         thrown.expect(RuntimeException.class);
 
@@ -110,8 +104,7 @@ public class DefaultBuilderTest
     }
 
     @Test
-    public void multipleCtorWithMultipleInjectShouldFail() throws Exception
-    {
+    public void multipleCtorWithMultipleInjectShouldFail() throws Exception {
         // Arrange
         thrown.expect(RuntimeException.class);
 
@@ -128,8 +121,7 @@ public class DefaultBuilderTest
     }
 
     @Test
-    public void alterationExecutesWhenInstanceCreated() throws Exception
-    {
+    public void alterationExecutesWhenInstanceCreated() throws Exception {
         // Arrange
         builder.add(ClassWithProperties.class);
         builder.alter(ClassWithProperties.class, ClassWithProperties.class,
@@ -145,8 +137,7 @@ public class DefaultBuilderTest
     }
 
     @Test
-    public void namedParametersUseProfileBasedKeysFirst() throws Exception
-    {
+    public void namedParametersUseProfileBasedKeysFirst() throws Exception {
         // Arrange
         builder.add(ClassWithNamedParameter.class);
         properties.put("Foo", "fallback");
@@ -162,8 +153,7 @@ public class DefaultBuilderTest
     }
 
     @Test
-    public void namedParametersFallBackToNonProfileBasedKeys() throws Exception
-    {
+    public void namedParametersFallBackToNonProfileBasedKeys() throws Exception {
         // Arrange
         builder.add(ClassWithNamedParameter.class);
         properties.put("Foo", "fallback");
@@ -187,8 +177,7 @@ public class DefaultBuilderTest
     }
 
     @Test
-    public void namedParamatersFallBackFromLeftToRight() throws Exception
-    {
+    public void namedParamatersFallBackFromLeftToRight() throws Exception {
         // Arrange
         builder.add(ClassWithNamedParameter.class);
         properties.put("Foo", "fallback");

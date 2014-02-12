@@ -17,8 +17,7 @@ package com.microsoft.windowsazure.services.servicebus.models;
 /**
  * Represents the result of a <code>receiveSubscriptionMessage</code> operation.
  */
-public class ReceiveSubscriptionMessageResult
-{
+public class ReceiveSubscriptionMessageResult {
 
     private BrokeredMessage value;
 
@@ -30,8 +29,7 @@ public class ReceiveSubscriptionMessageResult
      *            A {@link BrokeredMessage} object assigned as the value of the
      *            result.
      */
-    public ReceiveSubscriptionMessageResult(BrokeredMessage value)
-    {
+    public ReceiveSubscriptionMessageResult(BrokeredMessage value) {
         this.setValue(value);
     }
 
@@ -42,8 +40,7 @@ public class ReceiveSubscriptionMessageResult
      *            A {@link BrokeredMessage} object assigned as the value of the
      *            result.
      */
-    public void setValue(BrokeredMessage value)
-    {
+    public void setValue(BrokeredMessage value) {
         this.value = value;
     }
 
@@ -53,8 +50,7 @@ public class ReceiveSubscriptionMessageResult
      * @return A {@link BrokeredMessage} object that represents the value of the
      *         result.
      */
-    public BrokeredMessage getValue()
-    {
+    public BrokeredMessage getValue() {
         return value;
     }
 

@@ -27,107 +27,111 @@ import com.microsoft.windowsazure.core.OperationResponse;
 import java.net.InetAddress;
 
 /**
-* A standard service response including an HTTP status code and request ID.
-*/
-public class FirewallRuleUpdateResponse extends OperationResponse
-{
+ * A standard service response including an HTTP status code and request ID.
+ */
+public class FirewallRuleUpdateResponse extends OperationResponse {
     private InetAddress endIPAddress;
-    
+
     /**
-    * Gets or sets the ending IP address applied to this rule.
-    * @return The EndIPAddress value.
-    */
-    public InetAddress getEndIPAddress()
-    {
+     * Gets or sets the ending IP address applied to this rule.
+     * 
+     * @return The EndIPAddress value.
+     */
+    public InetAddress getEndIPAddress() {
         return this.endIPAddress;
     }
-    
+
     /**
-    * Gets or sets the ending IP address applied to this rule.
-    * @param endIPAddressValue The EndIPAddress value.
-    */
-    public void setEndIPAddress(final InetAddress endIPAddressValue)
-    {
+     * Gets or sets the ending IP address applied to this rule.
+     * 
+     * @param endIPAddressValue
+     *            The EndIPAddress value.
+     */
+    public void setEndIPAddress(final InetAddress endIPAddressValue) {
         this.endIPAddress = endIPAddressValue;
     }
-    
+
     private String name;
-    
+
     /**
-    * Gets or sets the name of the Firewall Rule.
-    * @return The Name value.
-    */
-    public String getName()
-    {
+     * Gets or sets the name of the Firewall Rule.
+     * 
+     * @return The Name value.
+     */
+    public String getName() {
         return this.name;
     }
-    
+
     /**
-    * Gets or sets the name of the Firewall Rule.
-    * @param nameValue The Name value.
-    */
-    public void setName(final String nameValue)
-    {
+     * Gets or sets the name of the Firewall Rule.
+     * 
+     * @param nameValue
+     *            The Name value.
+     */
+    public void setName(final String nameValue) {
         this.name = nameValue;
     }
-    
+
     private InetAddress startIPAddress;
-    
+
     /**
-    * Gets or sets the beginning IP address applied to this rule.
-    * @return The StartIPAddress value.
-    */
-    public InetAddress getStartIPAddress()
-    {
+     * Gets or sets the beginning IP address applied to this rule.
+     * 
+     * @return The StartIPAddress value.
+     */
+    public InetAddress getStartIPAddress() {
         return this.startIPAddress;
     }
-    
+
     /**
-    * Gets or sets the beginning IP address applied to this rule.
-    * @param startIPAddressValue The StartIPAddress value.
-    */
-    public void setStartIPAddress(final InetAddress startIPAddressValue)
-    {
+     * Gets or sets the beginning IP address applied to this rule.
+     * 
+     * @param startIPAddressValue
+     *            The StartIPAddress value.
+     */
+    public void setStartIPAddress(final InetAddress startIPAddressValue) {
         this.startIPAddress = startIPAddressValue;
     }
-    
+
     private String state;
-    
+
     /**
-    * Gets or sets the state of the rule.
-    * @return The State value.
-    */
-    public String getState()
-    {
+     * Gets or sets the state of the rule.
+     * 
+     * @return The State value.
+     */
+    public String getState() {
         return this.state;
     }
-    
+
     /**
-    * Gets or sets the state of the rule.
-    * @param stateValue The State value.
-    */
-    public void setState(final String stateValue)
-    {
+     * Gets or sets the state of the rule.
+     * 
+     * @param stateValue
+     *            The State value.
+     */
+    public void setState(final String stateValue) {
         this.state = stateValue;
     }
-    
+
     private String type;
-    
+
     /**
-    * Gets or sets the type of resource.
-    * @return The Type value.
-    */
-    public String getType()
-    {
+     * Gets or sets the type of resource.
+     * 
+     * @return The Type value.
+     */
+    public String getType() {
         return this.type;
     }
-    
+
     /**
-    * Gets or sets the type of resource.
-    * @param typeValue The Type value.
-    */
-    public void setType(final String typeValue)
-    {
+     * Gets or sets the type of resource.
+     * 
+     * @param typeValue
+     *            The Type value.
+     */
+    public void setType(final String typeValue) {
         this.type = typeValue;
     }
 }

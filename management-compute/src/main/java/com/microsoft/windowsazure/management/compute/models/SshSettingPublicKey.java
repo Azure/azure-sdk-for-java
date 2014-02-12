@@ -24,55 +24,56 @@
 package com.microsoft.windowsazure.management.compute.models;
 
 /**
-* Specifies a public key in the SSH settings.
-*/
-public class SshSettingPublicKey
-{
+ * Specifies a public key in the SSH settings.
+ */
+public class SshSettingPublicKey {
     private String fingerprint;
-    
+
     /**
-    * Required. Specifies the SHA1 fingerprint of an X509 certificate
-    * associated with the hosted service that includes the SSH public key.
-    * @return The Fingerprint value.
-    */
-    public String getFingerprint()
-    {
+     * Required. Specifies the SHA1 fingerprint of an X509 certificate
+     * associated with the hosted service that includes the SSH public key.
+     * 
+     * @return The Fingerprint value.
+     */
+    public String getFingerprint() {
         return this.fingerprint;
     }
-    
+
     /**
-    * Required. Specifies the SHA1 fingerprint of an X509 certificate
-    * associated with the hosted service that includes the SSH public key.
-    * @param fingerprintValue The Fingerprint value.
-    */
-    public void setFingerprint(final String fingerprintValue)
-    {
+     * Required. Specifies the SHA1 fingerprint of an X509 certificate
+     * associated with the hosted service that includes the SSH public key.
+     * 
+     * @param fingerprintValue
+     *            The Fingerprint value.
+     */
+    public void setFingerprint(final String fingerprintValue) {
         this.fingerprint = fingerprintValue;
     }
-    
+
     private String path;
-    
+
     /**
-    * Required. Specifies the full path of a file, on the virtual machine,
-    * which stores the SSH public key. If the file already exists, the
-    * specified key is appended to the file.
-    * Example:/home/user/.ssh/authorized_keys
-    * @return The Path value.
-    */
-    public String getPath()
-    {
+     * Required. Specifies the full path of a file, on the virtual machine,
+     * which stores the SSH public key. If the file already exists, the
+     * specified key is appended to the file.
+     * Example:/home/user/.ssh/authorized_keys
+     * 
+     * @return The Path value.
+     */
+    public String getPath() {
         return this.path;
     }
-    
+
     /**
-    * Required. Specifies the full path of a file, on the virtual machine,
-    * which stores the SSH public key. If the file already exists, the
-    * specified key is appended to the file.
-    * Example:/home/user/.ssh/authorized_keys
-    * @param pathValue The Path value.
-    */
-    public void setPath(final String pathValue)
-    {
+     * Required. Specifies the full path of a file, on the virtual machine,
+     * which stores the SSH public key. If the file already exists, the
+     * specified key is appended to the file.
+     * Example:/home/user/.ssh/authorized_keys
+     * 
+     * @param pathValue
+     *            The Path value.
+     */
+    public void setPath(final String pathValue) {
         this.path = pathValue;
     }
 }

@@ -24,22 +24,21 @@
 package com.microsoft.windowsazure.management.storage.models;
 
 /**
-* The status of the asynchronous request.
-*/
-public enum OperationStatus
-{
+ * The status of the asynchronous request.
+ */
+public enum OperationStatus {
     /**
-    * The asynchronous request is in progress.
-    */
+     * The asynchronous request is in progress.
+     */
     InProgress,
-    
+
     /**
-    * The asynchronous request succeeded.
-    */
+     * The asynchronous request succeeded.
+     */
     Succeeded,
-    
+
     /**
-    * The asynchronous request failed.
-    */
+     * The asynchronous request failed.
+     */
     Failed,
 }

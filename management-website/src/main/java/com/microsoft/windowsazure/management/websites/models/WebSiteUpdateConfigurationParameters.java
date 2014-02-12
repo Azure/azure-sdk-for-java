@@ -28,631 +28,664 @@ import java.util.Calendar;
 import java.util.HashMap;
 
 /**
-* The Update Web Site Configuration parameters.
-*/
-public class WebSiteUpdateConfigurationParameters
-{
+ * The Update Web Site Configuration parameters.
+ */
+public class WebSiteUpdateConfigurationParameters {
     private HashMap<String, String> appSettings;
-    
+
     /**
-    * A set of name/value pairs that contain application settings for a site.
-    * @return The AppSettings value.
-    */
-    public HashMap<String, String> getAppSettings()
-    {
+     * A set of name/value pairs that contain application settings for a site.
+     * 
+     * @return The AppSettings value.
+     */
+    public HashMap<String, String> getAppSettings() {
         return this.appSettings;
     }
-    
+
     /**
-    * A set of name/value pairs that contain application settings for a site.
-    * @param appSettingsValue The AppSettings value.
-    */
-    public void setAppSettings(final HashMap<String, String> appSettingsValue)
-    {
+     * A set of name/value pairs that contain application settings for a site.
+     * 
+     * @param appSettingsValue
+     *            The AppSettings value.
+     */
+    public void setAppSettings(final HashMap<String, String> appSettingsValue) {
         this.appSettings = appSettingsValue;
     }
-    
+
     private ArrayList<WebSiteUpdateConfigurationParameters.ConnectionStringInfo> connectionStrings;
-    
+
     /**
-    * Contains connection strings for database and other external resources.
-    * @return The ConnectionStrings value.
-    */
-    public ArrayList<WebSiteUpdateConfigurationParameters.ConnectionStringInfo> getConnectionStrings()
-    {
+     * Contains connection strings for database and other external resources.
+     * 
+     * @return The ConnectionStrings value.
+     */
+    public ArrayList<WebSiteUpdateConfigurationParameters.ConnectionStringInfo> getConnectionStrings() {
         return this.connectionStrings;
     }
-    
+
     /**
-    * Contains connection strings for database and other external resources.
-    * @param connectionStringsValue The ConnectionStrings value.
-    */
-    public void setConnectionStrings(final ArrayList<WebSiteUpdateConfigurationParameters.ConnectionStringInfo> connectionStringsValue)
-    {
+     * Contains connection strings for database and other external resources.
+     * 
+     * @param connectionStringsValue
+     *            The ConnectionStrings value.
+     */
+    public void setConnectionStrings(
+            final ArrayList<WebSiteUpdateConfigurationParameters.ConnectionStringInfo> connectionStringsValue) {
         this.connectionStrings = connectionStringsValue;
     }
-    
+
     private ArrayList<String> defaultDocuments;
-    
+
     /**
-    * Contains one or more string elements that list, in order of preference,
-    * the name of the file that a web site returns when the web site's domain
-    * name is requested by itself. For example, if the default document for
-    * http://contoso.com is default.htm, the page
-    * http://www.contoso.com/default.htm is returned when the browser is
-    * pointed to http://www.contoso.com.
-    * @return The DefaultDocuments value.
-    */
-    public ArrayList<String> getDefaultDocuments()
-    {
+     * Contains one or more string elements that list, in order of preference,
+     * the name of the file that a web site returns when the web site's domain
+     * name is requested by itself. For example, if the default document for
+     * http://contoso.com is default.htm, the page
+     * http://www.contoso.com/default.htm is returned when the browser is
+     * pointed to http://www.contoso.com.
+     * 
+     * @return The DefaultDocuments value.
+     */
+    public ArrayList<String> getDefaultDocuments() {
         return this.defaultDocuments;
     }
-    
+
     /**
-    * Contains one or more string elements that list, in order of preference,
-    * the name of the file that a web site returns when the web site's domain
-    * name is requested by itself. For example, if the default document for
-    * http://contoso.com is default.htm, the page
-    * http://www.contoso.com/default.htm is returned when the browser is
-    * pointed to http://www.contoso.com.
-    * @param defaultDocumentsValue The DefaultDocuments value.
-    */
-    public void setDefaultDocuments(final ArrayList<String> defaultDocumentsValue)
-    {
+     * Contains one or more string elements that list, in order of preference,
+     * the name of the file that a web site returns when the web site's domain
+     * name is requested by itself. For example, if the default document for
+     * http://contoso.com is default.htm, the page
+     * http://www.contoso.com/default.htm is returned when the browser is
+     * pointed to http://www.contoso.com.
+     * 
+     * @param defaultDocumentsValue
+     *            The DefaultDocuments value.
+     */
+    public void setDefaultDocuments(
+            final ArrayList<String> defaultDocumentsValue) {
         this.defaultDocuments = defaultDocumentsValue;
     }
-    
+
     private Boolean detailedErrorLoggingEnabled;
-    
+
     /**
-    * True if detailed error logging is enabled; otherwise, false.
-    * @return The DetailedErrorLoggingEnabled value.
-    */
-    public Boolean isDetailedErrorLoggingEnabled()
-    {
+     * True if detailed error logging is enabled; otherwise, false.
+     * 
+     * @return The DetailedErrorLoggingEnabled value.
+     */
+    public Boolean isDetailedErrorLoggingEnabled() {
         return this.detailedErrorLoggingEnabled;
     }
-    
+
     /**
-    * True if detailed error logging is enabled; otherwise, false.
-    * @param detailedErrorLoggingEnabledValue The DetailedErrorLoggingEnabled
-    * value.
-    */
-    public void setDetailedErrorLoggingEnabled(final Boolean detailedErrorLoggingEnabledValue)
-    {
+     * True if detailed error logging is enabled; otherwise, false.
+     * 
+     * @param detailedErrorLoggingEnabledValue
+     *            The DetailedErrorLoggingEnabled value.
+     */
+    public void setDetailedErrorLoggingEnabled(
+            final Boolean detailedErrorLoggingEnabledValue) {
         this.detailedErrorLoggingEnabled = detailedErrorLoggingEnabledValue;
     }
-    
+
     private String documentRoot;
-    
+
     /**
-    * The document root.
-    * @return The DocumentRoot value.
-    */
-    public String getDocumentRoot()
-    {
+     * The document root.
+     * 
+     * @return The DocumentRoot value.
+     */
+    public String getDocumentRoot() {
         return this.documentRoot;
     }
-    
+
     /**
-    * The document root.
-    * @param documentRootValue The DocumentRoot value.
-    */
-    public void setDocumentRoot(final String documentRootValue)
-    {
+     * The document root.
+     * 
+     * @param documentRootValue
+     *            The DocumentRoot value.
+     */
+    public void setDocumentRoot(final String documentRootValue) {
         this.documentRoot = documentRootValue;
     }
-    
+
     private ArrayList<WebSiteUpdateConfigurationParameters.HandlerMapping> handlerMappings;
-    
+
     /**
-    * Specifies custom executable programs for handling requests for specific
-    * file name extensions.
-    * @return The HandlerMappings value.
-    */
-    public ArrayList<WebSiteUpdateConfigurationParameters.HandlerMapping> getHandlerMappings()
-    {
+     * Specifies custom executable programs for handling requests for specific
+     * file name extensions.
+     * 
+     * @return The HandlerMappings value.
+     */
+    public ArrayList<WebSiteUpdateConfigurationParameters.HandlerMapping> getHandlerMappings() {
         return this.handlerMappings;
     }
-    
+
     /**
-    * Specifies custom executable programs for handling requests for specific
-    * file name extensions.
-    * @param handlerMappingsValue The HandlerMappings value.
-    */
-    public void setHandlerMappings(final ArrayList<WebSiteUpdateConfigurationParameters.HandlerMapping> handlerMappingsValue)
-    {
+     * Specifies custom executable programs for handling requests for specific
+     * file name extensions.
+     * 
+     * @param handlerMappingsValue
+     *            The HandlerMappings value.
+     */
+    public void setHandlerMappings(
+            final ArrayList<WebSiteUpdateConfigurationParameters.HandlerMapping> handlerMappingsValue) {
         this.handlerMappings = handlerMappingsValue;
     }
-    
+
     private Boolean httpLoggingEnabled;
-    
+
     /**
-    * True if HTTP error logging is enabled; otherwise, false.
-    * @return The HttpLoggingEnabled value.
-    */
-    public Boolean isHttpLoggingEnabled()
-    {
+     * True if HTTP error logging is enabled; otherwise, false.
+     * 
+     * @return The HttpLoggingEnabled value.
+     */
+    public Boolean isHttpLoggingEnabled() {
         return this.httpLoggingEnabled;
     }
-    
+
     /**
-    * True if HTTP error logging is enabled; otherwise, false.
-    * @param httpLoggingEnabledValue The HttpLoggingEnabled value.
-    */
-    public void setHttpLoggingEnabled(final Boolean httpLoggingEnabledValue)
-    {
+     * True if HTTP error logging is enabled; otherwise, false.
+     * 
+     * @param httpLoggingEnabledValue
+     *            The HttpLoggingEnabled value.
+     */
+    public void setHttpLoggingEnabled(final Boolean httpLoggingEnabledValue) {
         this.httpLoggingEnabled = httpLoggingEnabledValue;
     }
-    
+
     private Integer logsDirectorySizeLimit;
-    
+
     /**
-    * The limit of the logs directory.
-    * @return The LogsDirectorySizeLimit value.
-    */
-    public Integer getLogsDirectorySizeLimit()
-    {
+     * The limit of the logs directory.
+     * 
+     * @return The LogsDirectorySizeLimit value.
+     */
+    public Integer getLogsDirectorySizeLimit() {
         return this.logsDirectorySizeLimit;
     }
-    
+
     /**
-    * The limit of the logs directory.
-    * @param logsDirectorySizeLimitValue The LogsDirectorySizeLimit value.
-    */
-    public void setLogsDirectorySizeLimit(final Integer logsDirectorySizeLimitValue)
-    {
+     * The limit of the logs directory.
+     * 
+     * @param logsDirectorySizeLimitValue
+     *            The LogsDirectorySizeLimit value.
+     */
+    public void setLogsDirectorySizeLimit(
+            final Integer logsDirectorySizeLimitValue) {
         this.logsDirectorySizeLimit = logsDirectorySizeLimitValue;
     }
-    
+
     private ManagedPipelineMode managedPipelineMode;
-    
+
     /**
-    * Managed pipeline modes.
-    * @return The ManagedPipelineMode value.
-    */
-    public ManagedPipelineMode getManagedPipelineMode()
-    {
+     * Managed pipeline modes.
+     * 
+     * @return The ManagedPipelineMode value.
+     */
+    public ManagedPipelineMode getManagedPipelineMode() {
         return this.managedPipelineMode;
     }
-    
+
     /**
-    * Managed pipeline modes.
-    * @param managedPipelineModeValue The ManagedPipelineMode value.
-    */
-    public void setManagedPipelineMode(final ManagedPipelineMode managedPipelineModeValue)
-    {
+     * Managed pipeline modes.
+     * 
+     * @param managedPipelineModeValue
+     *            The ManagedPipelineMode value.
+     */
+    public void setManagedPipelineMode(
+            final ManagedPipelineMode managedPipelineModeValue) {
         this.managedPipelineMode = managedPipelineModeValue;
     }
-    
+
     private HashMap<String, String> metadata;
-    
+
     /**
-    * Contains name/value pairs for source control or other information.
-    * @return The Metadata value.
-    */
-    public HashMap<String, String> getMetadata()
-    {
+     * Contains name/value pairs for source control or other information.
+     * 
+     * @return The Metadata value.
+     */
+    public HashMap<String, String> getMetadata() {
         return this.metadata;
     }
-    
+
     /**
-    * Contains name/value pairs for source control or other information.
-    * @param metadataValue The Metadata value.
-    */
-    public void setMetadata(final HashMap<String, String> metadataValue)
-    {
+     * Contains name/value pairs for source control or other information.
+     * 
+     * @param metadataValue
+     *            The Metadata value.
+     */
+    public void setMetadata(final HashMap<String, String> metadataValue) {
         this.metadata = metadataValue;
     }
-    
+
     private String netFrameworkVersion;
-    
+
     /**
-    * The .NET Framework version. Supported values are v2.0 and v4.0.
-    * @return The NetFrameworkVersion value.
-    */
-    public String getNetFrameworkVersion()
-    {
+     * The .NET Framework version. Supported values are v2.0 and v4.0.
+     * 
+     * @return The NetFrameworkVersion value.
+     */
+    public String getNetFrameworkVersion() {
         return this.netFrameworkVersion;
     }
-    
+
     /**
-    * The .NET Framework version. Supported values are v2.0 and v4.0.
-    * @param netFrameworkVersionValue The NetFrameworkVersion value.
-    */
-    public void setNetFrameworkVersion(final String netFrameworkVersionValue)
-    {
+     * The .NET Framework version. Supported values are v2.0 and v4.0.
+     * 
+     * @param netFrameworkVersionValue
+     *            The NetFrameworkVersion value.
+     */
+    public void setNetFrameworkVersion(final String netFrameworkVersionValue) {
         this.netFrameworkVersion = netFrameworkVersionValue;
     }
-    
+
     private Integer numberOfWorkers;
-    
+
     /**
-    * The number of web workers allotted to the web site. If the site mode is
-    * Free, this value is 1. If the site mode is Shared, this value can range
-    * from 1 through 6. If the site mode is Standard, this value can range
-    * from 1 through 10.
-    * @return The NumberOfWorkers value.
-    */
-    public Integer getNumberOfWorkers()
-    {
+     * The number of web workers allotted to the web site. If the site mode is
+     * Free, this value is 1. If the site mode is Shared, this value can range
+     * from 1 through 6. If the site mode is Standard, this value can range from
+     * 1 through 10.
+     * 
+     * @return The NumberOfWorkers value.
+     */
+    public Integer getNumberOfWorkers() {
         return this.numberOfWorkers;
     }
-    
+
     /**
-    * The number of web workers allotted to the web site. If the site mode is
-    * Free, this value is 1. If the site mode is Shared, this value can range
-    * from 1 through 6. If the site mode is Standard, this value can range
-    * from 1 through 10.
-    * @param numberOfWorkersValue The NumberOfWorkers value.
-    */
-    public void setNumberOfWorkers(final Integer numberOfWorkersValue)
-    {
+     * The number of web workers allotted to the web site. If the site mode is
+     * Free, this value is 1. If the site mode is Shared, this value can range
+     * from 1 through 6. If the site mode is Standard, this value can range from
+     * 1 through 10.
+     * 
+     * @param numberOfWorkersValue
+     *            The NumberOfWorkers value.
+     */
+    public void setNumberOfWorkers(final Integer numberOfWorkersValue) {
         this.numberOfWorkers = numberOfWorkersValue;
     }
-    
+
     private String phpVersion;
-    
+
     /**
-    * Supported values are an empty string (an empty string disables PHP), 5.3,
-    * and 5.4.
-    * @return The PhpVersion value.
-    */
-    public String getPhpVersion()
-    {
+     * Supported values are an empty string (an empty string disables PHP), 5.3,
+     * and 5.4.
+     * 
+     * @return The PhpVersion value.
+     */
+    public String getPhpVersion() {
         return this.phpVersion;
     }
-    
+
     /**
-    * Supported values are an empty string (an empty string disables PHP), 5.3,
-    * and 5.4.
-    * @param phpVersionValue The PhpVersion value.
-    */
-    public void setPhpVersion(final String phpVersionValue)
-    {
+     * Supported values are an empty string (an empty string disables PHP), 5.3,
+     * and 5.4.
+     * 
+     * @param phpVersionValue
+     *            The PhpVersion value.
+     */
+    public void setPhpVersion(final String phpVersionValue) {
         this.phpVersion = phpVersionValue;
     }
-    
+
     private String publishingPassword;
-    
+
     /**
-    * Hash value of the password used for publishing the web site.
-    * @return The PublishingPassword value.
-    */
-    public String getPublishingPassword()
-    {
+     * Hash value of the password used for publishing the web site.
+     * 
+     * @return The PublishingPassword value.
+     */
+    public String getPublishingPassword() {
         return this.publishingPassword;
     }
-    
+
     /**
-    * Hash value of the password used for publishing the web site.
-    * @param publishingPasswordValue The PublishingPassword value.
-    */
-    public void setPublishingPassword(final String publishingPasswordValue)
-    {
+     * Hash value of the password used for publishing the web site.
+     * 
+     * @param publishingPasswordValue
+     *            The PublishingPassword value.
+     */
+    public void setPublishingPassword(final String publishingPasswordValue) {
         this.publishingPassword = publishingPasswordValue;
     }
-    
+
     private String publishingUserName;
-    
+
     /**
-    * The username used for publishing the web site. This is normally a dollar
-    * sign prepended to the web site name (for example, “$contoso”).
-    * @return The PublishingUserName value.
-    */
-    public String getPublishingUserName()
-    {
+     * The username used for publishing the web site. This is normally a dollar
+     * sign prepended to the web site name (for example, “$contoso”).
+     * 
+     * @return The PublishingUserName value.
+     */
+    public String getPublishingUserName() {
         return this.publishingUserName;
     }
-    
+
     /**
-    * The username used for publishing the web site. This is normally a dollar
-    * sign prepended to the web site name (for example, “$contoso”).
-    * @param publishingUserNameValue The PublishingUserName value.
-    */
-    public void setPublishingUserName(final String publishingUserNameValue)
-    {
+     * The username used for publishing the web site. This is normally a dollar
+     * sign prepended to the web site name (for example, “$contoso”).
+     * 
+     * @param publishingUserNameValue
+     *            The PublishingUserName value.
+     */
+    public void setPublishingUserName(final String publishingUserNameValue) {
         this.publishingUserName = publishingUserNameValue;
     }
-    
+
     private Boolean remoteDebuggingEnabled;
-    
+
     /**
-    * True remote debugging is enabled; otherwise, false.
-    * @return The RemoteDebuggingEnabled value.
-    */
-    public Boolean isRemoteDebuggingEnabled()
-    {
+     * True remote debugging is enabled; otherwise, false.
+     * 
+     * @return The RemoteDebuggingEnabled value.
+     */
+    public Boolean isRemoteDebuggingEnabled() {
         return this.remoteDebuggingEnabled;
     }
-    
+
     /**
-    * True remote debugging is enabled; otherwise, false.
-    * @param remoteDebuggingEnabledValue The RemoteDebuggingEnabled value.
-    */
-    public void setRemoteDebuggingEnabled(final Boolean remoteDebuggingEnabledValue)
-    {
+     * True remote debugging is enabled; otherwise, false.
+     * 
+     * @param remoteDebuggingEnabledValue
+     *            The RemoteDebuggingEnabled value.
+     */
+    public void setRemoteDebuggingEnabled(
+            final Boolean remoteDebuggingEnabledValue) {
         this.remoteDebuggingEnabled = remoteDebuggingEnabledValue;
     }
-    
+
     private RemoteDebuggingVersion remoteDebuggingVersion;
-    
+
     /**
-    * True remote debugging version.
-    * @return The RemoteDebuggingVersion value.
-    */
-    public RemoteDebuggingVersion getRemoteDebuggingVersion()
-    {
+     * True remote debugging version.
+     * 
+     * @return The RemoteDebuggingVersion value.
+     */
+    public RemoteDebuggingVersion getRemoteDebuggingVersion() {
         return this.remoteDebuggingVersion;
     }
-    
+
     /**
-    * True remote debugging version.
-    * @param remoteDebuggingVersionValue The RemoteDebuggingVersion value.
-    */
-    public void setRemoteDebuggingVersion(final RemoteDebuggingVersion remoteDebuggingVersionValue)
-    {
+     * True remote debugging version.
+     * 
+     * @param remoteDebuggingVersionValue
+     *            The RemoteDebuggingVersion value.
+     */
+    public void setRemoteDebuggingVersion(
+            final RemoteDebuggingVersion remoteDebuggingVersionValue) {
         this.remoteDebuggingVersion = remoteDebuggingVersionValue;
     }
-    
+
     private Boolean requestTracingEnabled;
-    
+
     /**
-    * True if request tracing is enabled; otherwise, false.
-    * @return The RequestTracingEnabled value.
-    */
-    public Boolean isRequestTracingEnabled()
-    {
+     * True if request tracing is enabled; otherwise, false.
+     * 
+     * @return The RequestTracingEnabled value.
+     */
+    public Boolean isRequestTracingEnabled() {
         return this.requestTracingEnabled;
     }
-    
+
     /**
-    * True if request tracing is enabled; otherwise, false.
-    * @param requestTracingEnabledValue The RequestTracingEnabled value.
-    */
-    public void setRequestTracingEnabled(final Boolean requestTracingEnabledValue)
-    {
+     * True if request tracing is enabled; otherwise, false.
+     * 
+     * @param requestTracingEnabledValue
+     *            The RequestTracingEnabled value.
+     */
+    public void setRequestTracingEnabled(
+            final Boolean requestTracingEnabledValue) {
         this.requestTracingEnabled = requestTracingEnabledValue;
     }
-    
+
     private Calendar requestTracingExpirationTime;
-    
+
     /**
-    * Time remaining until request tracing expires.
-    * @return The RequestTracingExpirationTime value.
-    */
-    public Calendar getRequestTracingExpirationTime()
-    {
+     * Time remaining until request tracing expires.
+     * 
+     * @return The RequestTracingExpirationTime value.
+     */
+    public Calendar getRequestTracingExpirationTime() {
         return this.requestTracingExpirationTime;
     }
-    
+
     /**
-    * Time remaining until request tracing expires.
-    * @param requestTracingExpirationTimeValue The RequestTracingExpirationTime
-    * value.
-    */
-    public void setRequestTracingExpirationTime(final Calendar requestTracingExpirationTimeValue)
-    {
+     * Time remaining until request tracing expires.
+     * 
+     * @param requestTracingExpirationTimeValue
+     *            The RequestTracingExpirationTime value.
+     */
+    public void setRequestTracingExpirationTime(
+            final Calendar requestTracingExpirationTimeValue) {
         this.requestTracingExpirationTime = requestTracingExpirationTimeValue;
     }
-    
+
     private String scmType;
-    
+
     /**
-    * The source control method that the web site is using (for example, Local
-    * Git). If deployment from source control has not been set up for the web
-    * site, this value is None.
-    * @return The ScmType value.
-    */
-    public String getScmType()
-    {
+     * The source control method that the web site is using (for example, Local
+     * Git). If deployment from source control has not been set up for the web
+     * site, this value is None.
+     * 
+     * @return The ScmType value.
+     */
+    public String getScmType() {
         return this.scmType;
     }
-    
+
     /**
-    * The source control method that the web site is using (for example, Local
-    * Git). If deployment from source control has not been set up for the web
-    * site, this value is None.
-    * @param scmTypeValue The ScmType value.
-    */
-    public void setScmType(final String scmTypeValue)
-    {
+     * The source control method that the web site is using (for example, Local
+     * Git). If deployment from source control has not been set up for the web
+     * site, this value is None.
+     * 
+     * @param scmTypeValue
+     *            The ScmType value.
+     */
+    public void setScmType(final String scmTypeValue) {
         this.scmType = scmTypeValue;
     }
-    
+
     private Boolean use32BitWorkerProcess;
-    
+
     /**
-    * True if 32-bit mode is enabled; otherwise, false.
-    * @return The Use32BitWorkerProcess value.
-    */
-    public Boolean isUse32BitWorkerProcess()
-    {
+     * True if 32-bit mode is enabled; otherwise, false.
+     * 
+     * @return The Use32BitWorkerProcess value.
+     */
+    public Boolean isUse32BitWorkerProcess() {
         return this.use32BitWorkerProcess;
     }
-    
+
     /**
-    * True if 32-bit mode is enabled; otherwise, false.
-    * @param use32BitWorkerProcessValue The Use32BitWorkerProcess value.
-    */
-    public void setUse32BitWorkerProcess(final Boolean use32BitWorkerProcessValue)
-    {
+     * True if 32-bit mode is enabled; otherwise, false.
+     * 
+     * @param use32BitWorkerProcessValue
+     *            The Use32BitWorkerProcess value.
+     */
+    public void setUse32BitWorkerProcess(
+            final Boolean use32BitWorkerProcessValue) {
         this.use32BitWorkerProcess = use32BitWorkerProcessValue;
     }
-    
+
     private Boolean webSocketsEnabled;
-    
+
     /**
-    * True if Web Sockets are enabled; otherwise, false.
-    * @return The WebSocketsEnabled value.
-    */
-    public Boolean isWebSocketsEnabled()
-    {
+     * True if Web Sockets are enabled; otherwise, false.
+     * 
+     * @return The WebSocketsEnabled value.
+     */
+    public Boolean isWebSocketsEnabled() {
         return this.webSocketsEnabled;
     }
-    
+
     /**
-    * True if Web Sockets are enabled; otherwise, false.
-    * @param webSocketsEnabledValue The WebSocketsEnabled value.
-    */
-    public void setWebSocketsEnabled(final Boolean webSocketsEnabledValue)
-    {
+     * True if Web Sockets are enabled; otherwise, false.
+     * 
+     * @param webSocketsEnabledValue
+     *            The WebSocketsEnabled value.
+     */
+    public void setWebSocketsEnabled(final Boolean webSocketsEnabledValue) {
         this.webSocketsEnabled = webSocketsEnabledValue;
     }
-    
+
     /**
-    * Initializes a new instance of the WebSiteUpdateConfigurationParameters
-    * class.
-    *
-    */
-    public WebSiteUpdateConfigurationParameters()
-    {
+     * Initializes a new instance of the WebSiteUpdateConfigurationParameters
+     * class.
+     * 
+     */
+    public WebSiteUpdateConfigurationParameters() {
         this.appSettings = new HashMap<String, String>();
         this.connectionStrings = new ArrayList<WebSiteUpdateConfigurationParameters.ConnectionStringInfo>();
         this.defaultDocuments = new ArrayList<String>();
         this.handlerMappings = new ArrayList<WebSiteUpdateConfigurationParameters.HandlerMapping>();
         this.metadata = new HashMap<String, String>();
     }
-    
+
     /**
-    * Connection string for database and other external resources.
-    */
-    public static class ConnectionStringInfo
-    {
+     * Connection string for database and other external resources.
+     */
+    public static class ConnectionStringInfo {
         private String connectionString;
-        
+
         /**
-        * A database connection string.
-        * @return The ConnectionString value.
-        */
-        public String getConnectionString()
-        {
+         * A database connection string.
+         * 
+         * @return The ConnectionString value.
+         */
+        public String getConnectionString() {
             return this.connectionString;
         }
-        
+
         /**
-        * A database connection string.
-        * @param connectionStringValue The ConnectionString value.
-        */
-        public void setConnectionString(final String connectionStringValue)
-        {
+         * A database connection string.
+         * 
+         * @param connectionStringValue
+         *            The ConnectionString value.
+         */
+        public void setConnectionString(final String connectionStringValue) {
             this.connectionString = connectionStringValue;
         }
-        
+
         private String name;
-        
+
         /**
-        * The name of the connection string.
-        * @return The Name value.
-        */
-        public String getName()
-        {
+         * The name of the connection string.
+         * 
+         * @return The Name value.
+         */
+        public String getName() {
             return this.name;
         }
-        
+
         /**
-        * The name of the connection string.
-        * @param nameValue The Name value.
-        */
-        public void setName(final String nameValue)
-        {
+         * The name of the connection string.
+         * 
+         * @param nameValue
+         *            The Name value.
+         */
+        public void setName(final String nameValue) {
             this.name = nameValue;
         }
-        
+
         private String type;
-        
+
         /**
-        * The type of the connection string (for example, "MySQL").
-        * @return The Type value.
-        */
-        public String getType()
-        {
+         * The type of the connection string (for example, "MySQL").
+         * 
+         * @return The Type value.
+         */
+        public String getType() {
             return this.type;
         }
-        
+
         /**
-        * The type of the connection string (for example, "MySQL").
-        * @param typeValue The Type value.
-        */
-        public void setType(final String typeValue)
-        {
+         * The type of the connection string (for example, "MySQL").
+         * 
+         * @param typeValue
+         *            The Type value.
+         */
+        public void setType(final String typeValue) {
             this.type = typeValue;
         }
     }
-    
+
     /**
-    * Specifies a custom executable program for handling requests for specific
-    * file name extensions.
-    */
-    public static class HandlerMapping
-    {
+     * Specifies a custom executable program for handling requests for specific
+     * file name extensions.
+     */
+    public static class HandlerMapping {
         private String arguments;
-        
+
         /**
-        * A string that contains optional arguments for the script processor
-        * specified by the
-        * SiteConfig.HandlerMappings.HandlerMapping.ScriptProcessor element.
-        * @return The Arguments value.
-        */
-        public String getArguments()
-        {
+         * A string that contains optional arguments for the script processor
+         * specified by the
+         * SiteConfig.HandlerMappings.HandlerMapping.ScriptProcessor element.
+         * 
+         * @return The Arguments value.
+         */
+        public String getArguments() {
             return this.arguments;
         }
-        
+
         /**
-        * A string that contains optional arguments for the script processor
-        * specified by the
-        * SiteConfig.HandlerMappings.HandlerMapping.ScriptProcessor element.
-        * @param argumentsValue The Arguments value.
-        */
-        public void setArguments(final String argumentsValue)
-        {
+         * A string that contains optional arguments for the script processor
+         * specified by the
+         * SiteConfig.HandlerMappings.HandlerMapping.ScriptProcessor element.
+         * 
+         * @param argumentsValue
+         *            The Arguments value.
+         */
+        public void setArguments(final String argumentsValue) {
             this.arguments = argumentsValue;
         }
-        
+
         private String extension;
-        
+
         /**
-        * A string that specifies the extension of the file type that the
-        * script processor will handle (for example, *.php).
-        * @return The Extension value.
-        */
-        public String getExtension()
-        {
+         * A string that specifies the extension of the file type that the
+         * script processor will handle (for example, *.php).
+         * 
+         * @return The Extension value.
+         */
+        public String getExtension() {
             return this.extension;
         }
-        
+
         /**
-        * A string that specifies the extension of the file type that the
-        * script processor will handle (for example, *.php).
-        * @param extensionValue The Extension value.
-        */
-        public void setExtension(final String extensionValue)
-        {
+         * A string that specifies the extension of the file type that the
+         * script processor will handle (for example, *.php).
+         * 
+         * @param extensionValue
+         *            The Extension value.
+         */
+        public void setExtension(final String extensionValue) {
             this.extension = extensionValue;
         }
-        
+
         private String scriptProcessor;
-        
+
         /**
-        * The absolute path to the location of the executable file that will
-        * handle the files specified in the
-        * SiteConfig.HandlerMappings.HandlerMapping.Extension element.
-        * @return The ScriptProcessor value.
-        */
-        public String getScriptProcessor()
-        {
+         * The absolute path to the location of the executable file that will
+         * handle the files specified in the
+         * SiteConfig.HandlerMappings.HandlerMapping.Extension element.
+         * 
+         * @return The ScriptProcessor value.
+         */
+        public String getScriptProcessor() {
             return this.scriptProcessor;
         }
-        
+
         /**
-        * The absolute path to the location of the executable file that will
-        * handle the files specified in the
-        * SiteConfig.HandlerMappings.HandlerMapping.Extension element.
-        * @param scriptProcessorValue The ScriptProcessor value.
-        */
-        public void setScriptProcessor(final String scriptProcessorValue)
-        {
+         * The absolute path to the location of the executable file that will
+         * handle the files specified in the
+         * SiteConfig.HandlerMappings.HandlerMapping.Extension element.
+         * 
+         * @param scriptProcessorValue
+         *            The ScriptProcessor value.
+         */
+        public void setScriptProcessor(final String scriptProcessorValue) {
             this.scriptProcessor = scriptProcessorValue;
         }
     }

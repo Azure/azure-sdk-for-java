@@ -28,47 +28,47 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
-* A response to a request for a list of namespaces.
-*/
-public class ServiceBusNamespaceDescriptionResponse extends OperationResponse implements Iterable<NamespaceDescription>
-{
+ * A response to a request for a list of namespaces.
+ */
+public class ServiceBusNamespaceDescriptionResponse extends OperationResponse
+        implements Iterable<NamespaceDescription> {
     private ArrayList<NamespaceDescription> namespaceDescriptions;
-    
+
     /**
-    * The descriptions for the namespace.
-    * @return The NamespaceDescriptions value.
-    */
-    public ArrayList<NamespaceDescription> getNamespaceDescriptions()
-    {
+     * The descriptions for the namespace.
+     * 
+     * @return The NamespaceDescriptions value.
+     */
+    public ArrayList<NamespaceDescription> getNamespaceDescriptions() {
         return this.namespaceDescriptions;
     }
-    
+
     /**
-    * The descriptions for the namespace.
-    * @param namespaceDescriptionsValue The NamespaceDescriptions value.
-    */
-    public void setNamespaceDescriptions(final ArrayList<NamespaceDescription> namespaceDescriptionsValue)
-    {
+     * The descriptions for the namespace.
+     * 
+     * @param namespaceDescriptionsValue
+     *            The NamespaceDescriptions value.
+     */
+    public void setNamespaceDescriptions(
+            final ArrayList<NamespaceDescription> namespaceDescriptionsValue) {
         this.namespaceDescriptions = namespaceDescriptionsValue;
     }
-    
+
     /**
-    * Initializes a new instance of the ServiceBusNamespaceDescriptionResponse
-    * class.
-    *
-    */
-    public ServiceBusNamespaceDescriptionResponse()
-    {
+     * Initializes a new instance of the ServiceBusNamespaceDescriptionResponse
+     * class.
+     * 
+     */
+    public ServiceBusNamespaceDescriptionResponse() {
         super();
         this.namespaceDescriptions = new ArrayList<NamespaceDescription>();
     }
-    
+
     /**
-    * Gets the sequence of NamespaceDescriptions.
-    *
-    */
-    public Iterator<NamespaceDescription> iterator()
-    {
+     * Gets the sequence of NamespaceDescriptions.
+     * 
+     */
+    public Iterator<NamespaceDescription> iterator() {
         return this.getNamespaceDescriptions().iterator();
     }
 }

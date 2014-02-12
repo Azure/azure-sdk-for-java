@@ -26,59 +26,60 @@ package com.microsoft.windowsazure.management.compute.models;
 import java.util.ArrayList;
 
 /**
-* Parameters for the shutdown roles operation.
-*/
-public class VirtualMachineShutdownRolesParameters
-{
+ * Parameters for the shutdown roles operation.
+ */
+public class VirtualMachineShutdownRolesParameters {
     private PostShutdownAction postShutdownAction;
-    
+
     /**
-    * The state of the roles after shutdown.  Possible values include Stopped
-    * or StoppedDeallocated
-    * @return The PostShutdownAction value.
-    */
-    public PostShutdownAction getPostShutdownAction()
-    {
+     * The state of the roles after shutdown. Possible values include Stopped or
+     * StoppedDeallocated
+     * 
+     * @return The PostShutdownAction value.
+     */
+    public PostShutdownAction getPostShutdownAction() {
         return this.postShutdownAction;
     }
-    
+
     /**
-    * The state of the roles after shutdown.  Possible values include Stopped
-    * or StoppedDeallocated
-    * @param postShutdownActionValue The PostShutdownAction value.
-    */
-    public void setPostShutdownAction(final PostShutdownAction postShutdownActionValue)
-    {
+     * The state of the roles after shutdown. Possible values include Stopped or
+     * StoppedDeallocated
+     * 
+     * @param postShutdownActionValue
+     *            The PostShutdownAction value.
+     */
+    public void setPostShutdownAction(
+            final PostShutdownAction postShutdownActionValue) {
         this.postShutdownAction = postShutdownActionValue;
     }
-    
+
     private ArrayList<String> roles;
-    
+
     /**
-    * The set of roles to shut down.
-    * @return The Roles value.
-    */
-    public ArrayList<String> getRoles()
-    {
+     * The set of roles to shut down.
+     * 
+     * @return The Roles value.
+     */
+    public ArrayList<String> getRoles() {
         return this.roles;
     }
-    
+
     /**
-    * The set of roles to shut down.
-    * @param rolesValue The Roles value.
-    */
-    public void setRoles(final ArrayList<String> rolesValue)
-    {
+     * The set of roles to shut down.
+     * 
+     * @param rolesValue
+     *            The Roles value.
+     */
+    public void setRoles(final ArrayList<String> rolesValue) {
         this.roles = rolesValue;
     }
-    
+
     /**
-    * Initializes a new instance of the VirtualMachineShutdownRolesParameters
-    * class.
-    *
-    */
-    public VirtualMachineShutdownRolesParameters()
-    {
+     * Initializes a new instance of the VirtualMachineShutdownRolesParameters
+     * class.
+     * 
+     */
+    public VirtualMachineShutdownRolesParameters() {
         this.roles = new ArrayList<String>();
     }
 }

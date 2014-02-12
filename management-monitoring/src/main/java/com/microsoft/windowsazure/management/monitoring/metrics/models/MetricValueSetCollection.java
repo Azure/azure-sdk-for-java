@@ -26,36 +26,35 @@ package com.microsoft.windowsazure.management.monitoring.metrics.models;
 import java.util.ArrayList;
 
 /**
-* The collection of metric value sets.
-*/
-public class MetricValueSetCollection
-{
+ * The collection of metric value sets.
+ */
+public class MetricValueSetCollection {
     private ArrayList<MetricValueSet> value;
-    
+
     /**
-    * The collection.
-    * @return The Value value.
-    */
-    public ArrayList<MetricValueSet> getValue()
-    {
+     * The collection.
+     * 
+     * @return The Value value.
+     */
+    public ArrayList<MetricValueSet> getValue() {
         return this.value;
     }
-    
+
     /**
-    * The collection.
-    * @param valueValue The Value value.
-    */
-    public void setValue(final ArrayList<MetricValueSet> valueValue)
-    {
+     * The collection.
+     * 
+     * @param valueValue
+     *            The Value value.
+     */
+    public void setValue(final ArrayList<MetricValueSet> valueValue) {
         this.value = valueValue;
     }
-    
+
     /**
-    * Initializes a new instance of the MetricValueSetCollection class.
-    *
-    */
-    public MetricValueSetCollection()
-    {
+     * Initializes a new instance of the MetricValueSetCollection class.
+     * 
+     */
+    public MetricValueSetCollection() {
         this.value = new ArrayList<MetricValueSet>();
     }
 }

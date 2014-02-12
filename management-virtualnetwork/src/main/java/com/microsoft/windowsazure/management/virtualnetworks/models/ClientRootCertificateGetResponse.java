@@ -26,27 +26,27 @@ package com.microsoft.windowsazure.management.virtualnetworks.models;
 import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
-* A standard storage response including an HTTP status code and request ID.
-*/
-public class ClientRootCertificateGetResponse extends OperationResponse
-{
+ * A standard storage response including an HTTP status code and request ID.
+ */
+public class ClientRootCertificateGetResponse extends OperationResponse {
     private String certificate;
-    
+
     /**
-    * The current client root certificate for the network gateway.
-    * @return The Certificate value.
-    */
-    public String getCertificate()
-    {
+     * The current client root certificate for the network gateway.
+     * 
+     * @return The Certificate value.
+     */
+    public String getCertificate() {
         return this.certificate;
     }
-    
+
     /**
-    * The current client root certificate for the network gateway.
-    * @param certificateValue The Certificate value.
-    */
-    public void setCertificate(final String certificateValue)
-    {
+     * The current client root certificate for the network gateway.
+     * 
+     * @param certificateValue
+     *            The Certificate value.
+     */
+    public void setCertificate(final String certificateValue) {
         this.certificate = certificateValue;
     }
 }

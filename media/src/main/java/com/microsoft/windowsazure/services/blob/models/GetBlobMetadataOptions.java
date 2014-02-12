@@ -25,8 +25,7 @@ import com.microsoft.windowsazure.core.utils.AccessConditionHeader;
  * timestamp to get the properties of a snapshot, and any access conditions for
  * the request.
  */
-public class GetBlobMetadataOptions extends BlobServiceOptions
-{
+public class GetBlobMetadataOptions extends BlobServiceOptions {
     private String snapshot;
     private String leaseId;
     private AccessConditionHeader accessCondition;
@@ -43,8 +42,7 @@ public class GetBlobMetadataOptions extends BlobServiceOptions
      * @return A reference to this {@link GetBlobMetadataOptions} instance.
      */
     @Override
-    public GetBlobMetadataOptions setTimeout(Integer timeout)
-    {
+    public GetBlobMetadataOptions setTimeout(Integer timeout) {
         super.setTimeout(timeout);
         return this;
     }
@@ -56,8 +54,7 @@ public class GetBlobMetadataOptions extends BlobServiceOptions
      * @return A {@link String} containing the snapshot timestamp value of the
      *         blob snapshot to get metadata for.
      */
-    public String getSnapshot()
-    {
+    public String getSnapshot() {
         return snapshot;
     }
 
@@ -75,8 +72,7 @@ public class GetBlobMetadataOptions extends BlobServiceOptions
      *            the blob snapshot to get metadata for.
      * @return A reference to this {@link GetBlobMetadataOptions} instance.
      */
-    public GetBlobMetadataOptions setSnapshot(String snapshot)
-    {
+    public GetBlobMetadataOptions setSnapshot(String snapshot) {
         this.snapshot = snapshot;
         return this;
     }
@@ -87,8 +83,7 @@ public class GetBlobMetadataOptions extends BlobServiceOptions
      * 
      * @return A {@link String} containing the lease ID set, if any.
      */
-    public String getLeaseId()
-    {
+    public String getLeaseId() {
         return leaseId;
     }
 
@@ -104,8 +99,7 @@ public class GetBlobMetadataOptions extends BlobServiceOptions
      *            A {@link String} containing the lease ID to set.
      * @return A reference to this {@link GetBlobMetadataOptions} instance.
      */
-    public GetBlobMetadataOptions setLeaseId(String leaseId)
-    {
+    public GetBlobMetadataOptions setLeaseId(String leaseId) {
         this.leaseId = leaseId;
         return this;
     }
@@ -117,8 +111,7 @@ public class GetBlobMetadataOptions extends BlobServiceOptions
      * @return An {@link AccessCondition} containing the access conditions set,
      *         if any.
      */
-    public AccessConditionHeader getAccessCondition()
-    {
+    public AccessConditionHeader getAccessCondition() {
         return accessCondition;
     }
 
@@ -132,8 +125,7 @@ public class GetBlobMetadataOptions extends BlobServiceOptions
      * @return A reference to this {@link GetBlobMetadataOptions} instance.
      */
     public GetBlobMetadataOptions setAccessCondition(
-            AccessConditionHeader accessCondition)
-    {
+            AccessConditionHeader accessCondition) {
         this.accessCondition = accessCondition;
         return this;
     }

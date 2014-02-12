@@ -69,31 +69,25 @@ import com.microsoft.windowsazure.services.media.models.Task;
 import com.microsoft.windowsazure.services.media.models.TaskInfo;
 import com.microsoft.windowsazure.services.media.models.TaskState;
 
-public class EncryptionIntegrationTest extends IntegrationTestBase
-{
+public class EncryptionIntegrationTest extends IntegrationTestBase {
     private final String storageDecryptionProcessor = "Storage Decryption";
 
-    private void assertByteArrayEquals(byte[] source, byte[] target)
-    {
+    private void assertByteArrayEquals(byte[] source, byte[] target) {
         assertEquals(source.length, target.length);
-        for (int i = 0; i < source.length; i++)
-        {
+        for (int i = 0; i < source.length; i++) {
             assertEquals(source[i], target[i]);
         }
     }
 
     @BeforeClass
-    public static void Setup()
-    {
+    public static void Setup() {
         Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
     }
 
     @Test
-    public void uploadAesProtectedAssetAndDownloadSuccess() throws Exception
-    {
+    public void uploadAesProtectedAssetAndDownloadSuccess() throws Exception {
         // Arrange
-        if (!EncryptionHelper.canUseStrongCrypto())
-        {
+        if (!EncryptionHelper.canUseStrongCrypto()) {
             Assert.fail("JVM does not support the required encryption");
         }
 
@@ -138,8 +132,7 @@ public class EncryptionIntegrationTest extends IntegrationTestBase
         // assert
         LinkInfo<TaskInfo> taskLinkInfo = jobInfo.getTasksLink();
         List<TaskInfo> taskInfos = service.list(Task.list(taskLinkInfo));
-        for (TaskInfo taskInfo : taskInfos)
-        {
+        for (TaskInfo taskInfo : taskInfos) {
             assertEquals(TaskState.Completed, taskInfo.getState());
             ListResult<AssetInfo> outputs = service.list(Asset.list(taskInfo
                     .getOutputAssetsLink()));
@@ -166,11 +159,9 @@ public class EncryptionIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void testEncryptedContentCanBeDecrypted() throws Exception
-    {
+    public void testEncryptedContentCanBeDecrypted() throws Exception {
         byte[] aesKey = new byte[32];
-        for (int i = 0; i < 32; i++)
-        {
+        for (int i = 0; i < 32; i++) {
             aesKey[i] = 1;
         }
         URL serverCertificateUri = getClass().getResource(
@@ -192,8 +183,7 @@ public class EncryptionIntegrationTest extends IntegrationTestBase
 
     @Test
     public void testEncryptedContentCanBeDecryptedUsingPreGeneratedKeyPair()
-            throws Exception
-    {
+            throws Exception {
         byte[] input = "abc".getBytes();
         Cipher cipher = Cipher.getInstance(
                 "RSA/ECB/OAEPWithSHA1AndMGF1Padding", "BC");
@@ -221,8 +211,7 @@ public class EncryptionIntegrationTest extends IntegrationTestBase
 
     @Test
     public void testEncryptionDecryptionFunctionUsingGeneratedKeyPair()
-            throws Exception
-    {
+            throws Exception {
         // Arrange
         byte[] input = "abc".getBytes();
         Cipher cipher = Cipher.getInstance(
@@ -245,8 +234,7 @@ public class EncryptionIntegrationTest extends IntegrationTestBase
     }
 
     private JobInfo decodeAsset(String name, String inputAssetId)
-            throws ServiceException, InterruptedException
-    {
+            throws ServiceException, InterruptedException {
         MediaProcessorInfo mediaProcessorInfo = service.list(
                 MediaProcessor.list().set("$filter",
                         "Name eq '" + storageDecryptionProcessor + "'")).get(0);
@@ -262,8 +250,7 @@ public class EncryptionIntegrationTest extends IntegrationTestBase
 
         JobInfo currentJobInfo = jobInfo;
         int retryCounter = 0;
-        while (currentJobInfo.getState().getCode() < 3 && retryCounter < 30)
-        {
+        while (currentJobInfo.getState().getCode() < 3 && retryCounter < 30) {
             Thread.sleep(10000);
             currentJobInfo = service.get(Job.get(jobInfo.getId()));
             retryCounter++;
@@ -272,8 +259,7 @@ public class EncryptionIntegrationTest extends IntegrationTestBase
     }
 
     private String createContentKey(byte[] aesKey) throws ServiceException,
-            Exception
-    {
+            Exception {
         String protectionKeyId = service.action(ProtectionKey
                 .getProtectionKeyId(ContentKeyType.StorageEncryption));
         String protectionKey = service.action(ProtectionKey
@@ -298,8 +284,7 @@ public class EncryptionIntegrationTest extends IntegrationTestBase
     private void uploadEncryptedAssetFile(AssetInfo asset,
             WritableBlobContainerContract blobWriter, String blobName,
             InputStream blobContent, String encryptionKeyId, byte[] iv)
-            throws ServiceException
-    {
+            throws ServiceException {
         blobWriter.createBlockBlob(blobName, blobContent);
         service.action(AssetFile.createFileInfos(asset.getId()));
         ListResult<AssetFileInfo> files = service.list(AssetFile.list(
@@ -322,8 +307,7 @@ public class EncryptionIntegrationTest extends IntegrationTestBase
     }
 
     private WritableBlobContainerContract getBlobWriter(String assetId,
-            int durationInMinutes) throws ServiceException
-    {
+            int durationInMinutes) throws ServiceException {
         AccessPolicyInfo accessPolicyInfo = service.create(AccessPolicy.create(
                 testPolicyPrefix + "uploadAesPortectedAssetSuccess",
                 durationInMinutes, EnumSet.of(AccessPolicyPermission.WRITE)));
@@ -338,8 +322,7 @@ public class EncryptionIntegrationTest extends IntegrationTestBase
 
     private InputStream getFileContents(String assetId, String fileName,
             int availabilityWindowInMinutes) throws ServiceException,
-            InterruptedException, IOException
-    {
+            InterruptedException, IOException {
         AccessPolicyInfo readAP = service.create(AccessPolicy.create(
                 testPolicyPrefix + "tempAccessPolicy",
                 availabilityWindowInMinutes,
@@ -352,20 +335,15 @@ public class EncryptionIntegrationTest extends IntegrationTestBase
         // There can be a delay before a new read locator is applied for the
         // asset files.
         InputStream reader = null;
-        for (int counter = 0; true; counter++)
-        {
-            try
-            {
+        for (int counter = 0; true; counter++) {
+            try {
                 reader = file.openConnection().getInputStream();
                 break;
-            } catch (IOException e)
-            {
+            } catch (IOException e) {
                 System.out.println("Got error, wait a bit and try again");
-                if (counter < 6)
-                {
+                if (counter < 6) {
                     Thread.sleep(10000);
-                } else
-                {
+                } else {
                     // No more retries.
                     throw e;
                 }
@@ -376,29 +354,23 @@ public class EncryptionIntegrationTest extends IntegrationTestBase
     }
 
     private void assertStreamsEqual(InputStream inputStream1,
-            InputStream inputStream2) throws IOException
-    {
+            InputStream inputStream2) throws IOException {
         byte[] buffer1 = new byte[1024];
         byte[] buffer2 = new byte[1024];
-        try
-        {
-            while (true)
-            {
+        try {
+            while (true) {
                 int n1 = inputStream1.read(buffer1);
                 int n2 = inputStream2.read(buffer2);
                 assertEquals("number of bytes read from streams", n1, n2);
-                if (n1 == -1)
-                {
+                if (n1 == -1) {
                     break;
                 }
-                for (int i = 0; i < n1; i++)
-                {
+                for (int i = 0; i < n1; i++) {
                     assertEquals("byte " + i + " read from streams",
                             buffer1[i], buffer2[i]);
                 }
             }
-        } finally
-        {
+        } finally {
             inputStream1.close();
             inputStream2.close();
         }

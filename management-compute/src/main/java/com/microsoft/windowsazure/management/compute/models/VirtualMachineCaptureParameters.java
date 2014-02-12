@@ -24,105 +24,110 @@
 package com.microsoft.windowsazure.management.compute.models;
 
 /**
-* Parameters supplied to the Capture Virtual Machine operation.
-*/
-public class VirtualMachineCaptureParameters
-{
+ * Parameters supplied to the Capture Virtual Machine operation.
+ */
+public class VirtualMachineCaptureParameters {
     private PostCaptureAction postCaptureAction;
-    
+
     /**
-    * Required. Specifies the action that is performed after the capture
-    * operation finishes.  Possible values are:  Delete – this value causes
-    * the virtual machine to be deleted after the image has been captured.
-    * Reprovision – this value causes the virtual machine to be redeployed
-    * after the image is captured by using the specified information in
-    * ProvisioningConfiguration.
-    * @return The PostCaptureAction value.
-    */
-    public PostCaptureAction getPostCaptureAction()
-    {
+     * Required. Specifies the action that is performed after the capture
+     * operation finishes. Possible values are: Delete – this value causes the
+     * virtual machine to be deleted after the image has been captured.
+     * Reprovision – this value causes the virtual machine to be redeployed
+     * after the image is captured by using the specified information in
+     * ProvisioningConfiguration.
+     * 
+     * @return The PostCaptureAction value.
+     */
+    public PostCaptureAction getPostCaptureAction() {
         return this.postCaptureAction;
     }
-    
+
     /**
-    * Required. Specifies the action that is performed after the capture
-    * operation finishes.  Possible values are:  Delete – this value causes
-    * the virtual machine to be deleted after the image has been captured.
-    * Reprovision – this value causes the virtual machine to be redeployed
-    * after the image is captured by using the specified information in
-    * ProvisioningConfiguration.
-    * @param postCaptureActionValue The PostCaptureAction value.
-    */
-    public void setPostCaptureAction(final PostCaptureAction postCaptureActionValue)
-    {
+     * Required. Specifies the action that is performed after the capture
+     * operation finishes. Possible values are: Delete – this value causes the
+     * virtual machine to be deleted after the image has been captured.
+     * Reprovision – this value causes the virtual machine to be redeployed
+     * after the image is captured by using the specified information in
+     * ProvisioningConfiguration.
+     * 
+     * @param postCaptureActionValue
+     *            The PostCaptureAction value.
+     */
+    public void setPostCaptureAction(
+            final PostCaptureAction postCaptureActionValue) {
         this.postCaptureAction = postCaptureActionValue;
     }
-    
+
     private ConfigurationSet provisioningConfiguration;
-    
+
     /**
-    * Optional. Provides information to be used to redeploy the virtual machine
-    * after the image has been captured. This element is only used when the
-    * PostCaptureAction is set to Reprovision.
-    * @return The ProvisioningConfiguration value.
-    */
-    public ConfigurationSet getProvisioningConfiguration()
-    {
+     * Optional. Provides information to be used to redeploy the virtual machine
+     * after the image has been captured. This element is only used when the
+     * PostCaptureAction is set to Reprovision.
+     * 
+     * @return The ProvisioningConfiguration value.
+     */
+    public ConfigurationSet getProvisioningConfiguration() {
         return this.provisioningConfiguration;
     }
-    
+
     /**
-    * Optional. Provides information to be used to redeploy the virtual machine
-    * after the image has been captured. This element is only used when the
-    * PostCaptureAction is set to Reprovision.
-    * @param provisioningConfigurationValue The ProvisioningConfiguration value.
-    */
-    public void setProvisioningConfiguration(final ConfigurationSet provisioningConfigurationValue)
-    {
+     * Optional. Provides information to be used to redeploy the virtual machine
+     * after the image has been captured. This element is only used when the
+     * PostCaptureAction is set to Reprovision.
+     * 
+     * @param provisioningConfigurationValue
+     *            The ProvisioningConfiguration value.
+     */
+    public void setProvisioningConfiguration(
+            final ConfigurationSet provisioningConfigurationValue) {
         this.provisioningConfiguration = provisioningConfigurationValue;
     }
-    
+
     private String targetImageLabel;
-    
+
     /**
-    * Required. Specifies the friendly name of the captured image. This is the
-    * value that appears in the Name column for the image in the Windows Azure
-    * Management Portal.
-    * @return The TargetImageLabel value.
-    */
-    public String getTargetImageLabel()
-    {
+     * Required. Specifies the friendly name of the captured image. This is the
+     * value that appears in the Name column for the image in the Windows Azure
+     * Management Portal.
+     * 
+     * @return The TargetImageLabel value.
+     */
+    public String getTargetImageLabel() {
         return this.targetImageLabel;
     }
-    
+
     /**
-    * Required. Specifies the friendly name of the captured image. This is the
-    * value that appears in the Name column for the image in the Windows Azure
-    * Management Portal.
-    * @param targetImageLabelValue The TargetImageLabel value.
-    */
-    public void setTargetImageLabel(final String targetImageLabelValue)
-    {
+     * Required. Specifies the friendly name of the captured image. This is the
+     * value that appears in the Name column for the image in the Windows Azure
+     * Management Portal.
+     * 
+     * @param targetImageLabelValue
+     *            The TargetImageLabel value.
+     */
+    public void setTargetImageLabel(final String targetImageLabelValue) {
         this.targetImageLabel = targetImageLabelValue;
     }
-    
+
     private String targetImageName;
-    
+
     /**
-    * Required. Specifies the image name of the captured image.
-    * @return The TargetImageName value.
-    */
-    public String getTargetImageName()
-    {
+     * Required. Specifies the image name of the captured image.
+     * 
+     * @return The TargetImageName value.
+     */
+    public String getTargetImageName() {
         return this.targetImageName;
     }
-    
+
     /**
-    * Required. Specifies the image name of the captured image.
-    * @param targetImageNameValue The TargetImageName value.
-    */
-    public void setTargetImageName(final String targetImageNameValue)
-    {
+     * Required. Specifies the image name of the captured image.
+     * 
+     * @param targetImageNameValue
+     *            The TargetImageName value.
+     */
+    public void setTargetImageName(final String targetImageNameValue) {
         this.targetImageName = targetImageNameValue;
     }
 }

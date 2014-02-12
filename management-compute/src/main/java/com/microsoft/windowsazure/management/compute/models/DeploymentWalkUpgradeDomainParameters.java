@@ -24,31 +24,31 @@
 package com.microsoft.windowsazure.management.compute.models;
 
 /**
-* Parameters supplied to the Walk Upgrade Domain operation.
-*/
-public class DeploymentWalkUpgradeDomainParameters
-{
+ * Parameters supplied to the Walk Upgrade Domain operation.
+ */
+public class DeploymentWalkUpgradeDomainParameters {
     private int upgradeDomain;
-    
+
     /**
-    * Required. An integer value that identifies the update domain to update.
-    * Update domains are identified with a zero-based index: the first update
-    * domain has an ID of 0, the second has an ID of 1, and so on.
-    * @return The UpgradeDomain value.
-    */
-    public int getUpgradeDomain()
-    {
+     * Required. An integer value that identifies the update domain to update.
+     * Update domains are identified with a zero-based index: the first update
+     * domain has an ID of 0, the second has an ID of 1, and so on.
+     * 
+     * @return The UpgradeDomain value.
+     */
+    public int getUpgradeDomain() {
         return this.upgradeDomain;
     }
-    
+
     /**
-    * Required. An integer value that identifies the update domain to update.
-    * Update domains are identified with a zero-based index: the first update
-    * domain has an ID of 0, the second has an ID of 1, and so on.
-    * @param upgradeDomainValue The UpgradeDomain value.
-    */
-    public void setUpgradeDomain(final int upgradeDomainValue)
-    {
+     * Required. An integer value that identifies the update domain to update.
+     * Update domains are identified with a zero-based index: the first update
+     * domain has an ID of 0, the second has an ID of 1, and so on.
+     * 
+     * @param upgradeDomainValue
+     *            The UpgradeDomain value.
+     */
+    public void setUpgradeDomain(final int upgradeDomainValue) {
         this.upgradeDomain = upgradeDomainValue;
     }
 }

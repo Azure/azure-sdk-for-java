@@ -48,428 +48,481 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
-* Operations for determining the version of the Windows Azure Guest Operating
-* System on which your service is running.  (see
-* http://msdn.microsoft.com/en-us/library/windowsazure/ff684169.aspx for more
-* information)
-*/
-public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeManagementClientImpl>, OperatingSystemOperations
-{
+ * Operations for determining the version of the Windows Azure Guest Operating
+ * System on which your service is running. (see
+ * http://msdn.microsoft.com/en-us/library/windowsazure/ff684169.aspx for more
+ * information)
+ */
+public class OperatingSystemOperationsImpl implements
+        ServiceOperations<ComputeManagementClientImpl>,
+        OperatingSystemOperations {
     /**
-    * Initializes a new instance of the OperatingSystemOperationsImpl class.
-    *
-    * @param client Reference to the service client.
-    */
-    OperatingSystemOperationsImpl(ComputeManagementClientImpl client)
-    {
+     * Initializes a new instance of the OperatingSystemOperationsImpl class.
+     * 
+     * @param client
+     *            Reference to the service client.
+     */
+    OperatingSystemOperationsImpl(ComputeManagementClientImpl client) {
         this.client = client;
     }
-    
+
     private ComputeManagementClientImpl client;
-    
+
     /**
-    * Gets a reference to the
-    * microsoft.windowsazure.management.compute.ComputeManagementClientImpl.
-    * @return The Client value.
-    */
-    public ComputeManagementClientImpl getClient()
-    {
+     * Gets a reference to the
+     * microsoft.windowsazure.management.compute.ComputeManagementClientImpl.
+     * 
+     * @return The Client value.
+     */
+    public ComputeManagementClientImpl getClient() {
         return this.client;
     }
-    
+
     /**
-    * The List Operating Systems operation lists the versions of the guest
-    * operating system that are currently available in Windows Azure. The
-    * 2010-10-28 version of List Operating Systems also indicates what family
-    * an operating system version belongs to. Currently Windows Azure supports
-    * two operating system families: the Windows Azure guest operating system
-    * that is substantially compatible with Windows Server 2008 SP2, and the
-    * Windows Azure guest operating system that is substantially compatible
-    * with Windows Server 2008 R2.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/ff684168.aspx for
-    * more information)
-    *
-    * @return The List Operating Systems operation response.
-    */
+     * The List Operating Systems operation lists the versions of the guest
+     * operating system that are currently available in Windows Azure. The
+     * 2010-10-28 version of List Operating Systems also indicates what family
+     * an operating system version belongs to. Currently Windows Azure supports
+     * two operating system families: the Windows Azure guest operating system
+     * that is substantially compatible with Windows Server 2008 SP2, and the
+     * Windows Azure guest operating system that is substantially compatible
+     * with Windows Server 2008 R2. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/ff684168.aspx for
+     * more information)
+     * 
+     * @return The List Operating Systems operation response.
+     */
     @Override
-    public Future<OperatingSystemListResponse> listAsync()
-    {
-        return this.getClient().getExecutorService().submit(new Callable<OperatingSystemListResponse>() { 
-            @Override
-            public OperatingSystemListResponse call() throws Exception
-            {
-                return list();
-            }
-         });
+    public Future<OperatingSystemListResponse> listAsync() {
+        return this.getClient().getExecutorService()
+                .submit(new Callable<OperatingSystemListResponse>() {
+                    @Override
+                    public OperatingSystemListResponse call() throws Exception {
+                        return list();
+                    }
+                });
     }
-    
+
     /**
-    * The List Operating Systems operation lists the versions of the guest
-    * operating system that are currently available in Windows Azure. The
-    * 2010-10-28 version of List Operating Systems also indicates what family
-    * an operating system version belongs to. Currently Windows Azure supports
-    * two operating system families: the Windows Azure guest operating system
-    * that is substantially compatible with Windows Server 2008 SP2, and the
-    * Windows Azure guest operating system that is substantially compatible
-    * with Windows Server 2008 R2.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/ff684168.aspx for
-    * more information)
-    *
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParserConfigurationException Thrown if there was a serious
-    * configuration error with the document parser.
-    * @throws SAXException Thrown if there was an error parsing the XML
-    * response.
-    * @throws URISyntaxException Thrown if there was an error parsing a URI in
-    * the response.
-    * @return The List Operating Systems operation response.
-    */
+     * The List Operating Systems operation lists the versions of the guest
+     * operating system that are currently available in Windows Azure. The
+     * 2010-10-28 version of List Operating Systems also indicates what family
+     * an operating system version belongs to. Currently Windows Azure supports
+     * two operating system families: the Windows Azure guest operating system
+     * that is substantially compatible with Windows Server 2008 SP2, and the
+     * Windows Azure guest operating system that is substantially compatible
+     * with Windows Server 2008 R2. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/ff684168.aspx for
+     * more information)
+     * 
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @throws ParserConfigurationException
+     *             Thrown if there was a serious configuration error with the
+     *             document parser.
+     * @throws SAXException
+     *             Thrown if there was an error parsing the XML response.
+     * @throws URISyntaxException
+     *             Thrown if there was an error parsing a URI in the response.
+     * @return The List Operating Systems operation response.
+     */
     @Override
-    public OperatingSystemListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
-    {
+    public OperatingSystemListResponse list() throws IOException,
+            ServiceException, ParserConfigurationException, SAXException,
+            URISyntaxException {
         // Validate
-        
+
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
-            CloudTracing.enter(invocationId, this, "listAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "listAsync",
+                    tracingParameters);
         }
-        
+
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/operatingsystems";
-        
+        String url = this.getClient().getBaseUri() + "/"
+                + this.getClient().getCredentials().getSubscriptionId()
+                + "/operatingsystems";
+
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
-        
+
         // Set Headers
         httpRequest.setHeader("x-ms-version", "2013-11-01");
-        
+
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            httpResponse = this.getClient().getHttpClient()
+                    .execute(httpRequest);
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+            if (statusCode != HttpStatus.SC_OK) {
+                ServiceException ex = ServiceException.createFromXml(
+                        httpRequest, null, httpResponse,
+                        httpResponse.getEntity());
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-            
+
             // Create Result
             OperatingSystemListResponse result = null;
             // Deserialize Response
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new OperatingSystemListResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
+                    .newInstance();
             documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            DocumentBuilder documentBuilder = documentBuilderFactory
+                    .newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
-            
-            NodeList elements = responseDoc.getElementsByTagName("OperatingSystems");
-            Element operatingSystemsSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (operatingSystemsSequenceElement != null)
-            {
-                for (int i1 = 0; i1 < operatingSystemsSequenceElement.getElementsByTagName("OperatingSystem").getLength(); i1 = i1 + 1)
-                {
-                    org.w3c.dom.Element operatingSystemsElement = ((org.w3c.dom.Element) operatingSystemsSequenceElement.getElementsByTagName("OperatingSystem").item(i1));
+
+            NodeList elements = responseDoc
+                    .getElementsByTagName("OperatingSystems");
+            Element operatingSystemsSequenceElement = elements.getLength() > 0 ? ((Element) elements
+                    .item(0)) : null;
+            if (operatingSystemsSequenceElement != null) {
+                for (int i1 = 0; i1 < operatingSystemsSequenceElement
+                        .getElementsByTagName("OperatingSystem").getLength(); i1 = i1 + 1) {
+                    org.w3c.dom.Element operatingSystemsElement = ((org.w3c.dom.Element) operatingSystemsSequenceElement
+                            .getElementsByTagName("OperatingSystem").item(i1));
                     OperatingSystemListResponse.OperatingSystem operatingSystemInstance = new OperatingSystemListResponse.OperatingSystem();
                     result.getOperatingSystems().add(operatingSystemInstance);
-                    
-                    NodeList elements2 = operatingSystemsElement.getElementsByTagName("Version");
-                    Element versionElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                    if (versionElement != null)
-                    {
+
+                    NodeList elements2 = operatingSystemsElement
+                            .getElementsByTagName("Version");
+                    Element versionElement = elements2.getLength() > 0 ? ((Element) elements2
+                            .item(0)) : null;
+                    if (versionElement != null) {
                         String versionInstance;
                         versionInstance = versionElement.getTextContent();
                         operatingSystemInstance.setVersion(versionInstance);
                     }
-                    
-                    NodeList elements3 = operatingSystemsElement.getElementsByTagName("Label");
-                    Element labelElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                    if (labelElement != null)
-                    {
+
+                    NodeList elements3 = operatingSystemsElement
+                            .getElementsByTagName("Label");
+                    Element labelElement = elements3.getLength() > 0 ? ((Element) elements3
+                            .item(0)) : null;
+                    if (labelElement != null) {
                         String labelInstance;
-                        labelInstance = labelElement.getTextContent() != null ? new String(Base64.decodeBase64(labelElement.getTextContent().getBytes())) : null;
+                        labelInstance = labelElement.getTextContent() != null ? new String(
+                                Base64.decodeBase64(labelElement
+                                        .getTextContent().getBytes())) : null;
                         operatingSystemInstance.setLabel(labelInstance);
                     }
-                    
-                    NodeList elements4 = operatingSystemsElement.getElementsByTagName("IsDefault");
-                    Element isDefaultElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                    if (isDefaultElement != null)
-                    {
+
+                    NodeList elements4 = operatingSystemsElement
+                            .getElementsByTagName("IsDefault");
+                    Element isDefaultElement = elements4.getLength() > 0 ? ((Element) elements4
+                            .item(0)) : null;
+                    if (isDefaultElement != null) {
                         boolean isDefaultInstance;
-                        isDefaultInstance = DatatypeConverter.parseBoolean(isDefaultElement.getTextContent());
+                        isDefaultInstance = DatatypeConverter
+                                .parseBoolean(isDefaultElement.getTextContent());
                         operatingSystemInstance.setIsDefault(isDefaultInstance);
                     }
-                    
-                    NodeList elements5 = operatingSystemsElement.getElementsByTagName("IsActive");
-                    Element isActiveElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                    if (isActiveElement != null)
-                    {
+
+                    NodeList elements5 = operatingSystemsElement
+                            .getElementsByTagName("IsActive");
+                    Element isActiveElement = elements5.getLength() > 0 ? ((Element) elements5
+                            .item(0)) : null;
+                    if (isActiveElement != null) {
                         boolean isActiveInstance;
-                        isActiveInstance = DatatypeConverter.parseBoolean(isActiveElement.getTextContent());
+                        isActiveInstance = DatatypeConverter
+                                .parseBoolean(isActiveElement.getTextContent());
                         operatingSystemInstance.setIsActive(isActiveInstance);
                     }
-                    
-                    NodeList elements6 = operatingSystemsElement.getElementsByTagName("Family");
-                    Element familyElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                    if (familyElement != null)
-                    {
+
+                    NodeList elements6 = operatingSystemsElement
+                            .getElementsByTagName("Family");
+                    Element familyElement = elements6.getLength() > 0 ? ((Element) elements6
+                            .item(0)) : null;
+                    if (familyElement != null) {
                         int familyInstance;
-                        familyInstance = DatatypeConverter.parseInt(familyElement.getTextContent());
+                        familyInstance = DatatypeConverter
+                                .parseInt(familyElement.getTextContent());
                         operatingSystemInstance.setFamily(familyInstance);
                     }
-                    
-                    NodeList elements7 = operatingSystemsElement.getElementsByTagName("FamilyLabel");
-                    Element familyLabelElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                    if (familyLabelElement != null)
-                    {
+
+                    NodeList elements7 = operatingSystemsElement
+                            .getElementsByTagName("FamilyLabel");
+                    Element familyLabelElement = elements7.getLength() > 0 ? ((Element) elements7
+                            .item(0)) : null;
+                    if (familyLabelElement != null) {
                         String familyLabelInstance;
-                        familyLabelInstance = familyLabelElement.getTextContent() != null ? new String(Base64.decodeBase64(familyLabelElement.getTextContent().getBytes())) : null;
-                        operatingSystemInstance.setFamilyLabel(familyLabelInstance);
+                        familyLabelInstance = familyLabelElement
+                                .getTextContent() != null ? new String(
+                                Base64.decodeBase64(familyLabelElement
+                                        .getTextContent().getBytes())) : null;
+                        operatingSystemInstance
+                                .setFamilyLabel(familyLabelInstance);
                     }
                 }
             }
-            
+
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader(
+                        "x-ms-request-id").getValue());
             }
-            
-            if (shouldTrace)
-            {
+
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
     }
-    
+
     /**
-    * The List OS Families operation lists the guest operating system families
-    * available in Windows Azure, and also lists the operating system versions
-    * available for each family. Currently Windows Azure supports two
-    * operating system families: the Windows Azure guest operating system that
-    * is substantially compatible with Windows Server 2008 SP2, and the
-    * Windows Azure guest operating system that is substantially compatible
-    * with Windows Server 2008 R2.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/gg441291.aspx for
-    * more information)
-    *
-    * @return The List Operating System Families operation response.
-    */
+     * The List OS Families operation lists the guest operating system families
+     * available in Windows Azure, and also lists the operating system versions
+     * available for each family. Currently Windows Azure supports two operating
+     * system families: the Windows Azure guest operating system that is
+     * substantially compatible with Windows Server 2008 SP2, and the Windows
+     * Azure guest operating system that is substantially compatible with
+     * Windows Server 2008 R2. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441291.aspx for
+     * more information)
+     * 
+     * @return The List Operating System Families operation response.
+     */
     @Override
-    public Future<OperatingSystemListFamiliesResponse> listFamiliesAsync()
-    {
-        return this.getClient().getExecutorService().submit(new Callable<OperatingSystemListFamiliesResponse>() { 
-            @Override
-            public OperatingSystemListFamiliesResponse call() throws Exception
-            {
-                return listFamilies();
-            }
-         });
+    public Future<OperatingSystemListFamiliesResponse> listFamiliesAsync() {
+        return this.getClient().getExecutorService()
+                .submit(new Callable<OperatingSystemListFamiliesResponse>() {
+                    @Override
+                    public OperatingSystemListFamiliesResponse call()
+                            throws Exception {
+                        return listFamilies();
+                    }
+                });
     }
-    
+
     /**
-    * The List OS Families operation lists the guest operating system families
-    * available in Windows Azure, and also lists the operating system versions
-    * available for each family. Currently Windows Azure supports two
-    * operating system families: the Windows Azure guest operating system that
-    * is substantially compatible with Windows Server 2008 SP2, and the
-    * Windows Azure guest operating system that is substantially compatible
-    * with Windows Server 2008 R2.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/gg441291.aspx for
-    * more information)
-    *
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParserConfigurationException Thrown if there was a serious
-    * configuration error with the document parser.
-    * @throws SAXException Thrown if there was an error parsing the XML
-    * response.
-    * @return The List Operating System Families operation response.
-    */
+     * The List OS Families operation lists the guest operating system families
+     * available in Windows Azure, and also lists the operating system versions
+     * available for each family. Currently Windows Azure supports two operating
+     * system families: the Windows Azure guest operating system that is
+     * substantially compatible with Windows Server 2008 SP2, and the Windows
+     * Azure guest operating system that is substantially compatible with
+     * Windows Server 2008 R2. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441291.aspx for
+     * more information)
+     * 
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @throws ParserConfigurationException
+     *             Thrown if there was a serious configuration error with the
+     *             document parser.
+     * @throws SAXException
+     *             Thrown if there was an error parsing the XML response.
+     * @return The List Operating System Families operation response.
+     */
     @Override
-    public OperatingSystemListFamiliesResponse listFamilies() throws IOException, ServiceException, ParserConfigurationException, SAXException
-    {
+    public OperatingSystemListFamiliesResponse listFamilies()
+            throws IOException, ServiceException, ParserConfigurationException,
+            SAXException {
         // Validate
-        
+
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
-            CloudTracing.enter(invocationId, this, "listFamiliesAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "listFamiliesAsync",
+                    tracingParameters);
         }
-        
+
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/operatingsystemfamilies";
-        
+        String url = this.getClient().getBaseUri() + "/"
+                + this.getClient().getCredentials().getSubscriptionId()
+                + "/operatingsystemfamilies";
+
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
-        
+
         // Set Headers
         httpRequest.setHeader("x-ms-version", "2013-11-01");
-        
+
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            httpResponse = this.getClient().getHttpClient()
+                    .execute(httpRequest);
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+            if (statusCode != HttpStatus.SC_OK) {
+                ServiceException ex = ServiceException.createFromXml(
+                        httpRequest, null, httpResponse,
+                        httpResponse.getEntity());
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-            
+
             // Create Result
             OperatingSystemListFamiliesResponse result = null;
             // Deserialize Response
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new OperatingSystemListFamiliesResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
+                    .newInstance();
             documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            DocumentBuilder documentBuilder = documentBuilderFactory
+                    .newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
-            
-            NodeList elements = responseDoc.getElementsByTagName("OperatingSystemFamilies");
-            Element operatingSystemFamiliesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (operatingSystemFamiliesSequenceElement != null)
-            {
-                for (int i1 = 0; i1 < operatingSystemFamiliesSequenceElement.getElementsByTagName("OperatingSystemFamily").getLength(); i1 = i1 + 1)
-                {
-                    org.w3c.dom.Element operatingSystemFamiliesElement = ((org.w3c.dom.Element) operatingSystemFamiliesSequenceElement.getElementsByTagName("OperatingSystemFamily").item(i1));
+
+            NodeList elements = responseDoc
+                    .getElementsByTagName("OperatingSystemFamilies");
+            Element operatingSystemFamiliesSequenceElement = elements
+                    .getLength() > 0 ? ((Element) elements.item(0)) : null;
+            if (operatingSystemFamiliesSequenceElement != null) {
+                for (int i1 = 0; i1 < operatingSystemFamiliesSequenceElement
+                        .getElementsByTagName("OperatingSystemFamily")
+                        .getLength(); i1 = i1 + 1) {
+                    org.w3c.dom.Element operatingSystemFamiliesElement = ((org.w3c.dom.Element) operatingSystemFamiliesSequenceElement
+                            .getElementsByTagName("OperatingSystemFamily")
+                            .item(i1));
                     OperatingSystemListFamiliesResponse.OperatingSystemFamily operatingSystemFamilyInstance = new OperatingSystemListFamiliesResponse.OperatingSystemFamily();
-                    result.getOperatingSystemFamilies().add(operatingSystemFamilyInstance);
-                    
-                    NodeList elements2 = operatingSystemFamiliesElement.getElementsByTagName("Name");
-                    Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                    if (nameElement != null)
-                    {
+                    result.getOperatingSystemFamilies().add(
+                            operatingSystemFamilyInstance);
+
+                    NodeList elements2 = operatingSystemFamiliesElement
+                            .getElementsByTagName("Name");
+                    Element nameElement = elements2.getLength() > 0 ? ((Element) elements2
+                            .item(0)) : null;
+                    if (nameElement != null) {
                         int nameInstance;
-                        nameInstance = DatatypeConverter.parseInt(nameElement.getTextContent());
+                        nameInstance = DatatypeConverter.parseInt(nameElement
+                                .getTextContent());
                         operatingSystemFamilyInstance.setName(nameInstance);
                     }
-                    
-                    NodeList elements3 = operatingSystemFamiliesElement.getElementsByTagName("Label");
-                    Element labelElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                    if (labelElement != null)
-                    {
+
+                    NodeList elements3 = operatingSystemFamiliesElement
+                            .getElementsByTagName("Label");
+                    Element labelElement = elements3.getLength() > 0 ? ((Element) elements3
+                            .item(0)) : null;
+                    if (labelElement != null) {
                         String labelInstance;
-                        labelInstance = labelElement.getTextContent() != null ? new String(Base64.decodeBase64(labelElement.getTextContent().getBytes())) : null;
+                        labelInstance = labelElement.getTextContent() != null ? new String(
+                                Base64.decodeBase64(labelElement
+                                        .getTextContent().getBytes())) : null;
                         operatingSystemFamilyInstance.setLabel(labelInstance);
                     }
-                    
-                    NodeList elements4 = operatingSystemFamiliesElement.getElementsByTagName("OperatingSystems");
-                    Element operatingSystemsSequenceElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                    if (operatingSystemsSequenceElement != null)
-                    {
-                        for (int i2 = 0; i2 < operatingSystemsSequenceElement.getElementsByTagName("OperatingSystem").getLength(); i2 = i2 + 1)
-                        {
-                            org.w3c.dom.Element operatingSystemsElement = ((org.w3c.dom.Element) operatingSystemsSequenceElement.getElementsByTagName("OperatingSystem").item(i2));
+
+                    NodeList elements4 = operatingSystemFamiliesElement
+                            .getElementsByTagName("OperatingSystems");
+                    Element operatingSystemsSequenceElement = elements4
+                            .getLength() > 0 ? ((Element) elements4.item(0))
+                            : null;
+                    if (operatingSystemsSequenceElement != null) {
+                        for (int i2 = 0; i2 < operatingSystemsSequenceElement
+                                .getElementsByTagName("OperatingSystem")
+                                .getLength(); i2 = i2 + 1) {
+                            org.w3c.dom.Element operatingSystemsElement = ((org.w3c.dom.Element) operatingSystemsSequenceElement
+                                    .getElementsByTagName("OperatingSystem")
+                                    .item(i2));
                             OperatingSystemListFamiliesResponse.OperatingSystem operatingSystemInstance = new OperatingSystemListFamiliesResponse.OperatingSystem();
-                            operatingSystemFamilyInstance.getOperatingSystems().add(operatingSystemInstance);
-                            
-                            NodeList elements5 = operatingSystemsElement.getElementsByTagName("Version");
-                            Element versionElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                            if (versionElement != null)
-                            {
+                            operatingSystemFamilyInstance.getOperatingSystems()
+                                    .add(operatingSystemInstance);
+
+                            NodeList elements5 = operatingSystemsElement
+                                    .getElementsByTagName("Version");
+                            Element versionElement = elements5.getLength() > 0 ? ((Element) elements5
+                                    .item(0)) : null;
+                            if (versionElement != null) {
                                 String versionInstance;
-                                versionInstance = versionElement.getTextContent();
-                                operatingSystemInstance.setVersion(versionInstance);
+                                versionInstance = versionElement
+                                        .getTextContent();
+                                operatingSystemInstance
+                                        .setVersion(versionInstance);
                             }
-                            
-                            NodeList elements6 = operatingSystemsElement.getElementsByTagName("Label");
-                            Element labelElement2 = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                            if (labelElement2 != null)
-                            {
+
+                            NodeList elements6 = operatingSystemsElement
+                                    .getElementsByTagName("Label");
+                            Element labelElement2 = elements6.getLength() > 0 ? ((Element) elements6
+                                    .item(0)) : null;
+                            if (labelElement2 != null) {
                                 String labelInstance2;
-                                labelInstance2 = labelElement2.getTextContent() != null ? new String(Base64.decodeBase64(labelElement2.getTextContent().getBytes())) : null;
-                                operatingSystemInstance.setLabel(labelInstance2);
+                                labelInstance2 = labelElement2.getTextContent() != null ? new String(
+                                        Base64.decodeBase64(labelElement2
+                                                .getTextContent().getBytes()))
+                                        : null;
+                                operatingSystemInstance
+                                        .setLabel(labelInstance2);
                             }
-                            
-                            NodeList elements7 = operatingSystemsElement.getElementsByTagName("IsDefault");
-                            Element isDefaultElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                            if (isDefaultElement != null)
-                            {
+
+                            NodeList elements7 = operatingSystemsElement
+                                    .getElementsByTagName("IsDefault");
+                            Element isDefaultElement = elements7.getLength() > 0 ? ((Element) elements7
+                                    .item(0)) : null;
+                            if (isDefaultElement != null) {
                                 boolean isDefaultInstance;
-                                isDefaultInstance = DatatypeConverter.parseBoolean(isDefaultElement.getTextContent());
-                                operatingSystemInstance.setIsDefault(isDefaultInstance);
+                                isDefaultInstance = DatatypeConverter
+                                        .parseBoolean(isDefaultElement
+                                                .getTextContent());
+                                operatingSystemInstance
+                                        .setIsDefault(isDefaultInstance);
                             }
-                            
-                            NodeList elements8 = operatingSystemsElement.getElementsByTagName("IsActive");
-                            Element isActiveElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                            if (isActiveElement != null)
-                            {
+
+                            NodeList elements8 = operatingSystemsElement
+                                    .getElementsByTagName("IsActive");
+                            Element isActiveElement = elements8.getLength() > 0 ? ((Element) elements8
+                                    .item(0)) : null;
+                            if (isActiveElement != null) {
                                 boolean isActiveInstance;
-                                isActiveInstance = DatatypeConverter.parseBoolean(isActiveElement.getTextContent());
-                                operatingSystemInstance.setIsActive(isActiveInstance);
+                                isActiveInstance = DatatypeConverter
+                                        .parseBoolean(isActiveElement
+                                                .getTextContent());
+                                operatingSystemInstance
+                                        .setIsActive(isActiveInstance);
                             }
                         }
                     }
                 }
             }
-            
+
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader(
+                        "x-ms-request-id").getValue());
             }
-            
-            if (shouldTrace)
-            {
+
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }

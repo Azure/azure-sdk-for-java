@@ -26,97 +26,100 @@ package com.microsoft.windowsazure.management.compute.models;
 import java.net.URI;
 
 /**
-* Parameters supplied to the Create Virtual Disk Image operation.
-*/
-public class VirtualMachineDiskCreateDiskParameters
-{
+ * Parameters supplied to the Create Virtual Disk Image operation.
+ */
+public class VirtualMachineDiskCreateDiskParameters {
     private String label;
-    
+
     /**
-    * Required. Specifies the friendly name of the disk.
-    * @return The Label value.
-    */
-    public String getLabel()
-    {
+     * Required. Specifies the friendly name of the disk.
+     * 
+     * @return The Label value.
+     */
+    public String getLabel() {
         return this.label;
     }
-    
+
     /**
-    * Required. Specifies the friendly name of the disk.
-    * @param labelValue The Label value.
-    */
-    public void setLabel(final String labelValue)
-    {
+     * Required. Specifies the friendly name of the disk.
+     * 
+     * @param labelValue
+     *            The Label value.
+     */
+    public void setLabel(final String labelValue) {
         this.label = labelValue;
     }
-    
+
     private URI mediaLinkUri;
-    
+
     /**
-    * Required. Specifies the location of the blob in Windows Azure storage.
-    * The blob location must belong to a storage account in the subscription
-    * specified by the SubscriptionId value in the operation call.  Example:
-    * http://example.blob.core.windows.net/disks/mydisk.vhd
-    * @return The MediaLinkUri value.
-    */
-    public URI getMediaLinkUri()
-    {
+     * Required. Specifies the location of the blob in Windows Azure storage.
+     * The blob location must belong to a storage account in the subscription
+     * specified by the SubscriptionId value in the operation call. Example:
+     * http://example.blob.core.windows.net/disks/mydisk.vhd
+     * 
+     * @return The MediaLinkUri value.
+     */
+    public URI getMediaLinkUri() {
         return this.mediaLinkUri;
     }
-    
+
     /**
-    * Required. Specifies the location of the blob in Windows Azure storage.
-    * The blob location must belong to a storage account in the subscription
-    * specified by the SubscriptionId value in the operation call.  Example:
-    * http://example.blob.core.windows.net/disks/mydisk.vhd
-    * @param mediaLinkUriValue The MediaLinkUri value.
-    */
-    public void setMediaLinkUri(final URI mediaLinkUriValue)
-    {
+     * Required. Specifies the location of the blob in Windows Azure storage.
+     * The blob location must belong to a storage account in the subscription
+     * specified by the SubscriptionId value in the operation call. Example:
+     * http://example.blob.core.windows.net/disks/mydisk.vhd
+     * 
+     * @param mediaLinkUriValue
+     *            The MediaLinkUri value.
+     */
+    public void setMediaLinkUri(final URI mediaLinkUriValue) {
         this.mediaLinkUri = mediaLinkUriValue;
     }
-    
+
     private String name;
-    
+
     /**
-    * Required. Specifies a name for the disk. Windows Azure uses the name to
-    * identify the disk when creating virtual machines from the disk.
-    * @return The Name value.
-    */
-    public String getName()
-    {
+     * Required. Specifies a name for the disk. Windows Azure uses the name to
+     * identify the disk when creating virtual machines from the disk.
+     * 
+     * @return The Name value.
+     */
+    public String getName() {
         return this.name;
     }
-    
+
     /**
-    * Required. Specifies a name for the disk. Windows Azure uses the name to
-    * identify the disk when creating virtual machines from the disk.
-    * @param nameValue The Name value.
-    */
-    public void setName(final String nameValue)
-    {
+     * Required. Specifies a name for the disk. Windows Azure uses the name to
+     * identify the disk when creating virtual machines from the disk.
+     * 
+     * @param nameValue
+     *            The Name value.
+     */
+    public void setName(final String nameValue) {
         this.name = nameValue;
     }
-    
+
     private String operatingSystemType;
-    
+
     /**
-    * Required. The operating system type of the disk. Possible values are:
-    * Linux, Windows.
-    * @return The OperatingSystemType value.
-    */
-    public String getOperatingSystemType()
-    {
+     * Required. The operating system type of the disk. Possible values are:
+     * Linux, Windows.
+     * 
+     * @return The OperatingSystemType value.
+     */
+    public String getOperatingSystemType() {
         return this.operatingSystemType;
     }
-    
+
     /**
-    * Required. The operating system type of the disk. Possible values are:
-    * Linux, Windows.
-    * @param operatingSystemTypeValue The OperatingSystemType value.
-    */
-    public void setOperatingSystemType(final String operatingSystemTypeValue)
-    {
+     * Required. The operating system type of the disk. Possible values are:
+     * Linux, Windows.
+     * 
+     * @param operatingSystemTypeValue
+     *            The OperatingSystemType value.
+     */
+    public void setOperatingSystemType(final String operatingSystemTypeValue) {
         this.operatingSystemType = operatingSystemTypeValue;
     }
 }

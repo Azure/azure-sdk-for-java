@@ -41,8 +41,7 @@ import com.microsoft.windowsazure.services.queue.models.UpdateMessageResult;
  * methods on the instance of <strong>QueueContract</strong> all work with a
  * particular storage account.
  */
-public interface QueueContract extends JerseyFilterableService<QueueContract>
-{
+public interface QueueContract extends JerseyFilterableService<QueueContract> {
     /**
      * Gets the service properties of the queue.
      * 

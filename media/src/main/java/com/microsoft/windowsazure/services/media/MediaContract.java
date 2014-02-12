@@ -24,8 +24,7 @@ import com.microsoft.windowsazure.services.media.models.LocatorInfo;
  * 
  */
 public interface MediaContract extends JerseyFilterableService<MediaContract>,
-        EntityContract
-{
+        EntityContract {
     /**
      * Creates an instance of the <code>WritableBlobContainerContract</code> API
      * that will write to the blob container given by the provided locator.

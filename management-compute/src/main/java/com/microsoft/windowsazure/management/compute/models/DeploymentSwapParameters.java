@@ -24,47 +24,48 @@
 package com.microsoft.windowsazure.management.compute.models;
 
 /**
-* Parameters supplied to the Swap Deployment operation.
-*/
-public class DeploymentSwapParameters
-{
+ * Parameters supplied to the Swap Deployment operation.
+ */
+public class DeploymentSwapParameters {
     private String productionDeployment;
-    
+
     /**
-    * The optional  name of the production deployment.
-    * @return The ProductionDeployment value.
-    */
-    public String getProductionDeployment()
-    {
+     * The optional name of the production deployment.
+     * 
+     * @return The ProductionDeployment value.
+     */
+    public String getProductionDeployment() {
         return this.productionDeployment;
     }
-    
+
     /**
-    * The optional  name of the production deployment.
-    * @param productionDeploymentValue The ProductionDeployment value.
-    */
-    public void setProductionDeployment(final String productionDeploymentValue)
-    {
+     * The optional name of the production deployment.
+     * 
+     * @param productionDeploymentValue
+     *            The ProductionDeployment value.
+     */
+    public void setProductionDeployment(final String productionDeploymentValue) {
         this.productionDeployment = productionDeploymentValue;
     }
-    
+
     private String sourceDeployment;
-    
+
     /**
-    * Required. The name of the source deployment.
-    * @return The SourceDeployment value.
-    */
-    public String getSourceDeployment()
-    {
+     * Required. The name of the source deployment.
+     * 
+     * @return The SourceDeployment value.
+     */
+    public String getSourceDeployment() {
         return this.sourceDeployment;
     }
-    
+
     /**
-    * Required. The name of the source deployment.
-    * @param sourceDeploymentValue The SourceDeployment value.
-    */
-    public void setSourceDeployment(final String sourceDeploymentValue)
-    {
+     * Required. The name of the source deployment.
+     * 
+     * @param sourceDeploymentValue
+     *            The SourceDeployment value.
+     */
+    public void setSourceDeployment(final String sourceDeploymentValue) {
         this.sourceDeployment = sourceDeploymentValue;
     }
 }

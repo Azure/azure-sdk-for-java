@@ -28,58 +28,59 @@ import java.net.InetAddress;
 import java.util.ArrayList;
 
 /**
-* A response that indicates the availability of a static IP address, and if
-* not, provide a list of suggestions.
-*/
-public class NetworkStaticIPAvailabilityResponse extends OperationResponse
-{
+ * A response that indicates the availability of a static IP address, and if
+ * not, provide a list of suggestions.
+ */
+public class NetworkStaticIPAvailabilityResponse extends OperationResponse {
     private ArrayList<InetAddress> availableAddresses;
-    
+
     /**
-    * The list of the available IP addresses.
-    * @return The AvailableAddresses value.
-    */
-    public ArrayList<InetAddress> getAvailableAddresses()
-    {
+     * The list of the available IP addresses.
+     * 
+     * @return The AvailableAddresses value.
+     */
+    public ArrayList<InetAddress> getAvailableAddresses() {
         return this.availableAddresses;
     }
-    
+
     /**
-    * The list of the available IP addresses.
-    * @param availableAddressesValue The AvailableAddresses value.
-    */
-    public void setAvailableAddresses(final ArrayList<InetAddress> availableAddressesValue)
-    {
+     * The list of the available IP addresses.
+     * 
+     * @param availableAddressesValue
+     *            The AvailableAddresses value.
+     */
+    public void setAvailableAddresses(
+            final ArrayList<InetAddress> availableAddressesValue) {
         this.availableAddresses = availableAddressesValue;
     }
-    
+
     private boolean isAvailable;
-    
+
     /**
-    * Whether the IP address is available.
-    * @return The IsAvailable value.
-    */
-    public boolean isAvailable()
-    {
+     * Whether the IP address is available.
+     * 
+     * @return The IsAvailable value.
+     */
+    public boolean isAvailable() {
         return this.isAvailable;
     }
-    
+
     /**
-    * Whether the IP address is available.
-    * @param isAvailableValue The IsAvailable value.
-    */
-    public void setIsAvailable(final boolean isAvailableValue)
-    {
+     * Whether the IP address is available.
+     * 
+     * @param isAvailableValue
+     *            The IsAvailable value.
+     */
+    public void setIsAvailable(final boolean isAvailableValue) {
         this.isAvailable = isAvailableValue;
     }
-    
+
     /**
-    * Initializes a new instance of the NetworkStaticIPAvailabilityResponse
-    * class.
-    *
-    */
-    public NetworkStaticIPAvailabilityResponse()
-    {
+     * Initializes a new instance of the NetworkStaticIPAvailabilityResponse
+     * class.
+     * 
+     */
+    public NetworkStaticIPAvailabilityResponse() {
         super();
         this.availableAddresses = new ArrayList<InetAddress>();
     }

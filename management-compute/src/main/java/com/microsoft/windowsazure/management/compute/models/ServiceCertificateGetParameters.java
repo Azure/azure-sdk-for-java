@@ -24,67 +24,69 @@
 package com.microsoft.windowsazure.management.compute.models;
 
 /**
-* Parameters supplied to the Get Service Certificate operation.
-*/
-public class ServiceCertificateGetParameters
-{
+ * Parameters supplied to the Get Service Certificate operation.
+ */
+public class ServiceCertificateGetParameters {
     private String serviceName;
-    
+
     /**
-    * The DNS prefix name of your service.
-    * @return The ServiceName value.
-    */
-    public String getServiceName()
-    {
+     * The DNS prefix name of your service.
+     * 
+     * @return The ServiceName value.
+     */
+    public String getServiceName() {
         return this.serviceName;
     }
-    
+
     /**
-    * The DNS prefix name of your service.
-    * @param serviceNameValue The ServiceName value.
-    */
-    public void setServiceName(final String serviceNameValue)
-    {
+     * The DNS prefix name of your service.
+     * 
+     * @param serviceNameValue
+     *            The ServiceName value.
+     */
+    public void setServiceName(final String serviceNameValue) {
         this.serviceName = serviceNameValue;
     }
-    
+
     private String thumbprint;
-    
+
     /**
-    * The hexadecimal representation of the thumbprint.
-    * @return The Thumbprint value.
-    */
-    public String getThumbprint()
-    {
+     * The hexadecimal representation of the thumbprint.
+     * 
+     * @return The Thumbprint value.
+     */
+    public String getThumbprint() {
         return this.thumbprint;
     }
-    
+
     /**
-    * The hexadecimal representation of the thumbprint.
-    * @param thumbprintValue The Thumbprint value.
-    */
-    public void setThumbprint(final String thumbprintValue)
-    {
+     * The hexadecimal representation of the thumbprint.
+     * 
+     * @param thumbprintValue
+     *            The Thumbprint value.
+     */
+    public void setThumbprint(final String thumbprintValue) {
         this.thumbprint = thumbprintValue;
     }
-    
+
     private String thumbprintAlgorithm;
-    
+
     /**
-    * The algorithm for the certificate's thumbprint.
-    * @return The ThumbprintAlgorithm value.
-    */
-    public String getThumbprintAlgorithm()
-    {
+     * The algorithm for the certificate's thumbprint.
+     * 
+     * @return The ThumbprintAlgorithm value.
+     */
+    public String getThumbprintAlgorithm() {
         return this.thumbprintAlgorithm;
     }
-    
+
     /**
-    * The algorithm for the certificate's thumbprint.
-    * @param thumbprintAlgorithmValue The ThumbprintAlgorithm value.
-    */
-    public void setThumbprintAlgorithm(final String thumbprintAlgorithmValue)
-    {
+     * The algorithm for the certificate's thumbprint.
+     * 
+     * @param thumbprintAlgorithmValue
+     *            The ThumbprintAlgorithm value.
+     */
+    public void setThumbprintAlgorithm(final String thumbprintAlgorithmValue) {
         this.thumbprintAlgorithm = thumbprintAlgorithmValue;
     }
 }

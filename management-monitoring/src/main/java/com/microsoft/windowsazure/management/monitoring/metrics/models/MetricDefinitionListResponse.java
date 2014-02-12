@@ -26,28 +26,28 @@ package com.microsoft.windowsazure.management.monitoring.metrics.models;
 import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
-* The List Metric Definitions operation response.
-*/
-public class MetricDefinitionListResponse extends OperationResponse
-{
+ * The List Metric Definitions operation response.
+ */
+public class MetricDefinitionListResponse extends OperationResponse {
     private MetricDefinitionCollection metricDefinitionCollection;
-    
+
     /**
-    * The retrieved metric definitions.
-    * @return The MetricDefinitionCollection value.
-    */
-    public MetricDefinitionCollection getMetricDefinitionCollection()
-    {
+     * The retrieved metric definitions.
+     * 
+     * @return The MetricDefinitionCollection value.
+     */
+    public MetricDefinitionCollection getMetricDefinitionCollection() {
         return this.metricDefinitionCollection;
     }
-    
+
     /**
-    * The retrieved metric definitions.
-    * @param metricDefinitionCollectionValue The MetricDefinitionCollection
-    * value.
-    */
-    public void setMetricDefinitionCollection(final MetricDefinitionCollection metricDefinitionCollectionValue)
-    {
+     * The retrieved metric definitions.
+     * 
+     * @param metricDefinitionCollectionValue
+     *            The MetricDefinitionCollection value.
+     */
+    public void setMetricDefinitionCollection(
+            final MetricDefinitionCollection metricDefinitionCollectionValue) {
         this.metricDefinitionCollection = metricDefinitionCollectionValue;
     }
 }

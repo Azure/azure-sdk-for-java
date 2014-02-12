@@ -26,13 +26,11 @@ import org.junit.Test;
 
 import com.microsoft.windowsazure.tracing.CloudTracing;
 
-public class JavaTracingInterceptorTest
-{
-	private ByteArrayOutputStream logContent;
-	
-	@Test
-    public void testInformationSendRequest()
-    {
+public class JavaTracingInterceptorTest {
+    private ByteArrayOutputStream logContent;
+
+    @Test
+    public void testInformationSendRequest() {
         // Arrange
         logContent = new ByteArrayOutputStream();
         System.setErr(new PrintStream(logContent));
@@ -50,7 +48,8 @@ public class JavaTracingInterceptorTest
 
         // Assert
         String result = logContent.toString();
-        assertTrue(result.contains("INFO: invocationId: test\r\nrequest: POST http://www.bing.com HTTP/1.1"));
+        assertTrue(result
+                .contains("INFO: invocationId: test\r\nrequest: POST http://www.bing.com HTTP/1.1"));
 
         CloudTracing.information("hello there");
         result = logContent.toString();

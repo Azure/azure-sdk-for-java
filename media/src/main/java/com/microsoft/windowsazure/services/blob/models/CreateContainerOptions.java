@@ -26,8 +26,7 @@ import com.microsoft.windowsazure.services.blob.BlobContract;
  * for container and blob data. Options that are not set will not be passed to
  * the server with a request.
  */
-public class CreateContainerOptions extends BlobServiceOptions
-{
+public class CreateContainerOptions extends BlobServiceOptions {
     private String publicAccess;
     private HashMap<String, String> metadata = new HashMap<String, String>();
 
@@ -43,8 +42,7 @@ public class CreateContainerOptions extends BlobServiceOptions
      * @return A reference to this {@link CreateContainerOptions} instance.
      */
     @Override
-    public CreateContainerOptions setTimeout(Integer timeout)
-    {
+    public CreateContainerOptions setTimeout(Integer timeout) {
         super.setTimeout(timeout);
         return this;
     }
@@ -56,8 +54,7 @@ public class CreateContainerOptions extends BlobServiceOptions
      * @return A {@link java.util.HashMap} of name-value pairs of {@link String}
      *         containing the names and values of the container metadata to set.
      */
-    public HashMap<String, String> getMetadata()
-    {
+    public HashMap<String, String> getMetadata() {
         return metadata;
     }
 
@@ -78,8 +75,7 @@ public class CreateContainerOptions extends BlobServiceOptions
      *            container metadata to set.
      * @return A reference to this {@link CreateContainerOptions} instance.
      */
-    public CreateContainerOptions setMetadata(HashMap<String, String> metadata)
-    {
+    public CreateContainerOptions setMetadata(HashMap<String, String> metadata) {
         this.metadata = metadata;
         return this;
     }
@@ -96,8 +92,7 @@ public class CreateContainerOptions extends BlobServiceOptions
      *            name-value pair to add to the metadata collection.
      * @return A reference to this {@link CreateContainerOptions} instance.
      */
-    public CreateContainerOptions addMetadata(String key, String value)
-    {
+    public CreateContainerOptions addMetadata(String key, String value) {
         this.getMetadata().put(key, value);
         return this;
     }
@@ -123,8 +118,7 @@ public class CreateContainerOptions extends BlobServiceOptions
      * @return A {@link String} containing the public access level value to set,
      *         or <code>null</code>.
      */
-    public String getPublicAccess()
-    {
+    public String getPublicAccess() {
         return publicAccess;
     }
 
@@ -155,8 +149,7 @@ public class CreateContainerOptions extends BlobServiceOptions
      *            the storage account owner.
      * @return A reference to this {@link CreateContainerOptions} instance.
      */
-    public CreateContainerOptions setPublicAccess(String publicAccess)
-    {
+    public CreateContainerOptions setPublicAccess(String publicAccess) {
         this.publicAccess = publicAccess;
         return this;
     }

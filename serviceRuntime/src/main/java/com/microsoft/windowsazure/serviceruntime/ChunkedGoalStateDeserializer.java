@@ -20,38 +20,30 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 
-class ChunkedGoalStateDeserializer implements GoalStateDeserializer
-{
+class ChunkedGoalStateDeserializer implements GoalStateDeserializer {
     private final XmlGoalStateDeserializer deserializer;
     private BufferedReader reader;
 
-    public ChunkedGoalStateDeserializer()
-    {
+    public ChunkedGoalStateDeserializer() {
         this.deserializer = new XmlGoalStateDeserializer();
     }
 
     @Override
-    public void initialize(InputStream inputStream)
-    {
-        try
-        {
+    public void initialize(InputStream inputStream) {
+        try {
             reader = new BufferedReader(new InputStreamReader(inputStream,
                     "UTF-8"));
-        } catch (UnsupportedEncodingException e)
-        {
+        } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public GoalState deserialize()
-    {
-        try
-        {
+    public GoalState deserialize() {
+        try {
             String lengthString = reader.readLine();
 
-            if (lengthString == null)
-            {
+            if (lengthString == null) {
                 return null;
             }
 
@@ -66,8 +58,7 @@ class ChunkedGoalStateDeserializer implements GoalStateDeserializer
             reader.readLine();
 
             return goalState;
-        } catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
 
             return null;

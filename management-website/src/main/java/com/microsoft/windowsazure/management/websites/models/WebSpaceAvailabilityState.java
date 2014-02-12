@@ -24,11 +24,10 @@
 package com.microsoft.windowsazure.management.websites.models;
 
 /**
-* The availability of a web space.
-*/
-public enum WebSpaceAvailabilityState
-{
+ * The availability of a web space.
+ */
+public enum WebSpaceAvailabilityState {
     Normal,
-    
+
     Limited,
 }

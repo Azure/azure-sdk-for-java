@@ -21,12 +21,10 @@ import java.util.EnumSet;
 
 import org.junit.Test;
 
-public class AccessPolicyPermissionTest
-{
+public class AccessPolicyPermissionTest {
 
     @Test
-    public void testGetFlagValue()
-    {
+    public void testGetFlagValue() {
         assertEquals(0, AccessPolicyPermission.NONE.getFlagValue());
         assertEquals(1, AccessPolicyPermission.READ.getFlagValue());
         assertEquals(2, AccessPolicyPermission.WRITE.getFlagValue());
@@ -35,16 +33,14 @@ public class AccessPolicyPermissionTest
     }
 
     @Test
-    public void testZeroResultsInNonePermission()
-    {
+    public void testZeroResultsInNonePermission() {
         EnumSet<AccessPolicyPermission> perms = AccessPolicyPermission
                 .permissionsFromBits(0);
         assertTrue(perms.contains(AccessPolicyPermission.NONE));
     }
 
     @Test
-    public void testAllBitsSetResultsInAllPermissions()
-    {
+    public void testAllBitsSetResultsInAllPermissions() {
         EnumSet<AccessPolicyPermission> perms = AccessPolicyPermission
                 .permissionsFromBits(1 + 2 + 4 + 8);
 
@@ -56,8 +52,7 @@ public class AccessPolicyPermissionTest
     }
 
     @Test
-    public void testWriteBitsResultsInOnlyWritePermissions()
-    {
+    public void testWriteBitsResultsInOnlyWritePermissions() {
         EnumSet<AccessPolicyPermission> perms = AccessPolicyPermission
                 .permissionsFromBits(2);
 
@@ -69,8 +64,7 @@ public class AccessPolicyPermissionTest
     }
 
     @Test
-    public void testEmptyPermissionsResultsInZeroBits()
-    {
+    public void testEmptyPermissionsResultsInZeroBits() {
         EnumSet<AccessPolicyPermission> perms = EnumSet
                 .noneOf(AccessPolicyPermission.class);
         int bits = AccessPolicyPermission.bitsFromPermissions(perms);
@@ -79,8 +73,7 @@ public class AccessPolicyPermissionTest
     }
 
     @Test
-    public void allPermissionsInSetResultsInCorrectValue()
-    {
+    public void allPermissionsInSetResultsInCorrectValue() {
         EnumSet<AccessPolicyPermission> perms = EnumSet.of(
                 AccessPolicyPermission.READ, AccessPolicyPermission.WRITE,
                 AccessPolicyPermission.DELETE, AccessPolicyPermission.LIST,
@@ -91,8 +84,7 @@ public class AccessPolicyPermissionTest
     }
 
     @Test
-    public void writePermissionsInSetResultsInCorrectValue()
-    {
+    public void writePermissionsInSetResultsInCorrectValue() {
         EnumSet<AccessPolicyPermission> perms = EnumSet
                 .of(AccessPolicyPermission.WRITE);
         int bits = AccessPolicyPermission.bitsFromPermissions(perms);
@@ -101,8 +93,7 @@ public class AccessPolicyPermissionTest
     }
 
     @Test
-    public void unknownPermissionBitsAreIgnored()
-    {
+    public void unknownPermissionBitsAreIgnored() {
         EnumSet<AccessPolicyPermission> perms = AccessPolicyPermission
                 .permissionsFromBits(16 + 32);
 

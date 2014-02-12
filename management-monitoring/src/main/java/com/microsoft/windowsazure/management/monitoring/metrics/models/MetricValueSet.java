@@ -28,196 +28,203 @@ import java.util.Calendar;
 import javax.xml.datatype.Duration;
 
 /**
-* A metric value set represents a set of metric values in a time period.
-*/
-public class MetricValueSet
-{
+ * A metric value set represents a set of metric values in a time period.
+ */
+public class MetricValueSet {
     private String displayName;
-    
+
     /**
-    * Metric display name.
-    * @return The DisplayName value.
-    */
-    public String getDisplayName()
-    {
+     * Metric display name.
+     * 
+     * @return The DisplayName value.
+     */
+    public String getDisplayName() {
         return this.displayName;
     }
-    
+
     /**
-    * Metric display name.
-    * @param displayNameValue The DisplayName value.
-    */
-    public void setDisplayName(final String displayNameValue)
-    {
+     * Metric display name.
+     * 
+     * @param displayNameValue
+     *            The DisplayName value.
+     */
+    public void setDisplayName(final String displayNameValue) {
         this.displayName = displayNameValue;
     }
-    
+
     private Calendar endTime;
-    
+
     /**
-    * The end time in UTC for the metric queried.
-    * @return The EndTime value.
-    */
-    public Calendar getEndTime()
-    {
+     * The end time in UTC for the metric queried.
+     * 
+     * @return The EndTime value.
+     */
+    public Calendar getEndTime() {
         return this.endTime;
     }
-    
+
     /**
-    * The end time in UTC for the metric queried.
-    * @param endTimeValue The EndTime value.
-    */
-    public void setEndTime(final Calendar endTimeValue)
-    {
+     * The end time in UTC for the metric queried.
+     * 
+     * @param endTimeValue
+     *            The EndTime value.
+     */
+    public void setEndTime(final Calendar endTimeValue) {
         this.endTime = endTimeValue;
     }
-    
+
     private ArrayList<MetricValue> metricValues;
-    
+
     /**
-    * Metric values.
-    * @return The MetricValues value.
-    */
-    public ArrayList<MetricValue> getMetricValues()
-    {
+     * Metric values.
+     * 
+     * @return The MetricValues value.
+     */
+    public ArrayList<MetricValue> getMetricValues() {
         return this.metricValues;
     }
-    
+
     /**
-    * Metric values.
-    * @param metricValuesValue The MetricValues value.
-    */
-    public void setMetricValues(final ArrayList<MetricValue> metricValuesValue)
-    {
+     * Metric values.
+     * 
+     * @param metricValuesValue
+     *            The MetricValues value.
+     */
+    public void setMetricValues(final ArrayList<MetricValue> metricValuesValue) {
         this.metricValues = metricValuesValue;
     }
-    
+
     private String name;
-    
+
     /**
-    * Metric name.
-    * @return The Name value.
-    */
-    public String getName()
-    {
+     * Metric name.
+     * 
+     * @return The Name value.
+     */
+    public String getName() {
         return this.name;
     }
-    
+
     /**
-    * Metric name.
-    * @param nameValue The Name value.
-    */
-    public void setName(final String nameValue)
-    {
+     * Metric name.
+     * 
+     * @param nameValue
+     *            The Name value.
+     */
+    public void setName(final String nameValue) {
         this.name = nameValue;
     }
-    
+
     private String namespace;
-    
+
     /**
-    * Metric namespace.
-    * @return The Namespace value.
-    */
-    public String getNamespace()
-    {
+     * Metric namespace.
+     * 
+     * @return The Namespace value.
+     */
+    public String getNamespace() {
         return this.namespace;
     }
-    
+
     /**
-    * Metric namespace.
-    * @param namespaceValue The Namespace value.
-    */
-    public void setNamespace(final String namespaceValue)
-    {
+     * Metric namespace.
+     * 
+     * @param namespaceValue
+     *            The Namespace value.
+     */
+    public void setNamespace(final String namespaceValue) {
         this.namespace = namespaceValue;
     }
-    
+
     private String primaryAggregation;
-    
+
     /**
-    * Metric primary aggregation.
-    * @return The PrimaryAggregation value.
-    */
-    public String getPrimaryAggregation()
-    {
+     * Metric primary aggregation.
+     * 
+     * @return The PrimaryAggregation value.
+     */
+    public String getPrimaryAggregation() {
         return this.primaryAggregation;
     }
-    
+
     /**
-    * Metric primary aggregation.
-    * @param primaryAggregationValue The PrimaryAggregation value.
-    */
-    public void setPrimaryAggregation(final String primaryAggregationValue)
-    {
+     * Metric primary aggregation.
+     * 
+     * @param primaryAggregationValue
+     *            The PrimaryAggregation value.
+     */
+    public void setPrimaryAggregation(final String primaryAggregationValue) {
         this.primaryAggregation = primaryAggregationValue;
     }
-    
+
     private Calendar startTime;
-    
+
     /**
-    * The start time in UTC for the metric queried.
-    * @return The StartTime value.
-    */
-    public Calendar getStartTime()
-    {
+     * The start time in UTC for the metric queried.
+     * 
+     * @return The StartTime value.
+     */
+    public Calendar getStartTime() {
         return this.startTime;
     }
-    
+
     /**
-    * The start time in UTC for the metric queried.
-    * @param startTimeValue The StartTime value.
-    */
-    public void setStartTime(final Calendar startTimeValue)
-    {
+     * The start time in UTC for the metric queried.
+     * 
+     * @param startTimeValue
+     *            The StartTime value.
+     */
+    public void setStartTime(final Calendar startTimeValue) {
         this.startTime = startTimeValue;
     }
-    
+
     private Duration timeGrain;
-    
+
     /**
-    * The time grain specifies the aggregation period of the metric value.
-    * @return The TimeGrain value.
-    */
-    public Duration getTimeGrain()
-    {
+     * The time grain specifies the aggregation period of the metric value.
+     * 
+     * @return The TimeGrain value.
+     */
+    public Duration getTimeGrain() {
         return this.timeGrain;
     }
-    
+
     /**
-    * The time grain specifies the aggregation period of the metric value.
-    * @param timeGrainValue The TimeGrain value.
-    */
-    public void setTimeGrain(final Duration timeGrainValue)
-    {
+     * The time grain specifies the aggregation period of the metric value.
+     * 
+     * @param timeGrainValue
+     *            The TimeGrain value.
+     */
+    public void setTimeGrain(final Duration timeGrainValue) {
         this.timeGrain = timeGrainValue;
     }
-    
+
     private String unit;
-    
+
     /**
-    * Metric unit.
-    * @return The Unit value.
-    */
-    public String getUnit()
-    {
+     * Metric unit.
+     * 
+     * @return The Unit value.
+     */
+    public String getUnit() {
         return this.unit;
     }
-    
+
     /**
-    * Metric unit.
-    * @param unitValue The Unit value.
-    */
-    public void setUnit(final String unitValue)
-    {
+     * Metric unit.
+     * 
+     * @param unitValue
+     *            The Unit value.
+     */
+    public void setUnit(final String unitValue) {
         this.unit = unitValue;
     }
-    
+
     /**
-    * Initializes a new instance of the MetricValueSet class.
-    *
-    */
-    public MetricValueSet()
-    {
+     * Initializes a new instance of the MetricValueSet class.
+     * 
+     */
+    public MetricValueSet() {
         this.metricValues = new ArrayList<MetricValue>();
     }
 }

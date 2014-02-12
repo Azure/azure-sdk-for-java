@@ -23,17 +23,16 @@
 
 package com.microsoft.windowsazure.management.websites.models;
 
-public class WebSpaceNames
-{
+public class WebSpaceNames {
     public static final String EastUSWebSpace = "eastuswebspace";
-    
+
     public static final String WestUSWebSpace = "westuswebspace";
-    
+
     public static final String NorthCentralUSWebSpace = "northcentraluswebspace";
-    
+
     public static final String NorthEuropeWebSpace = "northeuropewebspace";
-    
+
     public static final String WestEuropeWebSpace = "westeuropewebspace";
-    
+
     public static final String EastAsiaWebSpace = "eastasiawebspace";
 }

@@ -26,37 +26,36 @@ package com.microsoft.windowsazure.management.compute.models;
 import java.util.ArrayList;
 
 /**
-* Parameters for the start roles operation.
-*/
-public class VirtualMachineStartRolesParameters
-{
+ * Parameters for the start roles operation.
+ */
+public class VirtualMachineStartRolesParameters {
     private ArrayList<String> roles;
-    
+
     /**
-    * The set of roles to shut down.
-    * @return The Roles value.
-    */
-    public ArrayList<String> getRoles()
-    {
+     * The set of roles to shut down.
+     * 
+     * @return The Roles value.
+     */
+    public ArrayList<String> getRoles() {
         return this.roles;
     }
-    
+
     /**
-    * The set of roles to shut down.
-    * @param rolesValue The Roles value.
-    */
-    public void setRoles(final ArrayList<String> rolesValue)
-    {
+     * The set of roles to shut down.
+     * 
+     * @param rolesValue
+     *            The Roles value.
+     */
+    public void setRoles(final ArrayList<String> rolesValue) {
         this.roles = rolesValue;
     }
-    
+
     /**
-    * Initializes a new instance of the VirtualMachineStartRolesParameters
-    * class.
-    *
-    */
-    public VirtualMachineStartRolesParameters()
-    {
+     * Initializes a new instance of the VirtualMachineStartRolesParameters
+     * class.
+     * 
+     */
+    public VirtualMachineStartRolesParameters() {
         this.roles = new ArrayList<String>();
     }
 }

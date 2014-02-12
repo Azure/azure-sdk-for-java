@@ -23,15 +23,14 @@
 
 package com.microsoft.windowsazure.management.virtualnetworks.models;
 
-public class VirtualNetworkState
-{
+public class VirtualNetworkState {
     public static final String Created = "Created";
-    
+
     public static final String Creating = "Creating";
-    
+
     public static final String Updating = "Updating";
-    
+
     public static final String Deleting = "Deleting";
-    
+
     public static final String Unavailable = "Unavailable";
 }

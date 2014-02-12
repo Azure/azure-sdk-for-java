@@ -29,108 +29,112 @@ import java.util.Calendar;
 import java.util.Iterator;
 
 /**
-* The response to the list client root certificates request.
-*/
-public class ClientRootCertificateListResponse extends OperationResponse implements Iterable<ClientRootCertificateListResponse.ClientRootCertificate>
-{
+ * The response to the list client root certificates request.
+ */
+public class ClientRootCertificateListResponse extends OperationResponse
+        implements
+        Iterable<ClientRootCertificateListResponse.ClientRootCertificate> {
     private ArrayList<ClientRootCertificateListResponse.ClientRootCertificate> clientRootCertificates;
-    
+
     /**
-    * The list of client root certificates.
-    * @return The ClientRootCertificates value.
-    */
-    public ArrayList<ClientRootCertificateListResponse.ClientRootCertificate> getClientRootCertificates()
-    {
+     * The list of client root certificates.
+     * 
+     * @return The ClientRootCertificates value.
+     */
+    public ArrayList<ClientRootCertificateListResponse.ClientRootCertificate> getClientRootCertificates() {
         return this.clientRootCertificates;
     }
-    
+
     /**
-    * The list of client root certificates.
-    * @param clientRootCertificatesValue The ClientRootCertificates value.
-    */
-    public void setClientRootCertificates(final ArrayList<ClientRootCertificateListResponse.ClientRootCertificate> clientRootCertificatesValue)
-    {
+     * The list of client root certificates.
+     * 
+     * @param clientRootCertificatesValue
+     *            The ClientRootCertificates value.
+     */
+    public void setClientRootCertificates(
+            final ArrayList<ClientRootCertificateListResponse.ClientRootCertificate> clientRootCertificatesValue) {
         this.clientRootCertificates = clientRootCertificatesValue;
     }
-    
+
     /**
-    * Initializes a new instance of the ClientRootCertificateListResponse class.
-    *
-    */
-    public ClientRootCertificateListResponse()
-    {
+     * Initializes a new instance of the ClientRootCertificateListResponse
+     * class.
+     * 
+     */
+    public ClientRootCertificateListResponse() {
         super();
         this.clientRootCertificates = new ArrayList<ClientRootCertificateListResponse.ClientRootCertificate>();
     }
-    
+
     /**
-    * Gets the sequence of ClientRootCertificates.
-    *
-    */
-    public Iterator<ClientRootCertificateListResponse.ClientRootCertificate> iterator()
-    {
+     * Gets the sequence of ClientRootCertificates.
+     * 
+     */
+    public Iterator<ClientRootCertificateListResponse.ClientRootCertificate> iterator() {
         return this.getClientRootCertificates().iterator();
     }
-    
-    public static class ClientRootCertificate
-    {
+
+    public static class ClientRootCertificate {
         private Calendar expirationTime;
-        
+
         /**
-        * Specifies the time that the certificate will expire.
-        * @return The ExpirationTime value.
-        */
-        public Calendar getExpirationTime()
-        {
+         * Specifies the time that the certificate will expire.
+         * 
+         * @return The ExpirationTime value.
+         */
+        public Calendar getExpirationTime() {
             return this.expirationTime;
         }
-        
+
         /**
-        * Specifies the time that the certificate will expire.
-        * @param expirationTimeValue The ExpirationTime value.
-        */
-        public void setExpirationTime(final Calendar expirationTimeValue)
-        {
+         * Specifies the time that the certificate will expire.
+         * 
+         * @param expirationTimeValue
+         *            The ExpirationTime value.
+         */
+        public void setExpirationTime(final Calendar expirationTimeValue) {
             this.expirationTime = expirationTimeValue;
         }
-        
+
         private String subject;
-        
+
         /**
-        * Specifies the distinguished name of the certificate issuer.
-        * @return The Subject value.
-        */
-        public String getSubject()
-        {
+         * Specifies the distinguished name of the certificate issuer.
+         * 
+         * @return The Subject value.
+         */
+        public String getSubject() {
             return this.subject;
         }
-        
+
         /**
-        * Specifies the distinguished name of the certificate issuer.
-        * @param subjectValue The Subject value.
-        */
-        public void setSubject(final String subjectValue)
-        {
+         * Specifies the distinguished name of the certificate issuer.
+         * 
+         * @param subjectValue
+         *            The Subject value.
+         */
+        public void setSubject(final String subjectValue) {
             this.subject = subjectValue;
         }
-        
+
         private String thumbprint;
-        
+
         /**
-        * Specifies the thumbprint of the certificate.
-        * @return The Thumbprint value.
-        */
-        public String getThumbprint()
-        {
+         * Specifies the thumbprint of the certificate.
+         * 
+         * @return The Thumbprint value.
+         */
+        public String getThumbprint() {
             return this.thumbprint;
         }
-        
+
         /**
-        * Specifies the thumbprint of the certificate.
-        * @param thumbprintValue The Thumbprint value.
-        */
-        public void setThumbprint(final String thumbprintValue)
-        {
+         * Specifies the thumbprint of the certificate.
+         * 
+         * @param thumbprintValue
+         *            The Thumbprint value.
+         */
+        public void setThumbprint(final String thumbprintValue) {
             this.thumbprint = thumbprintValue;
         }
     }

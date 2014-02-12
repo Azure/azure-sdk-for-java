@@ -26,136 +26,141 @@ package com.microsoft.windowsazure.management.compute.models;
 import java.net.URI;
 
 /**
-* The parameters Windows Azure uses to create theoperating system disk for the
-* virtual machine.
-*/
-public class OSVirtualHardDisk
-{
+ * The parameters Windows Azure uses to create theoperating system disk for the
+ * virtual machine.
+ */
+public class OSVirtualHardDisk {
     private String diskLabel;
-    
+
     /**
-    * Specifies the friendly name an operating system image in the image
-    * repository.
-    * @return The DiskLabel value.
-    */
-    public String getDiskLabel()
-    {
+     * Specifies the friendly name an operating system image in the image
+     * repository.
+     * 
+     * @return The DiskLabel value.
+     */
+    public String getDiskLabel() {
         return this.diskLabel;
     }
-    
+
     /**
-    * Specifies the friendly name an operating system image in the image
-    * repository.
-    * @param diskLabelValue The DiskLabel value.
-    */
-    public void setDiskLabel(final String diskLabelValue)
-    {
+     * Specifies the friendly name an operating system image in the image
+     * repository.
+     * 
+     * @param diskLabelValue
+     *            The DiskLabel value.
+     */
+    public void setDiskLabel(final String diskLabelValue) {
         this.diskLabel = diskLabelValue;
     }
-    
+
     private String diskName;
-    
+
     /**
-    * Specifies the name an operating system image in the image repository.
-    * @return The DiskName value.
-    */
-    public String getDiskName()
-    {
+     * Specifies the name an operating system image in the image repository.
+     * 
+     * @return The DiskName value.
+     */
+    public String getDiskName() {
         return this.diskName;
     }
-    
+
     /**
-    * Specifies the name an operating system image in the image repository.
-    * @param diskNameValue The DiskName value.
-    */
-    public void setDiskName(final String diskNameValue)
-    {
+     * Specifies the name an operating system image in the image repository.
+     * 
+     * @param diskNameValue
+     *            The DiskName value.
+     */
+    public void setDiskName(final String diskNameValue) {
         this.diskName = diskNameValue;
     }
-    
+
     private VirtualHardDiskHostCaching hostCaching;
-    
+
     /**
-    * Specifies the platform caching behavior of the operating system disk blob
-    * for read/write efficiency.
-    * @return The HostCaching value.
-    */
-    public VirtualHardDiskHostCaching getHostCaching()
-    {
+     * Specifies the platform caching behavior of the operating system disk blob
+     * for read/write efficiency.
+     * 
+     * @return The HostCaching value.
+     */
+    public VirtualHardDiskHostCaching getHostCaching() {
         return this.hostCaching;
     }
-    
+
     /**
-    * Specifies the platform caching behavior of the operating system disk blob
-    * for read/write efficiency.
-    * @param hostCachingValue The HostCaching value.
-    */
-    public void setHostCaching(final VirtualHardDiskHostCaching hostCachingValue)
-    {
+     * Specifies the platform caching behavior of the operating system disk blob
+     * for read/write efficiency.
+     * 
+     * @param hostCachingValue
+     *            The HostCaching value.
+     */
+    public void setHostCaching(final VirtualHardDiskHostCaching hostCachingValue) {
         this.hostCaching = hostCachingValue;
     }
-    
+
     private URI mediaLink;
-    
+
     /**
-    * Specifies the location of the operating system disk in Windows Azure
-    * storage.
-    * @return The MediaLink value.
-    */
-    public URI getMediaLink()
-    {
+     * Specifies the location of the operating system disk in Windows Azure
+     * storage.
+     * 
+     * @return The MediaLink value.
+     */
+    public URI getMediaLink() {
         return this.mediaLink;
     }
-    
+
     /**
-    * Specifies the location of the operating system disk in Windows Azure
-    * storage.
-    * @param mediaLinkValue The MediaLink value.
-    */
-    public void setMediaLink(final URI mediaLinkValue)
-    {
+     * Specifies the location of the operating system disk in Windows Azure
+     * storage.
+     * 
+     * @param mediaLinkValue
+     *            The MediaLink value.
+     */
+    public void setMediaLink(final URI mediaLinkValue) {
         this.mediaLink = mediaLinkValue;
     }
-    
+
     private String operatingSystem;
-    
+
     /**
-    * The operating system running in the virtual machine.
-    * @return The OperatingSystem value.
-    */
-    public String getOperatingSystem()
-    {
+     * The operating system running in the virtual machine.
+     * 
+     * @return The OperatingSystem value.
+     */
+    public String getOperatingSystem() {
         return this.operatingSystem;
     }
-    
+
     /**
-    * The operating system running in the virtual machine.
-    * @param operatingSystemValue The OperatingSystem value.
-    */
-    public void setOperatingSystem(final String operatingSystemValue)
-    {
+     * The operating system running in the virtual machine.
+     * 
+     * @param operatingSystemValue
+     *            The OperatingSystem value.
+     */
+    public void setOperatingSystem(final String operatingSystemValue) {
         this.operatingSystem = operatingSystemValue;
     }
-    
+
     private String sourceImageName;
-    
+
     /**
-    * Specifies the name of the source image that was used to provision the
-    * virtual machine.
-    * @return The SourceImageName value.
-    */
-    public String getSourceImageName()
-    {
+     * Specifies the name of the source image that was used to provision the
+     * virtual machine.
+     * 
+     * @return The SourceImageName value.
+     */
+    public String getSourceImageName() {
         return this.sourceImageName;
     }
-    
+
     /**
-    * Specifies the name of the source image that was used to provision the
-    * virtual machine.
-    * @param sourceImageNameValue The SourceImageName value.
-    */
-    public void setSourceImageName(final String sourceImageNameValue)
-    {
+     * Specifies the name of the source image that was used to provision the
+     * virtual machine.
+     * 
+     * @param sourceImageNameValue
+     *            The SourceImageName value.
+     */
+    public void setSourceImageName(final String sourceImageNameValue) {
         this.sourceImageName = sourceImageNameValue;
     }
 }

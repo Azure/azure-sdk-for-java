@@ -23,20 +23,16 @@ import javax.activation.DataSource;
 
 import com.sun.mail.util.LineInputStream;
 
-public class StatusLine
-{
+public class StatusLine {
     private static final int DELIMITER = -1;
     private int status;
     private String reason;
 
-    public static StatusLine create(DataSource dataSource)
-    {
-        try
-        {
+    public static StatusLine create(DataSource dataSource) {
+        try {
             LineInputStream stream = new LineInputStream(
                     dataSource.getInputStream());
-            try
-            {
+            try {
                 String line = stream.readLine();
                 StringReader lineReader = new StringReader(line);
 
@@ -47,78 +43,62 @@ public class StatusLine
 
                 return new StatusLine().setStatus(
                         Integer.parseInt(statusString)).setReason(reason);
-            } finally
-            {
+            } finally {
                 stream.close();
             }
-        } catch (IOException e)
-        {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private static void expect(Reader reader, String string)
-    {
-        try
-        {
+    private static void expect(Reader reader, String string) {
+        try {
             byte[] byteArray = string.getBytes("UTF-8");
             int ch;
-            for (int i = 0; i < string.length(); i++)
-            {
+            for (int i = 0; i < string.length(); i++) {
                 ch = reader.read();
-                if (ch != byteArray[i])
-                {
+                if (ch != byteArray[i]) {
                     throw new RuntimeException(String.format(
                             "Expected '%s', found '%s' instead", string,
                             string.substring(0, i) + (char) ch));
                 }
             }
-        } catch (IOException e)
-        {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private static String extractInput(Reader reader, int delimiter)
-    {
-        try
-        {
+    private static String extractInput(Reader reader, int delimiter) {
+        try {
             StringBuilder sb = new StringBuilder();
-            while (true)
-            {
+            while (true) {
                 int ch = reader.read();
-                if (ch == DELIMITER || ch == delimiter)
-                {
+                if (ch == DELIMITER || ch == delimiter) {
                     break;
                 }
 
                 sb.append((char) ch);
             }
             return sb.toString();
-        } catch (IOException e)
-        {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public int getStatus()
-    {
+    public int getStatus() {
         return status;
     }
 
-    public StatusLine setStatus(int status)
-    {
+    public StatusLine setStatus(int status) {
         this.status = status;
         return this;
     }
 
-    public String getReason()
-    {
+    public String getReason() {
         return reason;
     }
 
-    public StatusLine setReason(String reason)
-    {
+    public StatusLine setReason(String reason) {
         this.reason = reason;
         return this;
     }

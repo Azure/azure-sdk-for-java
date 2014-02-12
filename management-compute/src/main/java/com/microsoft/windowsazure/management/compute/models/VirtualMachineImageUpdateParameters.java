@@ -27,251 +27,261 @@ import java.net.URI;
 import java.util.Calendar;
 
 /**
-* Parameters supplied to the Update Virtual Machine Image operation.
-*/
-public class VirtualMachineImageUpdateParameters
-{
+ * Parameters supplied to the Update Virtual Machine Image operation.
+ */
+public class VirtualMachineImageUpdateParameters {
     private String description;
-    
+
     /**
-    * Optional. Specifies the description of the OS image.
-    * @return The Description value.
-    */
-    public String getDescription()
-    {
+     * Optional. Specifies the description of the OS image.
+     * 
+     * @return The Description value.
+     */
+    public String getDescription() {
         return this.description;
     }
-    
+
     /**
-    * Optional. Specifies the description of the OS image.
-    * @param descriptionValue The Description value.
-    */
-    public void setDescription(final String descriptionValue)
-    {
+     * Optional. Specifies the description of the OS image.
+     * 
+     * @param descriptionValue
+     *            The Description value.
+     */
+    public void setDescription(final String descriptionValue) {
         this.description = descriptionValue;
     }
-    
+
     private String eula;
-    
+
     /**
-    * Optional. Specifies the End User License Agreement that is associated
-    * with the image. The value for this element is a string, but it is
-    * recommended that the value be a URL that points to a EULA.
-    * @return The Eula value.
-    */
-    public String getEula()
-    {
+     * Optional. Specifies the End User License Agreement that is associated
+     * with the image. The value for this element is a string, but it is
+     * recommended that the value be a URL that points to a EULA.
+     * 
+     * @return The Eula value.
+     */
+    public String getEula() {
         return this.eula;
     }
-    
+
     /**
-    * Optional. Specifies the End User License Agreement that is associated
-    * with the image. The value for this element is a string, but it is
-    * recommended that the value be a URL that points to a EULA.
-    * @param eulaValue The Eula value.
-    */
-    public void setEula(final String eulaValue)
-    {
+     * Optional. Specifies the End User License Agreement that is associated
+     * with the image. The value for this element is a string, but it is
+     * recommended that the value be a URL that points to a EULA.
+     * 
+     * @param eulaValue
+     *            The Eula value.
+     */
+    public void setEula(final String eulaValue) {
         this.eula = eulaValue;
     }
-    
+
     private URI iconUri;
-    
+
     /**
-    * Optional. Specifies the Uri to the icon that is displayed for the image
-    * in the Management Portal.
-    * @return The IconUri value.
-    */
-    public URI getIconUri()
-    {
+     * Optional. Specifies the Uri to the icon that is displayed for the image
+     * in the Management Portal.
+     * 
+     * @return The IconUri value.
+     */
+    public URI getIconUri() {
         return this.iconUri;
     }
-    
+
     /**
-    * Optional. Specifies the Uri to the icon that is displayed for the image
-    * in the Management Portal.
-    * @param iconUriValue The IconUri value.
-    */
-    public void setIconUri(final URI iconUriValue)
-    {
+     * Optional. Specifies the Uri to the icon that is displayed for the image
+     * in the Management Portal.
+     * 
+     * @param iconUriValue
+     *            The IconUri value.
+     */
+    public void setIconUri(final URI iconUriValue) {
         this.iconUri = iconUriValue;
     }
-    
+
     private String imageFamily;
-    
+
     /**
-    * Optional. Specifies a value that can be used to group OS images.
-    * @return The ImageFamily value.
-    */
-    public String getImageFamily()
-    {
+     * Optional. Specifies a value that can be used to group OS images.
+     * 
+     * @return The ImageFamily value.
+     */
+    public String getImageFamily() {
         return this.imageFamily;
     }
-    
+
     /**
-    * Optional. Specifies a value that can be used to group OS images.
-    * @param imageFamilyValue The ImageFamily value.
-    */
-    public void setImageFamily(final String imageFamilyValue)
-    {
+     * Optional. Specifies a value that can be used to group OS images.
+     * 
+     * @param imageFamilyValue
+     *            The ImageFamily value.
+     */
+    public void setImageFamily(final String imageFamilyValue) {
         this.imageFamily = imageFamilyValue;
     }
-    
+
     private boolean isPremium;
-    
+
     /**
-    * Indicates if the image contains software or associated services that will
-    * incur charges above the core price for the virtual machine.
-    * @return The IsPremium value.
-    */
-    public boolean isPremium()
-    {
+     * Indicates if the image contains software or associated services that will
+     * incur charges above the core price for the virtual machine.
+     * 
+     * @return The IsPremium value.
+     */
+    public boolean isPremium() {
         return this.isPremium;
     }
-    
+
     /**
-    * Indicates if the image contains software or associated services that will
-    * incur charges above the core price for the virtual machine.
-    * @param isPremiumValue The IsPremium value.
-    */
-    public void setIsPremium(final boolean isPremiumValue)
-    {
+     * Indicates if the image contains software or associated services that will
+     * incur charges above the core price for the virtual machine.
+     * 
+     * @param isPremiumValue
+     *            The IsPremium value.
+     */
+    public void setIsPremium(final boolean isPremiumValue) {
         this.isPremium = isPremiumValue;
     }
-    
+
     private String label;
-    
+
     /**
-    * Required. Specifies the friendly name of the image to be updated. You
-    * cannot use this operation to update images provided by the Windows Azure
-    * platform.
-    * @return The Label value.
-    */
-    public String getLabel()
-    {
+     * Required. Specifies the friendly name of the image to be updated. You
+     * cannot use this operation to update images provided by the Windows Azure
+     * platform.
+     * 
+     * @return The Label value.
+     */
+    public String getLabel() {
         return this.label;
     }
-    
+
     /**
-    * Required. Specifies the friendly name of the image to be updated. You
-    * cannot use this operation to update images provided by the Windows Azure
-    * platform.
-    * @param labelValue The Label value.
-    */
-    public void setLabel(final String labelValue)
-    {
+     * Required. Specifies the friendly name of the image to be updated. You
+     * cannot use this operation to update images provided by the Windows Azure
+     * platform.
+     * 
+     * @param labelValue
+     *            The Label value.
+     */
+    public void setLabel(final String labelValue) {
         this.label = labelValue;
     }
-    
+
     private String language;
-    
+
     /**
-    * Specifies the language of the image.  The Language element is only
-    * available using version 2013-03-01 or higher.
-    * @return The Language value.
-    */
-    public String getLanguage()
-    {
+     * Specifies the language of the image. The Language element is only
+     * available using version 2013-03-01 or higher.
+     * 
+     * @return The Language value.
+     */
+    public String getLanguage() {
         return this.language;
     }
-    
+
     /**
-    * Specifies the language of the image.  The Language element is only
-    * available using version 2013-03-01 or higher.
-    * @param languageValue The Language value.
-    */
-    public void setLanguage(final String languageValue)
-    {
+     * Specifies the language of the image. The Language element is only
+     * available using version 2013-03-01 or higher.
+     * 
+     * @param languageValue
+     *            The Language value.
+     */
+    public void setLanguage(final String languageValue) {
         this.language = languageValue;
     }
-    
+
     private URI privacyUri;
-    
+
     /**
-    * Optional. Specifies the URI that points to a document that contains the
-    * privacy policy related to the OS image.
-    * @return The PrivacyUri value.
-    */
-    public URI getPrivacyUri()
-    {
+     * Optional. Specifies the URI that points to a document that contains the
+     * privacy policy related to the OS image.
+     * 
+     * @return The PrivacyUri value.
+     */
+    public URI getPrivacyUri() {
         return this.privacyUri;
     }
-    
+
     /**
-    * Optional. Specifies the URI that points to a document that contains the
-    * privacy policy related to the OS image.
-    * @param privacyUriValue The PrivacyUri value.
-    */
-    public void setPrivacyUri(final URI privacyUriValue)
-    {
+     * Optional. Specifies the URI that points to a document that contains the
+     * privacy policy related to the OS image.
+     * 
+     * @param privacyUriValue
+     *            The PrivacyUri value.
+     */
+    public void setPrivacyUri(final URI privacyUriValue) {
         this.privacyUri = privacyUriValue;
     }
-    
+
     private Calendar publishedDate;
-    
+
     /**
-    * Optional. Specifies the date when the OS image was added to the image
-    * repository.
-    * @return The PublishedDate value.
-    */
-    public Calendar getPublishedDate()
-    {
+     * Optional. Specifies the date when the OS image was added to the image
+     * repository.
+     * 
+     * @return The PublishedDate value.
+     */
+    public Calendar getPublishedDate() {
         return this.publishedDate;
     }
-    
+
     /**
-    * Optional. Specifies the date when the OS image was added to the image
-    * repository.
-    * @param publishedDateValue The PublishedDate value.
-    */
-    public void setPublishedDate(final Calendar publishedDateValue)
-    {
+     * Optional. Specifies the date when the OS image was added to the image
+     * repository.
+     * 
+     * @param publishedDateValue
+     *            The PublishedDate value.
+     */
+    public void setPublishedDate(final Calendar publishedDateValue) {
         this.publishedDate = publishedDateValue;
     }
-    
+
     private String recommendedVMSize;
-    
+
     /**
-    * Optional. Specifies the size to use for the virtual machine that is
-    * created from the OS image.
-    * @return The RecommendedVMSize value.
-    */
-    public String getRecommendedVMSize()
-    {
+     * Optional. Specifies the size to use for the virtual machine that is
+     * created from the OS image.
+     * 
+     * @return The RecommendedVMSize value.
+     */
+    public String getRecommendedVMSize() {
         return this.recommendedVMSize;
     }
-    
+
     /**
-    * Optional. Specifies the size to use for the virtual machine that is
-    * created from the OS image.
-    * @param recommendedVMSizeValue The RecommendedVMSize value.
-    */
-    public void setRecommendedVMSize(final String recommendedVMSizeValue)
-    {
+     * Optional. Specifies the size to use for the virtual machine that is
+     * created from the OS image.
+     * 
+     * @param recommendedVMSizeValue
+     *            The RecommendedVMSize value.
+     */
+    public void setRecommendedVMSize(final String recommendedVMSizeValue) {
         this.recommendedVMSize = recommendedVMSizeValue;
     }
-    
+
     private URI smallIconUri;
-    
+
     /**
-    * Specifies the URI to the small icon that is displayed when the image is
-    * presented in the Windows Azure Management Portal.  The SmallIconUri
-    * element is only available using version 2013-03-01 or higher.
-    * @return The SmallIconUri value.
-    */
-    public URI getSmallIconUri()
-    {
+     * Specifies the URI to the small icon that is displayed when the image is
+     * presented in the Windows Azure Management Portal. The SmallIconUri
+     * element is only available using version 2013-03-01 or higher.
+     * 
+     * @return The SmallIconUri value.
+     */
+    public URI getSmallIconUri() {
         return this.smallIconUri;
     }
-    
+
     /**
-    * Specifies the URI to the small icon that is displayed when the image is
-    * presented in the Windows Azure Management Portal.  The SmallIconUri
-    * element is only available using version 2013-03-01 or higher.
-    * @param smallIconUriValue The SmallIconUri value.
-    */
-    public void setSmallIconUri(final URI smallIconUriValue)
-    {
+     * Specifies the URI to the small icon that is displayed when the image is
+     * presented in the Windows Azure Management Portal. The SmallIconUri
+     * element is only available using version 2013-03-01 or higher.
+     * 
+     * @param smallIconUriValue
+     *            The SmallIconUri value.
+     */
+    public void setSmallIconUri(final URI smallIconUriValue) {
         this.smallIconUri = smallIconUriValue;
     }
 }

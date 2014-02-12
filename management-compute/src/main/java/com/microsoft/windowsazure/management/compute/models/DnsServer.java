@@ -26,47 +26,48 @@ package com.microsoft.windowsazure.management.compute.models;
 import java.net.InetAddress;
 
 /**
-* Information about a DNS Server in the virtual network.
-*/
-public class DnsServer
-{
+ * Information about a DNS Server in the virtual network.
+ */
+public class DnsServer {
     private InetAddress address;
-    
+
     /**
-    * The DNS server address.
-    * @return The Address value.
-    */
-    public InetAddress getAddress()
-    {
+     * The DNS server address.
+     * 
+     * @return The Address value.
+     */
+    public InetAddress getAddress() {
         return this.address;
     }
-    
+
     /**
-    * The DNS server address.
-    * @param addressValue The Address value.
-    */
-    public void setAddress(final InetAddress addressValue)
-    {
+     * The DNS server address.
+     * 
+     * @param addressValue
+     *            The Address value.
+     */
+    public void setAddress(final InetAddress addressValue) {
         this.address = addressValue;
     }
-    
+
     private String name;
-    
+
     /**
-    * The name of the DNS server.
-    * @return The Name value.
-    */
-    public String getName()
-    {
+     * The name of the DNS server.
+     * 
+     * @return The Name value.
+     */
+    public String getName() {
         return this.name;
     }
-    
+
     /**
-    * The name of the DNS server.
-    * @param nameValue The Name value.
-    */
-    public void setName(final String nameValue)
-    {
+     * The name of the DNS server.
+     * 
+     * @param nameValue
+     *            The Name value.
+     */
+    public void setName(final String nameValue) {
         this.name = nameValue;
     }
 }

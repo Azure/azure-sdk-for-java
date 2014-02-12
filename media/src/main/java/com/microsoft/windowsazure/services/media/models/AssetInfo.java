@@ -25,8 +25,7 @@ import com.microsoft.windowsazure.services.media.implementation.content.AssetTyp
  * Data about a Media Services Asset entity.
  * 
  */
-public class AssetInfo extends ODataEntity<AssetType>
-{
+public class AssetInfo extends ODataEntity<AssetType> {
 
     /**
      * Instantiates a new asset info.
@@ -36,8 +35,7 @@ public class AssetInfo extends ODataEntity<AssetType>
      * @param content
      *            the content
      */
-    public AssetInfo(EntryType entry, AssetType content)
-    {
+    public AssetInfo(EntryType entry, AssetType content) {
         super(entry, content);
     }
 
@@ -46,8 +44,7 @@ public class AssetInfo extends ODataEntity<AssetType>
      * 
      * @return the id
      */
-    public String getId()
-    {
+    public String getId() {
         return getContent().getId();
     }
 
@@ -56,8 +53,7 @@ public class AssetInfo extends ODataEntity<AssetType>
      * 
      * @return the name
      */
-    public String getName()
-    {
+    public String getName() {
         return this.getContent().getName();
     }
 
@@ -66,8 +62,7 @@ public class AssetInfo extends ODataEntity<AssetType>
      * 
      * @return the state
      */
-    public AssetState getState()
-    {
+    public AssetState getState() {
         return AssetState.fromCode(getContent().getState());
     }
 
@@ -76,8 +71,7 @@ public class AssetInfo extends ODataEntity<AssetType>
      * 
      * @return the date
      */
-    public Date getCreated()
-    {
+    public Date getCreated() {
         return this.getContent().getCreated();
     }
 
@@ -86,8 +80,7 @@ public class AssetInfo extends ODataEntity<AssetType>
      * 
      * @return the date
      */
-    public Date getLastModified()
-    {
+    public Date getLastModified() {
         return getContent().getLastModified();
     }
 
@@ -96,8 +89,7 @@ public class AssetInfo extends ODataEntity<AssetType>
      * 
      * @return the id
      */
-    public String getAlternateId()
-    {
+    public String getAlternateId() {
         return getContent().getAlternateId();
     }
 
@@ -106,8 +98,7 @@ public class AssetInfo extends ODataEntity<AssetType>
      * 
      * @return the options
      */
-    public AssetOption getOptions()
-    {
+    public AssetOption getOptions() {
         return AssetOption.fromCode(getContent().getOptions());
     }
 
@@ -116,8 +107,7 @@ public class AssetInfo extends ODataEntity<AssetType>
      * 
      * @return the link
      */
-    public LinkInfo<AssetFileInfo> getAssetFilesLink()
-    {
+    public LinkInfo<AssetFileInfo> getAssetFilesLink() {
         return this.<AssetFileInfo> getRelationLink("Files");
     }
 
@@ -126,8 +116,7 @@ public class AssetInfo extends ODataEntity<AssetType>
      * 
      * @return the link
      */
-    public LinkInfo<ContentKeyInfo> getContentKeysLink()
-    {
+    public LinkInfo<ContentKeyInfo> getContentKeysLink() {
         return this.<ContentKeyInfo> getRelationLink("ContentKeys");
     }
 
@@ -136,8 +125,7 @@ public class AssetInfo extends ODataEntity<AssetType>
      * 
      * @return the link
      */
-    public LinkInfo<LocatorInfo> getLocatorsLink()
-    {
+    public LinkInfo<LocatorInfo> getLocatorsLink() {
         return this.<LocatorInfo> getRelationLink("Locators");
     }
 
@@ -146,8 +134,7 @@ public class AssetInfo extends ODataEntity<AssetType>
      * 
      * @return the link
      */
-    public LinkInfo<AssetInfo> getParentAssetsLink()
-    {
+    public LinkInfo<AssetInfo> getParentAssetsLink() {
         return this.<AssetInfo> getRelationLink("ParentAssets");
     }
 }

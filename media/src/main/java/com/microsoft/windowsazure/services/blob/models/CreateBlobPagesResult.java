@@ -34,8 +34,7 @@ import com.microsoft.windowsazure.services.blob.BlobContract;
  * Page</a> documentation on MSDN for details of the underlying Blob Service
  * REST API operation.
  */
-public class CreateBlobPagesResult
-{
+public class CreateBlobPagesResult {
     private String etag;
     private Date lastModified;
     private String contentMD5;
@@ -51,8 +50,7 @@ public class CreateBlobPagesResult
      * @return A {@link String} containing the server-assigned ETag value for
      *         the blob.
      */
-    public String getEtag()
-    {
+    public String getEtag() {
         return etag;
     }
 
@@ -67,8 +65,7 @@ public class CreateBlobPagesResult
      *            A {@link String} containing the server-assigned ETag value for
      *            the blob.
      */
-    public void setEtag(String etag)
-    {
+    public void setEtag(String etag) {
         this.etag = etag;
     }
 
@@ -84,8 +81,7 @@ public class CreateBlobPagesResult
      * @return A {@link java.util.Date} containing the last modified time of the
      *         page blob.
      */
-    public Date getLastModified()
-    {
+    public Date getLastModified() {
         return lastModified;
     }
 
@@ -100,8 +96,7 @@ public class CreateBlobPagesResult
      *            A {@link java.util.Date} containing the last modified time of
      *            the blob.
      */
-    public void setLastModified(Date lastModified)
-    {
+    public void setLastModified(Date lastModified) {
         this.lastModified = lastModified;
     }
 
@@ -111,8 +106,7 @@ public class CreateBlobPagesResult
      * 
      * @return A {@link String} containing the MD5 hash value of the page blob.
      */
-    public String getContentMD5()
-    {
+    public String getContentMD5() {
         return contentMD5;
     }
 
@@ -124,8 +118,7 @@ public class CreateBlobPagesResult
      *            A {@link String} containing the MD5 hash value of the page
      *            blob.
      */
-    public void setContentMD5(String contentMD5)
-    {
+    public void setContentMD5(String contentMD5) {
         this.contentMD5 = contentMD5;
     }
 
@@ -138,8 +131,7 @@ public class CreateBlobPagesResult
      * @return A {@link String} containing the client-assigned sequence number
      *         value for the page blob.
      */
-    public long getSequenceNumber()
-    {
+    public long getSequenceNumber() {
         return sequenceNumber;
     }
 
@@ -155,8 +147,7 @@ public class CreateBlobPagesResult
      *            A {@link String} containing the client-assigned sequence
      *            number value for the page blob.
      */
-    public void setSequenceNumber(long sequenceNumber)
-    {
+    public void setSequenceNumber(long sequenceNumber) {
         this.sequenceNumber = sequenceNumber;
     }
 }

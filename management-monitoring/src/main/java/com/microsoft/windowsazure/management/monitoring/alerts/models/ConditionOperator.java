@@ -23,13 +23,12 @@
 
 package com.microsoft.windowsazure.management.monitoring.alerts.models;
 
-public enum ConditionOperator
-{
+public enum ConditionOperator {
     GreaterThan,
-    
+
     GreaterThanOrEqual,
-    
+
     LessThan,
-    
+
     LessThanOrEqual,
 }

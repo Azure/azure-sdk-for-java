@@ -24,11 +24,10 @@
 package com.microsoft.windowsazure.management.websites.models;
 
 /**
-* The compute mode for a website.
-*/
-public enum WebSiteComputeMode
-{
+ * The compute mode for a website.
+ */
+public enum WebSiteComputeMode {
     Shared,
-    
+
     Dedicated,
 }

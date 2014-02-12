@@ -27,35 +27,32 @@ import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.HashMap;
 
 /**
-* The Resource Provider Get Properties operation response.
-*/
-public class ResourceProviderGetPropertiesResponse extends OperationResponse
-{
+ * The Resource Provider Get Properties operation response.
+ */
+public class ResourceProviderGetPropertiesResponse extends OperationResponse {
     private HashMap<String, String> properties;
-    
+
     /**
-    * @return The Properties value.
-    */
-    public HashMap<String, String> getProperties()
-    {
+     * @return The Properties value.
+     */
+    public HashMap<String, String> getProperties() {
         return this.properties;
     }
-    
+
     /**
-    * @param propertiesValue The Properties value.
-    */
-    public void setProperties(final HashMap<String, String> propertiesValue)
-    {
+     * @param propertiesValue
+     *            The Properties value.
+     */
+    public void setProperties(final HashMap<String, String> propertiesValue) {
         this.properties = propertiesValue;
     }
-    
+
     /**
-    * Initializes a new instance of the ResourceProviderGetPropertiesResponse
-    * class.
-    *
-    */
-    public ResourceProviderGetPropertiesResponse()
-    {
+     * Initializes a new instance of the ResourceProviderGetPropertiesResponse
+     * class.
+     * 
+     */
+    public ResourceProviderGetPropertiesResponse() {
         super();
         this.properties = new HashMap<String, String>();
     }

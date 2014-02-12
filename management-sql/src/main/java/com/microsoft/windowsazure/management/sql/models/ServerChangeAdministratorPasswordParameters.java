@@ -24,27 +24,27 @@
 package com.microsoft.windowsazure.management.sql.models;
 
 /**
-* Parameters supplied to the Manage Administrator Password operation.
-*/
-public class ServerChangeAdministratorPasswordParameters
-{
+ * Parameters supplied to the Manage Administrator Password operation.
+ */
+public class ServerChangeAdministratorPasswordParameters {
     private String newPassword;
-    
+
     /**
-    * Gets or sets new password for the administrator.
-    * @return The NewPassword value.
-    */
-    public String getNewPassword()
-    {
+     * Gets or sets new password for the administrator.
+     * 
+     * @return The NewPassword value.
+     */
+    public String getNewPassword() {
         return this.newPassword;
     }
-    
+
     /**
-    * Gets or sets new password for the administrator.
-    * @param newPasswordValue The NewPassword value.
-    */
-    public void setNewPassword(final String newPasswordValue)
-    {
+     * Gets or sets new password for the administrator.
+     * 
+     * @param newPasswordValue
+     *            The NewPassword value.
+     */
+    public void setNewPassword(final String newPasswordValue) {
         this.newPassword = newPasswordValue;
     }
 }

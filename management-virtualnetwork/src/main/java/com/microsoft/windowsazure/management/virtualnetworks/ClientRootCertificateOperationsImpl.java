@@ -53,652 +53,694 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-public class ClientRootCertificateOperationsImpl implements ServiceOperations<VirtualNetworkManagementClientImpl>, ClientRootCertificateOperations
-{
+public class ClientRootCertificateOperationsImpl implements
+        ServiceOperations<VirtualNetworkManagementClientImpl>,
+        ClientRootCertificateOperations {
     /**
-    * Initializes a new instance of the ClientRootCertificateOperationsImpl
-    * class.
-    *
-    * @param client Reference to the service client.
-    */
-    ClientRootCertificateOperationsImpl(VirtualNetworkManagementClientImpl client)
-    {
+     * Initializes a new instance of the ClientRootCertificateOperationsImpl
+     * class.
+     * 
+     * @param client
+     *            Reference to the service client.
+     */
+    ClientRootCertificateOperationsImpl(
+            VirtualNetworkManagementClientImpl client) {
         this.client = client;
     }
-    
+
     private VirtualNetworkManagementClientImpl client;
-    
+
     /**
-    * Gets a reference to the
-    * microsoft.windowsazure.management.virtualnetworks.VirtualNetworkManagementClientImpl.
-    * @return The Client value.
-    */
-    public VirtualNetworkManagementClientImpl getClient()
-    {
+     * Gets a reference to the
+     * microsoft.windowsazure.management.virtualnetworks.
+     * VirtualNetworkManagementClientImpl.
+     * 
+     * @return The Client value.
+     */
+    public VirtualNetworkManagementClientImpl getClient() {
         return this.client;
     }
-    
+
     /**
-    * The Upload Client Root Certificate operation is used to upload a new
-    * client root certificate to Windows Azure.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/dn205129.aspx for
-    * more information)
-    *
-    * @param virtualNetworkName The name of the virtual network for this
-    * gateway.
-    * @param parameters Parameters supplied to the Upload client certificate
-    * Virtual Network Gateway operation.
-    * @return A standard storage response including an HTTP status code and
-    * request ID.
-    */
+     * The Upload Client Root Certificate operation is used to upload a new
+     * client root certificate to Windows Azure. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/dn205129.aspx for
+     * more information)
+     * 
+     * @param virtualNetworkName
+     *            The name of the virtual network for this gateway.
+     * @param parameters
+     *            Parameters supplied to the Upload client certificate Virtual
+     *            Network Gateway operation.
+     * @return A standard storage response including an HTTP status code and
+     *         request ID.
+     */
     @Override
-    public Future<GatewayOperationResponse> createAsync(final String virtualNetworkName, final ClientRootCertificateCreateParameters parameters)
-    {
-        return this.getClient().getExecutorService().submit(new Callable<GatewayOperationResponse>() { 
-            @Override
-            public GatewayOperationResponse call() throws Exception
-            {
-                return create(virtualNetworkName, parameters);
-            }
-         });
+    public Future<GatewayOperationResponse> createAsync(
+            final String virtualNetworkName,
+            final ClientRootCertificateCreateParameters parameters) {
+        return this.getClient().getExecutorService()
+                .submit(new Callable<GatewayOperationResponse>() {
+                    @Override
+                    public GatewayOperationResponse call() throws Exception {
+                        return create(virtualNetworkName, parameters);
+                    }
+                });
     }
-    
+
     /**
-    * The Upload Client Root Certificate operation is used to upload a new
-    * client root certificate to Windows Azure.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/dn205129.aspx for
-    * more information)
-    *
-    * @param virtualNetworkName The name of the virtual network for this
-    * gateway.
-    * @param parameters Parameters supplied to the Upload client certificate
-    * Virtual Network Gateway operation.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParserConfigurationException Thrown if there was a serious
-    * configuration error with the document parser.
-    * @throws SAXException Thrown if there was an error parsing the XML
-    * response.
-    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
-    * or otherwise occupied, and the thread is interrupted, either before or
-    * during the activity. Occasionally a method may wish to test whether the
-    * current thread has been interrupted, and if so, to immediately throw
-    * this exception. The following code can be used to achieve this effect:
-    * @throws ExecutionException Thrown when attempting to retrieve the result
-    * of a task that aborted by throwing an exception. This exception can be
-    * inspected using the Throwable.getCause() method.
-    * @throws ServiceException Thrown if the server returned an error for the
-    * request.
-    * @return A standard storage response including an HTTP status code and
-    * request ID.
-    */
+     * The Upload Client Root Certificate operation is used to upload a new
+     * client root certificate to Windows Azure. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/dn205129.aspx for
+     * more information)
+     * 
+     * @param virtualNetworkName
+     *            The name of the virtual network for this gateway.
+     * @param parameters
+     *            Parameters supplied to the Upload client certificate Virtual
+     *            Network Gateway operation.
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @throws ParserConfigurationException
+     *             Thrown if there was a serious configuration error with the
+     *             document parser.
+     * @throws SAXException
+     *             Thrown if there was an error parsing the XML response.
+     * @throws InterruptedException
+     *             Thrown when a thread is waiting, sleeping, or otherwise
+     *             occupied, and the thread is interrupted, either before or
+     *             during the activity. Occasionally a method may wish to test
+     *             whether the current thread has been interrupted, and if so,
+     *             to immediately throw this exception. The following code can
+     *             be used to achieve this effect:
+     * @throws ExecutionException
+     *             Thrown when attempting to retrieve the result of a task that
+     *             aborted by throwing an exception. This exception can be
+     *             inspected using the Throwable.getCause() method.
+     * @throws ServiceException
+     *             Thrown if the server returned an error for the request.
+     * @return A standard storage response including an HTTP status code and
+     *         request ID.
+     */
     @Override
-    public GatewayOperationResponse create(String virtualNetworkName, ClientRootCertificateCreateParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException, InterruptedException, ExecutionException, ServiceException
-    {
+    public GatewayOperationResponse create(String virtualNetworkName,
+            ClientRootCertificateCreateParameters parameters)
+            throws IOException, ServiceException, ParserConfigurationException,
+            SAXException, InterruptedException, ExecutionException,
+            ServiceException {
         // Validate
-        if (virtualNetworkName == null)
-        {
+        if (virtualNetworkName == null) {
             throw new NullPointerException("virtualNetworkName");
         }
-        if (parameters == null)
-        {
+        if (parameters == null) {
             throw new NullPointerException("parameters");
         }
-        if (parameters.getCertificate() == null)
-        {
+        if (parameters.getCertificate() == null) {
             throw new NullPointerException("parameters.Certificate");
         }
-        
+
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("virtualNetworkName", virtualNetworkName);
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this, "createAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "createAsync",
+                    tracingParameters);
         }
-        
+
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/networking/" + virtualNetworkName + "/gateway/clientrootcertificates";
-        
+        String url = this.getClient().getBaseUri() + "/"
+                + this.getClient().getCredentials().getSubscriptionId()
+                + "/services/networking/" + virtualNetworkName
+                + "/gateway/clientrootcertificates";
+
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
-        
+
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
         httpRequest.setHeader("x-ms-version", "2013-11-01");
-        
+
         // Serialize Request
         String requestContent = parameters.getCertificate();
         StringEntity entity = new StringEntity(requestContent);
         httpRequest.setEntity(entity);
         httpRequest.setHeader("Content-Type", "application/xml");
-        
+
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            httpResponse = this.getClient().getHttpClient()
+                    .execute(httpRequest);
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_ACCEPTED)
-            {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
+                ServiceException ex = ServiceException.createFromXml(
+                        httpRequest, requestContent, httpResponse,
+                        httpResponse.getEntity());
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-            
+
             // Create Result
             GatewayOperationResponse result = null;
             // Deserialize Response
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new GatewayOperationResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
+                    .newInstance();
             documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            DocumentBuilder documentBuilder = documentBuilderFactory
+                    .newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
-            
-            NodeList elements = responseDoc.getElementsByTagName("GatewayOperationAsyncResponse");
-            Element gatewayOperationAsyncResponseElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (gatewayOperationAsyncResponseElement != null)
-            {
-                NodeList elements2 = gatewayOperationAsyncResponseElement.getElementsByTagName("ID");
-                Element idElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (idElement != null)
-                {
+
+            NodeList elements = responseDoc
+                    .getElementsByTagName("GatewayOperationAsyncResponse");
+            Element gatewayOperationAsyncResponseElement = elements.getLength() > 0 ? ((Element) elements
+                    .item(0)) : null;
+            if (gatewayOperationAsyncResponseElement != null) {
+                NodeList elements2 = gatewayOperationAsyncResponseElement
+                        .getElementsByTagName("ID");
+                Element idElement = elements2.getLength() > 0 ? ((Element) elements2
+                        .item(0)) : null;
+                if (idElement != null) {
                     String idInstance;
                     idInstance = idElement.getTextContent();
                     result.setOperationId(idInstance);
                 }
             }
-            
+
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader(
+                        "x-ms-request-id").getValue());
             }
-            
-            if (shouldTrace)
-            {
+
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
     }
-    
+
     /**
-    * The Delete Client Root Certificate operation deletes a previously
-    * uploaded client root certificate. from Windows Azure  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/dn205128.aspx for
-    * more information)
-    *
-    * @param virtualNetworkName The name of the virtual network for this
-    * gateway.
-    * @param certificateThumbprint The X509 certificate thumbprint.
-    * @return A standard storage response including an HTTP status code and
-    * request ID.
-    */
+     * The Delete Client Root Certificate operation deletes a previously
+     * uploaded client root certificate. from Windows Azure (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/dn205128.aspx for
+     * more information)
+     * 
+     * @param virtualNetworkName
+     *            The name of the virtual network for this gateway.
+     * @param certificateThumbprint
+     *            The X509 certificate thumbprint.
+     * @return A standard storage response including an HTTP status code and
+     *         request ID.
+     */
     @Override
-    public Future<GatewayOperationResponse> deleteAsync(final String virtualNetworkName, final String certificateThumbprint)
-    {
-        return this.getClient().getExecutorService().submit(new Callable<GatewayOperationResponse>() { 
-            @Override
-            public GatewayOperationResponse call() throws Exception
-            {
-                return delete(virtualNetworkName, certificateThumbprint);
-            }
-         });
+    public Future<GatewayOperationResponse> deleteAsync(
+            final String virtualNetworkName, final String certificateThumbprint) {
+        return this.getClient().getExecutorService()
+                .submit(new Callable<GatewayOperationResponse>() {
+                    @Override
+                    public GatewayOperationResponse call() throws Exception {
+                        return delete(virtualNetworkName, certificateThumbprint);
+                    }
+                });
     }
-    
+
     /**
-    * The Delete Client Root Certificate operation deletes a previously
-    * uploaded client root certificate. from Windows Azure  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/dn205128.aspx for
-    * more information)
-    *
-    * @param virtualNetworkName The name of the virtual network for this
-    * gateway.
-    * @param certificateThumbprint The X509 certificate thumbprint.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParserConfigurationException Thrown if there was a serious
-    * configuration error with the document parser.
-    * @throws SAXException Thrown if there was an error parsing the XML
-    * response.
-    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
-    * or otherwise occupied, and the thread is interrupted, either before or
-    * during the activity. Occasionally a method may wish to test whether the
-    * current thread has been interrupted, and if so, to immediately throw
-    * this exception. The following code can be used to achieve this effect:
-    * @throws ExecutionException Thrown when attempting to retrieve the result
-    * of a task that aborted by throwing an exception. This exception can be
-    * inspected using the Throwable.getCause() method.
-    * @throws ServiceException Thrown if the server returned an error for the
-    * request.
-    * @return A standard storage response including an HTTP status code and
-    * request ID.
-    */
+     * The Delete Client Root Certificate operation deletes a previously
+     * uploaded client root certificate. from Windows Azure (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/dn205128.aspx for
+     * more information)
+     * 
+     * @param virtualNetworkName
+     *            The name of the virtual network for this gateway.
+     * @param certificateThumbprint
+     *            The X509 certificate thumbprint.
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @throws ParserConfigurationException
+     *             Thrown if there was a serious configuration error with the
+     *             document parser.
+     * @throws SAXException
+     *             Thrown if there was an error parsing the XML response.
+     * @throws InterruptedException
+     *             Thrown when a thread is waiting, sleeping, or otherwise
+     *             occupied, and the thread is interrupted, either before or
+     *             during the activity. Occasionally a method may wish to test
+     *             whether the current thread has been interrupted, and if so,
+     *             to immediately throw this exception. The following code can
+     *             be used to achieve this effect:
+     * @throws ExecutionException
+     *             Thrown when attempting to retrieve the result of a task that
+     *             aborted by throwing an exception. This exception can be
+     *             inspected using the Throwable.getCause() method.
+     * @throws ServiceException
+     *             Thrown if the server returned an error for the request.
+     * @return A standard storage response including an HTTP status code and
+     *         request ID.
+     */
     @Override
-    public GatewayOperationResponse delete(String virtualNetworkName, String certificateThumbprint) throws IOException, ServiceException, ParserConfigurationException, SAXException, InterruptedException, ExecutionException, ServiceException
-    {
+    public GatewayOperationResponse delete(String virtualNetworkName,
+            String certificateThumbprint) throws IOException, ServiceException,
+            ParserConfigurationException, SAXException, InterruptedException,
+            ExecutionException, ServiceException {
         // Validate
-        if (virtualNetworkName == null)
-        {
+        if (virtualNetworkName == null) {
             throw new NullPointerException("virtualNetworkName");
         }
-        if (certificateThumbprint == null)
-        {
+        if (certificateThumbprint == null) {
             throw new NullPointerException("certificateThumbprint");
         }
-        
+
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("virtualNetworkName", virtualNetworkName);
-            tracingParameters.put("certificateThumbprint", certificateThumbprint);
-            CloudTracing.enter(invocationId, this, "deleteAsync", tracingParameters);
+            tracingParameters.put("certificateThumbprint",
+                    certificateThumbprint);
+            CloudTracing.enter(invocationId, this, "deleteAsync",
+                    tracingParameters);
         }
-        
+
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/networking/" + virtualNetworkName + "/gateway/clientrootcertificates/" + certificateThumbprint;
-        
+        String url = this.getClient().getBaseUri() + "/"
+                + this.getClient().getCredentials().getSubscriptionId()
+                + "/services/networking/" + virtualNetworkName
+                + "/gateway/clientrootcertificates/" + certificateThumbprint;
+
         // Create HTTP transport objects
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
-        
+
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
         httpRequest.setHeader("x-ms-version", "2013-11-01");
-        
+
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            httpResponse = this.getClient().getHttpClient()
+                    .execute(httpRequest);
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+            if (statusCode != HttpStatus.SC_OK) {
+                ServiceException ex = ServiceException.createFromXml(
+                        httpRequest, null, httpResponse,
+                        httpResponse.getEntity());
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-            
+
             // Create Result
             GatewayOperationResponse result = null;
             // Deserialize Response
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new GatewayOperationResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
+                    .newInstance();
             documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            DocumentBuilder documentBuilder = documentBuilderFactory
+                    .newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
-            
-            NodeList elements = responseDoc.getElementsByTagName("GatewayOperationAsyncResponse");
-            Element gatewayOperationAsyncResponseElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (gatewayOperationAsyncResponseElement != null)
-            {
-                NodeList elements2 = gatewayOperationAsyncResponseElement.getElementsByTagName("ID");
-                Element idElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (idElement != null)
-                {
+
+            NodeList elements = responseDoc
+                    .getElementsByTagName("GatewayOperationAsyncResponse");
+            Element gatewayOperationAsyncResponseElement = elements.getLength() > 0 ? ((Element) elements
+                    .item(0)) : null;
+            if (gatewayOperationAsyncResponseElement != null) {
+                NodeList elements2 = gatewayOperationAsyncResponseElement
+                        .getElementsByTagName("ID");
+                Element idElement = elements2.getLength() > 0 ? ((Element) elements2
+                        .item(0)) : null;
+                if (idElement != null) {
                     String idInstance;
                     idInstance = idElement.getTextContent();
                     result.setOperationId(idInstance);
                 }
             }
-            
+
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader(
+                        "x-ms-request-id").getValue());
             }
-            
-            if (shouldTrace)
-            {
+
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
     }
-    
+
     /**
-    * The Get Client Root Certificate operation returns the public portion of a
-    * previously uploaded client root certificate in a base-64 encoded format
-    * from Windows Azure.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/dn205127.aspx for
-    * more information)
-    *
-    * @param virtualNetworkName The name of the virtual network for this
-    * gateway.
-    * @param certificateThumbprint The X509 certificate thumbprint.
-    * @return A standard storage response including an HTTP status code and
-    * request ID.
-    */
+     * The Get Client Root Certificate operation returns the public portion of a
+     * previously uploaded client root certificate in a base-64 encoded format
+     * from Windows Azure. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/dn205127.aspx for
+     * more information)
+     * 
+     * @param virtualNetworkName
+     *            The name of the virtual network for this gateway.
+     * @param certificateThumbprint
+     *            The X509 certificate thumbprint.
+     * @return A standard storage response including an HTTP status code and
+     *         request ID.
+     */
     @Override
-    public Future<ClientRootCertificateGetResponse> getAsync(final String virtualNetworkName, final String certificateThumbprint)
-    {
-        return this.getClient().getExecutorService().submit(new Callable<ClientRootCertificateGetResponse>() { 
-            @Override
-            public ClientRootCertificateGetResponse call() throws Exception
-            {
-                return get(virtualNetworkName, certificateThumbprint);
-            }
-         });
+    public Future<ClientRootCertificateGetResponse> getAsync(
+            final String virtualNetworkName, final String certificateThumbprint) {
+        return this.getClient().getExecutorService()
+                .submit(new Callable<ClientRootCertificateGetResponse>() {
+                    @Override
+                    public ClientRootCertificateGetResponse call()
+                            throws Exception {
+                        return get(virtualNetworkName, certificateThumbprint);
+                    }
+                });
     }
-    
+
     /**
-    * The Get Client Root Certificate operation returns the public portion of a
-    * previously uploaded client root certificate in a base-64 encoded format
-    * from Windows Azure.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/dn205127.aspx for
-    * more information)
-    *
-    * @param virtualNetworkName The name of the virtual network for this
-    * gateway.
-    * @param certificateThumbprint The X509 certificate thumbprint.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParserConfigurationException Thrown if there was a serious
-    * configuration error with the document parser.
-    * @throws SAXException Thrown if there was an error parsing the XML
-    * response.
-    * @return A standard storage response including an HTTP status code and
-    * request ID.
-    */
+     * The Get Client Root Certificate operation returns the public portion of a
+     * previously uploaded client root certificate in a base-64 encoded format
+     * from Windows Azure. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/dn205127.aspx for
+     * more information)
+     * 
+     * @param virtualNetworkName
+     *            The name of the virtual network for this gateway.
+     * @param certificateThumbprint
+     *            The X509 certificate thumbprint.
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @throws ParserConfigurationException
+     *             Thrown if there was a serious configuration error with the
+     *             document parser.
+     * @throws SAXException
+     *             Thrown if there was an error parsing the XML response.
+     * @return A standard storage response including an HTTP status code and
+     *         request ID.
+     */
     @Override
-    public ClientRootCertificateGetResponse get(String virtualNetworkName, String certificateThumbprint) throws IOException, ServiceException, ParserConfigurationException, SAXException
-    {
+    public ClientRootCertificateGetResponse get(String virtualNetworkName,
+            String certificateThumbprint) throws IOException, ServiceException,
+            ParserConfigurationException, SAXException {
         // Validate
-        if (virtualNetworkName == null)
-        {
+        if (virtualNetworkName == null) {
             throw new NullPointerException("virtualNetworkName");
         }
-        if (certificateThumbprint == null)
-        {
+        if (certificateThumbprint == null) {
             throw new NullPointerException("certificateThumbprint");
         }
-        
+
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("virtualNetworkName", virtualNetworkName);
-            tracingParameters.put("certificateThumbprint", certificateThumbprint);
-            CloudTracing.enter(invocationId, this, "getAsync", tracingParameters);
+            tracingParameters.put("certificateThumbprint",
+                    certificateThumbprint);
+            CloudTracing.enter(invocationId, this, "getAsync",
+                    tracingParameters);
         }
-        
+
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/networking/" + virtualNetworkName + "/gateway/clientrootcertificates/" + certificateThumbprint;
-        
+        String url = this.getClient().getBaseUri() + "/"
+                + this.getClient().getCredentials().getSubscriptionId()
+                + "/services/networking/" + virtualNetworkName
+                + "/gateway/clientrootcertificates/" + certificateThumbprint;
+
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
-        
+
         // Set Headers
         httpRequest.setHeader("x-ms-version", "2013-11-01");
-        
+
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            httpResponse = this.getClient().getHttpClient()
+                    .execute(httpRequest);
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+            if (statusCode != HttpStatus.SC_OK) {
+                ServiceException ex = ServiceException.createFromXml(
+                        httpRequest, null, httpResponse,
+                        httpResponse.getEntity());
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-            
+
             // Create Result
             ClientRootCertificateGetResponse result = null;
             // Deserialize Response
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new ClientRootCertificateGetResponse();
             result.setCertificate(StreamUtils.toString(responseContent));
-            
+
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader(
+                        "x-ms-request-id").getValue());
             }
-            
-            if (shouldTrace)
-            {
+
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
     }
-    
+
     /**
-    * The List Client Root Certificates operation returns a list of all the
-    * client root certificates that are associated with the specified virtual
-    * network in Windows Azure.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/dn205130.aspx for
-    * more information)
-    *
-    * @param virtualNetworkName The name of the virtual network for this
-    * gateway.
-    * @return The response to the list client root certificates request.
-    */
+     * The List Client Root Certificates operation returns a list of all the
+     * client root certificates that are associated with the specified virtual
+     * network in Windows Azure. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/dn205130.aspx for
+     * more information)
+     * 
+     * @param virtualNetworkName
+     *            The name of the virtual network for this gateway.
+     * @return The response to the list client root certificates request.
+     */
     @Override
-    public Future<ClientRootCertificateListResponse> listAsync(final String virtualNetworkName)
-    {
-        return this.getClient().getExecutorService().submit(new Callable<ClientRootCertificateListResponse>() { 
-            @Override
-            public ClientRootCertificateListResponse call() throws Exception
-            {
-                return list(virtualNetworkName);
-            }
-         });
+    public Future<ClientRootCertificateListResponse> listAsync(
+            final String virtualNetworkName) {
+        return this.getClient().getExecutorService()
+                .submit(new Callable<ClientRootCertificateListResponse>() {
+                    @Override
+                    public ClientRootCertificateListResponse call()
+                            throws Exception {
+                        return list(virtualNetworkName);
+                    }
+                });
     }
-    
+
     /**
-    * The List Client Root Certificates operation returns a list of all the
-    * client root certificates that are associated with the specified virtual
-    * network in Windows Azure.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/dn205130.aspx for
-    * more information)
-    *
-    * @param virtualNetworkName The name of the virtual network for this
-    * gateway.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParserConfigurationException Thrown if there was a serious
-    * configuration error with the document parser.
-    * @throws SAXException Thrown if there was an error parsing the XML
-    * response.
-    * @return The response to the list client root certificates request.
-    */
+     * The List Client Root Certificates operation returns a list of all the
+     * client root certificates that are associated with the specified virtual
+     * network in Windows Azure. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/dn205130.aspx for
+     * more information)
+     * 
+     * @param virtualNetworkName
+     *            The name of the virtual network for this gateway.
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @throws ParserConfigurationException
+     *             Thrown if there was a serious configuration error with the
+     *             document parser.
+     * @throws SAXException
+     *             Thrown if there was an error parsing the XML response.
+     * @return The response to the list client root certificates request.
+     */
     @Override
-    public ClientRootCertificateListResponse list(String virtualNetworkName) throws IOException, ServiceException, ParserConfigurationException, SAXException
-    {
+    public ClientRootCertificateListResponse list(String virtualNetworkName)
+            throws IOException, ServiceException, ParserConfigurationException,
+            SAXException {
         // Validate
-        if (virtualNetworkName == null)
-        {
+        if (virtualNetworkName == null) {
             throw new NullPointerException("virtualNetworkName");
         }
-        
+
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("virtualNetworkName", virtualNetworkName);
-            CloudTracing.enter(invocationId, this, "listAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "listAsync",
+                    tracingParameters);
         }
-        
+
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/networking/" + virtualNetworkName + "/gateway/clientrootcertificates";
-        
+        String url = this.getClient().getBaseUri() + "/"
+                + this.getClient().getCredentials().getSubscriptionId()
+                + "/services/networking/" + virtualNetworkName
+                + "/gateway/clientrootcertificates";
+
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
-        
+
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
         httpRequest.setHeader("x-ms-version", "2013-11-01");
-        
+
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            httpResponse = this.getClient().getHttpClient()
+                    .execute(httpRequest);
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+            if (statusCode != HttpStatus.SC_OK) {
+                ServiceException ex = ServiceException.createFromXml(
+                        httpRequest, null, httpResponse,
+                        httpResponse.getEntity());
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-            
+
             // Create Result
             ClientRootCertificateListResponse result = null;
             // Deserialize Response
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new ClientRootCertificateListResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
+                    .newInstance();
             documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            DocumentBuilder documentBuilder = documentBuilderFactory
+                    .newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
-            
-            NodeList elements = responseDoc.getElementsByTagName("ClientRootCertificates");
-            Element clientRootCertificatesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (clientRootCertificatesSequenceElement != null)
-            {
-                for (int i1 = 0; i1 < clientRootCertificatesSequenceElement.getElementsByTagName("ClientRootCertificate").getLength(); i1 = i1 + 1)
-                {
-                    org.w3c.dom.Element clientRootCertificatesElement = ((org.w3c.dom.Element) clientRootCertificatesSequenceElement.getElementsByTagName("ClientRootCertificate").item(i1));
+
+            NodeList elements = responseDoc
+                    .getElementsByTagName("ClientRootCertificates");
+            Element clientRootCertificatesSequenceElement = elements
+                    .getLength() > 0 ? ((Element) elements.item(0)) : null;
+            if (clientRootCertificatesSequenceElement != null) {
+                for (int i1 = 0; i1 < clientRootCertificatesSequenceElement
+                        .getElementsByTagName("ClientRootCertificate")
+                        .getLength(); i1 = i1 + 1) {
+                    org.w3c.dom.Element clientRootCertificatesElement = ((org.w3c.dom.Element) clientRootCertificatesSequenceElement
+                            .getElementsByTagName("ClientRootCertificate")
+                            .item(i1));
                     ClientRootCertificateListResponse.ClientRootCertificate clientRootCertificateInstance = new ClientRootCertificateListResponse.ClientRootCertificate();
-                    result.getClientRootCertificates().add(clientRootCertificateInstance);
-                    
-                    NodeList elements2 = clientRootCertificatesElement.getElementsByTagName("ExpirationTime");
-                    Element expirationTimeElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                    if (expirationTimeElement != null)
-                    {
+                    result.getClientRootCertificates().add(
+                            clientRootCertificateInstance);
+
+                    NodeList elements2 = clientRootCertificatesElement
+                            .getElementsByTagName("ExpirationTime");
+                    Element expirationTimeElement = elements2.getLength() > 0 ? ((Element) elements2
+                            .item(0)) : null;
+                    if (expirationTimeElement != null) {
                         Calendar expirationTimeInstance;
-                        expirationTimeInstance = DatatypeConverter.parseDateTime(expirationTimeElement.getTextContent());
-                        clientRootCertificateInstance.setExpirationTime(expirationTimeInstance);
+                        expirationTimeInstance = DatatypeConverter
+                                .parseDateTime(expirationTimeElement
+                                        .getTextContent());
+                        clientRootCertificateInstance
+                                .setExpirationTime(expirationTimeInstance);
                     }
-                    
-                    NodeList elements3 = clientRootCertificatesElement.getElementsByTagName("Subject");
-                    Element subjectElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                    if (subjectElement != null)
-                    {
+
+                    NodeList elements3 = clientRootCertificatesElement
+                            .getElementsByTagName("Subject");
+                    Element subjectElement = elements3.getLength() > 0 ? ((Element) elements3
+                            .item(0)) : null;
+                    if (subjectElement != null) {
                         String subjectInstance;
                         subjectInstance = subjectElement.getTextContent();
-                        clientRootCertificateInstance.setSubject(subjectInstance);
+                        clientRootCertificateInstance
+                                .setSubject(subjectInstance);
                     }
-                    
-                    NodeList elements4 = clientRootCertificatesElement.getElementsByTagName("Thumbprint");
-                    Element thumbprintElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                    if (thumbprintElement != null)
-                    {
+
+                    NodeList elements4 = clientRootCertificatesElement
+                            .getElementsByTagName("Thumbprint");
+                    Element thumbprintElement = elements4.getLength() > 0 ? ((Element) elements4
+                            .item(0)) : null;
+                    if (thumbprintElement != null) {
                         String thumbprintInstance;
                         thumbprintInstance = thumbprintElement.getTextContent();
-                        clientRootCertificateInstance.setThumbprint(thumbprintInstance);
+                        clientRootCertificateInstance
+                                .setThumbprint(thumbprintInstance);
                     }
                 }
             }
-            
+
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader(
+                        "x-ms-request-id").getValue());
             }
-            
-            if (shouldTrace)
-            {
+
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }

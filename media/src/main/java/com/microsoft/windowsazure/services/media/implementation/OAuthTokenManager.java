@@ -30,8 +30,7 @@ import com.microsoft.windowsazure.services.media.MediaConfiguration;
  * An OAuth token manager class.
  * 
  */
-public class OAuthTokenManager
-{
+public class OAuthTokenManager {
     private final DateFactory dateFactory;
     private final URI acsBaseUri;
     private final String clientId;
@@ -71,8 +70,7 @@ public class OAuthTokenManager
             @Named(MediaConfiguration.OAUTH_CLIENT_ID) String clientId,
             @Named(MediaConfiguration.OAUTH_CLIENT_SECRET) String clientSecret,
             @Named(MediaConfiguration.OAUTH_SCOPE) String scope)
-            throws URISyntaxException
-    {
+            throws URISyntaxException {
         this.contract = contract;
         this.dateFactory = dateFactory;
         this.acsBaseUri = new URI(oAuthUri);
@@ -94,12 +92,10 @@ public class OAuthTokenManager
      * @throws ServiceException
      * @throws URISyntaxException
      */
-    public String getAccessToken() throws ServiceException, URISyntaxException
-    {
+    public String getAccessToken() throws ServiceException, URISyntaxException {
         Date now = dateFactory.getDate();
         if (this.activeToken == null
-                || now.after(this.activeToken.getExpiresUtc()))
-        {
+                || now.after(this.activeToken.getExpiresUtc())) {
             OAuthTokenResponse oAuth2TokenResponse = contract.getAccessToken(
                     acsBaseUri, clientId, clientSecret, scope);
             Date expiresUtc = new Date(now.getTime()

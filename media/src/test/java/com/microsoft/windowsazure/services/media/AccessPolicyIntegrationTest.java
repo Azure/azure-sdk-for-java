@@ -30,11 +30,9 @@ import com.microsoft.windowsazure.services.media.models.AccessPolicy;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyPermission;
 
-public class AccessPolicyIntegrationTest extends IntegrationTestBase
-{
+public class AccessPolicyIntegrationTest extends IntegrationTestBase {
     private void verifyInfosEqual(String message, AccessPolicyInfo expected,
-            AccessPolicyInfo actual)
-    {
+            AccessPolicyInfo actual) {
         verifyPolicyProperties(message, expected.getName(),
                 expected.getDurationInMinutes(), expected.getPermissions(),
                 actual);
@@ -42,24 +40,20 @@ public class AccessPolicyIntegrationTest extends IntegrationTestBase
 
     private void verifyPolicyProperties(String message, String testName,
             double duration, AccessPolicyPermission permission,
-            AccessPolicyInfo policy)
-    {
+            AccessPolicyInfo policy) {
         verifyPolicyProperties(message, testName, duration,
                 EnumSet.of(permission), policy);
     }
 
     private void verifyPolicyProperties(String message, String testName,
             double duration, EnumSet<AccessPolicyPermission> permissions,
-            AccessPolicyInfo policy)
-    {
+            AccessPolicyInfo policy) {
         assertNotNull(message, policy);
         assertEquals(message + " Name", testName, policy.getName());
         assertEquals(message + " DurationInMinutes", duration,
                 policy.getDurationInMinutes(), 0.00001);
-        for (AccessPolicyPermission permission : permissions)
-        {
-            if (permission != AccessPolicyPermission.NONE)
-            {
+        for (AccessPolicyPermission permission : permissions) {
+            if (permission != AccessPolicyPermission.NONE) {
                 assertTrue(
                         message + "permissions should contain " + permission,
                         policy.getPermissions().contains(permission));
@@ -76,8 +70,7 @@ public class AccessPolicyIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void canCreateAccessPolicy() throws Exception
-    {
+    public void canCreateAccessPolicy() throws Exception {
         String testName = testPolicyPrefix + "CanCreate";
         double duration = 5;
 
@@ -89,8 +82,7 @@ public class AccessPolicyIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void canCreateAccessPolicyWithReadPermissions() throws Exception
-    {
+    public void canCreateAccessPolicyWithReadPermissions() throws Exception {
         String testName = testPolicyPrefix + "CanCreateRead";
         double duration = 5;
 
@@ -102,8 +94,7 @@ public class AccessPolicyIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void canGetSinglePolicyById() throws Exception
-    {
+    public void canGetSinglePolicyById() throws Exception {
         String expectedName = testPolicyPrefix + "GetOne";
         double duration = 1;
         AccessPolicyInfo policyToGet = service.create(AccessPolicy.create(
@@ -119,24 +110,21 @@ public class AccessPolicyIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void canGetSinglePolicyByInvalidId() throws Exception
-    {
+    public void canGetSinglePolicyByInvalidId() throws Exception {
         expectedException.expect(ServiceException.class);
         expectedException.expect(new ServiceExceptionMatcher(400));
         service.get(AccessPolicy.get(invalidId));
     }
 
     @Test
-    public void canGetSinglePolicyByNonexistId() throws Exception
-    {
+    public void canGetSinglePolicyByNonexistId() throws Exception {
         expectedException.expect(ServiceException.class);
         expectedException.expect(new ServiceExceptionMatcher(404));
         service.get(AccessPolicy.get(validButNonexistAccessPolicyId));
     }
 
     @Test
-    public void canRetrieveListOfAccessPolicies() throws Exception
-    {
+    public void canRetrieveListOfAccessPolicies() throws Exception {
         String[] policyNames = new String[] { testPolicyPrefix + "ListOne",
                 testPolicyPrefix + "ListTwo" };
         double duration = 3;
@@ -144,8 +132,7 @@ public class AccessPolicyIntegrationTest extends IntegrationTestBase
                 AccessPolicyPermission.WRITE, AccessPolicyPermission.LIST);
 
         List<AccessPolicyInfo> expectedAccessPolicies = new ArrayList<AccessPolicyInfo>();
-        for (int i = 0; i < policyNames.length; i++)
-        {
+        for (int i = 0; i < policyNames.length; i++) {
             AccessPolicyInfo policy = service.create(AccessPolicy.create(
                     policyNames[i], duration, permissions));
             expectedAccessPolicies.add(policy);
@@ -155,12 +142,10 @@ public class AccessPolicyIntegrationTest extends IntegrationTestBase
                 .list());
 
         verifyListResultContains("listAccessPolicies", expectedAccessPolicies,
-                actualAccessPolicies, new ComponentDelegate()
-                {
+                actualAccessPolicies, new ComponentDelegate() {
                     @Override
                     public void verifyEquals(String message, Object expected,
-                            Object actual)
-                    {
+                            Object actual) {
                         verifyInfosEqual(message, (AccessPolicyInfo) expected,
                                 (AccessPolicyInfo) actual);
                     }
@@ -169,8 +154,7 @@ public class AccessPolicyIntegrationTest extends IntegrationTestBase
 
     @Test
     public void canUseQueryParametersWhenListingAccessPolicies()
-            throws Exception
-    {
+            throws Exception {
         String[] policyNames = new String[] { testPolicyPrefix + "ListThree",
                 testPolicyPrefix + "ListFour", testPolicyPrefix + "ListFive",
                 testPolicyPrefix + "ListSix", testPolicyPrefix + "ListSeven" };
@@ -180,8 +164,7 @@ public class AccessPolicyIntegrationTest extends IntegrationTestBase
                 AccessPolicyPermission.WRITE, AccessPolicyPermission.LIST);
 
         List<AccessPolicyInfo> expectedAccessPolicies = new ArrayList<AccessPolicyInfo>();
-        for (int i = 0; i < policyNames.length; i++)
-        {
+        for (int i = 0; i < policyNames.length; i++) {
             AccessPolicyInfo policy = service.create(AccessPolicy.create(
                     policyNames[i], duration, permissions));
             expectedAccessPolicies.add(policy);
@@ -196,8 +179,7 @@ public class AccessPolicyIntegrationTest extends IntegrationTestBase
     // Note: Access Policy cannot be updated.
 
     @Test
-    public void canDeleteAccessPolicyById() throws Exception
-    {
+    public void canDeleteAccessPolicyById() throws Exception {
         String policyName = testPolicyPrefix + "ToDelete";
         double duration = 1;
         AccessPolicyInfo policyToDelete = service
@@ -213,8 +195,7 @@ public class AccessPolicyIntegrationTest extends IntegrationTestBase
         assertEquals("listPoliciesResult.size", policyCountBaseline - 1,
                 listPoliciesResult.size());
 
-        for (AccessPolicyInfo policy : service.list(AccessPolicy.list()))
-        {
+        for (AccessPolicyInfo policy : service.list(AccessPolicy.list())) {
             assertFalse(policyToDelete.getId().equals(policy.getId()));
         }
 
@@ -224,24 +205,21 @@ public class AccessPolicyIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void canDeleteAccessPolicyByInvalidId() throws Exception
-    {
+    public void canDeleteAccessPolicyByInvalidId() throws Exception {
         expectedException.expect(ServiceException.class);
         expectedException.expect(new ServiceExceptionMatcher(400));
         service.delete(AccessPolicy.delete(invalidId));
     }
 
     @Test
-    public void canDeleteAccessPolicyByNonexistId() throws Exception
-    {
+    public void canDeleteAccessPolicyByNonexistId() throws Exception {
         expectedException.expect(ServiceException.class);
         expectedException.expect(new ServiceExceptionMatcher(404));
         service.delete(AccessPolicy.delete(validButNonexistAccessPolicyId));
     }
 
     @Test
-    public void canRetryAccessPolicyCreation() throws Exception
-    {
+    public void canRetryAccessPolicyCreation() throws Exception {
         String name = testPolicyPrefix + "canRetryAccessPolicyCreationPolicy";
         double duration = 1;
         EnumSet<AccessPolicyPermission> write = EnumSet

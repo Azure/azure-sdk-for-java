@@ -17,48 +17,46 @@ package com.microsoft.windowsazure.management;
 import com.microsoft.windowsazure.Configuration;
 
 /**
- *
+ * 
  * Access service management functionality.
- *
+ * 
  */
-public final class ManagementService
-{
-    private ManagementService()
-    {
+public final class ManagementService {
+    private ManagementService() {
         // class is not instantiated
     }
 
     /**
      * Creates an instance of the <code>ManagementClient</code> API.
+     * 
      * @return An instance of the <code>ManagementClient</code> API.
      */
-    public static ManagementClient create()
-    {
+    public static ManagementClient create() {
         return Configuration.getInstance().create(ManagementClient.class);
     }
 
     /**
      * Creates an instance of the <code>ManagementClient</code> API using the
      * specified configuration.
-     *
-     * @param config A <code>Configuration</code> object that represents the
-     * configuration for the service management.
+     * 
+     * @param config
+     *            A <code>Configuration</code> object that represents the
+     *            configuration for the service management.
      * @return An instance of the <code>ManagementClient</code> API.
      */
-    public static ManagementClient create(final Configuration config)
-    {
+    public static ManagementClient create(final Configuration config) {
         return config.create(ManagementClient.class);
     }
 
     /**
      * Creates an instance of the <code>ManagementClient</code> API.
-     *
-     * @param profile A <code>String</code> object that representing the profile
-     * of the service management service.
+     * 
+     * @param profile
+     *            A <code>String</code> object that representing the profile of
+     *            the service management service.
      * @return An instance of the <code>ManagementClient</code> API.
      */
-    public static ManagementClient create(final String profile)
-    {
+    public static ManagementClient create(final String profile) {
         return Configuration.getInstance().create(profile,
                 ManagementClient.class);
     }
@@ -66,15 +64,16 @@ public final class ManagementService
     /**
      * Creates an instance of the <code>ManagementClient</code> API using the
      * specified configuration.
-     *
-     * @param profile The profile.
-     * @param config A <code>Configuration</code> object that represents the
-     * configuration for the service management.
+     * 
+     * @param profile
+     *            The profile.
+     * @param config
+     *            A <code>Configuration</code> object that represents the
+     *            configuration for the service management.
      * @return An instance of the <code>ManagementClient</code> API.
      */
     public static ManagementClient create(final String profile,
-            final Configuration config)
-    {
+            final Configuration config) {
         return config.create(profile, ManagementClient.class);
     }
 }

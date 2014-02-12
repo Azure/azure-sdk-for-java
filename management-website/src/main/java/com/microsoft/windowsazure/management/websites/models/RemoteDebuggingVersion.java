@@ -24,17 +24,16 @@
 package com.microsoft.windowsazure.management.websites.models;
 
 /**
-* The remote debugging version.
-*/
-public enum RemoteDebuggingVersion
-{
+ * The remote debugging version.
+ */
+public enum RemoteDebuggingVersion {
     /**
-    * Visual Studio 2012.
-    */
+     * Visual Studio 2012.
+     */
     VS2012,
-    
+
     /**
-    * Visual Studio 2013.
-    */
+     * Visual Studio 2013.
+     */
     VS2013,
 }

@@ -23,13 +23,12 @@
 
 package com.microsoft.windowsazure.management.monitoring.autoscale.models;
 
-public enum MetricStatisticType
-{
+public enum MetricStatisticType {
     Average,
-    
+
     Min,
-    
+
     Max,
-    
+
     Sum,
 }

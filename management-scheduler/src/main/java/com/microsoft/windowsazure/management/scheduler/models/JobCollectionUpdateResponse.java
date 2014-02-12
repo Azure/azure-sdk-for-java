@@ -26,27 +26,27 @@ package com.microsoft.windowsazure.management.scheduler.models;
 import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
-* The Update Job Collection operation response.
-*/
-public class JobCollectionUpdateResponse extends OperationResponse
-{
+ * The Update Job Collection operation response.
+ */
+public class JobCollectionUpdateResponse extends OperationResponse {
     private String eTag;
-    
+
     /**
-    * New ETag of the updated Job Collection.
-    * @return The ETag value.
-    */
-    public String getETag()
-    {
+     * New ETag of the updated Job Collection.
+     * 
+     * @return The ETag value.
+     */
+    public String getETag() {
         return this.eTag;
     }
-    
+
     /**
-    * New ETag of the updated Job Collection.
-    * @param eTagValue The ETag value.
-    */
-    public void setETag(final String eTagValue)
-    {
+     * New ETag of the updated Job Collection.
+     * 
+     * @param eTagValue
+     *            The ETag value.
+     */
+    public void setETag(final String eTagValue) {
         this.eTag = eTagValue;
     }
 }

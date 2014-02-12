@@ -14,10 +14,8 @@
  */
 package com.microsoft.windowsazure.configuration.builder;
 
-public class ClassWithSingleCtorNoInject
-{
-    public ClassWithSingleCtorNoInject()
-    {
+public class ClassWithSingleCtorNoInject {
+    public ClassWithSingleCtorNoInject() {
 
     }
 }

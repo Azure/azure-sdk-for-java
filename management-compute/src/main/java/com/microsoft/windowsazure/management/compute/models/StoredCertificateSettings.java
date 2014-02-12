@@ -24,55 +24,56 @@
 package com.microsoft.windowsazure.management.compute.models;
 
 /**
-* Service certificates with which to provision to the new virtual machine.
-* Stored certificate settings reference certificates that already exist in the
-* Windows Azure hosted service. Prior to configuring the stored certificates
-* for the virtual machine, you must call the Add Service Certificate operation
-* or add the certificate via the Windows Azure Management portal.
-*/
-public class StoredCertificateSettings
-{
+ * Service certificates with which to provision to the new virtual machine.
+ * Stored certificate settings reference certificates that already exist in the
+ * Windows Azure hosted service. Prior to configuring the stored certificates
+ * for the virtual machine, you must call the Add Service Certificate operation
+ * or add the certificate via the Windows Azure Management portal.
+ */
+public class StoredCertificateSettings {
     private String storeName;
-    
+
     /**
-    * Required. Specifies the name of the certificate store from which retrieve
-    * certificate.  For example, “My”.
-    * @return The StoreName value.
-    */
-    public String getStoreName()
-    {
+     * Required. Specifies the name of the certificate store from which retrieve
+     * certificate. For example, “My”.
+     * 
+     * @return The StoreName value.
+     */
+    public String getStoreName() {
         return this.storeName;
     }
-    
+
     /**
-    * Required. Specifies the name of the certificate store from which retrieve
-    * certificate.  For example, “My”.
-    * @param storeNameValue The StoreName value.
-    */
-    public void setStoreName(final String storeNameValue)
-    {
+     * Required. Specifies the name of the certificate store from which retrieve
+     * certificate. For example, “My”.
+     * 
+     * @param storeNameValue
+     *            The StoreName value.
+     */
+    public void setStoreName(final String storeNameValue) {
         this.storeName = storeNameValue;
     }
-    
+
     private String thumbprint;
-    
+
     /**
-    * Required. Specifies the thumbprint of the certificate to be provisioned.
-    * The thumbprint must specify an existing service certificate.
-    * @return The Thumbprint value.
-    */
-    public String getThumbprint()
-    {
+     * Required. Specifies the thumbprint of the certificate to be provisioned.
+     * The thumbprint must specify an existing service certificate.
+     * 
+     * @return The Thumbprint value.
+     */
+    public String getThumbprint() {
         return this.thumbprint;
     }
-    
+
     /**
-    * Required. Specifies the thumbprint of the certificate to be provisioned.
-    * The thumbprint must specify an existing service certificate.
-    * @param thumbprintValue The Thumbprint value.
-    */
-    public void setThumbprint(final String thumbprintValue)
-    {
+     * Required. Specifies the thumbprint of the certificate to be provisioned.
+     * The thumbprint must specify an existing service certificate.
+     * 
+     * @param thumbprintValue
+     *            The Thumbprint value.
+     */
+    public void setThumbprint(final String thumbprintValue) {
         this.thumbprint = thumbprintValue;
     }
 }

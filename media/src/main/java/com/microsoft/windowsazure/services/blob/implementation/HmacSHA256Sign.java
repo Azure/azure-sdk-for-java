@@ -19,19 +19,15 @@ import javax.crypto.spec.SecretKeySpec;
 
 import com.sun.jersey.core.util.Base64;
 
-public class HmacSHA256Sign
-{
+public class HmacSHA256Sign {
     private final String accessKey;
 
-    public HmacSHA256Sign(String accessKey)
-    {
+    public HmacSHA256Sign(String accessKey) {
         this.accessKey = accessKey;
     }
 
-    public String sign(String stringToSign)
-    {
-        try
-        {
+    public String sign(String stringToSign) {
+        try {
             // Encoding the Signature
             // Signature=Base64(HMAC-SHA256(UTF8(StringToSign)))
 
@@ -39,8 +35,7 @@ public class HmacSHA256Sign
             hmac.init(new SecretKeySpec(Base64.decode(accessKey), "hmacSHA256"));
             byte[] digest = hmac.doFinal(stringToSign.getBytes("UTF-8"));
             return new String(Base64.encode(digest), "UTF-8");
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new IllegalArgumentException("accessKey", e);
         }
     }

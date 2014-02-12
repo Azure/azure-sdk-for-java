@@ -26,27 +26,27 @@ package com.microsoft.windowsazure.management.websites.models;
 import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
-* The Create Web Space operation response.
-*/
-public class WebSiteCreateResponse extends OperationResponse
-{
+ * The Create Web Space operation response.
+ */
+public class WebSiteCreateResponse extends OperationResponse {
     private WebSite webSite;
-    
+
     /**
-    * Details of the created website.
-    * @return The WebSite value.
-    */
-    public WebSite getWebSite()
-    {
+     * Details of the created website.
+     * 
+     * @return The WebSite value.
+     */
+    public WebSite getWebSite() {
         return this.webSite;
     }
-    
+
     /**
-    * Details of the created website.
-    * @param webSiteValue The WebSite value.
-    */
-    public void setWebSite(final WebSite webSiteValue)
-    {
+     * Details of the created website.
+     * 
+     * @param webSiteValue
+     *            The WebSite value.
+     */
+    public void setWebSite(final WebSite webSiteValue) {
         this.webSite = webSiteValue;
     }
 }

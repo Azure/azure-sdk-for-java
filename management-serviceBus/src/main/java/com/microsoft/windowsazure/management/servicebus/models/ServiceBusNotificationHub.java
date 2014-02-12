@@ -25,68 +25,64 @@ package com.microsoft.windowsazure.management.servicebus.models;
 
 import java.util.ArrayList;
 
-public class ServiceBusNotificationHub
-{
+public class ServiceBusNotificationHub {
     private ArrayList<ServiceBusSharedAccessAuthorizationRule> authorizationRules;
-    
+
     /**
-    * @return The AuthorizationRules value.
-    */
-    public ArrayList<ServiceBusSharedAccessAuthorizationRule> getAuthorizationRules()
-    {
+     * @return The AuthorizationRules value.
+     */
+    public ArrayList<ServiceBusSharedAccessAuthorizationRule> getAuthorizationRules() {
         return this.authorizationRules;
     }
-    
+
     /**
-    * @param authorizationRulesValue The AuthorizationRules value.
-    */
-    public void setAuthorizationRules(final ArrayList<ServiceBusSharedAccessAuthorizationRule> authorizationRulesValue)
-    {
+     * @param authorizationRulesValue
+     *            The AuthorizationRules value.
+     */
+    public void setAuthorizationRules(
+            final ArrayList<ServiceBusSharedAccessAuthorizationRule> authorizationRulesValue) {
         this.authorizationRules = authorizationRulesValue;
     }
-    
+
     private String name;
-    
+
     /**
-    * @return The Name value.
-    */
-    public String getName()
-    {
+     * @return The Name value.
+     */
+    public String getName() {
         return this.name;
     }
-    
+
     /**
-    * @param nameValue The Name value.
-    */
-    public void setName(final String nameValue)
-    {
+     * @param nameValue
+     *            The Name value.
+     */
+    public void setName(final String nameValue) {
         this.name = nameValue;
     }
-    
+
     private String registrationTtl;
-    
+
     /**
-    * @return The RegistrationTtl value.
-    */
-    public String getRegistrationTtl()
-    {
+     * @return The RegistrationTtl value.
+     */
+    public String getRegistrationTtl() {
         return this.registrationTtl;
     }
-    
+
     /**
-    * @param registrationTtlValue The RegistrationTtl value.
-    */
-    public void setRegistrationTtl(final String registrationTtlValue)
-    {
+     * @param registrationTtlValue
+     *            The RegistrationTtl value.
+     */
+    public void setRegistrationTtl(final String registrationTtlValue) {
         this.registrationTtl = registrationTtlValue;
     }
-    
+
     /**
-    * Initializes a new instance of the ServiceBusNotificationHub class.
-    *
-    */
-    public ServiceBusNotificationHub()
-    {
+     * Initializes a new instance of the ServiceBusNotificationHub class.
+     * 
+     */
+    public ServiceBusNotificationHub() {
         this.authorizationRules = new ArrayList<ServiceBusSharedAccessAuthorizationRule>();
     }
 }

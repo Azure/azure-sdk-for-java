@@ -24,8 +24,7 @@
 package com.microsoft.windowsazure.management.monitoring.metrics.models;
 
 /**
-* A metric setting get response.
-*/
-public abstract class MetricSettingValue
-{
+ * A metric setting get response.
+ */
+public abstract class MetricSettingValue {
 }

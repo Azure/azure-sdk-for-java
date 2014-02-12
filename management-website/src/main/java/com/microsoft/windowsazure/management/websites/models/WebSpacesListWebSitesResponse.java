@@ -28,46 +28,45 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
-* The List Web Sites operation response.
-*/
-public class WebSpacesListWebSitesResponse extends OperationResponse implements Iterable<WebSite>
-{
+ * The List Web Sites operation response.
+ */
+public class WebSpacesListWebSitesResponse extends OperationResponse implements
+        Iterable<WebSite> {
     private ArrayList<WebSite> webSites;
-    
+
     /**
-    * The websites associated with the specified web space.
-    * @return The WebSites value.
-    */
-    public ArrayList<WebSite> getWebSites()
-    {
+     * The websites associated with the specified web space.
+     * 
+     * @return The WebSites value.
+     */
+    public ArrayList<WebSite> getWebSites() {
         return this.webSites;
     }
-    
+
     /**
-    * The websites associated with the specified web space.
-    * @param webSitesValue The WebSites value.
-    */
-    public void setWebSites(final ArrayList<WebSite> webSitesValue)
-    {
+     * The websites associated with the specified web space.
+     * 
+     * @param webSitesValue
+     *            The WebSites value.
+     */
+    public void setWebSites(final ArrayList<WebSite> webSitesValue) {
         this.webSites = webSitesValue;
     }
-    
+
     /**
-    * Initializes a new instance of the WebSpacesListWebSitesResponse class.
-    *
-    */
-    public WebSpacesListWebSitesResponse()
-    {
+     * Initializes a new instance of the WebSpacesListWebSitesResponse class.
+     * 
+     */
+    public WebSpacesListWebSitesResponse() {
         super();
         this.webSites = new ArrayList<WebSite>();
     }
-    
+
     /**
-    * Gets the sequence of WebSites.
-    *
-    */
-    public Iterator<WebSite> iterator()
-    {
+     * Gets the sequence of WebSites.
+     * 
+     */
+    public Iterator<WebSite> iterator() {
         return this.getWebSites().iterator();
     }
 }

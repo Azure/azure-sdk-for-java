@@ -23,11 +23,9 @@ import java.util.TimeZone;
 
 import org.junit.Test;
 
-public class ISO8601DateConverterTests
-{
+public class ISO8601DateConverterTests {
     @Test
-    public void shortFormatWorks() throws Exception
-    {
+    public void shortFormatWorks() throws Exception {
         // Arrange
         ISO8601DateConverter converter = new ISO8601DateConverter();
         String value = "2012-01-12T00:35:58Z";
@@ -54,8 +52,7 @@ public class ISO8601DateConverterTests
     }
 
     @Test
-    public void longFormatWorks() throws Exception
-    {
+    public void longFormatWorks() throws Exception {
         // Arrange
         ISO8601DateConverter converter = new ISO8601DateConverter();
         String value = "2012-01-12T00:35:58.1234567Z";
@@ -82,8 +79,7 @@ public class ISO8601DateConverterTests
     }
 
     @Test
-    public void mixedFormatWorks() throws Exception
-    {
+    public void mixedFormatWorks() throws Exception {
         // Arrange
         ISO8601DateConverter converter = new ISO8601DateConverter();
         String value = "2012-01-12T00:35:58.12Z";
@@ -110,8 +106,7 @@ public class ISO8601DateConverterTests
     }
 
     @Test
-    public void shortFormatRoundTrips() throws Exception
-    {
+    public void shortFormatRoundTrips() throws Exception {
         // Arrange
         ISO8601DateConverter converter = new ISO8601DateConverter();
         String value = "2012-01-12T00:35:58Z";

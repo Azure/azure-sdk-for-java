@@ -52,8 +52,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "LocalResourcesInfo", propOrder = { "localResource" })
-class LocalResourcesInfo
-{
+class LocalResourcesInfo {
 
     @XmlElement(name = "LocalResource")
     protected List<LocalResourceInfo> localResource;
@@ -81,10 +80,8 @@ class LocalResourcesInfo
      * 
      * 
      */
-    public List<LocalResourceInfo> getLocalResource()
-    {
-        if (localResource == null)
-        {
+    public List<LocalResourceInfo> getLocalResource() {
+        if (localResource == null) {
             localResource = new ArrayList<LocalResourceInfo>();
         }
         return this.localResource;

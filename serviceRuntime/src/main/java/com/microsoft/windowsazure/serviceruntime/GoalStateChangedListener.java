@@ -17,7 +17,6 @@ package com.microsoft.windowsazure.serviceruntime;
 /**
  * 
  */
-interface GoalStateChangedListener
-{
+interface GoalStateChangedListener {
     public void goalStateChanged(GoalState newGoalState);
 }

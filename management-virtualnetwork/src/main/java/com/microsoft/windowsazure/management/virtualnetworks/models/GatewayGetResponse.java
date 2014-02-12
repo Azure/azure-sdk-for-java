@@ -27,87 +27,90 @@ import com.microsoft.windowsazure.core.OperationResponse;
 import java.net.InetAddress;
 
 /**
-* A standard storage response including an HTTP status code and request ID.
-*/
-public class GatewayGetResponse extends OperationResponse
-{
+ * A standard storage response including an HTTP status code and request ID.
+ */
+public class GatewayGetResponse extends OperationResponse {
     private GatewayType gatewayType;
-    
+
     /**
-    * The type of gateway routing used for this virtual network.
-    * @return The GatewayType value.
-    */
-    public GatewayType getGatewayType()
-    {
+     * The type of gateway routing used for this virtual network.
+     * 
+     * @return The GatewayType value.
+     */
+    public GatewayType getGatewayType() {
         return this.gatewayType;
     }
-    
+
     /**
-    * The type of gateway routing used for this virtual network.
-    * @param gatewayTypeValue The GatewayType value.
-    */
-    public void setGatewayType(final GatewayType gatewayTypeValue)
-    {
+     * The type of gateway routing used for this virtual network.
+     * 
+     * @param gatewayTypeValue
+     *            The GatewayType value.
+     */
+    public void setGatewayType(final GatewayType gatewayTypeValue) {
         this.gatewayType = gatewayTypeValue;
     }
-    
+
     private GatewayEvent lastEvent;
-    
+
     /**
-    * The last recorded event for this virtual network gateway.
-    * @return The LastEvent value.
-    */
-    public GatewayEvent getLastEvent()
-    {
+     * The last recorded event for this virtual network gateway.
+     * 
+     * @return The LastEvent value.
+     */
+    public GatewayEvent getLastEvent() {
         return this.lastEvent;
     }
-    
+
     /**
-    * The last recorded event for this virtual network gateway.
-    * @param lastEventValue The LastEvent value.
-    */
-    public void setLastEvent(final GatewayEvent lastEventValue)
-    {
+     * The last recorded event for this virtual network gateway.
+     * 
+     * @param lastEventValue
+     *            The LastEvent value.
+     */
+    public void setLastEvent(final GatewayEvent lastEventValue) {
         this.lastEvent = lastEventValue;
     }
-    
+
     private String state;
-    
+
     /**
-    * The provisioning state of the virtual network gateway.
-    * @return The State value.
-    */
-    public String getState()
-    {
+     * The provisioning state of the virtual network gateway.
+     * 
+     * @return The State value.
+     */
+    public String getState() {
         return this.state;
     }
-    
+
     /**
-    * The provisioning state of the virtual network gateway.
-    * @param stateValue The State value.
-    */
-    public void setState(final String stateValue)
-    {
+     * The provisioning state of the virtual network gateway.
+     * 
+     * @param stateValue
+     *            The State value.
+     */
+    public void setState(final String stateValue) {
         this.state = stateValue;
     }
-    
+
     private InetAddress vipAddress;
-    
+
     /**
-    * The virtual IP address for this virtual network gateway.
-    * @return The VipAddress value.
-    */
-    public InetAddress getVipAddress()
-    {
+     * The virtual IP address for this virtual network gateway.
+     * 
+     * @return The VipAddress value.
+     */
+    public InetAddress getVipAddress() {
         return this.vipAddress;
     }
-    
+
     /**
-    * The virtual IP address for this virtual network gateway.
-    * @param vipAddressValue The VipAddress value.
-    */
-    public void setVipAddress(final InetAddress vipAddressValue)
-    {
+     * The virtual IP address for this virtual network gateway.
+     * 
+     * @param vipAddressValue
+     *            The VipAddress value.
+     */
+    public void setVipAddress(final InetAddress vipAddressValue) {
         this.vipAddress = vipAddressValue;
     }
 }

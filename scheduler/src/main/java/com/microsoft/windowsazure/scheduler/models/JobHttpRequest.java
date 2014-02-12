@@ -27,88 +27,78 @@ import java.net.URI;
 import java.util.HashMap;
 
 /**
-* Request for a http or https action type.
-*/
-public class JobHttpRequest
-{
+ * Request for a http or https action type.
+ */
+public class JobHttpRequest {
     private String body;
-    
+
     /**
-    * HTTP request body.
-    */
-    public String getBody()
-    {
+     * HTTP request body.
+     */
+    public String getBody() {
         return this.body;
     }
-    
+
     /**
-    * HTTP request body.
-    */
-    public void setBody(String body)
-    {
+     * HTTP request body.
+     */
+    public void setBody(String body) {
         this.body = body;
     }
-    
+
     private HashMap<String, String> headers;
-    
+
     /**
-    * pair of strings representing header name value pairs.
-    */
-    public HashMap<String, String> getHeaders()
-    {
+     * pair of strings representing header name value pairs.
+     */
+    public HashMap<String, String> getHeaders() {
         return this.headers;
     }
-    
+
     /**
-    * pair of strings representing header name value pairs.
-    */
-    public void setHeaders(HashMap<String, String> headers)
-    {
+     * pair of strings representing header name value pairs.
+     */
+    public void setHeaders(HashMap<String, String> headers) {
         this.headers = headers;
     }
-    
+
     private String method;
-    
+
     /**
-    * http method e.g. GET, PUT, POST, DELETE.
-    */
-    public String getMethod()
-    {
+     * http method e.g. GET, PUT, POST, DELETE.
+     */
+    public String getMethod() {
         return this.method;
     }
-    
+
     /**
-    * http method e.g. GET, PUT, POST, DELETE.
-    */
-    public void setMethod(String method)
-    {
+     * http method e.g. GET, PUT, POST, DELETE.
+     */
+    public void setMethod(String method) {
         this.method = method;
     }
-    
+
     private URI uri;
-    
+
     /**
-    * uri of the endpoint to invoke.
-    */
-    public URI getUri()
-    {
+     * uri of the endpoint to invoke.
+     */
+    public URI getUri() {
         return this.uri;
     }
-    
+
     /**
-    * uri of the endpoint to invoke.
-    */
-    public void setUri(URI uri)
-    {
+     * uri of the endpoint to invoke.
+     */
+    public void setUri(URI uri) {
         this.uri = uri;
     }
-    
+
     /**
-    * Initializes a new instance of the JobHttpRequest class.
-    *
-    */
-    public JobHttpRequest()
-    {
+     * Initializes a new instance of the JobHttpRequest class.
+     * 
+     */
+    public JobHttpRequest() {
         this.headers = new HashMap<String, String>();
     }
 }

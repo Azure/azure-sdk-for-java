@@ -28,11 +28,9 @@ import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.UniformInterfaceException;
 
-public class ServiceExceptionFactoryTest
-{
+public class ServiceExceptionFactoryTest {
     @Test
-    public void serviceNameAndMessageAndCauseAppearInException()
-    {
+    public void serviceNameAndMessageAndCauseAppearInException() {
         // Arrange
         ClientResponse response = new ClientResponse(404, null,
                 new ByteArrayInputStream(new byte[0]), null);
@@ -51,8 +49,7 @@ public class ServiceExceptionFactoryTest
     }
 
     @Test
-    public void httpStatusCodeAndReasonPhraseAppearInException()
-    {
+    public void httpStatusCodeAndReasonPhraseAppearInException() {
         // Arrange
         ClientResponse response = new ClientResponse(404, null,
                 new ByteArrayInputStream(new byte[0]), null);
@@ -70,8 +67,7 @@ public class ServiceExceptionFactoryTest
     }
 
     @Test
-    public void informationWillPassUpIfServiceExceptionIsRootCauseOfClientHandlerExceptions()
-    {
+    public void informationWillPassUpIfServiceExceptionIsRootCauseOfClientHandlerExceptions() {
         // Arrange
         ClientResponse response = new ClientResponse(503, null,
                 new ByteArrayInputStream(new byte[0]), null);
@@ -92,8 +88,7 @@ public class ServiceExceptionFactoryTest
     }
 
     @Test
-    public void socketTimeoutWillPassUpIfInsideClientHandlerException()
-    {
+    public void socketTimeoutWillPassUpIfInsideClientHandlerException() {
         String expectedMessage = "connect timeout";
         SocketTimeoutException rootCause = new SocketTimeoutException(
                 expectedMessage);

@@ -27,21 +27,18 @@ import com.microsoft.windowsazure.services.media.entityoperations.EntityListOper
 import com.microsoft.windowsazure.services.media.entityoperations.EntityUpdateOperation;
 import com.microsoft.windowsazure.services.media.implementation.content.AssetFileType;
 
-public class AssetFileEntityTest
-{
+public class AssetFileEntityTest {
     private final String exampleAssetId = "nb:cid:UUID:bfe1c840-36c3-4a78-9b63-38e6eebd94c2";
     private final String exampleFileId = "nb:cid:UUID:49a229ad-8cc5-470f-9e0b-11838283aa58";
     private final String encodedAssetId = "'nb%3Acid%3AUUID%3Abfe1c840-36c3-4a78-9b63-38e6eebd94c2'";
     private final String encodedFileId = "'nb%3Acid%3AUUID%3A49a229ad-8cc5-470f-9e0b-11838283aa58'";
 
-    public AssetFileEntityTest() throws Exception
-    {
+    public AssetFileEntityTest() throws Exception {
 
     }
 
     @Test
-    public void createFileInfosHasExpectedUri() throws Exception
-    {
+    public void createFileInfosHasExpectedUri() throws Exception {
         EntityActionOperation action = AssetFile
                 .createFileInfos(exampleAssetId);
 
@@ -51,8 +48,7 @@ public class AssetFileEntityTest
     }
 
     @Test
-    public void createWithOptionsSetsOptionsAsExpected() throws Exception
-    {
+    public void createWithOptionsSetsOptionsAsExpected() throws Exception {
         String expectedName = "newFile.mp4";
         Long expectedSize = 65432L;
         String expectedChecksum = "check";
@@ -94,8 +90,7 @@ public class AssetFileEntityTest
     }
 
     @Test
-    public void getByIdHasCorrectUri() throws Exception
-    {
+    public void getByIdHasCorrectUri() throws Exception {
         String expectedUri = String.format("Files(%s)", encodedFileId);
         EntityGetOperation<AssetFileInfo> getter = AssetFile.get(exampleFileId);
 
@@ -103,16 +98,14 @@ public class AssetFileEntityTest
     }
 
     @Test
-    public void listAllFileInfosHasCorrectUri() throws Exception
-    {
+    public void listAllFileInfosHasCorrectUri() throws Exception {
         String expectedUri = "Files";
         EntityListOperation<AssetFileInfo> lister = AssetFile.list();
         assertEquals(expectedUri, lister.getUri());
     }
 
     @Test
-    public void updateWithAllOptionsHasCorrectPayload() throws Exception
-    {
+    public void updateWithAllOptionsHasCorrectPayload() throws Exception {
         Long expectedSize = 65432L;
         String expectedChecksum = "check";
         String expectedEncryptionKey = "ooh, secret!";
@@ -153,8 +146,7 @@ public class AssetFileEntityTest
     }
 
     @Test
-    public void deleteHasCorrectUri() throws Exception
-    {
+    public void deleteHasCorrectUri() throws Exception {
         String expectedUri = String.format("Files(%s)", encodedFileId);
         EntityDeleteOperation deleter = AssetFile.delete(exampleFileId);
 

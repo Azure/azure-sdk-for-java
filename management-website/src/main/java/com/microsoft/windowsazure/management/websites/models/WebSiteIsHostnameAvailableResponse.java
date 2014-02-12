@@ -26,27 +26,27 @@ package com.microsoft.windowsazure.management.websites.models;
 import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
-* The Is Hostname Available operation response.
-*/
-public class WebSiteIsHostnameAvailableResponse extends OperationResponse
-{
+ * The Is Hostname Available operation response.
+ */
+public class WebSiteIsHostnameAvailableResponse extends OperationResponse {
     private boolean isAvailable;
-    
+
     /**
-    * Indicates if the site name is available.
-    * @return The IsAvailable value.
-    */
-    public boolean isAvailable()
-    {
+     * Indicates if the site name is available.
+     * 
+     * @return The IsAvailable value.
+     */
+    public boolean isAvailable() {
         return this.isAvailable;
     }
-    
+
     /**
-    * Indicates if the site name is available.
-    * @param isAvailableValue The IsAvailable value.
-    */
-    public void setIsAvailable(final boolean isAvailableValue)
-    {
+     * Indicates if the site name is available.
+     * 
+     * @param isAvailableValue
+     *            The IsAvailable value.
+     */
+    public void setIsAvailable(final boolean isAvailableValue) {
         this.isAvailable = isAvailableValue;
     }
 }

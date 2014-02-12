@@ -24,9 +24,8 @@
 package com.microsoft.windowsazure.management.compute.models;
 
 /**
-* The type of the role for the virtual machine.
-*/
-public enum VirtualMachineRoleType
-{
+ * The type of the role for the virtual machine.
+ */
+public enum VirtualMachineRoleType {
     PersistentVMRole,
 }

@@ -27,8 +27,7 @@ import com.microsoft.windowsazure.core.utils.AccessConditionHeader;
  * get a blob with an active lease, an optional start and end range for blob
  * content to return, and any access conditions to satisfy.
  */
-public class CreateBlobSnapshotOptions extends BlobServiceOptions
-{
+public class CreateBlobSnapshotOptions extends BlobServiceOptions {
     private HashMap<String, String> metadata = new HashMap<String, String>();
     private String leaseId;
     private AccessConditionHeader accessCondition;
@@ -45,8 +44,7 @@ public class CreateBlobSnapshotOptions extends BlobServiceOptions
      * @return A reference to this {@link CreateBlobSnapshotOptions} instance.
      */
     @Override
-    public CreateBlobSnapshotOptions setTimeout(Integer timeout)
-    {
+    public CreateBlobSnapshotOptions setTimeout(Integer timeout) {
         super.setTimeout(timeout);
         return this;
     }
@@ -58,8 +56,7 @@ public class CreateBlobSnapshotOptions extends BlobServiceOptions
      * @return A {@link HashMap} of name-value pairs of {@link String}
      *         containing the blob metadata set, if any.
      */
-    public HashMap<String, String> getMetadata()
-    {
+    public HashMap<String, String> getMetadata() {
         return metadata;
     }
 
@@ -80,8 +77,7 @@ public class CreateBlobSnapshotOptions extends BlobServiceOptions
      * @return A reference to this {@link CreateBlobSnapshotOptions} instance.
      */
     public CreateBlobSnapshotOptions setMetadata(
-            HashMap<String, String> metadata)
-    {
+            HashMap<String, String> metadata) {
         this.metadata = metadata;
         return this;
     }
@@ -98,8 +94,7 @@ public class CreateBlobSnapshotOptions extends BlobServiceOptions
      *            name-value pair to add to the metadata collection.
      * @return A reference to this {@link CreateBlobSnapshotOptions} instance.
      */
-    public CreateBlobSnapshotOptions addMetadata(String key, String value)
-    {
+    public CreateBlobSnapshotOptions addMetadata(String key, String value) {
         this.getMetadata().put(key, value);
         return this;
     }
@@ -110,8 +105,7 @@ public class CreateBlobSnapshotOptions extends BlobServiceOptions
      * 
      * @return A {@link String} containing the lease ID set, if any.
      */
-    public String getLeaseId()
-    {
+    public String getLeaseId() {
         return leaseId;
     }
 
@@ -127,8 +121,7 @@ public class CreateBlobSnapshotOptions extends BlobServiceOptions
      *            A {@link String} containing the lease ID to set.
      * @return A reference to this {@link CreateBlobSnapshotOptions} instance.
      */
-    public CreateBlobSnapshotOptions setLeaseId(String leaseId)
-    {
+    public CreateBlobSnapshotOptions setLeaseId(String leaseId) {
         this.leaseId = leaseId;
         return this;
     }
@@ -140,8 +133,7 @@ public class CreateBlobSnapshotOptions extends BlobServiceOptions
      * @return An {@link AccessCondition} containing the access conditions set,
      *         if any.
      */
-    public AccessConditionHeader getAccessCondition()
-    {
+    public AccessConditionHeader getAccessCondition() {
         return accessCondition;
     }
 
@@ -158,8 +150,7 @@ public class CreateBlobSnapshotOptions extends BlobServiceOptions
      * @return A reference to this {@link CreateBlobSnapshotOptions} instance.
      */
     public CreateBlobSnapshotOptions setAccessCondition(
-            AccessConditionHeader accessCondition)
-    {
+            AccessConditionHeader accessCondition) {
         this.accessCondition = accessCondition;
         return this;
     }

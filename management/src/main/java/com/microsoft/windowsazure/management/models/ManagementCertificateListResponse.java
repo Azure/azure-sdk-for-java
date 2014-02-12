@@ -29,135 +29,140 @@ import java.util.Calendar;
 import java.util.Iterator;
 
 /**
-* The List Management Certificates operation response.
-*/
-public class ManagementCertificateListResponse extends OperationResponse implements Iterable<ManagementCertificateListResponse.SubscriptionCertificate>
-{
+ * The List Management Certificates operation response.
+ */
+public class ManagementCertificateListResponse extends OperationResponse
+        implements
+        Iterable<ManagementCertificateListResponse.SubscriptionCertificate> {
     private ArrayList<ManagementCertificateListResponse.SubscriptionCertificate> subscriptionCertificates;
-    
+
     /**
-    * The management certificates that are valid for your subscription.
-    * @return The SubscriptionCertificates value.
-    */
-    public ArrayList<ManagementCertificateListResponse.SubscriptionCertificate> getSubscriptionCertificates()
-    {
+     * The management certificates that are valid for your subscription.
+     * 
+     * @return The SubscriptionCertificates value.
+     */
+    public ArrayList<ManagementCertificateListResponse.SubscriptionCertificate> getSubscriptionCertificates() {
         return this.subscriptionCertificates;
     }
-    
+
     /**
-    * The management certificates that are valid for your subscription.
-    * @param subscriptionCertificatesValue The SubscriptionCertificates value.
-    */
-    public void setSubscriptionCertificates(final ArrayList<ManagementCertificateListResponse.SubscriptionCertificate> subscriptionCertificatesValue)
-    {
+     * The management certificates that are valid for your subscription.
+     * 
+     * @param subscriptionCertificatesValue
+     *            The SubscriptionCertificates value.
+     */
+    public void setSubscriptionCertificates(
+            final ArrayList<ManagementCertificateListResponse.SubscriptionCertificate> subscriptionCertificatesValue) {
         this.subscriptionCertificates = subscriptionCertificatesValue;
     }
-    
+
     /**
-    * Initializes a new instance of the ManagementCertificateListResponse class.
-    *
-    */
-    public ManagementCertificateListResponse()
-    {
+     * Initializes a new instance of the ManagementCertificateListResponse
+     * class.
+     * 
+     */
+    public ManagementCertificateListResponse() {
         super();
         this.subscriptionCertificates = new ArrayList<ManagementCertificateListResponse.SubscriptionCertificate>();
     }
-    
+
     /**
-    * Gets the sequence of SubscriptionCertificates.
-    *
-    */
-    public Iterator<ManagementCertificateListResponse.SubscriptionCertificate> iterator()
-    {
+     * Gets the sequence of SubscriptionCertificates.
+     * 
+     */
+    public Iterator<ManagementCertificateListResponse.SubscriptionCertificate> iterator() {
         return this.getSubscriptionCertificates().iterator();
     }
-    
+
     /**
-    * A management certificate that is valid for your subscription.
-    */
-    public static class SubscriptionCertificate
-    {
+     * A management certificate that is valid for your subscription.
+     */
+    public static class SubscriptionCertificate {
         private Calendar created;
-        
+
         /**
-        * The time that the management certificate was created, in UTC.
-        * @return The Created value.
-        */
-        public Calendar getCreated()
-        {
+         * The time that the management certificate was created, in UTC.
+         * 
+         * @return The Created value.
+         */
+        public Calendar getCreated() {
             return this.created;
         }
-        
+
         /**
-        * The time that the management certificate was created, in UTC.
-        * @param createdValue The Created value.
-        */
-        public void setCreated(final Calendar createdValue)
-        {
+         * The time that the management certificate was created, in UTC.
+         * 
+         * @param createdValue
+         *            The Created value.
+         */
+        public void setCreated(final Calendar createdValue) {
             this.created = createdValue;
         }
-        
+
         private byte[] data;
-        
+
         /**
-        * A base64 representation of the data contained in the management
-        * certificate, in .cer format.
-        * @return The Data value.
-        */
-        public byte[] getData()
-        {
+         * A base64 representation of the data contained in the management
+         * certificate, in .cer format.
+         * 
+         * @return The Data value.
+         */
+        public byte[] getData() {
             return this.data;
         }
-        
+
         /**
-        * A base64 representation of the data contained in the management
-        * certificate, in .cer format.
-        * @param dataValue The Data value.
-        */
-        public void setData(final byte[] dataValue)
-        {
+         * A base64 representation of the data contained in the management
+         * certificate, in .cer format.
+         * 
+         * @param dataValue
+         *            The Data value.
+         */
+        public void setData(final byte[] dataValue) {
             this.data = dataValue;
         }
-        
+
         private byte[] publicKey;
-        
+
         /**
-        * A base64 representation of the management certificate public key.
-        * @return The PublicKey value.
-        */
-        public byte[] getPublicKey()
-        {
+         * A base64 representation of the management certificate public key.
+         * 
+         * @return The PublicKey value.
+         */
+        public byte[] getPublicKey() {
             return this.publicKey;
         }
-        
+
         /**
-        * A base64 representation of the management certificate public key.
-        * @param publicKeyValue The PublicKey value.
-        */
-        public void setPublicKey(final byte[] publicKeyValue)
-        {
+         * A base64 representation of the management certificate public key.
+         * 
+         * @param publicKeyValue
+         *            The PublicKey value.
+         */
+        public void setPublicKey(final byte[] publicKeyValue) {
             this.publicKey = publicKeyValue;
         }
-        
+
         private String thumbprint;
-        
+
         /**
-        * The X509 certificate thumb print property of the management
-        * certificate. This thumb print uniquely identifies the certificate.
-        * @return The Thumbprint value.
-        */
-        public String getThumbprint()
-        {
+         * The X509 certificate thumb print property of the management
+         * certificate. This thumb print uniquely identifies the certificate.
+         * 
+         * @return The Thumbprint value.
+         */
+        public String getThumbprint() {
             return this.thumbprint;
         }
-        
+
         /**
-        * The X509 certificate thumb print property of the management
-        * certificate. This thumb print uniquely identifies the certificate.
-        * @param thumbprintValue The Thumbprint value.
-        */
-        public void setThumbprint(final String thumbprintValue)
-        {
+         * The X509 certificate thumb print property of the management
+         * certificate. This thumb print uniquely identifies the certificate.
+         * 
+         * @param thumbprintValue
+         *            The Thumbprint value.
+         */
+        public void setThumbprint(final String thumbprintValue) {
             this.thumbprint = thumbprintValue;
         }
     }

@@ -28,25 +28,20 @@ import com.microsoft.windowsazure.services.servicebus.implementation.EntityAvail
 import com.microsoft.windowsazure.services.servicebus.implementation.EntityStatus;
 import com.microsoft.windowsazure.services.servicebus.implementation.PartitioningPolicy;
 
-public class QueueInfoTest
-{
+public class QueueInfoTest {
 
-    private Duration createDuration(int milliSeconds)
-    {
+    private Duration createDuration(int milliSeconds) {
         DatatypeFactory datatypeFactory;
-        try
-        {
+        try {
             datatypeFactory = DatatypeFactory.newInstance();
-        } catch (DatatypeConfigurationException e)
-        {
+        } catch (DatatypeConfigurationException e) {
             throw new RuntimeException(e);
         }
         return datatypeFactory.newDuration(milliSeconds);
     }
 
     @Test
-    public void testGetSetLockDuration()
-    {
+    public void testGetSetLockDuration() {
         // Arrange
         Duration expectedLockDuration = createDuration(100);
         QueueInfo queueInfo = new QueueInfo();
@@ -61,8 +56,7 @@ public class QueueInfoTest
     }
 
     @Test
-    public void testGetSetMaxSizeInMegabytes()
-    {
+    public void testGetSetMaxSizeInMegabytes() {
         // Arrange
         Long expectedMaxSizeInMegabytes = 1024L;
         QueueInfo queueInfo = new QueueInfo();
@@ -77,8 +71,7 @@ public class QueueInfoTest
     }
 
     @Test
-    public void testGetSetRequiresDuplicateDetection()
-    {
+    public void testGetSetRequiresDuplicateDetection() {
         // Arrange
         Boolean expectedRequiresDuplicateDetection = true;
         QueueInfo queueInfo = new QueueInfo();
@@ -96,8 +89,7 @@ public class QueueInfoTest
     }
 
     @Test
-    public void testGetSetRequiresSession()
-    {
+    public void testGetSetRequiresSession() {
         // Arrange
         Boolean expectedRequiresSession = true;
         QueueInfo queueInfo = new QueueInfo();
@@ -111,8 +103,7 @@ public class QueueInfoTest
     }
 
     @Test
-    public void testGetSetDefaultMessageTimeToLive()
-    {
+    public void testGetSetDefaultMessageTimeToLive() {
         // Arrange
         Duration expectedDefaultMessageTimeToLive = createDuration(100);
         QueueInfo queueInfo = new QueueInfo();
@@ -128,8 +119,7 @@ public class QueueInfoTest
     }
 
     @Test
-    public void testGetSetDeadLetteringOnMessageExpiration()
-    {
+    public void testGetSetDeadLetteringOnMessageExpiration() {
         // Arrange
         Boolean expectedDeadLetteringOnMessageExpiration = true;
         QueueInfo queueInfo = new QueueInfo();
@@ -146,8 +136,7 @@ public class QueueInfoTest
     }
 
     @Test
-    public void testGetSetDuplicateDetectionHistoryTimeWindow()
-    {
+    public void testGetSetDuplicateDetectionHistoryTimeWindow() {
         // Arrange
         Duration expectedDefaultMessageTimeToLive = createDuration(100);
         QueueInfo queueInfo = new QueueInfo();
@@ -163,8 +152,7 @@ public class QueueInfoTest
     }
 
     @Test
-    public void testGetSetMaxDeliveryCount()
-    {
+    public void testGetSetMaxDeliveryCount() {
         // Arrange
         Integer expectedMaxDeliveryCount = 1024;
         QueueInfo queueInfo = new QueueInfo();
@@ -178,8 +166,7 @@ public class QueueInfoTest
     }
 
     @Test
-    public void testGetSetEnableBatchedOperations()
-    {
+    public void testGetSetEnableBatchedOperations() {
         // Arrange
         Boolean expectedEnableBatchedOperations = true;
         QueueInfo queueInfo = new QueueInfo();
@@ -195,8 +182,7 @@ public class QueueInfoTest
     }
 
     @Test
-    public void testGetSetSizeInBytes()
-    {
+    public void testGetSetSizeInBytes() {
         // Arrange
         Long expectedSizeInBytes = 1024L;
         QueueInfo queueInfo = new QueueInfo();
@@ -210,8 +196,7 @@ public class QueueInfoTest
     }
 
     @Test
-    public void testGetSetMessageCount()
-    {
+    public void testGetSetMessageCount() {
         // Arrange
         Long expectedMessageCount = 1024L;
         QueueInfo queueInfo = new QueueInfo();
@@ -225,8 +210,7 @@ public class QueueInfoTest
     }
 
     @Test
-    public void testGetSetIsAnonymousAccessible()
-    {
+    public void testGetSetIsAnonymousAccessible() {
         // Arrange
         Boolean expectedIsAnonymousAccessible = true;
         QueueInfo queueInfo = new QueueInfo();
@@ -241,8 +225,7 @@ public class QueueInfoTest
     }
 
     @Test
-    public void testGetSetStatus()
-    {
+    public void testGetSetStatus() {
         // Arrange
         EntityStatus expectedEntityStatus = EntityStatus.ACTIVE;
         QueueInfo queueInfo = new QueueInfo();
@@ -256,8 +239,7 @@ public class QueueInfoTest
     }
 
     @Test
-    public void testGetSetCreatedAt()
-    {
+    public void testGetSetCreatedAt() {
         // Arrange
         Calendar expectedCreatedAt = Calendar.getInstance();
         QueueInfo queueInfo = new QueueInfo();
@@ -271,8 +253,7 @@ public class QueueInfoTest
     }
 
     @Test
-    public void testGetSetUpdatedAt()
-    {
+    public void testGetSetUpdatedAt() {
         // Arrange
         Calendar expectedUpdatedAt = Calendar.getInstance();
         QueueInfo queueInfo = new QueueInfo();
@@ -286,8 +267,7 @@ public class QueueInfoTest
     }
 
     @Test
-    public void testGetSetAccessedAt()
-    {
+    public void testGetSetAccessedAt() {
         // Arrange
         Calendar expectedAccessedAt = Calendar.getInstance();
         QueueInfo queueInfo = new QueueInfo();
@@ -301,8 +281,7 @@ public class QueueInfoTest
     }
 
     @Test
-    public void testGetSetUserMetadata()
-    {
+    public void testGetSetUserMetadata() {
         // Arrange
         String expectedUserMetadata = "expectedUserMetaData";
         QueueInfo queueInfo = new QueueInfo();
@@ -316,8 +295,7 @@ public class QueueInfoTest
     }
 
     @Test
-    public void testGetSetSupportOrdering()
-    {
+    public void testGetSetSupportOrdering() {
         // Arrange
         Boolean expectedIsSupportOrdering = true;
         QueueInfo queueInfo = new QueueInfo();
@@ -331,8 +309,7 @@ public class QueueInfoTest
     }
 
     @Test
-    public void testGetSetAutoDeleteOnIdle()
-    {
+    public void testGetSetAutoDeleteOnIdle() {
         // Arrange
         Duration expectedIsAutoDeleteOnIdle = createDuration(100);
         QueueInfo queueInfo = new QueueInfo();
@@ -346,8 +323,7 @@ public class QueueInfoTest
     }
 
     @Test
-    public void testGetSetPartioningPolicy()
-    {
+    public void testGetSetPartioningPolicy() {
         // Arrange
         PartitioningPolicy expectedPartitioningPolicy = PartitioningPolicy.NO_PARTITIONING;
         QueueInfo queueInfo = new QueueInfo();
@@ -362,8 +338,7 @@ public class QueueInfoTest
     }
 
     @Test
-    public void testGetSetEntityAvailabilityStatus()
-    {
+    public void testGetSetEntityAvailabilityStatus() {
         // Arrange
         EntityAvailabilityStatus expectedEntityAvailabilityStatus = EntityAvailabilityStatus.AVAILABLE;
         QueueInfo queueInfo = new QueueInfo();

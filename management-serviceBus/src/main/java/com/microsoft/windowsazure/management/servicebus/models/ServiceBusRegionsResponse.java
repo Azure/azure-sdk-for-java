@@ -28,46 +28,45 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
-* A response to a request for a list of regions.
-*/
-public class ServiceBusRegionsResponse extends OperationResponse implements Iterable<ServiceBusLocation>
-{
+ * A response to a request for a list of regions.
+ */
+public class ServiceBusRegionsResponse extends OperationResponse implements
+        Iterable<ServiceBusLocation> {
     private ArrayList<ServiceBusLocation> regions;
-    
+
     /**
-    * The available regions.
-    * @return The Regions value.
-    */
-    public ArrayList<ServiceBusLocation> getRegions()
-    {
+     * The available regions.
+     * 
+     * @return The Regions value.
+     */
+    public ArrayList<ServiceBusLocation> getRegions() {
         return this.regions;
     }
-    
+
     /**
-    * The available regions.
-    * @param regionsValue The Regions value.
-    */
-    public void setRegions(final ArrayList<ServiceBusLocation> regionsValue)
-    {
+     * The available regions.
+     * 
+     * @param regionsValue
+     *            The Regions value.
+     */
+    public void setRegions(final ArrayList<ServiceBusLocation> regionsValue) {
         this.regions = regionsValue;
     }
-    
+
     /**
-    * Initializes a new instance of the ServiceBusRegionsResponse class.
-    *
-    */
-    public ServiceBusRegionsResponse()
-    {
+     * Initializes a new instance of the ServiceBusRegionsResponse class.
+     * 
+     */
+    public ServiceBusRegionsResponse() {
         super();
         this.regions = new ArrayList<ServiceBusLocation>();
     }
-    
+
     /**
-    * Gets the sequence of Regions.
-    *
-    */
-    public Iterator<ServiceBusLocation> iterator()
-    {
+     * Gets the sequence of Regions.
+     * 
+     */
+    public Iterator<ServiceBusLocation> iterator() {
         return this.getRegions().iterator();
     }
 }

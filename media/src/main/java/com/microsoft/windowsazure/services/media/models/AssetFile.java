@@ -34,24 +34,20 @@ import com.microsoft.windowsazure.services.media.entityoperations.EntityUpdateOp
 import com.microsoft.windowsazure.services.media.implementation.content.AssetFileType;
 import com.sun.jersey.api.client.GenericType;
 
-public class AssetFile
-{
+public class AssetFile {
     private static final String ENTITY_SET = "Files";
 
     // Prevent instantiation
-    private AssetFile()
-    {
+    private AssetFile() {
     }
 
-    public static Creator create(String parentAssetId, String name)
-    {
+    public static Creator create(String parentAssetId, String name) {
         return new Creator(parentAssetId, name);
     }
 
     public static class Creator extends
             EntityOperationSingleResultBase<AssetFileInfo> implements
-            EntityCreateOperation<AssetFileInfo>
-    {
+            EntityCreateOperation<AssetFileInfo> {
         private final String parentAssetId;
         private final String name;
         private String contentChecksum;
@@ -64,16 +60,14 @@ public class AssetFile
         private Boolean isPrimary;
         private String mimeType;
 
-        private Creator(String parentAssetId, String name)
-        {
+        private Creator(String parentAssetId, String name) {
             super(ENTITY_SET, AssetFileInfo.class);
             this.parentAssetId = parentAssetId;
             this.name = name;
         }
 
         @Override
-        public Object getRequestContents() throws ServiceException
-        {
+        public Object getRequestContents() throws ServiceException {
             AssetFileType content = new AssetFileType().setName(name)
                     .setParentAssetId(parentAssetId)
                     .setContentChecksum(contentChecksum)
@@ -92,8 +86,7 @@ public class AssetFile
          * @param contentChecksum
          *            the contentChecksum to set
          */
-        public Creator setContentChecksum(String contentChecksum)
-        {
+        public Creator setContentChecksum(String contentChecksum) {
             this.contentChecksum = contentChecksum;
             return this;
         }
@@ -102,8 +95,7 @@ public class AssetFile
          * @param contentFileSize
          *            the contentFileSize to set
          */
-        public Creator setContentFileSize(Long contentFileSize)
-        {
+        public Creator setContentFileSize(Long contentFileSize) {
             this.contentFileSize = contentFileSize;
             return this;
         }
@@ -112,8 +104,7 @@ public class AssetFile
          * @param encryptionKeyId
          *            the encryptionKeyId to set
          */
-        public Creator setEncryptionKeyId(String encryptionKeyId)
-        {
+        public Creator setEncryptionKeyId(String encryptionKeyId) {
             this.encryptionKeyId = encryptionKeyId;
             return this;
         }
@@ -122,8 +113,7 @@ public class AssetFile
          * @param encryptionScheme
          *            the encryptionScheme to set
          */
-        public Creator setEncryptionScheme(String encryptionScheme)
-        {
+        public Creator setEncryptionScheme(String encryptionScheme) {
             this.encryptionScheme = encryptionScheme;
             return this;
         }
@@ -132,8 +122,7 @@ public class AssetFile
          * @param encryptionVersion
          *            the encryptionVersion to set
          */
-        public Creator setEncryptionVersion(String encryptionVersion)
-        {
+        public Creator setEncryptionVersion(String encryptionVersion) {
             this.encryptionVersion = encryptionVersion;
             return this;
         }
@@ -142,8 +131,7 @@ public class AssetFile
          * @param initializationVector
          *            the initializationVector to set
          */
-        public Creator setInitializationVector(String initializationVector)
-        {
+        public Creator setInitializationVector(String initializationVector) {
             this.initializationVector = initializationVector;
             return this;
         }
@@ -152,8 +140,7 @@ public class AssetFile
          * @param isEncrypted
          *            the isEncrypted to set
          */
-        public Creator setIsEncrypted(Boolean isEncrypted)
-        {
+        public Creator setIsEncrypted(Boolean isEncrypted) {
             this.isEncrypted = isEncrypted;
             return this;
         }
@@ -162,8 +149,7 @@ public class AssetFile
          * @param isPrimary
          *            the isPrimary to set
          */
-        public Creator setIsPrimary(Boolean isPrimary)
-        {
+        public Creator setIsPrimary(Boolean isPrimary) {
             this.isPrimary = isPrimary;
             return this;
         }
@@ -172,8 +158,7 @@ public class AssetFile
          * @param mimeType
          *            the mimeType to set
          */
-        public Creator setMimeType(String mimeType)
-        {
+        public Creator setMimeType(String mimeType) {
             this.mimeType = mimeType;
             return this;
         }
@@ -188,14 +173,11 @@ public class AssetFile
      * @return The action operation object to pass to rest proxy.
      * @throws UnsupportedEncodingException
      */
-    public static EntityActionOperation createFileInfos(String assetId)
-    {
+    public static EntityActionOperation createFileInfos(String assetId) {
         String encodedId;
-        try
-        {
+        try {
             encodedId = URLEncoder.encode(assetId, "UTF-8");
-        } catch (UnsupportedEncodingException ex)
-        {
+        } catch (UnsupportedEncodingException ex) {
             // This can never happen unless JVM is broken
             throw new RuntimeException(ex);
         }
@@ -210,8 +192,7 @@ public class AssetFile
      *            id of file to get
      * @return the get operation to pass to rest proxy
      */
-    public static EntityGetOperation<AssetFileInfo> get(String assetFileId)
-    {
+    public static EntityGetOperation<AssetFileInfo> get(String assetFileId) {
         return new DefaultGetOperation<AssetFileInfo>(ENTITY_SET, assetFileId,
                 AssetFileInfo.class);
     }
@@ -221,11 +202,9 @@ public class AssetFile
      * 
      * @return The list operation to pass to rest proxy.
      */
-    public static DefaultListOperation<AssetFileInfo> list()
-    {
+    public static DefaultListOperation<AssetFileInfo> list() {
         return new DefaultListOperation<AssetFileInfo>(ENTITY_SET,
-                new GenericType<ListResult<AssetFileInfo>>()
-                {
+                new GenericType<ListResult<AssetFileInfo>>() {
                 });
     }
 
@@ -237,22 +216,18 @@ public class AssetFile
      * @return The list operation.
      */
     public static DefaultListOperation<AssetFileInfo> list(
-            LinkInfo<AssetFileInfo> link)
-    {
+            LinkInfo<AssetFileInfo> link) {
         return new DefaultListOperation<AssetFileInfo>(link.getHref(),
-                new GenericType<ListResult<AssetFileInfo>>()
-                {
+                new GenericType<ListResult<AssetFileInfo>>() {
                 });
     }
 
-    public static Updater update(String assetFileId)
-    {
+    public static Updater update(String assetFileId) {
         return new Updater(assetFileId);
     }
 
     public static class Updater extends EntityOperationBase implements
-            EntityUpdateOperation
-    {
+            EntityUpdateOperation {
         private String contentChecksum;
         private Long contentFileSize;
         private String encryptionKeyId;
@@ -263,15 +238,13 @@ public class AssetFile
         private Boolean isPrimary;
         private String mimeType;
 
-        private Updater(String assetFileId)
-        {
+        private Updater(String assetFileId) {
             super(new EntityOperationBase.EntityIdUriBuilder(ENTITY_SET,
                     assetFileId));
         }
 
         @Override
-        public Object getRequestContents()
-        {
+        public Object getRequestContents() {
             return new AssetFileType().setContentChecksum(contentChecksum)
                     .setContentFileSize(contentFileSize)
                     .setEncryptionKeyId(encryptionKeyId)
@@ -291,8 +264,7 @@ public class AssetFile
          * .entityoperations.EntityProxyData)
          */
         @Override
-        public void setProxyData(EntityProxyData proxyData)
-        {
+        public void setProxyData(EntityProxyData proxyData) {
             // Deliberately empty
         }
 
@@ -300,8 +272,7 @@ public class AssetFile
          * @param contentChecksum
          *            the contentChecksum to set
          */
-        public Updater setContentChecksum(String contentChecksum)
-        {
+        public Updater setContentChecksum(String contentChecksum) {
             this.contentChecksum = contentChecksum;
             return this;
         }
@@ -310,8 +281,7 @@ public class AssetFile
          * @param contentFileSize
          *            the contentFileSize to set
          */
-        public Updater setContentFileSize(Long contentFileSize)
-        {
+        public Updater setContentFileSize(Long contentFileSize) {
             this.contentFileSize = contentFileSize;
             return this;
         }
@@ -320,8 +290,7 @@ public class AssetFile
          * @param encryptionKeyId
          *            the encryptionKeyId to set
          */
-        public Updater setEncryptionKeyId(String encryptionKeyId)
-        {
+        public Updater setEncryptionKeyId(String encryptionKeyId) {
             this.encryptionKeyId = encryptionKeyId;
             return this;
         }
@@ -330,8 +299,7 @@ public class AssetFile
          * @param encryptionScheme
          *            the encryptionScheme to set
          */
-        public Updater setEncryptionScheme(String encryptionScheme)
-        {
+        public Updater setEncryptionScheme(String encryptionScheme) {
             this.encryptionScheme = encryptionScheme;
             return this;
         }
@@ -340,8 +308,7 @@ public class AssetFile
          * @param encryptionVersion
          *            the encryptionVersion to set
          */
-        public Updater setEncryptionVersion(String encryptionVersion)
-        {
+        public Updater setEncryptionVersion(String encryptionVersion) {
             this.encryptionVersion = encryptionVersion;
             return this;
         }
@@ -350,8 +317,7 @@ public class AssetFile
          * @param initializationVector
          *            the initializationVector to set
          */
-        public Updater setInitializationVector(String initializationVector)
-        {
+        public Updater setInitializationVector(String initializationVector) {
             this.initializationVector = initializationVector;
             return this;
         }
@@ -360,8 +326,7 @@ public class AssetFile
          * @param isEncrypted
          *            the isEncrypted to set
          */
-        public Updater setIsEncrypted(Boolean isEncrypted)
-        {
+        public Updater setIsEncrypted(Boolean isEncrypted) {
             this.isEncrypted = isEncrypted;
             return this;
         }
@@ -370,8 +335,7 @@ public class AssetFile
          * @param isPrimary
          *            the isPrimary to set
          */
-        public Updater setIsPrimary(Boolean isPrimary)
-        {
+        public Updater setIsPrimary(Boolean isPrimary) {
             this.isPrimary = isPrimary;
             return this;
         }
@@ -380,8 +344,7 @@ public class AssetFile
          * @param mimeType
          *            the mimeType to set
          */
-        public Updater setMimeType(String mimeType)
-        {
+        public Updater setMimeType(String mimeType) {
             this.mimeType = mimeType;
             return this;
         }
@@ -395,8 +358,7 @@ public class AssetFile
      *            file to delete
      * @return the delete operation object
      */
-    public static EntityDeleteOperation delete(String assetFileId)
-    {
+    public static EntityDeleteOperation delete(String assetFileId) {
         return new DefaultDeleteOperation(ENTITY_SET, assetFileId);
     }
 }

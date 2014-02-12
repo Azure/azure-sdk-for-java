@@ -35,117 +35,139 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 /**
-* Operation for listing subscription operations and details.  (see
-* http://msdn.microsoft.com/en-us/library/windowsazure/gg715315.aspx for more
-* information)
-*/
-public interface SubscriptionOperations
-{
+ * Operation for listing subscription operations and details. (see
+ * http://msdn.microsoft.com/en-us/library/windowsazure/gg715315.aspx for more
+ * information)
+ */
+public interface SubscriptionOperations {
     /**
-    * The Get Subscription operation returns account and resource allocation
-    * information on the specified subscription.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/hh403995.aspx for
-    * more information)
-    *
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParserConfigurationException Thrown if there was a serious
-    * configuration error with the document parser.
-    * @throws SAXException Thrown if there was an error parsing the XML
-    * response.
-    * @throws URISyntaxException Thrown if there was an error parsing a URI in
-    * the response.
-    * @return The Get Subscription operation response.
-    */
-    SubscriptionGetResponse get() throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException;
-    
+     * The Get Subscription operation returns account and resource allocation
+     * information on the specified subscription. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/hh403995.aspx for
+     * more information)
+     * 
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @throws ParserConfigurationException
+     *             Thrown if there was a serious configuration error with the
+     *             document parser.
+     * @throws SAXException
+     *             Thrown if there was an error parsing the XML response.
+     * @throws URISyntaxException
+     *             Thrown if there was an error parsing a URI in the response.
+     * @return The Get Subscription operation response.
+     */
+    SubscriptionGetResponse get() throws IOException, ServiceException,
+            ParserConfigurationException, SAXException, URISyntaxException;
+
     /**
-    * The Get Subscription operation returns account and resource allocation
-    * information on the specified subscription.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/hh403995.aspx for
-    * more information)
-    *
-    * @return The Get Subscription operation response.
-    */
+     * The Get Subscription operation returns account and resource allocation
+     * information on the specified subscription. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/hh403995.aspx for
+     * more information)
+     * 
+     * @return The Get Subscription operation response.
+     */
     Future<SubscriptionGetResponse> getAsync();
-    
+
     /**
-    * The List Subscription Operations operation returns a list of create,
-    * update, and delete operations that were performed on a subscription
-    * during the specified timeframe.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/gg715318.aspx for
-    * more information)
-    *
-    * @param parameters Parameters supplied to the List Subscription Operations
-    * operation.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParserConfigurationException Thrown if there was a serious
-    * configuration error with the document parser.
-    * @throws SAXException Thrown if there was an error parsing the XML
-    * response.
-    * @return The List Subscription Operations operation response.
-    */
-    SubscriptionListOperationsResponse listOperations(SubscriptionListOperationsParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException;
-    
+     * The List Subscription Operations operation returns a list of create,
+     * update, and delete operations that were performed on a subscription
+     * during the specified timeframe. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715318.aspx for
+     * more information)
+     * 
+     * @param parameters
+     *            Parameters supplied to the List Subscription Operations
+     *            operation.
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @throws ParserConfigurationException
+     *             Thrown if there was a serious configuration error with the
+     *             document parser.
+     * @throws SAXException
+     *             Thrown if there was an error parsing the XML response.
+     * @return The List Subscription Operations operation response.
+     */
+    SubscriptionListOperationsResponse listOperations(
+            SubscriptionListOperationsParameters parameters)
+            throws IOException, ServiceException, ParserConfigurationException,
+            SAXException;
+
     /**
-    * The List Subscription Operations operation returns a list of create,
-    * update, and delete operations that were performed on a subscription
-    * during the specified timeframe.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/gg715318.aspx for
-    * more information)
-    *
-    * @param parameters Parameters supplied to the List Subscription Operations
-    * operation.
-    * @return The List Subscription Operations operation response.
-    */
-    Future<SubscriptionListOperationsResponse> listOperationsAsync(SubscriptionListOperationsParameters parameters);
-    
+     * The List Subscription Operations operation returns a list of create,
+     * update, and delete operations that were performed on a subscription
+     * during the specified timeframe. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715318.aspx for
+     * more information)
+     * 
+     * @param parameters
+     *            Parameters supplied to the List Subscription Operations
+     *            operation.
+     * @return The List Subscription Operations operation response.
+     */
+    Future<SubscriptionListOperationsResponse> listOperationsAsync(
+            SubscriptionListOperationsParameters parameters);
+
     /**
-    * Register a resource with your subscription.
-    *
-    * @param resourceName Name of the resource to register.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
-    OperationResponse registerResource(String resourceName) throws IOException, ServiceException;
-    
+     * Register a resource with your subscription.
+     * 
+     * @param resourceName
+     *            Name of the resource to register.
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @return A standard service response including an HTTP status code and
+     *         request ID.
+     */
+    OperationResponse registerResource(String resourceName) throws IOException,
+            ServiceException;
+
     /**
-    * Register a resource with your subscription.
-    *
-    * @param resourceName Name of the resource to register.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
+     * Register a resource with your subscription.
+     * 
+     * @param resourceName
+     *            Name of the resource to register.
+     * @return A standard service response including an HTTP status code and
+     *         request ID.
+     */
     Future<OperationResponse> registerResourceAsync(String resourceName);
-    
+
     /**
-    * Unregister a resource with your subscription.
-    *
-    * @param resourceName Name of the resource to unregister.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
-    OperationResponse unregisterResource(String resourceName) throws IOException, ServiceException;
-    
+     * Unregister a resource with your subscription.
+     * 
+     * @param resourceName
+     *            Name of the resource to unregister.
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @return A standard service response including an HTTP status code and
+     *         request ID.
+     */
+    OperationResponse unregisterResource(String resourceName)
+            throws IOException, ServiceException;
+
     /**
-    * Unregister a resource with your subscription.
-    *
-    * @param resourceName Name of the resource to unregister.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
+     * Unregister a resource with your subscription.
+     * 
+     * @param resourceName
+     *            Name of the resource to unregister.
+     * @return A standard service response including an HTTP status code and
+     *         request ID.
+     */
     Future<OperationResponse> unregisterResourceAsync(String resourceName);
 }

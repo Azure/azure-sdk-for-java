@@ -20,8 +20,7 @@ package com.microsoft.windowsazure.services.blob;
  * <p>
  * These values must not be altered.
  */
-public class BlobConfiguration
-{
+public class BlobConfiguration {
     /**
      * The Blob configuration account name constant. This <code>String</code>
      * value is used as a key in the configuration file, to identify the value

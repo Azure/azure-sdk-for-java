@@ -24,67 +24,69 @@
 package com.microsoft.windowsazure.management.sql.models;
 
 /**
-* Parameters supplied to the Create Server operation.
-*/
-public class ServerCreateParameters
-{
+ * Parameters supplied to the Create Server operation.
+ */
+public class ServerCreateParameters {
     private String administratorPassword;
-    
+
     /**
-    * Gets or sets the administrator password.
-    * @return The AdministratorPassword value.
-    */
-    public String getAdministratorPassword()
-    {
+     * Gets or sets the administrator password.
+     * 
+     * @return The AdministratorPassword value.
+     */
+    public String getAdministratorPassword() {
         return this.administratorPassword;
     }
-    
+
     /**
-    * Gets or sets the administrator password.
-    * @param administratorPasswordValue The AdministratorPassword value.
-    */
-    public void setAdministratorPassword(final String administratorPasswordValue)
-    {
+     * Gets or sets the administrator password.
+     * 
+     * @param administratorPasswordValue
+     *            The AdministratorPassword value.
+     */
+    public void setAdministratorPassword(final String administratorPasswordValue) {
         this.administratorPassword = administratorPasswordValue;
     }
-    
+
     private String administratorUserName;
-    
+
     /**
-    * Gets or sets the administrator username.
-    * @return The AdministratorUserName value.
-    */
-    public String getAdministratorUserName()
-    {
+     * Gets or sets the administrator username.
+     * 
+     * @return The AdministratorUserName value.
+     */
+    public String getAdministratorUserName() {
         return this.administratorUserName;
     }
-    
+
     /**
-    * Gets or sets the administrator username.
-    * @param administratorUserNameValue The AdministratorUserName value.
-    */
-    public void setAdministratorUserName(final String administratorUserNameValue)
-    {
+     * Gets or sets the administrator username.
+     * 
+     * @param administratorUserNameValue
+     *            The AdministratorUserName value.
+     */
+    public void setAdministratorUserName(final String administratorUserNameValue) {
         this.administratorUserName = administratorUserNameValue;
     }
-    
+
     private String location;
-    
+
     /**
-    * Gets or sets the region in which this server will be created.
-    * @return The Location value.
-    */
-    public String getLocation()
-    {
+     * Gets or sets the region in which this server will be created.
+     * 
+     * @return The Location value.
+     */
+    public String getLocation() {
         return this.location;
     }
-    
+
     /**
-    * Gets or sets the region in which this server will be created.
-    * @param locationValue The Location value.
-    */
-    public void setLocation(final String locationValue)
-    {
+     * Gets or sets the region in which this server will be created.
+     * 
+     * @param locationValue
+     *            The Location value.
+     */
+    public void setLocation(final String locationValue) {
         this.location = locationValue;
     }
 }

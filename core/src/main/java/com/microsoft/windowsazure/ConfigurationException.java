@@ -15,27 +15,22 @@
 
 package com.microsoft.windowsazure;
 
-public class ConfigurationException extends RuntimeException
-{
+public class ConfigurationException extends RuntimeException {
 
     private static final long serialVersionUID = -5570476914992165380L;
 
-    public ConfigurationException()
-    {
+    public ConfigurationException() {
     }
 
-    public ConfigurationException(String message)
-    {
+    public ConfigurationException(String message) {
         super(message);
     }
 
-    public ConfigurationException(Throwable cause)
-    {
+    public ConfigurationException(Throwable cause) {
         super(cause);
     }
 
-    public ConfigurationException(String message, Throwable cause)
-    {
+    public ConfigurationException(String message, Throwable cause) {
         super(message, cause);
     }
 }

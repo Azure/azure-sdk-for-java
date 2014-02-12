@@ -26,113 +26,117 @@ package com.microsoft.windowsazure.management.compute.models;
 import java.net.InetAddress;
 
 /**
-* Objects that provide instance endpoint details.
-*/
-public class InstanceEndpoint
-{
+ * Objects that provide instance endpoint details.
+ */
+public class InstanceEndpoint {
     private Integer localPort;
-    
+
     /**
-    * Specifies the internal port on which the virtual machine is listening to
-    * serve the endpoint. This element is only listed for Virtual Machine
-    * deployments.
-    * @return The LocalPort value.
-    */
-    public Integer getLocalPort()
-    {
+     * Specifies the internal port on which the virtual machine is listening to
+     * serve the endpoint. This element is only listed for Virtual Machine
+     * deployments.
+     * 
+     * @return The LocalPort value.
+     */
+    public Integer getLocalPort() {
         return this.localPort;
     }
-    
+
     /**
-    * Specifies the internal port on which the virtual machine is listening to
-    * serve the endpoint. This element is only listed for Virtual Machine
-    * deployments.
-    * @param localPortValue The LocalPort value.
-    */
-    public void setLocalPort(final Integer localPortValue)
-    {
+     * Specifies the internal port on which the virtual machine is listening to
+     * serve the endpoint. This element is only listed for Virtual Machine
+     * deployments.
+     * 
+     * @param localPortValue
+     *            The LocalPort value.
+     */
+    public void setLocalPort(final Integer localPortValue) {
         this.localPort = localPortValue;
     }
-    
+
     private String name;
-    
+
     /**
-    * Specifies the name for the external endpoint. This element is only listed
-    * for Virtual Machine deployments.
-    * @return The Name value.
-    */
-    public String getName()
-    {
+     * Specifies the name for the external endpoint. This element is only listed
+     * for Virtual Machine deployments.
+     * 
+     * @return The Name value.
+     */
+    public String getName() {
         return this.name;
     }
-    
+
     /**
-    * Specifies the name for the external endpoint. This element is only listed
-    * for Virtual Machine deployments.
-    * @param nameValue The Name value.
-    */
-    public void setName(final String nameValue)
-    {
+     * Specifies the name for the external endpoint. This element is only listed
+     * for Virtual Machine deployments.
+     * 
+     * @param nameValue
+     *            The Name value.
+     */
+    public void setName(final String nameValue) {
         this.name = nameValue;
     }
-    
+
     private int port;
-    
+
     /**
-    * The external port of the role instance endpoint.
-    * @return The Port value.
-    */
-    public int getPort()
-    {
+     * The external port of the role instance endpoint.
+     * 
+     * @return The Port value.
+     */
+    public int getPort() {
         return this.port;
     }
-    
+
     /**
-    * The external port of the role instance endpoint.
-    * @param portValue The Port value.
-    */
-    public void setPort(final int portValue)
-    {
+     * The external port of the role instance endpoint.
+     * 
+     * @param portValue
+     *            The Port value.
+     */
+    public void setPort(final int portValue) {
         this.port = portValue;
     }
-    
+
     private String protocol;
-    
+
     /**
-    * Specifies the transport protocol for the endpoint.
-    * @return The Protocol value.
-    */
-    public String getProtocol()
-    {
+     * Specifies the transport protocol for the endpoint.
+     * 
+     * @return The Protocol value.
+     */
+    public String getProtocol() {
         return this.protocol;
     }
-    
+
     /**
-    * Specifies the transport protocol for the endpoint.
-    * @param protocolValue The Protocol value.
-    */
-    public void setProtocol(final String protocolValue)
-    {
+     * Specifies the transport protocol for the endpoint.
+     * 
+     * @param protocolValue
+     *            The Protocol value.
+     */
+    public void setProtocol(final String protocolValue) {
         this.protocol = protocolValue;
     }
-    
+
     private InetAddress virtualIPAddress;
-    
+
     /**
-    * The Virtual IP of the role endpoint.
-    * @return The VirtualIPAddress value.
-    */
-    public InetAddress getVirtualIPAddress()
-    {
+     * The Virtual IP of the role endpoint.
+     * 
+     * @return The VirtualIPAddress value.
+     */
+    public InetAddress getVirtualIPAddress() {
         return this.virtualIPAddress;
     }
-    
+
     /**
-    * The Virtual IP of the role endpoint.
-    * @param virtualIPAddressValue The VirtualIPAddress value.
-    */
-    public void setVirtualIPAddress(final InetAddress virtualIPAddressValue)
-    {
+     * The Virtual IP of the role endpoint.
+     * 
+     * @param virtualIPAddressValue
+     *            The VirtualIPAddress value.
+     */
+    public void setVirtualIPAddress(final InetAddress virtualIPAddressValue) {
         this.virtualIPAddress = virtualIPAddressValue;
     }
 }

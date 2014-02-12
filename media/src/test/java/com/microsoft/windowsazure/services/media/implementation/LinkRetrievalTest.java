@@ -35,16 +35,14 @@ import com.microsoft.windowsazure.services.media.models.MediaProcessorInfo;
  * Testing retrieval of links from ATOM entities
  * 
  */
-public class LinkRetrievalTest
-{
+public class LinkRetrievalTest {
     private static QName linkName = new QName("link", Constants.ATOM_NS);
     private MediaProcessorInfo info;
     private LinkType link1;
     private LinkType link2;
 
     @Before
-    public void setup()
-    {
+    public void setup() {
         EntryType entry = new EntryType();
 
         link1 = new LinkType();
@@ -81,33 +79,28 @@ public class LinkRetrievalTest
     }
 
     @Test
-    public void canRetrieveSingleLinkFromEntity()
-    {
+    public void canRetrieveSingleLinkFromEntity() {
         assertTrue(info.hasLink(link1.getRel()));
     }
 
     @Test
-    public void getFalseWhenLinkIsntThere()
-    {
+    public void getFalseWhenLinkIsntThere() {
         assertFalse(info.hasLink("noSuchLink"));
     }
 
     @Test
-    public void canRetrieveEntireLinkByRel()
-    {
+    public void canRetrieveEntireLinkByRel() {
         LinkInfo<?> link = info.getLink(link2.getRel());
 
         assertLinksEqual(link2, link);
     }
 
     @Test
-    public void getNullWhenLinkIsntThere()
-    {
+    public void getNullWhenLinkIsntThere() {
         assertNull(info.getLink("noSuchLink"));
     }
 
-    private static void assertLinksEqual(LinkType expected, LinkInfo<?> actual)
-    {
+    private static void assertLinksEqual(LinkType expected, LinkInfo<?> actual) {
         assertEquals(expected.getHref(), actual.getHref());
     }
 }

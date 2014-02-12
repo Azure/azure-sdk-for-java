@@ -24,8 +24,7 @@
 package com.microsoft.windowsazure.management.monitoring.alerts.models;
 
 /**
-* A rule action.
-*/
-public abstract class RuleAction
-{
+ * A rule action.
+ */
+public abstract class RuleAction {
 }

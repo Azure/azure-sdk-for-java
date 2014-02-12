@@ -21,8 +21,7 @@ import com.microsoft.windowsazure.services.blob.BlobContract;
  * API operations invoked through the {@link BlobContract} interface. This class
  * defines a server request timeout, which can be applied to all operations.
  */
-public class BlobServiceOptions
-{
+public class BlobServiceOptions {
     // Nullable because it is optional
     private Integer timeout;
 
@@ -35,8 +34,7 @@ public class BlobServiceOptions
      * 
      * @return The server request timeout value in milliseconds.
      */
-    public Integer getTimeout()
-    {
+    public Integer getTimeout() {
         return timeout;
     }
 
@@ -51,8 +49,7 @@ public class BlobServiceOptions
      *            The server request timeout value to set in milliseconds.
      * @return A reference to this {@link BlobServiceOptions} instance.
      */
-    public BlobServiceOptions setTimeout(Integer timeout)
-    {
+    public BlobServiceOptions setTimeout(Integer timeout) {
         this.timeout = timeout;
         return this;
     }

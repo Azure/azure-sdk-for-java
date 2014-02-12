@@ -24,67 +24,69 @@
 package com.microsoft.windowsazure.management.store.models;
 
 /**
-* Represents the data passed to the Update Store Resource API method.
-*/
-public class AddOnUpdateParameters
-{
+ * Represents the data passed to the Update Store Resource API method.
+ */
+public class AddOnUpdateParameters {
     private String plan;
-    
+
     /**
-    * The selected plan for this store addon.
-    * @return The Plan value.
-    */
-    public String getPlan()
-    {
+     * The selected plan for this store addon.
+     * 
+     * @return The Plan value.
+     */
+    public String getPlan() {
         return this.plan;
     }
-    
+
     /**
-    * The selected plan for this store addon.
-    * @param planValue The Plan value.
-    */
-    public void setPlan(final String planValue)
-    {
+     * The selected plan for this store addon.
+     * 
+     * @param planValue
+     *            The Plan value.
+     */
+    public void setPlan(final String planValue) {
         this.plan = planValue;
     }
-    
+
     private String promotionCode;
-    
+
     /**
-    * The promotion code for this store addon.
-    * @return The PromotionCode value.
-    */
-    public String getPromotionCode()
-    {
+     * The promotion code for this store addon.
+     * 
+     * @return The PromotionCode value.
+     */
+    public String getPromotionCode() {
         return this.promotionCode;
     }
-    
+
     /**
-    * The promotion code for this store addon.
-    * @param promotionCodeValue The PromotionCode value.
-    */
-    public void setPromotionCode(final String promotionCodeValue)
-    {
+     * The promotion code for this store addon.
+     * 
+     * @param promotionCodeValue
+     *            The PromotionCode value.
+     */
+    public void setPromotionCode(final String promotionCodeValue) {
         this.promotionCode = promotionCodeValue;
     }
-    
+
     private String type;
-    
+
     /**
-    * The type of store item to be created.
-    * @return The Type value.
-    */
-    public String getType()
-    {
+     * The type of store item to be created.
+     * 
+     * @return The Type value.
+     */
+    public String getType() {
         return this.type;
     }
-    
+
     /**
-    * The type of store item to be created.
-    * @param typeValue The Type value.
-    */
-    public void setType(final String typeValue)
-    {
+     * The type of store item to be created.
+     * 
+     * @param typeValue
+     *            The Type value.
+     */
+    public void setType(final String typeValue) {
         this.type = typeValue;
     }
 }

@@ -26,36 +26,35 @@ package com.microsoft.windowsazure.management.compute.models;
 import java.util.ArrayList;
 
 /**
-* The custom DNS settings that are specified for deployment.
-*/
-public class DnsSettings
-{
+ * The custom DNS settings that are specified for deployment.
+ */
+public class DnsSettings {
     private ArrayList<DnsServer> dnsServers;
-    
+
     /**
-    * Contains a collection of objects that define the DNS server settings.
-    * @return The DnsServers value.
-    */
-    public ArrayList<DnsServer> getDnsServers()
-    {
+     * Contains a collection of objects that define the DNS server settings.
+     * 
+     * @return The DnsServers value.
+     */
+    public ArrayList<DnsServer> getDnsServers() {
         return this.dnsServers;
     }
-    
+
     /**
-    * Contains a collection of objects that define the DNS server settings.
-    * @param dnsServersValue The DnsServers value.
-    */
-    public void setDnsServers(final ArrayList<DnsServer> dnsServersValue)
-    {
+     * Contains a collection of objects that define the DNS server settings.
+     * 
+     * @param dnsServersValue
+     *            The DnsServers value.
+     */
+    public void setDnsServers(final ArrayList<DnsServer> dnsServersValue) {
         this.dnsServers = dnsServersValue;
     }
-    
+
     /**
-    * Initializes a new instance of the DnsSettings class.
-    *
-    */
-    public DnsSettings()
-    {
+     * Initializes a new instance of the DnsSettings class.
+     * 
+     */
+    public DnsSettings() {
         this.dnsServers = new ArrayList<DnsServer>();
     }
 }

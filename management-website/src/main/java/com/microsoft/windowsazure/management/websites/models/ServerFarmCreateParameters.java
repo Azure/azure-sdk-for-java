@@ -24,109 +24,115 @@
 package com.microsoft.windowsazure.management.websites.models;
 
 /**
-* Parameters supplied to the Create Server Farm operation.
-*/
-public class ServerFarmCreateParameters
-{
+ * Parameters supplied to the Create Server Farm operation.
+ */
+public class ServerFarmCreateParameters {
     private Integer currentNumberOfWorkers;
-    
+
     /**
-    * The current number of Virtual Machines (VMs) in the server farm.
-    * @return The CurrentNumberOfWorkers value.
-    */
-    public Integer getCurrentNumberOfWorkers()
-    {
+     * The current number of Virtual Machines (VMs) in the server farm.
+     * 
+     * @return The CurrentNumberOfWorkers value.
+     */
+    public Integer getCurrentNumberOfWorkers() {
         return this.currentNumberOfWorkers;
     }
-    
+
     /**
-    * The current number of Virtual Machines (VMs) in the server farm.
-    * @param currentNumberOfWorkersValue The CurrentNumberOfWorkers value.
-    */
-    public void setCurrentNumberOfWorkers(final Integer currentNumberOfWorkersValue)
-    {
+     * The current number of Virtual Machines (VMs) in the server farm.
+     * 
+     * @param currentNumberOfWorkersValue
+     *            The CurrentNumberOfWorkers value.
+     */
+    public void setCurrentNumberOfWorkers(
+            final Integer currentNumberOfWorkersValue) {
         this.currentNumberOfWorkers = currentNumberOfWorkersValue;
     }
-    
+
     private ServerFarmWorkerSize currentWorkerSize;
-    
+
     /**
-    * The current worker size Possible values are Small, Medium, or Large.
-    * @return The CurrentWorkerSize value.
-    */
-    public ServerFarmWorkerSize getCurrentWorkerSize()
-    {
+     * The current worker size Possible values are Small, Medium, or Large.
+     * 
+     * @return The CurrentWorkerSize value.
+     */
+    public ServerFarmWorkerSize getCurrentWorkerSize() {
         return this.currentWorkerSize;
     }
-    
+
     /**
-    * The current worker size Possible values are Small, Medium, or Large.
-    * @param currentWorkerSizeValue The CurrentWorkerSize value.
-    */
-    public void setCurrentWorkerSize(final ServerFarmWorkerSize currentWorkerSizeValue)
-    {
+     * The current worker size Possible values are Small, Medium, or Large.
+     * 
+     * @param currentWorkerSizeValue
+     *            The CurrentWorkerSize value.
+     */
+    public void setCurrentWorkerSize(
+            final ServerFarmWorkerSize currentWorkerSizeValue) {
         this.currentWorkerSize = currentWorkerSizeValue;
     }
-    
+
     private int numberOfWorkers;
-    
+
     /**
-    * The instance count, which is the number of virtual machines dedicated to
-    * the farm. Supported values are 1-10.
-    * @return The NumberOfWorkers value.
-    */
-    public int getNumberOfWorkers()
-    {
+     * The instance count, which is the number of virtual machines dedicated to
+     * the farm. Supported values are 1-10.
+     * 
+     * @return The NumberOfWorkers value.
+     */
+    public int getNumberOfWorkers() {
         return this.numberOfWorkers;
     }
-    
+
     /**
-    * The instance count, which is the number of virtual machines dedicated to
-    * the farm. Supported values are 1-10.
-    * @param numberOfWorkersValue The NumberOfWorkers value.
-    */
-    public void setNumberOfWorkers(final int numberOfWorkersValue)
-    {
+     * The instance count, which is the number of virtual machines dedicated to
+     * the farm. Supported values are 1-10.
+     * 
+     * @param numberOfWorkersValue
+     *            The NumberOfWorkers value.
+     */
+    public void setNumberOfWorkers(final int numberOfWorkersValue) {
         this.numberOfWorkers = numberOfWorkersValue;
     }
-    
+
     private ServerFarmStatus status;
-    
+
     /**
-    * Server farm status. Possible values are Ready or Pending.
-    * @return The Status value.
-    */
-    public ServerFarmStatus getStatus()
-    {
+     * Server farm status. Possible values are Ready or Pending.
+     * 
+     * @return The Status value.
+     */
+    public ServerFarmStatus getStatus() {
         return this.status;
     }
-    
+
     /**
-    * Server farm status. Possible values are Ready or Pending.
-    * @param statusValue The Status value.
-    */
-    public void setStatus(final ServerFarmStatus statusValue)
-    {
+     * Server farm status. Possible values are Ready or Pending.
+     * 
+     * @param statusValue
+     *            The Status value.
+     */
+    public void setStatus(final ServerFarmStatus statusValue) {
         this.status = statusValue;
     }
-    
+
     private ServerFarmWorkerSize workerSize;
-    
+
     /**
-    * The instance size. Possible values are Small, Medium, or Large.
-    * @return The WorkerSize value.
-    */
-    public ServerFarmWorkerSize getWorkerSize()
-    {
+     * The instance size. Possible values are Small, Medium, or Large.
+     * 
+     * @return The WorkerSize value.
+     */
+    public ServerFarmWorkerSize getWorkerSize() {
         return this.workerSize;
     }
-    
+
     /**
-    * The instance size. Possible values are Small, Medium, or Large.
-    * @param workerSizeValue The WorkerSize value.
-    */
-    public void setWorkerSize(final ServerFarmWorkerSize workerSizeValue)
-    {
+     * The instance size. Possible values are Small, Medium, or Large.
+     * 
+     * @param workerSizeValue
+     *            The WorkerSize value.
+     */
+    public void setWorkerSize(final ServerFarmWorkerSize workerSizeValue) {
         this.workerSize = workerSizeValue;
     }
 }

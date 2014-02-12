@@ -17,13 +17,11 @@ package com.microsoft.windowsazure.core.pipeline.jersey;
 import com.microsoft.windowsazure.core.pipeline.filter.ServiceRequestContext;
 import com.microsoft.windowsazure.core.pipeline.filter.ServiceResponseContext;
 
-public interface ServiceFilter
-{
+public interface ServiceFilter {
     ServiceResponseContext handle(ServiceRequestContext request, Next next)
             throws Exception;
 
-    public interface Next
-    {
+    public interface Next {
         ServiceResponseContext handle(ServiceRequestContext request)
                 throws Exception;
     }

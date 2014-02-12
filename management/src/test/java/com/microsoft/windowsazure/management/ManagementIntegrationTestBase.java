@@ -34,13 +34,15 @@ public abstract class ManagementIntegrationTestBase {
 
         // add LoggingFilter to any pipeline that is created
         Registry builder = (Registry) config.getBuilder();
-        builder.alter(ManagementClient.class, Client.class, new Alteration<Client>() {
-            @Override
-            public Client alter(String profile, Client client, Builder builder, Map<String, Object> properties) {
-                client.addFilter(new LoggingFilter());
-                return client;
-            }
-        });
+        builder.alter(ManagementClient.class, Client.class,
+                new Alteration<Client>() {
+                    @Override
+                    public Client alter(String profile, Client client,
+                            Builder builder, Map<String, Object> properties) {
+                        client.addFilter(new LoggingFilter());
+                        return client;
+                    }
+                });
 
         managementClient = ManagementService.create(config);
     }
@@ -49,7 +51,6 @@ public abstract class ManagementIntegrationTestBase {
         return ManagementConfiguration.configure(
                 System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
                 System.getenv(ManagementConfiguration.KEYSTORE_PATH),
-                System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD)
-        );
+                System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD));
     }
 }

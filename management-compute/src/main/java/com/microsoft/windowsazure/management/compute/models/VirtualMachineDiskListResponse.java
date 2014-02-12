@@ -29,375 +29,388 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
-* The List Disks operation response.
-*/
-public class VirtualMachineDiskListResponse extends OperationResponse implements Iterable<VirtualMachineDiskListResponse.VirtualMachineDisk>
-{
+ * The List Disks operation response.
+ */
+public class VirtualMachineDiskListResponse extends OperationResponse implements
+        Iterable<VirtualMachineDiskListResponse.VirtualMachineDisk> {
     private ArrayList<VirtualMachineDiskListResponse.VirtualMachineDisk> disks;
-    
+
     /**
-    * The virtual machine disks associated with your subscription.
-    * @return The Disks value.
-    */
-    public ArrayList<VirtualMachineDiskListResponse.VirtualMachineDisk> getDisks()
-    {
+     * The virtual machine disks associated with your subscription.
+     * 
+     * @return The Disks value.
+     */
+    public ArrayList<VirtualMachineDiskListResponse.VirtualMachineDisk> getDisks() {
         return this.disks;
     }
-    
+
     /**
-    * The virtual machine disks associated with your subscription.
-    * @param disksValue The Disks value.
-    */
-    public void setDisks(final ArrayList<VirtualMachineDiskListResponse.VirtualMachineDisk> disksValue)
-    {
+     * The virtual machine disks associated with your subscription.
+     * 
+     * @param disksValue
+     *            The Disks value.
+     */
+    public void setDisks(
+            final ArrayList<VirtualMachineDiskListResponse.VirtualMachineDisk> disksValue) {
         this.disks = disksValue;
     }
-    
+
     /**
-    * Initializes a new instance of the VirtualMachineDiskListResponse class.
-    *
-    */
-    public VirtualMachineDiskListResponse()
-    {
+     * Initializes a new instance of the VirtualMachineDiskListResponse class.
+     * 
+     */
+    public VirtualMachineDiskListResponse() {
         super();
         this.disks = new ArrayList<VirtualMachineDiskListResponse.VirtualMachineDisk>();
     }
-    
+
     /**
-    * Gets the sequence of Disks.
-    *
-    */
-    public Iterator<VirtualMachineDiskListResponse.VirtualMachineDisk> iterator()
-    {
+     * Gets the sequence of Disks.
+     * 
+     */
+    public Iterator<VirtualMachineDiskListResponse.VirtualMachineDisk> iterator() {
         return this.getDisks().iterator();
     }
-    
+
     /**
-    * A virtual machine disk associated with your subscription.
-    */
-    public static class VirtualMachineDisk
-    {
+     * A virtual machine disk associated with your subscription.
+     */
+    public static class VirtualMachineDisk {
         private String affinityGroup;
-        
+
         /**
-        * The affinity group in which the disk is located. The AffinityGroup
-        * value is derived from storage account that contains the blob in
-        * which the media is located. If the storage account does not belong
-        * to an affinity group the value is NULL.
-        * @return The AffinityGroup value.
-        */
-        public String getAffinityGroup()
-        {
+         * The affinity group in which the disk is located. The AffinityGroup
+         * value is derived from storage account that contains the blob in which
+         * the media is located. If the storage account does not belong to an
+         * affinity group the value is NULL.
+         * 
+         * @return The AffinityGroup value.
+         */
+        public String getAffinityGroup() {
             return this.affinityGroup;
         }
-        
+
         /**
-        * The affinity group in which the disk is located. The AffinityGroup
-        * value is derived from storage account that contains the blob in
-        * which the media is located. If the storage account does not belong
-        * to an affinity group the value is NULL.
-        * @param affinityGroupValue The AffinityGroup value.
-        */
-        public void setAffinityGroup(final String affinityGroupValue)
-        {
+         * The affinity group in which the disk is located. The AffinityGroup
+         * value is derived from storage account that contains the blob in which
+         * the media is located. If the storage account does not belong to an
+         * affinity group the value is NULL.
+         * 
+         * @param affinityGroupValue
+         *            The AffinityGroup value.
+         */
+        public void setAffinityGroup(final String affinityGroupValue) {
             this.affinityGroup = affinityGroupValue;
         }
-        
+
         private Boolean isCorrupted;
-        
+
         /**
-        * Specifies thether the disk is known to be corrupt.
-        * @return The IsCorrupted value.
-        */
-        public Boolean isCorrupted()
-        {
+         * Specifies thether the disk is known to be corrupt.
+         * 
+         * @return The IsCorrupted value.
+         */
+        public Boolean isCorrupted() {
             return this.isCorrupted;
         }
-        
+
         /**
-        * Specifies thether the disk is known to be corrupt.
-        * @param isCorruptedValue The IsCorrupted value.
-        */
-        public void setIsCorrupted(final Boolean isCorruptedValue)
-        {
+         * Specifies thether the disk is known to be corrupt.
+         * 
+         * @param isCorruptedValue
+         *            The IsCorrupted value.
+         */
+        public void setIsCorrupted(final Boolean isCorruptedValue) {
             this.isCorrupted = isCorruptedValue;
         }
-        
+
         private Boolean isPremium;
-        
+
         /**
-        * Specifies whether or not the disk contains a premium virtual machine
-        * image.
-        * @return The IsPremium value.
-        */
-        public Boolean isPremium()
-        {
+         * Specifies whether or not the disk contains a premium virtual machine
+         * image.
+         * 
+         * @return The IsPremium value.
+         */
+        public Boolean isPremium() {
             return this.isPremium;
         }
-        
+
         /**
-        * Specifies whether or not the disk contains a premium virtual machine
-        * image.
-        * @param isPremiumValue The IsPremium value.
-        */
-        public void setIsPremium(final Boolean isPremiumValue)
-        {
+         * Specifies whether or not the disk contains a premium virtual machine
+         * image.
+         * 
+         * @param isPremiumValue
+         *            The IsPremium value.
+         */
+        public void setIsPremium(final Boolean isPremiumValue) {
             this.isPremium = isPremiumValue;
         }
-        
+
         private String label;
-        
+
         /**
-        * The friendly name of the disk.
-        * @return The Label value.
-        */
-        public String getLabel()
-        {
+         * The friendly name of the disk.
+         * 
+         * @return The Label value.
+         */
+        public String getLabel() {
             return this.label;
         }
-        
+
         /**
-        * The friendly name of the disk.
-        * @param labelValue The Label value.
-        */
-        public void setLabel(final String labelValue)
-        {
+         * The friendly name of the disk.
+         * 
+         * @param labelValue
+         *            The Label value.
+         */
+        public void setLabel(final String labelValue) {
             this.label = labelValue;
         }
-        
+
         private String location;
-        
+
         /**
-        * The geo-location in which the disk is located. The Location value is
-        * derived from storage account that contains the blob in which the
-        * disk is located. If the storage account belongs to an affinity group
-        * the value is NULL.
-        * @return The Location value.
-        */
-        public String getLocation()
-        {
+         * The geo-location in which the disk is located. The Location value is
+         * derived from storage account that contains the blob in which the disk
+         * is located. If the storage account belongs to an affinity group the
+         * value is NULL.
+         * 
+         * @return The Location value.
+         */
+        public String getLocation() {
             return this.location;
         }
-        
+
         /**
-        * The geo-location in which the disk is located. The Location value is
-        * derived from storage account that contains the blob in which the
-        * disk is located. If the storage account belongs to an affinity group
-        * the value is NULL.
-        * @param locationValue The Location value.
-        */
-        public void setLocation(final String locationValue)
-        {
+         * The geo-location in which the disk is located. The Location value is
+         * derived from storage account that contains the blob in which the disk
+         * is located. If the storage account belongs to an affinity group the
+         * value is NULL.
+         * 
+         * @param locationValue
+         *            The Location value.
+         */
+        public void setLocation(final String locationValue) {
             this.location = locationValue;
         }
-        
+
         private int logicalSizeInGB;
-        
+
         /**
-        * The size, in GB, of the disk.
-        * @return The LogicalSizeInGB value.
-        */
-        public int getLogicalSizeInGB()
-        {
+         * The size, in GB, of the disk.
+         * 
+         * @return The LogicalSizeInGB value.
+         */
+        public int getLogicalSizeInGB() {
             return this.logicalSizeInGB;
         }
-        
+
         /**
-        * The size, in GB, of the disk.
-        * @param logicalSizeInGBValue The LogicalSizeInGB value.
-        */
-        public void setLogicalSizeInGB(final int logicalSizeInGBValue)
-        {
+         * The size, in GB, of the disk.
+         * 
+         * @param logicalSizeInGBValue
+         *            The LogicalSizeInGB value.
+         */
+        public void setLogicalSizeInGB(final int logicalSizeInGBValue) {
             this.logicalSizeInGB = logicalSizeInGBValue;
         }
-        
+
         private URI mediaLinkUri;
-        
+
         /**
-        * The location of the blob in the blob store in which the media for the
-        * disk is located. The blob location belongs to a storage account in
-        * the subscription specified by the SubscriptionId value in the
-        * operation call. Example:
-        * http://example.blob.core.windows.net/disks/mydisk.vhd
-        * @return The MediaLinkUri value.
-        */
-        public URI getMediaLinkUri()
-        {
+         * The location of the blob in the blob store in which the media for the
+         * disk is located. The blob location belongs to a storage account in
+         * the subscription specified by the SubscriptionId value in the
+         * operation call. Example:
+         * http://example.blob.core.windows.net/disks/mydisk.vhd
+         * 
+         * @return The MediaLinkUri value.
+         */
+        public URI getMediaLinkUri() {
             return this.mediaLinkUri;
         }
-        
+
         /**
-        * The location of the blob in the blob store in which the media for the
-        * disk is located. The blob location belongs to a storage account in
-        * the subscription specified by the SubscriptionId value in the
-        * operation call. Example:
-        * http://example.blob.core.windows.net/disks/mydisk.vhd
-        * @param mediaLinkUriValue The MediaLinkUri value.
-        */
-        public void setMediaLinkUri(final URI mediaLinkUriValue)
-        {
+         * The location of the blob in the blob store in which the media for the
+         * disk is located. The blob location belongs to a storage account in
+         * the subscription specified by the SubscriptionId value in the
+         * operation call. Example:
+         * http://example.blob.core.windows.net/disks/mydisk.vhd
+         * 
+         * @param mediaLinkUriValue
+         *            The MediaLinkUri value.
+         */
+        public void setMediaLinkUri(final URI mediaLinkUriValue) {
             this.mediaLinkUri = mediaLinkUriValue;
         }
-        
+
         private String name;
-        
+
         /**
-        * The name of the disk. This is the name that is used when creating one
-        * or more virtual machines using the disk.
-        * @return The Name value.
-        */
-        public String getName()
-        {
+         * The name of the disk. This is the name that is used when creating one
+         * or more virtual machines using the disk.
+         * 
+         * @return The Name value.
+         */
+        public String getName() {
             return this.name;
         }
-        
+
         /**
-        * The name of the disk. This is the name that is used when creating one
-        * or more virtual machines using the disk.
-        * @param nameValue The Name value.
-        */
-        public void setName(final String nameValue)
-        {
+         * The name of the disk. This is the name that is used when creating one
+         * or more virtual machines using the disk.
+         * 
+         * @param nameValue
+         *            The Name value.
+         */
+        public void setName(final String nameValue) {
             this.name = nameValue;
         }
-        
+
         private String operatingSystemType;
-        
+
         /**
-        * The operating system type of the OS image.  Possible Values are:
-        * Linux, Windows, NULL.
-        * @return The OperatingSystemType value.
-        */
-        public String getOperatingSystemType()
-        {
+         * The operating system type of the OS image. Possible Values are:
+         * Linux, Windows, NULL.
+         * 
+         * @return The OperatingSystemType value.
+         */
+        public String getOperatingSystemType() {
             return this.operatingSystemType;
         }
-        
+
         /**
-        * The operating system type of the OS image.  Possible Values are:
-        * Linux, Windows, NULL.
-        * @param operatingSystemTypeValue The OperatingSystemType value.
-        */
-        public void setOperatingSystemType(final String operatingSystemTypeValue)
-        {
+         * The operating system type of the OS image. Possible Values are:
+         * Linux, Windows, NULL.
+         * 
+         * @param operatingSystemTypeValue
+         *            The OperatingSystemType value.
+         */
+        public void setOperatingSystemType(final String operatingSystemTypeValue) {
             this.operatingSystemType = operatingSystemTypeValue;
         }
-        
+
         private String sourceImageName;
-        
+
         /**
-        * The name of the OS Image from which the disk was created. This
-        * property is populated automatically when a disk is created from an
-        * OS image by calling the Add Role, Create Deployment, or Provision
-        * Disk operations.
-        * @return The SourceImageName value.
-        */
-        public String getSourceImageName()
-        {
+         * The name of the OS Image from which the disk was created. This
+         * property is populated automatically when a disk is created from an OS
+         * image by calling the Add Role, Create Deployment, or Provision Disk
+         * operations.
+         * 
+         * @return The SourceImageName value.
+         */
+        public String getSourceImageName() {
             return this.sourceImageName;
         }
-        
+
         /**
-        * The name of the OS Image from which the disk was created. This
-        * property is populated automatically when a disk is created from an
-        * OS image by calling the Add Role, Create Deployment, or Provision
-        * Disk operations.
-        * @param sourceImageNameValue The SourceImageName value.
-        */
-        public void setSourceImageName(final String sourceImageNameValue)
-        {
+         * The name of the OS Image from which the disk was created. This
+         * property is populated automatically when a disk is created from an OS
+         * image by calling the Add Role, Create Deployment, or Provision Disk
+         * operations.
+         * 
+         * @param sourceImageNameValue
+         *            The SourceImageName value.
+         */
+        public void setSourceImageName(final String sourceImageNameValue) {
             this.sourceImageName = sourceImageNameValue;
         }
-        
+
         private VirtualMachineDiskListResponse.VirtualMachineDiskUsageDetails usageDetails;
-        
+
         /**
-        * Contains properties that specify a virtual machine that currently
-        * using the disk. A disk cannot be deleted as long as it is attached
-        * to a virtual machine.
-        * @return The UsageDetails value.
-        */
-        public VirtualMachineDiskListResponse.VirtualMachineDiskUsageDetails getUsageDetails()
-        {
+         * Contains properties that specify a virtual machine that currently
+         * using the disk. A disk cannot be deleted as long as it is attached to
+         * a virtual machine.
+         * 
+         * @return The UsageDetails value.
+         */
+        public VirtualMachineDiskListResponse.VirtualMachineDiskUsageDetails getUsageDetails() {
             return this.usageDetails;
         }
-        
+
         /**
-        * Contains properties that specify a virtual machine that currently
-        * using the disk. A disk cannot be deleted as long as it is attached
-        * to a virtual machine.
-        * @param usageDetailsValue The UsageDetails value.
-        */
-        public void setUsageDetails(final VirtualMachineDiskListResponse.VirtualMachineDiskUsageDetails usageDetailsValue)
-        {
+         * Contains properties that specify a virtual machine that currently
+         * using the disk. A disk cannot be deleted as long as it is attached to
+         * a virtual machine.
+         * 
+         * @param usageDetailsValue
+         *            The UsageDetails value.
+         */
+        public void setUsageDetails(
+                final VirtualMachineDiskListResponse.VirtualMachineDiskUsageDetails usageDetailsValue) {
             this.usageDetails = usageDetailsValue;
         }
     }
-    
+
     /**
-    * Contains properties that specify a virtual machine that currently using
-    * the disk. A disk cannot be deleted as long as it is attached to a
-    * virtual machine.
-    */
-    public static class VirtualMachineDiskUsageDetails
-    {
+     * Contains properties that specify a virtual machine that currently using
+     * the disk. A disk cannot be deleted as long as it is attached to a virtual
+     * machine.
+     */
+    public static class VirtualMachineDiskUsageDetails {
         private String deploymentName;
-        
+
         /**
-        * The deployment in which the disk is being used.
-        * @return The DeploymentName value.
-        */
-        public String getDeploymentName()
-        {
+         * The deployment in which the disk is being used.
+         * 
+         * @return The DeploymentName value.
+         */
+        public String getDeploymentName() {
             return this.deploymentName;
         }
-        
+
         /**
-        * The deployment in which the disk is being used.
-        * @param deploymentNameValue The DeploymentName value.
-        */
-        public void setDeploymentName(final String deploymentNameValue)
-        {
+         * The deployment in which the disk is being used.
+         * 
+         * @param deploymentNameValue
+         *            The DeploymentName value.
+         */
+        public void setDeploymentName(final String deploymentNameValue) {
             this.deploymentName = deploymentNameValue;
         }
-        
+
         private String hostedServiceName;
-        
+
         /**
-        * The hosted service in which the disk is being used.
-        * @return The HostedServiceName value.
-        */
-        public String getHostedServiceName()
-        {
+         * The hosted service in which the disk is being used.
+         * 
+         * @return The HostedServiceName value.
+         */
+        public String getHostedServiceName() {
             return this.hostedServiceName;
         }
-        
+
         /**
-        * The hosted service in which the disk is being used.
-        * @param hostedServiceNameValue The HostedServiceName value.
-        */
-        public void setHostedServiceName(final String hostedServiceNameValue)
-        {
+         * The hosted service in which the disk is being used.
+         * 
+         * @param hostedServiceNameValue
+         *            The HostedServiceName value.
+         */
+        public void setHostedServiceName(final String hostedServiceNameValue) {
             this.hostedServiceName = hostedServiceNameValue;
         }
-        
+
         private String roleName;
-        
+
         /**
-        * The virtual machine that the disk is attached to.
-        * @return The RoleName value.
-        */
-        public String getRoleName()
-        {
+         * The virtual machine that the disk is attached to.
+         * 
+         * @return The RoleName value.
+         */
+        public String getRoleName() {
             return this.roleName;
         }
-        
+
         /**
-        * The virtual machine that the disk is attached to.
-        * @param roleNameValue The RoleName value.
-        */
-        public void setRoleName(final String roleNameValue)
-        {
+         * The virtual machine that the disk is attached to.
+         * 
+         * @param roleNameValue
+         *            The RoleName value.
+         */
+        public void setRoleName(final String roleNameValue) {
             this.roleName = roleNameValue;
         }
     }

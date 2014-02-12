@@ -14,7 +14,6 @@
  */
 package com.microsoft.windowsazure.services.servicebus.models;
 
-public class ListTopicsOptions extends AbstractListOptions<ListTopicsOptions>
-{
+public class ListTopicsOptions extends AbstractListOptions<ListTopicsOptions> {
     public static final ListTopicsOptions DEFAULT = new ListTopicsOptions();
 }

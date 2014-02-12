@@ -55,847 +55,923 @@ import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 /**
-* Provides REST operations for working with Store add-ins from the Windows
-* Azure store service.
-*/
-public class AddOnOperationsImpl implements ServiceOperations<StoreManagementClientImpl>, AddOnOperations
-{
+ * Provides REST operations for working with Store add-ins from the Windows
+ * Azure store service.
+ */
+public class AddOnOperationsImpl implements
+        ServiceOperations<StoreManagementClientImpl>, AddOnOperations {
     /**
-    * Initializes a new instance of the AddOnOperationsImpl class.
-    *
-    * @param client Reference to the service client.
-    */
-    AddOnOperationsImpl(StoreManagementClientImpl client)
-    {
+     * Initializes a new instance of the AddOnOperationsImpl class.
+     * 
+     * @param client
+     *            Reference to the service client.
+     */
+    AddOnOperationsImpl(StoreManagementClientImpl client) {
         this.client = client;
     }
-    
+
     private StoreManagementClientImpl client;
-    
+
     /**
-    * Gets a reference to the
-    * microsoft.windowsazure.management.store.StoreManagementClientImpl.
-    * @return The Client value.
-    */
-    public StoreManagementClientImpl getClient()
-    {
+     * Gets a reference to the
+     * microsoft.windowsazure.management.store.StoreManagementClientImpl.
+     * 
+     * @return The Client value.
+     */
+    public StoreManagementClientImpl getClient() {
         return this.client;
     }
-    
+
     /**
-    * The Create Store Item operation creates Windows Azure Store entries in a
-    * Windows Azure subscription.
-    *
-    * @param cloudServiceName The name of the cloud service to which this store
-    * item will be assigned.
-    * @param resourceName The name of this resource.
-    * @param addOnName The add on name.
-    * @param parameters Parameters used to specify how the Create procedure
-    * will function.
-    * @return The response body contains the status of the specified
-    * asynchronous operation, indicating whether it has succeeded, is
-    * inprogress, or has failed. Note that this status is distinct from the
-    * HTTP status code returned for the Get Operation Status operation itself.
-    * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
-    * operation failed, the response body includes the HTTP status code for
-    * the failed request, and also includes error information regarding the
-    * failure.
-    */
+     * The Create Store Item operation creates Windows Azure Store entries in a
+     * Windows Azure subscription.
+     * 
+     * @param cloudServiceName
+     *            The name of the cloud service to which this store item will be
+     *            assigned.
+     * @param resourceName
+     *            The name of this resource.
+     * @param addOnName
+     *            The add on name.
+     * @param parameters
+     *            Parameters used to specify how the Create procedure will
+     *            function.
+     * @return The response body contains the status of the specified
+     *         asynchronous operation, indicating whether it has succeeded, is
+     *         inprogress, or has failed. Note that this status is distinct from
+     *         the HTTP status code returned for the Get Operation Status
+     *         operation itself. If the asynchronous operation succeeded, the
+     *         response body includes the HTTP status code for the successful
+     *         request. If the asynchronous operation failed, the response body
+     *         includes the HTTP status code for the failed request, and also
+     *         includes error information regarding the failure.
+     */
     @Override
-    public Future<AddOnOperationStatusResponse> beginCreatingAsync(final String cloudServiceName, final String resourceName, final String addOnName, final AddOnCreateParameters parameters)
-    {
-        return this.getClient().getExecutorService().submit(new Callable<AddOnOperationStatusResponse>() { 
-            @Override
-            public AddOnOperationStatusResponse call() throws Exception
-            {
-                return beginCreating(cloudServiceName, resourceName, addOnName, parameters);
-            }
-         });
+    public Future<AddOnOperationStatusResponse> beginCreatingAsync(
+            final String cloudServiceName, final String resourceName,
+            final String addOnName, final AddOnCreateParameters parameters) {
+        return this.getClient().getExecutorService()
+                .submit(new Callable<AddOnOperationStatusResponse>() {
+                    @Override
+                    public AddOnOperationStatusResponse call() throws Exception {
+                        return beginCreating(cloudServiceName, resourceName,
+                                addOnName, parameters);
+                    }
+                });
     }
-    
+
     /**
-    * The Create Store Item operation creates Windows Azure Store entries in a
-    * Windows Azure subscription.
-    *
-    * @param cloudServiceName The name of the cloud service to which this store
-    * item will be assigned.
-    * @param resourceName The name of this resource.
-    * @param addOnName The add on name.
-    * @param parameters Parameters used to specify how the Create procedure
-    * will function.
-    * @throws ParserConfigurationException Thrown if there was an error
-    * configuring the parser for the response body.
-    * @throws SAXException Thrown if there was an error parsing the response
-    * body.
-    * @throws TransformerException Thrown if there was an error creating the
-    * DOM transformer.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @return The response body contains the status of the specified
-    * asynchronous operation, indicating whether it has succeeded, is
-    * inprogress, or has failed. Note that this status is distinct from the
-    * HTTP status code returned for the Get Operation Status operation itself.
-    * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
-    * operation failed, the response body includes the HTTP status code for
-    * the failed request, and also includes error information regarding the
-    * failure.
-    */
+     * The Create Store Item operation creates Windows Azure Store entries in a
+     * Windows Azure subscription.
+     * 
+     * @param cloudServiceName
+     *            The name of the cloud service to which this store item will be
+     *            assigned.
+     * @param resourceName
+     *            The name of this resource.
+     * @param addOnName
+     *            The add on name.
+     * @param parameters
+     *            Parameters used to specify how the Create procedure will
+     *            function.
+     * @throws ParserConfigurationException
+     *             Thrown if there was an error configuring the parser for the
+     *             response body.
+     * @throws SAXException
+     *             Thrown if there was an error parsing the response body.
+     * @throws TransformerException
+     *             Thrown if there was an error creating the DOM transformer.
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @return The response body contains the status of the specified
+     *         asynchronous operation, indicating whether it has succeeded, is
+     *         inprogress, or has failed. Note that this status is distinct from
+     *         the HTTP status code returned for the Get Operation Status
+     *         operation itself. If the asynchronous operation succeeded, the
+     *         response body includes the HTTP status code for the successful
+     *         request. If the asynchronous operation failed, the response body
+     *         includes the HTTP status code for the failed request, and also
+     *         includes error information regarding the failure.
+     */
     @Override
-    public AddOnOperationStatusResponse beginCreating(String cloudServiceName, String resourceName, String addOnName, AddOnCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
-    {
+    public AddOnOperationStatusResponse beginCreating(String cloudServiceName,
+            String resourceName, String addOnName,
+            AddOnCreateParameters parameters)
+            throws ParserConfigurationException, SAXException,
+            TransformerException, IOException, ServiceException {
         // Validate
-        if (cloudServiceName == null)
-        {
+        if (cloudServiceName == null) {
             throw new NullPointerException("cloudServiceName");
         }
-        if (resourceName == null)
-        {
+        if (resourceName == null) {
             throw new NullPointerException("resourceName");
         }
-        if (addOnName == null)
-        {
+        if (addOnName == null) {
             throw new NullPointerException("addOnName");
         }
-        if (parameters == null)
-        {
+        if (parameters == null) {
             throw new NullPointerException("parameters");
         }
-        if (parameters.getPlan() == null)
-        {
+        if (parameters.getPlan() == null) {
             throw new NullPointerException("parameters.Plan");
         }
-        if (parameters.getType() == null)
-        {
+        if (parameters.getType() == null) {
             throw new NullPointerException("parameters.Type");
         }
-        
+
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("cloudServiceName", cloudServiceName);
             tracingParameters.put("resourceName", resourceName);
             tracingParameters.put("addOnName", addOnName);
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this, "beginCreatingAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "beginCreatingAsync",
+                    tracingParameters);
         }
-        
+
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/CloudServices/" + cloudServiceName + "/resources/" + parameters.getType() + "/" + resourceName + "/" + addOnName;
-        
+        String url = this.getClient().getBaseUri() + "/"
+                + this.getClient().getCredentials().getSubscriptionId()
+                + "/CloudServices/" + cloudServiceName + "/resources/"
+                + parameters.getType() + "/" + resourceName + "/" + addOnName;
+
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
-        
+
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
         httpRequest.setHeader("x-ms-version", "2013-06-01");
-        
+
         // Serialize Request
         String requestContent = null;
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
+                .newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory
+                .newDocumentBuilder();
         Document requestDoc = documentBuilder.newDocument();
-        
-        Element resourceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Resource");
+
+        Element resourceElement = requestDoc.createElementNS(
+                "http://schemas.microsoft.com/windowsazure", "Resource");
         requestDoc.appendChild(resourceElement);
-        
-        Element typeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Type");
-        typeElement.appendChild(requestDoc.createTextNode(parameters.getType()));
+
+        Element typeElement = requestDoc.createElementNS(
+                "http://schemas.microsoft.com/windowsazure", "Type");
+        typeElement
+                .appendChild(requestDoc.createTextNode(parameters.getType()));
         resourceElement.appendChild(typeElement);
-        
-        Element planElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Plan");
-        planElement.appendChild(requestDoc.createTextNode(parameters.getPlan()));
+
+        Element planElement = requestDoc.createElementNS(
+                "http://schemas.microsoft.com/windowsazure", "Plan");
+        planElement
+                .appendChild(requestDoc.createTextNode(parameters.getPlan()));
         resourceElement.appendChild(planElement);
-        
-        if (parameters.getPromotionCode() != null)
-        {
-            Element promotionCodeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PromotionCode");
-            promotionCodeElement.appendChild(requestDoc.createTextNode(parameters.getPromotionCode()));
+
+        if (parameters.getPromotionCode() != null) {
+            Element promotionCodeElement = requestDoc.createElementNS(
+                    "http://schemas.microsoft.com/windowsazure",
+                    "PromotionCode");
+            promotionCodeElement.appendChild(requestDoc
+                    .createTextNode(parameters.getPromotionCode()));
             resourceElement.appendChild(promotionCodeElement);
         }
-        
+
         DOMSource domSource = new DOMSource(requestDoc);
         StringWriter stringWriter = new StringWriter();
         StreamResult streamResult = new StreamResult(stringWriter);
-        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        TransformerFactory transformerFactory = TransformerFactory
+                .newInstance();
         Transformer transformer = transformerFactory.newTransformer();
         transformer.transform(domSource, streamResult);
         requestContent = stringWriter.toString();
         StringEntity entity = new StringEntity(requestContent);
         httpRequest.setEntity(entity);
         httpRequest.setHeader("Content-Type", "application/xml");
-        
+
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            httpResponse = this.getClient().getHttpClient()
+                    .execute(httpRequest);
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_ACCEPTED)
-            {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
+                ServiceException ex = ServiceException.createFromXml(
+                        httpRequest, requestContent, httpResponse,
+                        httpResponse.getEntity());
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-            
+
             // Create Result
             AddOnOperationStatusResponse result = null;
             result = new AddOnOperationStatusResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader(
+                        "x-ms-request-id").getValue());
             }
-            
-            if (shouldTrace)
-            {
+
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
     }
-    
+
     /**
-    * The Delete Store Item operation deletes Windows Azure Store entries that
-    * re provisioned for a subscription.
-    *
-    * @param cloudServiceName The name of the cloud service to which this store
-    * item will be assigned.
-    * @param resourceProviderNamespace The namespace in which this store item
-    * resides.
-    * @param resourceProviderType The type of store item to be deleted.
-    * @param resourceProviderName The name of this resource provider.
-    * @return The response body contains the status of the specified
-    * asynchronous operation, indicating whether it has succeeded, is
-    * inprogress, or has failed. Note that this status is distinct from the
-    * HTTP status code returned for the Get Operation Status operation itself.
-    * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
-    * operation failed, the response body includes the HTTP status code for
-    * the failed request, and also includes error information regarding the
-    * failure.
-    */
+     * The Delete Store Item operation deletes Windows Azure Store entries that
+     * re provisioned for a subscription.
+     * 
+     * @param cloudServiceName
+     *            The name of the cloud service to which this store item will be
+     *            assigned.
+     * @param resourceProviderNamespace
+     *            The namespace in which this store item resides.
+     * @param resourceProviderType
+     *            The type of store item to be deleted.
+     * @param resourceProviderName
+     *            The name of this resource provider.
+     * @return The response body contains the status of the specified
+     *         asynchronous operation, indicating whether it has succeeded, is
+     *         inprogress, or has failed. Note that this status is distinct from
+     *         the HTTP status code returned for the Get Operation Status
+     *         operation itself. If the asynchronous operation succeeded, the
+     *         response body includes the HTTP status code for the successful
+     *         request. If the asynchronous operation failed, the response body
+     *         includes the HTTP status code for the failed request, and also
+     *         includes error information regarding the failure.
+     */
     @Override
-    public Future<AddOnOperationStatusResponse> beginDeletingAsync(final String cloudServiceName, final String resourceProviderNamespace, final String resourceProviderType, final String resourceProviderName)
-    {
-        return this.getClient().getExecutorService().submit(new Callable<AddOnOperationStatusResponse>() { 
-            @Override
-            public AddOnOperationStatusResponse call() throws Exception
-            {
-                return beginDeleting(cloudServiceName, resourceProviderNamespace, resourceProviderType, resourceProviderName);
-            }
-         });
+    public Future<AddOnOperationStatusResponse> beginDeletingAsync(
+            final String cloudServiceName,
+            final String resourceProviderNamespace,
+            final String resourceProviderType, final String resourceProviderName) {
+        return this.getClient().getExecutorService()
+                .submit(new Callable<AddOnOperationStatusResponse>() {
+                    @Override
+                    public AddOnOperationStatusResponse call() throws Exception {
+                        return beginDeleting(cloudServiceName,
+                                resourceProviderNamespace,
+                                resourceProviderType, resourceProviderName);
+                    }
+                });
     }
-    
+
     /**
-    * The Delete Store Item operation deletes Windows Azure Store entries that
-    * re provisioned for a subscription.
-    *
-    * @param cloudServiceName The name of the cloud service to which this store
-    * item will be assigned.
-    * @param resourceProviderNamespace The namespace in which this store item
-    * resides.
-    * @param resourceProviderType The type of store item to be deleted.
-    * @param resourceProviderName The name of this resource provider.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @return The response body contains the status of the specified
-    * asynchronous operation, indicating whether it has succeeded, is
-    * inprogress, or has failed. Note that this status is distinct from the
-    * HTTP status code returned for the Get Operation Status operation itself.
-    * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
-    * operation failed, the response body includes the HTTP status code for
-    * the failed request, and also includes error information regarding the
-    * failure.
-    */
+     * The Delete Store Item operation deletes Windows Azure Store entries that
+     * re provisioned for a subscription.
+     * 
+     * @param cloudServiceName
+     *            The name of the cloud service to which this store item will be
+     *            assigned.
+     * @param resourceProviderNamespace
+     *            The namespace in which this store item resides.
+     * @param resourceProviderType
+     *            The type of store item to be deleted.
+     * @param resourceProviderName
+     *            The name of this resource provider.
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @return The response body contains the status of the specified
+     *         asynchronous operation, indicating whether it has succeeded, is
+     *         inprogress, or has failed. Note that this status is distinct from
+     *         the HTTP status code returned for the Get Operation Status
+     *         operation itself. If the asynchronous operation succeeded, the
+     *         response body includes the HTTP status code for the successful
+     *         request. If the asynchronous operation failed, the response body
+     *         includes the HTTP status code for the failed request, and also
+     *         includes error information regarding the failure.
+     */
     @Override
-    public AddOnOperationStatusResponse beginDeleting(String cloudServiceName, String resourceProviderNamespace, String resourceProviderType, String resourceProviderName) throws IOException, ServiceException
-    {
+    public AddOnOperationStatusResponse beginDeleting(String cloudServiceName,
+            String resourceProviderNamespace, String resourceProviderType,
+            String resourceProviderName) throws IOException, ServiceException {
         // Validate
-        if (cloudServiceName == null)
-        {
+        if (cloudServiceName == null) {
             throw new NullPointerException("cloudServiceName");
         }
-        if (resourceProviderNamespace == null)
-        {
+        if (resourceProviderNamespace == null) {
             throw new NullPointerException("resourceProviderNamespace");
         }
-        if (resourceProviderType == null)
-        {
+        if (resourceProviderType == null) {
             throw new NullPointerException("resourceProviderType");
         }
-        if (resourceProviderName == null)
-        {
+        if (resourceProviderName == null) {
             throw new NullPointerException("resourceProviderName");
         }
-        
+
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("cloudServiceName", cloudServiceName);
-            tracingParameters.put("resourceProviderNamespace", resourceProviderNamespace);
+            tracingParameters.put("resourceProviderNamespace",
+                    resourceProviderNamespace);
             tracingParameters.put("resourceProviderType", resourceProviderType);
             tracingParameters.put("resourceProviderName", resourceProviderName);
-            CloudTracing.enter(invocationId, this, "beginDeletingAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "beginDeletingAsync",
+                    tracingParameters);
         }
-        
+
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/CloudServices/" + cloudServiceName + "/resources/" + resourceProviderNamespace + "/" + resourceProviderType + "/" + resourceProviderName;
-        
+        String url = this.getClient().getBaseUri() + "/"
+                + this.getClient().getCredentials().getSubscriptionId()
+                + "/CloudServices/" + cloudServiceName + "/resources/"
+                + resourceProviderNamespace + "/" + resourceProviderType + "/"
+                + resourceProviderName;
+
         // Create HTTP transport objects
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
-        
+
         // Set Headers
         httpRequest.setHeader("x-ms-version", "2013-06-01");
-        
+
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            httpResponse = this.getClient().getHttpClient()
+                    .execute(httpRequest);
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_ACCEPTED)
-            {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
+                ServiceException ex = ServiceException.createFromXml(
+                        httpRequest, null, httpResponse,
+                        httpResponse.getEntity());
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-            
+
             // Create Result
             AddOnOperationStatusResponse result = null;
             result = new AddOnOperationStatusResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader(
+                        "x-ms-request-id").getValue());
             }
-            
-            if (shouldTrace)
-            {
+
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
     }
-    
+
     /**
-    * The Create Store Item operation creates Windows Azure Store entries in a
-    * Windows Azure subscription.
-    *
-    * @param cloudServiceName The name of the cloud service to which this store
-    * item will be assigned.
-    * @param resourceName The name of this resource.
-    * @param addOnName The add on name.
-    * @param parameters Parameters used to specify how the Create procedure
-    * will function.
-    * @return The response body contains the status of the specified
-    * asynchronous operation, indicating whether it has succeeded, is
-    * inprogress, or has failed. Note that this status is distinct from the
-    * HTTP status code returned for the Get Operation Status operation itself.
-    * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
-    * operation failed, the response body includes the HTTP status code for
-    * the failed request, and also includes error information regarding the
-    * failure.
-    */
+     * The Create Store Item operation creates Windows Azure Store entries in a
+     * Windows Azure subscription.
+     * 
+     * @param cloudServiceName
+     *            The name of the cloud service to which this store item will be
+     *            assigned.
+     * @param resourceName
+     *            The name of this resource.
+     * @param addOnName
+     *            The add on name.
+     * @param parameters
+     *            Parameters used to specify how the Create procedure will
+     *            function.
+     * @return The response body contains the status of the specified
+     *         asynchronous operation, indicating whether it has succeeded, is
+     *         inprogress, or has failed. Note that this status is distinct from
+     *         the HTTP status code returned for the Get Operation Status
+     *         operation itself. If the asynchronous operation succeeded, the
+     *         response body includes the HTTP status code for the successful
+     *         request. If the asynchronous operation failed, the response body
+     *         includes the HTTP status code for the failed request, and also
+     *         includes error information regarding the failure.
+     */
     @Override
-    public Future<AddOnOperationStatusResponse> createAsync(final String cloudServiceName, final String resourceName, final String addOnName, final AddOnCreateParameters parameters)
-    {
-        return this.getClient().getExecutorService().submit(new Callable<AddOnOperationStatusResponse>() { 
-            @Override
-            public AddOnOperationStatusResponse call() throws Exception
-            {
-                return create(cloudServiceName, resourceName, addOnName, parameters);
-            }
-         });
+    public Future<AddOnOperationStatusResponse> createAsync(
+            final String cloudServiceName, final String resourceName,
+            final String addOnName, final AddOnCreateParameters parameters) {
+        return this.getClient().getExecutorService()
+                .submit(new Callable<AddOnOperationStatusResponse>() {
+                    @Override
+                    public AddOnOperationStatusResponse call() throws Exception {
+                        return create(cloudServiceName, resourceName,
+                                addOnName, parameters);
+                    }
+                });
     }
-    
+
     /**
-    * The Create Store Item operation creates Windows Azure Store entries in a
-    * Windows Azure subscription.
-    *
-    * @param cloudServiceName The name of the cloud service to which this store
-    * item will be assigned.
-    * @param resourceName The name of this resource.
-    * @param addOnName The add on name.
-    * @param parameters Parameters used to specify how the Create procedure
-    * will function.
-    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
-    * or otherwise occupied, and the thread is interrupted, either before or
-    * during the activity. Occasionally a method may wish to test whether the
-    * current thread has been interrupted, and if so, to immediately throw
-    * this exception. The following code can be used to achieve this effect:
-    * @throws ExecutionException Thrown when attempting to retrieve the result
-    * of a task that aborted by throwing an exception. This exception can be
-    * inspected using the Throwable.getCause() method.
-    * @throws ServiceException Thrown if the server returned an error for the
-    * request.
-    * @throws IOException Thrown if there was an error setting up tracing for
-    * the request.
-    * @return The response body contains the status of the specified
-    * asynchronous operation, indicating whether it has succeeded, is
-    * inprogress, or has failed. Note that this status is distinct from the
-    * HTTP status code returned for the Get Operation Status operation itself.
-    * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
-    * operation failed, the response body includes the HTTP status code for
-    * the failed request, and also includes error information regarding the
-    * failure.
-    */
+     * The Create Store Item operation creates Windows Azure Store entries in a
+     * Windows Azure subscription.
+     * 
+     * @param cloudServiceName
+     *            The name of the cloud service to which this store item will be
+     *            assigned.
+     * @param resourceName
+     *            The name of this resource.
+     * @param addOnName
+     *            The add on name.
+     * @param parameters
+     *            Parameters used to specify how the Create procedure will
+     *            function.
+     * @throws InterruptedException
+     *             Thrown when a thread is waiting, sleeping, or otherwise
+     *             occupied, and the thread is interrupted, either before or
+     *             during the activity. Occasionally a method may wish to test
+     *             whether the current thread has been interrupted, and if so,
+     *             to immediately throw this exception. The following code can
+     *             be used to achieve this effect:
+     * @throws ExecutionException
+     *             Thrown when attempting to retrieve the result of a task that
+     *             aborted by throwing an exception. This exception can be
+     *             inspected using the Throwable.getCause() method.
+     * @throws ServiceException
+     *             Thrown if the server returned an error for the request.
+     * @throws IOException
+     *             Thrown if there was an error setting up tracing for the
+     *             request.
+     * @return The response body contains the status of the specified
+     *         asynchronous operation, indicating whether it has succeeded, is
+     *         inprogress, or has failed. Note that this status is distinct from
+     *         the HTTP status code returned for the Get Operation Status
+     *         operation itself. If the asynchronous operation succeeded, the
+     *         response body includes the HTTP status code for the successful
+     *         request. If the asynchronous operation failed, the response body
+     *         includes the HTTP status code for the failed request, and also
+     *         includes error information regarding the failure.
+     */
     @Override
-    public AddOnOperationStatusResponse create(String cloudServiceName, String resourceName, String addOnName, AddOnCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException
-    {
+    public AddOnOperationStatusResponse create(String cloudServiceName,
+            String resourceName, String addOnName,
+            AddOnCreateParameters parameters) throws InterruptedException,
+            ExecutionException, ServiceException, IOException {
         StoreManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("cloudServiceName", cloudServiceName);
             tracingParameters.put("resourceName", resourceName);
             tracingParameters.put("addOnName", addOnName);
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this, "createAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "createAsync",
+                    tracingParameters);
         }
-        try
-        {
-            if (shouldTrace)
-            {
-                client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
+        try {
+            if (shouldTrace) {
+                client2 = this
+                        .getClient()
+                        .withRequestFilterLast(
+                                new ClientRequestTrackingHandler(invocationId))
+                        .withResponseFilterLast(
+                                new ClientRequestTrackingHandler(invocationId));
             }
-            
-            AddOnOperationStatusResponse response = client2.getAddOnsOperations().beginCreatingAsync(cloudServiceName, resourceName, addOnName, parameters).get();
-            AddOnOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
+
+            AddOnOperationStatusResponse response = client2
+                    .getAddOnsOperations()
+                    .beginCreatingAsync(cloudServiceName, resourceName,
+                            addOnName, parameters).get();
+            AddOnOperationStatusResponse result = client2
+                    .getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
-            while ((result.getStatus() != OperationStatus.InProgress) == false)
-            {
+            while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
-                result = client2.getOperationStatusAsync(response.getRequestId()).get();
+                result = client2.getOperationStatusAsync(
+                        response.getRequestId()).get();
                 delayInSeconds = 30;
             }
-            
-            if (shouldTrace)
-            {
+
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
-            
-            if (result.getStatus() != OperationStatus.Succeeded)
-            {
-                if (result.getError() != null)
-                {
-                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+
+            if (result.getStatus() != OperationStatus.Succeeded) {
+                if (result.getError() != null) {
+                    ServiceException ex = new ServiceException(result
+                            .getError().getCode()
+                            + " : "
+                            + result.getError().getMessage());
                     ex.setErrorCode(result.getError().getCode());
                     ex.setErrorMessage(result.getError().getMessage());
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else
-                {
+                } else {
                     ServiceException ex = new ServiceException("");
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
                 }
             }
-            
+
             return result;
-        }
-        finally
-        {
-            if (this.getClient() != null && shouldTrace)
-            {
+        } finally {
+            if (this.getClient() != null && shouldTrace) {
                 this.getClient().close();
             }
         }
     }
-    
+
     /**
-    * The Delete Store Item operation deletes Windows Azure Storeentries that
-    * are provisioned for a subscription.
-    *
-    * @param cloudServiceName The name of the cloud service to which this store
-    * item will be assigned.
-    * @param resourceProviderNamespace The namespace in which this store item
-    * resides.
-    * @param resourceProviderType The type of store item to be deleted.
-    * @param resourceProviderName The name of this resource provider.
-    * @return The response body contains the status of the specified
-    * asynchronous operation, indicating whether it has succeeded, is
-    * inprogress, or has failed. Note that this status is distinct from the
-    * HTTP status code returned for the Get Operation Status operation itself.
-    * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
-    * operation failed, the response body includes the HTTP status code for
-    * the failed request, and also includes error information regarding the
-    * failure.
-    */
+     * The Delete Store Item operation deletes Windows Azure Storeentries that
+     * are provisioned for a subscription.
+     * 
+     * @param cloudServiceName
+     *            The name of the cloud service to which this store item will be
+     *            assigned.
+     * @param resourceProviderNamespace
+     *            The namespace in which this store item resides.
+     * @param resourceProviderType
+     *            The type of store item to be deleted.
+     * @param resourceProviderName
+     *            The name of this resource provider.
+     * @return The response body contains the status of the specified
+     *         asynchronous operation, indicating whether it has succeeded, is
+     *         inprogress, or has failed. Note that this status is distinct from
+     *         the HTTP status code returned for the Get Operation Status
+     *         operation itself. If the asynchronous operation succeeded, the
+     *         response body includes the HTTP status code for the successful
+     *         request. If the asynchronous operation failed, the response body
+     *         includes the HTTP status code for the failed request, and also
+     *         includes error information regarding the failure.
+     */
     @Override
-    public Future<AddOnOperationStatusResponse> deleteAsync(final String cloudServiceName, final String resourceProviderNamespace, final String resourceProviderType, final String resourceProviderName)
-    {
-        return this.getClient().getExecutorService().submit(new Callable<AddOnOperationStatusResponse>() { 
-            @Override
-            public AddOnOperationStatusResponse call() throws Exception
-            {
-                return delete(cloudServiceName, resourceProviderNamespace, resourceProviderType, resourceProviderName);
-            }
-         });
+    public Future<AddOnOperationStatusResponse> deleteAsync(
+            final String cloudServiceName,
+            final String resourceProviderNamespace,
+            final String resourceProviderType, final String resourceProviderName) {
+        return this.getClient().getExecutorService()
+                .submit(new Callable<AddOnOperationStatusResponse>() {
+                    @Override
+                    public AddOnOperationStatusResponse call() throws Exception {
+                        return delete(cloudServiceName,
+                                resourceProviderNamespace,
+                                resourceProviderType, resourceProviderName);
+                    }
+                });
     }
-    
+
     /**
-    * The Delete Store Item operation deletes Windows Azure Storeentries that
-    * are provisioned for a subscription.
-    *
-    * @param cloudServiceName The name of the cloud service to which this store
-    * item will be assigned.
-    * @param resourceProviderNamespace The namespace in which this store item
-    * resides.
-    * @param resourceProviderType The type of store item to be deleted.
-    * @param resourceProviderName The name of this resource provider.
-    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
-    * or otherwise occupied, and the thread is interrupted, either before or
-    * during the activity. Occasionally a method may wish to test whether the
-    * current thread has been interrupted, and if so, to immediately throw
-    * this exception. The following code can be used to achieve this effect:
-    * @throws ExecutionException Thrown when attempting to retrieve the result
-    * of a task that aborted by throwing an exception. This exception can be
-    * inspected using the Throwable.getCause() method.
-    * @throws ServiceException Thrown if the server returned an error for the
-    * request.
-    * @throws IOException Thrown if there was an error setting up tracing for
-    * the request.
-    * @return The response body contains the status of the specified
-    * asynchronous operation, indicating whether it has succeeded, is
-    * inprogress, or has failed. Note that this status is distinct from the
-    * HTTP status code returned for the Get Operation Status operation itself.
-    * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
-    * operation failed, the response body includes the HTTP status code for
-    * the failed request, and also includes error information regarding the
-    * failure.
-    */
+     * The Delete Store Item operation deletes Windows Azure Storeentries that
+     * are provisioned for a subscription.
+     * 
+     * @param cloudServiceName
+     *            The name of the cloud service to which this store item will be
+     *            assigned.
+     * @param resourceProviderNamespace
+     *            The namespace in which this store item resides.
+     * @param resourceProviderType
+     *            The type of store item to be deleted.
+     * @param resourceProviderName
+     *            The name of this resource provider.
+     * @throws InterruptedException
+     *             Thrown when a thread is waiting, sleeping, or otherwise
+     *             occupied, and the thread is interrupted, either before or
+     *             during the activity. Occasionally a method may wish to test
+     *             whether the current thread has been interrupted, and if so,
+     *             to immediately throw this exception. The following code can
+     *             be used to achieve this effect:
+     * @throws ExecutionException
+     *             Thrown when attempting to retrieve the result of a task that
+     *             aborted by throwing an exception. This exception can be
+     *             inspected using the Throwable.getCause() method.
+     * @throws ServiceException
+     *             Thrown if the server returned an error for the request.
+     * @throws IOException
+     *             Thrown if there was an error setting up tracing for the
+     *             request.
+     * @return The response body contains the status of the specified
+     *         asynchronous operation, indicating whether it has succeeded, is
+     *         inprogress, or has failed. Note that this status is distinct from
+     *         the HTTP status code returned for the Get Operation Status
+     *         operation itself. If the asynchronous operation succeeded, the
+     *         response body includes the HTTP status code for the successful
+     *         request. If the asynchronous operation failed, the response body
+     *         includes the HTTP status code for the failed request, and also
+     *         includes error information regarding the failure.
+     */
     @Override
-    public AddOnOperationStatusResponse delete(String cloudServiceName, String resourceProviderNamespace, String resourceProviderType, String resourceProviderName) throws InterruptedException, ExecutionException, ServiceException, IOException
-    {
+    public AddOnOperationStatusResponse delete(String cloudServiceName,
+            String resourceProviderNamespace, String resourceProviderType,
+            String resourceProviderName) throws InterruptedException,
+            ExecutionException, ServiceException, IOException {
         StoreManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("cloudServiceName", cloudServiceName);
-            tracingParameters.put("resourceProviderNamespace", resourceProviderNamespace);
+            tracingParameters.put("resourceProviderNamespace",
+                    resourceProviderNamespace);
             tracingParameters.put("resourceProviderType", resourceProviderType);
             tracingParameters.put("resourceProviderName", resourceProviderName);
-            CloudTracing.enter(invocationId, this, "deleteAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "deleteAsync",
+                    tracingParameters);
         }
-        try
-        {
-            if (shouldTrace)
-            {
-                client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
+        try {
+            if (shouldTrace) {
+                client2 = this
+                        .getClient()
+                        .withRequestFilterLast(
+                                new ClientRequestTrackingHandler(invocationId))
+                        .withResponseFilterLast(
+                                new ClientRequestTrackingHandler(invocationId));
             }
-            
-            AddOnOperationStatusResponse response = client2.getAddOnsOperations().beginDeletingAsync(cloudServiceName, resourceProviderNamespace, resourceProviderType, resourceProviderName).get();
-            AddOnOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
+
+            AddOnOperationStatusResponse response = client2
+                    .getAddOnsOperations()
+                    .beginDeletingAsync(cloudServiceName,
+                            resourceProviderNamespace, resourceProviderType,
+                            resourceProviderName).get();
+            AddOnOperationStatusResponse result = client2
+                    .getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
-            while ((result.getStatus() != OperationStatus.InProgress) == false)
-            {
+            while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
-                result = client2.getOperationStatusAsync(response.getRequestId()).get();
+                result = client2.getOperationStatusAsync(
+                        response.getRequestId()).get();
                 delayInSeconds = 30;
             }
-            
-            if (shouldTrace)
-            {
+
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
-            
-            if (result.getStatus() != OperationStatus.Succeeded)
-            {
-                if (result.getError() != null)
-                {
-                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+
+            if (result.getStatus() != OperationStatus.Succeeded) {
+                if (result.getError() != null) {
+                    ServiceException ex = new ServiceException(result
+                            .getError().getCode()
+                            + " : "
+                            + result.getError().getMessage());
                     ex.setErrorCode(result.getError().getCode());
                     ex.setErrorMessage(result.getError().getMessage());
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else
-                {
+                } else {
                     ServiceException ex = new ServiceException("");
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
                 }
             }
-            
+
             return result;
-        }
-        finally
-        {
-            if (this.getClient() != null && shouldTrace)
-            {
+        } finally {
+            if (this.getClient() != null && shouldTrace) {
                 this.getClient().close();
             }
         }
     }
-    
+
     /**
-    * The Update Store Item operation creates Windows Azure Store entries in a
-    * Windows Azure subscription.
-    *
-    * @param cloudServiceName The name of the cloud service to which this store
-    * item will be assigned.
-    * @param resourceName The name of this resource.
-    * @param addOnName The addon name.
-    * @param parameters Parameters used to specify how the Create procedure
-    * will function.
-    * @return The response body contains the status of the specified
-    * asynchronous operation, indicating whether it has succeeded, is
-    * inprogress, or has failed. Note that this status is distinct from the
-    * HTTP status code returned for the Get Operation Status operation itself.
-    * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
-    * operation failed, the response body includes the HTTP status code for
-    * the failed request, and also includes error information regarding the
-    * failure.
-    */
+     * The Update Store Item operation creates Windows Azure Store entries in a
+     * Windows Azure subscription.
+     * 
+     * @param cloudServiceName
+     *            The name of the cloud service to which this store item will be
+     *            assigned.
+     * @param resourceName
+     *            The name of this resource.
+     * @param addOnName
+     *            The addon name.
+     * @param parameters
+     *            Parameters used to specify how the Create procedure will
+     *            function.
+     * @return The response body contains the status of the specified
+     *         asynchronous operation, indicating whether it has succeeded, is
+     *         inprogress, or has failed. Note that this status is distinct from
+     *         the HTTP status code returned for the Get Operation Status
+     *         operation itself. If the asynchronous operation succeeded, the
+     *         response body includes the HTTP status code for the successful
+     *         request. If the asynchronous operation failed, the response body
+     *         includes the HTTP status code for the failed request, and also
+     *         includes error information regarding the failure.
+     */
     @Override
-    public Future<AddOnOperationStatusResponse> updateAsync(final String cloudServiceName, final String resourceName, final String addOnName, final AddOnUpdateParameters parameters)
-    {
-        return this.getClient().getExecutorService().submit(new Callable<AddOnOperationStatusResponse>() { 
-            @Override
-            public AddOnOperationStatusResponse call() throws Exception
-            {
-                return update(cloudServiceName, resourceName, addOnName, parameters);
-            }
-         });
+    public Future<AddOnOperationStatusResponse> updateAsync(
+            final String cloudServiceName, final String resourceName,
+            final String addOnName, final AddOnUpdateParameters parameters) {
+        return this.getClient().getExecutorService()
+                .submit(new Callable<AddOnOperationStatusResponse>() {
+                    @Override
+                    public AddOnOperationStatusResponse call() throws Exception {
+                        return update(cloudServiceName, resourceName,
+                                addOnName, parameters);
+                    }
+                });
     }
-    
+
     /**
-    * The Update Store Item operation creates Windows Azure Store entries in a
-    * Windows Azure subscription.
-    *
-    * @param cloudServiceName The name of the cloud service to which this store
-    * item will be assigned.
-    * @param resourceName The name of this resource.
-    * @param addOnName The addon name.
-    * @param parameters Parameters used to specify how the Create procedure
-    * will function.
-    * @throws ParserConfigurationException Thrown if there was an error
-    * configuring the parser for the response body.
-    * @throws SAXException Thrown if there was an error parsing the response
-    * body.
-    * @throws TransformerException Thrown if there was an error creating the
-    * DOM transformer.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @return The response body contains the status of the specified
-    * asynchronous operation, indicating whether it has succeeded, is
-    * inprogress, or has failed. Note that this status is distinct from the
-    * HTTP status code returned for the Get Operation Status operation itself.
-    * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
-    * operation failed, the response body includes the HTTP status code for
-    * the failed request, and also includes error information regarding the
-    * failure.
-    */
+     * The Update Store Item operation creates Windows Azure Store entries in a
+     * Windows Azure subscription.
+     * 
+     * @param cloudServiceName
+     *            The name of the cloud service to which this store item will be
+     *            assigned.
+     * @param resourceName
+     *            The name of this resource.
+     * @param addOnName
+     *            The addon name.
+     * @param parameters
+     *            Parameters used to specify how the Create procedure will
+     *            function.
+     * @throws ParserConfigurationException
+     *             Thrown if there was an error configuring the parser for the
+     *             response body.
+     * @throws SAXException
+     *             Thrown if there was an error parsing the response body.
+     * @throws TransformerException
+     *             Thrown if there was an error creating the DOM transformer.
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @return The response body contains the status of the specified
+     *         asynchronous operation, indicating whether it has succeeded, is
+     *         inprogress, or has failed. Note that this status is distinct from
+     *         the HTTP status code returned for the Get Operation Status
+     *         operation itself. If the asynchronous operation succeeded, the
+     *         response body includes the HTTP status code for the successful
+     *         request. If the asynchronous operation failed, the response body
+     *         includes the HTTP status code for the failed request, and also
+     *         includes error information regarding the failure.
+     */
     @Override
-    public AddOnOperationStatusResponse update(String cloudServiceName, String resourceName, String addOnName, AddOnUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
-    {
+    public AddOnOperationStatusResponse update(String cloudServiceName,
+            String resourceName, String addOnName,
+            AddOnUpdateParameters parameters)
+            throws ParserConfigurationException, SAXException,
+            TransformerException, IOException, ServiceException {
         // Validate
-        if (cloudServiceName == null)
-        {
+        if (cloudServiceName == null) {
             throw new NullPointerException("cloudServiceName");
         }
-        if (resourceName == null)
-        {
+        if (resourceName == null) {
             throw new NullPointerException("resourceName");
         }
-        if (addOnName == null)
-        {
+        if (addOnName == null) {
             throw new NullPointerException("addOnName");
         }
-        if (parameters == null)
-        {
+        if (parameters == null) {
             throw new NullPointerException("parameters");
         }
-        if (parameters.getPlan() == null)
-        {
+        if (parameters.getPlan() == null) {
             throw new NullPointerException("parameters.Plan");
         }
-        if (parameters.getType() == null)
-        {
+        if (parameters.getType() == null) {
             throw new NullPointerException("parameters.Type");
         }
-        
+
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("cloudServiceName", cloudServiceName);
             tracingParameters.put("resourceName", resourceName);
             tracingParameters.put("addOnName", addOnName);
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this, "updateAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "updateAsync",
+                    tracingParameters);
         }
-        
+
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/CloudServices/" + cloudServiceName + "/resources/" + parameters.getType() + "/" + resourceName + "/" + addOnName;
-        
+        String url = this.getClient().getBaseUri() + "/"
+                + this.getClient().getCredentials().getSubscriptionId()
+                + "/CloudServices/" + cloudServiceName + "/resources/"
+                + parameters.getType() + "/" + resourceName + "/" + addOnName;
+
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
-        
+
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
         httpRequest.setHeader("If-Match", "*");
         httpRequest.setHeader("x-ms-version", "2013-06-01");
-        
+
         // Serialize Request
         String requestContent = null;
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
+                .newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory
+                .newDocumentBuilder();
         Document requestDoc = documentBuilder.newDocument();
-        
-        Element resourceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Resource");
+
+        Element resourceElement = requestDoc.createElementNS(
+                "http://schemas.microsoft.com/windowsazure", "Resource");
         requestDoc.appendChild(resourceElement);
-        
-        Element typeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Type");
-        typeElement.appendChild(requestDoc.createTextNode(parameters.getType()));
+
+        Element typeElement = requestDoc.createElementNS(
+                "http://schemas.microsoft.com/windowsazure", "Type");
+        typeElement
+                .appendChild(requestDoc.createTextNode(parameters.getType()));
         resourceElement.appendChild(typeElement);
-        
-        Element planElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Plan");
-        planElement.appendChild(requestDoc.createTextNode(parameters.getPlan()));
+
+        Element planElement = requestDoc.createElementNS(
+                "http://schemas.microsoft.com/windowsazure", "Plan");
+        planElement
+                .appendChild(requestDoc.createTextNode(parameters.getPlan()));
         resourceElement.appendChild(planElement);
-        
-        if (parameters.getPromotionCode() != null)
-        {
-            Element promotionCodeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PromotionCode");
-            promotionCodeElement.appendChild(requestDoc.createTextNode(parameters.getPromotionCode()));
+
+        if (parameters.getPromotionCode() != null) {
+            Element promotionCodeElement = requestDoc.createElementNS(
+                    "http://schemas.microsoft.com/windowsazure",
+                    "PromotionCode");
+            promotionCodeElement.appendChild(requestDoc
+                    .createTextNode(parameters.getPromotionCode()));
             resourceElement.appendChild(promotionCodeElement);
         }
-        
+
         DOMSource domSource = new DOMSource(requestDoc);
         StringWriter stringWriter = new StringWriter();
         StreamResult streamResult = new StreamResult(stringWriter);
-        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        TransformerFactory transformerFactory = TransformerFactory
+                .newInstance();
         Transformer transformer = transformerFactory.newTransformer();
         transformer.transform(domSource, streamResult);
         requestContent = stringWriter.toString();
         StringEntity entity = new StringEntity(requestContent);
         httpRequest.setEntity(entity);
         httpRequest.setHeader("Content-Type", "application/xml");
-        
+
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            httpResponse = this.getClient().getHttpClient()
+                    .execute(httpRequest);
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_ACCEPTED)
-            {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
+                ServiceException ex = ServiceException.createFromXml(
+                        httpRequest, requestContent, httpResponse,
+                        httpResponse.getEntity());
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-            
+
             // Create Result
             AddOnOperationStatusResponse result = null;
             result = new AddOnOperationStatusResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader(
+                        "x-ms-request-id").getValue());
             }
-            
-            if (shouldTrace)
-            {
+
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }

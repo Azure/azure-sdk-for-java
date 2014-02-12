@@ -17,68 +17,67 @@ package com.microsoft.windowsazure.management.websites;
 import com.microsoft.windowsazure.Configuration;
 
 /**
- *
+ * 
  * Access service management functionality.
- *
+ * 
  */
-public final class WebSiteManagementService
-{
+public final class WebSiteManagementService {
     /**
-    * The default constructor.
-    */
-    private WebSiteManagementService()
-    {
+     * The default constructor.
+     */
+    private WebSiteManagementService() {
         // class is not instantiated
     }
 
     /**
      * Creates an instance of the <code>WebSiteManagementClient</code> API.
+     * 
      * @return The <code>WebSiteManagementClient</code>.
      */
-    public static WebSiteManagementClient create()
-    {
+    public static WebSiteManagementClient create() {
         return Configuration.getInstance()
                 .create(WebSiteManagementClient.class);
     }
 
     /**
-     * Creates an instance of the <code>WebSiteManagementClient</code> API
-     * using the specified configuration.
-     *
-     * @param config A <code>Configuration</code> object that represents the
-     * configuration for the service management.
+     * Creates an instance of the <code>WebSiteManagementClient</code> API using
+     * the specified configuration.
+     * 
+     * @param config
+     *            A <code>Configuration</code> object that represents the
+     *            configuration for the service management.
      * @return The <code>WebSiteManagementClient</code>.
      */
-    public static WebSiteManagementClient create(final Configuration config)
-    {
+    public static WebSiteManagementClient create(final Configuration config) {
         return config.create(WebSiteManagementClient.class);
     }
 
     /**
      * Creates an instance of the <code>WebSiteManagementClient</code> API.
-     *
-     * @param profile A <code>String</code> object that representing the profile
-     * of the service management service.
+     * 
+     * @param profile
+     *            A <code>String</code> object that representing the profile of
+     *            the service management service.
      * @return The <code>WebSiteManagementClient</code>.
      */
-    public static WebSiteManagementClient create(final String profile)
-    {
+    public static WebSiteManagementClient create(final String profile) {
         return Configuration.getInstance().create(profile,
                 WebSiteManagementClient.class);
     }
 
     /**
-     * Creates an instance of the <code>WebSiteManagementClient</code> API
-     * using the specified configuration.
-     *
-     * @param profile The profile.
-     * @param config A <code>Configuration</code> object that represents the
-     * configuration for the service management.
+     * Creates an instance of the <code>WebSiteManagementClient</code> API using
+     * the specified configuration.
+     * 
+     * @param profile
+     *            The profile.
+     * @param config
+     *            A <code>Configuration</code> object that represents the
+     *            configuration for the service management.
      * @return The <code>WebSiteManagementClient</code>.
      */
     public static WebSiteManagementClient create(final String profile,
-            final Configuration config)
-    {
+            final Configuration config) {
         return config.create(profile, WebSiteManagementClient.class);
     }
 }

@@ -25,12 +25,10 @@ import org.junit.Test;
 import com.microsoft.windowsazure.services.media.implementation.content.ErrorDetailType;
 import com.microsoft.windowsazure.services.media.implementation.content.TaskType;
 
-public class TaskInfoTest
-{
+public class TaskInfoTest {
 
     @Test
-    public void testGetSetId()
-    {
+    public void testGetSetId() {
         // Arrange
         String expectedId = "expectedId";
         TaskInfo taskInfo = new TaskInfo(null, new TaskType().setId(expectedId));
@@ -44,8 +42,7 @@ public class TaskInfoTest
     }
 
     @Test
-    public void testGetSetConfiguration()
-    {
+    public void testGetSetConfiguration() {
         // Arrange
         String expectedConfiguration = "expectedConfiguration";
         TaskInfo taskInfo = new TaskInfo(null,
@@ -59,8 +56,7 @@ public class TaskInfoTest
     }
 
     @Test
-    public void testGetSetEndTime() throws Exception
-    {
+    public void testGetSetEndTime() throws Exception {
         // Arrange
         Date expectedEndTime = new Date();
 
@@ -76,13 +72,11 @@ public class TaskInfoTest
     }
 
     @Test
-    public void testGetSetErrorDetails() throws Exception
-    {
+    public void testGetSetErrorDetails() throws Exception {
         // Arrange
         List<ErrorDetail> expectedErrorDetails = new ArrayList<ErrorDetail>();
         List<ErrorDetailType> expectedErrorDetailsType = new ArrayList<ErrorDetailType>();
-        for (ErrorDetailType errorDetailType : expectedErrorDetailsType)
-        {
+        for (ErrorDetailType errorDetailType : expectedErrorDetailsType) {
             ErrorDetail errorDetail = new ErrorDetail(
                     errorDetailType.getCode(), errorDetailType.getMessage());
             expectedErrorDetails.add(errorDetail);
@@ -98,8 +92,7 @@ public class TaskInfoTest
     }
 
     @Test
-    public void testGetSetMediaProcessorId()
-    {
+    public void testGetSetMediaProcessorId() {
         // Arrange
         String expectedName = "testName";
         TaskInfo TaskInfo = new TaskInfo(null,
@@ -113,8 +106,7 @@ public class TaskInfoTest
     }
 
     @Test
-    public void testGetSetName()
-    {
+    public void testGetSetName() {
         // Arrange
 
         TaskOption expectedOptions = TaskOption.None;
@@ -129,8 +121,7 @@ public class TaskInfoTest
     }
 
     @Test
-    public void testGetSetPerfMessage()
-    {
+    public void testGetSetPerfMessage() {
         // Arrange
         String expectedPerfMessage = "testGetSetPerfMessage";
         TaskInfo TaskInfo = new TaskInfo(null,
@@ -144,8 +135,7 @@ public class TaskInfoTest
     }
 
     @Test
-    public void testGetSetPriority()
-    {
+    public void testGetSetPriority() {
         // Arrange
         int expectedPriority = 3;
         TaskInfo TaskInfo = new TaskInfo(null,
@@ -159,8 +149,7 @@ public class TaskInfoTest
     }
 
     @Test
-    public void testGetSetProgress()
-    {
+    public void testGetSetProgress() {
         // Arrange
         double expectedProgress = 3;
         TaskInfo TaskInfo = new TaskInfo(null,
@@ -174,8 +163,7 @@ public class TaskInfoTest
     }
 
     @Test
-    public void testGetSetRunningDuration()
-    {
+    public void testGetSetRunningDuration() {
         // Arrange
         double expectedRunningDuration = 3;
         TaskInfo TaskInfo = new TaskInfo(null,
@@ -189,8 +177,7 @@ public class TaskInfoTest
     }
 
     @Test
-    public void testGetSetStartTime()
-    {
+    public void testGetSetStartTime() {
         // Arrange
         Date expectedStartTime = new Date();
         TaskInfo TaskInfo = new TaskInfo(null,
@@ -204,8 +191,7 @@ public class TaskInfoTest
     }
 
     @Test
-    public void testGetSetState()
-    {
+    public void testGetSetState() {
         // Arrange
         TaskState expectedState = TaskState.Completed;
         TaskInfo TaskInfo = new TaskInfo(null,
@@ -219,8 +205,7 @@ public class TaskInfoTest
     }
 
     @Test
-    public void testGetSetTaskBody()
-    {
+    public void testGetSetTaskBody() {
         // Arrange
         String expectedTaskBody = "getSetTaskBody";
         TaskInfo TaskInfo = new TaskInfo(null,
@@ -234,8 +219,7 @@ public class TaskInfoTest
     }
 
     @Test
-    public void testGetSetOptions()
-    {
+    public void testGetSetOptions() {
         // Arrange
         TaskOption expectedTaskOption = TaskOption.ProtectedConfiguration;
         TaskInfo TaskInfo = new TaskInfo(null,
@@ -249,8 +233,7 @@ public class TaskInfoTest
     }
 
     @Test
-    public void testGetSetEncryptionKeyId()
-    {
+    public void testGetSetEncryptionKeyId() {
         // Arrange
         String expectedEncryptionKeyId = "getSetEncryptionKeyId";
         TaskInfo taskInfo = new TaskInfo(null,
@@ -264,8 +247,7 @@ public class TaskInfoTest
     }
 
     @Test
-    public void testGetSetEncryptionScheme()
-    {
+    public void testGetSetEncryptionScheme() {
         // Arrange
         String expectedEncryptionScheme = "getSetEncryptionScheme";
         TaskInfo taskInfo = new TaskInfo(null,
@@ -279,8 +261,7 @@ public class TaskInfoTest
     }
 
     @Test
-    public void testGetSetEncryptionVersion()
-    {
+    public void testGetSetEncryptionVersion() {
         // Arrange
         String expectedEncryptionVersion = "1.5";
         TaskInfo taskInfo = new TaskInfo(null,
@@ -294,8 +275,7 @@ public class TaskInfoTest
     }
 
     @Test
-    public void testGetSetInitializationVector()
-    {
+    public void testGetSetInitializationVector() {
         // Arrange
         String expectedInitializationVector = "testInitializationVector";
         TaskInfo taskInfo = new TaskInfo(null,

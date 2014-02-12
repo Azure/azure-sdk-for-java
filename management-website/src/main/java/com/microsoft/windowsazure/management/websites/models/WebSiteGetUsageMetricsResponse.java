@@ -29,255 +29,263 @@ import java.util.Calendar;
 import java.util.Iterator;
 
 /**
-* The Get Web Site Usage Metrics operation response.
-*/
-public class WebSiteGetUsageMetricsResponse extends OperationResponse implements Iterable<WebSiteGetUsageMetricsResponse.UsageMetric>
-{
+ * The Get Web Site Usage Metrics operation response.
+ */
+public class WebSiteGetUsageMetricsResponse extends OperationResponse implements
+        Iterable<WebSiteGetUsageMetricsResponse.UsageMetric> {
     private ArrayList<WebSiteGetUsageMetricsResponse.UsageMetric> usageMetrics;
-    
+
     /**
-    * The usage metrics for the web site.
-    * @return The UsageMetrics value.
-    */
-    public ArrayList<WebSiteGetUsageMetricsResponse.UsageMetric> getUsageMetrics()
-    {
+     * The usage metrics for the web site.
+     * 
+     * @return The UsageMetrics value.
+     */
+    public ArrayList<WebSiteGetUsageMetricsResponse.UsageMetric> getUsageMetrics() {
         return this.usageMetrics;
     }
-    
+
     /**
-    * The usage metrics for the web site.
-    * @param usageMetricsValue The UsageMetrics value.
-    */
-    public void setUsageMetrics(final ArrayList<WebSiteGetUsageMetricsResponse.UsageMetric> usageMetricsValue)
-    {
+     * The usage metrics for the web site.
+     * 
+     * @param usageMetricsValue
+     *            The UsageMetrics value.
+     */
+    public void setUsageMetrics(
+            final ArrayList<WebSiteGetUsageMetricsResponse.UsageMetric> usageMetricsValue) {
         this.usageMetrics = usageMetricsValue;
     }
-    
+
     /**
-    * Initializes a new instance of the WebSiteGetUsageMetricsResponse class.
-    *
-    */
-    public WebSiteGetUsageMetricsResponse()
-    {
+     * Initializes a new instance of the WebSiteGetUsageMetricsResponse class.
+     * 
+     */
+    public WebSiteGetUsageMetricsResponse() {
         super();
         this.usageMetrics = new ArrayList<WebSiteGetUsageMetricsResponse.UsageMetric>();
     }
-    
+
     /**
-    * Gets the sequence of UsageMetrics.
-    *
-    */
-    public Iterator<WebSiteGetUsageMetricsResponse.UsageMetric> iterator()
-    {
+     * Gets the sequence of UsageMetrics.
+     * 
+     */
+    public Iterator<WebSiteGetUsageMetricsResponse.UsageMetric> iterator() {
         return this.getUsageMetrics().iterator();
     }
-    
+
     /**
-    * A specific usage metric.
-    */
-    public static class UsageMetric
-    {
+     * A specific usage metric.
+     */
+    public static class UsageMetric {
         private WebSiteComputeMode computeMode;
-        
+
         /**
-        * The compute mode of the web site. For web sites in Standard Mode, the
-        * return value is Dedicated. For web sites in Free or Shared mode, the
-        * return value is Shared.
-        * @return The ComputeMode value.
-        */
-        public WebSiteComputeMode getComputeMode()
-        {
+         * The compute mode of the web site. For web sites in Standard Mode, the
+         * return value is Dedicated. For web sites in Free or Shared mode, the
+         * return value is Shared.
+         * 
+         * @return The ComputeMode value.
+         */
+        public WebSiteComputeMode getComputeMode() {
             return this.computeMode;
         }
-        
+
         /**
-        * The compute mode of the web site. For web sites in Standard Mode, the
-        * return value is Dedicated. For web sites in Free or Shared mode, the
-        * return value is Shared.
-        * @param computeModeValue The ComputeMode value.
-        */
-        public void setComputeMode(final WebSiteComputeMode computeModeValue)
-        {
+         * The compute mode of the web site. For web sites in Standard Mode, the
+         * return value is Dedicated. For web sites in Free or Shared mode, the
+         * return value is Shared.
+         * 
+         * @param computeModeValue
+         *            The ComputeMode value.
+         */
+        public void setComputeMode(final WebSiteComputeMode computeModeValue) {
             this.computeMode = computeModeValue;
         }
-        
+
         private String currentValue;
-        
+
         /**
-        * The current value of the metric specified, expressed in terms of the
-        * measurement specified by the Unit element.
-        * @return The CurrentValue value.
-        */
-        public String getCurrentValue()
-        {
+         * The current value of the metric specified, expressed in terms of the
+         * measurement specified by the Unit element.
+         * 
+         * @return The CurrentValue value.
+         */
+        public String getCurrentValue() {
             return this.currentValue;
         }
-        
+
         /**
-        * The current value of the metric specified, expressed in terms of the
-        * measurement specified by the Unit element.
-        * @param currentValueValue The CurrentValue value.
-        */
-        public void setCurrentValue(final String currentValueValue)
-        {
+         * The current value of the metric specified, expressed in terms of the
+         * measurement specified by the Unit element.
+         * 
+         * @param currentValueValue
+         *            The CurrentValue value.
+         */
+        public void setCurrentValue(final String currentValueValue) {
             this.currentValue = currentValueValue;
         }
-        
+
         private String displayName;
-        
+
         /**
-        * The display name of the metric (includes spaces).
-        * @return The DisplayName value.
-        */
-        public String getDisplayName()
-        {
+         * The display name of the metric (includes spaces).
+         * 
+         * @return The DisplayName value.
+         */
+        public String getDisplayName() {
             return this.displayName;
         }
-        
+
         /**
-        * The display name of the metric (includes spaces).
-        * @param displayNameValue The DisplayName value.
-        */
-        public void setDisplayName(final String displayNameValue)
-        {
+         * The display name of the metric (includes spaces).
+         * 
+         * @param displayNameValue
+         *            The DisplayName value.
+         */
+        public void setDisplayName(final String displayNameValue) {
             this.displayName = displayNameValue;
         }
-        
+
         private String limit;
-        
+
         /**
-        * The maximum point that the given metric can reach. The limit resets
-        * at the time specified by the NextResetTime element. If the limit is
-        * reached before the reset time, the site will be stopped. A value of
-        * -1 means unlimited. Resources with limits typically include CPU
-        * Time, Memory Usage, and File System Storage. Important: Site level
-        * Limits information is only meaningful for Shared and Standard web
-        * sites. For free web sites, limits are enforced at the webspace level.
-        * @return The Limit value.
-        */
-        public String getLimit()
-        {
+         * The maximum point that the given metric can reach. The limit resets
+         * at the time specified by the NextResetTime element. If the limit is
+         * reached before the reset time, the site will be stopped. A value of
+         * -1 means unlimited. Resources with limits typically include CPU Time,
+         * Memory Usage, and File System Storage. Important: Site level Limits
+         * information is only meaningful for Shared and Standard web sites. For
+         * free web sites, limits are enforced at the webspace level.
+         * 
+         * @return The Limit value.
+         */
+        public String getLimit() {
             return this.limit;
         }
-        
+
         /**
-        * The maximum point that the given metric can reach. The limit resets
-        * at the time specified by the NextResetTime element. If the limit is
-        * reached before the reset time, the site will be stopped. A value of
-        * -1 means unlimited. Resources with limits typically include CPU
-        * Time, Memory Usage, and File System Storage. Important: Site level
-        * Limits information is only meaningful for Shared and Standard web
-        * sites. For free web sites, limits are enforced at the webspace level.
-        * @param limitValue The Limit value.
-        */
-        public void setLimit(final String limitValue)
-        {
+         * The maximum point that the given metric can reach. The limit resets
+         * at the time specified by the NextResetTime element. If the limit is
+         * reached before the reset time, the site will be stopped. A value of
+         * -1 means unlimited. Resources with limits typically include CPU Time,
+         * Memory Usage, and File System Storage. Important: Site level Limits
+         * information is only meaningful for Shared and Standard web sites. For
+         * free web sites, limits are enforced at the webspace level.
+         * 
+         * @param limitValue
+         *            The Limit value.
+         */
+        public void setLimit(final String limitValue) {
             this.limit = limitValue;
         }
-        
+
         private String name;
-        
+
         /**
-        * The name of the metric, without spaces. The value is usually the same
-        * as that of the ResourceName element.
-        * @return The Name value.
-        */
-        public String getName()
-        {
+         * The name of the metric, without spaces. The value is usually the same
+         * as that of the ResourceName element.
+         * 
+         * @return The Name value.
+         */
+        public String getName() {
             return this.name;
         }
-        
+
         /**
-        * The name of the metric, without spaces. The value is usually the same
-        * as that of the ResourceName element.
-        * @param nameValue The Name value.
-        */
-        public void setName(final String nameValue)
-        {
+         * The name of the metric, without spaces. The value is usually the same
+         * as that of the ResourceName element.
+         * 
+         * @param nameValue
+         *            The Name value.
+         */
+        public void setName(final String nameValue) {
             this.name = nameValue;
         }
-        
+
         private Calendar nextResetTime;
-        
+
         /**
-        * The time at which the metric will be reset.
-        * @return The NextResetTime value.
-        */
-        public Calendar getNextResetTime()
-        {
+         * The time at which the metric will be reset.
+         * 
+         * @return The NextResetTime value.
+         */
+        public Calendar getNextResetTime() {
             return this.nextResetTime;
         }
-        
+
         /**
-        * The time at which the metric will be reset.
-        * @param nextResetTimeValue The NextResetTime value.
-        */
-        public void setNextResetTime(final Calendar nextResetTimeValue)
-        {
+         * The time at which the metric will be reset.
+         * 
+         * @param nextResetTimeValue
+         *            The NextResetTime value.
+         */
+        public void setNextResetTime(final Calendar nextResetTimeValue) {
             this.nextResetTime = nextResetTimeValue;
         }
-        
+
         private String resourceName;
-        
+
         /**
-        * The name of the resource being measured.
-        * @return The ResourceName value.
-        */
-        public String getResourceName()
-        {
+         * The name of the resource being measured.
+         * 
+         * @return The ResourceName value.
+         */
+        public String getResourceName() {
             return this.resourceName;
         }
-        
+
         /**
-        * The name of the resource being measured.
-        * @param resourceNameValue The ResourceName value.
-        */
-        public void setResourceName(final String resourceNameValue)
-        {
+         * The name of the resource being measured.
+         * 
+         * @param resourceNameValue
+         *            The ResourceName value.
+         */
+        public void setResourceName(final String resourceNameValue) {
             this.resourceName = resourceNameValue;
         }
-        
+
         private WebSiteMode siteMode;
-        
+
         /**
-        * The scaling for the web site. Web sites in Free Mode return a value
-        * of Limited. Web sites in Shared Mode return a value of Basic. Sites
-        * in Standard Mode return null.
-        * @return The SiteMode value.
-        */
-        public WebSiteMode getSiteMode()
-        {
+         * The scaling for the web site. Web sites in Free Mode return a value
+         * of Limited. Web sites in Shared Mode return a value of Basic. Sites
+         * in Standard Mode return null.
+         * 
+         * @return The SiteMode value.
+         */
+        public WebSiteMode getSiteMode() {
             return this.siteMode;
         }
-        
+
         /**
-        * The scaling for the web site. Web sites in Free Mode return a value
-        * of Limited. Web sites in Shared Mode return a value of Basic. Sites
-        * in Standard Mode return null.
-        * @param siteModeValue The SiteMode value.
-        */
-        public void setSiteMode(final WebSiteMode siteModeValue)
-        {
+         * The scaling for the web site. Web sites in Free Mode return a value
+         * of Limited. Web sites in Shared Mode return a value of Basic. Sites
+         * in Standard Mode return null.
+         * 
+         * @param siteModeValue
+         *            The SiteMode value.
+         */
+        public void setSiteMode(final WebSiteMode siteModeValue) {
             this.siteMode = siteModeValue;
         }
-        
+
         private String unit;
-        
+
         /**
-        * The unit of measure for the given metric.
-        * @return The Unit value.
-        */
-        public String getUnit()
-        {
+         * The unit of measure for the given metric.
+         * 
+         * @return The Unit value.
+         */
+        public String getUnit() {
             return this.unit;
         }
-        
+
         /**
-        * The unit of measure for the given metric.
-        * @param unitValue The Unit value.
-        */
-        public void setUnit(final String unitValue)
-        {
+         * The unit of measure for the given metric.
+         * 
+         * @param unitValue
+         *            The Unit value.
+         */
+        public void setUnit(final String unitValue) {
             this.unit = unitValue;
         }
     }

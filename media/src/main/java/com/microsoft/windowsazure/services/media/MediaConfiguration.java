@@ -20,11 +20,9 @@ import com.microsoft.windowsazure.Configuration;
  * Provides functionality to create a media services configuration.
  * 
  */
-public class MediaConfiguration
-{
+public class MediaConfiguration {
 
-    private MediaConfiguration()
-    {
+    private MediaConfiguration() {
     }
 
     /**
@@ -83,8 +81,7 @@ public class MediaConfiguration
      */
     public static Configuration configureWithOAuthAuthentication(
             String mediaServiceUri, String oAuthUri, String clientId,
-            String clientSecret, String scope)
-    {
+            String clientSecret, String scope) {
         return configureWithOAuthAuthentication(null,
                 Configuration.getInstance(), mediaServiceUri, oAuthUri,
                 clientId, clientSecret, scope);
@@ -121,8 +118,7 @@ public class MediaConfiguration
      */
     public static Configuration configureWithOAuthAuthentication(
             Configuration configuration, String mediaServiceUri,
-            String oAuthUri, String clientId, String clientSecret, String scope)
-    {
+            String oAuthUri, String clientId, String clientSecret, String scope) {
         return configureWithOAuthAuthentication(null, configuration,
                 mediaServiceUri, oAuthUri, clientId, clientSecret, scope);
     }
@@ -163,14 +159,11 @@ public class MediaConfiguration
     public static Configuration configureWithOAuthAuthentication(
             String profile, Configuration configuration,
             String mediaServiceUri, String oAuthUri, String clientId,
-            String clientSecret, String scope)
-    {
+            String clientSecret, String scope) {
 
-        if (profile == null)
-        {
+        if (profile == null) {
             profile = "";
-        } else if (profile.length() != 0 && !profile.endsWith("."))
-        {
+        } else if (profile.length() != 0 && !profile.endsWith(".")) {
             profile = profile + ".";
         }
 

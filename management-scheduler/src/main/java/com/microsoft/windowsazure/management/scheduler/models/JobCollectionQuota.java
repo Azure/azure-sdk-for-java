@@ -23,69 +23,72 @@
 
 package com.microsoft.windowsazure.management.scheduler.models;
 
-public class JobCollectionQuota
-{
+public class JobCollectionQuota {
     private Integer maxJobCount;
-    
+
     /**
-    * Maximum number of jobs that can be created in this job collection.
-    * Maximum value is dependent on the plan.
-    * @return The MaxJobCount value.
-    */
-    public Integer getMaxJobCount()
-    {
+     * Maximum number of jobs that can be created in this job collection.
+     * Maximum value is dependent on the plan.
+     * 
+     * @return The MaxJobCount value.
+     */
+    public Integer getMaxJobCount() {
         return this.maxJobCount;
     }
-    
+
     /**
-    * Maximum number of jobs that can be created in this job collection.
-    * Maximum value is dependent on the plan.
-    * @param maxJobCountValue The MaxJobCount value.
-    */
-    public void setMaxJobCount(final Integer maxJobCountValue)
-    {
+     * Maximum number of jobs that can be created in this job collection.
+     * Maximum value is dependent on the plan.
+     * 
+     * @param maxJobCountValue
+     *            The MaxJobCount value.
+     */
+    public void setMaxJobCount(final Integer maxJobCountValue) {
         this.maxJobCount = maxJobCountValue;
     }
-    
+
     private Integer maxJobOccurrence;
-    
+
     /**
-    * Maximum number of occurrences for all jobs in the job collection.
-    * @return The MaxJobOccurrence value.
-    */
-    public Integer getMaxJobOccurrence()
-    {
+     * Maximum number of occurrences for all jobs in the job collection.
+     * 
+     * @return The MaxJobOccurrence value.
+     */
+    public Integer getMaxJobOccurrence() {
         return this.maxJobOccurrence;
     }
-    
+
     /**
-    * Maximum number of occurrences for all jobs in the job collection.
-    * @param maxJobOccurrenceValue The MaxJobOccurrence value.
-    */
-    public void setMaxJobOccurrence(final Integer maxJobOccurrenceValue)
-    {
+     * Maximum number of occurrences for all jobs in the job collection.
+     * 
+     * @param maxJobOccurrenceValue
+     *            The MaxJobOccurrence value.
+     */
+    public void setMaxJobOccurrence(final Integer maxJobOccurrenceValue) {
         this.maxJobOccurrence = maxJobOccurrenceValue;
     }
-    
+
     private JobCollectionMaxRecurrence maxRecurrence;
-    
+
     /**
-    * Defines the maximum recurrences that can be specified in any job in this
-    * job collection.
-    * @return The MaxRecurrence value.
-    */
-    public JobCollectionMaxRecurrence getMaxRecurrence()
-    {
+     * Defines the maximum recurrences that can be specified in any job in this
+     * job collection.
+     * 
+     * @return The MaxRecurrence value.
+     */
+    public JobCollectionMaxRecurrence getMaxRecurrence() {
         return this.maxRecurrence;
     }
-    
+
     /**
-    * Defines the maximum recurrences that can be specified in any job in this
-    * job collection.
-    * @param maxRecurrenceValue The MaxRecurrence value.
-    */
-    public void setMaxRecurrence(final JobCollectionMaxRecurrence maxRecurrenceValue)
-    {
+     * Defines the maximum recurrences that can be specified in any job in this
+     * job collection.
+     * 
+     * @param maxRecurrenceValue
+     *            The MaxRecurrence value.
+     */
+    public void setMaxRecurrence(
+            final JobCollectionMaxRecurrence maxRecurrenceValue) {
         this.maxRecurrence = maxRecurrenceValue;
     }
 }

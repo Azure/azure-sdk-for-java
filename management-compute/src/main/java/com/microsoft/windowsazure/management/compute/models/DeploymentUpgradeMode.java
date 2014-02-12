@@ -23,11 +23,10 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-public enum DeploymentUpgradeMode
-{
+public enum DeploymentUpgradeMode {
     Auto,
-    
+
     Manual,
-    
+
     Simultaneous,
 }

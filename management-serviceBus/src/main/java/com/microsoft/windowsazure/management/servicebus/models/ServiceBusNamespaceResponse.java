@@ -26,27 +26,27 @@ package com.microsoft.windowsazure.management.servicebus.models;
 import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
-* The response to a request for a particular namespace.
-*/
-public class ServiceBusNamespaceResponse extends OperationResponse
-{
+ * The response to a request for a particular namespace.
+ */
+public class ServiceBusNamespaceResponse extends OperationResponse {
     private ServiceBusNamespace namespace;
-    
+
     /**
-    * The namespace.
-    * @return The Namespace value.
-    */
-    public ServiceBusNamespace getNamespace()
-    {
+     * The namespace.
+     * 
+     * @return The Namespace value.
+     */
+    public ServiceBusNamespace getNamespace() {
         return this.namespace;
     }
-    
+
     /**
-    * The namespace.
-    * @param namespaceValue The Namespace value.
-    */
-    public void setNamespace(final ServiceBusNamespace namespaceValue)
-    {
+     * The namespace.
+     * 
+     * @param namespaceValue
+     *            The Namespace value.
+     */
+    public void setNamespace(final ServiceBusNamespace namespaceValue) {
         this.namespace = namespaceValue;
     }
 }

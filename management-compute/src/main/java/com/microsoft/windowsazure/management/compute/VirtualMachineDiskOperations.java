@@ -44,430 +44,556 @@ import javax.xml.transform.TransformerException;
 import org.xml.sax.SAXException;
 
 /**
-* The Service Management API includes operations for managing the disks in your
-* subscription.  (see
-* http://msdn.microsoft.com/en-us/library/windowsazure/jj157188.aspx for more
-* information)
-*/
-public interface VirtualMachineDiskOperations
-{
+ * The Service Management API includes operations for managing the disks in your
+ * subscription. (see
+ * http://msdn.microsoft.com/en-us/library/windowsazure/jj157188.aspx for more
+ * information)
+ */
+public interface VirtualMachineDiskOperations {
     /**
-    * The Delete Data Disk operation removes the specified data disk from a
-    * virtual machine.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157179.aspx for
-    * more information)
-    *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of the deployment.
-    * @param roleName The name of the role to delete the data disk from.
-    * @param logicalUnitNumber The logical unit number of the disk.
-    * @param deleteFromStorage Optional. Specifies that the source blob for the
-    * disk should also be deleted from storage.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
-    OperationResponse beginDeletingDataDisk(String serviceName, String deploymentName, String roleName, int logicalUnitNumber, boolean deleteFromStorage) throws IOException, ServiceException;
-    
+     * The Delete Data Disk operation removes the specified data disk from a
+     * virtual machine. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157179.aspx for
+     * more information)
+     * 
+     * @param serviceName
+     *            The name of your service.
+     * @param deploymentName
+     *            The name of the deployment.
+     * @param roleName
+     *            The name of the role to delete the data disk from.
+     * @param logicalUnitNumber
+     *            The logical unit number of the disk.
+     * @param deleteFromStorage
+     *            Optional. Specifies that the source blob for the disk should
+     *            also be deleted from storage.
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @return A standard service response including an HTTP status code and
+     *         request ID.
+     */
+    OperationResponse beginDeletingDataDisk(String serviceName,
+            String deploymentName, String roleName, int logicalUnitNumber,
+            boolean deleteFromStorage) throws IOException, ServiceException;
+
     /**
-    * The Delete Data Disk operation removes the specified data disk from a
-    * virtual machine.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157179.aspx for
-    * more information)
-    *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of the deployment.
-    * @param roleName The name of the role to delete the data disk from.
-    * @param logicalUnitNumber The logical unit number of the disk.
-    * @param deleteFromStorage Optional. Specifies that the source blob for the
-    * disk should also be deleted from storage.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
-    Future<OperationResponse> beginDeletingDataDiskAsync(String serviceName, String deploymentName, String roleName, int logicalUnitNumber, boolean deleteFromStorage);
-    
+     * The Delete Data Disk operation removes the specified data disk from a
+     * virtual machine. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157179.aspx for
+     * more information)
+     * 
+     * @param serviceName
+     *            The name of your service.
+     * @param deploymentName
+     *            The name of the deployment.
+     * @param roleName
+     *            The name of the role to delete the data disk from.
+     * @param logicalUnitNumber
+     *            The logical unit number of the disk.
+     * @param deleteFromStorage
+     *            Optional. Specifies that the source blob for the disk should
+     *            also be deleted from storage.
+     * @return A standard service response including an HTTP status code and
+     *         request ID.
+     */
+    Future<OperationResponse> beginDeletingDataDiskAsync(String serviceName,
+            String deploymentName, String roleName, int logicalUnitNumber,
+            boolean deleteFromStorage);
+
     /**
-    * The Add Data Disk operation adds a data disk to a virtual machine. There
-    * are three ways to create the data disk using the Add Data Disk
-    * operation.  Option 1 – Attach an empty data disk to the role by
-    * specifying the disk label and location of the disk image.  Do not
-    * include the DiskName and SourceMediaLink elements in the request body.
-    * Include the MediaLink element and reference a blob that is in the same
-    * geographical region as the role.  You can also omit the MediaLink
-    * element. In this usage, Windows Azure will create the data disk in the
-    * storage account configured as default for the role.   Option 2 – Attach
-    * an existing data disk that is in the image repository.  Do not include
-    * the DiskName and SourceMediaLink elements in the request body.  Specify
-    * the data disk to use by including the DiskName element.  Note: If
-    * included the in the response body, the MediaLink and LogicalDiskSizeInGB
-    * elements are ignored.  Option 3 - Specify the location of a blob in your
-    * storage account that contain a disk image to use.  Include the
-    * SourceMediaLink element. Note: If the MediaLink element isincluded, it
-    * is ignored.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157199.aspx for
-    * more information)
-    *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of the deployment.
-    * @param roleName The name of the role to add the data disk to.
-    * @param parameters Parameters supplied to the Create Virtual Machine Data
-    * Disk operation.
-    * @throws ParserConfigurationException Thrown if there was an error
-    * configuring the parser for the response body.
-    * @throws SAXException Thrown if there was an error parsing the response
-    * body.
-    * @throws TransformerException Thrown if there was an error creating the
-    * DOM transformer.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
-    OperationResponse createDataDisk(String serviceName, String deploymentName, String roleName, VirtualMachineDiskCreateDataDiskParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
-    
+     * The Add Data Disk operation adds a data disk to a virtual machine. There
+     * are three ways to create the data disk using the Add Data Disk operation.
+     * Option 1 – Attach an empty data disk to the role by specifying the disk
+     * label and location of the disk image. Do not include the DiskName and
+     * SourceMediaLink elements in the request body. Include the MediaLink
+     * element and reference a blob that is in the same geographical region as
+     * the role. You can also omit the MediaLink element. In this usage, Windows
+     * Azure will create the data disk in the storage account configured as
+     * default for the role. Option 2 – Attach an existing data disk that is in
+     * the image repository. Do not include the DiskName and SourceMediaLink
+     * elements in the request body. Specify the data disk to use by including
+     * the DiskName element. Note: If included the in the response body, the
+     * MediaLink and LogicalDiskSizeInGB elements are ignored. Option 3 -
+     * Specify the location of a blob in your storage account that contain a
+     * disk image to use. Include the SourceMediaLink element. Note: If the
+     * MediaLink element isincluded, it is ignored. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157199.aspx for
+     * more information)
+     * 
+     * @param serviceName
+     *            The name of your service.
+     * @param deploymentName
+     *            The name of the deployment.
+     * @param roleName
+     *            The name of the role to add the data disk to.
+     * @param parameters
+     *            Parameters supplied to the Create Virtual Machine Data Disk
+     *            operation.
+     * @throws ParserConfigurationException
+     *             Thrown if there was an error configuring the parser for the
+     *             response body.
+     * @throws SAXException
+     *             Thrown if there was an error parsing the response body.
+     * @throws TransformerException
+     *             Thrown if there was an error creating the DOM transformer.
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @return A standard service response including an HTTP status code and
+     *         request ID.
+     */
+    OperationResponse createDataDisk(String serviceName, String deploymentName,
+            String roleName,
+            VirtualMachineDiskCreateDataDiskParameters parameters)
+            throws ParserConfigurationException, SAXException,
+            TransformerException, IOException, ServiceException;
+
     /**
-    * The Add Data Disk operation adds a data disk to a virtual machine. There
-    * are three ways to create the data disk using the Add Data Disk
-    * operation.  Option 1 – Attach an empty data disk to the role by
-    * specifying the disk label and location of the disk image.  Do not
-    * include the DiskName and SourceMediaLink elements in the request body.
-    * Include the MediaLink element and reference a blob that is in the same
-    * geographical region as the role.  You can also omit the MediaLink
-    * element. In this usage, Windows Azure will create the data disk in the
-    * storage account configured as default for the role.   Option 2 – Attach
-    * an existing data disk that is in the image repository.  Do not include
-    * the DiskName and SourceMediaLink elements in the request body.  Specify
-    * the data disk to use by including the DiskName element.  Note: If
-    * included the in the response body, the MediaLink and LogicalDiskSizeInGB
-    * elements are ignored.  Option 3 - Specify the location of a blob in your
-    * storage account that contain a disk image to use.  Include the
-    * SourceMediaLink element. Note: If the MediaLink element isincluded, it
-    * is ignored.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157199.aspx for
-    * more information)
-    *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of the deployment.
-    * @param roleName The name of the role to add the data disk to.
-    * @param parameters Parameters supplied to the Create Virtual Machine Data
-    * Disk operation.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
-    Future<OperationResponse> createDataDiskAsync(String serviceName, String deploymentName, String roleName, VirtualMachineDiskCreateDataDiskParameters parameters);
-    
+     * The Add Data Disk operation adds a data disk to a virtual machine. There
+     * are three ways to create the data disk using the Add Data Disk operation.
+     * Option 1 – Attach an empty data disk to the role by specifying the disk
+     * label and location of the disk image. Do not include the DiskName and
+     * SourceMediaLink elements in the request body. Include the MediaLink
+     * element and reference a blob that is in the same geographical region as
+     * the role. You can also omit the MediaLink element. In this usage, Windows
+     * Azure will create the data disk in the storage account configured as
+     * default for the role. Option 2 – Attach an existing data disk that is in
+     * the image repository. Do not include the DiskName and SourceMediaLink
+     * elements in the request body. Specify the data disk to use by including
+     * the DiskName element. Note: If included the in the response body, the
+     * MediaLink and LogicalDiskSizeInGB elements are ignored. Option 3 -
+     * Specify the location of a blob in your storage account that contain a
+     * disk image to use. Include the SourceMediaLink element. Note: If the
+     * MediaLink element isincluded, it is ignored. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157199.aspx for
+     * more information)
+     * 
+     * @param serviceName
+     *            The name of your service.
+     * @param deploymentName
+     *            The name of the deployment.
+     * @param roleName
+     *            The name of the role to add the data disk to.
+     * @param parameters
+     *            Parameters supplied to the Create Virtual Machine Data Disk
+     *            operation.
+     * @return A standard service response including an HTTP status code and
+     *         request ID.
+     */
+    Future<OperationResponse> createDataDiskAsync(String serviceName,
+            String deploymentName, String roleName,
+            VirtualMachineDiskCreateDataDiskParameters parameters);
+
     /**
-    * The Add Disk operation adds a disk to the user image repository. The disk
-    * can be an operating system disk or a data disk.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157178.aspx for
-    * more information)
-    *
-    * @param parameters Parameters supplied to the Create Virtual Machine Disk
-    * operation.
-    * @throws ParserConfigurationException Thrown if there was an error
-    * configuring the parser for the response body.
-    * @throws SAXException Thrown if there was an error parsing the response
-    * body.
-    * @throws TransformerException Thrown if there was an error creating the
-    * DOM transformer.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws URISyntaxException Thrown if there was an error parsing a URI in
-    * the response.
-    * @return A virtual machine disk associated with your subscription.
-    */
-    VirtualMachineDiskCreateDiskResponse createDisk(VirtualMachineDiskCreateDiskParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException;
-    
+     * The Add Disk operation adds a disk to the user image repository. The disk
+     * can be an operating system disk or a data disk. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157178.aspx for
+     * more information)
+     * 
+     * @param parameters
+     *            Parameters supplied to the Create Virtual Machine Disk
+     *            operation.
+     * @throws ParserConfigurationException
+     *             Thrown if there was an error configuring the parser for the
+     *             response body.
+     * @throws SAXException
+     *             Thrown if there was an error parsing the response body.
+     * @throws TransformerException
+     *             Thrown if there was an error creating the DOM transformer.
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @throws URISyntaxException
+     *             Thrown if there was an error parsing a URI in the response.
+     * @return A virtual machine disk associated with your subscription.
+     */
+    VirtualMachineDiskCreateDiskResponse createDisk(
+            VirtualMachineDiskCreateDiskParameters parameters)
+            throws ParserConfigurationException, SAXException,
+            TransformerException, IOException, ServiceException,
+            URISyntaxException;
+
     /**
-    * The Add Disk operation adds a disk to the user image repository. The disk
-    * can be an operating system disk or a data disk.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157178.aspx for
-    * more information)
-    *
-    * @param parameters Parameters supplied to the Create Virtual Machine Disk
-    * operation.
-    * @return A virtual machine disk associated with your subscription.
-    */
-    Future<VirtualMachineDiskCreateDiskResponse> createDiskAsync(VirtualMachineDiskCreateDiskParameters parameters);
-    
+     * The Add Disk operation adds a disk to the user image repository. The disk
+     * can be an operating system disk or a data disk. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157178.aspx for
+     * more information)
+     * 
+     * @param parameters
+     *            Parameters supplied to the Create Virtual Machine Disk
+     *            operation.
+     * @return A virtual machine disk associated with your subscription.
+     */
+    Future<VirtualMachineDiskCreateDiskResponse> createDiskAsync(
+            VirtualMachineDiskCreateDiskParameters parameters);
+
     /**
-    * The Delete Data Disk operation removes the specified data disk from a
-    * virtual machine.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157179.aspx for
-    * more information)
-    *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of the deployment.
-    * @param roleName The name of the role to delete the data disk from.
-    * @param logicalUnitNumber The logical unit number of the disk.
-    * @param deleteFromStorage Optional. Specifies that the source blob for the
-    * disk should also be deleted from storage.
-    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
-    * or otherwise occupied, and the thread is interrupted, either before or
-    * during the activity. Occasionally a method may wish to test whether the
-    * current thread has been interrupted, and if so, to immediately throw
-    * this exception. The following code can be used to achieve this effect:
-    * @throws ExecutionException Thrown when attempting to retrieve the result
-    * of a task that aborted by throwing an exception. This exception can be
-    * inspected using the Throwable.getCause() method.
-    * @throws ServiceException Thrown if the server returned an error for the
-    * request.
-    * @throws IOException Thrown if there was an error setting up tracing for
-    * the request.
-    * @return The response body contains the status of the specified
-    * asynchronous operation, indicating whether it has succeeded, is
-    * inprogress, or has failed. Note that this status is distinct from the
-    * HTTP status code returned for the Get Operation Status operation itself.
-    * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
-    * operation failed, the response body includes the HTTP status code for
-    * the failed request, and also includes error information regarding the
-    * failure.
-    */
-    ComputeOperationStatusResponse deleteDataDisk(String serviceName, String deploymentName, String roleName, int logicalUnitNumber, boolean deleteFromStorage) throws InterruptedException, ExecutionException, ServiceException, IOException;
-    
+     * The Delete Data Disk operation removes the specified data disk from a
+     * virtual machine. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157179.aspx for
+     * more information)
+     * 
+     * @param serviceName
+     *            The name of your service.
+     * @param deploymentName
+     *            The name of the deployment.
+     * @param roleName
+     *            The name of the role to delete the data disk from.
+     * @param logicalUnitNumber
+     *            The logical unit number of the disk.
+     * @param deleteFromStorage
+     *            Optional. Specifies that the source blob for the disk should
+     *            also be deleted from storage.
+     * @throws InterruptedException
+     *             Thrown when a thread is waiting, sleeping, or otherwise
+     *             occupied, and the thread is interrupted, either before or
+     *             during the activity. Occasionally a method may wish to test
+     *             whether the current thread has been interrupted, and if so,
+     *             to immediately throw this exception. The following code can
+     *             be used to achieve this effect:
+     * @throws ExecutionException
+     *             Thrown when attempting to retrieve the result of a task that
+     *             aborted by throwing an exception. This exception can be
+     *             inspected using the Throwable.getCause() method.
+     * @throws ServiceException
+     *             Thrown if the server returned an error for the request.
+     * @throws IOException
+     *             Thrown if there was an error setting up tracing for the
+     *             request.
+     * @return The response body contains the status of the specified
+     *         asynchronous operation, indicating whether it has succeeded, is
+     *         inprogress, or has failed. Note that this status is distinct from
+     *         the HTTP status code returned for the Get Operation Status
+     *         operation itself. If the asynchronous operation succeeded, the
+     *         response body includes the HTTP status code for the successful
+     *         request. If the asynchronous operation failed, the response body
+     *         includes the HTTP status code for the failed request, and also
+     *         includes error information regarding the failure.
+     */
+    ComputeOperationStatusResponse deleteDataDisk(String serviceName,
+            String deploymentName, String roleName, int logicalUnitNumber,
+            boolean deleteFromStorage) throws InterruptedException,
+            ExecutionException, ServiceException, IOException;
+
     /**
-    * The Delete Data Disk operation removes the specified data disk from a
-    * virtual machine.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157179.aspx for
-    * more information)
-    *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of the deployment.
-    * @param roleName The name of the role to delete the data disk from.
-    * @param logicalUnitNumber The logical unit number of the disk.
-    * @param deleteFromStorage Optional. Specifies that the source blob for the
-    * disk should also be deleted from storage.
-    * @return The response body contains the status of the specified
-    * asynchronous operation, indicating whether it has succeeded, is
-    * inprogress, or has failed. Note that this status is distinct from the
-    * HTTP status code returned for the Get Operation Status operation itself.
-    * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
-    * operation failed, the response body includes the HTTP status code for
-    * the failed request, and also includes error information regarding the
-    * failure.
-    */
-    Future<ComputeOperationStatusResponse> deleteDataDiskAsync(String serviceName, String deploymentName, String roleName, int logicalUnitNumber, boolean deleteFromStorage);
-    
+     * The Delete Data Disk operation removes the specified data disk from a
+     * virtual machine. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157179.aspx for
+     * more information)
+     * 
+     * @param serviceName
+     *            The name of your service.
+     * @param deploymentName
+     *            The name of the deployment.
+     * @param roleName
+     *            The name of the role to delete the data disk from.
+     * @param logicalUnitNumber
+     *            The logical unit number of the disk.
+     * @param deleteFromStorage
+     *            Optional. Specifies that the source blob for the disk should
+     *            also be deleted from storage.
+     * @return The response body contains the status of the specified
+     *         asynchronous operation, indicating whether it has succeeded, is
+     *         inprogress, or has failed. Note that this status is distinct from
+     *         the HTTP status code returned for the Get Operation Status
+     *         operation itself. If the asynchronous operation succeeded, the
+     *         response body includes the HTTP status code for the successful
+     *         request. If the asynchronous operation failed, the response body
+     *         includes the HTTP status code for the failed request, and also
+     *         includes error information regarding the failure.
+     */
+    Future<ComputeOperationStatusResponse> deleteDataDiskAsync(
+            String serviceName, String deploymentName, String roleName,
+            int logicalUnitNumber, boolean deleteFromStorage);
+
     /**
-    * The Delete Disk operation deletes the specified data or operating system
-    * disk from your image repository.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157200.aspx for
-    * more information)
-    *
-    * @param diskName The name of the disk to delete.
-    * @param deleteFromStorage Optional. Specifies that the source blob for the
-    * disk should also be deleted from storage.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
-    OperationResponse deleteDisk(String diskName, boolean deleteFromStorage) throws IOException, ServiceException;
-    
+     * The Delete Disk operation deletes the specified data or operating system
+     * disk from your image repository. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157200.aspx for
+     * more information)
+     * 
+     * @param diskName
+     *            The name of the disk to delete.
+     * @param deleteFromStorage
+     *            Optional. Specifies that the source blob for the disk should
+     *            also be deleted from storage.
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @return A standard service response including an HTTP status code and
+     *         request ID.
+     */
+    OperationResponse deleteDisk(String diskName, boolean deleteFromStorage)
+            throws IOException, ServiceException;
+
     /**
-    * The Delete Disk operation deletes the specified data or operating system
-    * disk from your image repository.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157200.aspx for
-    * more information)
-    *
-    * @param diskName The name of the disk to delete.
-    * @param deleteFromStorage Optional. Specifies that the source blob for the
-    * disk should also be deleted from storage.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
-    Future<OperationResponse> deleteDiskAsync(String diskName, boolean deleteFromStorage);
-    
+     * The Delete Disk operation deletes the specified data or operating system
+     * disk from your image repository. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157200.aspx for
+     * more information)
+     * 
+     * @param diskName
+     *            The name of the disk to delete.
+     * @param deleteFromStorage
+     *            Optional. Specifies that the source blob for the disk should
+     *            also be deleted from storage.
+     * @return A standard service response including an HTTP status code and
+     *         request ID.
+     */
+    Future<OperationResponse> deleteDiskAsync(String diskName,
+            boolean deleteFromStorage);
+
     /**
-    * The Get Data Disk operation retrieves the specified data disk from a
-    * virtual machine.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157180.aspx for
-    * more information)
-    *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of the deployment.
-    * @param roleName The name of the role.
-    * @param logicalUnitNumber The logical unit number of the disk.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParserConfigurationException Thrown if there was a serious
-    * configuration error with the document parser.
-    * @throws SAXException Thrown if there was an error parsing the XML
-    * response.
-    * @throws URISyntaxException Thrown if there was an error parsing a URI in
-    * the response.
-    * @return The Get Data Disk operation response.
-    */
-    VirtualMachineDiskGetDataDiskResponse getDataDisk(String serviceName, String deploymentName, String roleName, int logicalUnitNumber) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException;
-    
+     * The Get Data Disk operation retrieves the specified data disk from a
+     * virtual machine. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157180.aspx for
+     * more information)
+     * 
+     * @param serviceName
+     *            The name of your service.
+     * @param deploymentName
+     *            The name of the deployment.
+     * @param roleName
+     *            The name of the role.
+     * @param logicalUnitNumber
+     *            The logical unit number of the disk.
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @throws ParserConfigurationException
+     *             Thrown if there was a serious configuration error with the
+     *             document parser.
+     * @throws SAXException
+     *             Thrown if there was an error parsing the XML response.
+     * @throws URISyntaxException
+     *             Thrown if there was an error parsing a URI in the response.
+     * @return The Get Data Disk operation response.
+     */
+    VirtualMachineDiskGetDataDiskResponse getDataDisk(String serviceName,
+            String deploymentName, String roleName, int logicalUnitNumber)
+            throws IOException, ServiceException, ParserConfigurationException,
+            SAXException, URISyntaxException;
+
     /**
-    * The Get Data Disk operation retrieves the specified data disk from a
-    * virtual machine.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157180.aspx for
-    * more information)
-    *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of the deployment.
-    * @param roleName The name of the role.
-    * @param logicalUnitNumber The logical unit number of the disk.
-    * @return The Get Data Disk operation response.
-    */
-    Future<VirtualMachineDiskGetDataDiskResponse> getDataDiskAsync(String serviceName, String deploymentName, String roleName, int logicalUnitNumber);
-    
+     * The Get Data Disk operation retrieves the specified data disk from a
+     * virtual machine. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157180.aspx for
+     * more information)
+     * 
+     * @param serviceName
+     *            The name of your service.
+     * @param deploymentName
+     *            The name of the deployment.
+     * @param roleName
+     *            The name of the role.
+     * @param logicalUnitNumber
+     *            The logical unit number of the disk.
+     * @return The Get Data Disk operation response.
+     */
+    Future<VirtualMachineDiskGetDataDiskResponse> getDataDiskAsync(
+            String serviceName, String deploymentName, String roleName,
+            int logicalUnitNumber);
+
     /**
-    * The Get Disk operation retrieves a disk from the user image repository.
-    * The disk can be an operating system disk or a data disk.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157178.aspx for
-    * more information)
-    *
-    * @param diskName The name of the disk.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParserConfigurationException Thrown if there was a serious
-    * configuration error with the document parser.
-    * @throws SAXException Thrown if there was an error parsing the XML
-    * response.
-    * @throws URISyntaxException Thrown if there was an error parsing a URI in
-    * the response.
-    * @return A virtual machine disk associated with your subscription.
-    */
-    VirtualMachineDiskGetDiskResponse getDisk(String diskName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException;
-    
+     * The Get Disk operation retrieves a disk from the user image repository.
+     * The disk can be an operating system disk or a data disk. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157178.aspx for
+     * more information)
+     * 
+     * @param diskName
+     *            The name of the disk.
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @throws ParserConfigurationException
+     *             Thrown if there was a serious configuration error with the
+     *             document parser.
+     * @throws SAXException
+     *             Thrown if there was an error parsing the XML response.
+     * @throws URISyntaxException
+     *             Thrown if there was an error parsing a URI in the response.
+     * @return A virtual machine disk associated with your subscription.
+     */
+    VirtualMachineDiskGetDiskResponse getDisk(String diskName)
+            throws IOException, ServiceException, ParserConfigurationException,
+            SAXException, URISyntaxException;
+
     /**
-    * The Get Disk operation retrieves a disk from the user image repository.
-    * The disk can be an operating system disk or a data disk.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157178.aspx for
-    * more information)
-    *
-    * @param diskName The name of the disk.
-    * @return A virtual machine disk associated with your subscription.
-    */
+     * The Get Disk operation retrieves a disk from the user image repository.
+     * The disk can be an operating system disk or a data disk. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157178.aspx for
+     * more information)
+     * 
+     * @param diskName
+     *            The name of the disk.
+     * @return A virtual machine disk associated with your subscription.
+     */
     Future<VirtualMachineDiskGetDiskResponse> getDiskAsync(String diskName);
-    
+
     /**
-    * The List Disks operation retrieves a list of the disks in your image
-    * repository.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157176.aspx for
-    * more information)
-    *
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParserConfigurationException Thrown if there was a serious
-    * configuration error with the document parser.
-    * @throws SAXException Thrown if there was an error parsing the XML
-    * response.
-    * @throws URISyntaxException Thrown if there was an error parsing a URI in
-    * the response.
-    * @return The List Disks operation response.
-    */
-    VirtualMachineDiskListResponse listDisks() throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException;
-    
+     * The List Disks operation retrieves a list of the disks in your image
+     * repository. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157176.aspx for
+     * more information)
+     * 
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @throws ParserConfigurationException
+     *             Thrown if there was a serious configuration error with the
+     *             document parser.
+     * @throws SAXException
+     *             Thrown if there was an error parsing the XML response.
+     * @throws URISyntaxException
+     *             Thrown if there was an error parsing a URI in the response.
+     * @return The List Disks operation response.
+     */
+    VirtualMachineDiskListResponse listDisks() throws IOException,
+            ServiceException, ParserConfigurationException, SAXException,
+            URISyntaxException;
+
     /**
-    * The List Disks operation retrieves a list of the disks in your image
-    * repository.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157176.aspx for
-    * more information)
-    *
-    * @return The List Disks operation response.
-    */
+     * The List Disks operation retrieves a list of the disks in your image
+     * repository. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157176.aspx for
+     * more information)
+     * 
+     * @return The List Disks operation response.
+     */
     Future<VirtualMachineDiskListResponse> listDisksAsync();
-    
+
     /**
-    * The Update Data Disk operation updates the specified data disk attached
-    * to the specified virtual machine.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157190.aspx for
-    * more information)
-    *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of the deployment.
-    * @param roleName The name of the role to add the data disk to.
-    * @param logicalUnitNumber The logical unit number of the disk.
-    * @param parameters Parameters supplied to the Update Virtual Machine Data
-    * Disk operation.
-    * @throws ParserConfigurationException Thrown if there was an error
-    * configuring the parser for the response body.
-    * @throws SAXException Thrown if there was an error parsing the response
-    * body.
-    * @throws TransformerException Thrown if there was an error creating the
-    * DOM transformer.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
-    OperationResponse updateDataDisk(String serviceName, String deploymentName, String roleName, int logicalUnitNumber, VirtualMachineDiskUpdateDataDiskParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
-    
+     * The Update Data Disk operation updates the specified data disk attached
+     * to the specified virtual machine. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157190.aspx for
+     * more information)
+     * 
+     * @param serviceName
+     *            The name of your service.
+     * @param deploymentName
+     *            The name of the deployment.
+     * @param roleName
+     *            The name of the role to add the data disk to.
+     * @param logicalUnitNumber
+     *            The logical unit number of the disk.
+     * @param parameters
+     *            Parameters supplied to the Update Virtual Machine Data Disk
+     *            operation.
+     * @throws ParserConfigurationException
+     *             Thrown if there was an error configuring the parser for the
+     *             response body.
+     * @throws SAXException
+     *             Thrown if there was an error parsing the response body.
+     * @throws TransformerException
+     *             Thrown if there was an error creating the DOM transformer.
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @return A standard service response including an HTTP status code and
+     *         request ID.
+     */
+    OperationResponse updateDataDisk(String serviceName, String deploymentName,
+            String roleName, int logicalUnitNumber,
+            VirtualMachineDiskUpdateDataDiskParameters parameters)
+            throws ParserConfigurationException, SAXException,
+            TransformerException, IOException, ServiceException;
+
     /**
-    * The Update Data Disk operation updates the specified data disk attached
-    * to the specified virtual machine.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157190.aspx for
-    * more information)
-    *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of the deployment.
-    * @param roleName The name of the role to add the data disk to.
-    * @param logicalUnitNumber The logical unit number of the disk.
-    * @param parameters Parameters supplied to the Update Virtual Machine Data
-    * Disk operation.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
-    Future<OperationResponse> updateDataDiskAsync(String serviceName, String deploymentName, String roleName, int logicalUnitNumber, VirtualMachineDiskUpdateDataDiskParameters parameters);
-    
+     * The Update Data Disk operation updates the specified data disk attached
+     * to the specified virtual machine. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157190.aspx for
+     * more information)
+     * 
+     * @param serviceName
+     *            The name of your service.
+     * @param deploymentName
+     *            The name of the deployment.
+     * @param roleName
+     *            The name of the role to add the data disk to.
+     * @param logicalUnitNumber
+     *            The logical unit number of the disk.
+     * @param parameters
+     *            Parameters supplied to the Update Virtual Machine Data Disk
+     *            operation.
+     * @return A standard service response including an HTTP status code and
+     *         request ID.
+     */
+    Future<OperationResponse> updateDataDiskAsync(String serviceName,
+            String deploymentName, String roleName, int logicalUnitNumber,
+            VirtualMachineDiskUpdateDataDiskParameters parameters);
+
     /**
-    * The Add Disk operation adds a disk to the user image repository. The disk
-    * can be an operating system disk or a data disk.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157178.aspx for
-    * more information)
-    *
-    * @param diskName The name of the disk being updated.
-    * @param parameters Parameters supplied to the Update Virtual Machine Disk
-    * operation.
-    * @throws ParserConfigurationException Thrown if there was an error
-    * configuring the parser for the response body.
-    * @throws SAXException Thrown if there was an error parsing the response
-    * body.
-    * @throws TransformerException Thrown if there was an error creating the
-    * DOM transformer.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws URISyntaxException Thrown if there was an error parsing a URI in
-    * the response.
-    * @return A virtual machine disk associated with your subscription.
-    */
-    VirtualMachineDiskUpdateDiskResponse updateDisk(String diskName, VirtualMachineDiskUpdateDiskParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException;
-    
+     * The Add Disk operation adds a disk to the user image repository. The disk
+     * can be an operating system disk or a data disk. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157178.aspx for
+     * more information)
+     * 
+     * @param diskName
+     *            The name of the disk being updated.
+     * @param parameters
+     *            Parameters supplied to the Update Virtual Machine Disk
+     *            operation.
+     * @throws ParserConfigurationException
+     *             Thrown if there was an error configuring the parser for the
+     *             response body.
+     * @throws SAXException
+     *             Thrown if there was an error parsing the response body.
+     * @throws TransformerException
+     *             Thrown if there was an error creating the DOM transformer.
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @throws URISyntaxException
+     *             Thrown if there was an error parsing a URI in the response.
+     * @return A virtual machine disk associated with your subscription.
+     */
+    VirtualMachineDiskUpdateDiskResponse updateDisk(String diskName,
+            VirtualMachineDiskUpdateDiskParameters parameters)
+            throws ParserConfigurationException, SAXException,
+            TransformerException, IOException, ServiceException,
+            URISyntaxException;
+
     /**
-    * The Add Disk operation adds a disk to the user image repository. The disk
-    * can be an operating system disk or a data disk.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157178.aspx for
-    * more information)
-    *
-    * @param diskName The name of the disk being updated.
-    * @param parameters Parameters supplied to the Update Virtual Machine Disk
-    * operation.
-    * @return A virtual machine disk associated with your subscription.
-    */
-    Future<VirtualMachineDiskUpdateDiskResponse> updateDiskAsync(String diskName, VirtualMachineDiskUpdateDiskParameters parameters);
+     * The Add Disk operation adds a disk to the user image repository. The disk
+     * can be an operating system disk or a data disk. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157178.aspx for
+     * more information)
+     * 
+     * @param diskName
+     *            The name of the disk being updated.
+     * @param parameters
+     *            Parameters supplied to the Update Virtual Machine Disk
+     *            operation.
+     * @return A virtual machine disk associated with your subscription.
+     */
+    Future<VirtualMachineDiskUpdateDiskResponse> updateDiskAsync(
+            String diskName, VirtualMachineDiskUpdateDiskParameters parameters);
 }

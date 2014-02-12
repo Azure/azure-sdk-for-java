@@ -27,8 +27,7 @@ import javax.xml.bind.annotation.XmlElement;
  * start offset must be a modulus of 512 and the end offset must be a modulus of
  * 512 - 1. Examples of valid byte ranges are 0-511, 512-1023, etc.
  */
-public class PageRange
-{
+public class PageRange {
     private long start;
     private long end;
 
@@ -36,8 +35,7 @@ public class PageRange
      * Default constructor. The start and end values must be set for this
      * {@link PageRange} instance to be valid.
      */
-    public PageRange()
-    {
+    public PageRange() {
     }
 
     /**
@@ -56,8 +54,7 @@ public class PageRange
      *            The ending offset value in bytes for the page range,
      *            inclusive.
      */
-    public PageRange(long start, long end)
-    {
+    public PageRange(long start, long end) {
         this.start = start;
         this.end = end;
     }
@@ -70,8 +67,7 @@ public class PageRange
      *         inclusive.
      */
     @XmlElement(name = "Start")
-    public long getStart()
-    {
+    public long getStart() {
         return start;
     }
 
@@ -89,8 +85,7 @@ public class PageRange
      *            inclusive.
      * @return A reference to this {@link PageRange} instance.
      */
-    public PageRange setStart(long start)
-    {
+    public PageRange setStart(long start) {
         this.start = start;
         return this;
     }
@@ -102,8 +97,7 @@ public class PageRange
      * @return The ending offset value in bytes for the page range, inclusive.
      */
     @XmlElement(name = "End")
-    public long getEnd()
-    {
+    public long getEnd() {
         return end;
     }
 
@@ -121,8 +115,7 @@ public class PageRange
      *            inclusive.
      * @return A reference to this {@link PageRange} instance.
      */
-    public PageRange setEnd(long end)
-    {
+    public PageRange setEnd(long end) {
         this.end = end;
         return this;
     }
@@ -132,8 +125,7 @@ public class PageRange
      * 
      * @return The size of the page range in bytes.
      */
-    public long getLength()
-    {
+    public long getLength() {
         return end - start + 1;
     }
 
@@ -153,8 +145,7 @@ public class PageRange
      *            inclusive.
      * @return A reference to this {@link PageRange} instance.
      */
-    public PageRange setLength(long value)
-    {
+    public PageRange setLength(long value) {
         this.end = this.start + value - 1;
         return this;
     }

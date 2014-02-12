@@ -24,127 +24,133 @@
 package com.microsoft.windowsazure.management.sql.models;
 
 /**
-* Parameters supplied to the Create Database operation.
-*/
-public class DatabaseUpdateParameters
-{
+ * Parameters supplied to the Create Database operation.
+ */
+public class DatabaseUpdateParameters {
     private String collationName;
-    
+
     /**
-    * Gets or sets the collation name for the new database.
-    * @return The CollationName value.
-    */
-    public String getCollationName()
-    {
+     * Gets or sets the collation name for the new database.
+     * 
+     * @return The CollationName value.
+     */
+    public String getCollationName() {
         return this.collationName;
     }
-    
+
     /**
-    * Gets or sets the collation name for the new database.
-    * @param collationNameValue The CollationName value.
-    */
-    public void setCollationName(final String collationNameValue)
-    {
+     * Gets or sets the collation name for the new database.
+     * 
+     * @param collationNameValue
+     *            The CollationName value.
+     */
+    public void setCollationName(final String collationNameValue) {
         this.collationName = collationNameValue;
     }
-    
+
     private String edition;
-    
+
     /**
-    * Gets or sets the edition for the new database.
-    * @return The Edition value.
-    */
-    public String getEdition()
-    {
+     * Gets or sets the edition for the new database.
+     * 
+     * @return The Edition value.
+     */
+    public String getEdition() {
         return this.edition;
     }
-    
+
     /**
-    * Gets or sets the edition for the new database.
-    * @param editionValue The Edition value.
-    */
-    public void setEdition(final String editionValue)
-    {
+     * Gets or sets the edition for the new database.
+     * 
+     * @param editionValue
+     *            The Edition value.
+     */
+    public void setEdition(final String editionValue) {
         this.edition = editionValue;
     }
-    
+
     private int id;
-    
+
     /**
-    * Gets or sets the id of the database.
-    * @return The Id value.
-    */
-    public int getId()
-    {
+     * Gets or sets the id of the database.
+     * 
+     * @return The Id value.
+     */
+    public int getId() {
         return this.id;
     }
-    
+
     /**
-    * Gets or sets the id of the database.
-    * @param idValue The Id value.
-    */
-    public void setId(final int idValue)
-    {
+     * Gets or sets the id of the database.
+     * 
+     * @param idValue
+     *            The Id value.
+     */
+    public void setId(final int idValue) {
         this.id = idValue;
     }
-    
+
     private long maximumDatabaseSizeInGB;
-    
+
     /**
-    * Gets or sets the maximum size of this database, in Gigabytes.
-    * @return The MaximumDatabaseSizeInGB value.
-    */
-    public long getMaximumDatabaseSizeInGB()
-    {
+     * Gets or sets the maximum size of this database, in Gigabytes.
+     * 
+     * @return The MaximumDatabaseSizeInGB value.
+     */
+    public long getMaximumDatabaseSizeInGB() {
         return this.maximumDatabaseSizeInGB;
     }
-    
+
     /**
-    * Gets or sets the maximum size of this database, in Gigabytes.
-    * @param maximumDatabaseSizeInGBValue The MaximumDatabaseSizeInGB value.
-    */
-    public void setMaximumDatabaseSizeInGB(final long maximumDatabaseSizeInGBValue)
-    {
+     * Gets or sets the maximum size of this database, in Gigabytes.
+     * 
+     * @param maximumDatabaseSizeInGBValue
+     *            The MaximumDatabaseSizeInGB value.
+     */
+    public void setMaximumDatabaseSizeInGB(
+            final long maximumDatabaseSizeInGBValue) {
         this.maximumDatabaseSizeInGB = maximumDatabaseSizeInGBValue;
     }
-    
+
     private String name;
-    
+
     /**
-    * Gets or sets the name of the database.
-    * @return The Name value.
-    */
-    public String getName()
-    {
+     * Gets or sets the name of the database.
+     * 
+     * @return The Name value.
+     */
+    public String getName() {
         return this.name;
     }
-    
+
     /**
-    * Gets or sets the name of the database.
-    * @param nameValue The Name value.
-    */
-    public void setName(final String nameValue)
-    {
+     * Gets or sets the name of the database.
+     * 
+     * @param nameValue
+     *            The Name value.
+     */
+    public void setName(final String nameValue) {
         this.name = nameValue;
     }
-    
+
     private String serviceObjectiveId;
-    
+
     /**
-    * Gets or sets the id of this service objective.
-    * @return The ServiceObjectiveId value.
-    */
-    public String getServiceObjectiveId()
-    {
+     * Gets or sets the id of this service objective.
+     * 
+     * @return The ServiceObjectiveId value.
+     */
+    public String getServiceObjectiveId() {
         return this.serviceObjectiveId;
     }
-    
+
     /**
-    * Gets or sets the id of this service objective.
-    * @param serviceObjectiveIdValue The ServiceObjectiveId value.
-    */
-    public void setServiceObjectiveId(final String serviceObjectiveIdValue)
-    {
+     * Gets or sets the id of this service objective.
+     * 
+     * @param serviceObjectiveIdValue
+     *            The ServiceObjectiveId value.
+     */
+    public void setServiceObjectiveId(final String serviceObjectiveIdValue) {
         this.serviceObjectiveId = serviceObjectiveIdValue;
     }
 }

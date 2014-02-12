@@ -25,10 +25,10 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class AffinityGroupOperationsTests extends ManagementIntegrationTestBase { 
+public class AffinityGroupOperationsTests extends ManagementIntegrationTestBase {
     private static final String affinityGroupName1 = "af1";
     private static final String affinityGroupName2 = "af2";
-    
+
     @BeforeClass
     public static void setup() throws Exception {
         createService();
@@ -43,22 +43,21 @@ public class AffinityGroupOperationsTests extends ManagementIntegrationTestBase 
 
     @AfterClass
     public static void cleanup() throws Exception {
-        try
-        {
-            managementClient.getAffinityGroupsOperations().delete(affinityGroupName1);
-        }
-        catch (ServiceException e) {
+        try {
+            managementClient.getAffinityGroupsOperations().delete(
+                    affinityGroupName1);
+        } catch (ServiceException e) {
             e.printStackTrace();
         }
-        
+
         try {
-            managementClient.getAffinityGroupsOperations().delete(affinityGroupName2);
-        }
-        catch (ServiceException e) {
+            managementClient.getAffinityGroupsOperations().delete(
+                    affinityGroupName2);
+        } catch (ServiceException e) {
             e.printStackTrace();
         }
     }
-    
+
     @Test
     public void createAffinityGroup() throws Exception {
         // Arrange
@@ -66,19 +65,21 @@ public class AffinityGroupOperationsTests extends ManagementIntegrationTestBase 
         createParameters.setName(affinityGroupName2);
         createParameters.setLocation("West US");
         createParameters.setLabel("Great AF");
-        
+
         // Act
-        OperationResponse operationResponse = managementClient.getAffinityGroupsOperations().create(createParameters);
-        
+        OperationResponse operationResponse = managementClient
+                .getAffinityGroupsOperations().create(createParameters);
+
         // Assert
         Assert.assertEquals(201, operationResponse.getStatusCode());
         Assert.assertNotNull(operationResponse.getRequestId());
     }
-    
+
     @Test
     public void getAffinityGroups() throws Exception {
         // Act
-        AffinityGroupGetResponse affinityGroupResponse = managementClient.getAffinityGroupsOperations().get(affinityGroupName1);
+        AffinityGroupGetResponse affinityGroupResponse = managementClient
+                .getAffinityGroupsOperations().get(affinityGroupName1);
 
         // Assert
         Assert.assertEquals(200, affinityGroupResponse.getStatusCode());
