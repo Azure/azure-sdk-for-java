@@ -3000,9 +3000,9 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         }
         
         // Construct URL
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
         simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
         simpleDateFormat2.setTimeZone(TimeZone.getTimeZone("UTC"));
         String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/WebSpaces/" + webSpaceName + "/sites/" + webSiteName + "/metrics" + "?";
         if (parameters.getMetricNames() != null && parameters.getMetricNames().size() > 0)
@@ -5538,7 +5538,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         if (parameters.getRequestTracingExpirationTime() != null)
         {
             Element requestTracingExpirationTimeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RequestTracingExpirationTime");
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'");
             simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
             requestTracingExpirationTimeElement.appendChild(requestDoc.createTextNode(simpleDateFormat.format(parameters.getRequestTracingExpirationTime().getTime())));
             siteConfigElement.appendChild(requestTracingExpirationTimeElement);
