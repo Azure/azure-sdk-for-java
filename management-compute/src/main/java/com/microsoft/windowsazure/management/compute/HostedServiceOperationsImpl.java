@@ -430,6 +430,13 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
             extensionElement.appendChild(privateConfigurationElement);
         }
         
+        if (parameters.getVersion() != null)
+        {
+            Element versionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Version");
+            versionElement.appendChild(requestDoc.createTextNode(parameters.getVersion()));
+            extensionElement.appendChild(versionElement);
+        }
+        
         DOMSource domSource = new DOMSource(requestDoc);
         StringWriter stringWriter = new StringWriter();
         StreamResult streamResult = new StreamResult(stringWriter);
@@ -2738,17 +2745,8 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                             resourceExtensionReferenceInstance.setVersion(versionInstance);
                                         }
                                         
-                                        NodeList elements101 = resourceExtensionReferencesElement.getElementsByTagName("State");
-                                        Element stateElement = elements101.getLength() > 0 ? ((Element) elements101.item(0)) : null;
-                                        if (stateElement != null && (stateElement.getTextContent() == null || stateElement.getTextContent().isEmpty() == true) == false)
-                                        {
-                                            ResourceExtensionReferenceState stateInstance;
-                                            stateInstance = ResourceExtensionReferenceState.valueOf(stateElement.getTextContent());
-                                            resourceExtensionReferenceInstance.setState(stateInstance);
-                                        }
-                                        
-                                        NodeList elements102 = resourceExtensionReferencesElement.getElementsByTagName("ResourceExtensionParameterValues");
-                                        Element resourceExtensionParameterValuesSequenceElement = elements102.getLength() > 0 ? ((Element) elements102.item(0)) : null;
+                                        NodeList elements101 = resourceExtensionReferencesElement.getElementsByTagName("ResourceExtensionParameterValues");
+                                        Element resourceExtensionParameterValuesSequenceElement = elements101.getLength() > 0 ? ((Element) elements101.item(0)) : null;
                                         if (resourceExtensionParameterValuesSequenceElement != null)
                                         {
                                             for (int i14 = 0; i14 < resourceExtensionParameterValuesSequenceElement.getElementsByTagName("ResourceExtensionParameterValue").getLength(); i14 = i14 + 1)
@@ -2757,8 +2755,8 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                                 ResourceExtensionParameterValue resourceExtensionParameterValueInstance = new ResourceExtensionParameterValue();
                                                 resourceExtensionReferenceInstance.getResourceExtensionParameterValues().add(resourceExtensionParameterValueInstance);
                                                 
-                                                NodeList elements103 = resourceExtensionParameterValuesElement.getElementsByTagName("Key");
-                                                Element keyElement = elements103.getLength() > 0 ? ((Element) elements103.item(0)) : null;
+                                                NodeList elements102 = resourceExtensionParameterValuesElement.getElementsByTagName("Key");
+                                                Element keyElement = elements102.getLength() > 0 ? ((Element) elements102.item(0)) : null;
                                                 if (keyElement != null)
                                                 {
                                                     String keyInstance;
@@ -2766,8 +2764,8 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                                     resourceExtensionParameterValueInstance.setKey(keyInstance);
                                                 }
                                                 
-                                                NodeList elements104 = resourceExtensionParameterValuesElement.getElementsByTagName("Value");
-                                                Element valueElement = elements104.getLength() > 0 ? ((Element) elements104.item(0)) : null;
+                                                NodeList elements103 = resourceExtensionParameterValuesElement.getElementsByTagName("Value");
+                                                Element valueElement = elements103.getLength() > 0 ? ((Element) elements103.item(0)) : null;
                                                 if (valueElement != null)
                                                 {
                                                     String valueInstance;
@@ -2775,8 +2773,8 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                                     resourceExtensionParameterValueInstance.setValue(valueInstance);
                                                 }
                                                 
-                                                NodeList elements105 = resourceExtensionParameterValuesElement.getElementsByTagName("Type");
-                                                Element typeElement = elements105.getLength() > 0 ? ((Element) elements105.item(0)) : null;
+                                                NodeList elements104 = resourceExtensionParameterValuesElement.getElementsByTagName("Type");
+                                                Element typeElement = elements104.getLength() > 0 ? ((Element) elements104.item(0)) : null;
                                                 if (typeElement != null && (typeElement.getTextContent() == null || typeElement.getTextContent().isEmpty() == true) == false)
                                                 {
                                                     ResourceExtensionParameterValueType typeInstance;
@@ -2784,6 +2782,15 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                                     resourceExtensionParameterValueInstance.setType(typeInstance);
                                                 }
                                             }
+                                        }
+                                        
+                                        NodeList elements105 = resourceExtensionReferencesElement.getElementsByTagName("State");
+                                        Element stateElement = elements105.getLength() > 0 ? ((Element) elements105.item(0)) : null;
+                                        if (stateElement != null && (stateElement.getTextContent() == null || stateElement.getTextContent().isEmpty() == true) == false)
+                                        {
+                                            ResourceExtensionReferenceState stateInstance;
+                                            stateInstance = ResourceExtensionReferenceState.valueOf(stateElement.getTextContent());
+                                            resourceExtensionReferenceInstance.setState(stateInstance);
                                         }
                                     }
                                 }
@@ -2985,8 +2992,8 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                         Element rollbackAllowedElement = elements127.getLength() > 0 ? ((Element) elements127.item(0)) : null;
                         if (rollbackAllowedElement != null)
                         {
-                            String rollbackAllowedInstance;
-                            rollbackAllowedInstance = rollbackAllowedElement.getTextContent();
+                            boolean rollbackAllowedInstance;
+                            rollbackAllowedInstance = DatatypeConverter.parseBoolean(rollbackAllowedElement.getTextContent());
                             deploymentInstance.setRollbackAllowed(rollbackAllowedInstance);
                         }
                         

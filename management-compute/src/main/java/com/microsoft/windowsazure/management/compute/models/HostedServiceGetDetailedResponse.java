@@ -352,14 +352,14 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse
             this.roles = rolesValue;
         }
         
-        private String rollbackAllowed;
+        private boolean rollbackAllowed;
         
         /**
         * Indicates whether the Rollback Update Or Upgrade operation is allowed
         * at this time. True if the operation is allowed; otherwise false.
         * @return The RollbackAllowed value.
         */
-        public String getRollbackAllowed()
+        public boolean isRollbackAllowed()
         {
             return this.rollbackAllowed;
         }
@@ -369,7 +369,7 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse
         * at this time. True if the operation is allowed; otherwise false.
         * @param rollbackAllowedValue The RollbackAllowed value.
         */
-        public void setRollbackAllowed(final String rollbackAllowedValue)
+        public void setRollbackAllowed(final boolean rollbackAllowedValue)
         {
             this.rollbackAllowed = rollbackAllowedValue;
         }

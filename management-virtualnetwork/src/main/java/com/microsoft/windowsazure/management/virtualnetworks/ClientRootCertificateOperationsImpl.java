@@ -174,8 +174,7 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Vi
         httpRequest.setHeader("x-ms-version", "2013-11-01");
         
         // Serialize Request
-        String requestContent = null;
-        requestContent = parameters.getCertificate();
+        String requestContent = parameters.getCertificate();
         StringEntity entity = new StringEntity(requestContent);
         httpRequest.setEntity(entity);
         httpRequest.setHeader("Content-Type", "application/xml");

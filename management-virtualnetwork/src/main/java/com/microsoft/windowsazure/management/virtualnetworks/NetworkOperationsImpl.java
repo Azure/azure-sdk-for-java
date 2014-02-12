@@ -151,8 +151,7 @@ public class NetworkOperationsImpl implements ServiceOperations<VirtualNetworkMa
         httpRequest.setHeader("x-ms-version", "2013-11-01");
         
         // Serialize Request
-        String requestContent = null;
-        requestContent = parameters.getConfiguration();
+        String requestContent = parameters.getConfiguration();
         StringEntity entity = new StringEntity(requestContent);
         httpRequest.setEntity(entity);
         httpRequest.setHeader("Content-Type", "application/octet-stream");

@@ -680,8 +680,7 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
         httpRequest.setHeader("x-ms-version", "2013-11-01");
         
         // Serialize Request
-        String requestContent = null;
-        requestContent = "<" + "?" + "xml version=\"1.0\" encoding=\"utf-8\"" + "?" + "><UpdateGateway xmlns=\"http://schemas.microsoft.com/windowsazure\"><UpdateGatewayOperation>Failover</UpdateGatewayOperation></UpdateGateway>";
+        String requestContent = "<" + "?" + "xml version=\"1.0\" encoding=\"utf-8\"" + "?" + "><UpdateGateway xmlns=\"http://schemas.microsoft.com/windowsazure\"><UpdateGatewayOperation>Failover</UpdateGatewayOperation></UpdateGateway>";
         StringEntity entity = new StringEntity(requestContent);
         httpRequest.setEntity(entity);
         httpRequest.setHeader("Content-Type", "application/xml");

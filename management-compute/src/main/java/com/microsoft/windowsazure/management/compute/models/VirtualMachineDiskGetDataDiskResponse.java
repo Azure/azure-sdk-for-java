@@ -93,13 +93,13 @@ public class VirtualMachineDiskGetDataDiskResponse extends OperationResponse
         this.hostCaching = hostCachingValue;
     }
     
-    private double logicalDiskSizeInGB;
+    private int logicalDiskSizeInGB;
     
     /**
     * The size, in GB, of the data disk.
     * @return The LogicalDiskSizeInGB value.
     */
-    public double getLogicalDiskSizeInGB()
+    public int getLogicalDiskSizeInGB()
     {
         return this.logicalDiskSizeInGB;
     }
@@ -108,7 +108,7 @@ public class VirtualMachineDiskGetDataDiskResponse extends OperationResponse
     * The size, in GB, of the data disk.
     * @param logicalDiskSizeInGBValue The LogicalDiskSizeInGB value.
     */
-    public void setLogicalDiskSizeInGB(final double logicalDiskSizeInGBValue)
+    public void setLogicalDiskSizeInGB(final int logicalDiskSizeInGBValue)
     {
         this.logicalDiskSizeInGB = logicalDiskSizeInGBValue;
     }

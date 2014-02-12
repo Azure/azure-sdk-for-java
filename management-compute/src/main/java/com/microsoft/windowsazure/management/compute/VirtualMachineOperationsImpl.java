@@ -1460,13 +1460,6 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     resourceExtensionReferenceElement.appendChild(versionElement);
                 }
                 
-                if (resourceExtensionReferencesItem.getState() != null)
-                {
-                    Element stateElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "State");
-                    stateElement.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getState().toString()));
-                    resourceExtensionReferenceElement.appendChild(stateElement);
-                }
-                
                 if (resourceExtensionReferencesItem.getResourceExtensionParameterValues() != null)
                 {
                     Element resourceExtensionParameterValuesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValues");
@@ -1497,6 +1490,13 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         }
                     }
                     resourceExtensionReferenceElement.appendChild(resourceExtensionParameterValuesSequenceElement);
+                }
+                
+                if (resourceExtensionReferencesItem.getState() != null)
+                {
+                    Element stateElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "State");
+                    stateElement.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getState().toString()));
+                    resourceExtensionReferenceElement.appendChild(stateElement);
                 }
             }
             persistentVMRoleElement.appendChild(resourceExtensionReferencesSequenceElement);
@@ -2355,13 +2355,6 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         resourceExtensionReferenceElement.appendChild(versionElement);
                     }
                     
-                    if (resourceExtensionReferencesItem.getState() != null)
-                    {
-                        Element stateElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "State");
-                        stateElement.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getState().toString()));
-                        resourceExtensionReferenceElement.appendChild(stateElement);
-                    }
-                    
                     if (resourceExtensionReferencesItem.getResourceExtensionParameterValues() != null)
                     {
                         Element resourceExtensionParameterValuesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValues");
@@ -2392,6 +2385,13 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             }
                         }
                         resourceExtensionReferenceElement.appendChild(resourceExtensionParameterValuesSequenceElement);
+                    }
+                    
+                    if (resourceExtensionReferencesItem.getState() != null)
+                    {
+                        Element stateElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "State");
+                        stateElement.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getState().toString()));
+                        resourceExtensionReferenceElement.appendChild(stateElement);
                     }
                 }
                 roleElement.appendChild(resourceExtensionReferencesSequenceElement);
@@ -2849,8 +2849,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         httpRequest.setHeader("x-ms-version", "2013-11-01");
         
         // Serialize Request
-        String requestContent = null;
-        requestContent = "<RestartRoleOperation xmlns=\"http://schemas.microsoft.com/windowsazure\"><OperationType>RestartRoleOperation</OperationType></RestartRoleOperation>";
+        String requestContent = "<RestartRoleOperation xmlns=\"http://schemas.microsoft.com/windowsazure\"><OperationType>RestartRoleOperation</OperationType></RestartRoleOperation>";
         StringEntity entity = new StringEntity(requestContent);
         httpRequest.setEntity(entity);
         httpRequest.setHeader("Content-Type", "application/xml");
@@ -3322,8 +3321,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         httpRequest.setHeader("x-ms-version", "2013-11-01");
         
         // Serialize Request
-        String requestContent = null;
-        requestContent = "<StartRoleOperation xmlns=\"http://schemas.microsoft.com/windowsazure\"><OperationType>StartRoleOperation</OperationType></StartRoleOperation>";
+        String requestContent = "<StartRoleOperation xmlns=\"http://schemas.microsoft.com/windowsazure\"><OperationType>StartRoleOperation</OperationType></StartRoleOperation>";
         StringEntity entity = new StringEntity(requestContent);
         httpRequest.setEntity(entity);
         httpRequest.setHeader("Content-Type", "application/xml");
@@ -4188,13 +4186,6 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     resourceExtensionReferenceElement.appendChild(versionElement);
                 }
                 
-                if (resourceExtensionReferencesItem.getState() != null)
-                {
-                    Element stateElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "State");
-                    stateElement.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getState().toString()));
-                    resourceExtensionReferenceElement.appendChild(stateElement);
-                }
-                
                 if (resourceExtensionReferencesItem.getResourceExtensionParameterValues() != null)
                 {
                     Element resourceExtensionParameterValuesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValues");
@@ -4225,6 +4216,13 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         }
                     }
                     resourceExtensionReferenceElement.appendChild(resourceExtensionParameterValuesSequenceElement);
+                }
+                
+                if (resourceExtensionReferencesItem.getState() != null)
+                {
+                    Element stateElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "State");
+                    stateElement.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getState().toString()));
+                    resourceExtensionReferenceElement.appendChild(stateElement);
                 }
             }
             persistentVMRoleElement.appendChild(resourceExtensionReferencesSequenceElement);

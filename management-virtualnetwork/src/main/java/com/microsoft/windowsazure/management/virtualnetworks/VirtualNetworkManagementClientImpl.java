@@ -434,11 +434,11 @@ public class VirtualNetworkManagementClientImpl extends ServiceClient<VirtualNet
     */
      static LocalNetworkConnectionType parseLocalNetworkConnectionType(String value)
     {
-        if (value == "IPsec")
+        if ("IPsec".equals(value))
         {
             return LocalNetworkConnectionType.IPSecurity;
         }
-        if (value == "Dedicated")
+        if ("Dedicated".equals(value))
         {
             return LocalNetworkConnectionType.Dedicated;
         }

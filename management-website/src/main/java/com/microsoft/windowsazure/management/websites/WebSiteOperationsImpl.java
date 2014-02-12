@@ -50,7 +50,6 @@ import com.microsoft.windowsazure.management.websites.models.WebSiteOperationSta
 import com.microsoft.windowsazure.management.websites.models.WebSiteOperationStatusResponse;
 import com.microsoft.windowsazure.management.websites.models.WebSiteRuntimeAvailabilityState;
 import com.microsoft.windowsazure.management.websites.models.WebSiteSslState;
-import com.microsoft.windowsazure.management.websites.models.WebSiteState;
 import com.microsoft.windowsazure.management.websites.models.WebSiteUpdateConfigurationParameters;
 import com.microsoft.windowsazure.management.websites.models.WebSiteUpdateParameters;
 import com.microsoft.windowsazure.management.websites.models.WebSiteUpdateResponse;
@@ -1234,8 +1233,8 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 Element stateElement = elements45.getLength() > 0 ? ((Element) elements45.item(0)) : null;
                 if (stateElement != null)
                 {
-                    WebSiteState stateInstance;
-                    stateInstance = WebSiteState.valueOf(stateElement.getTextContent());
+                    String stateInstance;
+                    stateInstance = stateElement.getTextContent();
                     webSiteInstance.setState(stateInstance);
                 }
                 
@@ -2456,8 +2455,8 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 Element stateElement = elements45.getLength() > 0 ? ((Element) elements45.item(0)) : null;
                 if (stateElement != null)
                 {
-                    WebSiteState stateInstance;
-                    stateInstance = WebSiteState.valueOf(stateElement.getTextContent());
+                    String stateInstance;
+                    stateInstance = stateElement.getTextContent();
                     webSiteInstance.setState(stateInstance);
                 }
                 
@@ -3983,7 +3982,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagNameNS("", "boolean");
+            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/", "boolean");
             Element booleanElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (booleanElement != null)
             {
@@ -4612,7 +4611,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         if (parameters.getState() != null)
         {
             Element stateElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "State");
-            stateElement.appendChild(requestDoc.createTextNode(parameters.getState().toString()));
+            stateElement.appendChild(requestDoc.createTextNode(parameters.getState()));
             siteElement.appendChild(stateElement);
         }
         
@@ -5187,8 +5186,8 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 Element stateElement2 = elements45.getLength() > 0 ? ((Element) elements45.item(0)) : null;
                 if (stateElement2 != null)
                 {
-                    WebSiteState stateInstance;
-                    stateInstance = WebSiteState.valueOf(stateElement2.getTextContent());
+                    String stateInstance;
+                    stateInstance = stateElement2.getTextContent();
                     webSiteInstance.setState(stateInstance);
                 }
                 

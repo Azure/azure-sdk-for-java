@@ -28,12 +28,12 @@ import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.storage.models.CheckNameAvailabilityResponse;
 import com.microsoft.windowsazure.management.storage.models.StorageAccountCreateParameters;
 import com.microsoft.windowsazure.management.storage.models.StorageAccountGetKeysResponse;
+import com.microsoft.windowsazure.management.storage.models.StorageAccountGetResponse;
+import com.microsoft.windowsazure.management.storage.models.StorageAccountListResponse;
 import com.microsoft.windowsazure.management.storage.models.StorageAccountRegenerateKeysParameters;
 import com.microsoft.windowsazure.management.storage.models.StorageAccountRegenerateKeysResponse;
 import com.microsoft.windowsazure.management.storage.models.StorageAccountUpdateParameters;
 import com.microsoft.windowsazure.management.storage.models.StorageOperationStatusResponse;
-import com.microsoft.windowsazure.management.storage.models.StorageServiceGetResponse;
-import com.microsoft.windowsazure.management.storage.models.StorageServiceListResponse;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.concurrent.ExecutionException;
@@ -217,7 +217,7 @@ public interface StorageAccountOperations
     * the response.
     * @return The Get Storage Account Properties operation response.
     */
-    StorageServiceGetResponse get(String serviceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException;
+    StorageAccountGetResponse get(String serviceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException;
     
     /**
     * The Get Storage Account Properties operation returns system properties
@@ -228,7 +228,7 @@ public interface StorageAccountOperations
     * @param serviceName Name of the storage account to get.
     * @return The Get Storage Account Properties operation response.
     */
-    Future<StorageServiceGetResponse> getAsync(String serviceName);
+    Future<StorageAccountGetResponse> getAsync(String serviceName);
     
     /**
     * The Get Storage Keys operation returns the primary and secondary access
@@ -280,7 +280,7 @@ public interface StorageAccountOperations
     * the response.
     * @return The List Storage Accounts operation response.
     */
-    StorageServiceListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException;
+    StorageAccountListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException;
     
     /**
     * The List Storage Accounts operation lists the storage accounts available
@@ -290,7 +290,7 @@ public interface StorageAccountOperations
     *
     * @return The List Storage Accounts operation response.
     */
-    Future<StorageServiceListResponse> listAsync();
+    Future<StorageAccountListResponse> listAsync();
     
     /**
     * The Regenerate Keys operation regenerates the primary or secondary access
