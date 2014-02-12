@@ -25,6 +25,7 @@ import java.util.HashMap;
 import org.junit.Assert;
 
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
+import com.microsoft.windowsazure.management.websites.models.WebSiteCreateParameters;
 
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
@@ -59,6 +60,23 @@ public class ManagementResourceStepdefs
         {
             Class<?> objectClass = TextUtility.getJavaType(objectType);
             objects.put(name, objectClass.newInstance());
+        }
+    }
+    
+    
+    @Given("^set \"([^\"]*)\" with \"([^\"]*)\" of type \"([^\"]*)\"$")
+    public void set_property_obj(String propertyName, String propertyObj, String propertyType) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException
+    {
+        String[] parts = propertyName.split("\\.");
+        Object object = getObject(parts);
+        if (parts.length > 1)
+        {
+	        Method method = object.getClass().getMethod("set" + TextUtility.ToPascalCase(parts[parts.length - 1]), TextUtility.getJavaType(propertyType));
+	        method.invoke(object, objects.get(propertyObj));
+        }
+        else
+        {
+        	objects.put(propertyName, objects.get(propertyObj));
         }
     }
     
