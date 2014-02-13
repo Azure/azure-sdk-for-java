@@ -60,658 +60,724 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
-* You can use management certificates, which are also known as subscription
-* certificates, to authenticate clients attempting to connect to resources
-* associated with your Windows Azure subscription.  (see
-* http://msdn.microsoft.com/en-us/library/windowsazure/jj154124.aspx for more
-* information)
-*/
-public class ManagementCertificateOperationsImpl implements ServiceOperations<ManagementClientImpl>, ManagementCertificateOperations
-{
+ * You can use management certificates, which are also known as subscription
+ * certificates, to authenticate clients attempting to connect to resources
+ * associated with your Windows Azure subscription. (see
+ * http://msdn.microsoft.com/en-us/library/windowsazure/jj154124.aspx for more
+ * information)
+ */
+public class ManagementCertificateOperationsImpl implements
+        ServiceOperations<ManagementClientImpl>,
+        ManagementCertificateOperations {
     /**
-    * Initializes a new instance of the ManagementCertificateOperationsImpl
-    * class.
-    *
-    * @param client Reference to the service client.
-    */
-    ManagementCertificateOperationsImpl(ManagementClientImpl client)
-    {
+     * Initializes a new instance of the ManagementCertificateOperationsImpl
+     * class.
+     * 
+     * @param client
+     *            Reference to the service client.
+     */
+    ManagementCertificateOperationsImpl(ManagementClientImpl client) {
         this.client = client;
     }
-    
+
     private ManagementClientImpl client;
-    
+
     /**
-    * Gets a reference to the
-    * microsoft.windowsazure.management.ManagementClientImpl.
-    * @return The Client value.
-    */
-    public ManagementClientImpl getClient()
-    {
+     * Gets a reference to the
+     * microsoft.windowsazure.management.ManagementClientImpl.
+     * 
+     * @return The Client value.
+     */
+    public ManagementClientImpl getClient() {
         return this.client;
     }
-    
+
     /**
-    * The Add Management Certificate operation adds a certificate to the list
-    * of management certificates. Management certificates, which are also
-    * known as subscription certificates, authenticate clients attempting to
-    * connect to resources associated with your Windows Azure subscription.
-    * (see http://msdn.microsoft.com/en-us/library/windowsazure/jj154123.aspx
-    * for more information)
-    *
-    * @param parameters Parameters supplied to the Create Management
-    * Certificate operation.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
+     * The Add Management Certificate operation adds a certificate to the list
+     * of management certificates. Management certificates, which are also known
+     * as subscription certificates, authenticate clients attempting to connect
+     * to resources associated with your Windows Azure subscription. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154123.aspx for
+     * more information)
+     * 
+     * @param parameters
+     *            Parameters supplied to the Create Management Certificate
+     *            operation.
+     * @return A standard service response including an HTTP status code and
+     *         request ID.
+     */
     @Override
-    public Future<OperationResponse> createAsync(final ManagementCertificateCreateParameters parameters)
-    {
-        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
-            @Override
-            public OperationResponse call() throws Exception
-            {
-                return create(parameters);
-            }
-         });
+    public Future<OperationResponse> createAsync(
+            final ManagementCertificateCreateParameters parameters) {
+        return this.getClient().getExecutorService()
+                .submit(new Callable<OperationResponse>() {
+                    @Override
+                    public OperationResponse call() throws Exception {
+                        return create(parameters);
+                    }
+                });
     }
-    
+
     /**
-    * The Add Management Certificate operation adds a certificate to the list
-    * of management certificates. Management certificates, which are also
-    * known as subscription certificates, authenticate clients attempting to
-    * connect to resources associated with your Windows Azure subscription.
-    * (see http://msdn.microsoft.com/en-us/library/windowsazure/jj154123.aspx
-    * for more information)
-    *
-    * @param parameters Parameters supplied to the Create Management
-    * Certificate operation.
-    * @throws ParserConfigurationException Thrown if there was an error
-    * configuring the parser for the response body.
-    * @throws SAXException Thrown if there was an error parsing the response
-    * body.
-    * @throws TransformerException Thrown if there was an error creating the
-    * DOM transformer.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
+     * The Add Management Certificate operation adds a certificate to the list
+     * of management certificates. Management certificates, which are also known
+     * as subscription certificates, authenticate clients attempting to connect
+     * to resources associated with your Windows Azure subscription. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154123.aspx for
+     * more information)
+     * 
+     * @param parameters
+     *            Parameters supplied to the Create Management Certificate
+     *            operation.
+     * @throws ParserConfigurationException
+     *             Thrown if there was an error configuring the parser for the
+     *             response body.
+     * @throws SAXException
+     *             Thrown if there was an error parsing the response body.
+     * @throws TransformerException
+     *             Thrown if there was an error creating the DOM transformer.
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @return A standard service response including an HTTP status code and
+     *         request ID.
+     */
     @Override
-    public OperationResponse create(ManagementCertificateCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
-    {
+    public OperationResponse create(
+            ManagementCertificateCreateParameters parameters)
+            throws ParserConfigurationException, SAXException,
+            TransformerException, IOException, ServiceException {
         // Validate
-        if (parameters == null)
-        {
+        if (parameters == null) {
             throw new NullPointerException("parameters");
         }
-        
+
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this, "createAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "createAsync",
+                    tracingParameters);
         }
-        
+
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/certificates";
-        
+        String url = this.getClient().getBaseUri() + "/"
+                + this.getClient().getCredentials().getSubscriptionId()
+                + "/certificates";
+
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
-        
+
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
         httpRequest.setHeader("x-ms-version", "2013-03-01");
-        
+
         // Serialize Request
         String requestContent = null;
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
+                .newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory
+                .newDocumentBuilder();
         Document requestDoc = documentBuilder.newDocument();
-        
-        Element subscriptionCertificateElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SubscriptionCertificate");
+
+        Element subscriptionCertificateElement = requestDoc.createElementNS(
+                "http://schemas.microsoft.com/windowsazure",
+                "SubscriptionCertificate");
         requestDoc.appendChild(subscriptionCertificateElement);
-        
-        if (parameters.getPublicKey() != null)
-        {
-            Element subscriptionCertificatePublicKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SubscriptionCertificatePublicKey");
-            subscriptionCertificatePublicKeyElement.appendChild(requestDoc.createTextNode(new String(Base64.encodeBase64(parameters.getPublicKey()))));
-            subscriptionCertificateElement.appendChild(subscriptionCertificatePublicKeyElement);
+
+        if (parameters.getPublicKey() != null) {
+            Element subscriptionCertificatePublicKeyElement = requestDoc
+                    .createElementNS(
+                            "http://schemas.microsoft.com/windowsazure",
+                            "SubscriptionCertificatePublicKey");
+            subscriptionCertificatePublicKeyElement.appendChild(requestDoc
+                    .createTextNode(new String(Base64.encodeBase64(parameters
+                            .getPublicKey()))));
+            subscriptionCertificateElement
+                    .appendChild(subscriptionCertificatePublicKeyElement);
         }
-        
-        if (parameters.getThumbprint() != null)
-        {
-            Element subscriptionCertificateThumbprintElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SubscriptionCertificateThumbprint");
-            subscriptionCertificateThumbprintElement.appendChild(requestDoc.createTextNode(parameters.getThumbprint()));
-            subscriptionCertificateElement.appendChild(subscriptionCertificateThumbprintElement);
+
+        if (parameters.getThumbprint() != null) {
+            Element subscriptionCertificateThumbprintElement = requestDoc
+                    .createElementNS(
+                            "http://schemas.microsoft.com/windowsazure",
+                            "SubscriptionCertificateThumbprint");
+            subscriptionCertificateThumbprintElement.appendChild(requestDoc
+                    .createTextNode(parameters.getThumbprint()));
+            subscriptionCertificateElement
+                    .appendChild(subscriptionCertificateThumbprintElement);
         }
-        
-        if (parameters.getData() != null)
-        {
-            Element subscriptionCertificateDataElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SubscriptionCertificateData");
-            subscriptionCertificateDataElement.appendChild(requestDoc.createTextNode(new String(Base64.encodeBase64(parameters.getData()))));
-            subscriptionCertificateElement.appendChild(subscriptionCertificateDataElement);
+
+        if (parameters.getData() != null) {
+            Element subscriptionCertificateDataElement = requestDoc
+                    .createElementNS(
+                            "http://schemas.microsoft.com/windowsazure",
+                            "SubscriptionCertificateData");
+            subscriptionCertificateDataElement.appendChild(requestDoc
+                    .createTextNode(new String(Base64.encodeBase64(parameters
+                            .getData()))));
+            subscriptionCertificateElement
+                    .appendChild(subscriptionCertificateDataElement);
         }
-        
+
         DOMSource domSource = new DOMSource(requestDoc);
         StringWriter stringWriter = new StringWriter();
         StreamResult streamResult = new StreamResult(stringWriter);
-        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        TransformerFactory transformerFactory = TransformerFactory
+                .newInstance();
         Transformer transformer = transformerFactory.newTransformer();
         transformer.transform(domSource, streamResult);
         requestContent = stringWriter.toString();
         StringEntity entity = new StringEntity(requestContent);
         httpRequest.setEntity(entity);
         httpRequest.setHeader("Content-Type", "application/xml");
-        
+
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            httpResponse = this.getClient().getHttpClient()
+                    .execute(httpRequest);
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+            if (statusCode != HttpStatus.SC_OK) {
+                ServiceException ex = ServiceException.createFromXml(
+                        httpRequest, requestContent, httpResponse,
+                        httpResponse.getEntity());
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-            
+
             // Create Result
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader(
+                        "x-ms-request-id").getValue());
             }
-            
-            if (shouldTrace)
-            {
+
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
     }
-    
+
     /**
-    * The Delete Management Certificate operation deletes a certificate from
-    * the list of management certificates. Management certificates, which are
-    * also known as subscription certificates, authenticate clients attempting
-    * to connect to resources associated with your Windows Azure subscription.
-    * (see http://msdn.microsoft.com/en-us/library/windowsazure/jj154127.aspx
-    * for more information)
-    *
-    * @param thumbprint the thumbprint value of the certificate to delete.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
+     * The Delete Management Certificate operation deletes a certificate from
+     * the list of management certificates. Management certificates, which are
+     * also known as subscription certificates, authenticate clients attempting
+     * to connect to resources associated with your Windows Azure subscription.
+     * (see http://msdn.microsoft.com/en-us/library/windowsazure/jj154127.aspx
+     * for more information)
+     * 
+     * @param thumbprint
+     *            the thumbprint value of the certificate to delete.
+     * @return A standard service response including an HTTP status code and
+     *         request ID.
+     */
     @Override
-    public Future<OperationResponse> deleteAsync(final String thumbprint)
-    {
-        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
-            @Override
-            public OperationResponse call() throws Exception
-            {
-                return delete(thumbprint);
-            }
-         });
+    public Future<OperationResponse> deleteAsync(final String thumbprint) {
+        return this.getClient().getExecutorService()
+                .submit(new Callable<OperationResponse>() {
+                    @Override
+                    public OperationResponse call() throws Exception {
+                        return delete(thumbprint);
+                    }
+                });
     }
-    
+
     /**
-    * The Delete Management Certificate operation deletes a certificate from
-    * the list of management certificates. Management certificates, which are
-    * also known as subscription certificates, authenticate clients attempting
-    * to connect to resources associated with your Windows Azure subscription.
-    * (see http://msdn.microsoft.com/en-us/library/windowsazure/jj154127.aspx
-    * for more information)
-    *
-    * @param thumbprint the thumbprint value of the certificate to delete.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
+     * The Delete Management Certificate operation deletes a certificate from
+     * the list of management certificates. Management certificates, which are
+     * also known as subscription certificates, authenticate clients attempting
+     * to connect to resources associated with your Windows Azure subscription.
+     * (see http://msdn.microsoft.com/en-us/library/windowsazure/jj154127.aspx
+     * for more information)
+     * 
+     * @param thumbprint
+     *            the thumbprint value of the certificate to delete.
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @return A standard service response including an HTTP status code and
+     *         request ID.
+     */
     @Override
-    public OperationResponse delete(String thumbprint) throws IOException, ServiceException
-    {
+    public OperationResponse delete(String thumbprint) throws IOException,
+            ServiceException {
         // Validate
-        if (thumbprint == null)
-        {
+        if (thumbprint == null) {
             throw new NullPointerException("thumbprint");
         }
-        
+
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("thumbprint", thumbprint);
-            CloudTracing.enter(invocationId, this, "deleteAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "deleteAsync",
+                    tracingParameters);
         }
-        
+
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/certificates/" + thumbprint;
-        
+        String url = this.getClient().getBaseUri() + "/"
+                + this.getClient().getCredentials().getSubscriptionId()
+                + "/certificates/" + thumbprint;
+
         // Create HTTP transport objects
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
-        
+
         // Set Headers
         httpRequest.setHeader("x-ms-version", "2013-03-01");
-        
+
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            httpResponse = this.getClient().getHttpClient()
+                    .execute(httpRequest);
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK && statusCode != HttpStatus.SC_NOT_FOUND)
-            {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+            if (statusCode != HttpStatus.SC_OK
+                    && statusCode != HttpStatus.SC_NOT_FOUND) {
+                ServiceException ex = ServiceException.createFromXml(
+                        httpRequest, null, httpResponse,
+                        httpResponse.getEntity());
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-            
+
             // Create Result
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader(
+                        "x-ms-request-id").getValue());
             }
-            
-            if (shouldTrace)
-            {
+
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
     }
-    
+
     /**
-    * The Get Management Certificate operation retrieves information about the
-    * management certificate with the specified thumbprint. Management
-    * certificates, which are also known as subscription certificates,
-    * authenticate clients attempting to connect to resources associated with
-    * your Windows Azure subscription.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj154131.aspx for
-    * more information)
-    *
-    * @param thumbprint The thumbprint value of the certificate to retrieve
-    * information about.
-    * @return The Get Management Certificate operation response.
-    */
+     * The Get Management Certificate operation retrieves information about the
+     * management certificate with the specified thumbprint. Management
+     * certificates, which are also known as subscription certificates,
+     * authenticate clients attempting to connect to resources associated with
+     * your Windows Azure subscription. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154131.aspx for
+     * more information)
+     * 
+     * @param thumbprint
+     *            The thumbprint value of the certificate to retrieve
+     *            information about.
+     * @return The Get Management Certificate operation response.
+     */
     @Override
-    public Future<ManagementCertificateGetResponse> getAsync(final String thumbprint)
-    {
-        return this.getClient().getExecutorService().submit(new Callable<ManagementCertificateGetResponse>() { 
-            @Override
-            public ManagementCertificateGetResponse call() throws Exception
-            {
-                return get(thumbprint);
-            }
-         });
+    public Future<ManagementCertificateGetResponse> getAsync(
+            final String thumbprint) {
+        return this.getClient().getExecutorService()
+                .submit(new Callable<ManagementCertificateGetResponse>() {
+                    @Override
+                    public ManagementCertificateGetResponse call()
+                            throws Exception {
+                        return get(thumbprint);
+                    }
+                });
     }
-    
+
     /**
-    * The Get Management Certificate operation retrieves information about the
-    * management certificate with the specified thumbprint. Management
-    * certificates, which are also known as subscription certificates,
-    * authenticate clients attempting to connect to resources associated with
-    * your Windows Azure subscription.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj154131.aspx for
-    * more information)
-    *
-    * @param thumbprint The thumbprint value of the certificate to retrieve
-    * information about.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParserConfigurationException Thrown if there was a serious
-    * configuration error with the document parser.
-    * @throws SAXException Thrown if there was an error parsing the XML
-    * response.
-    * @throws URISyntaxException Thrown if there was an error parsing a URI in
-    * the response.
-    * @return The Get Management Certificate operation response.
-    */
+     * The Get Management Certificate operation retrieves information about the
+     * management certificate with the specified thumbprint. Management
+     * certificates, which are also known as subscription certificates,
+     * authenticate clients attempting to connect to resources associated with
+     * your Windows Azure subscription. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154131.aspx for
+     * more information)
+     * 
+     * @param thumbprint
+     *            The thumbprint value of the certificate to retrieve
+     *            information about.
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @throws ParserConfigurationException
+     *             Thrown if there was a serious configuration error with the
+     *             document parser.
+     * @throws SAXException
+     *             Thrown if there was an error parsing the XML response.
+     * @throws URISyntaxException
+     *             Thrown if there was an error parsing a URI in the response.
+     * @return The Get Management Certificate operation response.
+     */
     @Override
-    public ManagementCertificateGetResponse get(String thumbprint) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
-    {
+    public ManagementCertificateGetResponse get(String thumbprint)
+            throws IOException, ServiceException, ParserConfigurationException,
+            SAXException, URISyntaxException {
         // Validate
-        if (thumbprint == null)
-        {
+        if (thumbprint == null) {
             throw new NullPointerException("thumbprint");
         }
-        
+
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("thumbprint", thumbprint);
-            CloudTracing.enter(invocationId, this, "getAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "getAsync",
+                    tracingParameters);
         }
-        
+
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/certificates/" + thumbprint;
-        
+        String url = this.getClient().getBaseUri() + "/"
+                + this.getClient().getCredentials().getSubscriptionId()
+                + "/certificates/" + thumbprint;
+
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
-        
+
         // Set Headers
         httpRequest.setHeader("x-ms-version", "2013-03-01");
-        
+
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            httpResponse = this.getClient().getHttpClient()
+                    .execute(httpRequest);
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+            if (statusCode != HttpStatus.SC_OK) {
+                ServiceException ex = ServiceException.createFromXml(
+                        httpRequest, null, httpResponse,
+                        httpResponse.getEntity());
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-            
+
             // Create Result
             ManagementCertificateGetResponse result = null;
             // Deserialize Response
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new ManagementCertificateGetResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
+                    .newInstance();
             documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            DocumentBuilder documentBuilder = documentBuilderFactory
+                    .newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
-            
-            NodeList elements = responseDoc.getElementsByTagName("SubscriptionCertificate");
-            Element subscriptionCertificateElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (subscriptionCertificateElement != null)
-            {
-                NodeList elements2 = subscriptionCertificateElement.getElementsByTagName("SubscriptionCertificatePublicKey");
-                Element subscriptionCertificatePublicKeyElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (subscriptionCertificatePublicKeyElement != null)
-                {
+
+            NodeList elements = responseDoc
+                    .getElementsByTagName("SubscriptionCertificate");
+            Element subscriptionCertificateElement = elements.getLength() > 0 ? ((Element) elements
+                    .item(0)) : null;
+            if (subscriptionCertificateElement != null) {
+                NodeList elements2 = subscriptionCertificateElement
+                        .getElementsByTagName("SubscriptionCertificatePublicKey");
+                Element subscriptionCertificatePublicKeyElement = elements2
+                        .getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                if (subscriptionCertificatePublicKeyElement != null) {
                     byte[] subscriptionCertificatePublicKeyInstance;
-                    subscriptionCertificatePublicKeyInstance = subscriptionCertificatePublicKeyElement.getTextContent() != null ? Base64.decodeBase64(subscriptionCertificatePublicKeyElement.getTextContent().getBytes()) : null;
+                    subscriptionCertificatePublicKeyInstance = subscriptionCertificatePublicKeyElement
+                            .getTextContent() != null ? Base64
+                            .decodeBase64(subscriptionCertificatePublicKeyElement
+                                    .getTextContent().getBytes())
+                            : null;
                     result.setPublicKey(subscriptionCertificatePublicKeyInstance);
                 }
-                
-                NodeList elements3 = subscriptionCertificateElement.getElementsByTagName("SubscriptionCertificateThumbprint");
-                Element subscriptionCertificateThumbprintElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                if (subscriptionCertificateThumbprintElement != null)
-                {
+
+                NodeList elements3 = subscriptionCertificateElement
+                        .getElementsByTagName("SubscriptionCertificateThumbprint");
+                Element subscriptionCertificateThumbprintElement = elements3
+                        .getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                if (subscriptionCertificateThumbprintElement != null) {
                     String subscriptionCertificateThumbprintInstance;
-                    subscriptionCertificateThumbprintInstance = subscriptionCertificateThumbprintElement.getTextContent();
+                    subscriptionCertificateThumbprintInstance = subscriptionCertificateThumbprintElement
+                            .getTextContent();
                     result.setThumbprint(subscriptionCertificateThumbprintInstance);
                 }
-                
-                NodeList elements4 = subscriptionCertificateElement.getElementsByTagName("SubscriptionCertificateData");
-                Element subscriptionCertificateDataElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                if (subscriptionCertificateDataElement != null)
-                {
+
+                NodeList elements4 = subscriptionCertificateElement
+                        .getElementsByTagName("SubscriptionCertificateData");
+                Element subscriptionCertificateDataElement = elements4
+                        .getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                if (subscriptionCertificateDataElement != null) {
                     byte[] subscriptionCertificateDataInstance;
-                    subscriptionCertificateDataInstance = subscriptionCertificateDataElement.getTextContent() != null ? Base64.decodeBase64(subscriptionCertificateDataElement.getTextContent().getBytes()) : null;
+                    subscriptionCertificateDataInstance = subscriptionCertificateDataElement
+                            .getTextContent() != null ? Base64
+                            .decodeBase64(subscriptionCertificateDataElement
+                                    .getTextContent().getBytes()) : null;
                     result.setData(subscriptionCertificateDataInstance);
                 }
-                
-                NodeList elements5 = subscriptionCertificateElement.getElementsByTagName("Created");
-                Element createdElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                if (createdElement != null)
-                {
+
+                NodeList elements5 = subscriptionCertificateElement
+                        .getElementsByTagName("Created");
+                Element createdElement = elements5.getLength() > 0 ? ((Element) elements5
+                        .item(0)) : null;
+                if (createdElement != null) {
                     Calendar createdInstance;
-                    createdInstance = DatatypeConverter.parseDateTime(createdElement.getTextContent());
+                    createdInstance = DatatypeConverter
+                            .parseDateTime(createdElement.getTextContent());
                     result.setCreated(createdInstance);
                 }
             }
-            
+
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader(
+                        "x-ms-request-id").getValue());
             }
-            
-            if (shouldTrace)
-            {
+
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
     }
-    
+
     /**
-    * The List Management Certificates operation lists and returns basic
-    * information about all of the management certificates associated with the
-    * specified subscription. Management certificates, which are also known as
-    * subscription certificates, authenticate clients attempting to connect to
-    * resources associated with your Windows Azure subscription.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj154105.aspx for
-    * more information)
-    *
-    * @return The List Management Certificates operation response.
-    */
+     * The List Management Certificates operation lists and returns basic
+     * information about all of the management certificates associated with the
+     * specified subscription. Management certificates, which are also known as
+     * subscription certificates, authenticate clients attempting to connect to
+     * resources associated with your Windows Azure subscription. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154105.aspx for
+     * more information)
+     * 
+     * @return The List Management Certificates operation response.
+     */
     @Override
-    public Future<ManagementCertificateListResponse> listAsync()
-    {
-        return this.getClient().getExecutorService().submit(new Callable<ManagementCertificateListResponse>() { 
-            @Override
-            public ManagementCertificateListResponse call() throws Exception
-            {
-                return list();
-            }
-         });
+    public Future<ManagementCertificateListResponse> listAsync() {
+        return this.getClient().getExecutorService()
+                .submit(new Callable<ManagementCertificateListResponse>() {
+                    @Override
+                    public ManagementCertificateListResponse call()
+                            throws Exception {
+                        return list();
+                    }
+                });
     }
-    
+
     /**
-    * The List Management Certificates operation lists and returns basic
-    * information about all of the management certificates associated with the
-    * specified subscription. Management certificates, which are also known as
-    * subscription certificates, authenticate clients attempting to connect to
-    * resources associated with your Windows Azure subscription.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj154105.aspx for
-    * more information)
-    *
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParserConfigurationException Thrown if there was a serious
-    * configuration error with the document parser.
-    * @throws SAXException Thrown if there was an error parsing the XML
-    * response.
-    * @return The List Management Certificates operation response.
-    */
+     * The List Management Certificates operation lists and returns basic
+     * information about all of the management certificates associated with the
+     * specified subscription. Management certificates, which are also known as
+     * subscription certificates, authenticate clients attempting to connect to
+     * resources associated with your Windows Azure subscription. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154105.aspx for
+     * more information)
+     * 
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @throws ParserConfigurationException
+     *             Thrown if there was a serious configuration error with the
+     *             document parser.
+     * @throws SAXException
+     *             Thrown if there was an error parsing the XML response.
+     * @return The List Management Certificates operation response.
+     */
     @Override
-    public ManagementCertificateListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException
-    {
+    public ManagementCertificateListResponse list() throws IOException,
+            ServiceException, ParserConfigurationException, SAXException {
         // Validate
-        
+
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
-            CloudTracing.enter(invocationId, this, "listAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "listAsync",
+                    tracingParameters);
         }
-        
+
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/certificates";
-        
+        String url = this.getClient().getBaseUri() + "/"
+                + this.getClient().getCredentials().getSubscriptionId()
+                + "/certificates";
+
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
-        
+
         // Set Headers
         httpRequest.setHeader("x-ms-version", "2013-03-01");
-        
+
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            httpResponse = this.getClient().getHttpClient()
+                    .execute(httpRequest);
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+            if (statusCode != HttpStatus.SC_OK) {
+                ServiceException ex = ServiceException.createFromXml(
+                        httpRequest, null, httpResponse,
+                        httpResponse.getEntity());
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-            
+
             // Create Result
             ManagementCertificateListResponse result = null;
             // Deserialize Response
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new ManagementCertificateListResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
+                    .newInstance();
             documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            DocumentBuilder documentBuilder = documentBuilderFactory
+                    .newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
-            
-            NodeList elements = responseDoc.getElementsByTagName("SubscriptionCertificates");
-            Element subscriptionCertificatesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (subscriptionCertificatesSequenceElement != null)
-            {
-                for (int i1 = 0; i1 < subscriptionCertificatesSequenceElement.getElementsByTagName("SubscriptionCertificate").getLength(); i1 = i1 + 1)
-                {
-                    org.w3c.dom.Element subscriptionCertificatesElement = ((org.w3c.dom.Element) subscriptionCertificatesSequenceElement.getElementsByTagName("SubscriptionCertificate").item(i1));
+
+            NodeList elements = responseDoc
+                    .getElementsByTagName("SubscriptionCertificates");
+            Element subscriptionCertificatesSequenceElement = elements
+                    .getLength() > 0 ? ((Element) elements.item(0)) : null;
+            if (subscriptionCertificatesSequenceElement != null) {
+                for (int i1 = 0; i1 < subscriptionCertificatesSequenceElement
+                        .getElementsByTagName("SubscriptionCertificate")
+                        .getLength(); i1 = i1 + 1) {
+                    org.w3c.dom.Element subscriptionCertificatesElement = ((org.w3c.dom.Element) subscriptionCertificatesSequenceElement
+                            .getElementsByTagName("SubscriptionCertificate")
+                            .item(i1));
                     ManagementCertificateListResponse.SubscriptionCertificate subscriptionCertificateInstance = new ManagementCertificateListResponse.SubscriptionCertificate();
-                    result.getSubscriptionCertificates().add(subscriptionCertificateInstance);
-                    
-                    NodeList elements2 = subscriptionCertificatesElement.getElementsByTagName("SubscriptionCertificatePublicKey");
-                    Element subscriptionCertificatePublicKeyElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                    if (subscriptionCertificatePublicKeyElement != null)
-                    {
+                    result.getSubscriptionCertificates().add(
+                            subscriptionCertificateInstance);
+
+                    NodeList elements2 = subscriptionCertificatesElement
+                            .getElementsByTagName("SubscriptionCertificatePublicKey");
+                    Element subscriptionCertificatePublicKeyElement = elements2
+                            .getLength() > 0 ? ((Element) elements2.item(0))
+                            : null;
+                    if (subscriptionCertificatePublicKeyElement != null) {
                         byte[] subscriptionCertificatePublicKeyInstance;
-                        subscriptionCertificatePublicKeyInstance = subscriptionCertificatePublicKeyElement.getTextContent() != null ? Base64.decodeBase64(subscriptionCertificatePublicKeyElement.getTextContent().getBytes()) : null;
-                        subscriptionCertificateInstance.setPublicKey(subscriptionCertificatePublicKeyInstance);
+                        subscriptionCertificatePublicKeyInstance = subscriptionCertificatePublicKeyElement
+                                .getTextContent() != null ? Base64
+                                .decodeBase64(subscriptionCertificatePublicKeyElement
+                                        .getTextContent().getBytes())
+                                : null;
+                        subscriptionCertificateInstance
+                                .setPublicKey(subscriptionCertificatePublicKeyInstance);
                     }
-                    
-                    NodeList elements3 = subscriptionCertificatesElement.getElementsByTagName("SubscriptionCertificateThumbprint");
-                    Element subscriptionCertificateThumbprintElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                    if (subscriptionCertificateThumbprintElement != null)
-                    {
+
+                    NodeList elements3 = subscriptionCertificatesElement
+                            .getElementsByTagName("SubscriptionCertificateThumbprint");
+                    Element subscriptionCertificateThumbprintElement = elements3
+                            .getLength() > 0 ? ((Element) elements3.item(0))
+                            : null;
+                    if (subscriptionCertificateThumbprintElement != null) {
                         String subscriptionCertificateThumbprintInstance;
-                        subscriptionCertificateThumbprintInstance = subscriptionCertificateThumbprintElement.getTextContent();
-                        subscriptionCertificateInstance.setThumbprint(subscriptionCertificateThumbprintInstance);
+                        subscriptionCertificateThumbprintInstance = subscriptionCertificateThumbprintElement
+                                .getTextContent();
+                        subscriptionCertificateInstance
+                                .setThumbprint(subscriptionCertificateThumbprintInstance);
                     }
-                    
-                    NodeList elements4 = subscriptionCertificatesElement.getElementsByTagName("SubscriptionCertificateData");
-                    Element subscriptionCertificateDataElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                    if (subscriptionCertificateDataElement != null)
-                    {
+
+                    NodeList elements4 = subscriptionCertificatesElement
+                            .getElementsByTagName("SubscriptionCertificateData");
+                    Element subscriptionCertificateDataElement = elements4
+                            .getLength() > 0 ? ((Element) elements4.item(0))
+                            : null;
+                    if (subscriptionCertificateDataElement != null) {
                         byte[] subscriptionCertificateDataInstance;
-                        subscriptionCertificateDataInstance = subscriptionCertificateDataElement.getTextContent() != null ? Base64.decodeBase64(subscriptionCertificateDataElement.getTextContent().getBytes()) : null;
-                        subscriptionCertificateInstance.setData(subscriptionCertificateDataInstance);
+                        subscriptionCertificateDataInstance = subscriptionCertificateDataElement
+                                .getTextContent() != null ? Base64
+                                .decodeBase64(subscriptionCertificateDataElement
+                                        .getTextContent().getBytes())
+                                : null;
+                        subscriptionCertificateInstance
+                                .setData(subscriptionCertificateDataInstance);
                     }
-                    
-                    NodeList elements5 = subscriptionCertificatesElement.getElementsByTagName("Created");
-                    Element createdElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                    if (createdElement != null)
-                    {
+
+                    NodeList elements5 = subscriptionCertificatesElement
+                            .getElementsByTagName("Created");
+                    Element createdElement = elements5.getLength() > 0 ? ((Element) elements5
+                            .item(0)) : null;
+                    if (createdElement != null) {
                         Calendar createdInstance;
-                        createdInstance = DatatypeConverter.parseDateTime(createdElement.getTextContent());
-                        subscriptionCertificateInstance.setCreated(createdInstance);
+                        createdInstance = DatatypeConverter
+                                .parseDateTime(createdElement.getTextContent());
+                        subscriptionCertificateInstance
+                                .setCreated(createdInstance);
                     }
                 }
             }
-            
+
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader(
+                        "x-ms-request-id").getValue());
             }
-            
-            if (shouldTrace)
-            {
+
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }

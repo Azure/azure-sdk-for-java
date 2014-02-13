@@ -28,46 +28,45 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
-* A response to a request for a list of topics.
-*/
-public class ServiceBusTopicsResponse extends OperationResponse implements Iterable<ServiceBusTopic>
-{
+ * A response to a request for a list of topics.
+ */
+public class ServiceBusTopicsResponse extends OperationResponse implements
+        Iterable<ServiceBusTopic> {
     private ArrayList<ServiceBusTopic> topics;
-    
+
     /**
-    * The list of topics.
-    * @return The Topics value.
-    */
-    public ArrayList<ServiceBusTopic> getTopics()
-    {
+     * The list of topics.
+     * 
+     * @return The Topics value.
+     */
+    public ArrayList<ServiceBusTopic> getTopics() {
         return this.topics;
     }
-    
+
     /**
-    * The list of topics.
-    * @param topicsValue The Topics value.
-    */
-    public void setTopics(final ArrayList<ServiceBusTopic> topicsValue)
-    {
+     * The list of topics.
+     * 
+     * @param topicsValue
+     *            The Topics value.
+     */
+    public void setTopics(final ArrayList<ServiceBusTopic> topicsValue) {
         this.topics = topicsValue;
     }
-    
+
     /**
-    * Initializes a new instance of the ServiceBusTopicsResponse class.
-    *
-    */
-    public ServiceBusTopicsResponse()
-    {
+     * Initializes a new instance of the ServiceBusTopicsResponse class.
+     * 
+     */
+    public ServiceBusTopicsResponse() {
         super();
         this.topics = new ArrayList<ServiceBusTopic>();
     }
-    
+
     /**
-    * Gets the sequence of Topics.
-    *
-    */
-    public Iterator<ServiceBusTopic> iterator()
-    {
+     * Gets the sequence of Topics.
+     * 
+     */
+    public Iterator<ServiceBusTopic> iterator() {
         return this.getTopics().iterator();
     }
 }

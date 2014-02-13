@@ -21,19 +21,16 @@ import com.microsoft.windowsazure.Configuration;
  * Access media services functionality. This class cannot be instantiated.
  * 
  */
-public class MediaService
-{
+public class MediaService {
 
-    private MediaService()
-    {
+    private MediaService() {
     }
 
     /**
      * Creates an instance of the <code>MediaServicesContract</code> API.
      * 
      */
-    public static MediaContract create()
-    {
+    public static MediaContract create() {
         return Configuration.getInstance().create(MediaContract.class);
     }
 
@@ -46,8 +43,7 @@ public class MediaService
      *            configuration for the service bus service.
      * 
      */
-    public static MediaContract create(Configuration config)
-    {
+    public static MediaContract create(Configuration config) {
         return config.create(MediaContract.class);
     }
 
@@ -55,8 +51,7 @@ public class MediaService
      * Creates an instance of the <code>MediaServicesContract</code> API.
      * 
      */
-    public static MediaContract create(String profile)
-    {
+    public static MediaContract create(String profile) {
         return Configuration.getInstance().create(profile, MediaContract.class);
     }
 
@@ -69,8 +64,7 @@ public class MediaService
      *            configuration for the service bus service.
      * 
      */
-    public static MediaContract create(String profile, Configuration config)
-    {
+    public static MediaContract create(String profile, Configuration config) {
         return config.create(profile, MediaContract.class);
     }
 }

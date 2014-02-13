@@ -31,67 +31,85 @@ import java.text.ParseException;
 import java.util.concurrent.Future;
 
 /**
-* Operations for managing the alert incidents.
-*/
-public interface IncidentOperations
-{
+ * Operations for managing the alert incidents.
+ */
+public interface IncidentOperations {
     /**
-    *
-    * @param incidentId The id of the incident to retrieve.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
-    * @return The Get Incident operation response.
-    */
-    IncidentGetResponse get(String incidentId) throws IOException, ServiceException, ParseException;
-    
+     * 
+     * @param incidentId
+     *            The id of the incident to retrieve.
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @throws ParseException
+     *             Thrown if there was an error parsing a string in the
+     *             response.
+     * @return The Get Incident operation response.
+     */
+    IncidentGetResponse get(String incidentId) throws IOException,
+            ServiceException, ParseException;
+
     /**
-    *
-    * @param incidentId The id of the incident to retrieve.
-    * @return The Get Incident operation response.
-    */
+     * 
+     * @param incidentId
+     *            The id of the incident to retrieve.
+     * @return The Get Incident operation response.
+     */
     Future<IncidentGetResponse> getAsync(String incidentId);
-    
+
     /**
-    *
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
-    * @return The List incidents operation response.
-    */
-    IncidentListResponse listActiveForSubscription() throws IOException, ServiceException, ParseException;
-    
+     * 
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @throws ParseException
+     *             Thrown if there was an error parsing a string in the
+     *             response.
+     * @return The List incidents operation response.
+     */
+    IncidentListResponse listActiveForSubscription() throws IOException,
+            ServiceException, ParseException;
+
     /**
-    *
-    * @return The List incidents operation response.
-    */
+     * 
+     * @return The List incidents operation response.
+     */
     Future<IncidentListResponse> listActiveForSubscriptionAsync();
-    
+
     /**
-    *
-    * @param ruleId The rule id.
-    * @param isActive A boolean to retrieve only active or resolved incidents.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
-    * @return The List incidents operation response.
-    */
-    IncidentListResponse listForRule(String ruleId, boolean isActive) throws IOException, ServiceException, ParseException;
-    
+     * 
+     * @param ruleId
+     *            The rule id.
+     * @param isActive
+     *            A boolean to retrieve only active or resolved incidents.
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @throws ParseException
+     *             Thrown if there was an error parsing a string in the
+     *             response.
+     * @return The List incidents operation response.
+     */
+    IncidentListResponse listForRule(String ruleId, boolean isActive)
+            throws IOException, ServiceException, ParseException;
+
     /**
-    *
-    * @param ruleId The rule id.
-    * @param isActive A boolean to retrieve only active or resolved incidents.
-    * @return The List incidents operation response.
-    */
-    Future<IncidentListResponse> listForRuleAsync(String ruleId, boolean isActive);
+     * 
+     * @param ruleId
+     *            The rule id.
+     * @param isActive
+     *            A boolean to retrieve only active or resolved incidents.
+     * @return The List incidents operation response.
+     */
+    Future<IncidentListResponse> listForRuleAsync(String ruleId,
+            boolean isActive);
 }

@@ -24,35 +24,34 @@
 package com.microsoft.windowsazure.management.scheduler.models;
 
 /**
-* State of the Job Collection resource.
-*/
-public enum JobCollectionState
-{
+ * State of the Job Collection resource.
+ */
+public enum JobCollectionState {
     /**
-    * Service Manager knows about the resource but the state is still Unknown
-    * which might either be a result of failed communication with the RP or
-    * just that the Service Manager hasn’t got around to process the resource.
-    */
+     * Service Manager knows about the resource but the state is still Unknown
+     * which might either be a result of failed communication with the RP or
+     * just that the Service Manager hasn’t got around to process the resource.
+     */
     Unknown,
-    
+
     /**
-    * The resource provider did not respond with information for the resource.
-    */
+     * The resource provider did not respond with information for the resource.
+     */
     NotFound,
-    
+
     /**
-    * Resource is running fine.
-    */
+     * Resource is running fine.
+     */
     Started,
-    
+
     /**
-    * Resource was stopped due to an issue.
-    */
+     * Resource was stopped due to an issue.
+     */
     Stopped,
-    
+
     /**
-    * The resource was temporarily put on hold primarily due to a monetary
-    * event.
-    */
+     * The resource was temporarily put on hold primarily due to a monetary
+     * event.
+     */
     Paused,
 }

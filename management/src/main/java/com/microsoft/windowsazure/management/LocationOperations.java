@@ -31,38 +31,41 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 /**
-* The Service Management API includes operations for listing the available data
-* center locations for a hosted service in your subscription.  (see
-* http://msdn.microsoft.com/en-us/library/windowsazure/gg441299.aspx for more
-* information)
-*/
-public interface LocationOperations
-{
+ * The Service Management API includes operations for listing the available data
+ * center locations for a hosted service in your subscription. (see
+ * http://msdn.microsoft.com/en-us/library/windowsazure/gg441299.aspx for more
+ * information)
+ */
+public interface LocationOperations {
     /**
-    * The List Locations operation lists all of the data center locations that
-    * are valid for your subscription.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/gg441293.aspx for
-    * more information)
-    *
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParserConfigurationException Thrown if there was a serious
-    * configuration error with the document parser.
-    * @throws SAXException Thrown if there was an error parsing the XML
-    * response.
-    * @return The List Locations operation response.
-    */
-    LocationsListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException;
-    
+     * The List Locations operation lists all of the data center locations that
+     * are valid for your subscription. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441293.aspx for
+     * more information)
+     * 
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @throws ParserConfigurationException
+     *             Thrown if there was a serious configuration error with the
+     *             document parser.
+     * @throws SAXException
+     *             Thrown if there was an error parsing the XML response.
+     * @return The List Locations operation response.
+     */
+    LocationsListResponse list() throws IOException, ServiceException,
+            ParserConfigurationException, SAXException;
+
     /**
-    * The List Locations operation lists all of the data center locations that
-    * are valid for your subscription.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/gg441293.aspx for
-    * more information)
-    *
-    * @return The List Locations operation response.
-    */
+     * The List Locations operation lists all of the data center locations that
+     * are valid for your subscription. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441293.aspx for
+     * more information)
+     * 
+     * @return The List Locations operation response.
+     */
     Future<LocationsListResponse> listAsync();
 }

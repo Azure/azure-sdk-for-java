@@ -27,69 +27,71 @@ import com.microsoft.windowsazure.core.OperationResponse;
 import java.net.URI;
 
 /**
-* The primary and secondary access keys for a storage account.
-*/
-public class StorageAccountRegenerateKeysResponse extends OperationResponse
-{
+ * The primary and secondary access keys for a storage account.
+ */
+public class StorageAccountRegenerateKeysResponse extends OperationResponse {
     private String primaryKey;
-    
+
     /**
-    * The primary access key for the storage account.
-    * @return The PrimaryKey value.
-    */
-    public String getPrimaryKey()
-    {
+     * The primary access key for the storage account.
+     * 
+     * @return The PrimaryKey value.
+     */
+    public String getPrimaryKey() {
         return this.primaryKey;
     }
-    
+
     /**
-    * The primary access key for the storage account.
-    * @param primaryKeyValue The PrimaryKey value.
-    */
-    public void setPrimaryKey(final String primaryKeyValue)
-    {
+     * The primary access key for the storage account.
+     * 
+     * @param primaryKeyValue
+     *            The PrimaryKey value.
+     */
+    public void setPrimaryKey(final String primaryKeyValue) {
         this.primaryKey = primaryKeyValue;
     }
-    
+
     private String secondaryKey;
-    
+
     /**
-    * The secondary access key for the storage account.
-    * @return The SecondaryKey value.
-    */
-    public String getSecondaryKey()
-    {
+     * The secondary access key for the storage account.
+     * 
+     * @return The SecondaryKey value.
+     */
+    public String getSecondaryKey() {
         return this.secondaryKey;
     }
-    
+
     /**
-    * The secondary access key for the storage account.
-    * @param secondaryKeyValue The SecondaryKey value.
-    */
-    public void setSecondaryKey(final String secondaryKeyValue)
-    {
+     * The secondary access key for the storage account.
+     * 
+     * @param secondaryKeyValue
+     *            The SecondaryKey value.
+     */
+    public void setSecondaryKey(final String secondaryKeyValue) {
         this.secondaryKey = secondaryKeyValue;
     }
-    
+
     private URI uri;
-    
+
     /**
-    * The Service Management API request URI used to perform Get Storage
-    * Account Properties requests against the storage account.
-    * @return The Uri value.
-    */
-    public URI getUri()
-    {
+     * The Service Management API request URI used to perform Get Storage
+     * Account Properties requests against the storage account.
+     * 
+     * @return The Uri value.
+     */
+    public URI getUri() {
         return this.uri;
     }
-    
+
     /**
-    * The Service Management API request URI used to perform Get Storage
-    * Account Properties requests against the storage account.
-    * @param uriValue The Uri value.
-    */
-    public void setUri(final URI uriValue)
-    {
+     * The Service Management API request URI used to perform Get Storage
+     * Account Properties requests against the storage account.
+     * 
+     * @param uriValue
+     *            The Uri value.
+     */
+    public void setUri(final URI uriValue) {
         this.uri = uriValue;
     }
 }

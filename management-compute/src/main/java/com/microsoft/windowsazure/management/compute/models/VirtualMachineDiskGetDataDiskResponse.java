@@ -27,137 +27,142 @@ import com.microsoft.windowsazure.core.OperationResponse;
 import java.net.URI;
 
 /**
-* The Get Data Disk operation response.
-*/
-public class VirtualMachineDiskGetDataDiskResponse extends OperationResponse
-{
+ * The Get Data Disk operation response.
+ */
+public class VirtualMachineDiskGetDataDiskResponse extends OperationResponse {
     private String diskLabel;
-    
+
     /**
-    * The description of the data disk.
-    * @return The DiskLabel value.
-    */
-    public String getDiskLabel()
-    {
+     * The description of the data disk.
+     * 
+     * @return The DiskLabel value.
+     */
+    public String getDiskLabel() {
         return this.diskLabel;
     }
-    
+
     /**
-    * The description of the data disk.
-    * @param diskLabelValue The DiskLabel value.
-    */
-    public void setDiskLabel(final String diskLabelValue)
-    {
+     * The description of the data disk.
+     * 
+     * @param diskLabelValue
+     *            The DiskLabel value.
+     */
+    public void setDiskLabel(final String diskLabelValue) {
         this.diskLabel = diskLabelValue;
     }
-    
+
     private String diskName;
-    
+
     /**
-    * The name of the data disk.
-    * @return The DiskName value.
-    */
-    public String getDiskName()
-    {
+     * The name of the data disk.
+     * 
+     * @return The DiskName value.
+     */
+    public String getDiskName() {
         return this.diskName;
     }
-    
+
     /**
-    * The name of the data disk.
-    * @param diskNameValue The DiskName value.
-    */
-    public void setDiskName(final String diskNameValue)
-    {
+     * The name of the data disk.
+     * 
+     * @param diskNameValue
+     *            The DiskName value.
+     */
+    public void setDiskName(final String diskNameValue) {
         this.diskName = diskNameValue;
     }
-    
+
     private VirtualHardDiskHostCaching hostCaching;
-    
+
     /**
-    * The current value of the platform caching behavior of data disk blob for
-    * read/write efficiency. Possible values are: None, ReadOnly, ReadWrite.
-    * @return The HostCaching value.
-    */
-    public VirtualHardDiskHostCaching getHostCaching()
-    {
+     * The current value of the platform caching behavior of data disk blob for
+     * read/write efficiency. Possible values are: None, ReadOnly, ReadWrite.
+     * 
+     * @return The HostCaching value.
+     */
+    public VirtualHardDiskHostCaching getHostCaching() {
         return this.hostCaching;
     }
-    
+
     /**
-    * The current value of the platform caching behavior of data disk blob for
-    * read/write efficiency. Possible values are: None, ReadOnly, ReadWrite.
-    * @param hostCachingValue The HostCaching value.
-    */
-    public void setHostCaching(final VirtualHardDiskHostCaching hostCachingValue)
-    {
+     * The current value of the platform caching behavior of data disk blob for
+     * read/write efficiency. Possible values are: None, ReadOnly, ReadWrite.
+     * 
+     * @param hostCachingValue
+     *            The HostCaching value.
+     */
+    public void setHostCaching(final VirtualHardDiskHostCaching hostCachingValue) {
         this.hostCaching = hostCachingValue;
     }
-    
+
     private int logicalDiskSizeInGB;
-    
+
     /**
-    * The size, in GB, of the data disk.
-    * @return The LogicalDiskSizeInGB value.
-    */
-    public int getLogicalDiskSizeInGB()
-    {
+     * The size, in GB, of the data disk.
+     * 
+     * @return The LogicalDiskSizeInGB value.
+     */
+    public int getLogicalDiskSizeInGB() {
         return this.logicalDiskSizeInGB;
     }
-    
+
     /**
-    * The size, in GB, of the data disk.
-    * @param logicalDiskSizeInGBValue The LogicalDiskSizeInGB value.
-    */
-    public void setLogicalDiskSizeInGB(final int logicalDiskSizeInGBValue)
-    {
+     * The size, in GB, of the data disk.
+     * 
+     * @param logicalDiskSizeInGBValue
+     *            The LogicalDiskSizeInGB value.
+     */
+    public void setLogicalDiskSizeInGB(final int logicalDiskSizeInGBValue) {
         this.logicalDiskSizeInGB = logicalDiskSizeInGBValue;
     }
-    
+
     private Integer logicalUnitNumber;
-    
+
     /**
-    * The Logical Unit Number (LUN) for the disk. The LUN specifies the slot in
-    * which the data drive appears when mounted for usage by the virtual
-    * machine.
-    * @return The LogicalUnitNumber value.
-    */
-    public Integer getLogicalUnitNumber()
-    {
+     * The Logical Unit Number (LUN) for the disk. The LUN specifies the slot in
+     * which the data drive appears when mounted for usage by the virtual
+     * machine.
+     * 
+     * @return The LogicalUnitNumber value.
+     */
+    public Integer getLogicalUnitNumber() {
         return this.logicalUnitNumber;
     }
-    
+
     /**
-    * The Logical Unit Number (LUN) for the disk. The LUN specifies the slot in
-    * which the data drive appears when mounted for usage by the virtual
-    * machine.
-    * @param logicalUnitNumberValue The LogicalUnitNumber value.
-    */
-    public void setLogicalUnitNumber(final Integer logicalUnitNumberValue)
-    {
+     * The Logical Unit Number (LUN) for the disk. The LUN specifies the slot in
+     * which the data drive appears when mounted for usage by the virtual
+     * machine.
+     * 
+     * @param logicalUnitNumberValue
+     *            The LogicalUnitNumber value.
+     */
+    public void setLogicalUnitNumber(final Integer logicalUnitNumberValue) {
         this.logicalUnitNumber = logicalUnitNumberValue;
     }
-    
+
     private URI mediaLinkUri;
-    
+
     /**
-    * The location of physical blob backing the data disk. The blob location is
-    * in storage account in the subscription specified by the SubscriptionId
-    * value in the operation call.
-    * @return The MediaLinkUri value.
-    */
-    public URI getMediaLinkUri()
-    {
+     * The location of physical blob backing the data disk. The blob location is
+     * in storage account in the subscription specified by the SubscriptionId
+     * value in the operation call.
+     * 
+     * @return The MediaLinkUri value.
+     */
+    public URI getMediaLinkUri() {
         return this.mediaLinkUri;
     }
-    
+
     /**
-    * The location of physical blob backing the data disk. The blob location is
-    * in storage account in the subscription specified by the SubscriptionId
-    * value in the operation call.
-    * @param mediaLinkUriValue The MediaLinkUri value.
-    */
-    public void setMediaLinkUri(final URI mediaLinkUriValue)
-    {
+     * The location of physical blob backing the data disk. The blob location is
+     * in storage account in the subscription specified by the SubscriptionId
+     * value in the operation call.
+     * 
+     * @param mediaLinkUriValue
+     *            The MediaLinkUri value.
+     */
+    public void setMediaLinkUri(final URI mediaLinkUriValue) {
         this.mediaLinkUri = mediaLinkUriValue;
     }
 }

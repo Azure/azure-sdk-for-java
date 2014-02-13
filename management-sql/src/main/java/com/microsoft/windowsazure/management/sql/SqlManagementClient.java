@@ -28,77 +28,84 @@ import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import java.net.URI;
 
 /**
-* The SQL Database Management API is a REST API for managing SQL Database
-* servers and the firewall rules associated with SQL Database servers.  (see
-* http://msdn.microsoft.com/en-us/library/windowsazure/gg715283.aspx for more
-* information)
-*/
-public interface SqlManagementClient extends FilterableService<SqlManagementClient>
-{
+ * The SQL Database Management API is a REST API for managing SQL Database
+ * servers and the firewall rules associated with SQL Database servers. (see
+ * http://msdn.microsoft.com/en-us/library/windowsazure/gg715283.aspx for more
+ * information)
+ */
+public interface SqlManagementClient extends
+        FilterableService<SqlManagementClient> {
     /**
-    * The URI used as the base for all SQL requests.
-    * @return The BaseUri value.
-    */
-    URI getBaseUri(); 
-    
+     * The URI used as the base for all SQL requests.
+     * 
+     * @return The BaseUri value.
+     */
+    URI getBaseUri();
+
     /**
-    * When you create a Windows Azure subscription, it is uniquely identified
-    * by a subscription ID. The subscription ID forms part of the URI for
-    * every call that you make to the Service Management API.  The Windows
-    * Azure Service ManagementAPI use mutual authentication of management
-    * certificates over SSL to ensure that a request made to the service is
-    * secure.  No anonymous requests are allowed.
-    * @return The Credentials value.
-    */
-    SubscriptionCloudCredentials getCredentials(); 
-    
+     * When you create a Windows Azure subscription, it is uniquely identified
+     * by a subscription ID. The subscription ID forms part of the URI for every
+     * call that you make to the Service Management API. The Windows Azure
+     * Service ManagementAPI use mutual authentication of management
+     * certificates over SSL to ensure that a request made to the service is
+     * secure. No anonymous requests are allowed.
+     * 
+     * @return The Credentials value.
+     */
+    SubscriptionCloudCredentials getCredentials();
+
     /**
-    * Includes operations for importing and exporting SQL Databases into and
-    * out of Windows Azure blob storage.
-    * @return The DacOperations value.
-    */
-    DacOperations getDacOperations(); 
-    
+     * Includes operations for importing and exporting SQL Databases into and
+     * out of Windows Azure blob storage.
+     * 
+     * @return The DacOperations value.
+     */
+    DacOperations getDacOperations();
+
     /**
-    * The SQL Database Management API includes operations for get/stop SQL
-    * Databases' operations for a subscription.
-    * @return The DatabaseOperationsOperations value.
-    */
-    DatabaseOperationOperations getDatabaseOperationsOperations(); 
-    
+     * The SQL Database Management API includes operations for get/stop SQL
+     * Databases' operations for a subscription.
+     * 
+     * @return The DatabaseOperationsOperations value.
+     */
+    DatabaseOperationOperations getDatabaseOperationsOperations();
+
     /**
-    * The SQL Database Management API includes operations for managing SQL
-    * Databases for a subscription.
-    * @return The DatabasesOperations value.
-    */
-    DatabaseOperations getDatabasesOperations(); 
-    
+     * The SQL Database Management API includes operations for managing SQL
+     * Databases for a subscription.
+     * 
+     * @return The DatabasesOperations value.
+     */
+    DatabaseOperations getDatabasesOperations();
+
     /**
-    * The Windows Azure SQL Database Management API includes operations for
-    * managing the server-level firewall rules for SQL Database servers.You
-    * cannot manage the database-level firewall rules using the Windows Azure
-    * SQL Database Management API; they can only be managed by running the
-    * Transact-SQL statements against the master or individual user
-    * databases.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/gg715276.aspx for
-    * more information)
-    * @return The FirewallRulesOperations value.
-    */
-    FirewallRuleOperations getFirewallRulesOperations(); 
-    
+     * The Windows Azure SQL Database Management API includes operations for
+     * managing the server-level firewall rules for SQL Database servers.You
+     * cannot manage the database-level firewall rules using the Windows Azure
+     * SQL Database Management API; they can only be managed by running the
+     * Transact-SQL statements against the master or individual user databases.
+     * (see http://msdn.microsoft.com/en-us/library/windowsazure/gg715276.aspx
+     * for more information)
+     * 
+     * @return The FirewallRulesOperations value.
+     */
+    FirewallRuleOperations getFirewallRulesOperations();
+
     /**
-    * The SQL Database Management API includes operations for managing SQL
-    * Database servers for a subscription.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/gg715271.aspx for
-    * more information)
-    * @return The ServersOperations value.
-    */
-    ServerOperations getServersOperations(); 
-    
+     * The SQL Database Management API includes operations for managing SQL
+     * Database servers for a subscription. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715271.aspx for
+     * more information)
+     * 
+     * @return The ServersOperations value.
+     */
+    ServerOperations getServersOperations();
+
     /**
-    * The SQL Database Management API includes operations for getting Service
-    * Objective for a subscription.
-    * @return The ServiceObjectivesOperations value.
-    */
-    ServiceObjectiveOperations getServiceObjectivesOperations(); 
+     * The SQL Database Management API includes operations for getting Service
+     * Objective for a subscription.
+     * 
+     * @return The ServiceObjectivesOperations value.
+     */
+    ServiceObjectiveOperations getServiceObjectivesOperations();
 }

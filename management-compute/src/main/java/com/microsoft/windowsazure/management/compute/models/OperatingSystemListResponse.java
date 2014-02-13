@@ -28,223 +28,228 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
-* The List Operating Systems operation response.
-*/
-public class OperatingSystemListResponse extends OperationResponse implements Iterable<OperatingSystemListResponse.OperatingSystem>
-{
+ * The List Operating Systems operation response.
+ */
+public class OperatingSystemListResponse extends OperationResponse implements
+        Iterable<OperatingSystemListResponse.OperatingSystem> {
     private ArrayList<OperatingSystemListResponse.OperatingSystem> operatingSystems;
-    
+
     /**
-    * The operating systems that are valid for your subscription.
-    * @return The OperatingSystems value.
-    */
-    public ArrayList<OperatingSystemListResponse.OperatingSystem> getOperatingSystems()
-    {
+     * The operating systems that are valid for your subscription.
+     * 
+     * @return The OperatingSystems value.
+     */
+    public ArrayList<OperatingSystemListResponse.OperatingSystem> getOperatingSystems() {
         return this.operatingSystems;
     }
-    
+
     /**
-    * The operating systems that are valid for your subscription.
-    * @param operatingSystemsValue The OperatingSystems value.
-    */
-    public void setOperatingSystems(final ArrayList<OperatingSystemListResponse.OperatingSystem> operatingSystemsValue)
-    {
+     * The operating systems that are valid for your subscription.
+     * 
+     * @param operatingSystemsValue
+     *            The OperatingSystems value.
+     */
+    public void setOperatingSystems(
+            final ArrayList<OperatingSystemListResponse.OperatingSystem> operatingSystemsValue) {
         this.operatingSystems = operatingSystemsValue;
     }
-    
+
     /**
-    * Initializes a new instance of the OperatingSystemListResponse class.
-    *
-    */
-    public OperatingSystemListResponse()
-    {
+     * Initializes a new instance of the OperatingSystemListResponse class.
+     * 
+     */
+    public OperatingSystemListResponse() {
         super();
         this.operatingSystems = new ArrayList<OperatingSystemListResponse.OperatingSystem>();
     }
-    
+
     /**
-    * Gets the sequence of OperatingSystems.
-    *
-    */
-    public Iterator<OperatingSystemListResponse.OperatingSystem> iterator()
-    {
+     * Gets the sequence of OperatingSystems.
+     * 
+     */
+    public Iterator<OperatingSystemListResponse.OperatingSystem> iterator() {
         return this.getOperatingSystems().iterator();
     }
-    
+
     /**
-    * An operating system that is valid for your subscription.
-    */
-    public static class OperatingSystem
-    {
+     * An operating system that is valid for your subscription.
+     */
+    public static class OperatingSystem {
         private int family;
-        
+
         /**
-        * Indicates which operating system family this version belongs to. A
-        * value of 1 corresponds to the Windows Azure guest operating system
-        * that is substantially compatible with Windows Server 2008 SP2. A
-        * value of 2 corresponds to the Windows Azure guest operating system
-        * that is substantially compatible with Windows Server 2008 R2.
-        * @return The Family value.
-        */
-        public int getFamily()
-        {
+         * Indicates which operating system family this version belongs to. A
+         * value of 1 corresponds to the Windows Azure guest operating system
+         * that is substantially compatible with Windows Server 2008 SP2. A
+         * value of 2 corresponds to the Windows Azure guest operating system
+         * that is substantially compatible with Windows Server 2008 R2.
+         * 
+         * @return The Family value.
+         */
+        public int getFamily() {
             return this.family;
         }
-        
+
         /**
-        * Indicates which operating system family this version belongs to. A
-        * value of 1 corresponds to the Windows Azure guest operating system
-        * that is substantially compatible with Windows Server 2008 SP2. A
-        * value of 2 corresponds to the Windows Azure guest operating system
-        * that is substantially compatible with Windows Server 2008 R2.
-        * @param familyValue The Family value.
-        */
-        public void setFamily(final int familyValue)
-        {
+         * Indicates which operating system family this version belongs to. A
+         * value of 1 corresponds to the Windows Azure guest operating system
+         * that is substantially compatible with Windows Server 2008 SP2. A
+         * value of 2 corresponds to the Windows Azure guest operating system
+         * that is substantially compatible with Windows Server 2008 R2.
+         * 
+         * @param familyValue
+         *            The Family value.
+         */
+        public void setFamily(final int familyValue) {
             this.family = familyValue;
         }
-        
+
         private String familyLabel;
-        
+
         /**
-        * The label of the operating system family.
-        * @return The FamilyLabel value.
-        */
-        public String getFamilyLabel()
-        {
+         * The label of the operating system family.
+         * 
+         * @return The FamilyLabel value.
+         */
+        public String getFamilyLabel() {
             return this.familyLabel;
         }
-        
+
         /**
-        * The label of the operating system family.
-        * @param familyLabelValue The FamilyLabel value.
-        */
-        public void setFamilyLabel(final String familyLabelValue)
-        {
+         * The label of the operating system family.
+         * 
+         * @param familyLabelValue
+         *            The FamilyLabel value.
+         */
+        public void setFamilyLabel(final String familyLabelValue) {
             this.familyLabel = familyLabelValue;
         }
-        
+
         private boolean isActive;
-        
+
         /**
-        * Indicates whether this operating system version is currently active
-        * for running a service. If an operating system version is active, you
-        * can manually configure your service to run on that version.  An
-        * operating system version may be inactive for one of two reasons:  1.
-        * It is not yet active as it is in the process of being rolled out to
-        * Windows Azure data centers. If your service is configured to use
-        * auto-upgrade, it will be upgraded to the new operating system
-        * version during the rollout. If you are manually configuring your
-        * operating system version, you can upgrade to the latest version once
-        * it becomes active.  2. It is no longer supported for running a
-        * service. In this case you will either need to manually configure
-        * your service to run on a newer version, or configure your service to
-        * use auto-upgrade to manage operating system upgrades.
-        * @return The IsActive value.
-        */
-        public boolean isActive()
-        {
+         * Indicates whether this operating system version is currently active
+         * for running a service. If an operating system version is active, you
+         * can manually configure your service to run on that version. An
+         * operating system version may be inactive for one of two reasons: 1.
+         * It is not yet active as it is in the process of being rolled out to
+         * Windows Azure data centers. If your service is configured to use
+         * auto-upgrade, it will be upgraded to the new operating system version
+         * during the rollout. If you are manually configuring your operating
+         * system version, you can upgrade to the latest version once it becomes
+         * active. 2. It is no longer supported for running a service. In this
+         * case you will either need to manually configure your service to run
+         * on a newer version, or configure your service to use auto-upgrade to
+         * manage operating system upgrades.
+         * 
+         * @return The IsActive value.
+         */
+        public boolean isActive() {
             return this.isActive;
         }
-        
+
         /**
-        * Indicates whether this operating system version is currently active
-        * for running a service. If an operating system version is active, you
-        * can manually configure your service to run on that version.  An
-        * operating system version may be inactive for one of two reasons:  1.
-        * It is not yet active as it is in the process of being rolled out to
-        * Windows Azure data centers. If your service is configured to use
-        * auto-upgrade, it will be upgraded to the new operating system
-        * version during the rollout. If you are manually configuring your
-        * operating system version, you can upgrade to the latest version once
-        * it becomes active.  2. It is no longer supported for running a
-        * service. In this case you will either need to manually configure
-        * your service to run on a newer version, or configure your service to
-        * use auto-upgrade to manage operating system upgrades.
-        * @param isActiveValue The IsActive value.
-        */
-        public void setIsActive(final boolean isActiveValue)
-        {
+         * Indicates whether this operating system version is currently active
+         * for running a service. If an operating system version is active, you
+         * can manually configure your service to run on that version. An
+         * operating system version may be inactive for one of two reasons: 1.
+         * It is not yet active as it is in the process of being rolled out to
+         * Windows Azure data centers. If your service is configured to use
+         * auto-upgrade, it will be upgraded to the new operating system version
+         * during the rollout. If you are manually configuring your operating
+         * system version, you can upgrade to the latest version once it becomes
+         * active. 2. It is no longer supported for running a service. In this
+         * case you will either need to manually configure your service to run
+         * on a newer version, or configure your service to use auto-upgrade to
+         * manage operating system upgrades.
+         * 
+         * @param isActiveValue
+         *            The IsActive value.
+         */
+        public void setIsActive(final boolean isActiveValue) {
             this.isActive = isActiveValue;
         }
-        
+
         private boolean isDefault;
-        
+
         /**
-        * Indicates whether this operating system version is the default
-        * version for a service that has not otherwise specified a particular
-        * version. The default operating system version is applied to services
-        * that are configured for auto-upgrade. An operating system family has
-        * exactly one default operating system version at any given time, for
-        * which the IsDefault element is set to true; for all other versions,
-        * IsDefault is set to false.
-        * @return The IsDefault value.
-        */
-        public boolean isDefault()
-        {
+         * Indicates whether this operating system version is the default
+         * version for a service that has not otherwise specified a particular
+         * version. The default operating system version is applied to services
+         * that are configured for auto-upgrade. An operating system family has
+         * exactly one default operating system version at any given time, for
+         * which the IsDefault element is set to true; for all other versions,
+         * IsDefault is set to false.
+         * 
+         * @return The IsDefault value.
+         */
+        public boolean isDefault() {
             return this.isDefault;
         }
-        
+
         /**
-        * Indicates whether this operating system version is the default
-        * version for a service that has not otherwise specified a particular
-        * version. The default operating system version is applied to services
-        * that are configured for auto-upgrade. An operating system family has
-        * exactly one default operating system version at any given time, for
-        * which the IsDefault element is set to true; for all other versions,
-        * IsDefault is set to false.
-        * @param isDefaultValue The IsDefault value.
-        */
-        public void setIsDefault(final boolean isDefaultValue)
-        {
+         * Indicates whether this operating system version is the default
+         * version for a service that has not otherwise specified a particular
+         * version. The default operating system version is applied to services
+         * that are configured for auto-upgrade. An operating system family has
+         * exactly one default operating system version at any given time, for
+         * which the IsDefault element is set to true; for all other versions,
+         * IsDefault is set to false.
+         * 
+         * @param isDefaultValue
+         *            The IsDefault value.
+         */
+        public void setIsDefault(final boolean isDefaultValue) {
             this.isDefault = isDefaultValue;
         }
-        
+
         private String label;
-        
+
         /**
-        * The label of the operating system version.
-        * @return The Label value.
-        */
-        public String getLabel()
-        {
+         * The label of the operating system version.
+         * 
+         * @return The Label value.
+         */
+        public String getLabel() {
             return this.label;
         }
-        
+
         /**
-        * The label of the operating system version.
-        * @param labelValue The Label value.
-        */
-        public void setLabel(final String labelValue)
-        {
+         * The label of the operating system version.
+         * 
+         * @param labelValue
+         *            The Label value.
+         */
+        public void setLabel(final String labelValue) {
             this.label = labelValue;
         }
-        
+
         private String version;
-        
+
         /**
-        * The operating system version. This value corresponds to the
-        * configuration value for specifying that your service is to run on a
-        * particular version of the Windows Azure guest operating system. See
-        * Configuring Settings for the Windows Azure Guest OS for additional
-        * details.
-        * @return The Version value.
-        */
-        public String getVersion()
-        {
+         * The operating system version. This value corresponds to the
+         * configuration value for specifying that your service is to run on a
+         * particular version of the Windows Azure guest operating system. See
+         * Configuring Settings for the Windows Azure Guest OS for additional
+         * details.
+         * 
+         * @return The Version value.
+         */
+        public String getVersion() {
             return this.version;
         }
-        
+
         /**
-        * The operating system version. This value corresponds to the
-        * configuration value for specifying that your service is to run on a
-        * particular version of the Windows Azure guest operating system. See
-        * Configuring Settings for the Windows Azure Guest OS for additional
-        * details.
-        * @param versionValue The Version value.
-        */
-        public void setVersion(final String versionValue)
-        {
+         * The operating system version. This value corresponds to the
+         * configuration value for specifying that your service is to run on a
+         * particular version of the Windows Azure guest operating system. See
+         * Configuring Settings for the Windows Azure Guest OS for additional
+         * details.
+         * 
+         * @param versionValue
+         *            The Version value.
+         */
+        public void setVersion(final String versionValue) {
             this.version = versionValue;
         }
     }

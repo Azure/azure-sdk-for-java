@@ -42,23 +42,20 @@ import com.microsoft.windowsazure.services.media.models.TaskOption;
 import com.microsoft.windowsazure.services.media.models.TaskState;
 import com.sun.jersey.core.util.Base64;
 
-public class TaskIntegrationTest extends IntegrationTestBase
-{
+public class TaskIntegrationTest extends IntegrationTestBase {
     private static AssetInfo assetInfo;
     private Creator jobCreator;
 
     private static final String commonConfiguration = "H.264 256k DSL CBR";
 
     @BeforeClass
-    public static void setup() throws Exception
-    {
+    public static void setup() throws Exception {
         IntegrationTestBase.setup();
         assetInfo = setupAssetWithFile();
     }
 
     @Before
-    public void instanceSetup()
-    {
+    public void instanceSetup() {
         this.jobCreator = Job.create()
                 .setName(testJobPrefix + UUID.randomUUID().toString())
                 .setPriority(3).addInputMediaAsset(assetInfo.getId());
@@ -66,8 +63,7 @@ public class TaskIntegrationTest extends IntegrationTestBase
 
     @Test
     public void createTaskSuccess() throws ServiceException,
-            UnsupportedEncodingException
-    {
+            UnsupportedEncodingException {
         // Arrange
 
         // Required
@@ -111,8 +107,7 @@ public class TaskIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void createTwoTasksSuccess() throws ServiceException
-    {
+    public void createTwoTasksSuccess() throws ServiceException {
         // Arrange
 
         // Required
@@ -129,8 +124,7 @@ public class TaskIntegrationTest extends IntegrationTestBase
 
         List<CreateBatchOperation> taskCreators = new ArrayList<CreateBatchOperation>();
 
-        for (int i = 0; i < taskBodies.length; i++)
-        {
+        for (int i = 0; i < taskBodies.length; i++) {
             CreateBatchOperation taskCreator = Task
                     .create(mediaProcessorId, taskBodies[i])
                     .setConfiguration(configuration)
@@ -145,8 +139,7 @@ public class TaskIntegrationTest extends IntegrationTestBase
 
         // Assert
         assertEquals("taskInfos count", taskCreators.size(), taskInfos.size());
-        for (int i = 0; i < taskCreators.size(); i++)
-        {
+        for (int i = 0; i < taskCreators.size(); i++) {
             verifyTaskPropertiesJustStartedNoEncryption("taskInfo",
                     mediaProcessorId, options, taskBodies[i], configuration,
                     baseName + suffixes[i], jobPriority, taskInfos.get(i));
@@ -154,16 +147,14 @@ public class TaskIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void canListTasksWithOptions() throws ServiceException
-    {
+    public void canListTasksWithOptions() throws ServiceException {
         // Arrange
         String mediaProcessorId = MEDIA_ENCODER_MEDIA_PROCESSOR_ID;
         String configuration = commonConfiguration;
         String[] taskNameSuffixes = new String[] { "A", "B", "C", "D" };
         String baseName = "My encoding Task " + UUID.randomUUID().toString();
         int taskCounter = 0;
-        for (String suffix : taskNameSuffixes)
-        {
+        for (String suffix : taskNameSuffixes) {
             CreateBatchOperation taskCreator = Task
                     .create(mediaProcessorId, constructTaskBody(taskCounter++))
                     .setConfiguration(configuration).setName(baseName + suffix);
@@ -186,8 +177,7 @@ public class TaskIntegrationTest extends IntegrationTestBase
 
     @Test
     public void cancelTaskSuccess() throws ServiceException,
-            InterruptedException
-    {
+            InterruptedException {
         // Arrange
         String mediaProcessorId = MEDIA_ENCODER_MEDIA_PROCESSOR_ID;
         String taskBody = constructTaskBody(0);
@@ -203,8 +193,7 @@ public class TaskIntegrationTest extends IntegrationTestBase
         // Act
         service.action(Job.cancel(jobInfo.getId()));
         JobInfo cancellingJobInfo = service.get(Job.get(jobInfo.getId()));
-        while (cancellingJobInfo.getState() == JobState.Canceling)
-        {
+        while (cancellingJobInfo.getState() == JobState.Canceling) {
             Thread.sleep(2000);
             cancellingJobInfo = service.get(Job.get(jobInfo.getId()));
         }
@@ -212,8 +201,7 @@ public class TaskIntegrationTest extends IntegrationTestBase
         // Assert
         List<TaskInfo> taskInfos = service.list(Task.list(cancellingJobInfo
                 .getTasksLink()));
-        for (TaskInfo taskInfo : taskInfos)
-        {
+        for (TaskInfo taskInfo : taskInfos) {
             verifyTaskPropertiesNoEncryption("canceled task", mediaProcessorId,
                     TaskOption.None, taskBody, configuration, name, 3,
                     new Date(), null, 0.0, 0.0, null, TaskState.Canceled,
@@ -227,8 +215,7 @@ public class TaskIntegrationTest extends IntegrationTestBase
             String encryptionScheme, String encryptionVersion,
             String initializationVector, Date endTime, String errorDetails,
             double progress, double runningDuration, Date startTime,
-            TaskState state, TaskInfo actual) throws ServiceException
-    {
+            TaskState state, TaskInfo actual) throws ServiceException {
         assertNotNull(message, actual);
         assertNotNull(message + " id", actual.getId());
 
@@ -292,8 +279,7 @@ public class TaskIntegrationTest extends IntegrationTestBase
             String configuration, String name, int priority,
             String encryptionKeyId, String encryptionScheme,
             String encryptionVersion, String initializationVector,
-            TaskInfo actual) throws ServiceException
-    {
+            TaskInfo actual) throws ServiceException {
 
         // Read-only
         Date endTime = null;
@@ -313,8 +299,7 @@ public class TaskIntegrationTest extends IntegrationTestBase
     private void verifyTaskPropertiesJustStartedNoEncryption(String message,
             String mediaProcessorId, TaskOption options, String taskBody,
             String configuration, String name, int priority, TaskInfo actual)
-            throws ServiceException
-    {
+            throws ServiceException {
         String encryptionKeyId = null;
         String encryptionScheme = null;
         String encryptionVersion = null;
@@ -331,8 +316,7 @@ public class TaskIntegrationTest extends IntegrationTestBase
             String configuration, String name, int priority, Date endTime,
             String errorDetails, double progress, double runningDuration,
             Date startTime, TaskState state, TaskInfo actual)
-            throws ServiceException
-    {
+            throws ServiceException {
         String encryptionKeyId = null;
         String encryptionScheme = null;
         String encryptionVersion = null;
@@ -345,8 +329,7 @@ public class TaskIntegrationTest extends IntegrationTestBase
                 state, actual);
     }
 
-    private String constructTaskBody(int outputIndex)
-    {
+    private String constructTaskBody(int outputIndex) {
         return "<taskBody><inputAsset>JobInputAsset(0)</inputAsset>"
                 + "<outputAsset>JobOutputAsset(" + outputIndex
                 + ")</outputAsset></taskBody>";

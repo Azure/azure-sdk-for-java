@@ -21,18 +21,15 @@ import com.sun.jersey.core.util.Base64;
 /*
  * JAXB adapter for a Base64 encoded string element
  */
-public class Base64StringAdapter extends XmlAdapter<String, String>
-{
+public class Base64StringAdapter extends XmlAdapter<String, String> {
 
     @Override
-    public String marshal(String arg0) throws Exception
-    {
+    public String marshal(String arg0) throws Exception {
         return new String(Base64.encode(arg0), "UTF-8");
     }
 
     @Override
-    public String unmarshal(String arg0) throws Exception
-    {
+    public String unmarshal(String arg0) throws Exception {
         return Base64.base64Decode(arg0);
     }
 }

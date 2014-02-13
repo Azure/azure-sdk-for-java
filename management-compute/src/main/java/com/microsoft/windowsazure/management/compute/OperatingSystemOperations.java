@@ -33,90 +33,97 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 /**
-* Operations for determining the version of the Windows Azure Guest Operating
-* System on which your service is running.  (see
-* http://msdn.microsoft.com/en-us/library/windowsazure/ff684169.aspx for more
-* information)
-*/
-public interface OperatingSystemOperations
-{
+ * Operations for determining the version of the Windows Azure Guest Operating
+ * System on which your service is running. (see
+ * http://msdn.microsoft.com/en-us/library/windowsazure/ff684169.aspx for more
+ * information)
+ */
+public interface OperatingSystemOperations {
     /**
-    * The List Operating Systems operation lists the versions of the guest
-    * operating system that are currently available in Windows Azure. The
-    * 2010-10-28 version of List Operating Systems also indicates what family
-    * an operating system version belongs to. Currently Windows Azure supports
-    * two operating system families: the Windows Azure guest operating system
-    * that is substantially compatible with Windows Server 2008 SP2, and the
-    * Windows Azure guest operating system that is substantially compatible
-    * with Windows Server 2008 R2.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/ff684168.aspx for
-    * more information)
-    *
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParserConfigurationException Thrown if there was a serious
-    * configuration error with the document parser.
-    * @throws SAXException Thrown if there was an error parsing the XML
-    * response.
-    * @throws URISyntaxException Thrown if there was an error parsing a URI in
-    * the response.
-    * @return The List Operating Systems operation response.
-    */
-    OperatingSystemListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException;
-    
+     * The List Operating Systems operation lists the versions of the guest
+     * operating system that are currently available in Windows Azure. The
+     * 2010-10-28 version of List Operating Systems also indicates what family
+     * an operating system version belongs to. Currently Windows Azure supports
+     * two operating system families: the Windows Azure guest operating system
+     * that is substantially compatible with Windows Server 2008 SP2, and the
+     * Windows Azure guest operating system that is substantially compatible
+     * with Windows Server 2008 R2. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/ff684168.aspx for
+     * more information)
+     * 
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @throws ParserConfigurationException
+     *             Thrown if there was a serious configuration error with the
+     *             document parser.
+     * @throws SAXException
+     *             Thrown if there was an error parsing the XML response.
+     * @throws URISyntaxException
+     *             Thrown if there was an error parsing a URI in the response.
+     * @return The List Operating Systems operation response.
+     */
+    OperatingSystemListResponse list() throws IOException, ServiceException,
+            ParserConfigurationException, SAXException, URISyntaxException;
+
     /**
-    * The List Operating Systems operation lists the versions of the guest
-    * operating system that are currently available in Windows Azure. The
-    * 2010-10-28 version of List Operating Systems also indicates what family
-    * an operating system version belongs to. Currently Windows Azure supports
-    * two operating system families: the Windows Azure guest operating system
-    * that is substantially compatible with Windows Server 2008 SP2, and the
-    * Windows Azure guest operating system that is substantially compatible
-    * with Windows Server 2008 R2.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/ff684168.aspx for
-    * more information)
-    *
-    * @return The List Operating Systems operation response.
-    */
+     * The List Operating Systems operation lists the versions of the guest
+     * operating system that are currently available in Windows Azure. The
+     * 2010-10-28 version of List Operating Systems also indicates what family
+     * an operating system version belongs to. Currently Windows Azure supports
+     * two operating system families: the Windows Azure guest operating system
+     * that is substantially compatible with Windows Server 2008 SP2, and the
+     * Windows Azure guest operating system that is substantially compatible
+     * with Windows Server 2008 R2. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/ff684168.aspx for
+     * more information)
+     * 
+     * @return The List Operating Systems operation response.
+     */
     Future<OperatingSystemListResponse> listAsync();
-    
+
     /**
-    * The List OS Families operation lists the guest operating system families
-    * available in Windows Azure, and also lists the operating system versions
-    * available for each family. Currently Windows Azure supports two
-    * operating system families: the Windows Azure guest operating system that
-    * is substantially compatible with Windows Server 2008 SP2, and the
-    * Windows Azure guest operating system that is substantially compatible
-    * with Windows Server 2008 R2.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/gg441291.aspx for
-    * more information)
-    *
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParserConfigurationException Thrown if there was a serious
-    * configuration error with the document parser.
-    * @throws SAXException Thrown if there was an error parsing the XML
-    * response.
-    * @return The List Operating System Families operation response.
-    */
-    OperatingSystemListFamiliesResponse listFamilies() throws IOException, ServiceException, ParserConfigurationException, SAXException;
-    
+     * The List OS Families operation lists the guest operating system families
+     * available in Windows Azure, and also lists the operating system versions
+     * available for each family. Currently Windows Azure supports two operating
+     * system families: the Windows Azure guest operating system that is
+     * substantially compatible with Windows Server 2008 SP2, and the Windows
+     * Azure guest operating system that is substantially compatible with
+     * Windows Server 2008 R2. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441291.aspx for
+     * more information)
+     * 
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @throws ParserConfigurationException
+     *             Thrown if there was a serious configuration error with the
+     *             document parser.
+     * @throws SAXException
+     *             Thrown if there was an error parsing the XML response.
+     * @return The List Operating System Families operation response.
+     */
+    OperatingSystemListFamiliesResponse listFamilies() throws IOException,
+            ServiceException, ParserConfigurationException, SAXException;
+
     /**
-    * The List OS Families operation lists the guest operating system families
-    * available in Windows Azure, and also lists the operating system versions
-    * available for each family. Currently Windows Azure supports two
-    * operating system families: the Windows Azure guest operating system that
-    * is substantially compatible with Windows Server 2008 SP2, and the
-    * Windows Azure guest operating system that is substantially compatible
-    * with Windows Server 2008 R2.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/gg441291.aspx for
-    * more information)
-    *
-    * @return The List Operating System Families operation response.
-    */
+     * The List OS Families operation lists the guest operating system families
+     * available in Windows Azure, and also lists the operating system versions
+     * available for each family. Currently Windows Azure supports two operating
+     * system families: the Windows Azure guest operating system that is
+     * substantially compatible with Windows Server 2008 SP2, and the Windows
+     * Azure guest operating system that is substantially compatible with
+     * Windows Server 2008 R2. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441291.aspx for
+     * more information)
+     * 
+     * @return The List Operating System Families operation response.
+     */
     Future<OperatingSystemListFamiliesResponse> listFamiliesAsync();
 }

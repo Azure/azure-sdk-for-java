@@ -24,8 +24,7 @@ import com.microsoft.windowsazure.services.queue.QueueContract;
  * maximum number of queues to return in a single response, and whether to
  * include queue metadata with the response.
  */
-public class ListQueuesOptions extends QueueServiceOptions
-{
+public class ListQueuesOptions extends QueueServiceOptions {
     private String prefix;
     private String marker;
     private int maxResults;
@@ -43,8 +42,7 @@ public class ListQueuesOptions extends QueueServiceOptions
      * @return A reference to this {@link ListQueuesOptions} instance.
      */
     @Override
-    public ListQueuesOptions setTimeout(Integer timeout)
-    {
+    public ListQueuesOptions setTimeout(Integer timeout) {
         super.setTimeout(timeout);
         return this;
     }
@@ -57,8 +55,7 @@ public class ListQueuesOptions extends QueueServiceOptions
      *         a {@link QueueContract#listQueues(ListQueuesOptions) listQueues}
      *         request.
      */
-    public String getPrefix()
-    {
+    public String getPrefix() {
         return prefix;
     }
 
@@ -76,8 +73,7 @@ public class ListQueuesOptions extends QueueServiceOptions
      *            request.
      * @return A reference to this {@link ListQueuesOptions} instance.
      */
-    public ListQueuesOptions setPrefix(String prefix)
-    {
+    public ListQueuesOptions setPrefix(String prefix) {
         this.prefix = prefix;
         return this;
     }
@@ -99,8 +95,7 @@ public class ListQueuesOptions extends QueueServiceOptions
      * @return The marker value that identifies the beginning of the list of
      *         queues to be returned.
      */
-    public String getMarker()
-    {
+    public String getMarker() {
         return marker;
     }
 
@@ -122,8 +117,7 @@ public class ListQueuesOptions extends QueueServiceOptions
      *            The {@link String} marker value to set.
      * @return A reference to this {@link ListQueuesOptions} instance.
      */
-    public ListQueuesOptions setMarker(String marker)
-    {
+    public ListQueuesOptions setMarker(String marker) {
         this.marker = marker;
         return this;
     }
@@ -135,8 +129,7 @@ public class ListQueuesOptions extends QueueServiceOptions
      * 
      * @return The maximum number of queues to return.
      */
-    public int getMaxResults()
-    {
+    public int getMaxResults() {
         return maxResults;
     }
 
@@ -153,8 +146,7 @@ public class ListQueuesOptions extends QueueServiceOptions
      *            The maximum number of queues to return.
      * @return A reference to this {@link ListQueuesOptions} instance.
      */
-    public ListQueuesOptions setMaxResults(int maxResults)
-    {
+    public ListQueuesOptions setMaxResults(int maxResults) {
         this.maxResults = maxResults;
         return this;
     }
@@ -165,8 +157,7 @@ public class ListQueuesOptions extends QueueServiceOptions
      * 
      * @return <code>true</code> to return metadata.
      */
-    public boolean isIncludeMetadata()
-    {
+    public boolean isIncludeMetadata() {
         return includeMetadata;
     }
 
@@ -178,8 +169,7 @@ public class ListQueuesOptions extends QueueServiceOptions
      *            <code>true</code> to return metadata.
      * @return A reference to this {@link ListQueuesOptions} instance.
      */
-    public ListQueuesOptions setIncludeMetadata(boolean includeMetadata)
-    {
+    public ListQueuesOptions setIncludeMetadata(boolean includeMetadata) {
         this.includeMetadata = includeMetadata;
         return this;
     }

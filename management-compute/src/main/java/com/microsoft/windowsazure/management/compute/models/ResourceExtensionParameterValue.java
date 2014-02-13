@@ -24,71 +24,73 @@
 package com.microsoft.windowsazure.management.compute.models;
 
 /**
-* Required. Specifies the key, value, and type of the parameter.
-*/
-public class ResourceExtensionParameterValue
-{
+ * Required. Specifies the key, value, and type of the parameter.
+ */
+public class ResourceExtensionParameterValue {
     private String key;
-    
+
     /**
-    * Key
-    * @return The Key value.
-    */
-    public String getKey()
-    {
+     * Key
+     * 
+     * @return The Key value.
+     */
+    public String getKey() {
         return this.key;
     }
-    
+
     /**
-    * Key
-    * @param keyValue The Key value.
-    */
-    public void setKey(final String keyValue)
-    {
+     * Key
+     * 
+     * @param keyValue
+     *            The Key value.
+     */
+    public void setKey(final String keyValue) {
         this.key = keyValue;
     }
-    
+
     private ResourceExtensionParameterValueType type;
-    
+
     /**
-    * If this value is set to Private, the parameter will not be returned by
-    * Get Deployment. You can only specify one public parameter and one
-    * private parameter for a maximum of two parameters.
-    * @return The Type value.
-    */
-    public ResourceExtensionParameterValueType getType()
-    {
+     * If this value is set to Private, the parameter will not be returned by
+     * Get Deployment. You can only specify one public parameter and one private
+     * parameter for a maximum of two parameters.
+     * 
+     * @return The Type value.
+     */
+    public ResourceExtensionParameterValueType getType() {
         return this.type;
     }
-    
+
     /**
-    * If this value is set to Private, the parameter will not be returned by
-    * Get Deployment. You can only specify one public parameter and one
-    * private parameter for a maximum of two parameters.
-    * @param typeValue The Type value.
-    */
-    public void setType(final ResourceExtensionParameterValueType typeValue)
-    {
+     * If this value is set to Private, the parameter will not be returned by
+     * Get Deployment. You can only specify one public parameter and one private
+     * parameter for a maximum of two parameters.
+     * 
+     * @param typeValue
+     *            The Type value.
+     */
+    public void setType(final ResourceExtensionParameterValueType typeValue) {
         this.type = typeValue;
     }
-    
+
     private String value;
-    
+
     /**
-    * Value
-    * @return The Value value.
-    */
-    public String getValue()
-    {
+     * Value
+     * 
+     * @return The Value value.
+     */
+    public String getValue() {
         return this.value;
     }
-    
+
     /**
-    * Value
-    * @param valueValue The Value value.
-    */
-    public void setValue(final String valueValue)
-    {
+     * Value
+     * 
+     * @param valueValue
+     *            The Value value.
+     */
+    public void setValue(final String valueValue) {
         this.value = valueValue;
     }
 }

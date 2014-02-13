@@ -39,8 +39,7 @@ import com.microsoft.windowsazure.services.queue.QueueContract;
  * service REST API operation.
  */
 @XmlRootElement(name = "EnumerationResults")
-public class ListQueuesResult
-{
+public class ListQueuesResult {
     private List<Queue> queues = new ArrayList<Queue>();
     private String accountName;
     private String prefix;
@@ -57,8 +56,7 @@ public class ListQueuesResult
      */
     @XmlElementWrapper(name = "Queues")
     @XmlElement(name = "Queue")
-    public List<Queue> getQueues()
-    {
+    public List<Queue> getQueues() {
         return queues;
     }
 
@@ -73,8 +71,7 @@ public class ListQueuesResult
      *            A {@link List} of {@link Queue} instances representing the
      *            queues returned by the request.
      */
-    public void setQueues(List<Queue> value)
-    {
+    public void setQueues(List<Queue> value) {
         this.queues = value;
     }
 
@@ -89,8 +86,7 @@ public class ListQueuesResult
      *         API operations on the storage account.
      */
     @XmlAttribute(name = "AccountName")
-    public String getAccountName()
-    {
+    public String getAccountName() {
         return accountName;
     }
 
@@ -104,8 +100,7 @@ public class ListQueuesResult
      *            A {@link String} containing the base URI for Queue service
      *            REST API operations on the storage account.
      */
-    public void setAccountName(String accountName)
-    {
+    public void setAccountName(String accountName) {
         this.accountName = accountName;
     }
 
@@ -120,8 +115,7 @@ public class ListQueuesResult
      *         returned.
      */
     @XmlElement(name = "Prefix")
-    public String getPrefix()
-    {
+    public String getPrefix() {
         return prefix;
     }
 
@@ -138,8 +132,7 @@ public class ListQueuesResult
      *            The {@link String} prefix used to qualify the names of the
      *            queues returned.
      */
-    public void setPrefix(String prefix)
-    {
+    public void setPrefix(String prefix) {
         this.prefix = prefix;
     }
 
@@ -161,8 +154,7 @@ public class ListQueuesResult
      *         response.
      */
     @XmlElement(name = "Marker")
-    public String getMarker()
-    {
+    public String getMarker() {
         return marker;
     }
 
@@ -179,8 +171,7 @@ public class ListQueuesResult
      *            A {@link String} containing the marker value used for the
      *            response.
      */
-    public void setMarker(String marker)
-    {
+    public void setMarker(String marker) {
         this.marker = marker;
     }
 
@@ -198,8 +189,7 @@ public class ListQueuesResult
      *         list queues request.
      */
     @XmlElement(name = "NextMarker")
-    public String getNextMarker()
-    {
+    public String getNextMarker() {
         return nextMarker;
     }
 
@@ -215,8 +205,7 @@ public class ListQueuesResult
      *            A {@link String} containing the marker value to use to resume
      *            the list queues request.
      */
-    public void setNextMarker(String nextMarker)
-    {
+    public void setNextMarker(String nextMarker) {
         this.nextMarker = nextMarker;
     }
 
@@ -237,8 +226,7 @@ public class ListQueuesResult
      * @return The maximum number of results to return specified by the request.
      */
     @XmlElement(name = "MaxResults")
-    public int getMaxResults()
-    {
+    public int getMaxResults() {
         return maxResults;
     }
 
@@ -253,8 +241,7 @@ public class ListQueuesResult
      *            The maximum number of results to return specified by the
      *            request.
      */
-    public void setMaxResults(int maxResults)
-    {
+    public void setMaxResults(int maxResults) {
         this.maxResults = maxResults;
     }
 
@@ -263,8 +250,7 @@ public class ListQueuesResult
      * {@link Queue} instance contains a copy of the queue name, URI, and
      * metadata in the storage service as of the time the queue was requested.
      */
-    public static class Queue
-    {
+    public static class Queue {
         private String name;
         private String url;
         private HashMap<String, String> metadata = new HashMap<String, String>();
@@ -275,8 +261,7 @@ public class ListQueuesResult
          * @return A {@link String} containing the name of this queue.
          */
         @XmlElement(name = "Name")
-        public String getName()
-        {
+        public String getName() {
             return name;
         }
 
@@ -289,8 +274,7 @@ public class ListQueuesResult
          * @param name
          *            A {@link String} containing the name of this queue.
          */
-        public void setName(String name)
-        {
+        public void setName(String name) {
             this.name = name;
         }
 
@@ -301,8 +285,7 @@ public class ListQueuesResult
          *         API operations on this queue.
          */
         @XmlElement(name = "Url")
-        public String getUrl()
-        {
+        public String getUrl() {
             return url;
         }
 
@@ -316,8 +299,7 @@ public class ListQueuesResult
          *            A {@link String} containing the URI for Queue service REST
          *            API operations on this queue.
          */
-        public void setUrl(String url)
-        {
+        public void setUrl(String url) {
             this.url = url;
         }
 
@@ -330,8 +312,7 @@ public class ListQueuesResult
          */
         @XmlElement(name = "Metadata")
         @XmlJavaTypeAdapter(MetadataAdapter.class)
-        public HashMap<String, String> getMetadata()
-        {
+        public HashMap<String, String> getMetadata() {
             return metadata;
         }
 
@@ -345,8 +326,7 @@ public class ListQueuesResult
          *            A {@link java.util.HashMap} of key-value {@link String}
          *            pairs containing the queue metadata.
          */
-        public void setMetadata(HashMap<String, String> metadata)
-        {
+        public void setMetadata(HashMap<String, String> metadata) {
             this.metadata = metadata;
         }
     }

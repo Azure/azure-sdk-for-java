@@ -59,661 +59,749 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
-* Provides REST operations for working with cloud services from the Windows
-* Azure store service.
-*/
-public class CloudServiceOperationsImpl implements ServiceOperations<StoreManagementClientImpl>, CloudServiceOperations
-{
+ * Provides REST operations for working with cloud services from the Windows
+ * Azure store service.
+ */
+public class CloudServiceOperationsImpl implements
+        ServiceOperations<StoreManagementClientImpl>, CloudServiceOperations {
     /**
-    * Initializes a new instance of the CloudServiceOperationsImpl class.
-    *
-    * @param client Reference to the service client.
-    */
-    CloudServiceOperationsImpl(StoreManagementClientImpl client)
-    {
+     * Initializes a new instance of the CloudServiceOperationsImpl class.
+     * 
+     * @param client
+     *            Reference to the service client.
+     */
+    CloudServiceOperationsImpl(StoreManagementClientImpl client) {
         this.client = client;
     }
-    
+
     private StoreManagementClientImpl client;
-    
+
     /**
-    * Gets a reference to the
-    * microsoft.windowsazure.management.store.StoreManagementClientImpl.
-    * @return The Client value.
-    */
-    public StoreManagementClientImpl getClient()
-    {
+     * Gets a reference to the
+     * microsoft.windowsazure.management.store.StoreManagementClientImpl.
+     * 
+     * @return The Client value.
+     */
+    public StoreManagementClientImpl getClient() {
         return this.client;
     }
-    
+
     /**
-    * The Create Cloud Service operation creates a Windows Azure cloud service
-    * in a Windows Azure subscription.
-    *
-    * @param parameters Parameters used to specify how the Create procedure
-    * will function.
-    * @return The response body contains the status of the specified
-    * asynchronous operation, indicating whether it has succeeded, is
-    * inprogress, or has failed. Note that this status is distinct from the
-    * HTTP status code returned for the Get Operation Status operation itself.
-    * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
-    * operation failed, the response body includes the HTTP status code for
-    * the failed request, and also includes error information regarding the
-    * failure.
-    */
+     * The Create Cloud Service operation creates a Windows Azure cloud service
+     * in a Windows Azure subscription.
+     * 
+     * @param parameters
+     *            Parameters used to specify how the Create procedure will
+     *            function.
+     * @return The response body contains the status of the specified
+     *         asynchronous operation, indicating whether it has succeeded, is
+     *         inprogress, or has failed. Note that this status is distinct from
+     *         the HTTP status code returned for the Get Operation Status
+     *         operation itself. If the asynchronous operation succeeded, the
+     *         response body includes the HTTP status code for the successful
+     *         request. If the asynchronous operation failed, the response body
+     *         includes the HTTP status code for the failed request, and also
+     *         includes error information regarding the failure.
+     */
     @Override
-    public Future<AddOnOperationStatusResponse> beginCreatingAsync(final CloudServiceCreateParameters parameters)
-    {
-        return this.getClient().getExecutorService().submit(new Callable<AddOnOperationStatusResponse>() { 
-            @Override
-            public AddOnOperationStatusResponse call() throws Exception
-            {
-                return beginCreating(parameters);
-            }
-         });
+    public Future<AddOnOperationStatusResponse> beginCreatingAsync(
+            final CloudServiceCreateParameters parameters) {
+        return this.getClient().getExecutorService()
+                .submit(new Callable<AddOnOperationStatusResponse>() {
+                    @Override
+                    public AddOnOperationStatusResponse call() throws Exception {
+                        return beginCreating(parameters);
+                    }
+                });
     }
-    
+
     /**
-    * The Create Cloud Service operation creates a Windows Azure cloud service
-    * in a Windows Azure subscription.
-    *
-    * @param parameters Parameters used to specify how the Create procedure
-    * will function.
-    * @throws ParserConfigurationException Thrown if there was an error
-    * configuring the parser for the response body.
-    * @throws SAXException Thrown if there was an error parsing the response
-    * body.
-    * @throws TransformerException Thrown if there was an error creating the
-    * DOM transformer.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @return The response body contains the status of the specified
-    * asynchronous operation, indicating whether it has succeeded, is
-    * inprogress, or has failed. Note that this status is distinct from the
-    * HTTP status code returned for the Get Operation Status operation itself.
-    * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
-    * operation failed, the response body includes the HTTP status code for
-    * the failed request, and also includes error information regarding the
-    * failure.
-    */
+     * The Create Cloud Service operation creates a Windows Azure cloud service
+     * in a Windows Azure subscription.
+     * 
+     * @param parameters
+     *            Parameters used to specify how the Create procedure will
+     *            function.
+     * @throws ParserConfigurationException
+     *             Thrown if there was an error configuring the parser for the
+     *             response body.
+     * @throws SAXException
+     *             Thrown if there was an error parsing the response body.
+     * @throws TransformerException
+     *             Thrown if there was an error creating the DOM transformer.
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @return The response body contains the status of the specified
+     *         asynchronous operation, indicating whether it has succeeded, is
+     *         inprogress, or has failed. Note that this status is distinct from
+     *         the HTTP status code returned for the Get Operation Status
+     *         operation itself. If the asynchronous operation succeeded, the
+     *         response body includes the HTTP status code for the successful
+     *         request. If the asynchronous operation failed, the response body
+     *         includes the HTTP status code for the failed request, and also
+     *         includes error information regarding the failure.
+     */
     @Override
-    public AddOnOperationStatusResponse beginCreating(CloudServiceCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
-    {
+    public AddOnOperationStatusResponse beginCreating(
+            CloudServiceCreateParameters parameters)
+            throws ParserConfigurationException, SAXException,
+            TransformerException, IOException, ServiceException {
         // Validate
-        if (parameters == null)
-        {
+        if (parameters == null) {
             throw new NullPointerException("parameters");
         }
-        if (parameters.getDescription() == null)
-        {
+        if (parameters.getDescription() == null) {
             throw new NullPointerException("parameters.Description");
         }
-        if (parameters.getGeoRegion() == null)
-        {
+        if (parameters.getGeoRegion() == null) {
             throw new NullPointerException("parameters.GeoRegion");
         }
-        if (parameters.getLabel() == null)
-        {
+        if (parameters.getLabel() == null) {
             throw new NullPointerException("parameters.Label");
         }
-        if (parameters.getName() == null)
-        {
+        if (parameters.getName() == null) {
             throw new NullPointerException("parameters.Name");
         }
-        
+
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this, "beginCreatingAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "beginCreatingAsync",
+                    tracingParameters);
         }
-        
+
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/CloudServices/" + parameters.getName() + "/";
-        
+        String url = this.getClient().getBaseUri() + "/"
+                + this.getClient().getCredentials().getSubscriptionId()
+                + "/CloudServices/" + parameters.getName() + "/";
+
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
-        
+
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
         httpRequest.setHeader("x-ms-version", "2013-06-01");
-        
+
         // Serialize Request
         String requestContent = null;
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
+                .newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory
+                .newDocumentBuilder();
         Document requestDoc = documentBuilder.newDocument();
-        
-        Element cloudServiceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CloudService");
+
+        Element cloudServiceElement = requestDoc.createElementNS(
+                "http://schemas.microsoft.com/windowsazure", "CloudService");
         requestDoc.appendChild(cloudServiceElement);
-        
-        Element nameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
-        nameElement.appendChild(requestDoc.createTextNode(parameters.getName()));
+
+        Element nameElement = requestDoc.createElementNS(
+                "http://schemas.microsoft.com/windowsazure", "Name");
+        nameElement
+                .appendChild(requestDoc.createTextNode(parameters.getName()));
         cloudServiceElement.appendChild(nameElement);
-        
-        Element labelElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Label");
-        labelElement.appendChild(requestDoc.createTextNode(parameters.getLabel()));
+
+        Element labelElement = requestDoc.createElementNS(
+                "http://schemas.microsoft.com/windowsazure", "Label");
+        labelElement.appendChild(requestDoc.createTextNode(parameters
+                .getLabel()));
         cloudServiceElement.appendChild(labelElement);
-        
-        Element descriptionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Description");
-        descriptionElement.appendChild(requestDoc.createTextNode(parameters.getDescription()));
+
+        Element descriptionElement = requestDoc.createElementNS(
+                "http://schemas.microsoft.com/windowsazure", "Description");
+        descriptionElement.appendChild(requestDoc.createTextNode(parameters
+                .getDescription()));
         cloudServiceElement.appendChild(descriptionElement);
-        
-        Element geoRegionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "GeoRegion");
-        geoRegionElement.appendChild(requestDoc.createTextNode(parameters.getGeoRegion()));
+
+        Element geoRegionElement = requestDoc.createElementNS(
+                "http://schemas.microsoft.com/windowsazure", "GeoRegion");
+        geoRegionElement.appendChild(requestDoc.createTextNode(parameters
+                .getGeoRegion()));
         cloudServiceElement.appendChild(geoRegionElement);
-        
+
         DOMSource domSource = new DOMSource(requestDoc);
         StringWriter stringWriter = new StringWriter();
         StreamResult streamResult = new StreamResult(stringWriter);
-        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        TransformerFactory transformerFactory = TransformerFactory
+                .newInstance();
         Transformer transformer = transformerFactory.newTransformer();
         transformer.transform(domSource, streamResult);
         requestContent = stringWriter.toString();
         StringEntity entity = new StringEntity(requestContent);
         httpRequest.setEntity(entity);
         httpRequest.setHeader("Content-Type", "application/xml");
-        
+
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            httpResponse = this.getClient().getHttpClient()
+                    .execute(httpRequest);
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_ACCEPTED)
-            {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
+                ServiceException ex = ServiceException.createFromXml(
+                        httpRequest, requestContent, httpResponse,
+                        httpResponse.getEntity());
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-            
+
             // Create Result
             AddOnOperationStatusResponse result = null;
             result = new AddOnOperationStatusResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader(
+                        "x-ms-request-id").getValue());
             }
-            
-            if (shouldTrace)
-            {
+
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
     }
-    
+
     /**
-    * The Create Cloud Service operation creates a Windows Azure cloud service
-    * in a Windows Azure subscription.
-    *
-    * @param parameters Parameters used to specify how the Create procedure
-    * will function.
-    * @return The response body contains the status of the specified
-    * asynchronous operation, indicating whether it has succeeded, is
-    * inprogress, or has failed. Note that this status is distinct from the
-    * HTTP status code returned for the Get Operation Status operation itself.
-    * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
-    * operation failed, the response body includes the HTTP status code for
-    * the failed request, and also includes error information regarding the
-    * failure.
-    */
+     * The Create Cloud Service operation creates a Windows Azure cloud service
+     * in a Windows Azure subscription.
+     * 
+     * @param parameters
+     *            Parameters used to specify how the Create procedure will
+     *            function.
+     * @return The response body contains the status of the specified
+     *         asynchronous operation, indicating whether it has succeeded, is
+     *         inprogress, or has failed. Note that this status is distinct from
+     *         the HTTP status code returned for the Get Operation Status
+     *         operation itself. If the asynchronous operation succeeded, the
+     *         response body includes the HTTP status code for the successful
+     *         request. If the asynchronous operation failed, the response body
+     *         includes the HTTP status code for the failed request, and also
+     *         includes error information regarding the failure.
+     */
     @Override
-    public Future<AddOnOperationStatusResponse> createAsync(final CloudServiceCreateParameters parameters)
-    {
-        return this.getClient().getExecutorService().submit(new Callable<AddOnOperationStatusResponse>() { 
-            @Override
-            public AddOnOperationStatusResponse call() throws Exception
-            {
-                return create(parameters);
-            }
-         });
+    public Future<AddOnOperationStatusResponse> createAsync(
+            final CloudServiceCreateParameters parameters) {
+        return this.getClient().getExecutorService()
+                .submit(new Callable<AddOnOperationStatusResponse>() {
+                    @Override
+                    public AddOnOperationStatusResponse call() throws Exception {
+                        return create(parameters);
+                    }
+                });
     }
-    
+
     /**
-    * The Create Cloud Service operation creates a Windows Azure cloud service
-    * in a Windows Azure subscription.
-    *
-    * @param parameters Parameters used to specify how the Create procedure
-    * will function.
-    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
-    * or otherwise occupied, and the thread is interrupted, either before or
-    * during the activity. Occasionally a method may wish to test whether the
-    * current thread has been interrupted, and if so, to immediately throw
-    * this exception. The following code can be used to achieve this effect:
-    * @throws ExecutionException Thrown when attempting to retrieve the result
-    * of a task that aborted by throwing an exception. This exception can be
-    * inspected using the Throwable.getCause() method.
-    * @throws ServiceException Thrown if the server returned an error for the
-    * request.
-    * @throws IOException Thrown if there was an error setting up tracing for
-    * the request.
-    * @return The response body contains the status of the specified
-    * asynchronous operation, indicating whether it has succeeded, is
-    * inprogress, or has failed. Note that this status is distinct from the
-    * HTTP status code returned for the Get Operation Status operation itself.
-    * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
-    * operation failed, the response body includes the HTTP status code for
-    * the failed request, and also includes error information regarding the
-    * failure.
-    */
+     * The Create Cloud Service operation creates a Windows Azure cloud service
+     * in a Windows Azure subscription.
+     * 
+     * @param parameters
+     *            Parameters used to specify how the Create procedure will
+     *            function.
+     * @throws InterruptedException
+     *             Thrown when a thread is waiting, sleeping, or otherwise
+     *             occupied, and the thread is interrupted, either before or
+     *             during the activity. Occasionally a method may wish to test
+     *             whether the current thread has been interrupted, and if so,
+     *             to immediately throw this exception. The following code can
+     *             be used to achieve this effect:
+     * @throws ExecutionException
+     *             Thrown when attempting to retrieve the result of a task that
+     *             aborted by throwing an exception. This exception can be
+     *             inspected using the Throwable.getCause() method.
+     * @throws ServiceException
+     *             Thrown if the server returned an error for the request.
+     * @throws IOException
+     *             Thrown if there was an error setting up tracing for the
+     *             request.
+     * @return The response body contains the status of the specified
+     *         asynchronous operation, indicating whether it has succeeded, is
+     *         inprogress, or has failed. Note that this status is distinct from
+     *         the HTTP status code returned for the Get Operation Status
+     *         operation itself. If the asynchronous operation succeeded, the
+     *         response body includes the HTTP status code for the successful
+     *         request. If the asynchronous operation failed, the response body
+     *         includes the HTTP status code for the failed request, and also
+     *         includes error information regarding the failure.
+     */
     @Override
-    public AddOnOperationStatusResponse create(CloudServiceCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException
-    {
+    public AddOnOperationStatusResponse create(
+            CloudServiceCreateParameters parameters)
+            throws InterruptedException, ExecutionException, ServiceException,
+            IOException {
         StoreManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this, "createAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "createAsync",
+                    tracingParameters);
         }
-        try
-        {
-            if (shouldTrace)
-            {
-                client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
+        try {
+            if (shouldTrace) {
+                client2 = this
+                        .getClient()
+                        .withRequestFilterLast(
+                                new ClientRequestTrackingHandler(invocationId))
+                        .withResponseFilterLast(
+                                new ClientRequestTrackingHandler(invocationId));
             }
-            
-            AddOnOperationStatusResponse response = client2.getCloudServicesOperations().beginCreatingAsync(parameters).get();
-            AddOnOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
+
+            AddOnOperationStatusResponse response = client2
+                    .getCloudServicesOperations()
+                    .beginCreatingAsync(parameters).get();
+            AddOnOperationStatusResponse result = client2
+                    .getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
-            while ((result.getStatus() != OperationStatus.InProgress) == false)
-            {
+            while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
-                result = client2.getOperationStatusAsync(response.getRequestId()).get();
+                result = client2.getOperationStatusAsync(
+                        response.getRequestId()).get();
                 delayInSeconds = 30;
             }
-            
-            if (shouldTrace)
-            {
+
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
-            
-            if (result.getStatus() != OperationStatus.Succeeded)
-            {
-                if (result.getError() != null)
-                {
-                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+
+            if (result.getStatus() != OperationStatus.Succeeded) {
+                if (result.getError() != null) {
+                    ServiceException ex = new ServiceException(result
+                            .getError().getCode()
+                            + " : "
+                            + result.getError().getMessage());
                     ex.setErrorCode(result.getError().getCode());
                     ex.setErrorMessage(result.getError().getMessage());
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else
-                {
+                } else {
                     ServiceException ex = new ServiceException("");
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
                 }
             }
-            
+
             return result;
-        }
-        finally
-        {
-            if (this.getClient() != null && shouldTrace)
-            {
+        } finally {
+            if (this.getClient() != null && shouldTrace) {
                 this.getClient().close();
             }
         }
     }
-    
+
     /**
-    * The List Cloud Services operation enumerates Windows Azure Store entries
-    * that are provisioned for a subscription.
-    *
-    * @return The response structure for the Cloud Service List operation.
-    */
+     * The List Cloud Services operation enumerates Windows Azure Store entries
+     * that are provisioned for a subscription.
+     * 
+     * @return The response structure for the Cloud Service List operation.
+     */
     @Override
-    public Future<CloudServiceListResponse> listAsync()
-    {
-        return this.getClient().getExecutorService().submit(new Callable<CloudServiceListResponse>() { 
-            @Override
-            public CloudServiceListResponse call() throws Exception
-            {
-                return list();
-            }
-         });
+    public Future<CloudServiceListResponse> listAsync() {
+        return this.getClient().getExecutorService()
+                .submit(new Callable<CloudServiceListResponse>() {
+                    @Override
+                    public CloudServiceListResponse call() throws Exception {
+                        return list();
+                    }
+                });
     }
-    
+
     /**
-    * The List Cloud Services operation enumerates Windows Azure Store entries
-    * that are provisioned for a subscription.
-    *
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParserConfigurationException Thrown if there was a serious
-    * configuration error with the document parser.
-    * @throws SAXException Thrown if there was an error parsing the XML
-    * response.
-    * @return The response structure for the Cloud Service List operation.
-    */
+     * The List Cloud Services operation enumerates Windows Azure Store entries
+     * that are provisioned for a subscription.
+     * 
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @throws ParserConfigurationException
+     *             Thrown if there was a serious configuration error with the
+     *             document parser.
+     * @throws SAXException
+     *             Thrown if there was an error parsing the XML response.
+     * @return The response structure for the Cloud Service List operation.
+     */
     @Override
-    public CloudServiceListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException
-    {
+    public CloudServiceListResponse list() throws IOException,
+            ServiceException, ParserConfigurationException, SAXException {
         // Validate
-        
+
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
-            CloudTracing.enter(invocationId, this, "listAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "listAsync",
+                    tracingParameters);
         }
-        
+
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/CloudServices/";
-        
+        String url = this.getClient().getBaseUri() + "/"
+                + this.getClient().getCredentials().getSubscriptionId()
+                + "/CloudServices/";
+
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
-        
+
         // Set Headers
         httpRequest.setHeader("x-ms-version", "2013-06-01");
-        
+
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            httpResponse = this.getClient().getHttpClient()
+                    .execute(httpRequest);
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+            if (statusCode != HttpStatus.SC_OK) {
+                ServiceException ex = ServiceException.createFromXml(
+                        httpRequest, null, httpResponse,
+                        httpResponse.getEntity());
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-            
+
             // Create Result
             CloudServiceListResponse result = null;
             // Deserialize Response
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new CloudServiceListResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
+                    .newInstance();
             documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            DocumentBuilder documentBuilder = documentBuilderFactory
+                    .newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
-            
-            NodeList elements = responseDoc.getElementsByTagName("CloudServices");
-            Element cloudServicesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (cloudServicesSequenceElement != null)
-            {
-                for (int i1 = 0; i1 < cloudServicesSequenceElement.getElementsByTagName("CloudService").getLength(); i1 = i1 + 1)
-                {
-                    org.w3c.dom.Element cloudServicesElement = ((org.w3c.dom.Element) cloudServicesSequenceElement.getElementsByTagName("CloudService").item(i1));
+
+            NodeList elements = responseDoc
+                    .getElementsByTagName("CloudServices");
+            Element cloudServicesSequenceElement = elements.getLength() > 0 ? ((Element) elements
+                    .item(0)) : null;
+            if (cloudServicesSequenceElement != null) {
+                for (int i1 = 0; i1 < cloudServicesSequenceElement
+                        .getElementsByTagName("CloudService").getLength(); i1 = i1 + 1) {
+                    org.w3c.dom.Element cloudServicesElement = ((org.w3c.dom.Element) cloudServicesSequenceElement
+                            .getElementsByTagName("CloudService").item(i1));
                     CloudServiceListResponse.CloudService cloudServiceInstance = new CloudServiceListResponse.CloudService();
                     result.getCloudServices().add(cloudServiceInstance);
-                    
-                    NodeList elements2 = cloudServicesElement.getElementsByTagName("Name");
-                    Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                    if (nameElement != null)
-                    {
+
+                    NodeList elements2 = cloudServicesElement
+                            .getElementsByTagName("Name");
+                    Element nameElement = elements2.getLength() > 0 ? ((Element) elements2
+                            .item(0)) : null;
+                    if (nameElement != null) {
                         String nameInstance;
                         nameInstance = nameElement.getTextContent();
                         cloudServiceInstance.setName(nameInstance);
                     }
-                    
-                    NodeList elements3 = cloudServicesElement.getElementsByTagName("Label");
-                    Element labelElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                    if (labelElement != null)
-                    {
+
+                    NodeList elements3 = cloudServicesElement
+                            .getElementsByTagName("Label");
+                    Element labelElement = elements3.getLength() > 0 ? ((Element) elements3
+                            .item(0)) : null;
+                    if (labelElement != null) {
                         String labelInstance;
-                        labelInstance = labelElement.getTextContent() != null ? new String(Base64.decodeBase64(labelElement.getTextContent().getBytes())) : null;
+                        labelInstance = labelElement.getTextContent() != null ? new String(
+                                Base64.decodeBase64(labelElement
+                                        .getTextContent().getBytes())) : null;
                         cloudServiceInstance.setLabel(labelInstance);
                     }
-                    
-                    NodeList elements4 = cloudServicesElement.getElementsByTagName("Description");
-                    Element descriptionElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                    if (descriptionElement != null)
-                    {
+
+                    NodeList elements4 = cloudServicesElement
+                            .getElementsByTagName("Description");
+                    Element descriptionElement = elements4.getLength() > 0 ? ((Element) elements4
+                            .item(0)) : null;
+                    if (descriptionElement != null) {
                         String descriptionInstance;
-                        descriptionInstance = descriptionElement.getTextContent();
-                        cloudServiceInstance.setDescription(descriptionInstance);
+                        descriptionInstance = descriptionElement
+                                .getTextContent();
+                        cloudServiceInstance
+                                .setDescription(descriptionInstance);
                     }
-                    
-                    NodeList elements5 = cloudServicesElement.getElementsByTagName("GeoRegion");
-                    Element geoRegionElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                    if (geoRegionElement != null)
-                    {
+
+                    NodeList elements5 = cloudServicesElement
+                            .getElementsByTagName("GeoRegion");
+                    Element geoRegionElement = elements5.getLength() > 0 ? ((Element) elements5
+                            .item(0)) : null;
+                    if (geoRegionElement != null) {
                         String geoRegionInstance;
                         geoRegionInstance = geoRegionElement.getTextContent();
                         cloudServiceInstance.setGeoRegion(geoRegionInstance);
                     }
-                    
-                    NodeList elements6 = cloudServicesElement.getElementsByTagName("Resources");
-                    Element resourcesSequenceElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                    if (resourcesSequenceElement != null)
-                    {
-                        for (int i2 = 0; i2 < resourcesSequenceElement.getElementsByTagName("Resource").getLength(); i2 = i2 + 1)
-                        {
-                            org.w3c.dom.Element resourcesElement = ((org.w3c.dom.Element) resourcesSequenceElement.getElementsByTagName("Resource").item(i2));
+
+                    NodeList elements6 = cloudServicesElement
+                            .getElementsByTagName("Resources");
+                    Element resourcesSequenceElement = elements6.getLength() > 0 ? ((Element) elements6
+                            .item(0)) : null;
+                    if (resourcesSequenceElement != null) {
+                        for (int i2 = 0; i2 < resourcesSequenceElement
+                                .getElementsByTagName("Resource").getLength(); i2 = i2 + 1) {
+                            org.w3c.dom.Element resourcesElement = ((org.w3c.dom.Element) resourcesSequenceElement
+                                    .getElementsByTagName("Resource").item(i2));
                             CloudServiceListResponse.CloudService.AddOnResource resourceInstance = new CloudServiceListResponse.CloudService.AddOnResource();
-                            cloudServiceInstance.getResources().add(resourceInstance);
-                            
-                            NodeList elements7 = resourcesElement.getElementsByTagName("ResourceProviderNamespace");
-                            Element resourceProviderNamespaceElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                            if (resourceProviderNamespaceElement != null)
-                            {
+                            cloudServiceInstance.getResources().add(
+                                    resourceInstance);
+
+                            NodeList elements7 = resourcesElement
+                                    .getElementsByTagName("ResourceProviderNamespace");
+                            Element resourceProviderNamespaceElement = elements7
+                                    .getLength() > 0 ? ((Element) elements7
+                                    .item(0)) : null;
+                            if (resourceProviderNamespaceElement != null) {
                                 String resourceProviderNamespaceInstance;
-                                resourceProviderNamespaceInstance = resourceProviderNamespaceElement.getTextContent();
-                                resourceInstance.setNamespace(resourceProviderNamespaceInstance);
+                                resourceProviderNamespaceInstance = resourceProviderNamespaceElement
+                                        .getTextContent();
+                                resourceInstance
+                                        .setNamespace(resourceProviderNamespaceInstance);
                             }
-                            
-                            NodeList elements8 = resourcesElement.getElementsByTagName("Type");
-                            Element typeElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                            if (typeElement != null)
-                            {
+
+                            NodeList elements8 = resourcesElement
+                                    .getElementsByTagName("Type");
+                            Element typeElement = elements8.getLength() > 0 ? ((Element) elements8
+                                    .item(0)) : null;
+                            if (typeElement != null) {
                                 String typeInstance;
                                 typeInstance = typeElement.getTextContent();
                                 resourceInstance.setType(typeInstance);
                             }
-                            
-                            NodeList elements9 = resourcesElement.getElementsByTagName("Name");
-                            Element nameElement2 = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-                            if (nameElement2 != null)
-                            {
+
+                            NodeList elements9 = resourcesElement
+                                    .getElementsByTagName("Name");
+                            Element nameElement2 = elements9.getLength() > 0 ? ((Element) elements9
+                                    .item(0)) : null;
+                            if (nameElement2 != null) {
                                 String nameInstance2;
                                 nameInstance2 = nameElement2.getTextContent();
                                 resourceInstance.setName(nameInstance2);
                             }
-                            
-                            NodeList elements10 = resourcesElement.getElementsByTagName("Plan");
-                            Element planElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
-                            if (planElement != null)
-                            {
+
+                            NodeList elements10 = resourcesElement
+                                    .getElementsByTagName("Plan");
+                            Element planElement = elements10.getLength() > 0 ? ((Element) elements10
+                                    .item(0)) : null;
+                            if (planElement != null) {
                                 String planInstance;
                                 planInstance = planElement.getTextContent();
                                 resourceInstance.setPlan(planInstance);
                             }
-                            
-                            NodeList elements11 = resourcesElement.getElementsByTagName("SchemaVersion");
-                            Element schemaVersionElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
-                            if (schemaVersionElement != null)
-                            {
+
+                            NodeList elements11 = resourcesElement
+                                    .getElementsByTagName("SchemaVersion");
+                            Element schemaVersionElement = elements11
+                                    .getLength() > 0 ? ((Element) elements11
+                                    .item(0)) : null;
+                            if (schemaVersionElement != null) {
                                 String schemaVersionInstance;
-                                schemaVersionInstance = schemaVersionElement.getTextContent();
-                                resourceInstance.setSchemaVersion(schemaVersionInstance);
+                                schemaVersionInstance = schemaVersionElement
+                                        .getTextContent();
+                                resourceInstance
+                                        .setSchemaVersion(schemaVersionInstance);
                             }
-                            
-                            NodeList elements12 = resourcesElement.getElementsByTagName("ETag");
-                            Element eTagElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
-                            if (eTagElement != null)
-                            {
+
+                            NodeList elements12 = resourcesElement
+                                    .getElementsByTagName("ETag");
+                            Element eTagElement = elements12.getLength() > 0 ? ((Element) elements12
+                                    .item(0)) : null;
+                            if (eTagElement != null) {
                                 String eTagInstance;
                                 eTagInstance = eTagElement.getTextContent();
                                 resourceInstance.setETag(eTagInstance);
                             }
-                            
-                            NodeList elements13 = resourcesElement.getElementsByTagName("State");
-                            Element stateElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
-                            if (stateElement != null)
-                            {
+
+                            NodeList elements13 = resourcesElement
+                                    .getElementsByTagName("State");
+                            Element stateElement = elements13.getLength() > 0 ? ((Element) elements13
+                                    .item(0)) : null;
+                            if (stateElement != null) {
                                 String stateInstance;
                                 stateInstance = stateElement.getTextContent();
                                 resourceInstance.setState(stateInstance);
                             }
-                            
-                            NodeList elements14 = resourcesElement.getElementsByTagName("UsageMeters");
-                            Element usageMetersSequenceElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
-                            if (usageMetersSequenceElement != null)
-                            {
-                                for (int i3 = 0; i3 < usageMetersSequenceElement.getElementsByTagName("UsageMeter").getLength(); i3 = i3 + 1)
-                                {
-                                    org.w3c.dom.Element usageMetersElement = ((org.w3c.dom.Element) usageMetersSequenceElement.getElementsByTagName("UsageMeter").item(i3));
+
+                            NodeList elements14 = resourcesElement
+                                    .getElementsByTagName("UsageMeters");
+                            Element usageMetersSequenceElement = elements14
+                                    .getLength() > 0 ? ((Element) elements14
+                                    .item(0)) : null;
+                            if (usageMetersSequenceElement != null) {
+                                for (int i3 = 0; i3 < usageMetersSequenceElement
+                                        .getElementsByTagName("UsageMeter")
+                                        .getLength(); i3 = i3 + 1) {
+                                    org.w3c.dom.Element usageMetersElement = ((org.w3c.dom.Element) usageMetersSequenceElement
+                                            .getElementsByTagName("UsageMeter")
+                                            .item(i3));
                                     CloudServiceListResponse.CloudService.AddOnResource.UsageLimit usageMeterInstance = new CloudServiceListResponse.CloudService.AddOnResource.UsageLimit();
-                                    resourceInstance.getUsageLimits().add(usageMeterInstance);
-                                    
-                                    NodeList elements15 = usageMetersElement.getElementsByTagName("Name");
-                                    Element nameElement3 = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
-                                    if (nameElement3 != null)
-                                    {
+                                    resourceInstance.getUsageLimits().add(
+                                            usageMeterInstance);
+
+                                    NodeList elements15 = usageMetersElement
+                                            .getElementsByTagName("Name");
+                                    Element nameElement3 = elements15
+                                            .getLength() > 0 ? ((Element) elements15
+                                            .item(0)) : null;
+                                    if (nameElement3 != null) {
                                         String nameInstance3;
-                                        nameInstance3 = nameElement3.getTextContent();
-                                        usageMeterInstance.setName(nameInstance3);
+                                        nameInstance3 = nameElement3
+                                                .getTextContent();
+                                        usageMeterInstance
+                                                .setName(nameInstance3);
                                     }
-                                    
-                                    NodeList elements16 = usageMetersElement.getElementsByTagName("Unit");
-                                    Element unitElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
-                                    if (unitElement != null)
-                                    {
+
+                                    NodeList elements16 = usageMetersElement
+                                            .getElementsByTagName("Unit");
+                                    Element unitElement = elements16
+                                            .getLength() > 0 ? ((Element) elements16
+                                            .item(0)) : null;
+                                    if (unitElement != null) {
                                         String unitInstance;
-                                        unitInstance = unitElement.getTextContent();
-                                        usageMeterInstance.setUnit(unitInstance);
+                                        unitInstance = unitElement
+                                                .getTextContent();
+                                        usageMeterInstance
+                                                .setUnit(unitInstance);
                                     }
-                                    
-                                    NodeList elements17 = usageMetersElement.getElementsByTagName("Included");
-                                    Element includedElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
-                                    if (includedElement != null)
-                                    {
+
+                                    NodeList elements17 = usageMetersElement
+                                            .getElementsByTagName("Included");
+                                    Element includedElement = elements17
+                                            .getLength() > 0 ? ((Element) elements17
+                                            .item(0)) : null;
+                                    if (includedElement != null) {
                                         long includedInstance;
-                                        includedInstance = DatatypeConverter.parseLong(includedElement.getTextContent());
-                                        usageMeterInstance.setAmountIncluded(includedInstance);
+                                        includedInstance = DatatypeConverter
+                                                .parseLong(includedElement
+                                                        .getTextContent());
+                                        usageMeterInstance
+                                                .setAmountIncluded(includedInstance);
                                     }
-                                    
-                                    NodeList elements18 = usageMetersElement.getElementsByTagName("Used");
-                                    Element usedElement = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
-                                    if (usedElement != null)
-                                    {
+
+                                    NodeList elements18 = usageMetersElement
+                                            .getElementsByTagName("Used");
+                                    Element usedElement = elements18
+                                            .getLength() > 0 ? ((Element) elements18
+                                            .item(0)) : null;
+                                    if (usedElement != null) {
                                         long usedInstance;
-                                        usedInstance = DatatypeConverter.parseLong(usedElement.getTextContent());
-                                        usageMeterInstance.setAmountUsed(usedInstance);
+                                        usedInstance = DatatypeConverter
+                                                .parseLong(usedElement
+                                                        .getTextContent());
+                                        usageMeterInstance
+                                                .setAmountUsed(usedInstance);
                                     }
                                 }
                             }
-                            
-                            NodeList elements19 = resourcesElement.getElementsByTagName("OutputItems");
-                            Element outputItemsSequenceElement = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
-                            if (outputItemsSequenceElement != null)
-                            {
-                                for (int i4 = 0; i4 < outputItemsSequenceElement.getElementsByTagName("OutputItem").getLength(); i4 = i4 + 1)
-                                {
-                                    org.w3c.dom.Element outputItemsElement = ((org.w3c.dom.Element) outputItemsSequenceElement.getElementsByTagName("OutputItem").item(i4));
-                                    NodeList elements20 = outputItemsElement.getElementsByTagName("Key");
-                                    String outputItemsKey = elements20.getLength() > 0 ? ((org.w3c.dom.Element) elements20.item(0)).getTextContent() : null;
-                                    NodeList elements21 = outputItemsElement.getElementsByTagName("Value");
-                                    String outputItemsValue = elements21.getLength() > 0 ? ((org.w3c.dom.Element) elements21.item(0)).getTextContent() : null;
-                                    resourceInstance.getOutputItems().put(outputItemsKey, outputItemsValue);
+
+                            NodeList elements19 = resourcesElement
+                                    .getElementsByTagName("OutputItems");
+                            Element outputItemsSequenceElement = elements19
+                                    .getLength() > 0 ? ((Element) elements19
+                                    .item(0)) : null;
+                            if (outputItemsSequenceElement != null) {
+                                for (int i4 = 0; i4 < outputItemsSequenceElement
+                                        .getElementsByTagName("OutputItem")
+                                        .getLength(); i4 = i4 + 1) {
+                                    org.w3c.dom.Element outputItemsElement = ((org.w3c.dom.Element) outputItemsSequenceElement
+                                            .getElementsByTagName("OutputItem")
+                                            .item(i4));
+                                    NodeList elements20 = outputItemsElement
+                                            .getElementsByTagName("Key");
+                                    String outputItemsKey = elements20
+                                            .getLength() > 0 ? ((org.w3c.dom.Element) elements20
+                                            .item(0)).getTextContent() : null;
+                                    NodeList elements21 = outputItemsElement
+                                            .getElementsByTagName("Value");
+                                    String outputItemsValue = elements21
+                                            .getLength() > 0 ? ((org.w3c.dom.Element) elements21
+                                            .item(0)).getTextContent() : null;
+                                    resourceInstance.getOutputItems().put(
+                                            outputItemsKey, outputItemsValue);
                                 }
                             }
-                            
-                            NodeList elements22 = resourcesElement.getElementsByTagName("OperationStatus");
-                            Element operationStatusElement = elements22.getLength() > 0 ? ((Element) elements22.item(0)) : null;
-                            if (operationStatusElement != null)
-                            {
+
+                            NodeList elements22 = resourcesElement
+                                    .getElementsByTagName("OperationStatus");
+                            Element operationStatusElement = elements22
+                                    .getLength() > 0 ? ((Element) elements22
+                                    .item(0)) : null;
+                            if (operationStatusElement != null) {
                                 CloudServiceListResponse.CloudService.AddOnResource.OperationStatus operationStatusInstance = new CloudServiceListResponse.CloudService.AddOnResource.OperationStatus();
-                                resourceInstance.setStatus(operationStatusInstance);
-                                
-                                NodeList elements23 = operationStatusElement.getElementsByTagName("Type");
-                                Element typeElement2 = elements23.getLength() > 0 ? ((Element) elements23.item(0)) : null;
-                                if (typeElement2 != null)
-                                {
+                                resourceInstance
+                                        .setStatus(operationStatusInstance);
+
+                                NodeList elements23 = operationStatusElement
+                                        .getElementsByTagName("Type");
+                                Element typeElement2 = elements23.getLength() > 0 ? ((Element) elements23
+                                        .item(0)) : null;
+                                if (typeElement2 != null) {
                                     String typeInstance2;
-                                    typeInstance2 = typeElement2.getTextContent();
-                                    operationStatusInstance.setType(typeInstance2);
+                                    typeInstance2 = typeElement2
+                                            .getTextContent();
+                                    operationStatusInstance
+                                            .setType(typeInstance2);
                                 }
-                                
-                                NodeList elements24 = operationStatusElement.getElementsByTagName("Result");
-                                Element resultElement = elements24.getLength() > 0 ? ((Element) elements24.item(0)) : null;
-                                if (resultElement != null)
-                                {
+
+                                NodeList elements24 = operationStatusElement
+                                        .getElementsByTagName("Result");
+                                Element resultElement = elements24.getLength() > 0 ? ((Element) elements24
+                                        .item(0)) : null;
+                                if (resultElement != null) {
                                     String resultInstance;
-                                    resultInstance = resultElement.getTextContent();
-                                    operationStatusInstance.setResult(resultInstance);
+                                    resultInstance = resultElement
+                                            .getTextContent();
+                                    operationStatusInstance
+                                            .setResult(resultInstance);
                                 }
                             }
                         }
                     }
                 }
             }
-            
+
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader(
+                        "x-ms-request-id").getValue());
             }
-            
-            if (shouldTrace)
-            {
+
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }

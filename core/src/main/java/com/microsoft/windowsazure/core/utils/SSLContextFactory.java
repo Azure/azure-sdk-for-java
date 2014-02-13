@@ -33,10 +33,8 @@ import javax.net.ssl.X509TrustManager;
 /**
  * A factory for creating SSLContext instance.
  */
-public final class SSLContextFactory
-{
-    private SSLContextFactory()
-    {
+public final class SSLContextFactory {
+    private SSLContextFactory() {
     }
 
     /**
@@ -51,10 +49,8 @@ public final class SSLContextFactory
      *             when an I/O exception has occurred.
      */
     public static SSLContext create(KeyStoreCredential keyStoreCredential)
-            throws GeneralSecurityException, IOException
-    {
-        if (keyStoreCredential == null)
-        {
+            throws GeneralSecurityException, IOException {
+        if (keyStoreCredential == null) {
             throw new IllegalArgumentException(
                     "KeyStoreCredential cannot be null.");
         }
@@ -80,17 +76,14 @@ public final class SSLContextFactory
      */
     public static SSLContext create(String keyStorePath,
             String keyStorePassword, KeyStoreType keyStoreType)
-            throws GeneralSecurityException, IOException
-    {
+            throws GeneralSecurityException, IOException {
 
-        if ((keyStorePath == null) || (keyStorePath.isEmpty()))
-        {
+        if ((keyStorePath == null) || (keyStorePath.isEmpty())) {
             throw new IllegalArgumentException(
                     "The keystore path cannot be null or empty.");
         }
 
-        if (keyStoreType == null)
-        {
+        if (keyStoreType == null) {
             throw new IllegalArgumentException(
                     "The type of the keystore cannot be null");
         }
@@ -101,29 +94,25 @@ public final class SSLContextFactory
                 keyStorePassword, keyStoreType);
         SSLContext sslContext = SSLContext.getInstance("TLS");
         sslContext.init(keyManagers,
-                new TrustManager[]
-                {
-                    new X509TrustManager()
-                    {
-                        public X509Certificate[] getAcceptedIssuers()
-                        {
-                            // System.out.println("getAcceptedIssuers =============");
-                            return null;
-                        }
-
-                        public void checkClientTrusted(X509Certificate[] certs,
-                                String authType)
-                        {
-                            // System.out.println("checkClientTrusted =============");
-                        }
-
-                        public void checkServerTrusted(X509Certificate[] certs,
-                                String authType)
-                        {
-                            // System.out.println("checkServerTrusted =============");
-                        }
+                new TrustManager[] { new X509TrustManager() {
+                    @Override
+                    public X509Certificate[] getAcceptedIssuers() {
+                        // System.out.println("getAcceptedIssuers =============");
+                        return null;
                     }
-                }, new SecureRandom());
+
+                    @Override
+                    public void checkClientTrusted(X509Certificate[] certs,
+                            String authType) {
+                        // System.out.println("checkClientTrusted =============");
+                    }
+
+                    @Override
+                    public void checkServerTrusted(X509Certificate[] certs,
+                            String authType) {
+                        // System.out.println("checkServerTrusted =============");
+                    }
+                } }, new SecureRandom());
 
         keyStoreInputStream.close();
         return sslContext;
@@ -146,8 +135,7 @@ public final class SSLContextFactory
      */
     private static KeyManager[] getKeyManagers(InputStream keyStoreInputStream,
             String keyStorePassword, KeyStoreType keyStoreType)
-            throws IOException, GeneralSecurityException
-    {
+            throws IOException, GeneralSecurityException {
 
         KeyStore keyStore = KeyStore.getInstance(keyStoreType.name());
         keyStore.load(keyStoreInputStream, keyStorePassword.toCharArray());

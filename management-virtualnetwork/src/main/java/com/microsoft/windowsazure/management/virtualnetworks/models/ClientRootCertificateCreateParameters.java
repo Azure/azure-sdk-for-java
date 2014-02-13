@@ -23,27 +23,27 @@
 
 package com.microsoft.windowsazure.management.virtualnetworks.models;
 
-public class ClientRootCertificateCreateParameters
-{
+public class ClientRootCertificateCreateParameters {
     private String certificate;
-    
+
     /**
-    * The new client root certificate to upload, represented as a hex encoded
-    * string
-    * @return The Certificate value.
-    */
-    public String getCertificate()
-    {
+     * The new client root certificate to upload, represented as a hex encoded
+     * string
+     * 
+     * @return The Certificate value.
+     */
+    public String getCertificate() {
         return this.certificate;
     }
-    
+
     /**
-    * The new client root certificate to upload, represented as a hex encoded
-    * string
-    * @param certificateValue The Certificate value.
-    */
-    public void setCertificate(final String certificateValue)
-    {
+     * The new client root certificate to upload, represented as a hex encoded
+     * string
+     * 
+     * @param certificateValue
+     *            The Certificate value.
+     */
+    public void setCertificate(final String certificateValue) {
         this.certificate = certificateValue;
     }
 }

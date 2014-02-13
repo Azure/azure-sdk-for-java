@@ -23,8 +23,7 @@ import com.microsoft.windowsazure.services.media.implementation.content.MediaPro
  * Data about a Media Processor entity.
  * 
  */
-public class MediaProcessorInfo extends ODataEntity<MediaProcessorType>
-{
+public class MediaProcessorInfo extends ODataEntity<MediaProcessorType> {
 
     /**
      * Instantiates a new media processor info.
@@ -34,8 +33,7 @@ public class MediaProcessorInfo extends ODataEntity<MediaProcessorType>
      * @param content
      *            the content
      */
-    public MediaProcessorInfo(EntryType entry, MediaProcessorType content)
-    {
+    public MediaProcessorInfo(EntryType entry, MediaProcessorType content) {
         super(entry, content);
     }
 
@@ -44,8 +42,7 @@ public class MediaProcessorInfo extends ODataEntity<MediaProcessorType>
      * 
      * @return the id
      */
-    public String getId()
-    {
+    public String getId() {
         return getContent().getId();
     }
 
@@ -54,8 +51,7 @@ public class MediaProcessorInfo extends ODataEntity<MediaProcessorType>
      * 
      * @return the name
      */
-    public String getName()
-    {
+    public String getName() {
         return this.getContent().getName();
     }
 
@@ -64,8 +60,7 @@ public class MediaProcessorInfo extends ODataEntity<MediaProcessorType>
      * 
      * @return the description
      */
-    public String getDescription()
-    {
+    public String getDescription() {
         return this.getContent().getDescription();
     }
 
@@ -74,8 +69,7 @@ public class MediaProcessorInfo extends ODataEntity<MediaProcessorType>
      * 
      * @return the sku
      */
-    public String getSku()
-    {
+    public String getSku() {
         return this.getContent().getSku();
     }
 
@@ -84,8 +78,7 @@ public class MediaProcessorInfo extends ODataEntity<MediaProcessorType>
      * 
      * @return the vendor
      */
-    public String getVendor()
-    {
+    public String getVendor() {
         return this.getContent().getVendor();
     }
 
@@ -94,8 +87,7 @@ public class MediaProcessorInfo extends ODataEntity<MediaProcessorType>
      * 
      * @return the version
      */
-    public String getVersion()
-    {
+    public String getVersion() {
         return this.getContent().getVersion();
     }
 }

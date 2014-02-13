@@ -30,8 +30,7 @@ import com.microsoft.windowsazure.core.pipeline.Base64StringAdapter;
  * Represents a list of blocks that may be committed to a block blob.
  */
 @XmlRootElement(name = "BlockList")
-public class BlockList
-{
+public class BlockList {
     private List<Entry> entries = new ArrayList<Entry>();
 
     /**
@@ -42,8 +41,7 @@ public class BlockList
      *            a committed block.
      * @return A reference to this {@link BlockList} instance.
      */
-    public BlockList addCommittedEntry(String blockId)
-    {
+    public BlockList addCommittedEntry(String blockId) {
         CommittedEntry entry = new CommittedEntry();
         entry.setBlockId(blockId);
         getEntries().add(entry);
@@ -58,8 +56,7 @@ public class BlockList
      *            an uncommitted block.
      * @return A reference to this {@link BlockList} instance.
      */
-    public BlockList addUncommittedEntry(String blockId)
-    {
+    public BlockList addUncommittedEntry(String blockId) {
         UncommittedEntry entry = new UncommittedEntry();
         entry.setBlockId(blockId);
         getEntries().add(entry);
@@ -77,8 +74,7 @@ public class BlockList
      *            the latest matching block.
      * @return A reference to this {@link BlockList} instance.
      */
-    public BlockList addLatestEntry(String blockId)
-    {
+    public BlockList addLatestEntry(String blockId) {
         LatestEntry entry = new LatestEntry();
         entry.setBlockId(blockId);
         getEntries().add(entry);
@@ -96,8 +92,7 @@ public class BlockList
             @XmlElementRef(name = "Uncommitted", type = UncommittedEntry.class),
             @XmlElementRef(name = "Latest", type = LatestEntry.class) })
     @XmlMixed
-    public List<Entry> getEntries()
-    {
+    public List<Entry> getEntries() {
         return entries;
     }
 
@@ -109,8 +104,7 @@ public class BlockList
      *            blocks to commit.
      * @return A reference to this {@link BlockList} instance.
      */
-    public BlockList setEntries(List<Entry> entries)
-    {
+    public BlockList setEntries(List<Entry> entries) {
         this.entries = entries;
         return this;
     }
@@ -119,8 +113,7 @@ public class BlockList
      * The abstract base class for an entry in a {@link BlockList}, representing
      * a committed or uncommitted block.
      */
-    public abstract static class Entry
-    {
+    public abstract static class Entry {
         private String blockId;
 
         /**
@@ -131,8 +124,7 @@ public class BlockList
          */
         @XmlJavaTypeAdapter(Base64StringAdapter.class)
         @XmlValue
-        public String getBlockId()
-        {
+        public String getBlockId() {
             return blockId;
         }
 
@@ -143,8 +135,7 @@ public class BlockList
          *            A {@link String} containing the client-specified block ID
          *            for the block.
          */
-        public void setBlockId(String blockId)
-        {
+        public void setBlockId(String blockId) {
             this.blockId = blockId;
         }
     }
@@ -154,16 +145,14 @@ public class BlockList
      * block.
      */
     @XmlRootElement(name = "Committed")
-    public static class CommittedEntry extends Entry
-    {
+    public static class CommittedEntry extends Entry {
     }
 
     /**
      * Represents an entry in a {@link BlockList} for an uncommitted block.
      */
     @XmlRootElement(name = "Uncommitted")
-    public static class UncommittedEntry extends Entry
-    {
+    public static class UncommittedEntry extends Entry {
     }
 
     /**
@@ -172,7 +161,6 @@ public class BlockList
      * with the specified block ID if no uncommitted block is found.
      */
     @XmlRootElement(name = "Latest")
-    public static class LatestEntry extends Entry
-    {
+    public static class LatestEntry extends Entry {
     }
 }

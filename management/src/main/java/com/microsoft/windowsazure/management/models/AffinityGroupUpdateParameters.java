@@ -24,51 +24,52 @@
 package com.microsoft.windowsazure.management.models;
 
 /**
-* Parameters supplied to the Update Affinity Group operation.
-*/
-public class AffinityGroupUpdateParameters
-{
+ * Parameters supplied to the Update Affinity Group operation.
+ */
+public class AffinityGroupUpdateParameters {
     private String description;
-    
+
     /**
-    * Optional. A description for the affinity group. The description can be up
-    * to 1024 characters in length.
-    * @return The Description value.
-    */
-    public String getDescription()
-    {
+     * Optional. A description for the affinity group. The description can be up
+     * to 1024 characters in length.
+     * 
+     * @return The Description value.
+     */
+    public String getDescription() {
         return this.description;
     }
-    
+
     /**
-    * Optional. A description for the affinity group. The description can be up
-    * to 1024 characters in length.
-    * @param descriptionValue The Description value.
-    */
-    public void setDescription(final String descriptionValue)
-    {
+     * Optional. A description for the affinity group. The description can be up
+     * to 1024 characters in length.
+     * 
+     * @param descriptionValue
+     *            The Description value.
+     */
+    public void setDescription(final String descriptionValue) {
         this.description = descriptionValue;
     }
-    
+
     private String label;
-    
+
     /**
-    * Required. A name for the affinity specified as a base-64 encoded string.
-    * The label can be up to 100 characters in length.
-    * @return The Label value.
-    */
-    public String getLabel()
-    {
+     * Required. A name for the affinity specified as a base-64 encoded string.
+     * The label can be up to 100 characters in length.
+     * 
+     * @return The Label value.
+     */
+    public String getLabel() {
         return this.label;
     }
-    
+
     /**
-    * Required. A name for the affinity specified as a base-64 encoded string.
-    * The label can be up to 100 characters in length.
-    * @param labelValue The Label value.
-    */
-    public void setLabel(final String labelValue)
-    {
+     * Required. A name for the affinity specified as a base-64 encoded string.
+     * The label can be up to 100 characters in length.
+     * 
+     * @param labelValue
+     *            The Label value.
+     */
+    public void setLabel(final String labelValue) {
         this.label = labelValue;
     }
 }

@@ -26,96 +26,98 @@ package com.microsoft.windowsazure.management.servicebus.models;
 import java.util.ArrayList;
 
 /**
-* A connection string for a service bus entity.
-*/
-public class ServiceBusConnectionDetail
-{
+ * A connection string for a service bus entity.
+ */
+public class ServiceBusConnectionDetail {
     private String authorizationType;
-    
+
     /**
-    * The type of authorization for the connection to the entity.
-    * @return The AuthorizationType value.
-    */
-    public String getAuthorizationType()
-    {
+     * The type of authorization for the connection to the entity.
+     * 
+     * @return The AuthorizationType value.
+     */
+    public String getAuthorizationType() {
         return this.authorizationType;
     }
-    
+
     /**
-    * The type of authorization for the connection to the entity.
-    * @param authorizationTypeValue The AuthorizationType value.
-    */
-    public void setAuthorizationType(final String authorizationTypeValue)
-    {
+     * The type of authorization for the connection to the entity.
+     * 
+     * @param authorizationTypeValue
+     *            The AuthorizationType value.
+     */
+    public void setAuthorizationType(final String authorizationTypeValue) {
         this.authorizationType = authorizationTypeValue;
     }
-    
+
     private String connectionString;
-    
+
     /**
-    * The connection string to the entity.
-    * @return The ConnectionString value.
-    */
-    public String getConnectionString()
-    {
+     * The connection string to the entity.
+     * 
+     * @return The ConnectionString value.
+     */
+    public String getConnectionString() {
         return this.connectionString;
     }
-    
+
     /**
-    * The connection string to the entity.
-    * @param connectionStringValue The ConnectionString value.
-    */
-    public void setConnectionString(final String connectionStringValue)
-    {
+     * The connection string to the entity.
+     * 
+     * @param connectionStringValue
+     *            The ConnectionString value.
+     */
+    public void setConnectionString(final String connectionStringValue) {
         this.connectionString = connectionStringValue;
     }
-    
+
     private String keyName;
-    
+
     /**
-    * The name of the key used in the connection.
-    * @return The KeyName value.
-    */
-    public String getKeyName()
-    {
+     * The name of the key used in the connection.
+     * 
+     * @return The KeyName value.
+     */
+    public String getKeyName() {
         return this.keyName;
     }
-    
+
     /**
-    * The name of the key used in the connection.
-    * @param keyNameValue The KeyName value.
-    */
-    public void setKeyName(final String keyNameValue)
-    {
+     * The name of the key used in the connection.
+     * 
+     * @param keyNameValue
+     *            The KeyName value.
+     */
+    public void setKeyName(final String keyNameValue) {
         this.keyName = keyNameValue;
     }
-    
+
     private ArrayList<AccessRight> rights;
-    
+
     /**
-    * The rights connections to the entity via the connection string will have.
-    * @return The Rights value.
-    */
-    public ArrayList<AccessRight> getRights()
-    {
+     * The rights connections to the entity via the connection string will have.
+     * 
+     * @return The Rights value.
+     */
+    public ArrayList<AccessRight> getRights() {
         return this.rights;
     }
-    
+
     /**
-    * The rights connections to the entity via the connection string will have.
-    * @param rightsValue The Rights value.
-    */
-    public void setRights(final ArrayList<AccessRight> rightsValue)
-    {
+     * The rights connections to the entity via the connection string will have.
+     * 
+     * @param rightsValue
+     *            The Rights value.
+     */
+    public void setRights(final ArrayList<AccessRight> rightsValue) {
         this.rights = rightsValue;
     }
-    
+
     /**
-    * Initializes a new instance of the ServiceBusConnectionDetail class.
-    *
-    */
-    public ServiceBusConnectionDetail()
-    {
+     * Initializes a new instance of the ServiceBusConnectionDetail class.
+     * 
+     */
+    public ServiceBusConnectionDetail() {
         this.rights = new ArrayList<AccessRight>();
     }
 }

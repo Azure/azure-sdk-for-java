@@ -40,8 +40,7 @@ import com.microsoft.windowsazure.core.RFC1123DateAdapter;
  * Service REST API operation.
  */
 @XmlRootElement(name = "EnumerationResults")
-public class ListContainersResult
-{
+public class ListContainersResult {
     private List<Container> containers;
     private String accountName;
     private String prefix;
@@ -57,8 +56,7 @@ public class ListContainersResult
      */
     @XmlElementWrapper(name = "Containers")
     @XmlElement(name = "Container")
-    public List<Container> getContainers()
-    {
+    public List<Container> getContainers() {
         return containers;
     }
 
@@ -73,8 +71,7 @@ public class ListContainersResult
      *            A {@link List} of {@link Container} instances representing the
      *            blob containers returned by the request.
      */
-    public void setContainers(List<Container> value)
-    {
+    public void setContainers(List<Container> value) {
         this.containers = value;
     }
 
@@ -86,8 +83,7 @@ public class ListContainersResult
      *         API operations on the storage account.
      */
     @XmlAttribute(name = "AccountName")
-    public String getAccountName()
-    {
+    public String getAccountName() {
         return accountName;
     }
 
@@ -104,8 +100,7 @@ public class ListContainersResult
      *            A {@link String} containing the base URI for Blob Service REST
      *            API operations on the storage account.
      */
-    public void setAccountName(String accountName)
-    {
+    public void setAccountName(String accountName) {
         this.accountName = accountName;
     }
 
@@ -118,8 +113,7 @@ public class ListContainersResult
      *         container names returned, if any.
      */
     @XmlElement(name = "Prefix")
-    public String getPrefix()
-    {
+    public String getPrefix() {
         return prefix;
     }
 
@@ -135,8 +129,7 @@ public class ListContainersResult
      *            A {@link String} containing the prefix used to filter the
      *            container names returned, if any.
      */
-    public void setPrefix(String prefix)
-    {
+    public void setPrefix(String prefix) {
         this.prefix = prefix;
     }
 
@@ -162,8 +155,7 @@ public class ListContainersResult
      *         beginning of the container list returned, if any.
      */
     @XmlElement(name = "Marker")
-    public String getMarker()
-    {
+    public String getMarker() {
         return marker;
     }
 
@@ -179,8 +171,7 @@ public class ListContainersResult
      *            A {@link String} containing the marker used to specify the
      *            beginning of the container list returned.
      */
-    public void setMarker(String marker)
-    {
+    public void setMarker(String marker) {
         this.marker = marker;
     }
 
@@ -207,8 +198,7 @@ public class ListContainersResult
      *         to return, if any was set in the response from the server.
      */
     @XmlElement(name = "NextMarker")
-    public String getNextMarker()
-    {
+    public String getNextMarker() {
         return nextMarker;
     }
 
@@ -225,8 +215,7 @@ public class ListContainersResult
      *            specify the beginning of the next portion of the container
      *            list to return.
      */
-    public void setNextMarker(String nextMarker)
-    {
+    public void setNextMarker(String nextMarker) {
         this.nextMarker = nextMarker;
     }
 
@@ -250,8 +239,7 @@ public class ListContainersResult
      *         specified in the request, if any.
      */
     @XmlElement(name = "MaxResults")
-    public int getMaxResults()
-    {
+    public int getMaxResults() {
         return maxResults;
     }
 
@@ -267,8 +255,7 @@ public class ListContainersResult
      *            The maximum number of container list items to return that was
      *            specified in the request, if any.
      */
-    public void setMaxResults(int maxResults)
-    {
+    public void setMaxResults(int maxResults) {
         this.maxResults = maxResults;
     }
 
@@ -278,8 +265,7 @@ public class ListContainersResult
      * and metadata in the storage service as of the time the container list was
      * requested.
      */
-    public static class Container
-    {
+    public static class Container {
         private String name;
         private String url;
         private HashMap<String, String> metadata = new HashMap<String, String>();
@@ -291,8 +277,7 @@ public class ListContainersResult
          * @return A {@link String} containing the name of the container.
          */
         @XmlElement(name = "Name")
-        public String getName()
-        {
+        public String getName() {
             return name;
         }
 
@@ -306,8 +291,7 @@ public class ListContainersResult
          * @param name
          *            A {@link String} containing the name of the container.
          */
-        public void setName(String name)
-        {
+        public void setName(String name) {
             this.name = name;
         }
 
@@ -317,8 +301,7 @@ public class ListContainersResult
          * @return A {@link String} containing the URI of the container.
          */
         @XmlElement(name = "Url")
-        public String getUrl()
-        {
+        public String getUrl() {
             return url;
         }
 
@@ -332,8 +315,7 @@ public class ListContainersResult
          * @param url
          *            A {@link String} containing the URI of the container.
          */
-        public void setUrl(String url)
-        {
+        public void setUrl(String url) {
             this.url = url;
         }
 
@@ -345,8 +327,7 @@ public class ListContainersResult
          *         properties associated with the container.
          */
         @XmlElement(name = "Properties")
-        public ContainerProperties getProperties()
-        {
+        public ContainerProperties getProperties() {
             return properties;
         }
 
@@ -361,8 +342,7 @@ public class ListContainersResult
          *            A {@link ContainerProperties} instance containing the
          *            properties associated with the container.
          */
-        public void setProperties(ContainerProperties properties)
-        {
+        public void setProperties(ContainerProperties properties) {
             this.properties = properties;
         }
 
@@ -376,8 +356,7 @@ public class ListContainersResult
          */
         @XmlElement(name = "Metadata")
         @XmlJavaTypeAdapter(MetadataAdapter.class)
-        public HashMap<String, String> getMetadata()
-        {
+        public HashMap<String, String> getMetadata() {
             return metadata;
         }
 
@@ -393,8 +372,7 @@ public class ListContainersResult
          *            {@link String} containing the names and values of the
          *            container metadata.
          */
-        public void setMetadata(HashMap<String, String> metadata)
-        {
+        public void setMetadata(HashMap<String, String> metadata) {
             this.metadata = metadata;
         }
     }
@@ -405,8 +383,7 @@ public class ListContainersResult
      * container properties in the storage service as of the time the container
      * list was requested.
      */
-    public static class ContainerProperties
-    {
+    public static class ContainerProperties {
         private Date lastModified;
         private String etag;
 
@@ -421,8 +398,7 @@ public class ListContainersResult
          */
         @XmlElement(name = "Last-Modified")
         @XmlJavaTypeAdapter(RFC1123DateAdapter.class)
-        public Date getLastModified()
-        {
+        public Date getLastModified() {
             return lastModified;
         }
 
@@ -438,8 +414,7 @@ public class ListContainersResult
          *            A {@link java.util.Date} containing the last modified time
          *            of the container.
          */
-        public void setLastModified(Date lastModified)
-        {
+        public void setLastModified(Date lastModified) {
             this.lastModified = lastModified;
         }
 
@@ -453,8 +428,7 @@ public class ListContainersResult
          *         for the container.
          */
         @XmlElement(name = "Etag")
-        public String getEtag()
-        {
+        public String getEtag() {
             return etag;
         }
 
@@ -469,8 +443,7 @@ public class ListContainersResult
          *            A {@link String} containing the server-assigned ETag value
          *            for the container.
          */
-        public void setEtag(String etag)
-        {
+        public void setEtag(String etag) {
             this.etag = etag;
         }
     }

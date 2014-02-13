@@ -23,9 +23,8 @@
 
 package com.microsoft.windowsazure.management.virtualnetworks.models;
 
-public enum LocalNetworkConnectionType
-{
+public enum LocalNetworkConnectionType {
     IPSecurity,
-    
+
     Dedicated,
 }

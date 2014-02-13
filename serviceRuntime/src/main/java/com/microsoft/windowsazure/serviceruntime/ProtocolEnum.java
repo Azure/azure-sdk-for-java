@@ -56,8 +56,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlType(name = "ProtocolEnum")
 @XmlEnum
-enum ProtocolEnum
-{
+enum ProtocolEnum {
 
     @XmlEnumValue("ip")
     IP("ip"), @XmlEnumValue("tcp")
@@ -74,22 +73,17 @@ enum ProtocolEnum
     RAW("raw");
     private final String value;
 
-    ProtocolEnum(String v)
-    {
+    ProtocolEnum(String v) {
         value = v;
     }
 
-    public String value()
-    {
+    public String value() {
         return value;
     }
 
-    public static ProtocolEnum fromValue(String v)
-    {
-        for (ProtocolEnum c : ProtocolEnum.values())
-        {
-            if (c.value.equals(v))
-            {
+    public static ProtocolEnum fromValue(String v) {
+        for (ProtocolEnum c : ProtocolEnum.values()) {
+            if (c.value.equals(v)) {
                 return c;
             }
         }

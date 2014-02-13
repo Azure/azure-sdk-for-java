@@ -28,173 +28,180 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
-* The List Server Farm operation response.
-*/
-public class ServerFarmListResponse extends OperationResponse implements Iterable<ServerFarmListResponse.ServerFarm>
-{
+ * The List Server Farm operation response.
+ */
+public class ServerFarmListResponse extends OperationResponse implements
+        Iterable<ServerFarmListResponse.ServerFarm> {
     private ArrayList<ServerFarmListResponse.ServerFarm> serverFarms;
-    
+
     /**
-    * The server farms associated with the specified subscription.
-    * @return The ServerFarms value.
-    */
-    public ArrayList<ServerFarmListResponse.ServerFarm> getServerFarms()
-    {
+     * The server farms associated with the specified subscription.
+     * 
+     * @return The ServerFarms value.
+     */
+    public ArrayList<ServerFarmListResponse.ServerFarm> getServerFarms() {
         return this.serverFarms;
     }
-    
+
     /**
-    * The server farms associated with the specified subscription.
-    * @param serverFarmsValue The ServerFarms value.
-    */
-    public void setServerFarms(final ArrayList<ServerFarmListResponse.ServerFarm> serverFarmsValue)
-    {
+     * The server farms associated with the specified subscription.
+     * 
+     * @param serverFarmsValue
+     *            The ServerFarms value.
+     */
+    public void setServerFarms(
+            final ArrayList<ServerFarmListResponse.ServerFarm> serverFarmsValue) {
         this.serverFarms = serverFarmsValue;
     }
-    
+
     /**
-    * Initializes a new instance of the ServerFarmListResponse class.
-    *
-    */
-    public ServerFarmListResponse()
-    {
+     * Initializes a new instance of the ServerFarmListResponse class.
+     * 
+     */
+    public ServerFarmListResponse() {
         super();
         this.serverFarms = new ArrayList<ServerFarmListResponse.ServerFarm>();
     }
-    
+
     /**
-    * Gets the sequence of ServerFarms.
-    *
-    */
-    public Iterator<ServerFarmListResponse.ServerFarm> iterator()
-    {
+     * Gets the sequence of ServerFarms.
+     * 
+     */
+    public Iterator<ServerFarmListResponse.ServerFarm> iterator() {
         return this.getServerFarms().iterator();
     }
-    
+
     /**
-    * A server farm associated with the specified subscription.
-    */
-    public static class ServerFarm
-    {
+     * A server farm associated with the specified subscription.
+     */
+    public static class ServerFarm {
         private int currentNumberOfWorkers;
-        
+
         /**
-        * The current number of Virtual Machines (VMs) in the server farm.
-        * @return The CurrentNumberOfWorkers value.
-        */
-        public int getCurrentNumberOfWorkers()
-        {
+         * The current number of Virtual Machines (VMs) in the server farm.
+         * 
+         * @return The CurrentNumberOfWorkers value.
+         */
+        public int getCurrentNumberOfWorkers() {
             return this.currentNumberOfWorkers;
         }
-        
+
         /**
-        * The current number of Virtual Machines (VMs) in the server farm.
-        * @param currentNumberOfWorkersValue The CurrentNumberOfWorkers value.
-        */
-        public void setCurrentNumberOfWorkers(final int currentNumberOfWorkersValue)
-        {
+         * The current number of Virtual Machines (VMs) in the server farm.
+         * 
+         * @param currentNumberOfWorkersValue
+         *            The CurrentNumberOfWorkers value.
+         */
+        public void setCurrentNumberOfWorkers(
+                final int currentNumberOfWorkersValue) {
             this.currentNumberOfWorkers = currentNumberOfWorkersValue;
         }
-        
+
         private ServerFarmWorkerSize currentWorkerSize;
-        
+
         /**
-        * The current worker size Possible values are Small, Medium, or Large.
-        * @return The CurrentWorkerSize value.
-        */
-        public ServerFarmWorkerSize getCurrentWorkerSize()
-        {
+         * The current worker size Possible values are Small, Medium, or Large.
+         * 
+         * @return The CurrentWorkerSize value.
+         */
+        public ServerFarmWorkerSize getCurrentWorkerSize() {
             return this.currentWorkerSize;
         }
-        
+
         /**
-        * The current worker size Possible values are Small, Medium, or Large.
-        * @param currentWorkerSizeValue The CurrentWorkerSize value.
-        */
-        public void setCurrentWorkerSize(final ServerFarmWorkerSize currentWorkerSizeValue)
-        {
+         * The current worker size Possible values are Small, Medium, or Large.
+         * 
+         * @param currentWorkerSizeValue
+         *            The CurrentWorkerSize value.
+         */
+        public void setCurrentWorkerSize(
+                final ServerFarmWorkerSize currentWorkerSizeValue) {
             this.currentWorkerSize = currentWorkerSizeValue;
         }
-        
+
         private String name;
-        
+
         /**
-        * The name of the server farm.
-        * @return The Name value.
-        */
-        public String getName()
-        {
+         * The name of the server farm.
+         * 
+         * @return The Name value.
+         */
+        public String getName() {
             return this.name;
         }
-        
+
         /**
-        * The name of the server farm.
-        * @param nameValue The Name value.
-        */
-        public void setName(final String nameValue)
-        {
+         * The name of the server farm.
+         * 
+         * @param nameValue
+         *            The Name value.
+         */
+        public void setName(final String nameValue) {
             this.name = nameValue;
         }
-        
+
         private int numberOfWorkers;
-        
+
         /**
-        * The instance count, which is the number of virtual machines dedicated
-        * to the farm. Supported values are 1-10.
-        * @return The NumberOfWorkers value.
-        */
-        public int getNumberOfWorkers()
-        {
+         * The instance count, which is the number of virtual machines dedicated
+         * to the farm. Supported values are 1-10.
+         * 
+         * @return The NumberOfWorkers value.
+         */
+        public int getNumberOfWorkers() {
             return this.numberOfWorkers;
         }
-        
+
         /**
-        * The instance count, which is the number of virtual machines dedicated
-        * to the farm. Supported values are 1-10.
-        * @param numberOfWorkersValue The NumberOfWorkers value.
-        */
-        public void setNumberOfWorkers(final int numberOfWorkersValue)
-        {
+         * The instance count, which is the number of virtual machines dedicated
+         * to the farm. Supported values are 1-10.
+         * 
+         * @param numberOfWorkersValue
+         *            The NumberOfWorkers value.
+         */
+        public void setNumberOfWorkers(final int numberOfWorkersValue) {
             this.numberOfWorkers = numberOfWorkersValue;
         }
-        
+
         private ServerFarmStatus status;
-        
+
         /**
-        * Server farm status. Possible values are Ready or Pending.
-        * @return The Status value.
-        */
-        public ServerFarmStatus getStatus()
-        {
+         * Server farm status. Possible values are Ready or Pending.
+         * 
+         * @return The Status value.
+         */
+        public ServerFarmStatus getStatus() {
             return this.status;
         }
-        
+
         /**
-        * Server farm status. Possible values are Ready or Pending.
-        * @param statusValue The Status value.
-        */
-        public void setStatus(final ServerFarmStatus statusValue)
-        {
+         * Server farm status. Possible values are Ready or Pending.
+         * 
+         * @param statusValue
+         *            The Status value.
+         */
+        public void setStatus(final ServerFarmStatus statusValue) {
             this.status = statusValue;
         }
-        
+
         private ServerFarmWorkerSize workerSize;
-        
+
         /**
-        * The instance size. Possible values are Small, Medium, or Large.
-        * @return The WorkerSize value.
-        */
-        public ServerFarmWorkerSize getWorkerSize()
-        {
+         * The instance size. Possible values are Small, Medium, or Large.
+         * 
+         * @return The WorkerSize value.
+         */
+        public ServerFarmWorkerSize getWorkerSize() {
             return this.workerSize;
         }
-        
+
         /**
-        * The instance size. Possible values are Small, Medium, or Large.
-        * @param workerSizeValue The WorkerSize value.
-        */
-        public void setWorkerSize(final ServerFarmWorkerSize workerSizeValue)
-        {
+         * The instance size. Possible values are Small, Medium, or Large.
+         * 
+         * @param workerSizeValue
+         *            The WorkerSize value.
+         */
+        public void setWorkerSize(final ServerFarmWorkerSize workerSizeValue) {
             this.workerSize = workerSizeValue;
         }
     }

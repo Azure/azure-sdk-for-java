@@ -52,8 +52,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "RuntimeServerDiscoveryInfo", propOrder = {
 
 })
-class RuntimeServerDiscoveryInfo
-{
+class RuntimeServerDiscoveryInfo {
 
     @XmlElement(name = "RuntimeServerEndpoints", required = true)
     protected RuntimeServerEndpointsInfo runtimeServerEndpoints;
@@ -64,8 +63,7 @@ class RuntimeServerDiscoveryInfo
      * @return possible object is {@link RuntimeServerEndpointsInfo }
      * 
      */
-    public RuntimeServerEndpointsInfo getRuntimeServerEndpoints()
-    {
+    public RuntimeServerEndpointsInfo getRuntimeServerEndpoints() {
         return runtimeServerEndpoints;
     }
 
@@ -76,8 +74,7 @@ class RuntimeServerDiscoveryInfo
      *            allowed object is {@link RuntimeServerEndpointsInfo }
      * 
      */
-    public void setRuntimeServerEndpoints(RuntimeServerEndpointsInfo value)
-    {
+    public void setRuntimeServerEndpoints(RuntimeServerEndpointsInfo value) {
         this.runtimeServerEndpoints = value;
     }
 

@@ -34,8 +34,7 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.filter.ClientFilter;
 
 public class SharedKeyFilter extends ClientFilter implements
-        EntityStreamingListener
-{
+        EntityStreamingListener {
     private static Log log = LogFactory.getLog(SharedKeyFilter.class);
 
     private final String accountName;
@@ -43,42 +42,35 @@ public class SharedKeyFilter extends ClientFilter implements
 
     public SharedKeyFilter(
             @Named(BlobConfiguration.ACCOUNT_NAME) String accountName,
-            @Named(BlobConfiguration.ACCOUNT_KEY) String accountKey)
-    {
+            @Named(BlobConfiguration.ACCOUNT_KEY) String accountKey) {
         this.accountName = accountName;
         this.signer = new HmacSHA256Sign(accountKey);
     }
 
-    protected String getHeader(ClientRequest cr, String headerKey)
-    {
+    protected String getHeader(ClientRequest cr, String headerKey) {
         return SharedKeyUtils.getHeader(cr, headerKey);
     }
 
-    protected HmacSHA256Sign getSigner()
-    {
+    protected HmacSHA256Sign getSigner() {
         return signer;
     }
 
-    protected String getAccountName()
-    {
+    protected String getAccountName() {
         return accountName;
     }
 
     @Override
     public ClientResponse handle(ClientRequest cr)
-            throws ClientHandlerException
-    {
+            throws ClientHandlerException {
         // Only sign if no other filter is handling authorization
-        if (cr.getProperties().get(SharedKeyUtils.AUTHORIZATION_FILTER_MARKER) == null)
-        {
+        if (cr.getProperties().get(SharedKeyUtils.AUTHORIZATION_FILTER_MARKER) == null) {
             cr.getProperties().put(SharedKeyUtils.AUTHORIZATION_FILTER_MARKER,
                     null);
 
             // Register ourselves as listener so we are called back when the
             // entity is
             // written to the output stream by the next filter in line.
-            if (cr.getProperties().get(EntityStreamingListener.class.getName()) == null)
-            {
+            if (cr.getProperties().get(EntityStreamingListener.class.getName()) == null) {
                 cr.getProperties().put(EntityStreamingListener.class.getName(),
                         this);
             }
@@ -88,8 +80,7 @@ public class SharedKeyFilter extends ClientFilter implements
     }
 
     @Override
-    public void onBeforeStreamingEntity(ClientRequest clientRequest)
-    {
+    public void onBeforeStreamingEntity(ClientRequest clientRequest) {
         // All headers should be known at this point, time to sign!
         sign(clientRequest);
     }
@@ -101,8 +92,7 @@ public class SharedKeyFilter extends ClientFilter implements
      * "\n" If-Unmodified-Since + "\n" Range + "\n" CanonicalizedHeaders +
      * CanonicalizedResource;
      */
-    public void sign(ClientRequest cr)
-    {
+    public void sign(ClientRequest cr) {
         // gather signed material
         addOptionalDateHeader(cr);
 
@@ -122,8 +112,7 @@ public class SharedKeyFilter extends ClientFilter implements
         stringToSign += getCanonicalizedHeaders(cr);
         stringToSign += getCanonicalizedResource(cr);
 
-        if (log.isDebugEnabled())
-        {
+        if (log.isDebugEnabled()) {
             log.debug(String.format("String to sign: \"%s\"", stringToSign));
         }
         // System.out.println(String.format("String to sign: \"%s\"",
@@ -134,11 +123,9 @@ public class SharedKeyFilter extends ClientFilter implements
                 "SharedKey " + this.accountName + ":" + signature);
     }
 
-    protected void addOptionalDateHeader(ClientRequest cr)
-    {
+    protected void addOptionalDateHeader(ClientRequest cr) {
         String date = getHeader(cr, "Date");
-        if (date == "")
-        {
+        if (date == "") {
             date = new RFC1123DateConverter().format(new Date());
             cr.getHeaders().putSingle("Date", date);
         }
@@ -167,8 +154,7 @@ public class SharedKeyFilter extends ClientFilter implements
      * the resulting list. Construct the CanonicalizedHeaders string by
      * concatenating all headers in this list into a single string.
      */
-    private String getCanonicalizedHeaders(ClientRequest cr)
-    {
+    private String getCanonicalizedHeaders(ClientRequest cr) {
         return SharedKeyUtils.getCanonicalizedHeaders(cr);
     }
 
@@ -206,8 +192,7 @@ public class SharedKeyFilter extends ClientFilter implements
      * 
      * 9. Append a new line character (\n) after each name-value pair.
      */
-    private String getCanonicalizedResource(ClientRequest cr)
-    {
+    private String getCanonicalizedResource(ClientRequest cr) {
         // 1. Beginning with an empty string (""), append a forward slash (/),
         // followed by the name of the account that owns
         // the resource being accessed.
@@ -224,8 +209,7 @@ public class SharedKeyFilter extends ClientFilter implements
                 .getURI().getQuery());
 
         // 4. Convert all parameter names to lowercase.
-        for (QueryParam param : queryParams)
-        {
+        for (QueryParam param : queryParams) {
             param.setName(param.getName().toLowerCase(Locale.US));
         }
 
@@ -236,8 +220,7 @@ public class SharedKeyFilter extends ClientFilter implements
         // 7. Append each query parameter name and value to the string
         // 8. If a query parameter has more than one value, sort all values
         // lexicographically, then include them in a comma-separated list
-        for (int i = 0; i < queryParams.size(); i++)
-        {
+        for (int i = 0; i < queryParams.size(); i++) {
             QueryParam param = queryParams.get(i);
 
             List<String> values = param.getValues();
@@ -247,10 +230,8 @@ public class SharedKeyFilter extends ClientFilter implements
             result += "\n";
             result += param.getName();
             result += ":";
-            for (int j = 0; j < values.size(); j++)
-            {
-                if (j > 0)
-                {
+            for (int j = 0; j < values.size(); j++) {
+                if (j > 0) {
                     result += ",";
                 }
                 result += values.get(j);

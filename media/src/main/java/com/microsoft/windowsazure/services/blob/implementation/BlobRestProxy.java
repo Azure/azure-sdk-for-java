@@ -35,16 +35,14 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.filter.ClientFilter;
 
 public class BlobRestProxy extends BlobOperationRestProxy implements
-        BlobContract
-{
+        BlobContract {
     private final SharedKeyFilter sharedKeyFilter;
 
     @Inject
     public BlobRestProxy(HttpURLConnectionClient channel,
             @Named(BlobConfiguration.ACCOUNT_NAME) String accountName,
             @Named(BlobConfiguration.URI) String url,
-            SharedKeyFilter sharedKeyFilter, UserAgentFilter userAgentFilter)
-    {
+            SharedKeyFilter sharedKeyFilter, UserAgentFilter userAgentFilter) {
         super(channel, accountName, url);
 
         this.sharedKeyFilter = sharedKeyFilter;
@@ -55,16 +53,14 @@ public class BlobRestProxy extends BlobOperationRestProxy implements
 
     public BlobRestProxy(Client client, ClientFilter[] filters,
             String accountName, String url, SharedKeyFilter sharedKeyFilter,
-            RFC1123DateConverter dateMapper)
-    {
+            RFC1123DateConverter dateMapper) {
         super(client, filters, accountName, url, dateMapper);
 
         this.sharedKeyFilter = sharedKeyFilter;
     }
 
     @Override
-    public BlobContract withFilter(ServiceFilter filter)
-    {
+    public BlobContract withFilter(ServiceFilter filter) {
         ClientFilter[] currentFilters = getFilters();
         ClientFilter[] newFilters = Arrays.copyOf(currentFilters,
                 currentFilters.length + 1);
@@ -75,8 +71,7 @@ public class BlobRestProxy extends BlobOperationRestProxy implements
 
     @Override
     public BlobContract withRequestFilterFirst(
-            ServiceRequestFilter serviceRequestFilter)
-    {
+            ServiceRequestFilter serviceRequestFilter) {
         ClientFilter[] currentFilters = getFilters();
         ClientFilter[] newFilters = new ClientFilter[currentFilters.length + 1];
         System.arraycopy(currentFilters, 0, newFilters, 1,
@@ -88,8 +83,7 @@ public class BlobRestProxy extends BlobOperationRestProxy implements
 
     @Override
     public BlobContract withRequestFilterLast(
-            ServiceRequestFilter serviceRequestFilter)
-    {
+            ServiceRequestFilter serviceRequestFilter) {
         ClientFilter[] currentFilters = getFilters();
         ClientFilter[] newFilters = Arrays.copyOf(currentFilters,
                 currentFilters.length + 1);
@@ -101,8 +95,7 @@ public class BlobRestProxy extends BlobOperationRestProxy implements
 
     @Override
     public BlobContract withResponseFilterFirst(
-            ServiceResponseFilter serviceResponseFilter)
-    {
+            ServiceResponseFilter serviceResponseFilter) {
         ClientFilter[] currentFilters = getFilters();
         ClientFilter[] newFilters = new ClientFilter[currentFilters.length + 1];
         System.arraycopy(currentFilters, 0, newFilters, 1,
@@ -114,8 +107,7 @@ public class BlobRestProxy extends BlobOperationRestProxy implements
 
     @Override
     public BlobContract withResponseFilterLast(
-            ServiceResponseFilter serviceResponseFilter)
-    {
+            ServiceResponseFilter serviceResponseFilter) {
         ClientFilter[] currentFilters = getFilters();
         ClientFilter[] newFilters = Arrays.copyOf(currentFilters,
                 currentFilters.length + 1);

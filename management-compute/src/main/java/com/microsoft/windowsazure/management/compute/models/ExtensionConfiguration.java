@@ -26,151 +26,154 @@ package com.microsoft.windowsazure.management.compute.models;
 import java.util.ArrayList;
 
 /**
-* Represents an extension that is added to the cloud service.
-*/
-public class ExtensionConfiguration
-{
+ * Represents an extension that is added to the cloud service.
+ */
+public class ExtensionConfiguration {
     private ArrayList<ExtensionConfiguration.Extension> allRoles;
-    
+
     /**
-    * Optional. Specifies a list of extensions that are applied to all roles in
-    * a deployment.
-    * @return The AllRoles value.
-    */
-    public ArrayList<ExtensionConfiguration.Extension> getAllRoles()
-    {
+     * Optional. Specifies a list of extensions that are applied to all roles in
+     * a deployment.
+     * 
+     * @return The AllRoles value.
+     */
+    public ArrayList<ExtensionConfiguration.Extension> getAllRoles() {
         return this.allRoles;
     }
-    
+
     /**
-    * Optional. Specifies a list of extensions that are applied to all roles in
-    * a deployment.
-    * @param allRolesValue The AllRoles value.
-    */
-    public void setAllRoles(final ArrayList<ExtensionConfiguration.Extension> allRolesValue)
-    {
+     * Optional. Specifies a list of extensions that are applied to all roles in
+     * a deployment.
+     * 
+     * @param allRolesValue
+     *            The AllRoles value.
+     */
+    public void setAllRoles(
+            final ArrayList<ExtensionConfiguration.Extension> allRolesValue) {
         this.allRoles = allRolesValue;
     }
-    
+
     private ArrayList<ExtensionConfiguration.NamedRole> namedRoles;
-    
+
     /**
-    * Optional. Specifies a list of extensions that are applied to specific
-    * roles in a deployment.
-    * @return The NamedRoles value.
-    */
-    public ArrayList<ExtensionConfiguration.NamedRole> getNamedRoles()
-    {
+     * Optional. Specifies a list of extensions that are applied to specific
+     * roles in a deployment.
+     * 
+     * @return The NamedRoles value.
+     */
+    public ArrayList<ExtensionConfiguration.NamedRole> getNamedRoles() {
         return this.namedRoles;
     }
-    
+
     /**
-    * Optional. Specifies a list of extensions that are applied to specific
-    * roles in a deployment.
-    * @param namedRolesValue The NamedRoles value.
-    */
-    public void setNamedRoles(final ArrayList<ExtensionConfiguration.NamedRole> namedRolesValue)
-    {
+     * Optional. Specifies a list of extensions that are applied to specific
+     * roles in a deployment.
+     * 
+     * @param namedRolesValue
+     *            The NamedRoles value.
+     */
+    public void setNamedRoles(
+            final ArrayList<ExtensionConfiguration.NamedRole> namedRolesValue) {
         this.namedRoles = namedRolesValue;
     }
-    
+
     /**
-    * Initializes a new instance of the ExtensionConfiguration class.
-    *
-    */
-    public ExtensionConfiguration()
-    {
+     * Initializes a new instance of the ExtensionConfiguration class.
+     * 
+     */
+    public ExtensionConfiguration() {
         this.allRoles = new ArrayList<ExtensionConfiguration.Extension>();
         this.namedRoles = new ArrayList<ExtensionConfiguration.NamedRole>();
     }
-    
+
     /**
-    * Represents an extension that is to be deployed to a role in a cloud
-    * service.
-    */
-    public static class Extension
-    {
+     * Represents an extension that is to be deployed to a role in a cloud
+     * service.
+     */
+    public static class Extension {
         private String id;
-        
+
         /**
-        * Required. The identifier of the extension. The identifier is created
-        * when the extension is added to the cloud service. You can find the
-        * Id of an extension that was added to a cloud service by using List
-        * Extensions.
-        * @return The Id value.
-        */
-        public String getId()
-        {
+         * Required. The identifier of the extension. The identifier is created
+         * when the extension is added to the cloud service. You can find the Id
+         * of an extension that was added to a cloud service by using List
+         * Extensions.
+         * 
+         * @return The Id value.
+         */
+        public String getId() {
             return this.id;
         }
-        
+
         /**
-        * Required. The identifier of the extension. The identifier is created
-        * when the extension is added to the cloud service. You can find the
-        * Id of an extension that was added to a cloud service by using List
-        * Extensions.
-        * @param idValue The Id value.
-        */
-        public void setId(final String idValue)
-        {
+         * Required. The identifier of the extension. The identifier is created
+         * when the extension is added to the cloud service. You can find the Id
+         * of an extension that was added to a cloud service by using List
+         * Extensions.
+         * 
+         * @param idValue
+         *            The Id value.
+         */
+        public void setId(final String idValue) {
             this.id = idValue;
         }
     }
-    
+
     /**
-    * Specifies a list of extensions that are applied to specific roles in a
-    * deployment.
-    */
-    public static class NamedRole
-    {
+     * Specifies a list of extensions that are applied to specific roles in a
+     * deployment.
+     */
+    public static class NamedRole {
         private ArrayList<ExtensionConfiguration.Extension> extensions;
-        
+
         /**
-        * Required. Represents an extension that is to be deployed to a role in
-        * a cloud service.
-        * @return The Extensions value.
-        */
-        public ArrayList<ExtensionConfiguration.Extension> getExtensions()
-        {
+         * Required. Represents an extension that is to be deployed to a role in
+         * a cloud service.
+         * 
+         * @return The Extensions value.
+         */
+        public ArrayList<ExtensionConfiguration.Extension> getExtensions() {
             return this.extensions;
         }
-        
+
         /**
-        * Required. Represents an extension that is to be deployed to a role in
-        * a cloud service.
-        * @param extensionsValue The Extensions value.
-        */
-        public void setExtensions(final ArrayList<ExtensionConfiguration.Extension> extensionsValue)
-        {
+         * Required. Represents an extension that is to be deployed to a role in
+         * a cloud service.
+         * 
+         * @param extensionsValue
+         *            The Extensions value.
+         */
+        public void setExtensions(
+                final ArrayList<ExtensionConfiguration.Extension> extensionsValue) {
             this.extensions = extensionsValue;
         }
-        
+
         private String roleName;
-        
+
         /**
-        * Required. Specifies the name of the role.
-        * @return The RoleName value.
-        */
-        public String getRoleName()
-        {
+         * Required. Specifies the name of the role.
+         * 
+         * @return The RoleName value.
+         */
+        public String getRoleName() {
             return this.roleName;
         }
-        
+
         /**
-        * Required. Specifies the name of the role.
-        * @param roleNameValue The RoleName value.
-        */
-        public void setRoleName(final String roleNameValue)
-        {
+         * Required. Specifies the name of the role.
+         * 
+         * @param roleNameValue
+         *            The RoleName value.
+         */
+        public void setRoleName(final String roleNameValue) {
             this.roleName = roleNameValue;
         }
-        
+
         /**
-        * Initializes a new instance of the NamedRole class.
-        *
-        */
-        public NamedRole()
-        {
+         * Initializes a new instance of the NamedRole class.
+         * 
+         */
+        public NamedRole() {
             this.extensions = new ArrayList<ExtensionConfiguration.Extension>();
         }
     }

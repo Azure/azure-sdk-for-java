@@ -22,12 +22,10 @@ import org.junit.Test;
 
 import com.microsoft.windowsazure.services.media.implementation.content.LocatorRestType;
 
-public class LocatorInfoTest
-{
+public class LocatorInfoTest {
 
     @Test
-    public void testGetSetId()
-    {
+    public void testGetSetId() {
         // Arrange
         String expectedId = "testId";
         LocatorInfo locator = new LocatorInfo(null,
@@ -41,8 +39,7 @@ public class LocatorInfoTest
     }
 
     @Test
-    public void testGetSetExpirationDateTime()
-    {
+    public void testGetSetExpirationDateTime() {
         // Arrange
         Date expectedExpirationDateTime = new Date();
         LocatorInfo locatorInfo = new LocatorInfo(null,
@@ -57,8 +54,7 @@ public class LocatorInfoTest
     }
 
     @Test
-    public void testGetSetType()
-    {
+    public void testGetSetType() {
         // Arrange
         LocatorType expectedLocatorType = LocatorType.SAS;
         LocatorInfo locatorInfo = new LocatorInfo(null,
@@ -72,8 +68,7 @@ public class LocatorInfoTest
     }
 
     @Test
-    public void testGetSetPath()
-    {
+    public void testGetSetPath() {
         // Arrange
         String expectedPath = "testPath";
         LocatorInfo locatorInfo = new LocatorInfo(null,
@@ -87,8 +82,7 @@ public class LocatorInfoTest
     }
 
     @Test
-    public void testGetSetAccessPolicyId()
-    {
+    public void testGetSetAccessPolicyId() {
         // Arrange
         String expectedAccessPolicyId = "testAccessPolicyId";
         LocatorInfo locatorInfo = new LocatorInfo(null,
@@ -102,8 +96,7 @@ public class LocatorInfoTest
     }
 
     @Test
-    public void testGetSetAssetId()
-    {
+    public void testGetSetAssetId() {
         // Arrange
         String expectedAssetId = "testAssetId";
         LocatorInfo locatorInfo = new LocatorInfo(null,
@@ -117,8 +110,7 @@ public class LocatorInfoTest
     }
 
     @Test
-    public void testGetSetStartTime()
-    {
+    public void testGetSetStartTime() {
         // Arrange
         Date expectedStartTime = new Date();
         LocatorInfo locatorInfo = new LocatorInfo(null,
@@ -132,8 +124,7 @@ public class LocatorInfoTest
     }
 
     @Test
-    public void testGetSetBaseUri()
-    {
+    public void testGetSetBaseUri() {
         // Arrange
         String expectedBaseUri = "testBaseUri";
         LocatorInfo locatorInfo = new LocatorInfo(null,
@@ -147,8 +138,7 @@ public class LocatorInfoTest
     }
 
     @Test
-    public void testGetSetContentAccessComponent()
-    {
+    public void testGetSetContentAccessComponent() {
         // Arrange
         String expectedContentAccessComponent = "testContentAccessToken";
         LocatorInfo locatorInfo = new LocatorInfo(

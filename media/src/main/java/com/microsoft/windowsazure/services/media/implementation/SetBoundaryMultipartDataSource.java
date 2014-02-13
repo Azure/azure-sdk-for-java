@@ -23,49 +23,41 @@ import javax.mail.BodyPart;
 import javax.mail.MessagingException;
 import javax.mail.MultipartDataSource;
 
-public class SetBoundaryMultipartDataSource implements MultipartDataSource
-{
+public class SetBoundaryMultipartDataSource implements MultipartDataSource {
 
     private final String boundary;
 
-    public SetBoundaryMultipartDataSource(String boundary)
-    {
+    public SetBoundaryMultipartDataSource(String boundary) {
         this.boundary = boundary;
     }
 
     @Override
-    public String getContentType()
-    {
+    public String getContentType() {
         return "multipart/mixed; boundary=" + boundary;
     }
 
     @Override
-    public InputStream getInputStream() throws IOException
-    {
+    public InputStream getInputStream() throws IOException {
         return null;
     }
 
     @Override
-    public String getName()
-    {
+    public String getName() {
         return null;
     }
 
     @Override
-    public OutputStream getOutputStream() throws IOException
-    {
+    public OutputStream getOutputStream() throws IOException {
         return null;
     }
 
     @Override
-    public int getCount()
-    {
+    public int getCount() {
         return 0;
     }
 
     @Override
-    public BodyPart getBodyPart(int index) throws MessagingException
-    {
+    public BodyPart getBodyPart(int index) throws MessagingException {
         return null;
     }
 }

@@ -24,51 +24,52 @@
 package com.microsoft.windowsazure.management.compute.models;
 
 /**
-* Parameters supplied to the Rollback Update Or Upgrade operation.
-*/
-public class DeploymentRollbackUpdateOrUpgradeParameters
-{
+ * Parameters supplied to the Rollback Update Or Upgrade operation.
+ */
+public class DeploymentRollbackUpdateOrUpgradeParameters {
     private boolean force;
-    
+
     /**
-    * Specifies whether the rollback should proceed even when it will cause
-    * local data to be lost from some role instances. True if the rollback
-    * should proceed; otherwise false.
-    * @return The Force value.
-    */
-    public boolean isForce()
-    {
+     * Specifies whether the rollback should proceed even when it will cause
+     * local data to be lost from some role instances. True if the rollback
+     * should proceed; otherwise false.
+     * 
+     * @return The Force value.
+     */
+    public boolean isForce() {
         return this.force;
     }
-    
+
     /**
-    * Specifies whether the rollback should proceed even when it will cause
-    * local data to be lost from some role instances. True if the rollback
-    * should proceed; otherwise false.
-    * @param forceValue The Force value.
-    */
-    public void setForce(final boolean forceValue)
-    {
+     * Specifies whether the rollback should proceed even when it will cause
+     * local data to be lost from some role instances. True if the rollback
+     * should proceed; otherwise false.
+     * 
+     * @param forceValue
+     *            The Force value.
+     */
+    public void setForce(final boolean forceValue) {
         this.force = forceValue;
     }
-    
+
     private RollbackUpdateOrUpgradeMode mode;
-    
+
     /**
-    * Required. Specifies whether the rollback should proceed automatically.
-    * @return The Mode value.
-    */
-    public RollbackUpdateOrUpgradeMode getMode()
-    {
+     * Required. Specifies whether the rollback should proceed automatically.
+     * 
+     * @return The Mode value.
+     */
+    public RollbackUpdateOrUpgradeMode getMode() {
         return this.mode;
     }
-    
+
     /**
-    * Required. Specifies whether the rollback should proceed automatically.
-    * @param modeValue The Mode value.
-    */
-    public void setMode(final RollbackUpdateOrUpgradeMode modeValue)
-    {
+     * Required. Specifies whether the rollback should proceed automatically.
+     * 
+     * @param modeValue
+     *            The Mode value.
+     */
+    public void setMode(final RollbackUpdateOrUpgradeMode modeValue) {
         this.mode = modeValue;
     }
 }

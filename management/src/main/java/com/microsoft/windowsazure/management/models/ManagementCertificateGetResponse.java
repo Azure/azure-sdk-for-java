@@ -27,91 +27,94 @@ import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.Calendar;
 
 /**
-* The Get Management Certificate operation response.
-*/
-public class ManagementCertificateGetResponse extends OperationResponse
-{
+ * The Get Management Certificate operation response.
+ */
+public class ManagementCertificateGetResponse extends OperationResponse {
     private Calendar created;
-    
+
     /**
-    * The time that the management certificate was created, in UTC.
-    * @return The Created value.
-    */
-    public Calendar getCreated()
-    {
+     * The time that the management certificate was created, in UTC.
+     * 
+     * @return The Created value.
+     */
+    public Calendar getCreated() {
         return this.created;
     }
-    
+
     /**
-    * The time that the management certificate was created, in UTC.
-    * @param createdValue The Created value.
-    */
-    public void setCreated(final Calendar createdValue)
-    {
+     * The time that the management certificate was created, in UTC.
+     * 
+     * @param createdValue
+     *            The Created value.
+     */
+    public void setCreated(final Calendar createdValue) {
         this.created = createdValue;
     }
-    
+
     private byte[] data;
-    
+
     /**
-    * A base64 representation of the raw data contained in the management
-    * certificate in .cer format.
-    * @return The Data value.
-    */
-    public byte[] getData()
-    {
+     * A base64 representation of the raw data contained in the management
+     * certificate in .cer format.
+     * 
+     * @return The Data value.
+     */
+    public byte[] getData() {
         return this.data;
     }
-    
+
     /**
-    * A base64 representation of the raw data contained in the management
-    * certificate in .cer format.
-    * @param dataValue The Data value.
-    */
-    public void setData(final byte[] dataValue)
-    {
+     * A base64 representation of the raw data contained in the management
+     * certificate in .cer format.
+     * 
+     * @param dataValue
+     *            The Data value.
+     */
+    public void setData(final byte[] dataValue) {
         this.data = dataValue;
     }
-    
+
     private byte[] publicKey;
-    
+
     /**
-    * A base64 representation of the management certificate public key.
-    * @return The PublicKey value.
-    */
-    public byte[] getPublicKey()
-    {
+     * A base64 representation of the management certificate public key.
+     * 
+     * @return The PublicKey value.
+     */
+    public byte[] getPublicKey() {
         return this.publicKey;
     }
-    
+
     /**
-    * A base64 representation of the management certificate public key.
-    * @param publicKeyValue The PublicKey value.
-    */
-    public void setPublicKey(final byte[] publicKeyValue)
-    {
+     * A base64 representation of the management certificate public key.
+     * 
+     * @param publicKeyValue
+     *            The PublicKey value.
+     */
+    public void setPublicKey(final byte[] publicKeyValue) {
         this.publicKey = publicKeyValue;
     }
-    
+
     private String thumbprint;
-    
+
     /**
-    * The thumb print that uniquely identifies the management certificate. This
-    * thumb print is the same value as the one specified by the request URI.
-    * @return The Thumbprint value.
-    */
-    public String getThumbprint()
-    {
+     * The thumb print that uniquely identifies the management certificate. This
+     * thumb print is the same value as the one specified by the request URI.
+     * 
+     * @return The Thumbprint value.
+     */
+    public String getThumbprint() {
         return this.thumbprint;
     }
-    
+
     /**
-    * The thumb print that uniquely identifies the management certificate. This
-    * thumb print is the same value as the one specified by the request URI.
-    * @param thumbprintValue The Thumbprint value.
-    */
-    public void setThumbprint(final String thumbprintValue)
-    {
+     * The thumb print that uniquely identifies the management certificate. This
+     * thumb print is the same value as the one specified by the request URI.
+     * 
+     * @param thumbprintValue
+     *            The Thumbprint value.
+     */
+    public void setThumbprint(final String thumbprintValue) {
         this.thumbprint = thumbprintValue;
     }
 }

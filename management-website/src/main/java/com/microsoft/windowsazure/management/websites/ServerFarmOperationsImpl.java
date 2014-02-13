@@ -64,1082 +64,1189 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
-* Operations for managing the server farm in a web space.  (see
-* http://msdn.microsoft.com/en-us/library/windowsazure/dn194277.aspx for more
-* information)
-*/
-public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManagementClientImpl>, ServerFarmOperations
-{
+ * Operations for managing the server farm in a web space. (see
+ * http://msdn.microsoft.com/en-us/library/windowsazure/dn194277.aspx for more
+ * information)
+ */
+public class ServerFarmOperationsImpl implements
+        ServiceOperations<WebSiteManagementClientImpl>, ServerFarmOperations {
     /**
-    * Initializes a new instance of the ServerFarmOperationsImpl class.
-    *
-    * @param client Reference to the service client.
-    */
-    ServerFarmOperationsImpl(WebSiteManagementClientImpl client)
-    {
+     * Initializes a new instance of the ServerFarmOperationsImpl class.
+     * 
+     * @param client
+     *            Reference to the service client.
+     */
+    ServerFarmOperationsImpl(WebSiteManagementClientImpl client) {
         this.client = client;
     }
-    
+
     private WebSiteManagementClientImpl client;
-    
+
     /**
-    * Gets a reference to the
-    * microsoft.windowsazure.management.websites.WebSiteManagementClientImpl.
-    * @return The Client value.
-    */
-    public WebSiteManagementClientImpl getClient()
-    {
+     * Gets a reference to the
+     * microsoft.windowsazure.management.websites.WebSiteManagementClientImpl.
+     * 
+     * @return The Client value.
+     */
+    public WebSiteManagementClientImpl getClient() {
         return this.client;
     }
-    
+
     /**
-    * You can create a server farm by issuing an HTTP POST request. Only one
-    * server farm per webspace is permitted. You can retrieve server farm
-    * details by using HTTP GET, change server farm properties by using HTTP
-    * PUT, and delete a server farm by using HTTP DELETE. A request body is
-    * required for server farm creation (HTTP POST) and server farm update
-    * (HTTP PUT).  Warning: Creating a server farm changes your webspace’s
-    * Compute Mode from Shared to Dedicated. You will be charged from the
-    * moment the server farm is created, even if all your sites are still
-    * running in Free mode.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/dn194277.aspx for
-    * more information)
-    *
-    * @param webSpaceName The name of the web space.
-    * @param parameters Parameters supplied to the Create Server Farm operation.
-    * @return The Create Server Farm operation response.
-    */
+     * You can create a server farm by issuing an HTTP POST request. Only one
+     * server farm per webspace is permitted. You can retrieve server farm
+     * details by using HTTP GET, change server farm properties by using HTTP
+     * PUT, and delete a server farm by using HTTP DELETE. A request body is
+     * required for server farm creation (HTTP POST) and server farm update
+     * (HTTP PUT). Warning: Creating a server farm changes your webspace’s
+     * Compute Mode from Shared to Dedicated. You will be charged from the
+     * moment the server farm is created, even if all your sites are still
+     * running in Free mode. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/dn194277.aspx for
+     * more information)
+     * 
+     * @param webSpaceName
+     *            The name of the web space.
+     * @param parameters
+     *            Parameters supplied to the Create Server Farm operation.
+     * @return The Create Server Farm operation response.
+     */
     @Override
-    public Future<ServerFarmCreateResponse> createAsync(final String webSpaceName, final ServerFarmCreateParameters parameters)
-    {
-        return this.getClient().getExecutorService().submit(new Callable<ServerFarmCreateResponse>() { 
-            @Override
-            public ServerFarmCreateResponse call() throws Exception
-            {
-                return create(webSpaceName, parameters);
-            }
-         });
+    public Future<ServerFarmCreateResponse> createAsync(
+            final String webSpaceName,
+            final ServerFarmCreateParameters parameters) {
+        return this.getClient().getExecutorService()
+                .submit(new Callable<ServerFarmCreateResponse>() {
+                    @Override
+                    public ServerFarmCreateResponse call() throws Exception {
+                        return create(webSpaceName, parameters);
+                    }
+                });
     }
-    
+
     /**
-    * You can create a server farm by issuing an HTTP POST request. Only one
-    * server farm per webspace is permitted. You can retrieve server farm
-    * details by using HTTP GET, change server farm properties by using HTTP
-    * PUT, and delete a server farm by using HTTP DELETE. A request body is
-    * required for server farm creation (HTTP POST) and server farm update
-    * (HTTP PUT).  Warning: Creating a server farm changes your webspace’s
-    * Compute Mode from Shared to Dedicated. You will be charged from the
-    * moment the server farm is created, even if all your sites are still
-    * running in Free mode.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/dn194277.aspx for
-    * more information)
-    *
-    * @param webSpaceName The name of the web space.
-    * @param parameters Parameters supplied to the Create Server Farm operation.
-    * @throws ParserConfigurationException Thrown if there was an error
-    * configuring the parser for the response body.
-    * @throws SAXException Thrown if there was an error parsing the response
-    * body.
-    * @throws TransformerException Thrown if there was an error creating the
-    * DOM transformer.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws URISyntaxException Thrown if there was an error parsing a URI in
-    * the response.
-    * @return The Create Server Farm operation response.
-    */
+     * You can create a server farm by issuing an HTTP POST request. Only one
+     * server farm per webspace is permitted. You can retrieve server farm
+     * details by using HTTP GET, change server farm properties by using HTTP
+     * PUT, and delete a server farm by using HTTP DELETE. A request body is
+     * required for server farm creation (HTTP POST) and server farm update
+     * (HTTP PUT). Warning: Creating a server farm changes your webspace’s
+     * Compute Mode from Shared to Dedicated. You will be charged from the
+     * moment the server farm is created, even if all your sites are still
+     * running in Free mode. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/dn194277.aspx for
+     * more information)
+     * 
+     * @param webSpaceName
+     *            The name of the web space.
+     * @param parameters
+     *            Parameters supplied to the Create Server Farm operation.
+     * @throws ParserConfigurationException
+     *             Thrown if there was an error configuring the parser for the
+     *             response body.
+     * @throws SAXException
+     *             Thrown if there was an error parsing the response body.
+     * @throws TransformerException
+     *             Thrown if there was an error creating the DOM transformer.
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @throws URISyntaxException
+     *             Thrown if there was an error parsing a URI in the response.
+     * @return The Create Server Farm operation response.
+     */
     @Override
-    public ServerFarmCreateResponse create(String webSpaceName, ServerFarmCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException
-    {
+    public ServerFarmCreateResponse create(String webSpaceName,
+            ServerFarmCreateParameters parameters)
+            throws ParserConfigurationException, SAXException,
+            TransformerException, IOException, ServiceException,
+            URISyntaxException {
         // Validate
-        if (webSpaceName == null)
-        {
+        if (webSpaceName == null) {
             throw new NullPointerException("webSpaceName");
         }
-        if (parameters == null)
-        {
+        if (parameters == null) {
             throw new NullPointerException("parameters");
         }
-        
+
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("webSpaceName", webSpaceName);
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this, "createAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "createAsync",
+                    tracingParameters);
         }
-        
+
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/WebSpaces/" + webSpaceName + "/ServerFarms";
-        
+        String url = this.getClient().getBaseUri() + "/"
+                + this.getClient().getCredentials().getSubscriptionId()
+                + "/services/WebSpaces/" + webSpaceName + "/ServerFarms";
+
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
-        
+
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
         httpRequest.setHeader("x-ms-version", "2013-08-01");
-        
+
         // Serialize Request
         String requestContent = null;
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
+                .newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory
+                .newDocumentBuilder();
         Document requestDoc = documentBuilder.newDocument();
-        
-        Element serverFarmElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ServerFarm");
+
+        Element serverFarmElement = requestDoc.createElementNS(
+                "http://schemas.microsoft.com/windowsazure", "ServerFarm");
         requestDoc.appendChild(serverFarmElement);
-        
-        if (parameters.getCurrentNumberOfWorkers() != null)
-        {
-            Element currentNumberOfWorkersElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CurrentNumberOfWorkers");
-            currentNumberOfWorkersElement.appendChild(requestDoc.createTextNode(Integer.toString(parameters.getCurrentNumberOfWorkers())));
+
+        if (parameters.getCurrentNumberOfWorkers() != null) {
+            Element currentNumberOfWorkersElement = requestDoc.createElementNS(
+                    "http://schemas.microsoft.com/windowsazure",
+                    "CurrentNumberOfWorkers");
+            currentNumberOfWorkersElement.appendChild(requestDoc
+                    .createTextNode(Integer.toString(parameters
+                            .getCurrentNumberOfWorkers())));
             serverFarmElement.appendChild(currentNumberOfWorkersElement);
         }
-        
-        if (parameters.getCurrentWorkerSize() != null)
-        {
-            Element currentWorkerSizeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CurrentWorkerSize");
-            currentWorkerSizeElement.appendChild(requestDoc.createTextNode(parameters.getCurrentWorkerSize().toString()));
+
+        if (parameters.getCurrentWorkerSize() != null) {
+            Element currentWorkerSizeElement = requestDoc.createElementNS(
+                    "http://schemas.microsoft.com/windowsazure",
+                    "CurrentWorkerSize");
+            currentWorkerSizeElement.appendChild(requestDoc
+                    .createTextNode(parameters.getCurrentWorkerSize()
+                            .toString()));
             serverFarmElement.appendChild(currentWorkerSizeElement);
         }
-        
-        Element nameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+
+        Element nameElement = requestDoc.createElementNS(
+                "http://schemas.microsoft.com/windowsazure", "Name");
         nameElement.appendChild(requestDoc.createTextNode("DefaultServerFarm"));
         serverFarmElement.appendChild(nameElement);
-        
-        Element numberOfWorkersElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "NumberOfWorkers");
-        numberOfWorkersElement.appendChild(requestDoc.createTextNode(Integer.toString(parameters.getNumberOfWorkers())));
+
+        Element numberOfWorkersElement = requestDoc.createElementNS(
+                "http://schemas.microsoft.com/windowsazure", "NumberOfWorkers");
+        numberOfWorkersElement.appendChild(requestDoc.createTextNode(Integer
+                .toString(parameters.getNumberOfWorkers())));
         serverFarmElement.appendChild(numberOfWorkersElement);
-        
-        Element workerSizeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "WorkerSize");
-        workerSizeElement.appendChild(requestDoc.createTextNode(parameters.getWorkerSize().toString()));
+
+        Element workerSizeElement = requestDoc.createElementNS(
+                "http://schemas.microsoft.com/windowsazure", "WorkerSize");
+        workerSizeElement.appendChild(requestDoc.createTextNode(parameters
+                .getWorkerSize().toString()));
         serverFarmElement.appendChild(workerSizeElement);
-        
-        if (parameters.getStatus() != null)
-        {
-            Element statusElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Status");
-            statusElement.appendChild(requestDoc.createTextNode(parameters.getStatus().toString()));
+
+        if (parameters.getStatus() != null) {
+            Element statusElement = requestDoc.createElementNS(
+                    "http://schemas.microsoft.com/windowsazure", "Status");
+            statusElement.appendChild(requestDoc.createTextNode(parameters
+                    .getStatus().toString()));
             serverFarmElement.appendChild(statusElement);
         }
-        
+
         DOMSource domSource = new DOMSource(requestDoc);
         StringWriter stringWriter = new StringWriter();
         StreamResult streamResult = new StreamResult(stringWriter);
-        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        TransformerFactory transformerFactory = TransformerFactory
+                .newInstance();
         Transformer transformer = transformerFactory.newTransformer();
         transformer.transform(domSource, streamResult);
         requestContent = stringWriter.toString();
         StringEntity entity = new StringEntity(requestContent);
         httpRequest.setEntity(entity);
         httpRequest.setHeader("Content-Type", "application/xml");
-        
+
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            httpResponse = this.getClient().getHttpClient()
+                    .execute(httpRequest);
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+            if (statusCode != HttpStatus.SC_OK) {
+                ServiceException ex = ServiceException.createFromXml(
+                        httpRequest, requestContent, httpResponse,
+                        httpResponse.getEntity());
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-            
+
             // Create Result
             ServerFarmCreateResponse result = null;
             // Deserialize Response
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new ServerFarmCreateResponse();
-            DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+            DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory
+                    .newInstance();
             documentBuilderFactory2.setNamespaceAware(true);
-            DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
+            DocumentBuilder documentBuilder2 = documentBuilderFactory2
+                    .newDocumentBuilder();
             Document responseDoc = documentBuilder2.parse(responseContent);
-            
+
             NodeList elements = responseDoc.getElementsByTagName("ServerFarm");
-            Element serverFarmElement2 = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (serverFarmElement2 != null)
-            {
-                NodeList elements2 = serverFarmElement2.getElementsByTagName("CurrentNumberOfWorkers");
-                Element currentNumberOfWorkersElement2 = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (currentNumberOfWorkersElement2 != null)
-                {
+            Element serverFarmElement2 = elements.getLength() > 0 ? ((Element) elements
+                    .item(0)) : null;
+            if (serverFarmElement2 != null) {
+                NodeList elements2 = serverFarmElement2
+                        .getElementsByTagName("CurrentNumberOfWorkers");
+                Element currentNumberOfWorkersElement2 = elements2.getLength() > 0 ? ((Element) elements2
+                        .item(0)) : null;
+                if (currentNumberOfWorkersElement2 != null) {
                     int currentNumberOfWorkersInstance;
-                    currentNumberOfWorkersInstance = DatatypeConverter.parseInt(currentNumberOfWorkersElement2.getTextContent());
+                    currentNumberOfWorkersInstance = DatatypeConverter
+                            .parseInt(currentNumberOfWorkersElement2
+                                    .getTextContent());
                     result.setCurrentNumberOfWorkers(currentNumberOfWorkersInstance);
                 }
-                
-                NodeList elements3 = serverFarmElement2.getElementsByTagName("CurrentWorkerSize");
-                Element currentWorkerSizeElement2 = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                if (currentWorkerSizeElement2 != null)
-                {
+
+                NodeList elements3 = serverFarmElement2
+                        .getElementsByTagName("CurrentWorkerSize");
+                Element currentWorkerSizeElement2 = elements3.getLength() > 0 ? ((Element) elements3
+                        .item(0)) : null;
+                if (currentWorkerSizeElement2 != null) {
                     ServerFarmWorkerSize currentWorkerSizeInstance;
-                    currentWorkerSizeInstance = ServerFarmWorkerSize.valueOf(currentWorkerSizeElement2.getTextContent());
+                    currentWorkerSizeInstance = ServerFarmWorkerSize
+                            .valueOf(currentWorkerSizeElement2.getTextContent());
                     result.setCurrentWorkerSize(currentWorkerSizeInstance);
                 }
-                
-                NodeList elements4 = serverFarmElement2.getElementsByTagName("Name");
-                Element nameElement2 = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                if (nameElement2 != null)
-                {
+
+                NodeList elements4 = serverFarmElement2
+                        .getElementsByTagName("Name");
+                Element nameElement2 = elements4.getLength() > 0 ? ((Element) elements4
+                        .item(0)) : null;
+                if (nameElement2 != null) {
                     String nameInstance;
                     nameInstance = nameElement2.getTextContent();
                     result.setName(nameInstance);
                 }
-                
-                NodeList elements5 = serverFarmElement2.getElementsByTagName("NumberOfWorkers");
-                Element numberOfWorkersElement2 = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                if (numberOfWorkersElement2 != null)
-                {
+
+                NodeList elements5 = serverFarmElement2
+                        .getElementsByTagName("NumberOfWorkers");
+                Element numberOfWorkersElement2 = elements5.getLength() > 0 ? ((Element) elements5
+                        .item(0)) : null;
+                if (numberOfWorkersElement2 != null) {
                     int numberOfWorkersInstance;
-                    numberOfWorkersInstance = DatatypeConverter.parseInt(numberOfWorkersElement2.getTextContent());
+                    numberOfWorkersInstance = DatatypeConverter
+                            .parseInt(numberOfWorkersElement2.getTextContent());
                     result.setNumberOfWorkers(numberOfWorkersInstance);
                 }
-                
-                NodeList elements6 = serverFarmElement2.getElementsByTagName("WorkerSize");
-                Element workerSizeElement2 = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                if (workerSizeElement2 != null)
-                {
+
+                NodeList elements6 = serverFarmElement2
+                        .getElementsByTagName("WorkerSize");
+                Element workerSizeElement2 = elements6.getLength() > 0 ? ((Element) elements6
+                        .item(0)) : null;
+                if (workerSizeElement2 != null) {
                     ServerFarmWorkerSize workerSizeInstance;
-                    workerSizeInstance = ServerFarmWorkerSize.valueOf(workerSizeElement2.getTextContent());
+                    workerSizeInstance = ServerFarmWorkerSize
+                            .valueOf(workerSizeElement2.getTextContent());
                     result.setWorkerSize(workerSizeInstance);
                 }
-                
-                NodeList elements7 = serverFarmElement2.getElementsByTagName("Status");
-                Element statusElement2 = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                if (statusElement2 != null)
-                {
+
+                NodeList elements7 = serverFarmElement2
+                        .getElementsByTagName("Status");
+                Element statusElement2 = elements7.getLength() > 0 ? ((Element) elements7
+                        .item(0)) : null;
+                if (statusElement2 != null) {
                     ServerFarmStatus statusInstance;
-                    statusInstance = ServerFarmStatus.valueOf(statusElement2.getTextContent());
+                    statusInstance = ServerFarmStatus.valueOf(statusElement2
+                            .getTextContent());
                     result.setStatus(statusInstance);
                 }
             }
-            
+
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader(
+                        "x-ms-request-id").getValue());
             }
-            
-            if (shouldTrace)
-            {
+
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
     }
-    
+
     /**
-    * You can create a server farm by issuing an HTTP POST request. Only one
-    * server farm per webspace is permitted. You can retrieve server farm
-    * details by using HTTP GET, change server farm properties by using HTTP
-    * PUT, and delete a server farm by using HTTP DELETE. A request body is
-    * required for server farm creation (HTTP POST) and server farm update
-    * (HTTP PUT).  Warning: Creating a server farm changes your webspace’s
-    * Compute Mode from Shared to Dedicated. You will be charged from the
-    * moment the server farm is created, even if all your sites are still
-    * running in Free mode.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/dn194277.aspx for
-    * more information)
-    *
-    * @param webSpaceName The name of the web space.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
+     * You can create a server farm by issuing an HTTP POST request. Only one
+     * server farm per webspace is permitted. You can retrieve server farm
+     * details by using HTTP GET, change server farm properties by using HTTP
+     * PUT, and delete a server farm by using HTTP DELETE. A request body is
+     * required for server farm creation (HTTP POST) and server farm update
+     * (HTTP PUT). Warning: Creating a server farm changes your webspace’s
+     * Compute Mode from Shared to Dedicated. You will be charged from the
+     * moment the server farm is created, even if all your sites are still
+     * running in Free mode. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/dn194277.aspx for
+     * more information)
+     * 
+     * @param webSpaceName
+     *            The name of the web space.
+     * @return A standard service response including an HTTP status code and
+     *         request ID.
+     */
     @Override
-    public Future<OperationResponse> deleteAsync(final String webSpaceName)
-    {
-        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
-            @Override
-            public OperationResponse call() throws Exception
-            {
-                return delete(webSpaceName);
-            }
-         });
+    public Future<OperationResponse> deleteAsync(final String webSpaceName) {
+        return this.getClient().getExecutorService()
+                .submit(new Callable<OperationResponse>() {
+                    @Override
+                    public OperationResponse call() throws Exception {
+                        return delete(webSpaceName);
+                    }
+                });
     }
-    
+
     /**
-    * You can create a server farm by issuing an HTTP POST request. Only one
-    * server farm per webspace is permitted. You can retrieve server farm
-    * details by using HTTP GET, change server farm properties by using HTTP
-    * PUT, and delete a server farm by using HTTP DELETE. A request body is
-    * required for server farm creation (HTTP POST) and server farm update
-    * (HTTP PUT).  Warning: Creating a server farm changes your webspace’s
-    * Compute Mode from Shared to Dedicated. You will be charged from the
-    * moment the server farm is created, even if all your sites are still
-    * running in Free mode.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/dn194277.aspx for
-    * more information)
-    *
-    * @param webSpaceName The name of the web space.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
+     * You can create a server farm by issuing an HTTP POST request. Only one
+     * server farm per webspace is permitted. You can retrieve server farm
+     * details by using HTTP GET, change server farm properties by using HTTP
+     * PUT, and delete a server farm by using HTTP DELETE. A request body is
+     * required for server farm creation (HTTP POST) and server farm update
+     * (HTTP PUT). Warning: Creating a server farm changes your webspace’s
+     * Compute Mode from Shared to Dedicated. You will be charged from the
+     * moment the server farm is created, even if all your sites are still
+     * running in Free mode. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/dn194277.aspx for
+     * more information)
+     * 
+     * @param webSpaceName
+     *            The name of the web space.
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @return A standard service response including an HTTP status code and
+     *         request ID.
+     */
     @Override
-    public OperationResponse delete(String webSpaceName) throws IOException, ServiceException
-    {
+    public OperationResponse delete(String webSpaceName) throws IOException,
+            ServiceException {
         // Validate
-        if (webSpaceName == null)
-        {
+        if (webSpaceName == null) {
             throw new NullPointerException("webSpaceName");
         }
-        
+
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("webSpaceName", webSpaceName);
-            CloudTracing.enter(invocationId, this, "deleteAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "deleteAsync",
+                    tracingParameters);
         }
-        
+
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/WebSpaces/" + webSpaceName + "/ServerFarms/DefaultServerFarm";
-        
+        String url = this.getClient().getBaseUri() + "/"
+                + this.getClient().getCredentials().getSubscriptionId()
+                + "/services/WebSpaces/" + webSpaceName
+                + "/ServerFarms/DefaultServerFarm";
+
         // Create HTTP transport objects
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
-        
+
         // Set Headers
         httpRequest.setHeader("x-ms-version", "2013-08-01");
-        
+
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            httpResponse = this.getClient().getHttpClient()
+                    .execute(httpRequest);
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+            if (statusCode != HttpStatus.SC_OK) {
+                ServiceException ex = ServiceException.createFromXml(
+                        httpRequest, null, httpResponse,
+                        httpResponse.getEntity());
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-            
+
             // Create Result
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader(
+                        "x-ms-request-id").getValue());
             }
-            
-            if (shouldTrace)
-            {
+
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
     }
-    
+
     /**
-    * You can create a server farm by issuing an HTTP POST request. Only one
-    * server farm per webspace is permitted. You can retrieve server farm
-    * details by using HTTP GET, change server farm properties by using HTTP
-    * PUT, and delete a server farm by using HTTP DELETE. A request body is
-    * required for server farm creation (HTTP POST) and server farm update
-    * (HTTP PUT).  Warning: Creating a server farm changes your webspace’s
-    * Compute Mode from Shared to Dedicated. You will be charged from the
-    * moment the server farm is created, even if all your sites are still
-    * running in Free mode.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/dn194277.aspx for
-    * more information)
-    *
-    * @param webSpaceName The name of the web space.
-    * @param serverFarmName The name of the server farm.
-    * @return The Get Server Farm operation response.
-    */
+     * You can create a server farm by issuing an HTTP POST request. Only one
+     * server farm per webspace is permitted. You can retrieve server farm
+     * details by using HTTP GET, change server farm properties by using HTTP
+     * PUT, and delete a server farm by using HTTP DELETE. A request body is
+     * required for server farm creation (HTTP POST) and server farm update
+     * (HTTP PUT). Warning: Creating a server farm changes your webspace’s
+     * Compute Mode from Shared to Dedicated. You will be charged from the
+     * moment the server farm is created, even if all your sites are still
+     * running in Free mode. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/dn194277.aspx for
+     * more information)
+     * 
+     * @param webSpaceName
+     *            The name of the web space.
+     * @param serverFarmName
+     *            The name of the server farm.
+     * @return The Get Server Farm operation response.
+     */
     @Override
-    public Future<ServerFarmGetResponse> getAsync(final String webSpaceName, final String serverFarmName)
-    {
-        return this.getClient().getExecutorService().submit(new Callable<ServerFarmGetResponse>() { 
-            @Override
-            public ServerFarmGetResponse call() throws Exception
-            {
-                return get(webSpaceName, serverFarmName);
-            }
-         });
+    public Future<ServerFarmGetResponse> getAsync(final String webSpaceName,
+            final String serverFarmName) {
+        return this.getClient().getExecutorService()
+                .submit(new Callable<ServerFarmGetResponse>() {
+                    @Override
+                    public ServerFarmGetResponse call() throws Exception {
+                        return get(webSpaceName, serverFarmName);
+                    }
+                });
     }
-    
+
     /**
-    * You can create a server farm by issuing an HTTP POST request. Only one
-    * server farm per webspace is permitted. You can retrieve server farm
-    * details by using HTTP GET, change server farm properties by using HTTP
-    * PUT, and delete a server farm by using HTTP DELETE. A request body is
-    * required for server farm creation (HTTP POST) and server farm update
-    * (HTTP PUT).  Warning: Creating a server farm changes your webspace’s
-    * Compute Mode from Shared to Dedicated. You will be charged from the
-    * moment the server farm is created, even if all your sites are still
-    * running in Free mode.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/dn194277.aspx for
-    * more information)
-    *
-    * @param webSpaceName The name of the web space.
-    * @param serverFarmName The name of the server farm.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParserConfigurationException Thrown if there was a serious
-    * configuration error with the document parser.
-    * @throws SAXException Thrown if there was an error parsing the XML
-    * response.
-    * @throws URISyntaxException Thrown if there was an error parsing a URI in
-    * the response.
-    * @return The Get Server Farm operation response.
-    */
+     * You can create a server farm by issuing an HTTP POST request. Only one
+     * server farm per webspace is permitted. You can retrieve server farm
+     * details by using HTTP GET, change server farm properties by using HTTP
+     * PUT, and delete a server farm by using HTTP DELETE. A request body is
+     * required for server farm creation (HTTP POST) and server farm update
+     * (HTTP PUT). Warning: Creating a server farm changes your webspace’s
+     * Compute Mode from Shared to Dedicated. You will be charged from the
+     * moment the server farm is created, even if all your sites are still
+     * running in Free mode. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/dn194277.aspx for
+     * more information)
+     * 
+     * @param webSpaceName
+     *            The name of the web space.
+     * @param serverFarmName
+     *            The name of the server farm.
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @throws ParserConfigurationException
+     *             Thrown if there was a serious configuration error with the
+     *             document parser.
+     * @throws SAXException
+     *             Thrown if there was an error parsing the XML response.
+     * @throws URISyntaxException
+     *             Thrown if there was an error parsing a URI in the response.
+     * @return The Get Server Farm operation response.
+     */
     @Override
-    public ServerFarmGetResponse get(String webSpaceName, String serverFarmName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
-    {
+    public ServerFarmGetResponse get(String webSpaceName, String serverFarmName)
+            throws IOException, ServiceException, ParserConfigurationException,
+            SAXException, URISyntaxException {
         // Validate
-        if (webSpaceName == null)
-        {
+        if (webSpaceName == null) {
             throw new NullPointerException("webSpaceName");
         }
-        if (serverFarmName == null)
-        {
+        if (serverFarmName == null) {
             throw new NullPointerException("serverFarmName");
         }
-        
+
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("webSpaceName", webSpaceName);
             tracingParameters.put("serverFarmName", serverFarmName);
-            CloudTracing.enter(invocationId, this, "getAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "getAsync",
+                    tracingParameters);
         }
-        
+
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/WebSpaces/" + webSpaceName + "/ServerFarms/" + serverFarmName;
-        
+        String url = this.getClient().getBaseUri() + "/"
+                + this.getClient().getCredentials().getSubscriptionId()
+                + "/services/WebSpaces/" + webSpaceName + "/ServerFarms/"
+                + serverFarmName;
+
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
-        
+
         // Set Headers
         httpRequest.setHeader("x-ms-version", "2013-08-01");
-        
+
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            httpResponse = this.getClient().getHttpClient()
+                    .execute(httpRequest);
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+            if (statusCode != HttpStatus.SC_OK) {
+                ServiceException ex = ServiceException.createFromXml(
+                        httpRequest, null, httpResponse,
+                        httpResponse.getEntity());
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-            
+
             // Create Result
             ServerFarmGetResponse result = null;
             // Deserialize Response
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new ServerFarmGetResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
+                    .newInstance();
             documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            DocumentBuilder documentBuilder = documentBuilderFactory
+                    .newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
-            
+
             NodeList elements = responseDoc.getElementsByTagName("ServerFarm");
-            Element serverFarmElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (serverFarmElement != null)
-            {
-                NodeList elements2 = serverFarmElement.getElementsByTagName("CurrentNumberOfWorkers");
-                Element currentNumberOfWorkersElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (currentNumberOfWorkersElement != null)
-                {
+            Element serverFarmElement = elements.getLength() > 0 ? ((Element) elements
+                    .item(0)) : null;
+            if (serverFarmElement != null) {
+                NodeList elements2 = serverFarmElement
+                        .getElementsByTagName("CurrentNumberOfWorkers");
+                Element currentNumberOfWorkersElement = elements2.getLength() > 0 ? ((Element) elements2
+                        .item(0)) : null;
+                if (currentNumberOfWorkersElement != null) {
                     int currentNumberOfWorkersInstance;
-                    currentNumberOfWorkersInstance = DatatypeConverter.parseInt(currentNumberOfWorkersElement.getTextContent());
+                    currentNumberOfWorkersInstance = DatatypeConverter
+                            .parseInt(currentNumberOfWorkersElement
+                                    .getTextContent());
                     result.setCurrentNumberOfWorkers(currentNumberOfWorkersInstance);
                 }
-                
-                NodeList elements3 = serverFarmElement.getElementsByTagName("CurrentWorkerSize");
-                Element currentWorkerSizeElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                if (currentWorkerSizeElement != null)
-                {
+
+                NodeList elements3 = serverFarmElement
+                        .getElementsByTagName("CurrentWorkerSize");
+                Element currentWorkerSizeElement = elements3.getLength() > 0 ? ((Element) elements3
+                        .item(0)) : null;
+                if (currentWorkerSizeElement != null) {
                     ServerFarmWorkerSize currentWorkerSizeInstance;
-                    currentWorkerSizeInstance = ServerFarmWorkerSize.valueOf(currentWorkerSizeElement.getTextContent());
+                    currentWorkerSizeInstance = ServerFarmWorkerSize
+                            .valueOf(currentWorkerSizeElement.getTextContent());
                     result.setCurrentWorkerSize(currentWorkerSizeInstance);
                 }
-                
-                NodeList elements4 = serverFarmElement.getElementsByTagName("Name");
-                Element nameElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                if (nameElement != null)
-                {
+
+                NodeList elements4 = serverFarmElement
+                        .getElementsByTagName("Name");
+                Element nameElement = elements4.getLength() > 0 ? ((Element) elements4
+                        .item(0)) : null;
+                if (nameElement != null) {
                     String nameInstance;
                     nameInstance = nameElement.getTextContent();
                     result.setName(nameInstance);
                 }
-                
-                NodeList elements5 = serverFarmElement.getElementsByTagName("NumberOfWorkers");
-                Element numberOfWorkersElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                if (numberOfWorkersElement != null)
-                {
+
+                NodeList elements5 = serverFarmElement
+                        .getElementsByTagName("NumberOfWorkers");
+                Element numberOfWorkersElement = elements5.getLength() > 0 ? ((Element) elements5
+                        .item(0)) : null;
+                if (numberOfWorkersElement != null) {
                     int numberOfWorkersInstance;
-                    numberOfWorkersInstance = DatatypeConverter.parseInt(numberOfWorkersElement.getTextContent());
+                    numberOfWorkersInstance = DatatypeConverter
+                            .parseInt(numberOfWorkersElement.getTextContent());
                     result.setNumberOfWorkers(numberOfWorkersInstance);
                 }
-                
-                NodeList elements6 = serverFarmElement.getElementsByTagName("WorkerSize");
-                Element workerSizeElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                if (workerSizeElement != null)
-                {
+
+                NodeList elements6 = serverFarmElement
+                        .getElementsByTagName("WorkerSize");
+                Element workerSizeElement = elements6.getLength() > 0 ? ((Element) elements6
+                        .item(0)) : null;
+                if (workerSizeElement != null) {
                     ServerFarmWorkerSize workerSizeInstance;
-                    workerSizeInstance = ServerFarmWorkerSize.valueOf(workerSizeElement.getTextContent());
+                    workerSizeInstance = ServerFarmWorkerSize
+                            .valueOf(workerSizeElement.getTextContent());
                     result.setWorkerSize(workerSizeInstance);
                 }
-                
-                NodeList elements7 = serverFarmElement.getElementsByTagName("Status");
-                Element statusElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                if (statusElement != null)
-                {
+
+                NodeList elements7 = serverFarmElement
+                        .getElementsByTagName("Status");
+                Element statusElement = elements7.getLength() > 0 ? ((Element) elements7
+                        .item(0)) : null;
+                if (statusElement != null) {
                     ServerFarmStatus statusInstance;
-                    statusInstance = ServerFarmStatus.valueOf(statusElement.getTextContent());
+                    statusInstance = ServerFarmStatus.valueOf(statusElement
+                            .getTextContent());
                     result.setStatus(statusInstance);
                 }
             }
-            
+
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader(
+                        "x-ms-request-id").getValue());
             }
-            
-            if (shouldTrace)
-            {
+
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
     }
-    
+
     /**
-    * You can create a server farm by issuing an HTTP POST request. Only one
-    * server farm per webspace is permitted. You can retrieve server farm
-    * details by using HTTP GET, change server farm properties by using HTTP
-    * PUT, and delete a server farm by using HTTP DELETE. A request body is
-    * required for server farm creation (HTTP POST) and server farm update
-    * (HTTP PUT).  Warning: Creating a server farm changes your webspace’s
-    * Compute Mode from Shared to Dedicated. You will be charged from the
-    * moment the server farm is created, even if all your sites are still
-    * running in Free mode.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/dn194277.aspx for
-    * more information)
-    *
-    * @param webSpaceName The name of the web space.
-    * @return The List Server Farm operation response.
-    */
+     * You can create a server farm by issuing an HTTP POST request. Only one
+     * server farm per webspace is permitted. You can retrieve server farm
+     * details by using HTTP GET, change server farm properties by using HTTP
+     * PUT, and delete a server farm by using HTTP DELETE. A request body is
+     * required for server farm creation (HTTP POST) and server farm update
+     * (HTTP PUT). Warning: Creating a server farm changes your webspace’s
+     * Compute Mode from Shared to Dedicated. You will be charged from the
+     * moment the server farm is created, even if all your sites are still
+     * running in Free mode. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/dn194277.aspx for
+     * more information)
+     * 
+     * @param webSpaceName
+     *            The name of the web space.
+     * @return The List Server Farm operation response.
+     */
     @Override
-    public Future<ServerFarmListResponse> listAsync(final String webSpaceName)
-    {
-        return this.getClient().getExecutorService().submit(new Callable<ServerFarmListResponse>() { 
-            @Override
-            public ServerFarmListResponse call() throws Exception
-            {
-                return list(webSpaceName);
-            }
-         });
+    public Future<ServerFarmListResponse> listAsync(final String webSpaceName) {
+        return this.getClient().getExecutorService()
+                .submit(new Callable<ServerFarmListResponse>() {
+                    @Override
+                    public ServerFarmListResponse call() throws Exception {
+                        return list(webSpaceName);
+                    }
+                });
     }
-    
+
     /**
-    * You can create a server farm by issuing an HTTP POST request. Only one
-    * server farm per webspace is permitted. You can retrieve server farm
-    * details by using HTTP GET, change server farm properties by using HTTP
-    * PUT, and delete a server farm by using HTTP DELETE. A request body is
-    * required for server farm creation (HTTP POST) and server farm update
-    * (HTTP PUT).  Warning: Creating a server farm changes your webspace’s
-    * Compute Mode from Shared to Dedicated. You will be charged from the
-    * moment the server farm is created, even if all your sites are still
-    * running in Free mode.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/dn194277.aspx for
-    * more information)
-    *
-    * @param webSpaceName The name of the web space.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParserConfigurationException Thrown if there was a serious
-    * configuration error with the document parser.
-    * @throws SAXException Thrown if there was an error parsing the XML
-    * response.
-    * @return The List Server Farm operation response.
-    */
+     * You can create a server farm by issuing an HTTP POST request. Only one
+     * server farm per webspace is permitted. You can retrieve server farm
+     * details by using HTTP GET, change server farm properties by using HTTP
+     * PUT, and delete a server farm by using HTTP DELETE. A request body is
+     * required for server farm creation (HTTP POST) and server farm update
+     * (HTTP PUT). Warning: Creating a server farm changes your webspace’s
+     * Compute Mode from Shared to Dedicated. You will be charged from the
+     * moment the server farm is created, even if all your sites are still
+     * running in Free mode. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/dn194277.aspx for
+     * more information)
+     * 
+     * @param webSpaceName
+     *            The name of the web space.
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @throws ParserConfigurationException
+     *             Thrown if there was a serious configuration error with the
+     *             document parser.
+     * @throws SAXException
+     *             Thrown if there was an error parsing the XML response.
+     * @return The List Server Farm operation response.
+     */
     @Override
-    public ServerFarmListResponse list(String webSpaceName) throws IOException, ServiceException, ParserConfigurationException, SAXException
-    {
+    public ServerFarmListResponse list(String webSpaceName) throws IOException,
+            ServiceException, ParserConfigurationException, SAXException {
         // Validate
-        if (webSpaceName == null)
-        {
+        if (webSpaceName == null) {
             throw new NullPointerException("webSpaceName");
         }
-        
+
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("webSpaceName", webSpaceName);
-            CloudTracing.enter(invocationId, this, "listAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "listAsync",
+                    tracingParameters);
         }
-        
+
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/WebSpaces/" + webSpaceName + "/ServerFarms";
-        
+        String url = this.getClient().getBaseUri() + "/"
+                + this.getClient().getCredentials().getSubscriptionId()
+                + "/services/WebSpaces/" + webSpaceName + "/ServerFarms";
+
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
-        
+
         // Set Headers
         httpRequest.setHeader("x-ms-version", "2013-08-01");
-        
+
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            httpResponse = this.getClient().getHttpClient()
+                    .execute(httpRequest);
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+            if (statusCode != HttpStatus.SC_OK) {
+                ServiceException ex = ServiceException.createFromXml(
+                        httpRequest, null, httpResponse,
+                        httpResponse.getEntity());
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-            
+
             // Create Result
             ServerFarmListResponse result = null;
             // Deserialize Response
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new ServerFarmListResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
+                    .newInstance();
             documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            DocumentBuilder documentBuilder = documentBuilderFactory
+                    .newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
-            
+
             NodeList elements = responseDoc.getElementsByTagName("ServerFarms");
-            Element serverFarmsSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (serverFarmsSequenceElement != null)
-            {
-                for (int i1 = 0; i1 < serverFarmsSequenceElement.getElementsByTagName("ServerFarm").getLength(); i1 = i1 + 1)
-                {
-                    org.w3c.dom.Element serverFarmsElement = ((org.w3c.dom.Element) serverFarmsSequenceElement.getElementsByTagName("ServerFarm").item(i1));
+            Element serverFarmsSequenceElement = elements.getLength() > 0 ? ((Element) elements
+                    .item(0)) : null;
+            if (serverFarmsSequenceElement != null) {
+                for (int i1 = 0; i1 < serverFarmsSequenceElement
+                        .getElementsByTagName("ServerFarm").getLength(); i1 = i1 + 1) {
+                    org.w3c.dom.Element serverFarmsElement = ((org.w3c.dom.Element) serverFarmsSequenceElement
+                            .getElementsByTagName("ServerFarm").item(i1));
                     ServerFarmListResponse.ServerFarm serverFarmInstance = new ServerFarmListResponse.ServerFarm();
                     result.getServerFarms().add(serverFarmInstance);
-                    
-                    NodeList elements2 = serverFarmsElement.getElementsByTagName("CurrentNumberOfWorkers");
-                    Element currentNumberOfWorkersElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                    if (currentNumberOfWorkersElement != null)
-                    {
+
+                    NodeList elements2 = serverFarmsElement
+                            .getElementsByTagName("CurrentNumberOfWorkers");
+                    Element currentNumberOfWorkersElement = elements2
+                            .getLength() > 0 ? ((Element) elements2.item(0))
+                            : null;
+                    if (currentNumberOfWorkersElement != null) {
                         int currentNumberOfWorkersInstance;
-                        currentNumberOfWorkersInstance = DatatypeConverter.parseInt(currentNumberOfWorkersElement.getTextContent());
-                        serverFarmInstance.setCurrentNumberOfWorkers(currentNumberOfWorkersInstance);
+                        currentNumberOfWorkersInstance = DatatypeConverter
+                                .parseInt(currentNumberOfWorkersElement
+                                        .getTextContent());
+                        serverFarmInstance
+                                .setCurrentNumberOfWorkers(currentNumberOfWorkersInstance);
                     }
-                    
-                    NodeList elements3 = serverFarmsElement.getElementsByTagName("CurrentWorkerSize");
-                    Element currentWorkerSizeElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                    if (currentWorkerSizeElement != null)
-                    {
+
+                    NodeList elements3 = serverFarmsElement
+                            .getElementsByTagName("CurrentWorkerSize");
+                    Element currentWorkerSizeElement = elements3.getLength() > 0 ? ((Element) elements3
+                            .item(0)) : null;
+                    if (currentWorkerSizeElement != null) {
                         ServerFarmWorkerSize currentWorkerSizeInstance;
-                        currentWorkerSizeInstance = ServerFarmWorkerSize.valueOf(currentWorkerSizeElement.getTextContent());
-                        serverFarmInstance.setCurrentWorkerSize(currentWorkerSizeInstance);
+                        currentWorkerSizeInstance = ServerFarmWorkerSize
+                                .valueOf(currentWorkerSizeElement
+                                        .getTextContent());
+                        serverFarmInstance
+                                .setCurrentWorkerSize(currentWorkerSizeInstance);
                     }
-                    
-                    NodeList elements4 = serverFarmsElement.getElementsByTagName("Name");
-                    Element nameElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                    if (nameElement != null)
-                    {
+
+                    NodeList elements4 = serverFarmsElement
+                            .getElementsByTagName("Name");
+                    Element nameElement = elements4.getLength() > 0 ? ((Element) elements4
+                            .item(0)) : null;
+                    if (nameElement != null) {
                         String nameInstance;
                         nameInstance = nameElement.getTextContent();
                         serverFarmInstance.setName(nameInstance);
                     }
-                    
-                    NodeList elements5 = serverFarmsElement.getElementsByTagName("NumberOfWorkers");
-                    Element numberOfWorkersElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                    if (numberOfWorkersElement != null)
-                    {
+
+                    NodeList elements5 = serverFarmsElement
+                            .getElementsByTagName("NumberOfWorkers");
+                    Element numberOfWorkersElement = elements5.getLength() > 0 ? ((Element) elements5
+                            .item(0)) : null;
+                    if (numberOfWorkersElement != null) {
                         int numberOfWorkersInstance;
-                        numberOfWorkersInstance = DatatypeConverter.parseInt(numberOfWorkersElement.getTextContent());
-                        serverFarmInstance.setNumberOfWorkers(numberOfWorkersInstance);
+                        numberOfWorkersInstance = DatatypeConverter
+                                .parseInt(numberOfWorkersElement
+                                        .getTextContent());
+                        serverFarmInstance
+                                .setNumberOfWorkers(numberOfWorkersInstance);
                     }
-                    
-                    NodeList elements6 = serverFarmsElement.getElementsByTagName("WorkerSize");
-                    Element workerSizeElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                    if (workerSizeElement != null)
-                    {
+
+                    NodeList elements6 = serverFarmsElement
+                            .getElementsByTagName("WorkerSize");
+                    Element workerSizeElement = elements6.getLength() > 0 ? ((Element) elements6
+                            .item(0)) : null;
+                    if (workerSizeElement != null) {
                         ServerFarmWorkerSize workerSizeInstance;
-                        workerSizeInstance = ServerFarmWorkerSize.valueOf(workerSizeElement.getTextContent());
+                        workerSizeInstance = ServerFarmWorkerSize
+                                .valueOf(workerSizeElement.getTextContent());
                         serverFarmInstance.setWorkerSize(workerSizeInstance);
                     }
-                    
-                    NodeList elements7 = serverFarmsElement.getElementsByTagName("Status");
-                    Element statusElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                    if (statusElement != null)
-                    {
+
+                    NodeList elements7 = serverFarmsElement
+                            .getElementsByTagName("Status");
+                    Element statusElement = elements7.getLength() > 0 ? ((Element) elements7
+                            .item(0)) : null;
+                    if (statusElement != null) {
                         ServerFarmStatus statusInstance;
-                        statusInstance = ServerFarmStatus.valueOf(statusElement.getTextContent());
+                        statusInstance = ServerFarmStatus.valueOf(statusElement
+                                .getTextContent());
                         serverFarmInstance.setStatus(statusInstance);
                     }
                 }
             }
-            
+
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader(
+                        "x-ms-request-id").getValue());
             }
-            
-            if (shouldTrace)
-            {
+
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
     }
-    
+
     /**
-    * You can create a server farm by issuing an HTTP POST request. Only one
-    * server farm per webspace is permitted. You can retrieve server farm
-    * details by using HTTP GET, change server farm properties by using HTTP
-    * PUT, and delete a server farm by using HTTP DELETE. A request body is
-    * required for server farm creation (HTTP POST) and server farm update
-    * (HTTP PUT).  Warning: Creating a server farm changes your webspace’s
-    * Compute Mode from Shared to Dedicated. You will be charged from the
-    * moment the server farm is created, even if all your sites are still
-    * running in Free mode.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/dn194277.aspx for
-    * more information)
-    *
-    * @param webSpaceName The name of the web space.
-    * @param parameters Parameters supplied to the Update Server Farm operation.
-    * @return The Update Server Farm operation response.
-    */
+     * You can create a server farm by issuing an HTTP POST request. Only one
+     * server farm per webspace is permitted. You can retrieve server farm
+     * details by using HTTP GET, change server farm properties by using HTTP
+     * PUT, and delete a server farm by using HTTP DELETE. A request body is
+     * required for server farm creation (HTTP POST) and server farm update
+     * (HTTP PUT). Warning: Creating a server farm changes your webspace’s
+     * Compute Mode from Shared to Dedicated. You will be charged from the
+     * moment the server farm is created, even if all your sites are still
+     * running in Free mode. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/dn194277.aspx for
+     * more information)
+     * 
+     * @param webSpaceName
+     *            The name of the web space.
+     * @param parameters
+     *            Parameters supplied to the Update Server Farm operation.
+     * @return The Update Server Farm operation response.
+     */
     @Override
-    public Future<ServerFarmUpdateResponse> updateAsync(final String webSpaceName, final ServerFarmUpdateParameters parameters)
-    {
-        return this.getClient().getExecutorService().submit(new Callable<ServerFarmUpdateResponse>() { 
-            @Override
-            public ServerFarmUpdateResponse call() throws Exception
-            {
-                return update(webSpaceName, parameters);
-            }
-         });
+    public Future<ServerFarmUpdateResponse> updateAsync(
+            final String webSpaceName,
+            final ServerFarmUpdateParameters parameters) {
+        return this.getClient().getExecutorService()
+                .submit(new Callable<ServerFarmUpdateResponse>() {
+                    @Override
+                    public ServerFarmUpdateResponse call() throws Exception {
+                        return update(webSpaceName, parameters);
+                    }
+                });
     }
-    
+
     /**
-    * You can create a server farm by issuing an HTTP POST request. Only one
-    * server farm per webspace is permitted. You can retrieve server farm
-    * details by using HTTP GET, change server farm properties by using HTTP
-    * PUT, and delete a server farm by using HTTP DELETE. A request body is
-    * required for server farm creation (HTTP POST) and server farm update
-    * (HTTP PUT).  Warning: Creating a server farm changes your webspace’s
-    * Compute Mode from Shared to Dedicated. You will be charged from the
-    * moment the server farm is created, even if all your sites are still
-    * running in Free mode.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/dn194277.aspx for
-    * more information)
-    *
-    * @param webSpaceName The name of the web space.
-    * @param parameters Parameters supplied to the Update Server Farm operation.
-    * @throws ParserConfigurationException Thrown if there was an error
-    * configuring the parser for the response body.
-    * @throws SAXException Thrown if there was an error parsing the response
-    * body.
-    * @throws TransformerException Thrown if there was an error creating the
-    * DOM transformer.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws URISyntaxException Thrown if there was an error parsing a URI in
-    * the response.
-    * @return The Update Server Farm operation response.
-    */
+     * You can create a server farm by issuing an HTTP POST request. Only one
+     * server farm per webspace is permitted. You can retrieve server farm
+     * details by using HTTP GET, change server farm properties by using HTTP
+     * PUT, and delete a server farm by using HTTP DELETE. A request body is
+     * required for server farm creation (HTTP POST) and server farm update
+     * (HTTP PUT). Warning: Creating a server farm changes your webspace’s
+     * Compute Mode from Shared to Dedicated. You will be charged from the
+     * moment the server farm is created, even if all your sites are still
+     * running in Free mode. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/dn194277.aspx for
+     * more information)
+     * 
+     * @param webSpaceName
+     *            The name of the web space.
+     * @param parameters
+     *            Parameters supplied to the Update Server Farm operation.
+     * @throws ParserConfigurationException
+     *             Thrown if there was an error configuring the parser for the
+     *             response body.
+     * @throws SAXException
+     *             Thrown if there was an error parsing the response body.
+     * @throws TransformerException
+     *             Thrown if there was an error creating the DOM transformer.
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @throws URISyntaxException
+     *             Thrown if there was an error parsing a URI in the response.
+     * @return The Update Server Farm operation response.
+     */
     @Override
-    public ServerFarmUpdateResponse update(String webSpaceName, ServerFarmUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException
-    {
+    public ServerFarmUpdateResponse update(String webSpaceName,
+            ServerFarmUpdateParameters parameters)
+            throws ParserConfigurationException, SAXException,
+            TransformerException, IOException, ServiceException,
+            URISyntaxException {
         // Validate
-        if (webSpaceName == null)
-        {
+        if (webSpaceName == null) {
             throw new NullPointerException("webSpaceName");
         }
-        if (parameters == null)
-        {
+        if (parameters == null) {
             throw new NullPointerException("parameters");
         }
-        
+
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("webSpaceName", webSpaceName);
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this, "updateAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "updateAsync",
+                    tracingParameters);
         }
-        
+
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/WebSpaces/" + webSpaceName + "/ServerFarms/DefaultServerFarm";
-        
+        String url = this.getClient().getBaseUri() + "/"
+                + this.getClient().getCredentials().getSubscriptionId()
+                + "/services/WebSpaces/" + webSpaceName
+                + "/ServerFarms/DefaultServerFarm";
+
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
-        
+
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
         httpRequest.setHeader("x-ms-version", "2013-08-01");
-        
+
         // Serialize Request
         String requestContent = null;
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
+                .newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory
+                .newDocumentBuilder();
         Document requestDoc = documentBuilder.newDocument();
-        
-        Element serverFarmElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ServerFarm");
+
+        Element serverFarmElement = requestDoc.createElementNS(
+                "http://schemas.microsoft.com/windowsazure", "ServerFarm");
         requestDoc.appendChild(serverFarmElement);
-        
-        if (parameters.getCurrentNumberOfWorkers() != null)
-        {
-            Element currentNumberOfWorkersElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CurrentNumberOfWorkers");
-            currentNumberOfWorkersElement.appendChild(requestDoc.createTextNode(Integer.toString(parameters.getCurrentNumberOfWorkers())));
+
+        if (parameters.getCurrentNumberOfWorkers() != null) {
+            Element currentNumberOfWorkersElement = requestDoc.createElementNS(
+                    "http://schemas.microsoft.com/windowsazure",
+                    "CurrentNumberOfWorkers");
+            currentNumberOfWorkersElement.appendChild(requestDoc
+                    .createTextNode(Integer.toString(parameters
+                            .getCurrentNumberOfWorkers())));
             serverFarmElement.appendChild(currentNumberOfWorkersElement);
         }
-        
-        if (parameters.getCurrentWorkerSize() != null)
-        {
-            Element currentWorkerSizeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CurrentWorkerSize");
-            currentWorkerSizeElement.appendChild(requestDoc.createTextNode(parameters.getCurrentWorkerSize().toString()));
+
+        if (parameters.getCurrentWorkerSize() != null) {
+            Element currentWorkerSizeElement = requestDoc.createElementNS(
+                    "http://schemas.microsoft.com/windowsazure",
+                    "CurrentWorkerSize");
+            currentWorkerSizeElement.appendChild(requestDoc
+                    .createTextNode(parameters.getCurrentWorkerSize()
+                            .toString()));
             serverFarmElement.appendChild(currentWorkerSizeElement);
         }
-        
-        Element nameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+
+        Element nameElement = requestDoc.createElementNS(
+                "http://schemas.microsoft.com/windowsazure", "Name");
         nameElement.appendChild(requestDoc.createTextNode("DefaultServerFarm"));
         serverFarmElement.appendChild(nameElement);
-        
-        Element numberOfWorkersElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "NumberOfWorkers");
-        numberOfWorkersElement.appendChild(requestDoc.createTextNode(Integer.toString(parameters.getNumberOfWorkers())));
+
+        Element numberOfWorkersElement = requestDoc.createElementNS(
+                "http://schemas.microsoft.com/windowsazure", "NumberOfWorkers");
+        numberOfWorkersElement.appendChild(requestDoc.createTextNode(Integer
+                .toString(parameters.getNumberOfWorkers())));
         serverFarmElement.appendChild(numberOfWorkersElement);
-        
-        Element workerSizeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "WorkerSize");
-        workerSizeElement.appendChild(requestDoc.createTextNode(parameters.getWorkerSize().toString()));
+
+        Element workerSizeElement = requestDoc.createElementNS(
+                "http://schemas.microsoft.com/windowsazure", "WorkerSize");
+        workerSizeElement.appendChild(requestDoc.createTextNode(parameters
+                .getWorkerSize().toString()));
         serverFarmElement.appendChild(workerSizeElement);
-        
-        if (parameters.getStatus() != null)
-        {
-            Element statusElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Status");
-            statusElement.appendChild(requestDoc.createTextNode(parameters.getStatus().toString()));
+
+        if (parameters.getStatus() != null) {
+            Element statusElement = requestDoc.createElementNS(
+                    "http://schemas.microsoft.com/windowsazure", "Status");
+            statusElement.appendChild(requestDoc.createTextNode(parameters
+                    .getStatus().toString()));
             serverFarmElement.appendChild(statusElement);
         }
-        
+
         DOMSource domSource = new DOMSource(requestDoc);
         StringWriter stringWriter = new StringWriter();
         StreamResult streamResult = new StreamResult(stringWriter);
-        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        TransformerFactory transformerFactory = TransformerFactory
+                .newInstance();
         Transformer transformer = transformerFactory.newTransformer();
         transformer.transform(domSource, streamResult);
         requestContent = stringWriter.toString();
         StringEntity entity = new StringEntity(requestContent);
         httpRequest.setEntity(entity);
         httpRequest.setHeader("Content-Type", "application/xml");
-        
+
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            httpResponse = this.getClient().getHttpClient()
+                    .execute(httpRequest);
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+            if (statusCode != HttpStatus.SC_OK) {
+                ServiceException ex = ServiceException.createFromXml(
+                        httpRequest, requestContent, httpResponse,
+                        httpResponse.getEntity());
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-            
+
             // Create Result
             ServerFarmUpdateResponse result = null;
             // Deserialize Response
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new ServerFarmUpdateResponse();
-            DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+            DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory
+                    .newInstance();
             documentBuilderFactory2.setNamespaceAware(true);
-            DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
+            DocumentBuilder documentBuilder2 = documentBuilderFactory2
+                    .newDocumentBuilder();
             Document responseDoc = documentBuilder2.parse(responseContent);
-            
+
             NodeList elements = responseDoc.getElementsByTagName("ServerFarm");
-            Element serverFarmElement2 = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (serverFarmElement2 != null)
-            {
-                NodeList elements2 = serverFarmElement2.getElementsByTagName("CurrentNumberOfWorkers");
-                Element currentNumberOfWorkersElement2 = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (currentNumberOfWorkersElement2 != null)
-                {
+            Element serverFarmElement2 = elements.getLength() > 0 ? ((Element) elements
+                    .item(0)) : null;
+            if (serverFarmElement2 != null) {
+                NodeList elements2 = serverFarmElement2
+                        .getElementsByTagName("CurrentNumberOfWorkers");
+                Element currentNumberOfWorkersElement2 = elements2.getLength() > 0 ? ((Element) elements2
+                        .item(0)) : null;
+                if (currentNumberOfWorkersElement2 != null) {
                     int currentNumberOfWorkersInstance;
-                    currentNumberOfWorkersInstance = DatatypeConverter.parseInt(currentNumberOfWorkersElement2.getTextContent());
+                    currentNumberOfWorkersInstance = DatatypeConverter
+                            .parseInt(currentNumberOfWorkersElement2
+                                    .getTextContent());
                     result.setCurrentNumberOfWorkers(currentNumberOfWorkersInstance);
                 }
-                
-                NodeList elements3 = serverFarmElement2.getElementsByTagName("CurrentWorkerSize");
-                Element currentWorkerSizeElement2 = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                if (currentWorkerSizeElement2 != null)
-                {
+
+                NodeList elements3 = serverFarmElement2
+                        .getElementsByTagName("CurrentWorkerSize");
+                Element currentWorkerSizeElement2 = elements3.getLength() > 0 ? ((Element) elements3
+                        .item(0)) : null;
+                if (currentWorkerSizeElement2 != null) {
                     ServerFarmWorkerSize currentWorkerSizeInstance;
-                    currentWorkerSizeInstance = ServerFarmWorkerSize.valueOf(currentWorkerSizeElement2.getTextContent());
+                    currentWorkerSizeInstance = ServerFarmWorkerSize
+                            .valueOf(currentWorkerSizeElement2.getTextContent());
                     result.setCurrentWorkerSize(currentWorkerSizeInstance);
                 }
-                
-                NodeList elements4 = serverFarmElement2.getElementsByTagName("Name");
-                Element nameElement2 = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                if (nameElement2 != null)
-                {
+
+                NodeList elements4 = serverFarmElement2
+                        .getElementsByTagName("Name");
+                Element nameElement2 = elements4.getLength() > 0 ? ((Element) elements4
+                        .item(0)) : null;
+                if (nameElement2 != null) {
                     String nameInstance;
                     nameInstance = nameElement2.getTextContent();
                     result.setName(nameInstance);
                 }
-                
-                NodeList elements5 = serverFarmElement2.getElementsByTagName("NumberOfWorkers");
-                Element numberOfWorkersElement2 = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                if (numberOfWorkersElement2 != null)
-                {
+
+                NodeList elements5 = serverFarmElement2
+                        .getElementsByTagName("NumberOfWorkers");
+                Element numberOfWorkersElement2 = elements5.getLength() > 0 ? ((Element) elements5
+                        .item(0)) : null;
+                if (numberOfWorkersElement2 != null) {
                     int numberOfWorkersInstance;
-                    numberOfWorkersInstance = DatatypeConverter.parseInt(numberOfWorkersElement2.getTextContent());
+                    numberOfWorkersInstance = DatatypeConverter
+                            .parseInt(numberOfWorkersElement2.getTextContent());
                     result.setNumberOfWorkers(numberOfWorkersInstance);
                 }
-                
-                NodeList elements6 = serverFarmElement2.getElementsByTagName("WorkerSize");
-                Element workerSizeElement2 = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                if (workerSizeElement2 != null)
-                {
+
+                NodeList elements6 = serverFarmElement2
+                        .getElementsByTagName("WorkerSize");
+                Element workerSizeElement2 = elements6.getLength() > 0 ? ((Element) elements6
+                        .item(0)) : null;
+                if (workerSizeElement2 != null) {
                     ServerFarmWorkerSize workerSizeInstance;
-                    workerSizeInstance = ServerFarmWorkerSize.valueOf(workerSizeElement2.getTextContent());
+                    workerSizeInstance = ServerFarmWorkerSize
+                            .valueOf(workerSizeElement2.getTextContent());
                     result.setWorkerSize(workerSizeInstance);
                 }
-                
-                NodeList elements7 = serverFarmElement2.getElementsByTagName("Status");
-                Element statusElement2 = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                if (statusElement2 != null)
-                {
+
+                NodeList elements7 = serverFarmElement2
+                        .getElementsByTagName("Status");
+                Element statusElement2 = elements7.getLength() > 0 ? ((Element) elements7
+                        .item(0)) : null;
+                if (statusElement2 != null) {
                     ServerFarmStatus statusInstance;
-                    statusInstance = ServerFarmStatus.valueOf(statusElement2.getTextContent());
+                    statusInstance = ServerFarmStatus.valueOf(statusElement2
+                            .getTextContent());
                     result.setStatus(statusInstance);
                 }
             }
-            
+
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader(
+                        "x-ms-request-id").getValue());
             }
-            
-            if (shouldTrace)
-            {
+
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }

@@ -27,7 +27,7 @@ import java.util.Map;
 import junit.framework.Assert;
 import org.junit.Test;
 
-public class ManagementClientTests extends ManagementIntegrationTestBase { 
+public class ManagementClientTests extends ManagementIntegrationTestBase {
     @Test
     public void createWithRequestFilterLast() throws Exception {
         // reinitialize configuration from known state
@@ -35,32 +35,36 @@ public class ManagementClientTests extends ManagementIntegrationTestBase {
 
         // add LoggingFilter to any pipeline that is created
         Builder.Registry builder = (Builder.Registry) config.getBuilder();
-        builder.alter(ManagementClient.class, Client.class, new Builder.Alteration<Client>() {
-            @Override
-            public Client alter(String profile, Client client, Builder builder, Map<String, Object> properties) {
-                client.addFilter(new LoggingFilter());
-                return client;
-            }
-        });
+        builder.alter(ManagementClient.class, Client.class,
+                new Builder.Alteration<Client>() {
+                    @Override
+                    public Client alter(String profile, Client client,
+                            Builder builder, Map<String, Object> properties) {
+                        client.addFilter(new LoggingFilter());
+                        return client;
+                    }
+                });
 
         managementClient = ManagementService.create(config);
-        
+
         TestRequestFilter testFilter = new TestRequestFilter("filter1a");
-        ManagementClient filteredService = managementClient.withRequestFilterLast(testFilter);
-        
+        ManagementClient filteredService = managementClient
+                .withRequestFilterLast(testFilter);
+
         // Executing operation on the filtered service should execute the filter
-        AffinityGroupListResponse response = filteredService.getAffinityGroupsOperations().list();
-        
+        AffinityGroupListResponse response = filteredService
+                .getAffinityGroupsOperations().list();
+
         Assert.assertEquals(200, response.getStatusCode());
         Assert.assertEquals(1, testFilter.getCalled());
-        
+
         // Make sure the filter executes twice
         response = filteredService.getAffinityGroupsOperations().list();
-        
+
         Assert.assertEquals(200, response.getStatusCode());
         Assert.assertEquals(2, testFilter.getCalled());
     }
-    
+
     @Test
     public void createWithRequestLastRespectsOrder() throws Exception {
         // reinitialize configuration from known state
@@ -68,36 +72,40 @@ public class ManagementClientTests extends ManagementIntegrationTestBase {
 
         // add LoggingFilter to any pipeline that is created
         Builder.Registry builder = (Builder.Registry) config.getBuilder();
-        builder.alter(ManagementClient.class, Client.class, new Builder.Alteration<Client>() {
-            @Override
-            public Client alter(String profile, Client client, Builder builder, Map<String, Object> properties) {
-                client.addFilter(new LoggingFilter());
-                return client;
-            }
-        });
+        builder.alter(ManagementClient.class, Client.class,
+                new Builder.Alteration<Client>() {
+                    @Override
+                    public Client alter(String profile, Client client,
+                            Builder builder, Map<String, Object> properties) {
+                        client.addFilter(new LoggingFilter());
+                        return client;
+                    }
+                });
 
         managementClient = ManagementService.create(config);
-        
+
         TestRequestFilter testFilter1 = new TestRequestFilter("filter1b");
         TestRequestFilter testFilter2 = new TestRequestFilter("filter2b");
-        ManagementClient filteredService = managementClient.withRequestFilterLast(testFilter1);
+        ManagementClient filteredService = managementClient
+                .withRequestFilterLast(testFilter1);
         filteredService = filteredService.withRequestFilterLast(testFilter2);
-        
+
         // Executing operation on the filtered service should execute the filter
-        AffinityGroupListResponse response = filteredService.getAffinityGroupsOperations().list();
-        
+        AffinityGroupListResponse response = filteredService
+                .getAffinityGroupsOperations().list();
+
         Assert.assertEquals(200, response.getStatusCode());
         Assert.assertEquals(0, testFilter1.getCalled());
         Assert.assertEquals(1, testFilter2.getCalled());
-        
+
         // Make sure the filter executes twice
         response = filteredService.getAffinityGroupsOperations().list();
-        
+
         Assert.assertEquals(200, response.getStatusCode());
         Assert.assertEquals(0, testFilter1.getCalled());
         Assert.assertEquals(2, testFilter2.getCalled());
     }
-    
+
     @Test
     public void createWithRequestFirstRespectsOrder() throws Exception {
         // reinitialize configuration from known state
@@ -105,36 +113,40 @@ public class ManagementClientTests extends ManagementIntegrationTestBase {
 
         // add LoggingFilter to any pipeline that is created
         Builder.Registry builder = (Builder.Registry) config.getBuilder();
-        builder.alter(ManagementClient.class, Client.class, new Builder.Alteration<Client>() {
-            @Override
-            public Client alter(String profile, Client client, Builder builder, Map<String, Object> properties) {
-                client.addFilter(new LoggingFilter());
-                return client;
-            }
-        });
+        builder.alter(ManagementClient.class, Client.class,
+                new Builder.Alteration<Client>() {
+                    @Override
+                    public Client alter(String profile, Client client,
+                            Builder builder, Map<String, Object> properties) {
+                        client.addFilter(new LoggingFilter());
+                        return client;
+                    }
+                });
 
         managementClient = ManagementService.create(config);
-        
+
         TestRequestFilter testFilter1 = new TestRequestFilter("filter1c");
         TestRequestFilter testFilter2 = new TestRequestFilter("filter2c");
-        ManagementClient filteredService = managementClient.withRequestFilterFirst(testFilter1);
+        ManagementClient filteredService = managementClient
+                .withRequestFilterFirst(testFilter1);
         filteredService = filteredService.withRequestFilterFirst(testFilter2);
-        
+
         // Executing operation on the filtered service should execute the filter
-        AffinityGroupListResponse response = filteredService.getAffinityGroupsOperations().list();
-        
+        AffinityGroupListResponse response = filteredService
+                .getAffinityGroupsOperations().list();
+
         Assert.assertEquals(200, response.getStatusCode());
         Assert.assertEquals(1, testFilter1.getCalled());
         Assert.assertEquals(0, testFilter2.getCalled());
-        
+
         // Make sure the filter executes twice
         response = filteredService.getAffinityGroupsOperations().list();
-        
+
         Assert.assertEquals(200, response.getStatusCode());
         Assert.assertEquals(2, testFilter1.getCalled());
         Assert.assertEquals(0, testFilter2.getCalled());
     }
-    
+
     @Test
     public void createWithResponseLastRespectsOrder() throws Exception {
         // reinitialize configuration from known state
@@ -142,36 +154,40 @@ public class ManagementClientTests extends ManagementIntegrationTestBase {
 
         // add LoggingFilter to any pipeline that is created
         Builder.Registry builder = (Builder.Registry) config.getBuilder();
-        builder.alter(ManagementClient.class, Client.class, new Builder.Alteration<Client>() {
-            @Override
-            public Client alter(String profile, Client client, Builder builder, Map<String, Object> properties) {
-                client.addFilter(new LoggingFilter());
-                return client;
-            }
-        });
+        builder.alter(ManagementClient.class, Client.class,
+                new Builder.Alteration<Client>() {
+                    @Override
+                    public Client alter(String profile, Client client,
+                            Builder builder, Map<String, Object> properties) {
+                        client.addFilter(new LoggingFilter());
+                        return client;
+                    }
+                });
 
         managementClient = ManagementService.create(config);
-        
+
         TestResponseFilter testFilter1 = new TestResponseFilter("filter1b");
         TestResponseFilter testFilter2 = new TestResponseFilter("filter2b");
-        ManagementClient filteredService = managementClient.withResponseFilterLast(testFilter1);
+        ManagementClient filteredService = managementClient
+                .withResponseFilterLast(testFilter1);
         filteredService = filteredService.withResponseFilterLast(testFilter2);
-        
+
         // Executing operation on the filtered service should execute the filter
-        AffinityGroupListResponse response = filteredService.getAffinityGroupsOperations().list();
-        
+        AffinityGroupListResponse response = filteredService
+                .getAffinityGroupsOperations().list();
+
         Assert.assertEquals(200, response.getStatusCode());
         Assert.assertEquals(0, testFilter1.getCalled());
         Assert.assertEquals(1, testFilter2.getCalled());
-        
+
         // Make sure the filter executes twice
         response = filteredService.getAffinityGroupsOperations().list();
-        
+
         Assert.assertEquals(200, response.getStatusCode());
         Assert.assertEquals(0, testFilter1.getCalled());
         Assert.assertEquals(2, testFilter2.getCalled());
     }
-    
+
     @Test
     public void createWithResponseFirstRespectsOrder() throws Exception {
         // reinitialize configuration from known state
@@ -179,31 +195,35 @@ public class ManagementClientTests extends ManagementIntegrationTestBase {
 
         // add LoggingFilter to any pipeline that is created
         Builder.Registry builder = (Builder.Registry) config.getBuilder();
-        builder.alter(ManagementClient.class, Client.class, new Builder.Alteration<Client>() {
-            @Override
-            public Client alter(String profile, Client client, Builder builder, Map<String, Object> properties) {
-                client.addFilter(new LoggingFilter());
-                return client;
-            }
-        });
+        builder.alter(ManagementClient.class, Client.class,
+                new Builder.Alteration<Client>() {
+                    @Override
+                    public Client alter(String profile, Client client,
+                            Builder builder, Map<String, Object> properties) {
+                        client.addFilter(new LoggingFilter());
+                        return client;
+                    }
+                });
 
         managementClient = ManagementService.create(config);
-        
+
         TestResponseFilter testFilter1 = new TestResponseFilter("filter1c");
         TestResponseFilter testFilter2 = new TestResponseFilter("filter2c");
-        ManagementClient filteredService = managementClient.withResponseFilterFirst(testFilter1);
+        ManagementClient filteredService = managementClient
+                .withResponseFilterFirst(testFilter1);
         filteredService = filteredService.withResponseFilterFirst(testFilter2);
-        
+
         // Executing operation on the filtered service should execute the filter
-        AffinityGroupListResponse response = filteredService.getAffinityGroupsOperations().list();
-        
+        AffinityGroupListResponse response = filteredService
+                .getAffinityGroupsOperations().list();
+
         Assert.assertEquals(200, response.getStatusCode());
         Assert.assertEquals(1, testFilter1.getCalled());
         Assert.assertEquals(0, testFilter2.getCalled());
-        
+
         // Make sure the filter executes twice
         response = filteredService.getAffinityGroupsOperations().list();
-        
+
         Assert.assertEquals(200, response.getStatusCode());
         Assert.assertEquals(2, testFilter1.getCalled());
         Assert.assertEquals(0, testFilter2.getCalled());

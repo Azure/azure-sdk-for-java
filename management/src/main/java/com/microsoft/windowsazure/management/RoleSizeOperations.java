@@ -31,32 +31,35 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 /**
-* The Service Management API includes operations for listing the available role
-* sizes for VMs in your subscription.
-*/
-public interface RoleSizeOperations
-{
+ * The Service Management API includes operations for listing the available role
+ * sizes for VMs in your subscription.
+ */
+public interface RoleSizeOperations {
     /**
-    * The List Role Sizes operation lists all of the role sizes that are valid
-    * for your subscription.
-    *
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParserConfigurationException Thrown if there was a serious
-    * configuration error with the document parser.
-    * @throws SAXException Thrown if there was an error parsing the XML
-    * response.
-    * @return The List Role Sizes operation response.
-    */
-    RoleSizeListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException;
-    
+     * The List Role Sizes operation lists all of the role sizes that are valid
+     * for your subscription.
+     * 
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @throws ParserConfigurationException
+     *             Thrown if there was a serious configuration error with the
+     *             document parser.
+     * @throws SAXException
+     *             Thrown if there was an error parsing the XML response.
+     * @return The List Role Sizes operation response.
+     */
+    RoleSizeListResponse list() throws IOException, ServiceException,
+            ParserConfigurationException, SAXException;
+
     /**
-    * The List Role Sizes operation lists all of the role sizes that are valid
-    * for your subscription.
-    *
-    * @return The List Role Sizes operation response.
-    */
+     * The List Role Sizes operation lists all of the role sizes that are valid
+     * for your subscription.
+     * 
+     * @return The List Role Sizes operation response.
+     */
     Future<RoleSizeListResponse> listAsync();
 }

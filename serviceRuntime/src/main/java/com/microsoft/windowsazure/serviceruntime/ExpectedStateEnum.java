@@ -46,30 +46,24 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlType(name = "ExpectedStateEnum")
 @XmlEnum
-enum ExpectedStateEnum
-{
+enum ExpectedStateEnum {
 
     @XmlEnumValue("Started")
     STARTED("Started"), @XmlEnumValue("Stopped")
     STOPPED("Stopped");
     private final String value;
 
-    ExpectedStateEnum(String v)
-    {
+    ExpectedStateEnum(String v) {
         value = v;
     }
 
-    public String value()
-    {
+    public String value() {
         return value;
     }
 
-    public static ExpectedStateEnum fromValue(String v)
-    {
-        for (ExpectedStateEnum c : ExpectedStateEnum.values())
-        {
-            if (c.value.equals(v))
-            {
+    public static ExpectedStateEnum fromValue(String v) {
+        for (ExpectedStateEnum c : ExpectedStateEnum.values()) {
+            if (c.value.equals(v)) {
                 return c;
             }
         }

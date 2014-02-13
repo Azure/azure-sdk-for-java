@@ -23,9 +23,8 @@
 
 package com.microsoft.windowsazure.management.virtualnetworks.models;
 
-public enum GatewayType
-{
+public enum GatewayType {
     StaticRouting,
-    
+
     DynamicRouting,
 }

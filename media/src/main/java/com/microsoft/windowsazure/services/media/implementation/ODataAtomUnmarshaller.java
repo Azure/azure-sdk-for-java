@@ -44,8 +44,7 @@ import com.microsoft.windowsazure.services.media.models.ListResult;
  * This class implements unmarshalling from OData over Atom into Java classes.
  * 
  */
-public class ODataAtomUnmarshaller
-{
+public class ODataAtomUnmarshaller {
     private final JAXBContext atomContext;
     private final JAXBContext mediaContentContext;
     private final Unmarshaller atomUnmarshaller;
@@ -54,8 +53,7 @@ public class ODataAtomUnmarshaller
     /**
      * @throws JAXBException
      */
-    public ODataAtomUnmarshaller() throws JAXBException
-    {
+    public ODataAtomUnmarshaller() throws JAXBException {
         atomContext = JAXBContext.newInstance(FeedType.class.getPackage()
                 .getName());
         atomUnmarshaller = atomContext.createUnmarshaller();
@@ -82,8 +80,7 @@ public class ODataAtomUnmarshaller
     @SuppressWarnings("rawtypes")
     public <T extends ODataEntity> ListResult<T> unmarshalFeed(
             InputStream stream, Class<T> contentType) throws JAXBException,
-            ServiceException
-    {
+            ServiceException {
         validateNotNull(stream, "stream");
         validateNotNull(contentType, "contentType");
 
@@ -91,11 +88,9 @@ public class ODataAtomUnmarshaller
         FeedType feed = unmarshalFeed(stream);
         Class<?> marshallingContentType = getMarshallingContentType(contentType);
 
-        for (Object feedChild : feed.getFeedChildren())
-        {
+        for (Object feedChild : feed.getFeedChildren()) {
             EntryType entry = asEntry(feedChild);
-            if (entry != null)
-            {
+            if (entry != null) {
                 entries.add(contentFromEntry(contentType,
                         marshallingContentType, entry));
             }
@@ -117,8 +112,7 @@ public class ODataAtomUnmarshaller
      */
     @SuppressWarnings("rawtypes")
     public <T extends ODataEntity> T unmarshalEntry(InputStream stream,
-            Class<T> contentType) throws JAXBException, ServiceException
-    {
+            Class<T> contentType) throws JAXBException, ServiceException {
         validateNotNull(stream, "stream");
         validateNotNull(contentType, "contentType");
 
@@ -131,8 +125,7 @@ public class ODataAtomUnmarshaller
     @SuppressWarnings("rawtypes")
     private <T extends ODataEntity> T contentFromEntry(Class<T> contentType,
             Class<?> marshallingContentType, EntryType entry)
-            throws JAXBException, ServiceException
-    {
+            throws JAXBException, ServiceException {
         unmarshalODataContent(entry, contentType);
         ContentType contentElement = getFirstOfType(ContentType.class,
                 entry.getEntryChildren());
@@ -141,14 +134,11 @@ public class ODataAtomUnmarshaller
         return constructResultObject(contentType, entry, contentObject);
     }
 
-    private EntryType asEntry(Object o)
-    {
-        if (o instanceof JAXBElement)
-        {
+    private EntryType asEntry(Object o) {
+        if (o instanceof JAXBElement) {
             @SuppressWarnings("rawtypes")
             JAXBElement e = (JAXBElement) o;
-            if (e.getDeclaredType() == EntryType.class)
-            {
+            if (e.getDeclaredType() == EntryType.class) {
                 return (EntryType) e.getValue();
             }
         }
@@ -156,24 +146,19 @@ public class ODataAtomUnmarshaller
     }
 
     private void unmarshalODataContent(EntryType entry, Class<?> contentType)
-            throws JAXBException
-    {
+            throws JAXBException {
         unmarshalEntryActions(entry);
         unmarshalEntryContent(entry, contentType);
     }
 
-    private void unmarshalEntryActions(EntryType entry) throws JAXBException
-    {
+    private void unmarshalEntryActions(EntryType entry) throws JAXBException {
         List<Object> children = entry.getEntryChildren();
-        for (int i = 0; i < children.size(); ++i)
-        {
+        for (int i = 0; i < children.size(); ++i) {
             Object child = children.get(i);
-            if (child instanceof Element)
-            {
+            if (child instanceof Element) {
                 Element e = (Element) child;
                 if (qnameFromElement(e).equals(
-                        Constants.ODATA_ACTION_ELEMENT_NAME))
-                {
+                        Constants.ODATA_ACTION_ELEMENT_NAME)) {
                     JAXBElement<ODataActionType> actionElement = mediaContentUnmarshaller
                             .unmarshal(e, ODataActionType.class);
                     children.set(i, actionElement);
@@ -184,21 +169,17 @@ public class ODataAtomUnmarshaller
 
     @SuppressWarnings("rawtypes")
     private void unmarshalEntryContent(EntryType entry, Class<?> contentType)
-            throws JAXBException
-    {
+            throws JAXBException {
         Class<?> marshallingContentType = getMarshallingContentType(contentType);
         ContentType contentElement = getFirstOfType(ContentType.class,
                 entry.getEntryChildren());
         List<Object> contentChildren = contentElement.getContent();
-        for (int i = 0; i < contentChildren.size(); ++i)
-        {
+        for (int i = 0; i < contentChildren.size(); ++i) {
             Object child = contentChildren.get(i);
-            if (child instanceof Element)
-            {
+            if (child instanceof Element) {
                 Element e = (Element) child;
                 if (qnameFromElement(e).equals(
-                        Constants.ODATA_PROPERTIES_ELEMENT_NAME))
-                {
+                        Constants.ODATA_PROPERTIES_ELEMENT_NAME)) {
                     JAXBElement actualContentElement = mediaContentUnmarshaller
                             .unmarshal(e, marshallingContentType);
                     contentChildren.set(i, actualContentElement);
@@ -208,16 +189,12 @@ public class ODataAtomUnmarshaller
     }
 
     @SuppressWarnings("unchecked")
-    private <T> T getFirstOfType(Class<T> targetType, List<Object> collection)
-    {
-        for (Object c : collection)
-        {
-            if (c instanceof JAXBElement)
-            {
+    private <T> T getFirstOfType(Class<T> targetType, List<Object> collection) {
+        for (Object c : collection) {
+            if (c instanceof JAXBElement) {
                 @SuppressWarnings("rawtypes")
                 JAXBElement e = (JAXBElement) c;
-                if (e.getDeclaredType() == targetType)
-                {
+                if (e.getDeclaredType() == targetType) {
                     return (T) e.getValue();
                 }
             }
@@ -228,65 +205,51 @@ public class ODataAtomUnmarshaller
     @SuppressWarnings("rawtypes")
     private <T extends ODataEntity> T constructResultObject(
             Class<T> contentType, EntryType entry, Object contentObject)
-            throws ServiceException
-    {
+            throws ServiceException {
         Class<?> marshallingType = getMarshallingContentType(contentType);
-        try
-        {
+        try {
             Constructor<T> resultCtor = contentType.getConstructor(
                     EntryType.class, marshallingType);
             return resultCtor.newInstance(entry, contentObject);
-        } catch (IllegalArgumentException e)
-        {
+        } catch (IllegalArgumentException e) {
             throw new ServiceException(e);
-        } catch (SecurityException e)
-        {
+        } catch (SecurityException e) {
             throw new ServiceException(e);
-        } catch (InstantiationException e)
-        {
+        } catch (InstantiationException e) {
             throw new ServiceException(e);
-        } catch (IllegalAccessException e)
-        {
+        } catch (IllegalAccessException e) {
             throw new ServiceException(e);
-        } catch (InvocationTargetException e)
-        {
+        } catch (InvocationTargetException e) {
             throw new ServiceException(e);
-        } catch (NoSuchMethodException e)
-        {
+        } catch (NoSuchMethodException e) {
             throw new ServiceException(e);
         }
     }
 
-    public EntryType unmarshalEntry(InputStream stream) throws JAXBException
-    {
+    public EntryType unmarshalEntry(InputStream stream) throws JAXBException {
         JAXBElement<EntryType> entryElement = atomUnmarshaller.unmarshal(
                 new StreamSource(stream), EntryType.class);
         return entryElement.getValue();
     }
 
-    private FeedType unmarshalFeed(InputStream stream) throws JAXBException
-    {
+    private FeedType unmarshalFeed(InputStream stream) throws JAXBException {
         JAXBElement<FeedType> feedElement = atomUnmarshaller.unmarshal(
                 new StreamSource(stream), FeedType.class);
         return feedElement.getValue();
     }
 
-    private static QName qnameFromElement(Element e)
-    {
+    private static QName qnameFromElement(Element e) {
         return new QName(e.getLocalName(), e.getNamespaceURI());
     }
 
-    private static Class<?> getMarshallingContentType(Class<?> contentType)
-    {
+    private static Class<?> getMarshallingContentType(Class<?> contentType) {
         ParameterizedType pt = (ParameterizedType) contentType
                 .getGenericSuperclass();
         return (Class<?>) pt.getActualTypeArguments()[0];
     }
 
-    private static void validateNotNull(Object param, String paramName)
-    {
-        if (param == null)
-        {
+    private static void validateNotNull(Object param, String paramName) {
+        if (param == null) {
             throw new IllegalArgumentException(paramName);
         }
     }

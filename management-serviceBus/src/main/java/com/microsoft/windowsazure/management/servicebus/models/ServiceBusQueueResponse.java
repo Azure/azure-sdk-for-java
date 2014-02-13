@@ -26,47 +26,48 @@ package com.microsoft.windowsazure.management.servicebus.models;
 import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
-* A response to a request for a particular queue.
-*/
-public class ServiceBusQueueResponse extends OperationResponse
-{
+ * A response to a request for a particular queue.
+ */
+public class ServiceBusQueueResponse extends OperationResponse {
     private String name;
-    
+
     /**
-    * The name of the queue.
-    * @return The Name value.
-    */
-    public String getName()
-    {
+     * The name of the queue.
+     * 
+     * @return The Name value.
+     */
+    public String getName() {
         return this.name;
     }
-    
+
     /**
-    * The name of the queue.
-    * @param nameValue The Name value.
-    */
-    public void setName(final String nameValue)
-    {
+     * The name of the queue.
+     * 
+     * @param nameValue
+     *            The Name value.
+     */
+    public void setName(final String nameValue) {
         this.name = nameValue;
     }
-    
+
     private ServiceBusQueue queue;
-    
+
     /**
-    * The requested queue.
-    * @return The Queue value.
-    */
-    public ServiceBusQueue getQueue()
-    {
+     * The requested queue.
+     * 
+     * @return The Queue value.
+     */
+    public ServiceBusQueue getQueue() {
         return this.queue;
     }
-    
+
     /**
-    * The requested queue.
-    * @param queueValue The Queue value.
-    */
-    public void setQueue(final ServiceBusQueue queueValue)
-    {
+     * The requested queue.
+     * 
+     * @param queueValue
+     *            The Queue value.
+     */
+    public void setQueue(final ServiceBusQueue queueValue) {
         this.queue = queueValue;
     }
 }

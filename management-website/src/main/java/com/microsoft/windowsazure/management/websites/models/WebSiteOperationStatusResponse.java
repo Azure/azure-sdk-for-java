@@ -28,316 +28,327 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
-* The response body contains the status of the specified long-running
-* operation, indicating whether it has succeeded, is inprogress, has time
-* dout, or has failed. Note that this status is distinct from the HTTP status
-* code returned for the Get Operation Status operation itself.  If the
-* long-running operation failed, the response body includes error information
-* regarding the failure.
-*/
-public class WebSiteOperationStatusResponse extends OperationResponse
-{
+ * The response body contains the status of the specified long-running
+ * operation, indicating whether it has succeeded, is inprogress, has time dout,
+ * or has failed. Note that this status is distinct from the HTTP status code
+ * returned for the Get Operation Status operation itself. If the long-running
+ * operation failed, the response body includes error information regarding the
+ * failure.
+ */
+public class WebSiteOperationStatusResponse extends OperationResponse {
     private Calendar createdTime;
-    
+
     /**
-    * The time when the operation was created.
-    * @return The CreatedTime value.
-    */
-    public Calendar getCreatedTime()
-    {
+     * The time when the operation was created.
+     * 
+     * @return The CreatedTime value.
+     */
+    public Calendar getCreatedTime() {
         return this.createdTime;
     }
-    
+
     /**
-    * The time when the operation was created.
-    * @param createdTimeValue The CreatedTime value.
-    */
-    public void setCreatedTime(final Calendar createdTimeValue)
-    {
+     * The time when the operation was created.
+     * 
+     * @param createdTimeValue
+     *            The CreatedTime value.
+     */
+    public void setCreatedTime(final Calendar createdTimeValue) {
         this.createdTime = createdTimeValue;
     }
-    
+
     private ArrayList<WebSiteOperationStatusResponse.Error> errors;
-    
+
     /**
-    * The list of errors that occurred during the operation.
-    * @return The Errors value.
-    */
-    public ArrayList<WebSiteOperationStatusResponse.Error> getErrors()
-    {
+     * The list of errors that occurred during the operation.
+     * 
+     * @return The Errors value.
+     */
+    public ArrayList<WebSiteOperationStatusResponse.Error> getErrors() {
         return this.errors;
     }
-    
+
     /**
-    * The list of errors that occurred during the operation.
-    * @param errorsValue The Errors value.
-    */
-    public void setErrors(final ArrayList<WebSiteOperationStatusResponse.Error> errorsValue)
-    {
+     * The list of errors that occurred during the operation.
+     * 
+     * @param errorsValue
+     *            The Errors value.
+     */
+    public void setErrors(
+            final ArrayList<WebSiteOperationStatusResponse.Error> errorsValue) {
         this.errors = errorsValue;
     }
-    
+
     private Calendar expirationTime;
-    
+
     /**
-    * The time when the operation will time out.
-    * @return The ExpirationTime value.
-    */
-    public Calendar getExpirationTime()
-    {
+     * The time when the operation will time out.
+     * 
+     * @return The ExpirationTime value.
+     */
+    public Calendar getExpirationTime() {
         return this.expirationTime;
     }
-    
+
     /**
-    * The time when the operation will time out.
-    * @param expirationTimeValue The ExpirationTime value.
-    */
-    public void setExpirationTime(final Calendar expirationTimeValue)
-    {
+     * The time when the operation will time out.
+     * 
+     * @param expirationTimeValue
+     *            The ExpirationTime value.
+     */
+    public void setExpirationTime(final Calendar expirationTimeValue) {
         this.expirationTime = expirationTimeValue;
     }
-    
+
     private String geoMasterOperationId;
-    
+
     /**
-    * The GeoMaster Operation Id for this operation, if any.
-    * @return The GeoMasterOperationId value.
-    */
-    public String getGeoMasterOperationId()
-    {
+     * The GeoMaster Operation Id for this operation, if any.
+     * 
+     * @return The GeoMasterOperationId value.
+     */
+    public String getGeoMasterOperationId() {
         return this.geoMasterOperationId;
     }
-    
+
     /**
-    * The GeoMaster Operation Id for this operation, if any.
-    * @param geoMasterOperationIdValue The GeoMasterOperationId value.
-    */
-    public void setGeoMasterOperationId(final String geoMasterOperationIdValue)
-    {
+     * The GeoMaster Operation Id for this operation, if any.
+     * 
+     * @param geoMasterOperationIdValue
+     *            The GeoMasterOperationId value.
+     */
+    public void setGeoMasterOperationId(final String geoMasterOperationIdValue) {
         this.geoMasterOperationId = geoMasterOperationIdValue;
     }
-    
+
     private Calendar modifiedTime;
-    
+
     /**
-    * The time when the operation was last modified.
-    * @return The ModifiedTime value.
-    */
-    public Calendar getModifiedTime()
-    {
+     * The time when the operation was last modified.
+     * 
+     * @return The ModifiedTime value.
+     */
+    public Calendar getModifiedTime() {
         return this.modifiedTime;
     }
-    
+
     /**
-    * The time when the operation was last modified.
-    * @param modifiedTimeValue The ModifiedTime value.
-    */
-    public void setModifiedTime(final Calendar modifiedTimeValue)
-    {
+     * The time when the operation was last modified.
+     * 
+     * @param modifiedTimeValue
+     *            The ModifiedTime value.
+     */
+    public void setModifiedTime(final Calendar modifiedTimeValue) {
         this.modifiedTime = modifiedTimeValue;
     }
-    
+
     private String name;
-    
+
     /**
-    * The name of the operation.
-    * @return The Name value.
-    */
-    public String getName()
-    {
+     * The name of the operation.
+     * 
+     * @return The Name value.
+     */
+    public String getName() {
         return this.name;
     }
-    
+
     /**
-    * The name of the operation.
-    * @param nameValue The Name value.
-    */
-    public void setName(final String nameValue)
-    {
+     * The name of the operation.
+     * 
+     * @param nameValue
+     *            The Name value.
+     */
+    public void setName(final String nameValue) {
         this.name = nameValue;
     }
-    
+
     private String operationId;
-    
+
     /**
-    * The operation Id for this operation.  Used to poll for operation status.
-    * @return The OperationId value.
-    */
-    public String getOperationId()
-    {
+     * The operation Id for this operation. Used to poll for operation status.
+     * 
+     * @return The OperationId value.
+     */
+    public String getOperationId() {
         return this.operationId;
     }
-    
+
     /**
-    * The operation Id for this operation.  Used to poll for operation status.
-    * @param operationIdValue The OperationId value.
-    */
-    public void setOperationId(final String operationIdValue)
-    {
+     * The operation Id for this operation. Used to poll for operation status.
+     * 
+     * @param operationIdValue
+     *            The OperationId value.
+     */
+    public void setOperationId(final String operationIdValue) {
         this.operationId = operationIdValue;
     }
-    
+
     private WebSiteOperationStatus status;
-    
+
     /**
-    * The status of the asynchronous operation.
-    * @return The Status value.
-    */
-    public WebSiteOperationStatus getStatus()
-    {
+     * The status of the asynchronous operation.
+     * 
+     * @return The Status value.
+     */
+    public WebSiteOperationStatus getStatus() {
         return this.status;
     }
-    
+
     /**
-    * The status of the asynchronous operation.
-    * @param statusValue The Status value.
-    */
-    public void setStatus(final WebSiteOperationStatus statusValue)
-    {
+     * The status of the asynchronous operation.
+     * 
+     * @param statusValue
+     *            The Status value.
+     */
+    public void setStatus(final WebSiteOperationStatus statusValue) {
         this.status = statusValue;
     }
-    
+
     /**
-    * Initializes a new instance of the WebSiteOperationStatusResponse class.
-    *
-    */
-    public WebSiteOperationStatusResponse()
-    {
+     * Initializes a new instance of the WebSiteOperationStatusResponse class.
+     * 
+     */
+    public WebSiteOperationStatusResponse() {
         super();
         this.errors = new ArrayList<WebSiteOperationStatusResponse.Error>();
     }
-    
+
     /**
-    * Information about an error that occured suring the operation.
-    */
-    public static class Error
-    {
+     * Information about an error that occured suring the operation.
+     */
+    public static class Error {
         private String code;
-        
+
         /**
-        * The error code.
-        * @return The Code value.
-        */
-        public String getCode()
-        {
+         * The error code.
+         * 
+         * @return The Code value.
+         */
+        public String getCode() {
             return this.code;
         }
-        
+
         /**
-        * The error code.
-        * @param codeValue The Code value.
-        */
-        public void setCode(final String codeValue)
-        {
+         * The error code.
+         * 
+         * @param codeValue
+         *            The Code value.
+         */
+        public void setCode(final String codeValue) {
             this.code = codeValue;
         }
-        
+
         private String extendedCode;
-        
+
         /**
-        * The error extended code.
-        * @return The ExtendedCode value.
-        */
-        public String getExtendedCode()
-        {
+         * The error extended code.
+         * 
+         * @return The ExtendedCode value.
+         */
+        public String getExtendedCode() {
             return this.extendedCode;
         }
-        
+
         /**
-        * The error extended code.
-        * @param extendedCodeValue The ExtendedCode value.
-        */
-        public void setExtendedCode(final String extendedCodeValue)
-        {
+         * The error extended code.
+         * 
+         * @param extendedCodeValue
+         *            The ExtendedCode value.
+         */
+        public void setExtendedCode(final String extendedCodeValue) {
             this.extendedCode = extendedCodeValue;
         }
-        
+
         private String innerErrors;
-        
+
         /**
-        * The inner errors for this operation.
-        * @return The InnerErrors value.
-        */
-        public String getInnerErrors()
-        {
+         * The inner errors for this operation.
+         * 
+         * @return The InnerErrors value.
+         */
+        public String getInnerErrors() {
             return this.innerErrors;
         }
-        
+
         /**
-        * The inner errors for this operation.
-        * @param innerErrorsValue The InnerErrors value.
-        */
-        public void setInnerErrors(final String innerErrorsValue)
-        {
+         * The inner errors for this operation.
+         * 
+         * @param innerErrorsValue
+         *            The InnerErrors value.
+         */
+        public void setInnerErrors(final String innerErrorsValue) {
             this.innerErrors = innerErrorsValue;
         }
-        
+
         private String message;
-        
+
         /**
-        * The error message.
-        * @return The Message value.
-        */
-        public String getMessage()
-        {
+         * The error message.
+         * 
+         * @return The Message value.
+         */
+        public String getMessage() {
             return this.message;
         }
-        
+
         /**
-        * The error message.
-        * @param messageValue The Message value.
-        */
-        public void setMessage(final String messageValue)
-        {
+         * The error message.
+         * 
+         * @param messageValue
+         *            The Message value.
+         */
+        public void setMessage(final String messageValue) {
             this.message = messageValue;
         }
-        
+
         private String messageTemplate;
-        
+
         /**
-        * The message template.
-        * @return The MessageTemplate value.
-        */
-        public String getMessageTemplate()
-        {
+         * The message template.
+         * 
+         * @return The MessageTemplate value.
+         */
+        public String getMessageTemplate() {
             return this.messageTemplate;
         }
-        
+
         /**
-        * The message template.
-        * @param messageTemplateValue The MessageTemplate value.
-        */
-        public void setMessageTemplate(final String messageTemplateValue)
-        {
+         * The message template.
+         * 
+         * @param messageTemplateValue
+         *            The MessageTemplate value.
+         */
+        public void setMessageTemplate(final String messageTemplateValue) {
             this.messageTemplate = messageTemplateValue;
         }
-        
+
         private ArrayList<String> parameters;
-        
+
         /**
-        * The parameters for the message template.
-        * @return The Parameters value.
-        */
-        public ArrayList<String> getParameters()
-        {
+         * The parameters for the message template.
+         * 
+         * @return The Parameters value.
+         */
+        public ArrayList<String> getParameters() {
             return this.parameters;
         }
-        
+
         /**
-        * The parameters for the message template.
-        * @param parametersValue The Parameters value.
-        */
-        public void setParameters(final ArrayList<String> parametersValue)
-        {
+         * The parameters for the message template.
+         * 
+         * @param parametersValue
+         *            The Parameters value.
+         */
+        public void setParameters(final ArrayList<String> parametersValue) {
             this.parameters = parametersValue;
         }
-        
+
         /**
-        * Initializes a new instance of the Error class.
-        *
-        */
-        public Error()
-        {
+         * Initializes a new instance of the Error class.
+         * 
+         */
+        public Error() {
             this.parameters = new ArrayList<String>();
         }
     }

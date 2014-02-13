@@ -27,216 +27,227 @@ import java.util.Calendar;
 import java.util.HashMap;
 
 /**
-* The properties that are assigned to the cloud service.
-*/
-public class HostedServiceProperties
-{
+ * The properties that are assigned to the cloud service.
+ */
+public class HostedServiceProperties {
     private String affinityGroup;
-    
+
     /**
-    * The affinity group with which this cloud service is associated, if any.
-    * If the service is associated with an affinity group, the Location
-    * element is not returned.
-    * @return The AffinityGroup value.
-    */
-    public String getAffinityGroup()
-    {
+     * The affinity group with which this cloud service is associated, if any.
+     * If the service is associated with an affinity group, the Location element
+     * is not returned.
+     * 
+     * @return The AffinityGroup value.
+     */
+    public String getAffinityGroup() {
         return this.affinityGroup;
     }
-    
+
     /**
-    * The affinity group with which this cloud service is associated, if any.
-    * If the service is associated with an affinity group, the Location
-    * element is not returned.
-    * @param affinityGroupValue The AffinityGroup value.
-    */
-    public void setAffinityGroup(final String affinityGroupValue)
-    {
+     * The affinity group with which this cloud service is associated, if any.
+     * If the service is associated with an affinity group, the Location element
+     * is not returned.
+     * 
+     * @param affinityGroupValue
+     *            The AffinityGroup value.
+     */
+    public void setAffinityGroup(final String affinityGroupValue) {
         this.affinityGroup = affinityGroupValue;
     }
-    
+
     private Calendar dateCreated;
-    
+
     /**
-    * The date that the cloud service was created, in
-    * [4DigitYear]-[2DigitMonth]-[2DigitDay]T[2DigitHour]:[2DigitMinute]:[2DigitSecond]Z
-    * format. The date 2011-05-11T16:15:26Z is an example that could
-    * bereturned by the DateCreated or DateLastModified elements.
-    * @return The DateCreated value.
-    */
-    public Calendar getDateCreated()
-    {
+     * The date that the cloud service was created, in
+     * [4DigitYear]-[2DigitMonth]
+     * -[2DigitDay]T[2DigitHour]:[2DigitMinute]:[2DigitSecond]Z format. The date
+     * 2011-05-11T16:15:26Z is an example that could bereturned by the
+     * DateCreated or DateLastModified elements.
+     * 
+     * @return The DateCreated value.
+     */
+    public Calendar getDateCreated() {
         return this.dateCreated;
     }
-    
+
     /**
-    * The date that the cloud service was created, in
-    * [4DigitYear]-[2DigitMonth]-[2DigitDay]T[2DigitHour]:[2DigitMinute]:[2DigitSecond]Z
-    * format. The date 2011-05-11T16:15:26Z is an example that could
-    * bereturned by the DateCreated or DateLastModified elements.
-    * @param dateCreatedValue The DateCreated value.
-    */
-    public void setDateCreated(final Calendar dateCreatedValue)
-    {
+     * The date that the cloud service was created, in
+     * [4DigitYear]-[2DigitMonth]
+     * -[2DigitDay]T[2DigitHour]:[2DigitMinute]:[2DigitSecond]Z format. The date
+     * 2011-05-11T16:15:26Z is an example that could bereturned by the
+     * DateCreated or DateLastModified elements.
+     * 
+     * @param dateCreatedValue
+     *            The DateCreated value.
+     */
+    public void setDateCreated(final Calendar dateCreatedValue) {
         this.dateCreated = dateCreatedValue;
     }
-    
+
     private Calendar dateLastModified;
-    
+
     /**
-    * The date that the cloud service was last updated, in
-    * [4DigitYear]-[2DigitMonth]-[2DigitDay]T[2DigitHour]:[2DigitMinute]:[2DigitSecond]Z
-    * format. The date 2011-05-11T16:15:26Z is an example that could be
-    * returned by the DateCreated or DateLastModified elements.
-    * @return The DateLastModified value.
-    */
-    public Calendar getDateLastModified()
-    {
+     * The date that the cloud service was last updated, in
+     * [4DigitYear]-[2DigitMonth
+     * ]-[2DigitDay]T[2DigitHour]:[2DigitMinute]:[2DigitSecond]Z format. The
+     * date 2011-05-11T16:15:26Z is an example that could be returned by the
+     * DateCreated or DateLastModified elements.
+     * 
+     * @return The DateLastModified value.
+     */
+    public Calendar getDateLastModified() {
         return this.dateLastModified;
     }
-    
+
     /**
-    * The date that the cloud service was last updated, in
-    * [4DigitYear]-[2DigitMonth]-[2DigitDay]T[2DigitHour]:[2DigitMinute]:[2DigitSecond]Z
-    * format. The date 2011-05-11T16:15:26Z is an example that could be
-    * returned by the DateCreated or DateLastModified elements.
-    * @param dateLastModifiedValue The DateLastModified value.
-    */
-    public void setDateLastModified(final Calendar dateLastModifiedValue)
-    {
+     * The date that the cloud service was last updated, in
+     * [4DigitYear]-[2DigitMonth
+     * ]-[2DigitDay]T[2DigitHour]:[2DigitMinute]:[2DigitSecond]Z format. The
+     * date 2011-05-11T16:15:26Z is an example that could be returned by the
+     * DateCreated or DateLastModified elements.
+     * 
+     * @param dateLastModifiedValue
+     *            The DateLastModified value.
+     */
+    public void setDateLastModified(final Calendar dateLastModifiedValue) {
         this.dateLastModified = dateLastModifiedValue;
     }
-    
+
     private String description;
-    
+
     /**
-    * The description for the cloud service.
-    * @return The Description value.
-    */
-    public String getDescription()
-    {
+     * The description for the cloud service.
+     * 
+     * @return The Description value.
+     */
+    public String getDescription() {
         return this.description;
     }
-    
+
     /**
-    * The description for the cloud service.
-    * @param descriptionValue The Description value.
-    */
-    public void setDescription(final String descriptionValue)
-    {
+     * The description for the cloud service.
+     * 
+     * @param descriptionValue
+     *            The Description value.
+     */
+    public void setDescription(final String descriptionValue) {
         this.description = descriptionValue;
     }
-    
+
     private HashMap<String, String> extendedProperties;
-    
+
     /**
-    * Optional. Represents the name of an extended cloud service property. Each
-    * extended property must have both a defined name and value. You can have
-    * a maximum of 50 extended property name and value pairs.  The maximum
-    * length of the Name element is 64 characters, only alphanumeric
-    * characters and underscores are valid in the name, and it must start with
-    * a letter. Attempting to use other characters, starting with a non-letter
-    * character, or entering a name that is identical to that of another
-    * extended property owned by the same service, will result in a status
-    * code 400 (Bad Request) error.  Each extended property value has a
-    * maximum length of 255 characters.
-    * @return The ExtendedProperties value.
-    */
-    public HashMap<String, String> getExtendedProperties()
-    {
+     * Optional. Represents the name of an extended cloud service property. Each
+     * extended property must have both a defined name and value. You can have a
+     * maximum of 50 extended property name and value pairs. The maximum length
+     * of the Name element is 64 characters, only alphanumeric characters and
+     * underscores are valid in the name, and it must start with a letter.
+     * Attempting to use other characters, starting with a non-letter character,
+     * or entering a name that is identical to that of another extended property
+     * owned by the same service, will result in a status code 400 (Bad Request)
+     * error. Each extended property value has a maximum length of 255
+     * characters.
+     * 
+     * @return The ExtendedProperties value.
+     */
+    public HashMap<String, String> getExtendedProperties() {
         return this.extendedProperties;
     }
-    
+
     /**
-    * Optional. Represents the name of an extended cloud service property. Each
-    * extended property must have both a defined name and value. You can have
-    * a maximum of 50 extended property name and value pairs.  The maximum
-    * length of the Name element is 64 characters, only alphanumeric
-    * characters and underscores are valid in the name, and it must start with
-    * a letter. Attempting to use other characters, starting with a non-letter
-    * character, or entering a name that is identical to that of another
-    * extended property owned by the same service, will result in a status
-    * code 400 (Bad Request) error.  Each extended property value has a
-    * maximum length of 255 characters.
-    * @param extendedPropertiesValue The ExtendedProperties value.
-    */
-    public void setExtendedProperties(final HashMap<String, String> extendedPropertiesValue)
-    {
+     * Optional. Represents the name of an extended cloud service property. Each
+     * extended property must have both a defined name and value. You can have a
+     * maximum of 50 extended property name and value pairs. The maximum length
+     * of the Name element is 64 characters, only alphanumeric characters and
+     * underscores are valid in the name, and it must start with a letter.
+     * Attempting to use other characters, starting with a non-letter character,
+     * or entering a name that is identical to that of another extended property
+     * owned by the same service, will result in a status code 400 (Bad Request)
+     * error. Each extended property value has a maximum length of 255
+     * characters.
+     * 
+     * @param extendedPropertiesValue
+     *            The ExtendedProperties value.
+     */
+    public void setExtendedProperties(
+            final HashMap<String, String> extendedPropertiesValue) {
         this.extendedProperties = extendedPropertiesValue;
     }
-    
+
     private String label;
-    
+
     /**
-    * The user-supplied name of the cloud service. This name can be used
-    * identify the service for your tracking purposes.
-    * @return The Label value.
-    */
-    public String getLabel()
-    {
+     * The user-supplied name of the cloud service. This name can be used
+     * identify the service for your tracking purposes.
+     * 
+     * @return The Label value.
+     */
+    public String getLabel() {
         return this.label;
     }
-    
+
     /**
-    * The user-supplied name of the cloud service. This name can be used
-    * identify the service for your tracking purposes.
-    * @param labelValue The Label value.
-    */
-    public void setLabel(final String labelValue)
-    {
+     * The user-supplied name of the cloud service. This name can be used
+     * identify the service for your tracking purposes.
+     * 
+     * @param labelValue
+     *            The Label value.
+     */
+    public void setLabel(final String labelValue) {
         this.label = labelValue;
     }
-    
+
     private String location;
-    
+
     /**
-    * The geo-location of the cloud service in Windows Azure, if the service is
-    * not associated with an affinity group. If a location has been specified,
-    * the AffinityGroup element is not returned.
-    * @return The Location value.
-    */
-    public String getLocation()
-    {
+     * The geo-location of the cloud service in Windows Azure, if the service is
+     * not associated with an affinity group. If a location has been specified,
+     * the AffinityGroup element is not returned.
+     * 
+     * @return The Location value.
+     */
+    public String getLocation() {
         return this.location;
     }
-    
+
     /**
-    * The geo-location of the cloud service in Windows Azure, if the service is
-    * not associated with an affinity group. If a location has been specified,
-    * the AffinityGroup element is not returned.
-    * @param locationValue The Location value.
-    */
-    public void setLocation(final String locationValue)
-    {
+     * The geo-location of the cloud service in Windows Azure, if the service is
+     * not associated with an affinity group. If a location has been specified,
+     * the AffinityGroup element is not returned.
+     * 
+     * @param locationValue
+     *            The Location value.
+     */
+    public void setLocation(final String locationValue) {
         this.location = locationValue;
     }
-    
+
     private HostedServiceStatus status;
-    
+
     /**
-    * The status of the cloud service.
-    * @return The Status value.
-    */
-    public HostedServiceStatus getStatus()
-    {
+     * The status of the cloud service.
+     * 
+     * @return The Status value.
+     */
+    public HostedServiceStatus getStatus() {
         return this.status;
     }
-    
+
     /**
-    * The status of the cloud service.
-    * @param statusValue The Status value.
-    */
-    public void setStatus(final HostedServiceStatus statusValue)
-    {
+     * The status of the cloud service.
+     * 
+     * @param statusValue
+     *            The Status value.
+     */
+    public void setStatus(final HostedServiceStatus statusValue) {
         this.status = statusValue;
     }
-    
+
     /**
-    * Initializes a new instance of the HostedServiceProperties class.
-    *
-    */
-    public HostedServiceProperties()
-    {
+     * Initializes a new instance of the HostedServiceProperties class.
+     * 
+     */
+    public HostedServiceProperties() {
         this.extendedProperties = new HashMap<String, String>();
     }
 }

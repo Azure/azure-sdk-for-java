@@ -24,27 +24,28 @@
 package com.microsoft.windowsazure.management.compute.models;
 
 /**
-* The parameters required for shutting down the virtual machine.
-*/
-public class VirtualMachineShutdownParameters
-{
+ * The parameters required for shutting down the virtual machine.
+ */
+public class VirtualMachineShutdownParameters {
     private PostShutdownAction postShutdownAction;
-    
+
     /**
-    * The state of the vm after shotdown (stopped or stopped and deallocated)
-    * @return The PostShutdownAction value.
-    */
-    public PostShutdownAction getPostShutdownAction()
-    {
+     * The state of the vm after shotdown (stopped or stopped and deallocated)
+     * 
+     * @return The PostShutdownAction value.
+     */
+    public PostShutdownAction getPostShutdownAction() {
         return this.postShutdownAction;
     }
-    
+
     /**
-    * The state of the vm after shotdown (stopped or stopped and deallocated)
-    * @param postShutdownActionValue The PostShutdownAction value.
-    */
-    public void setPostShutdownAction(final PostShutdownAction postShutdownActionValue)
-    {
+     * The state of the vm after shotdown (stopped or stopped and deallocated)
+     * 
+     * @param postShutdownActionValue
+     *            The PostShutdownAction value.
+     */
+    public void setPostShutdownAction(
+            final PostShutdownAction postShutdownActionValue) {
         this.postShutdownAction = postShutdownActionValue;
     }
 }

@@ -28,8 +28,7 @@ import com.microsoft.windowsazure.exception.ServiceException;
  * common methods.
  * 
  */
-public abstract class EntityOperationBase implements EntityOperation
-{
+public abstract class EntityOperationBase implements EntityOperation {
 
     /** The uri builder. */
     private final EntityUriBuilder uriBuilder;
@@ -43,13 +42,10 @@ public abstract class EntityOperationBase implements EntityOperation
      * @param uri
      *            the uri
      */
-    protected EntityOperationBase(final String uri)
-    {
-        this.uriBuilder = new EntityUriBuilder()
-        {
+    protected EntityOperationBase(final String uri) {
+        this.uriBuilder = new EntityUriBuilder() {
             @Override
-            public String getUri()
-            {
+            public String getUri() {
                 return uri;
             }
         };
@@ -61,8 +57,7 @@ public abstract class EntityOperationBase implements EntityOperation
      * @param uriBuilder
      *            the uri builder
      */
-    protected EntityOperationBase(EntityUriBuilder uriBuilder)
-    {
+    protected EntityOperationBase(EntityUriBuilder uriBuilder) {
         this.uriBuilder = uriBuilder;
     }
 
@@ -75,8 +70,7 @@ public abstract class EntityOperationBase implements EntityOperation
      * EntityProxyData)
      */
     @Override
-    public void setProxyData(EntityProxyData proxyData)
-    {
+    public void setProxyData(EntityProxyData proxyData) {
         this.proxyData = proxyData;
     }
 
@@ -85,8 +79,7 @@ public abstract class EntityOperationBase implements EntityOperation
      * 
      * @return the proxy data
      */
-    protected EntityProxyData getProxyData()
-    {
+    protected EntityProxyData getProxyData() {
         return proxyData;
     }
 
@@ -98,8 +91,7 @@ public abstract class EntityOperationBase implements EntityOperation
      * ()
      */
     @Override
-    public String getUri()
-    {
+    public String getUri() {
         return uriBuilder.getUri();
     }
 
@@ -110,8 +102,7 @@ public abstract class EntityOperationBase implements EntityOperation
      * getContentType()
      */
     @Override
-    public MediaType getContentType()
-    {
+    public MediaType getContentType() {
         return MediaType.APPLICATION_ATOM_XML_TYPE;
     }
 
@@ -122,8 +113,7 @@ public abstract class EntityOperationBase implements EntityOperation
      * getAcceptType()
      */
     @Override
-    public MediaType getAcceptType()
-    {
+    public MediaType getAcceptType() {
         return MediaType.APPLICATION_ATOM_XML_TYPE;
     }
 
@@ -135,16 +125,14 @@ public abstract class EntityOperationBase implements EntityOperation
      * #processResponse(java.lang.Object)
      */
     @Override
-    public Object processResponse(Object rawResponse) throws ServiceException
-    {
+    public Object processResponse(Object rawResponse) throws ServiceException {
         return rawResponse;
     }
 
     /**
      * The Interface EntityUriBuilder.
      */
-    public interface EntityUriBuilder
-    {
+    public interface EntityUriBuilder {
 
         /**
          * Gets the uri.
@@ -157,8 +145,7 @@ public abstract class EntityOperationBase implements EntityOperation
     /**
      * The Class EntityIdUriBuilder.
      */
-    public static class EntityIdUriBuilder implements EntityUriBuilder
-    {
+    public static class EntityIdUriBuilder implements EntityUriBuilder {
 
         /** The entity type. */
         private final String entityType;
@@ -177,8 +164,7 @@ public abstract class EntityOperationBase implements EntityOperation
          * @param entityId
          *            the entity id
          */
-        public EntityIdUriBuilder(String entityName, String entityId)
-        {
+        public EntityIdUriBuilder(String entityName, String entityId) {
             super();
             this.entityType = entityName;
             this.entityId = entityId;
@@ -191,8 +177,7 @@ public abstract class EntityOperationBase implements EntityOperation
          *            the action name
          * @return the entity id uri builder
          */
-        public EntityIdUriBuilder setActionName(String actionName)
-        {
+        public EntityIdUriBuilder setActionName(String actionName) {
             this.actionName = actionName;
             return this;
         }
@@ -205,22 +190,17 @@ public abstract class EntityOperationBase implements EntityOperation
          * .EntityUriBuilder#getUri()
          */
         @Override
-        public String getUri()
-        {
+        public String getUri() {
             String escapedEntityId;
-            try
-            {
+            try {
                 escapedEntityId = URLEncoder.encode(entityId, "UTF-8");
-            } catch (UnsupportedEncodingException e)
-            {
+            } catch (UnsupportedEncodingException e) {
                 throw new InvalidParameterException(entityId);
             }
             String result = null;
-            if ((this.actionName == null) || this.actionName.isEmpty())
-            {
+            if ((this.actionName == null) || this.actionName.isEmpty()) {
                 result = String.format("%s('%s')", entityType, escapedEntityId);
-            } else
-            {
+            } else {
                 result = String.format("%s('%s')/%s", entityType,
                         escapedEntityId, this.actionName);
             }

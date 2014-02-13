@@ -24,27 +24,27 @@
 package com.microsoft.windowsazure.management.compute.models;
 
 /**
-* The configuration needed to provision the machine in the domain.
-*/
-public class DomainJoinProvisioning
-{
+ * The configuration needed to provision the machine in the domain.
+ */
+public class DomainJoinProvisioning {
     private String accountData;
-    
+
     /**
-    * The account infor for joining the domain.
-    * @return The AccountData value.
-    */
-    public String getAccountData()
-    {
+     * The account infor for joining the domain.
+     * 
+     * @return The AccountData value.
+     */
+    public String getAccountData() {
         return this.accountData;
     }
-    
+
     /**
-    * The account infor for joining the domain.
-    * @param accountDataValue The AccountData value.
-    */
-    public void setAccountData(final String accountDataValue)
-    {
+     * The account infor for joining the domain.
+     * 
+     * @param accountDataValue
+     *            The AccountData value.
+     */
+    public void setAccountData(final String accountDataValue) {
         this.accountData = accountDataValue;
     }
 }

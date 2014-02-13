@@ -37,8 +37,7 @@ import com.microsoft.windowsazure.services.queue.QueueContract;
  * Service REST API operation.
  */
 @XmlRootElement(name = "QueueMessagesList")
-public class ListMessagesResult
-{
+public class ListMessagesResult {
     private List<QueueMessage> queueMessages = new ArrayList<QueueMessage>();
 
     /**
@@ -52,8 +51,7 @@ public class ListMessagesResult
      *         messages returned by the request.
      */
     @XmlElement(name = "QueueMessage")
-    public List<QueueMessage> getQueueMessages()
-    {
+    public List<QueueMessage> getQueueMessages() {
         return queueMessages;
     }
 
@@ -68,8 +66,7 @@ public class ListMessagesResult
      *            A {@link List} of {@link QueueMessage} instances representing
      *            the messages returned by the request.
      */
-    public void setQueueMessages(List<QueueMessage> queueMessages)
-    {
+    public void setQueueMessages(List<QueueMessage> queueMessages) {
         this.queueMessages = queueMessages;
     }
 
@@ -78,8 +75,7 @@ public class ListMessagesResult
      * {@link QueueMessage} instance contains a copy of the queue message data
      * in the storage service as of the time the message was requested.
      */
-    public static class QueueMessage
-    {
+    public static class QueueMessage {
         private String messageId;
         private Date insertionDate;
         private Date expirationDate;
@@ -97,8 +93,7 @@ public class ListMessagesResult
          * @return A {@link String} containing the message ID.
          */
         @XmlElement(name = "MessageId")
-        public String getMessageId()
-        {
+        public String getMessageId() {
             return messageId;
         }
 
@@ -111,8 +106,7 @@ public class ListMessagesResult
          * @param messageId
          *            A {@link String} containing the message ID.
          */
-        public void setMessageId(String messageId)
-        {
+        public void setMessageId(String messageId) {
             this.messageId = messageId;
         }
 
@@ -123,8 +117,7 @@ public class ListMessagesResult
          */
         @XmlElement(name = "InsertionTime")
         @XmlJavaTypeAdapter(RFC1123DateAdapter.class)
-        public Date getInsertionDate()
-        {
+        public Date getInsertionDate() {
             return insertionDate;
         }
 
@@ -137,8 +130,7 @@ public class ListMessagesResult
          * @param insertionDate
          *            The {@link Date} when this message was added to the queue.
          */
-        public void setInsertionDate(Date insertionDate)
-        {
+        public void setInsertionDate(Date insertionDate) {
             this.insertionDate = insertionDate;
         }
 
@@ -150,8 +142,7 @@ public class ListMessagesResult
          */
         @XmlElement(name = "ExpirationTime")
         @XmlJavaTypeAdapter(RFC1123DateAdapter.class)
-        public Date getExpirationDate()
-        {
+        public Date getExpirationDate() {
             return expirationDate;
         }
 
@@ -164,8 +155,7 @@ public class ListMessagesResult
          * @param expirationDate
          *            The {@link Date} when this message will expire.
          */
-        public void setExpirationDate(Date expirationDate)
-        {
+        public void setExpirationDate(Date expirationDate) {
             this.expirationDate = expirationDate;
         }
 
@@ -178,8 +168,7 @@ public class ListMessagesResult
          *         queue message.
          */
         @XmlElement(name = "PopReceipt")
-        public String getPopReceipt()
-        {
+        public String getPopReceipt() {
             return popReceipt;
         }
 
@@ -193,8 +182,7 @@ public class ListMessagesResult
          *            A {@link String} containing the pop receipt value for the
          *            queue message.
          */
-        public void setPopReceipt(String popReceipt)
-        {
+        public void setPopReceipt(String popReceipt) {
             this.popReceipt = popReceipt;
         }
 
@@ -207,8 +195,7 @@ public class ListMessagesResult
          */
         @XmlElement(name = "TimeNextVisible")
         @XmlJavaTypeAdapter(RFC1123DateAdapter.class)
-        public Date getTimeNextVisible()
-        {
+        public Date getTimeNextVisible() {
             return timeNextVisible;
         }
 
@@ -222,8 +209,7 @@ public class ListMessagesResult
          *            The {@link Date} when this message will become visible in
          *            the queue.
          */
-        public void setTimeNextVisible(Date timeNextVisible)
-        {
+        public void setTimeNextVisible(Date timeNextVisible) {
             this.timeNextVisible = timeNextVisible;
         }
 
@@ -234,8 +220,7 @@ public class ListMessagesResult
          * @return The number of times this queue message has been retrieved.
          */
         @XmlElement(name = "DequeueCount")
-        public int getDequeueCount()
-        {
+        public int getDequeueCount() {
             return dequeueCount;
         }
 
@@ -248,8 +233,7 @@ public class ListMessagesResult
          * @param dequeueCount
          *            The number of times this queue message has been retrieved.
          */
-        public void setDequeueCount(int dequeueCount)
-        {
+        public void setDequeueCount(int dequeueCount) {
             this.dequeueCount = dequeueCount;
         }
 
@@ -259,8 +243,7 @@ public class ListMessagesResult
          * @return A {@link String} containing the content of the queue message.
          */
         @XmlElement(name = "MessageText")
-        public String getMessageText()
-        {
+        public String getMessageText() {
             return messageText;
         }
 
@@ -273,8 +256,7 @@ public class ListMessagesResult
          * @param messageText
          *            A {@link String} containing the content of the message.
          */
-        public void setMessageText(String messageText)
-        {
+        public void setMessageText(String messageText) {
             this.messageText = messageText;
         }
     }

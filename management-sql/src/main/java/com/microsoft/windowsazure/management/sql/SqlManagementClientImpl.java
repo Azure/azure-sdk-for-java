@@ -33,128 +33,129 @@ import javax.inject.Named;
 import org.apache.http.impl.client.HttpClientBuilder;
 
 /**
-* The SQL Database Management API is a REST API for managing SQL Database
-* servers and the firewall rules associated with SQL Database servers.  (see
-* http://msdn.microsoft.com/en-us/library/windowsazure/gg715283.aspx for more
-* information)
-*/
-public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> implements SqlManagementClient
-{
+ * The SQL Database Management API is a REST API for managing SQL Database
+ * servers and the firewall rules associated with SQL Database servers. (see
+ * http://msdn.microsoft.com/en-us/library/windowsazure/gg715283.aspx for more
+ * information)
+ */
+public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient>
+        implements SqlManagementClient {
     private URI baseUri;
-    
+
     /**
-    * The URI used as the base for all SQL requests.
-    * @return The BaseUri value.
-    */
-    public URI getBaseUri()
-    {
+     * The URI used as the base for all SQL requests.
+     * 
+     * @return The BaseUri value.
+     */
+    public URI getBaseUri() {
         return this.baseUri;
     }
-    
+
     private SubscriptionCloudCredentials credentials;
-    
+
     /**
-    * When you create a Windows Azure subscription, it is uniquely identified
-    * by a subscription ID. The subscription ID forms part of the URI for
-    * every call that you make to the Service Management API.  The Windows
-    * Azure Service ManagementAPI use mutual authentication of management
-    * certificates over SSL to ensure that a request made to the service is
-    * secure.  No anonymous requests are allowed.
-    * @return The Credentials value.
-    */
-    public SubscriptionCloudCredentials getCredentials()
-    {
+     * When you create a Windows Azure subscription, it is uniquely identified
+     * by a subscription ID. The subscription ID forms part of the URI for every
+     * call that you make to the Service Management API. The Windows Azure
+     * Service ManagementAPI use mutual authentication of management
+     * certificates over SSL to ensure that a request made to the service is
+     * secure. No anonymous requests are allowed.
+     * 
+     * @return The Credentials value.
+     */
+    public SubscriptionCloudCredentials getCredentials() {
         return this.credentials;
     }
-    
+
     private DacOperations dac;
-    
+
     /**
-    * Includes operations for importing and exporting SQL Databases into and
-    * out of Windows Azure blob storage.
-    * @return The DacOperations value.
-    */
-    public DacOperations getDacOperations()
-    {
+     * Includes operations for importing and exporting SQL Databases into and
+     * out of Windows Azure blob storage.
+     * 
+     * @return The DacOperations value.
+     */
+    public DacOperations getDacOperations() {
         return this.dac;
     }
-    
+
     private DatabaseOperationOperations databaseOperations;
-    
+
     /**
-    * The SQL Database Management API includes operations for get/stop SQL
-    * Databases' operations for a subscription.
-    * @return The DatabaseOperationsOperations value.
-    */
-    public DatabaseOperationOperations getDatabaseOperationsOperations()
-    {
+     * The SQL Database Management API includes operations for get/stop SQL
+     * Databases' operations for a subscription.
+     * 
+     * @return The DatabaseOperationsOperations value.
+     */
+    public DatabaseOperationOperations getDatabaseOperationsOperations() {
         return this.databaseOperations;
     }
-    
+
     private DatabaseOperations databases;
-    
+
     /**
-    * The SQL Database Management API includes operations for managing SQL
-    * Databases for a subscription.
-    * @return The DatabasesOperations value.
-    */
-    public DatabaseOperations getDatabasesOperations()
-    {
+     * The SQL Database Management API includes operations for managing SQL
+     * Databases for a subscription.
+     * 
+     * @return The DatabasesOperations value.
+     */
+    public DatabaseOperations getDatabasesOperations() {
         return this.databases;
     }
-    
+
     private FirewallRuleOperations firewallRules;
-    
+
     /**
-    * The Windows Azure SQL Database Management API includes operations for
-    * managing the server-level firewall rules for SQL Database servers.You
-    * cannot manage the database-level firewall rules using the Windows Azure
-    * SQL Database Management API; they can only be managed by running the
-    * Transact-SQL statements against the master or individual user
-    * databases.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/gg715276.aspx for
-    * more information)
-    * @return The FirewallRulesOperations value.
-    */
-    public FirewallRuleOperations getFirewallRulesOperations()
-    {
+     * The Windows Azure SQL Database Management API includes operations for
+     * managing the server-level firewall rules for SQL Database servers.You
+     * cannot manage the database-level firewall rules using the Windows Azure
+     * SQL Database Management API; they can only be managed by running the
+     * Transact-SQL statements against the master or individual user databases.
+     * (see http://msdn.microsoft.com/en-us/library/windowsazure/gg715276.aspx
+     * for more information)
+     * 
+     * @return The FirewallRulesOperations value.
+     */
+    public FirewallRuleOperations getFirewallRulesOperations() {
         return this.firewallRules;
     }
-    
+
     private ServerOperations servers;
-    
+
     /**
-    * The SQL Database Management API includes operations for managing SQL
-    * Database servers for a subscription.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/gg715271.aspx for
-    * more information)
-    * @return The ServersOperations value.
-    */
-    public ServerOperations getServersOperations()
-    {
+     * The SQL Database Management API includes operations for managing SQL
+     * Database servers for a subscription. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715271.aspx for
+     * more information)
+     * 
+     * @return The ServersOperations value.
+     */
+    public ServerOperations getServersOperations() {
         return this.servers;
     }
-    
+
     private ServiceObjectiveOperations serviceObjectives;
-    
+
     /**
-    * The SQL Database Management API includes operations for getting Service
-    * Objective for a subscription.
-    * @return The ServiceObjectivesOperations value.
-    */
-    public ServiceObjectiveOperations getServiceObjectivesOperations()
-    {
+     * The SQL Database Management API includes operations for getting Service
+     * Objective for a subscription.
+     * 
+     * @return The ServiceObjectivesOperations value.
+     */
+    public ServiceObjectiveOperations getServiceObjectivesOperations() {
         return this.serviceObjectives;
     }
-    
+
     /**
-    * Initializes a new instance of the SqlManagementClientImpl class.
-    *
-    * @param httpBuilder The HTTP client builder.
-    * @param executorService The executor service.
-    */
-    private SqlManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService)
-    {
+     * Initializes a new instance of the SqlManagementClientImpl class.
+     * 
+     * @param httpBuilder
+     *            The HTTP client builder.
+     * @param executorService
+     *            The executor service.
+     */
+    private SqlManagementClientImpl(HttpClientBuilder httpBuilder,
+            ExecutorService executorService) {
         super(httpBuilder, executorService);
         this.dac = new DacOperationsImpl(this);
         this.databaseOperations = new DatabaseOperationOperationsImpl(this);
@@ -163,69 +164,82 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
         this.servers = new ServerOperationsImpl(this);
         this.serviceObjectives = new ServiceObjectiveOperationsImpl(this);
     }
-    
+
     /**
-    * Initializes a new instance of the SqlManagementClientImpl class.
-    *
-    * @param httpBuilder The HTTP client builder.
-    * @param executorService The executor service.
-    * @param credentials When you create a Windows Azure subscription, it is
-    * uniquely identified by a subscription ID. The subscription ID forms part
-    * of the URI for every call that you make to the Service Management API.
-    * The Windows Azure Service ManagementAPI use mutual authentication of
-    * management certificates over SSL to ensure that a request made to the
-    * service is secure.  No anonymous requests are allowed.
-    * @param baseUri The URI used as the base for all SQL requests.
-    */
-    public SqlManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, SubscriptionCloudCredentials credentials, URI baseUri)
-    {
+     * Initializes a new instance of the SqlManagementClientImpl class.
+     * 
+     * @param httpBuilder
+     *            The HTTP client builder.
+     * @param executorService
+     *            The executor service.
+     * @param credentials
+     *            When you create a Windows Azure subscription, it is uniquely
+     *            identified by a subscription ID. The subscription ID forms
+     *            part of the URI for every call that you make to the Service
+     *            Management API. The Windows Azure Service ManagementAPI use
+     *            mutual authentication of management certificates over SSL to
+     *            ensure that a request made to the service is secure. No
+     *            anonymous requests are allowed.
+     * @param baseUri
+     *            The URI used as the base for all SQL requests.
+     */
+    public SqlManagementClientImpl(HttpClientBuilder httpBuilder,
+            ExecutorService executorService,
+            SubscriptionCloudCredentials credentials, URI baseUri) {
         this(httpBuilder, executorService);
-        if (credentials == null)
-        {
+        if (credentials == null) {
             throw new NullPointerException("credentials");
         }
-        if (baseUri == null)
-        {
+        if (baseUri == null) {
             throw new NullPointerException("baseUri");
         }
         this.credentials = credentials;
         this.baseUri = baseUri;
     }
-    
+
     /**
-    * Initializes a new instance of the SqlManagementClientImpl class.
-    * Initializes a new instance of the SqlManagementClientImpl class.
-    *
-    * @param httpBuilder The HTTP client builder.
-    * @param executorService The executor service.
-    * @param credentials When you create a Windows Azure subscription, it is
-    * uniquely identified by a subscription ID. The subscription ID forms part
-    * of the URI for every call that you make to the Service Management API.
-    * The Windows Azure Service ManagementAPI use mutual authentication of
-    * management certificates over SSL to ensure that a request made to the
-    * service is secure.  No anonymous requests are allowed.
-    * @throws URISyntaxException Thrown if there was an error parsing a URI in
-    * the response.
-    */
+     * Initializes a new instance of the SqlManagementClientImpl class.
+     * Initializes a new instance of the SqlManagementClientImpl class.
+     * 
+     * @param httpBuilder
+     *            The HTTP client builder.
+     * @param executorService
+     *            The executor service.
+     * @param credentials
+     *            When you create a Windows Azure subscription, it is uniquely
+     *            identified by a subscription ID. The subscription ID forms
+     *            part of the URI for every call that you make to the Service
+     *            Management API. The Windows Azure Service ManagementAPI use
+     *            mutual authentication of management certificates over SSL to
+     *            ensure that a request made to the service is secure. No
+     *            anonymous requests are allowed.
+     * @throws URISyntaxException
+     *             Thrown if there was an error parsing a URI in the response.
+     */
     @Inject
-    public SqlManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, @Named(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS) SubscriptionCloudCredentials credentials) throws java.net.URISyntaxException
-    {
+    public SqlManagementClientImpl(
+            HttpClientBuilder httpBuilder,
+            ExecutorService executorService,
+            @Named(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS) SubscriptionCloudCredentials credentials)
+            throws java.net.URISyntaxException {
         this(httpBuilder, executorService);
-        if (credentials == null)
-        {
+        if (credentials == null) {
             throw new NullPointerException("credentials");
         }
         this.credentials = credentials;
         this.baseUri = new URI("https://management.core.windows.net");
     }
-    
+
     /**
-    *
-    * @param httpBuilder The HTTP client builder.
-    * @param executorService The executor service.
-    */
-    protected SqlManagementClientImpl newInstance(HttpClientBuilder httpBuilder, ExecutorService executorService)
-    {
-        return new SqlManagementClientImpl(httpBuilder, executorService, this.getCredentials(), this.getBaseUri());
+     * 
+     * @param httpBuilder
+     *            The HTTP client builder.
+     * @param executorService
+     *            The executor service.
+     */
+    protected SqlManagementClientImpl newInstance(
+            HttpClientBuilder httpBuilder, ExecutorService executorService) {
+        return new SqlManagementClientImpl(httpBuilder, executorService,
+                this.getCredentials(), this.getBaseUri());
     }
 }

@@ -26,67 +26,69 @@ package com.microsoft.windowsazure.management.websites.models;
 import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
-* The Create Publishing User operation response.
-*/
-public class WebSpacesCreatePublishingUserResponse extends OperationResponse
-{
+ * The Create Publishing User operation response.
+ */
+public class WebSpacesCreatePublishingUserResponse extends OperationResponse {
     private String name;
-    
+
     /**
-    * The publishing user name.
-    * @return The Name value.
-    */
-    public String getName()
-    {
+     * The publishing user name.
+     * 
+     * @return The Name value.
+     */
+    public String getName() {
         return this.name;
     }
-    
+
     /**
-    * The publishing user name.
-    * @param nameValue The Name value.
-    */
-    public void setName(final String nameValue)
-    {
+     * The publishing user name.
+     * 
+     * @param nameValue
+     *            The Name value.
+     */
+    public void setName(final String nameValue) {
         this.name = nameValue;
     }
-    
+
     private String publishingPassword;
-    
+
     /**
-    * The publishing user password.
-    * @return The PublishingPassword value.
-    */
-    public String getPublishingPassword()
-    {
+     * The publishing user password.
+     * 
+     * @return The PublishingPassword value.
+     */
+    public String getPublishingPassword() {
         return this.publishingPassword;
     }
-    
+
     /**
-    * The publishing user password.
-    * @param publishingPasswordValue The PublishingPassword value.
-    */
-    public void setPublishingPassword(final String publishingPasswordValue)
-    {
+     * The publishing user password.
+     * 
+     * @param publishingPasswordValue
+     *            The PublishingPassword value.
+     */
+    public void setPublishingPassword(final String publishingPasswordValue) {
         this.publishingPassword = publishingPasswordValue;
     }
-    
+
     private String publishingUserName;
-    
+
     /**
-    * The publishing user username.
-    * @return The PublishingUserName value.
-    */
-    public String getPublishingUserName()
-    {
+     * The publishing user username.
+     * 
+     * @return The PublishingUserName value.
+     */
+    public String getPublishingUserName() {
         return this.publishingUserName;
     }
-    
+
     /**
-    * The publishing user username.
-    * @param publishingUserNameValue The PublishingUserName value.
-    */
-    public void setPublishingUserName(final String publishingUserNameValue)
-    {
+     * The publishing user username.
+     * 
+     * @param publishingUserNameValue
+     *            The PublishingUserName value.
+     */
+    public void setPublishingUserName(final String publishingUserNameValue) {
         this.publishingUserName = publishingUserNameValue;
     }
 }

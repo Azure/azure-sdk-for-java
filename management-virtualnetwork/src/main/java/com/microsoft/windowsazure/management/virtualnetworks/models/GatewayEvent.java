@@ -26,87 +26,90 @@ package com.microsoft.windowsazure.management.virtualnetworks.models;
 import java.util.Calendar;
 
 /**
-* A management event for the virtual network gateway.
-*/
-public class GatewayEvent
-{
+ * A management event for the virtual network gateway.
+ */
+public class GatewayEvent {
     private String data;
-    
+
     /**
-    * Additional data associated with this event.
-    * @return The Data value.
-    */
-    public String getData()
-    {
+     * Additional data associated with this event.
+     * 
+     * @return The Data value.
+     */
+    public String getData() {
         return this.data;
     }
-    
+
     /**
-    * Additional data associated with this event.
-    * @param dataValue The Data value.
-    */
-    public void setData(final String dataValue)
-    {
+     * Additional data associated with this event.
+     * 
+     * @param dataValue
+     *            The Data value.
+     */
+    public void setData(final String dataValue) {
         this.data = dataValue;
     }
-    
+
     private String id;
-    
+
     /**
-    * The event ID.
-    * @return The Id value.
-    */
-    public String getId()
-    {
+     * The event ID.
+     * 
+     * @return The Id value.
+     */
+    public String getId() {
         return this.id;
     }
-    
+
     /**
-    * The event ID.
-    * @param idValue The Id value.
-    */
-    public void setId(final String idValue)
-    {
+     * The event ID.
+     * 
+     * @param idValue
+     *            The Id value.
+     */
+    public void setId(final String idValue) {
         this.id = idValue;
     }
-    
+
     private String message;
-    
+
     /**
-    * The event message.
-    * @return The Message value.
-    */
-    public String getMessage()
-    {
+     * The event message.
+     * 
+     * @return The Message value.
+     */
+    public String getMessage() {
         return this.message;
     }
-    
+
     /**
-    * The event message.
-    * @param messageValue The Message value.
-    */
-    public void setMessage(final String messageValue)
-    {
+     * The event message.
+     * 
+     * @param messageValue
+     *            The Message value.
+     */
+    public void setMessage(final String messageValue) {
         this.message = messageValue;
     }
-    
+
     private Calendar timestamp;
-    
+
     /**
-    * The date and time when the event occurred.
-    * @return The Timestamp value.
-    */
-    public Calendar getTimestamp()
-    {
+     * The date and time when the event occurred.
+     * 
+     * @return The Timestamp value.
+     */
+    public Calendar getTimestamp() {
         return this.timestamp;
     }
-    
+
     /**
-    * The date and time when the event occurred.
-    * @param timestampValue The Timestamp value.
-    */
-    public void setTimestamp(final Calendar timestampValue)
-    {
+     * The date and time when the event occurred.
+     * 
+     * @param timestampValue
+     *            The Timestamp value.
+     */
+    public void setTimestamp(final Calendar timestampValue) {
         this.timestamp = timestampValue;
     }
 }

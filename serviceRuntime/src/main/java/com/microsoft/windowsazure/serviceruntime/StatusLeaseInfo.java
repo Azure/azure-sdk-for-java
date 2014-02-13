@@ -60,8 +60,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "StatusLeaseInfo", propOrder = { "acquire", "release" })
-class StatusLeaseInfo
-{
+class StatusLeaseInfo {
 
     @XmlElement(name = "Acquire")
     protected AcquireLeaseInfo acquire;
@@ -76,8 +75,7 @@ class StatusLeaseInfo
      * @return possible object is {@link AcquireLeaseInfo }
      * 
      */
-    public AcquireLeaseInfo getAcquire()
-    {
+    public AcquireLeaseInfo getAcquire() {
         return acquire;
     }
 
@@ -88,8 +86,7 @@ class StatusLeaseInfo
      *            allowed object is {@link AcquireLeaseInfo }
      * 
      */
-    public void setAcquire(AcquireLeaseInfo value)
-    {
+    public void setAcquire(AcquireLeaseInfo value) {
         this.acquire = value;
     }
 
@@ -99,8 +96,7 @@ class StatusLeaseInfo
      * @return possible object is {@link StatusLeaseInfo.Release }
      * 
      */
-    public StatusLeaseInfo.Release getRelease()
-    {
+    public StatusLeaseInfo.Release getRelease() {
         return release;
     }
 
@@ -111,8 +107,7 @@ class StatusLeaseInfo
      *            allowed object is {@link StatusLeaseInfo.Release }
      * 
      */
-    public void setRelease(StatusLeaseInfo.Release value)
-    {
+    public void setRelease(StatusLeaseInfo.Release value) {
         this.release = value;
     }
 
@@ -122,8 +117,7 @@ class StatusLeaseInfo
      * @return possible object is {@link String }
      * 
      */
-    public String getClientId()
-    {
+    public String getClientId() {
         return clientId;
     }
 
@@ -134,8 +128,7 @@ class StatusLeaseInfo
      *            allowed object is {@link String }
      * 
      */
-    public void setClientId(String value)
-    {
+    public void setClientId(String value) {
         this.clientId = value;
     }
 
@@ -160,8 +153,7 @@ class StatusLeaseInfo
      */
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = "")
-    public static class Release
-    {
+    public static class Release {
 
     }
 

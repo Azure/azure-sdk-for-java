@@ -40,282 +40,336 @@ import javax.xml.transform.TransformerException;
 import org.xml.sax.SAXException;
 
 /**
-* Operations for managing service certificates for your subscription.  (see
-* http://msdn.microsoft.com/en-us/library/windowsazure/ee795178.aspx for more
-* information)
-*/
-public interface ServiceCertificateOperations
-{
+ * Operations for managing service certificates for your subscription. (see
+ * http://msdn.microsoft.com/en-us/library/windowsazure/ee795178.aspx for more
+ * information)
+ */
+public interface ServiceCertificateOperations {
     /**
-    * The Add Service Certificate operation adds a certificate to a hosted
-    * service.  The Add Service Certificate operation is an asynchronous
-    * operation. To determine whether the management service has finished
-    * processing the request, call Get Operation Status.   (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460817.aspx for
-    * more information)
-    *
-    * @param serviceName The DNS prefix name of your service.
-    * @param parameters Parameters supplied to the Create Service Certificate
-    * operation.
-    * @throws ParserConfigurationException Thrown if there was an error
-    * configuring the parser for the response body.
-    * @throws SAXException Thrown if there was an error parsing the response
-    * body.
-    * @throws TransformerException Thrown if there was an error creating the
-    * DOM transformer.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
-    OperationResponse beginCreating(String serviceName, ServiceCertificateCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
-    
+     * The Add Service Certificate operation adds a certificate to a hosted
+     * service. The Add Service Certificate operation is an asynchronous
+     * operation. To determine whether the management service has finished
+     * processing the request, call Get Operation Status. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460817.aspx for
+     * more information)
+     * 
+     * @param serviceName
+     *            The DNS prefix name of your service.
+     * @param parameters
+     *            Parameters supplied to the Create Service Certificate
+     *            operation.
+     * @throws ParserConfigurationException
+     *             Thrown if there was an error configuring the parser for the
+     *             response body.
+     * @throws SAXException
+     *             Thrown if there was an error parsing the response body.
+     * @throws TransformerException
+     *             Thrown if there was an error creating the DOM transformer.
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @return A standard service response including an HTTP status code and
+     *         request ID.
+     */
+    OperationResponse beginCreating(String serviceName,
+            ServiceCertificateCreateParameters parameters)
+            throws ParserConfigurationException, SAXException,
+            TransformerException, IOException, ServiceException;
+
     /**
-    * The Add Service Certificate operation adds a certificate to a hosted
-    * service.  The Add Service Certificate operation is an asynchronous
-    * operation. To determine whether the management service has finished
-    * processing the request, call Get Operation Status.   (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460817.aspx for
-    * more information)
-    *
-    * @param serviceName The DNS prefix name of your service.
-    * @param parameters Parameters supplied to the Create Service Certificate
-    * operation.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
-    Future<OperationResponse> beginCreatingAsync(String serviceName, ServiceCertificateCreateParameters parameters);
-    
+     * The Add Service Certificate operation adds a certificate to a hosted
+     * service. The Add Service Certificate operation is an asynchronous
+     * operation. To determine whether the management service has finished
+     * processing the request, call Get Operation Status. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460817.aspx for
+     * more information)
+     * 
+     * @param serviceName
+     *            The DNS prefix name of your service.
+     * @param parameters
+     *            Parameters supplied to the Create Service Certificate
+     *            operation.
+     * @return A standard service response including an HTTP status code and
+     *         request ID.
+     */
+    Future<OperationResponse> beginCreatingAsync(String serviceName,
+            ServiceCertificateCreateParameters parameters);
+
     /**
-    * The Delete Service Certificate operation deletes a service certificate
-    * from the certificate store of a hosted service.  The Delete Service
-    * Certificate operation is an asynchronous operation. To determine whether
-    * the management service has finished processing the request, call Get
-    * Operation Status.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460803.aspx for
-    * more information)
-    *
-    * @param parameters Parameters supplied to the Delete Service Certificate
-    * operation.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
-    OperationResponse beginDeleting(ServiceCertificateDeleteParameters parameters) throws IOException, ServiceException;
-    
+     * The Delete Service Certificate operation deletes a service certificate
+     * from the certificate store of a hosted service. The Delete Service
+     * Certificate operation is an asynchronous operation. To determine whether
+     * the management service has finished processing the request, call Get
+     * Operation Status. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460803.aspx for
+     * more information)
+     * 
+     * @param parameters
+     *            Parameters supplied to the Delete Service Certificate
+     *            operation.
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @return A standard service response including an HTTP status code and
+     *         request ID.
+     */
+    OperationResponse beginDeleting(
+            ServiceCertificateDeleteParameters parameters) throws IOException,
+            ServiceException;
+
     /**
-    * The Delete Service Certificate operation deletes a service certificate
-    * from the certificate store of a hosted service.  The Delete Service
-    * Certificate operation is an asynchronous operation. To determine whether
-    * the management service has finished processing the request, call Get
-    * Operation Status.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460803.aspx for
-    * more information)
-    *
-    * @param parameters Parameters supplied to the Delete Service Certificate
-    * operation.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
-    Future<OperationResponse> beginDeletingAsync(ServiceCertificateDeleteParameters parameters);
-    
+     * The Delete Service Certificate operation deletes a service certificate
+     * from the certificate store of a hosted service. The Delete Service
+     * Certificate operation is an asynchronous operation. To determine whether
+     * the management service has finished processing the request, call Get
+     * Operation Status. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460803.aspx for
+     * more information)
+     * 
+     * @param parameters
+     *            Parameters supplied to the Delete Service Certificate
+     *            operation.
+     * @return A standard service response including an HTTP status code and
+     *         request ID.
+     */
+    Future<OperationResponse> beginDeletingAsync(
+            ServiceCertificateDeleteParameters parameters);
+
     /**
-    * The Add Service Certificate operation adds a certificate to a hosted
-    * service.  The Add Service Certificate operation is an asynchronous
-    * operation. To determine whether the management service has finished
-    * processing the request, call Get Operation Status.  This overload will
-    * (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460817.aspx for
-    * more information)
-    *
-    * @param serviceName The DNS prefix name of your service.
-    * @param parameters Parameters supplied to the Create Service Certificate
-    * operation.
-    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
-    * or otherwise occupied, and the thread is interrupted, either before or
-    * during the activity. Occasionally a method may wish to test whether the
-    * current thread has been interrupted, and if so, to immediately throw
-    * this exception. The following code can be used to achieve this effect:
-    * @throws ExecutionException Thrown when attempting to retrieve the result
-    * of a task that aborted by throwing an exception. This exception can be
-    * inspected using the Throwable.getCause() method.
-    * @throws ServiceException Thrown if the server returned an error for the
-    * request.
-    * @throws IOException Thrown if there was an error setting up tracing for
-    * the request.
-    * @throws ParserConfigurationException Thrown if there was an error
-    * configuring the parser for the response body.
-    * @throws SAXException Thrown if there was an error parsing the response
-    * body.
-    * @throws TransformerException Thrown if there was an error creating the
-    * DOM transformer.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws URISyntaxException Thrown if there was an error parsing a URI in
-    * the response.
-    * @return The response body contains the status of the specified
-    * asynchronous operation, indicating whether it has succeeded, is
-    * inprogress, or has failed. Note that this status is distinct from the
-    * HTTP status code returned for the Get Operation Status operation itself.
-    * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
-    * operation failed, the response body includes the HTTP status code for
-    * the failed request, and also includes error information regarding the
-    * failure.
-    */
-    ComputeOperationStatusResponse create(String serviceName, ServiceCertificateCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, ServiceException, URISyntaxException;
-    
+     * The Add Service Certificate operation adds a certificate to a hosted
+     * service. The Add Service Certificate operation is an asynchronous
+     * operation. To determine whether the management service has finished
+     * processing the request, call Get Operation Status. This overload will
+     * (see http://msdn.microsoft.com/en-us/library/windowsazure/ee460817.aspx
+     * for more information)
+     * 
+     * @param serviceName
+     *            The DNS prefix name of your service.
+     * @param parameters
+     *            Parameters supplied to the Create Service Certificate
+     *            operation.
+     * @throws InterruptedException
+     *             Thrown when a thread is waiting, sleeping, or otherwise
+     *             occupied, and the thread is interrupted, either before or
+     *             during the activity. Occasionally a method may wish to test
+     *             whether the current thread has been interrupted, and if so,
+     *             to immediately throw this exception. The following code can
+     *             be used to achieve this effect:
+     * @throws ExecutionException
+     *             Thrown when attempting to retrieve the result of a task that
+     *             aborted by throwing an exception. This exception can be
+     *             inspected using the Throwable.getCause() method.
+     * @throws ServiceException
+     *             Thrown if the server returned an error for the request.
+     * @throws IOException
+     *             Thrown if there was an error setting up tracing for the
+     *             request.
+     * @throws ParserConfigurationException
+     *             Thrown if there was an error configuring the parser for the
+     *             response body.
+     * @throws SAXException
+     *             Thrown if there was an error parsing the response body.
+     * @throws TransformerException
+     *             Thrown if there was an error creating the DOM transformer.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @throws URISyntaxException
+     *             Thrown if there was an error parsing a URI in the response.
+     * @return The response body contains the status of the specified
+     *         asynchronous operation, indicating whether it has succeeded, is
+     *         inprogress, or has failed. Note that this status is distinct from
+     *         the HTTP status code returned for the Get Operation Status
+     *         operation itself. If the asynchronous operation succeeded, the
+     *         response body includes the HTTP status code for the successful
+     *         request. If the asynchronous operation failed, the response body
+     *         includes the HTTP status code for the failed request, and also
+     *         includes error information regarding the failure.
+     */
+    ComputeOperationStatusResponse create(String serviceName,
+            ServiceCertificateCreateParameters parameters)
+            throws InterruptedException, ExecutionException, ServiceException,
+            IOException, ParserConfigurationException, SAXException,
+            TransformerException, ServiceException, URISyntaxException;
+
     /**
-    * The Add Service Certificate operation adds a certificate to a hosted
-    * service.  The Add Service Certificate operation is an asynchronous
-    * operation. To determine whether the management service has finished
-    * processing the request, call Get Operation Status.  This overload will
-    * (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460817.aspx for
-    * more information)
-    *
-    * @param serviceName The DNS prefix name of your service.
-    * @param parameters Parameters supplied to the Create Service Certificate
-    * operation.
-    * @return The response body contains the status of the specified
-    * asynchronous operation, indicating whether it has succeeded, is
-    * inprogress, or has failed. Note that this status is distinct from the
-    * HTTP status code returned for the Get Operation Status operation itself.
-    * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
-    * operation failed, the response body includes the HTTP status code for
-    * the failed request, and also includes error information regarding the
-    * failure.
-    */
-    Future<ComputeOperationStatusResponse> createAsync(String serviceName, ServiceCertificateCreateParameters parameters);
-    
+     * The Add Service Certificate operation adds a certificate to a hosted
+     * service. The Add Service Certificate operation is an asynchronous
+     * operation. To determine whether the management service has finished
+     * processing the request, call Get Operation Status. This overload will
+     * (see http://msdn.microsoft.com/en-us/library/windowsazure/ee460817.aspx
+     * for more information)
+     * 
+     * @param serviceName
+     *            The DNS prefix name of your service.
+     * @param parameters
+     *            Parameters supplied to the Create Service Certificate
+     *            operation.
+     * @return The response body contains the status of the specified
+     *         asynchronous operation, indicating whether it has succeeded, is
+     *         inprogress, or has failed. Note that this status is distinct from
+     *         the HTTP status code returned for the Get Operation Status
+     *         operation itself. If the asynchronous operation succeeded, the
+     *         response body includes the HTTP status code for the successful
+     *         request. If the asynchronous operation failed, the response body
+     *         includes the HTTP status code for the failed request, and also
+     *         includes error information regarding the failure.
+     */
+    Future<ComputeOperationStatusResponse> createAsync(String serviceName,
+            ServiceCertificateCreateParameters parameters);
+
     /**
-    * The Delete Service Certificate operation deletes a service certificate
-    * from the certificate store of a hosted service.  The Delete Service
-    * Certificate operation is an asynchronous operation. To determine whether
-    * the management service has finished processing the request, call Get
-    * Operation Status.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460803.aspx for
-    * more information)
-    *
-    * @param parameters Parameters supplied to the Delete Service Certificate
-    * operation.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
-    * or otherwise occupied, and the thread is interrupted, either before or
-    * during the activity. Occasionally a method may wish to test whether the
-    * current thread has been interrupted, and if so, to immediately throw
-    * this exception. The following code can be used to achieve this effect:
-    * @throws ExecutionException Thrown when attempting to retrieve the result
-    * of a task that aborted by throwing an exception. This exception can be
-    * inspected using the Throwable.getCause() method.
-    * @throws ServiceException Thrown if the server returned an error for the
-    * request.
-    * @return The response body contains the status of the specified
-    * asynchronous operation, indicating whether it has succeeded, is
-    * inprogress, or has failed. Note that this status is distinct from the
-    * HTTP status code returned for the Get Operation Status operation itself.
-    * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
-    * operation failed, the response body includes the HTTP status code for
-    * the failed request, and also includes error information regarding the
-    * failure.
-    */
-    ComputeOperationStatusResponse delete(ServiceCertificateDeleteParameters parameters) throws IOException, ServiceException, InterruptedException, ExecutionException, ServiceException;
-    
+     * The Delete Service Certificate operation deletes a service certificate
+     * from the certificate store of a hosted service. The Delete Service
+     * Certificate operation is an asynchronous operation. To determine whether
+     * the management service has finished processing the request, call Get
+     * Operation Status. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460803.aspx for
+     * more information)
+     * 
+     * @param parameters
+     *            Parameters supplied to the Delete Service Certificate
+     *            operation.
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @throws InterruptedException
+     *             Thrown when a thread is waiting, sleeping, or otherwise
+     *             occupied, and the thread is interrupted, either before or
+     *             during the activity. Occasionally a method may wish to test
+     *             whether the current thread has been interrupted, and if so,
+     *             to immediately throw this exception. The following code can
+     *             be used to achieve this effect:
+     * @throws ExecutionException
+     *             Thrown when attempting to retrieve the result of a task that
+     *             aborted by throwing an exception. This exception can be
+     *             inspected using the Throwable.getCause() method.
+     * @throws ServiceException
+     *             Thrown if the server returned an error for the request.
+     * @return The response body contains the status of the specified
+     *         asynchronous operation, indicating whether it has succeeded, is
+     *         inprogress, or has failed. Note that this status is distinct from
+     *         the HTTP status code returned for the Get Operation Status
+     *         operation itself. If the asynchronous operation succeeded, the
+     *         response body includes the HTTP status code for the successful
+     *         request. If the asynchronous operation failed, the response body
+     *         includes the HTTP status code for the failed request, and also
+     *         includes error information regarding the failure.
+     */
+    ComputeOperationStatusResponse delete(
+            ServiceCertificateDeleteParameters parameters) throws IOException,
+            ServiceException, InterruptedException, ExecutionException,
+            ServiceException;
+
     /**
-    * The Delete Service Certificate operation deletes a service certificate
-    * from the certificate store of a hosted service.  The Delete Service
-    * Certificate operation is an asynchronous operation. To determine whether
-    * the management service has finished processing the request, call Get
-    * Operation Status.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460803.aspx for
-    * more information)
-    *
-    * @param parameters Parameters supplied to the Delete Service Certificate
-    * operation.
-    * @return The response body contains the status of the specified
-    * asynchronous operation, indicating whether it has succeeded, is
-    * inprogress, or has failed. Note that this status is distinct from the
-    * HTTP status code returned for the Get Operation Status operation itself.
-    * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
-    * operation failed, the response body includes the HTTP status code for
-    * the failed request, and also includes error information regarding the
-    * failure.
-    */
-    Future<ComputeOperationStatusResponse> deleteAsync(ServiceCertificateDeleteParameters parameters);
-    
+     * The Delete Service Certificate operation deletes a service certificate
+     * from the certificate store of a hosted service. The Delete Service
+     * Certificate operation is an asynchronous operation. To determine whether
+     * the management service has finished processing the request, call Get
+     * Operation Status. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460803.aspx for
+     * more information)
+     * 
+     * @param parameters
+     *            Parameters supplied to the Delete Service Certificate
+     *            operation.
+     * @return The response body contains the status of the specified
+     *         asynchronous operation, indicating whether it has succeeded, is
+     *         inprogress, or has failed. Note that this status is distinct from
+     *         the HTTP status code returned for the Get Operation Status
+     *         operation itself. If the asynchronous operation succeeded, the
+     *         response body includes the HTTP status code for the successful
+     *         request. If the asynchronous operation failed, the response body
+     *         includes the HTTP status code for the failed request, and also
+     *         includes error information regarding the failure.
+     */
+    Future<ComputeOperationStatusResponse> deleteAsync(
+            ServiceCertificateDeleteParameters parameters);
+
     /**
-    * The Get Service Certificate operation returns the public data for the
-    * specified X.509 certificate associated with a hosted service.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460792.aspx for
-    * more information)
-    *
-    * @param parameters Parameters supplied to the Get Service Certificate
-    * operation.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParserConfigurationException Thrown if there was a serious
-    * configuration error with the document parser.
-    * @throws SAXException Thrown if there was an error parsing the XML
-    * response.
-    * @throws URISyntaxException Thrown if there was an error parsing a URI in
-    * the response.
-    * @return The Get Service Certificate operation response.
-    */
-    ServiceCertificateGetResponse get(ServiceCertificateGetParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException;
-    
+     * The Get Service Certificate operation returns the public data for the
+     * specified X.509 certificate associated with a hosted service. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460792.aspx for
+     * more information)
+     * 
+     * @param parameters
+     *            Parameters supplied to the Get Service Certificate operation.
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @throws ParserConfigurationException
+     *             Thrown if there was a serious configuration error with the
+     *             document parser.
+     * @throws SAXException
+     *             Thrown if there was an error parsing the XML response.
+     * @throws URISyntaxException
+     *             Thrown if there was an error parsing a URI in the response.
+     * @return The Get Service Certificate operation response.
+     */
+    ServiceCertificateGetResponse get(ServiceCertificateGetParameters parameters)
+            throws IOException, ServiceException, ParserConfigurationException,
+            SAXException, URISyntaxException;
+
     /**
-    * The Get Service Certificate operation returns the public data for the
-    * specified X.509 certificate associated with a hosted service.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460792.aspx for
-    * more information)
-    *
-    * @param parameters Parameters supplied to the Get Service Certificate
-    * operation.
-    * @return The Get Service Certificate operation response.
-    */
-    Future<ServiceCertificateGetResponse> getAsync(ServiceCertificateGetParameters parameters);
-    
+     * The Get Service Certificate operation returns the public data for the
+     * specified X.509 certificate associated with a hosted service. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460792.aspx for
+     * more information)
+     * 
+     * @param parameters
+     *            Parameters supplied to the Get Service Certificate operation.
+     * @return The Get Service Certificate operation response.
+     */
+    Future<ServiceCertificateGetResponse> getAsync(
+            ServiceCertificateGetParameters parameters);
+
     /**
-    * The List Service Certificates operation lists all of the service
-    * certificates associated with the specified hosted service.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj154105.aspx for
-    * more information)
-    *
-    * @param serviceName The DNS prefix name of your hosted service.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParserConfigurationException Thrown if there was a serious
-    * configuration error with the document parser.
-    * @throws SAXException Thrown if there was an error parsing the XML
-    * response.
-    * @throws URISyntaxException Thrown if there was an error parsing a URI in
-    * the response.
-    * @return The List Service Certificates operation response.
-    */
-    ServiceCertificateListResponse list(String serviceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException;
-    
+     * The List Service Certificates operation lists all of the service
+     * certificates associated with the specified hosted service. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154105.aspx for
+     * more information)
+     * 
+     * @param serviceName
+     *            The DNS prefix name of your hosted service.
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @throws ParserConfigurationException
+     *             Thrown if there was a serious configuration error with the
+     *             document parser.
+     * @throws SAXException
+     *             Thrown if there was an error parsing the XML response.
+     * @throws URISyntaxException
+     *             Thrown if there was an error parsing a URI in the response.
+     * @return The List Service Certificates operation response.
+     */
+    ServiceCertificateListResponse list(String serviceName) throws IOException,
+            ServiceException, ParserConfigurationException, SAXException,
+            URISyntaxException;
+
     /**
-    * The List Service Certificates operation lists all of the service
-    * certificates associated with the specified hosted service.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj154105.aspx for
-    * more information)
-    *
-    * @param serviceName The DNS prefix name of your hosted service.
-    * @return The List Service Certificates operation response.
-    */
+     * The List Service Certificates operation lists all of the service
+     * certificates associated with the specified hosted service. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154105.aspx for
+     * more information)
+     * 
+     * @param serviceName
+     *            The DNS prefix name of your hosted service.
+     * @return The List Service Certificates operation response.
+     */
     Future<ServiceCertificateListResponse> listAsync(String serviceName);
 }

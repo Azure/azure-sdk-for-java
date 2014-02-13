@@ -24,11 +24,10 @@
 package com.microsoft.windowsazure.management.compute.models;
 
 /**
-* The current state of the upgrade.
-*/
-public enum UpgradeDomainState
-{
+ * The current state of the upgrade.
+ */
+public enum UpgradeDomainState {
     Before,
-    
+
     During,
 }

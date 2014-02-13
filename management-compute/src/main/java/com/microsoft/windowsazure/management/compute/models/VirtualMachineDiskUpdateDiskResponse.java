@@ -27,187 +27,194 @@ import com.microsoft.windowsazure.core.OperationResponse;
 import java.net.URI;
 
 /**
-* A virtual machine disk associated with your subscription.
-*/
-public class VirtualMachineDiskUpdateDiskResponse extends OperationResponse
-{
+ * A virtual machine disk associated with your subscription.
+ */
+public class VirtualMachineDiskUpdateDiskResponse extends OperationResponse {
     private String affinityGroup;
-    
+
     /**
-    * The affinity group in which the disk is located. The AffinityGroup value
-    * is derived from storage account that contains the blob in which the
-    * media is located. If the storage account does not belong to an affinity
-    * group the value is NULL.
-    * @return The AffinityGroup value.
-    */
-    public String getAffinityGroup()
-    {
+     * The affinity group in which the disk is located. The AffinityGroup value
+     * is derived from storage account that contains the blob in which the media
+     * is located. If the storage account does not belong to an affinity group
+     * the value is NULL.
+     * 
+     * @return The AffinityGroup value.
+     */
+    public String getAffinityGroup() {
         return this.affinityGroup;
     }
-    
+
     /**
-    * The affinity group in which the disk is located. The AffinityGroup value
-    * is derived from storage account that contains the blob in which the
-    * media is located. If the storage account does not belong to an affinity
-    * group the value is NULL.
-    * @param affinityGroupValue The AffinityGroup value.
-    */
-    public void setAffinityGroup(final String affinityGroupValue)
-    {
+     * The affinity group in which the disk is located. The AffinityGroup value
+     * is derived from storage account that contains the blob in which the media
+     * is located. If the storage account does not belong to an affinity group
+     * the value is NULL.
+     * 
+     * @param affinityGroupValue
+     *            The AffinityGroup value.
+     */
+    public void setAffinityGroup(final String affinityGroupValue) {
         this.affinityGroup = affinityGroupValue;
     }
-    
+
     private Boolean isPremium;
-    
+
     /**
-    * Specifies whether the comtained image is a premium image
-    * @return The IsPremium value.
-    */
-    public Boolean isPremium()
-    {
+     * Specifies whether the comtained image is a premium image
+     * 
+     * @return The IsPremium value.
+     */
+    public Boolean isPremium() {
         return this.isPremium;
     }
-    
+
     /**
-    * Specifies whether the comtained image is a premium image
-    * @param isPremiumValue The IsPremium value.
-    */
-    public void setIsPremium(final Boolean isPremiumValue)
-    {
+     * Specifies whether the comtained image is a premium image
+     * 
+     * @param isPremiumValue
+     *            The IsPremium value.
+     */
+    public void setIsPremium(final Boolean isPremiumValue) {
         this.isPremium = isPremiumValue;
     }
-    
+
     private String label;
-    
+
     /**
-    * The friendly name of the disk
-    * @return The Label value.
-    */
-    public String getLabel()
-    {
+     * The friendly name of the disk
+     * 
+     * @return The Label value.
+     */
+    public String getLabel() {
         return this.label;
     }
-    
+
     /**
-    * The friendly name of the disk
-    * @param labelValue The Label value.
-    */
-    public void setLabel(final String labelValue)
-    {
+     * The friendly name of the disk
+     * 
+     * @param labelValue
+     *            The Label value.
+     */
+    public void setLabel(final String labelValue) {
         this.label = labelValue;
     }
-    
+
     private String location;
-    
+
     /**
-    * The geo-location in which the disk is located. The Location value is
-    * derived from storage account that contains the blob in which the disk is
-    * located. If the storage account belongs to an affinity group the value
-    * is NULL.
-    * @return The Location value.
-    */
-    public String getLocation()
-    {
+     * The geo-location in which the disk is located. The Location value is
+     * derived from storage account that contains the blob in which the disk is
+     * located. If the storage account belongs to an affinity group the value is
+     * NULL.
+     * 
+     * @return The Location value.
+     */
+    public String getLocation() {
         return this.location;
     }
-    
+
     /**
-    * The geo-location in which the disk is located. The Location value is
-    * derived from storage account that contains the blob in which the disk is
-    * located. If the storage account belongs to an affinity group the value
-    * is NULL.
-    * @param locationValue The Location value.
-    */
-    public void setLocation(final String locationValue)
-    {
+     * The geo-location in which the disk is located. The Location value is
+     * derived from storage account that contains the blob in which the disk is
+     * located. If the storage account belongs to an affinity group the value is
+     * NULL.
+     * 
+     * @param locationValue
+     *            The Location value.
+     */
+    public void setLocation(final String locationValue) {
         this.location = locationValue;
     }
-    
+
     private int logicalSizeInGB;
-    
+
     /**
-    * The size, in GB, of the disk.
-    * @return The LogicalSizeInGB value.
-    */
-    public int getLogicalSizeInGB()
-    {
+     * The size, in GB, of the disk.
+     * 
+     * @return The LogicalSizeInGB value.
+     */
+    public int getLogicalSizeInGB() {
         return this.logicalSizeInGB;
     }
-    
+
     /**
-    * The size, in GB, of the disk.
-    * @param logicalSizeInGBValue The LogicalSizeInGB value.
-    */
-    public void setLogicalSizeInGB(final int logicalSizeInGBValue)
-    {
+     * The size, in GB, of the disk.
+     * 
+     * @param logicalSizeInGBValue
+     *            The LogicalSizeInGB value.
+     */
+    public void setLogicalSizeInGB(final int logicalSizeInGBValue) {
         this.logicalSizeInGB = logicalSizeInGBValue;
     }
-    
+
     private URI mediaLinkUri;
-    
+
     /**
-    * The location of the blob in the blob store in which the media for the
-    * disk is located. The blob location belongs to a storage account in the
-    * subscription specified by the SubscriptionId value in the operation
-    * call. Example: http://example.blob.core.windows.net/disks/mydisk.vhd
-    * @return The MediaLinkUri value.
-    */
-    public URI getMediaLinkUri()
-    {
+     * The location of the blob in the blob store in which the media for the
+     * disk is located. The blob location belongs to a storage account in the
+     * subscription specified by the SubscriptionId value in the operation call.
+     * Example: http://example.blob.core.windows.net/disks/mydisk.vhd
+     * 
+     * @return The MediaLinkUri value.
+     */
+    public URI getMediaLinkUri() {
         return this.mediaLinkUri;
     }
-    
+
     /**
-    * The location of the blob in the blob store in which the media for the
-    * disk is located. The blob location belongs to a storage account in the
-    * subscription specified by the SubscriptionId value in the operation
-    * call. Example: http://example.blob.core.windows.net/disks/mydisk.vhd
-    * @param mediaLinkUriValue The MediaLinkUri value.
-    */
-    public void setMediaLinkUri(final URI mediaLinkUriValue)
-    {
+     * The location of the blob in the blob store in which the media for the
+     * disk is located. The blob location belongs to a storage account in the
+     * subscription specified by the SubscriptionId value in the operation call.
+     * Example: http://example.blob.core.windows.net/disks/mydisk.vhd
+     * 
+     * @param mediaLinkUriValue
+     *            The MediaLinkUri value.
+     */
+    public void setMediaLinkUri(final URI mediaLinkUriValue) {
         this.mediaLinkUri = mediaLinkUriValue;
     }
-    
+
     private String name;
-    
+
     /**
-    * The name of the disk. This is the name that is used when creating one or
-    * more virtual machines using the disk.
-    * @return The Name value.
-    */
-    public String getName()
-    {
+     * The name of the disk. This is the name that is used when creating one or
+     * more virtual machines using the disk.
+     * 
+     * @return The Name value.
+     */
+    public String getName() {
         return this.name;
     }
-    
+
     /**
-    * The name of the disk. This is the name that is used when creating one or
-    * more virtual machines using the disk.
-    * @param nameValue The Name value.
-    */
-    public void setName(final String nameValue)
-    {
+     * The name of the disk. This is the name that is used when creating one or
+     * more virtual machines using the disk.
+     * 
+     * @param nameValue
+     *            The Name value.
+     */
+    public void setName(final String nameValue) {
         this.name = nameValue;
     }
-    
+
     private String operatingSystem;
-    
+
     /**
-    * The Operating System type for the disk.
-    * @return The OperatingSystem value.
-    */
-    public String getOperatingSystem()
-    {
+     * The Operating System type for the disk.
+     * 
+     * @return The OperatingSystem value.
+     */
+    public String getOperatingSystem() {
         return this.operatingSystem;
     }
-    
+
     /**
-    * The Operating System type for the disk.
-    * @param operatingSystemValue The OperatingSystem value.
-    */
-    public void setOperatingSystem(final String operatingSystemValue)
-    {
+     * The Operating System type for the disk.
+     * 
+     * @param operatingSystemValue
+     *            The OperatingSystem value.
+     */
+    public void setOperatingSystem(final String operatingSystemValue) {
         this.operatingSystem = operatingSystemValue;
     }
 }

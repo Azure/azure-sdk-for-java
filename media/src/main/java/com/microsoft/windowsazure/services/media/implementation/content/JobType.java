@@ -30,8 +30,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class JobType implements MediaServiceDTO
-{
+public class JobType implements MediaServiceDTO {
 
     /** The id. */
     @XmlElement(name = "Id", namespace = Constants.ODATA_DATA_NS)
@@ -83,8 +82,7 @@ public class JobType implements MediaServiceDTO
      * 
      * @return the id
      */
-    public String getId()
-    {
+    public String getId() {
         return id;
     }
 
@@ -95,8 +93,7 @@ public class JobType implements MediaServiceDTO
      *            the new id
      * @return the job type
      */
-    public JobType setId(String id)
-    {
+    public JobType setId(String id) {
         this.id = id;
         return this;
     }
@@ -106,8 +103,7 @@ public class JobType implements MediaServiceDTO
      * 
      * @return the name
      */
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
@@ -118,8 +114,7 @@ public class JobType implements MediaServiceDTO
      *            the new name
      * @return the job type
      */
-    public JobType setName(String name)
-    {
+    public JobType setName(String name) {
         this.name = name;
         return this;
     }
@@ -129,8 +124,7 @@ public class JobType implements MediaServiceDTO
      * 
      * @return the created
      */
-    public Date getCreated()
-    {
+    public Date getCreated() {
         return created;
     }
 
@@ -141,8 +135,7 @@ public class JobType implements MediaServiceDTO
      *            the new created
      * @return the job type
      */
-    public JobType setCreated(Date created)
-    {
+    public JobType setCreated(Date created) {
         this.created = created;
         return this;
     }
@@ -152,8 +145,7 @@ public class JobType implements MediaServiceDTO
      * 
      * @return the last modified
      */
-    public Date getLastModified()
-    {
+    public Date getLastModified() {
         return lastModified;
     }
 
@@ -164,8 +156,7 @@ public class JobType implements MediaServiceDTO
      *            the new last modified
      * @return the job type
      */
-    public JobType setLastModified(Date lastModified)
-    {
+    public JobType setLastModified(Date lastModified) {
         this.lastModified = lastModified;
         return this;
     }
@@ -175,8 +166,7 @@ public class JobType implements MediaServiceDTO
      * 
      * @return the end time
      */
-    public Date getEndTime()
-    {
+    public Date getEndTime() {
         return endTime;
     }
 
@@ -187,8 +177,7 @@ public class JobType implements MediaServiceDTO
      *            the new end time
      * @return the job type
      */
-    public JobType setEndTime(Date endTime)
-    {
+    public JobType setEndTime(Date endTime) {
         this.endTime = endTime;
         return this;
     }
@@ -198,8 +187,7 @@ public class JobType implements MediaServiceDTO
      * 
      * @return the priority
      */
-    public Integer getPriority()
-    {
+    public Integer getPriority() {
         return priority;
     }
 
@@ -210,8 +198,7 @@ public class JobType implements MediaServiceDTO
      *            the new priority
      * @return the job type
      */
-    public JobType setPriority(Integer priority)
-    {
+    public JobType setPriority(Integer priority) {
         this.priority = priority;
         return this;
     }
@@ -221,8 +208,7 @@ public class JobType implements MediaServiceDTO
      * 
      * @return the running duration
      */
-    public Double getRunningDuration()
-    {
+    public Double getRunningDuration() {
         return runningDuration;
     }
 
@@ -233,8 +219,7 @@ public class JobType implements MediaServiceDTO
      *            the new running duration
      * @return the job type
      */
-    public JobType setRunningDuration(Double runningDuration)
-    {
+    public JobType setRunningDuration(Double runningDuration) {
         this.runningDuration = runningDuration;
         return this;
     }
@@ -244,8 +229,7 @@ public class JobType implements MediaServiceDTO
      * 
      * @return the start time
      */
-    public Date getStartTime()
-    {
+    public Date getStartTime() {
         return startTime;
     }
 
@@ -256,8 +240,7 @@ public class JobType implements MediaServiceDTO
      *            the new start time
      * @return the job type
      */
-    public JobType setStartTime(Date startTime)
-    {
+    public JobType setStartTime(Date startTime) {
         this.startTime = startTime;
         return this;
     }
@@ -267,8 +250,7 @@ public class JobType implements MediaServiceDTO
      * 
      * @return the state
      */
-    public Integer getState()
-    {
+    public Integer getState() {
         return state;
     }
 
@@ -279,8 +261,7 @@ public class JobType implements MediaServiceDTO
      *            the new state
      * @return the job type
      */
-    public JobType setState(Integer state)
-    {
+    public JobType setState(Integer state) {
         this.state = state;
         return this;
     }
@@ -290,8 +271,7 @@ public class JobType implements MediaServiceDTO
      * 
      * @return the template id
      */
-    public String getTemplateId()
-    {
+    public String getTemplateId() {
         return templateId;
     }
 
@@ -302,8 +282,7 @@ public class JobType implements MediaServiceDTO
      *            the new template id
      * @return the job type
      */
-    public JobType setTemplateId(String templateId)
-    {
+    public JobType setTemplateId(String templateId) {
         this.templateId = templateId;
         return this;
     }
@@ -313,8 +292,7 @@ public class JobType implements MediaServiceDTO
      * 
      * @return the job notification subscriptions
      */
-    public List<JobNotificationSubscriptionType> getJobNotificationSubscriptionTypes()
-    {
+    public List<JobNotificationSubscriptionType> getJobNotificationSubscriptionTypes() {
         return this.jobNotificationSubscriptionTypes;
     }
 
@@ -326,10 +304,8 @@ public class JobType implements MediaServiceDTO
      * @return the job type
      */
     public JobType addJobNotificationSubscriptionType(
-            JobNotificationSubscriptionType jobNotificationSubscription)
-    {
-        if (this.jobNotificationSubscriptionTypes == null)
-        {
+            JobNotificationSubscriptionType jobNotificationSubscription) {
+        if (this.jobNotificationSubscriptionTypes == null) {
             this.jobNotificationSubscriptionTypes = new ArrayList<JobNotificationSubscriptionType>();
         }
         this.jobNotificationSubscriptionTypes.add(jobNotificationSubscription);

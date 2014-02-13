@@ -26,56 +26,57 @@ package com.microsoft.windowsazure.management.monitoring.metrics.models;
 import java.util.ArrayList;
 
 /**
-* The setting for Endpoint monitoring.
-*/
-public class AvailabilityMetricSettingValue extends MetricSettingValue
-{
+ * The setting for Endpoint monitoring.
+ */
+public class AvailabilityMetricSettingValue extends MetricSettingValue {
     private ArrayList<NameConfig> availableLocations;
-    
+
     /**
-    * The locations from which the Urls can be monitored.
-    * @return The AvailableLocations value.
-    */
-    public ArrayList<NameConfig> getAvailableLocations()
-    {
+     * The locations from which the Urls can be monitored.
+     * 
+     * @return The AvailableLocations value.
+     */
+    public ArrayList<NameConfig> getAvailableLocations() {
         return this.availableLocations;
     }
-    
+
     /**
-    * The locations from which the Urls can be monitored.
-    * @param availableLocationsValue The AvailableLocations value.
-    */
-    public void setAvailableLocations(final ArrayList<NameConfig> availableLocationsValue)
-    {
+     * The locations from which the Urls can be monitored.
+     * 
+     * @param availableLocationsValue
+     *            The AvailableLocations value.
+     */
+    public void setAvailableLocations(
+            final ArrayList<NameConfig> availableLocationsValue) {
         this.availableLocations = availableLocationsValue;
     }
-    
+
     private ArrayList<EndpointConfig> endpoints;
-    
+
     /**
-    * The configuration for Urls to be monitored using endpoint monitoiring.
-    * @return The Endpoints value.
-    */
-    public ArrayList<EndpointConfig> getEndpoints()
-    {
+     * The configuration for Urls to be monitored using endpoint monitoiring.
+     * 
+     * @return The Endpoints value.
+     */
+    public ArrayList<EndpointConfig> getEndpoints() {
         return this.endpoints;
     }
-    
+
     /**
-    * The configuration for Urls to be monitored using endpoint monitoiring.
-    * @param endpointsValue The Endpoints value.
-    */
-    public void setEndpoints(final ArrayList<EndpointConfig> endpointsValue)
-    {
+     * The configuration for Urls to be monitored using endpoint monitoiring.
+     * 
+     * @param endpointsValue
+     *            The Endpoints value.
+     */
+    public void setEndpoints(final ArrayList<EndpointConfig> endpointsValue) {
         this.endpoints = endpointsValue;
     }
-    
+
     /**
-    * Initializes a new instance of the AvailabilityMetricSettingValue class.
-    *
-    */
-    public AvailabilityMetricSettingValue()
-    {
+     * Initializes a new instance of the AvailabilityMetricSettingValue class.
+     * 
+     */
+    public AvailabilityMetricSettingValue() {
         super();
         this.availableLocations = new ArrayList<NameConfig>();
         this.endpoints = new ArrayList<EndpointConfig>();

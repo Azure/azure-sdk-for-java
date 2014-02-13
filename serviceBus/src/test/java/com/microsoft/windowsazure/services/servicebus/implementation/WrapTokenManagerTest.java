@@ -30,16 +30,14 @@ import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
-public class WrapTokenManagerTest
-{
+public class WrapTokenManagerTest {
     private WrapContract contract;
     private WrapTokenManager client;
     private DateFactory dateFactory;
     private Calendar calendar;
 
     @Before
-    public void init() throws Exception
-    {
+    public void init() throws Exception {
         calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
 
         dateFactory = mock(DateFactory.class);
@@ -48,26 +46,21 @@ public class WrapTokenManagerTest
                 null, null, "testurl", "testname", "testpassword");
         client = new WrapTokenManager(contract, dateFactory, settings);
 
-        when(dateFactory.getDate()).thenAnswer(new Answer<Date>()
-        {
+        when(dateFactory.getDate()).thenAnswer(new Answer<Date>() {
             @Override
-            public Date answer(InvocationOnMock invocation) throws Throwable
-            {
+            public Date answer(InvocationOnMock invocation) throws Throwable {
                 return calendar.getTime();
             }
         });
     }
 
-    private void doIncrementingTokens() throws ServiceException
-    {
-        doAnswer(new Answer<WrapAccessTokenResult>()
-        {
+    private void doIncrementingTokens() throws ServiceException {
+        doAnswer(new Answer<WrapAccessTokenResult>() {
             int count = 0;
 
             @Override
             public WrapAccessTokenResult answer(InvocationOnMock invocation)
-                    throws Throwable
-            {
+                    throws Throwable {
                 ++count;
                 WrapAccessTokenResult wrapResponse = new WrapAccessTokenResult();
                 wrapResponse.setAccessToken("testaccesstoken1-" + count);
@@ -77,14 +70,12 @@ public class WrapTokenManagerTest
         }).when(contract).wrapAccessToken("testurl", "testname",
                 "testpassword", "http://test/scope");
 
-        doAnswer(new Answer<WrapAccessTokenResult>()
-        {
+        doAnswer(new Answer<WrapAccessTokenResult>() {
             int count = 0;
 
             @Override
             public WrapAccessTokenResult answer(InvocationOnMock invocation)
-                    throws Throwable
-            {
+                    throws Throwable {
                 ++count;
                 WrapAccessTokenResult wrapResponse = new WrapAccessTokenResult();
                 wrapResponse.setAccessToken("testaccesstoken2-" + count);
@@ -97,8 +88,7 @@ public class WrapTokenManagerTest
 
     @Test
     public void clientUsesContractToGetToken() throws ServiceException,
-            URISyntaxException
-    {
+            URISyntaxException {
         // Arrange
         doIncrementingTokens();
 
@@ -113,8 +103,7 @@ public class WrapTokenManagerTest
 
     @Test
     public void clientWillNotCallMultipleTimesWhileAccessTokenIsValid()
-            throws ServiceException, URISyntaxException
-    {
+            throws ServiceException, URISyntaxException {
         // Arrange
         doIncrementingTokens();
 
@@ -138,8 +127,7 @@ public class WrapTokenManagerTest
 
     @Test
     public void callsToDifferentPathsWillResultInDifferentAccessTokens()
-            throws ServiceException, URISyntaxException
-    {
+            throws ServiceException, URISyntaxException {
         // Arrange
         doIncrementingTokens();
 
@@ -165,8 +153,7 @@ public class WrapTokenManagerTest
 
     @Test
     public void clientWillBeCalledWhenTokenIsHalfwayToExpiring()
-            throws ServiceException, URISyntaxException
-    {
+            throws ServiceException, URISyntaxException {
         // Arrange
         doIncrementingTokens();
 

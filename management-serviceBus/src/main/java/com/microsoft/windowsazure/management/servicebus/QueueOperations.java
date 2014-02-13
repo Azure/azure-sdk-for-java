@@ -36,182 +36,229 @@ import javax.xml.transform.TransformerException;
 import org.xml.sax.SAXException;
 
 /**
-* The Service Bus Management API includes operations for managing Service Bus
-* queues.
-*/
-public interface QueueOperations
-{
+ * The Service Bus Management API includes operations for managing Service Bus
+ * queues.
+ */
+public interface QueueOperations {
     /**
-    * Creates a new queue. Once created, this queue’s resource manifest is
-    * immutable. This operation is idempotent. Repeating the create call,
-    * after a queue with same name has been created successfully, will result
-    * in a 409 Conflict error message.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj856295.aspx for
-    * more information)
-    *
-    * @param namespaceName The namespace name.
-    * @param queue The service bus queue.
-    * @throws ParserConfigurationException Thrown if there was an error
-    * configuring the parser for the response body.
-    * @throws SAXException Thrown if there was an error parsing the response
-    * body.
-    * @throws TransformerException Thrown if there was an error creating the
-    * DOM transformer.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws URISyntaxException Thrown if there was an error parsing a URI in
-    * the response.
-    * @return A response to a request for a particular queue.
-    */
-    ServiceBusQueueResponse create(String namespaceName, ServiceBusQueue queue) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException;
-    
+     * Creates a new queue. Once created, this queue’s resource manifest is
+     * immutable. This operation is idempotent. Repeating the create call, after
+     * a queue with same name has been created successfully, will result in a
+     * 409 Conflict error message. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/jj856295.aspx for
+     * more information)
+     * 
+     * @param namespaceName
+     *            The namespace name.
+     * @param queue
+     *            The service bus queue.
+     * @throws ParserConfigurationException
+     *             Thrown if there was an error configuring the parser for the
+     *             response body.
+     * @throws SAXException
+     *             Thrown if there was an error parsing the response body.
+     * @throws TransformerException
+     *             Thrown if there was an error creating the DOM transformer.
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @throws URISyntaxException
+     *             Thrown if there was an error parsing a URI in the response.
+     * @return A response to a request for a particular queue.
+     */
+    ServiceBusQueueResponse create(String namespaceName, ServiceBusQueue queue)
+            throws ParserConfigurationException, SAXException,
+            TransformerException, IOException, ServiceException,
+            URISyntaxException;
+
     /**
-    * Creates a new queue. Once created, this queue’s resource manifest is
-    * immutable. This operation is idempotent. Repeating the create call,
-    * after a queue with same name has been created successfully, will result
-    * in a 409 Conflict error message.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj856295.aspx for
-    * more information)
-    *
-    * @param namespaceName The namespace name.
-    * @param queue The service bus queue.
-    * @return A response to a request for a particular queue.
-    */
-    Future<ServiceBusQueueResponse> createAsync(String namespaceName, ServiceBusQueue queue);
-    
+     * Creates a new queue. Once created, this queue’s resource manifest is
+     * immutable. This operation is idempotent. Repeating the create call, after
+     * a queue with same name has been created successfully, will result in a
+     * 409 Conflict error message. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/jj856295.aspx for
+     * more information)
+     * 
+     * @param namespaceName
+     *            The namespace name.
+     * @param queue
+     *            The service bus queue.
+     * @return A response to a request for a particular queue.
+     */
+    Future<ServiceBusQueueResponse> createAsync(String namespaceName,
+            ServiceBusQueue queue);
+
     /**
-    * The queue description is an XML AtomPub document that defines the desired
-    * semantics for a subscription. The queue description contains the
-    * following properties. For more information, see the QueueDescription
-    * Properties topic.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
-    * more information)
-    *
-    * @param namespaceName The namespace name.
-    * @param queueName The queue name.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParserConfigurationException Thrown if there was a serious
-    * configuration error with the document parser.
-    * @throws SAXException Thrown if there was an error parsing the XML
-    * response.
-    * @throws URISyntaxException Thrown if there was an error parsing a URI in
-    * the response.
-    * @return A response to a request for a particular queue.
-    */
-    ServiceBusQueueResponse get(String namespaceName, String queueName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException;
-    
+     * The queue description is an XML AtomPub document that defines the desired
+     * semantics for a subscription. The queue description contains the
+     * following properties. For more information, see the QueueDescription
+     * Properties topic. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
+     * more information)
+     * 
+     * @param namespaceName
+     *            The namespace name.
+     * @param queueName
+     *            The queue name.
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @throws ParserConfigurationException
+     *             Thrown if there was a serious configuration error with the
+     *             document parser.
+     * @throws SAXException
+     *             Thrown if there was an error parsing the XML response.
+     * @throws URISyntaxException
+     *             Thrown if there was an error parsing a URI in the response.
+     * @return A response to a request for a particular queue.
+     */
+    ServiceBusQueueResponse get(String namespaceName, String queueName)
+            throws IOException, ServiceException, ParserConfigurationException,
+            SAXException, URISyntaxException;
+
     /**
-    * The queue description is an XML AtomPub document that defines the desired
-    * semantics for a subscription. The queue description contains the
-    * following properties. For more information, see the QueueDescription
-    * Properties topic.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
-    * more information)
-    *
-    * @param namespaceName The namespace name.
-    * @param queueName The queue name.
-    * @return A response to a request for a particular queue.
-    */
-    Future<ServiceBusQueueResponse> getAsync(String namespaceName, String queueName);
-    
+     * The queue description is an XML AtomPub document that defines the desired
+     * semantics for a subscription. The queue description contains the
+     * following properties. For more information, see the QueueDescription
+     * Properties topic. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
+     * more information)
+     * 
+     * @param namespaceName
+     *            The namespace name.
+     * @param queueName
+     *            The queue name.
+     * @return A response to a request for a particular queue.
+     */
+    Future<ServiceBusQueueResponse> getAsync(String namespaceName,
+            String queueName);
+
     /**
-    * Gets the set of connection strings for a queue.
-    *
-    * @param namespaceName The namespace name.
-    * @param queueName The queue name.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParserConfigurationException Thrown if there was a serious
-    * configuration error with the document parser.
-    * @throws SAXException Thrown if there was an error parsing the XML
-    * response.
-    * @return The set of connection details for a service bus entity.
-    */
-    ServiceBusConnectionDetailsResponse getConnectionDetails(String namespaceName, String queueName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
-    
+     * Gets the set of connection strings for a queue.
+     * 
+     * @param namespaceName
+     *            The namespace name.
+     * @param queueName
+     *            The queue name.
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @throws ParserConfigurationException
+     *             Thrown if there was a serious configuration error with the
+     *             document parser.
+     * @throws SAXException
+     *             Thrown if there was an error parsing the XML response.
+     * @return The set of connection details for a service bus entity.
+     */
+    ServiceBusConnectionDetailsResponse getConnectionDetails(
+            String namespaceName, String queueName) throws IOException,
+            ServiceException, ParserConfigurationException, SAXException;
+
     /**
-    * Gets the set of connection strings for a queue.
-    *
-    * @param namespaceName The namespace name.
-    * @param queueName The queue name.
-    * @return The set of connection details for a service bus entity.
-    */
-    Future<ServiceBusConnectionDetailsResponse> getConnectionDetailsAsync(String namespaceName, String queueName);
-    
+     * Gets the set of connection strings for a queue.
+     * 
+     * @param namespaceName
+     *            The namespace name.
+     * @param queueName
+     *            The queue name.
+     * @return The set of connection details for a service bus entity.
+     */
+    Future<ServiceBusConnectionDetailsResponse> getConnectionDetailsAsync(
+            String namespaceName, String queueName);
+
     /**
-    * Enumerates the queues in the service namespace. The result is returned in
-    * pages, each containing up to 100 queues. If the namespace contains more
-    * than 100 queues, a feed is returned that contains the first page and a
-    * next link with the URI to view the next page of data.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/hh780759.asp for
-    * more information)
-    *
-    * @param namespaceName The namespace name.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParserConfigurationException Thrown if there was a serious
-    * configuration error with the document parser.
-    * @throws SAXException Thrown if there was an error parsing the XML
-    * response.
-    * @throws URISyntaxException Thrown if there was an error parsing a URI in
-    * the response.
-    * @return A response to a request for a list of queues.
-    */
-    ServiceBusQueuesResponse list(String namespaceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException;
-    
+     * Enumerates the queues in the service namespace. The result is returned in
+     * pages, each containing up to 100 queues. If the namespace contains more
+     * than 100 queues, a feed is returned that contains the first page and a
+     * next link with the URI to view the next page of data. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780759.asp for
+     * more information)
+     * 
+     * @param namespaceName
+     *            The namespace name.
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @throws ParserConfigurationException
+     *             Thrown if there was a serious configuration error with the
+     *             document parser.
+     * @throws SAXException
+     *             Thrown if there was an error parsing the XML response.
+     * @throws URISyntaxException
+     *             Thrown if there was an error parsing a URI in the response.
+     * @return A response to a request for a list of queues.
+     */
+    ServiceBusQueuesResponse list(String namespaceName) throws IOException,
+            ServiceException, ParserConfigurationException, SAXException,
+            URISyntaxException;
+
     /**
-    * Enumerates the queues in the service namespace. The result is returned in
-    * pages, each containing up to 100 queues. If the namespace contains more
-    * than 100 queues, a feed is returned that contains the first page and a
-    * next link with the URI to view the next page of data.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/hh780759.asp for
-    * more information)
-    *
-    * @param namespaceName The namespace name.
-    * @return A response to a request for a list of queues.
-    */
+     * Enumerates the queues in the service namespace. The result is returned in
+     * pages, each containing up to 100 queues. If the namespace contains more
+     * than 100 queues, a feed is returned that contains the first page and a
+     * next link with the URI to view the next page of data. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780759.asp for
+     * more information)
+     * 
+     * @param namespaceName
+     *            The namespace name.
+     * @return A response to a request for a list of queues.
+     */
     Future<ServiceBusQueuesResponse> listAsync(String namespaceName);
-    
+
     /**
-    * Updates the queue description and makes a call to update corresponding DB
-    * entries.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj856305.aspx for
-    * more information)
-    *
-    * @param namespaceName The namespace name.
-    * @param queue The service bus queue.
-    * @throws ParserConfigurationException Thrown if there was an error
-    * configuring the parser for the response body.
-    * @throws SAXException Thrown if there was an error parsing the response
-    * body.
-    * @throws TransformerException Thrown if there was an error creating the
-    * DOM transformer.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @return A response to a request for a particular queue.
-    */
-    ServiceBusQueueResponse update(String namespaceName, ServiceBusQueue queue) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
-    
+     * Updates the queue description and makes a call to update corresponding DB
+     * entries. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/jj856305.aspx for
+     * more information)
+     * 
+     * @param namespaceName
+     *            The namespace name.
+     * @param queue
+     *            The service bus queue.
+     * @throws ParserConfigurationException
+     *             Thrown if there was an error configuring the parser for the
+     *             response body.
+     * @throws SAXException
+     *             Thrown if there was an error parsing the response body.
+     * @throws TransformerException
+     *             Thrown if there was an error creating the DOM transformer.
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @return A response to a request for a particular queue.
+     */
+    ServiceBusQueueResponse update(String namespaceName, ServiceBusQueue queue)
+            throws ParserConfigurationException, SAXException,
+            TransformerException, IOException, ServiceException;
+
     /**
-    * Updates the queue description and makes a call to update corresponding DB
-    * entries.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj856305.aspx for
-    * more information)
-    *
-    * @param namespaceName The namespace name.
-    * @param queue The service bus queue.
-    * @return A response to a request for a particular queue.
-    */
-    Future<ServiceBusQueueResponse> updateAsync(String namespaceName, ServiceBusQueue queue);
+     * Updates the queue description and makes a call to update corresponding DB
+     * entries. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/jj856305.aspx for
+     * more information)
+     * 
+     * @param namespaceName
+     *            The namespace name.
+     * @param queue
+     *            The service bus queue.
+     * @return A response to a request for a particular queue.
+     */
+    Future<ServiceBusQueueResponse> updateAsync(String namespaceName,
+            ServiceBusQueue queue);
 }

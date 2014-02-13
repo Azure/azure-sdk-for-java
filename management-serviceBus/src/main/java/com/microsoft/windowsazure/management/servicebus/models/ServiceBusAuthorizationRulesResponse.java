@@ -28,47 +28,47 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
-* A response to a request for a list of authorization rules.
-*/
-public class ServiceBusAuthorizationRulesResponse extends OperationResponse implements Iterable<ServiceBusSharedAccessAuthorizationRule>
-{
+ * A response to a request for a list of authorization rules.
+ */
+public class ServiceBusAuthorizationRulesResponse extends OperationResponse
+        implements Iterable<ServiceBusSharedAccessAuthorizationRule> {
     private ArrayList<ServiceBusSharedAccessAuthorizationRule> authorizationRules;
-    
+
     /**
-    * The list of authorization rules.
-    * @return The AuthorizationRules value.
-    */
-    public ArrayList<ServiceBusSharedAccessAuthorizationRule> getAuthorizationRules()
-    {
+     * The list of authorization rules.
+     * 
+     * @return The AuthorizationRules value.
+     */
+    public ArrayList<ServiceBusSharedAccessAuthorizationRule> getAuthorizationRules() {
         return this.authorizationRules;
     }
-    
+
     /**
-    * The list of authorization rules.
-    * @param authorizationRulesValue The AuthorizationRules value.
-    */
-    public void setAuthorizationRules(final ArrayList<ServiceBusSharedAccessAuthorizationRule> authorizationRulesValue)
-    {
+     * The list of authorization rules.
+     * 
+     * @param authorizationRulesValue
+     *            The AuthorizationRules value.
+     */
+    public void setAuthorizationRules(
+            final ArrayList<ServiceBusSharedAccessAuthorizationRule> authorizationRulesValue) {
         this.authorizationRules = authorizationRulesValue;
     }
-    
+
     /**
-    * Initializes a new instance of the ServiceBusAuthorizationRulesResponse
-    * class.
-    *
-    */
-    public ServiceBusAuthorizationRulesResponse()
-    {
+     * Initializes a new instance of the ServiceBusAuthorizationRulesResponse
+     * class.
+     * 
+     */
+    public ServiceBusAuthorizationRulesResponse() {
         super();
         this.authorizationRules = new ArrayList<ServiceBusSharedAccessAuthorizationRule>();
     }
-    
+
     /**
-    * Gets the sequence of AuthorizationRules.
-    *
-    */
-    public Iterator<ServiceBusSharedAccessAuthorizationRule> iterator()
-    {
+     * Gets the sequence of AuthorizationRules.
+     * 
+     */
+    public Iterator<ServiceBusSharedAccessAuthorizationRule> iterator() {
         return this.getAuthorizationRules().iterator();
     }
 }

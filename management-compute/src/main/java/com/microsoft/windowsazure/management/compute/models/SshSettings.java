@@ -26,58 +26,59 @@ package com.microsoft.windowsazure.management.compute.models;
 import java.util.ArrayList;
 
 /**
-* Optional. Specifies the SSH public keys and key pairs to populate in the
-* image during provisioning. This element is only used with the
-* LinuxProvisioningConfiguration set.
-*/
-public class SshSettings
-{
+ * Optional. Specifies the SSH public keys and key pairs to populate in the
+ * image during provisioning. This element is only used with the
+ * LinuxProvisioningConfiguration set.
+ */
+public class SshSettings {
     private ArrayList<SshSettingKeyPair> keyPairs;
-    
+
     /**
-    * Optional. Specifies the collection of SSH public keys.
-    * @return The KeyPairs value.
-    */
-    public ArrayList<SshSettingKeyPair> getKeyPairs()
-    {
+     * Optional. Specifies the collection of SSH public keys.
+     * 
+     * @return The KeyPairs value.
+     */
+    public ArrayList<SshSettingKeyPair> getKeyPairs() {
         return this.keyPairs;
     }
-    
+
     /**
-    * Optional. Specifies the collection of SSH public keys.
-    * @param keyPairsValue The KeyPairs value.
-    */
-    public void setKeyPairs(final ArrayList<SshSettingKeyPair> keyPairsValue)
-    {
+     * Optional. Specifies the collection of SSH public keys.
+     * 
+     * @param keyPairsValue
+     *            The KeyPairs value.
+     */
+    public void setKeyPairs(final ArrayList<SshSettingKeyPair> keyPairsValue) {
         this.keyPairs = keyPairsValue;
     }
-    
+
     private ArrayList<SshSettingPublicKey> publicKeys;
-    
+
     /**
-    * Optional. Specifies the collection of SSH public keys.
-    * @return The PublicKeys value.
-    */
-    public ArrayList<SshSettingPublicKey> getPublicKeys()
-    {
+     * Optional. Specifies the collection of SSH public keys.
+     * 
+     * @return The PublicKeys value.
+     */
+    public ArrayList<SshSettingPublicKey> getPublicKeys() {
         return this.publicKeys;
     }
-    
+
     /**
-    * Optional. Specifies the collection of SSH public keys.
-    * @param publicKeysValue The PublicKeys value.
-    */
-    public void setPublicKeys(final ArrayList<SshSettingPublicKey> publicKeysValue)
-    {
+     * Optional. Specifies the collection of SSH public keys.
+     * 
+     * @param publicKeysValue
+     *            The PublicKeys value.
+     */
+    public void setPublicKeys(
+            final ArrayList<SshSettingPublicKey> publicKeysValue) {
         this.publicKeys = publicKeysValue;
     }
-    
+
     /**
-    * Initializes a new instance of the SshSettings class.
-    *
-    */
-    public SshSettings()
-    {
+     * Initializes a new instance of the SshSettings class.
+     * 
+     */
+    public SshSettings() {
         this.keyPairs = new ArrayList<SshSettingKeyPair>();
         this.publicKeys = new ArrayList<SshSettingPublicKey>();
     }

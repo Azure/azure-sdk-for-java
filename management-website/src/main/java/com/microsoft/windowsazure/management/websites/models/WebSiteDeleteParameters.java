@@ -24,69 +24,72 @@
 package com.microsoft.windowsazure.management.websites.models;
 
 /**
-* The Delete Web Site operation parameters.
-*/
-public class WebSiteDeleteParameters
-{
+ * The Delete Web Site operation parameters.
+ */
+public class WebSiteDeleteParameters {
     private boolean deleteAllSlots;
-    
+
     /**
-    * Delete all slots for the web site.
-    * @return The DeleteAllSlots value.
-    */
-    public boolean isDeleteAllSlots()
-    {
+     * Delete all slots for the web site.
+     * 
+     * @return The DeleteAllSlots value.
+     */
+    public boolean isDeleteAllSlots() {
         return this.deleteAllSlots;
     }
-    
+
     /**
-    * Delete all slots for the web site.
-    * @param deleteAllSlotsValue The DeleteAllSlots value.
-    */
-    public void setDeleteAllSlots(final boolean deleteAllSlotsValue)
-    {
+     * Delete all slots for the web site.
+     * 
+     * @param deleteAllSlotsValue
+     *            The DeleteAllSlots value.
+     */
+    public void setDeleteAllSlots(final boolean deleteAllSlotsValue) {
         this.deleteAllSlots = deleteAllSlotsValue;
     }
-    
+
     private boolean deleteEmptyServerFarm;
-    
+
     /**
-    * If the site being deleted is the last web site in a server farm, you can
-    * delete the server farm.
-    * @return The DeleteEmptyServerFarm value.
-    */
-    public boolean isDeleteEmptyServerFarm()
-    {
+     * If the site being deleted is the last web site in a server farm, you can
+     * delete the server farm.
+     * 
+     * @return The DeleteEmptyServerFarm value.
+     */
+    public boolean isDeleteEmptyServerFarm() {
         return this.deleteEmptyServerFarm;
     }
-    
+
     /**
-    * If the site being deleted is the last web site in a server farm, you can
-    * delete the server farm.
-    * @param deleteEmptyServerFarmValue The DeleteEmptyServerFarm value.
-    */
-    public void setDeleteEmptyServerFarm(final boolean deleteEmptyServerFarmValue)
-    {
+     * If the site being deleted is the last web site in a server farm, you can
+     * delete the server farm.
+     * 
+     * @param deleteEmptyServerFarmValue
+     *            The DeleteEmptyServerFarm value.
+     */
+    public void setDeleteEmptyServerFarm(
+            final boolean deleteEmptyServerFarmValue) {
         this.deleteEmptyServerFarm = deleteEmptyServerFarmValue;
     }
-    
+
     private boolean deleteMetrics;
-    
+
     /**
-    * Delete the metrics for the web site.
-    * @return The DeleteMetrics value.
-    */
-    public boolean isDeleteMetrics()
-    {
+     * Delete the metrics for the web site.
+     * 
+     * @return The DeleteMetrics value.
+     */
+    public boolean isDeleteMetrics() {
         return this.deleteMetrics;
     }
-    
+
     /**
-    * Delete the metrics for the web site.
-    * @param deleteMetricsValue The DeleteMetrics value.
-    */
-    public void setDeleteMetrics(final boolean deleteMetricsValue)
-    {
+     * Delete the metrics for the web site.
+     * 
+     * @param deleteMetricsValue
+     *            The DeleteMetrics value.
+     */
+    public void setDeleteMetrics(final boolean deleteMetricsValue) {
         this.deleteMetrics = deleteMetricsValue;
     }
 }

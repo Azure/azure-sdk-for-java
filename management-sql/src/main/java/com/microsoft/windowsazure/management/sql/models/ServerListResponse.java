@@ -29,144 +29,147 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 /**
-* The response structure for the Server List operation.
-*/
-public class ServerListResponse extends OperationResponse implements Iterable<ServerListResponse.Server>
-{
+ * The response structure for the Server List operation.
+ */
+public class ServerListResponse extends OperationResponse implements
+        Iterable<ServerListResponse.Server> {
     private ArrayList<ServerListResponse.Server> servers;
-    
+
     /**
-    * Gets or sets the SQL Servers that are valid for your subscription.
-    * @return The Servers value.
-    */
-    public ArrayList<ServerListResponse.Server> getServers()
-    {
+     * Gets or sets the SQL Servers that are valid for your subscription.
+     * 
+     * @return The Servers value.
+     */
+    public ArrayList<ServerListResponse.Server> getServers() {
         return this.servers;
     }
-    
+
     /**
-    * Gets or sets the SQL Servers that are valid for your subscription.
-    * @param serversValue The Servers value.
-    */
-    public void setServers(final ArrayList<ServerListResponse.Server> serversValue)
-    {
+     * Gets or sets the SQL Servers that are valid for your subscription.
+     * 
+     * @param serversValue
+     *            The Servers value.
+     */
+    public void setServers(
+            final ArrayList<ServerListResponse.Server> serversValue) {
         this.servers = serversValue;
     }
-    
+
     /**
-    * Initializes a new instance of the ServerListResponse class.
-    *
-    */
-    public ServerListResponse()
-    {
+     * Initializes a new instance of the ServerListResponse class.
+     * 
+     */
+    public ServerListResponse() {
         super();
         this.servers = new ArrayList<ServerListResponse.Server>();
     }
-    
+
     /**
-    * Gets the sequence of Servers.
-    *
-    */
-    public Iterator<ServerListResponse.Server> iterator()
-    {
+     * Gets the sequence of Servers.
+     * 
+     */
+    public Iterator<ServerListResponse.Server> iterator() {
         return this.getServers().iterator();
     }
-    
+
     /**
-    * An individual server in your Windows Azure subscription.
-    */
-    public static class Server
-    {
+     * An individual server in your Windows Azure subscription.
+     */
+    public static class Server {
         private String administratorUserName;
-        
+
         /**
-        * Gets or sets the name of an administrator for this server.
-        * @return The AdministratorUserName value.
-        */
-        public String getAdministratorUserName()
-        {
+         * Gets or sets the name of an administrator for this server.
+         * 
+         * @return The AdministratorUserName value.
+         */
+        public String getAdministratorUserName() {
             return this.administratorUserName;
         }
-        
+
         /**
-        * Gets or sets the name of an administrator for this server.
-        * @param administratorUserNameValue The AdministratorUserName value.
-        */
-        public void setAdministratorUserName(final String administratorUserNameValue)
-        {
+         * Gets or sets the name of an administrator for this server.
+         * 
+         * @param administratorUserNameValue
+         *            The AdministratorUserName value.
+         */
+        public void setAdministratorUserName(
+                final String administratorUserNameValue) {
             this.administratorUserName = administratorUserNameValue;
         }
-        
+
         private HashMap<String, String> features;
-        
+
         /**
-        * Gets or sets the list of features and the type of database server for
-        * an individual server.
-        * @return The Features value.
-        */
-        public HashMap<String, String> getFeatures()
-        {
+         * Gets or sets the list of features and the type of database server for
+         * an individual server.
+         * 
+         * @return The Features value.
+         */
+        public HashMap<String, String> getFeatures() {
             return this.features;
         }
-        
+
         /**
-        * Gets or sets the list of features and the type of database server for
-        * an individual server.
-        * @param featuresValue The Features value.
-        */
-        public void setFeatures(final HashMap<String, String> featuresValue)
-        {
+         * Gets or sets the list of features and the type of database server for
+         * an individual server.
+         * 
+         * @param featuresValue
+         *            The Features value.
+         */
+        public void setFeatures(final HashMap<String, String> featuresValue) {
             this.features = featuresValue;
         }
-        
+
         private String location;
-        
+
         /**
-        * Gets or sets the name of a data center location that is valid for
-        * your subscription.
-        * @return The Location value.
-        */
-        public String getLocation()
-        {
+         * Gets or sets the name of a data center location that is valid for
+         * your subscription.
+         * 
+         * @return The Location value.
+         */
+        public String getLocation() {
             return this.location;
         }
-        
+
         /**
-        * Gets or sets the name of a data center location that is valid for
-        * your subscription.
-        * @param locationValue The Location value.
-        */
-        public void setLocation(final String locationValue)
-        {
+         * Gets or sets the name of a data center location that is valid for
+         * your subscription.
+         * 
+         * @param locationValue
+         *            The Location value.
+         */
+        public void setLocation(final String locationValue) {
             this.location = locationValue;
         }
-        
+
         private String name;
-        
+
         /**
-        * Gets or sets the name of a SQL Server running in your subscription.
-        * @return The Name value.
-        */
-        public String getName()
-        {
+         * Gets or sets the name of a SQL Server running in your subscription.
+         * 
+         * @return The Name value.
+         */
+        public String getName() {
             return this.name;
         }
-        
+
         /**
-        * Gets or sets the name of a SQL Server running in your subscription.
-        * @param nameValue The Name value.
-        */
-        public void setName(final String nameValue)
-        {
+         * Gets or sets the name of a SQL Server running in your subscription.
+         * 
+         * @param nameValue
+         *            The Name value.
+         */
+        public void setName(final String nameValue) {
             this.name = nameValue;
         }
-        
+
         /**
-        * Initializes a new instance of the Server class.
-        *
-        */
-        public Server()
-        {
+         * Initializes a new instance of the Server class.
+         * 
+         */
+        public Server() {
             this.features = new HashMap<String, String>();
         }
     }

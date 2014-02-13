@@ -17,8 +17,7 @@ package com.microsoft.windowsazure.services.servicebus.models;
 /**
  * Represents the result of a <code>createTopic</code> operation.
  */
-public class CreateTopicResult
-{
+public class CreateTopicResult {
 
     private TopicInfo value;
 
@@ -29,8 +28,7 @@ public class CreateTopicResult
      *            A {@link TopicInfo} object assigned as the value of the
      *            result.
      */
-    public CreateTopicResult(TopicInfo value)
-    {
+    public CreateTopicResult(TopicInfo value) {
         this.setValue(value);
     }
 
@@ -41,8 +39,7 @@ public class CreateTopicResult
      *            A {@link TopicInfo} object assigned as the value of the
      *            result.
      */
-    public void setValue(TopicInfo value)
-    {
+    public void setValue(TopicInfo value) {
         this.value = value;
     }
 
@@ -52,8 +49,7 @@ public class CreateTopicResult
      * @return A {@link TopicInfo} object that represents the value of the
      *         result.
      */
-    public TopicInfo getValue()
-    {
+    public TopicInfo getValue() {
         return value;
     }
 

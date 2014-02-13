@@ -21,44 +21,43 @@ import com.microsoft.windowsazure.Configuration;
  * Access service management functionality.
  * 
  */
-public class ServiceBusManagementService
-{
-    private ServiceBusManagementService()
-    {
+public class ServiceBusManagementService {
+    private ServiceBusManagementService() {
         // class is not instantiated
     }
 
     /**
      * Creates an instance of the <code>ServiceBusManagementClient</code> API.
+     * 
      * @return An instance of the <code>ServiceBusManagementClient</code> API.
      */
-    public static ServiceBusManagementClient create()
-    {
-        return Configuration.getInstance().create(ServiceBusManagementClient.class);
+    public static ServiceBusManagementClient create() {
+        return Configuration.getInstance().create(
+                ServiceBusManagementClient.class);
     }
 
     /**
      * Creates an instance of the <code>ServiceBusManagementClient</code> API
      * using the specified configuration.
-     *
-     * @param config A <code>Configuration</code> object that represents the
-     * configuration for the service management.
+     * 
+     * @param config
+     *            A <code>Configuration</code> object that represents the
+     *            configuration for the service management.
      * @return An instance of the <code>ServiceBusManagementClient</code> API.
      */
-    public static ServiceBusManagementClient create(final Configuration config)
-    {
+    public static ServiceBusManagementClient create(final Configuration config) {
         return config.create(ServiceBusManagementClient.class);
     }
 
     /**
      * Creates an instance of the <code>ServiceBusManagementClient</code> API.
-     *
-     * @param profile A <code>String</code> object that representing the profile
-     * of the service management service.
+     * 
+     * @param profile
+     *            A <code>String</code> object that representing the profile of
+     *            the service management service.
      * @return An instance of the <code>ServiceBusManagementClient</code> API.
      */
-    public static ServiceBusManagementClient create(final String profile)
-    {
+    public static ServiceBusManagementClient create(final String profile) {
         return Configuration.getInstance().create(profile,
                 ServiceBusManagementClient.class);
     }
@@ -66,14 +65,14 @@ public class ServiceBusManagementService
     /**
      * Creates an instance of the <code>ServiceBusManagementClient</code> API
      * using the specified configuration.
-     *
-     * @param config A <code>Configuration</code> object that represents the
-     * configuration for the service management.
+     * 
+     * @param config
+     *            A <code>Configuration</code> object that represents the
+     *            configuration for the service management.
      * @return An instance of the <code>ServiceBusManagementClient</code> API.
      */
     public static ServiceBusManagementClient create(final String profile,
-            final Configuration config)
-    {
+            final Configuration config) {
         return config.create(profile, ServiceBusManagementClient.class);
     }
 }

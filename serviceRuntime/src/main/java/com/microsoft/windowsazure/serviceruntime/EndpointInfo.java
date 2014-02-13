@@ -51,8 +51,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "EndpointInfo")
-class EndpointInfo
-{
+class EndpointInfo {
 
     @XmlAttribute(required = true)
     protected String name;
@@ -69,8 +68,7 @@ class EndpointInfo
      * @return possible object is {@link String }
      * 
      */
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
@@ -81,8 +79,7 @@ class EndpointInfo
      *            allowed object is {@link String }
      * 
      */
-    public void setName(String value)
-    {
+    public void setName(String value) {
         this.name = value;
     }
 
@@ -92,8 +89,7 @@ class EndpointInfo
      * @return possible object is {@link String }
      * 
      */
-    public String getAddress()
-    {
+    public String getAddress() {
         return address;
     }
 
@@ -104,8 +100,7 @@ class EndpointInfo
      *            allowed object is {@link String }
      * 
      */
-    public void setAddress(String value)
-    {
+    public void setAddress(String value) {
         this.address = value;
     }
 
@@ -113,8 +108,7 @@ class EndpointInfo
      * Gets the value of the port property.
      * 
      */
-    public int getPort()
-    {
+    public int getPort() {
         return port;
     }
 
@@ -122,8 +116,7 @@ class EndpointInfo
      * Sets the value of the port property.
      * 
      */
-    public void setPort(int value)
-    {
+    public void setPort(int value) {
         this.port = value;
     }
 
@@ -133,8 +126,7 @@ class EndpointInfo
      * @return possible object is {@link ProtocolEnum }
      * 
      */
-    public ProtocolEnum getProtocol()
-    {
+    public ProtocolEnum getProtocol() {
         return protocol;
     }
 
@@ -145,8 +137,7 @@ class EndpointInfo
      *            allowed object is {@link ProtocolEnum }
      * 
      */
-    public void setProtocol(ProtocolEnum value)
-    {
+    public void setProtocol(ProtocolEnum value) {
         this.protocol = value;
     }
 

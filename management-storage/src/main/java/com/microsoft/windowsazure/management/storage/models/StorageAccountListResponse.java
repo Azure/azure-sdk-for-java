@@ -30,168 +30,169 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 /**
-* The List Storage Accounts operation response.
-*/
-public class StorageAccountListResponse extends OperationResponse implements Iterable<StorageAccountListResponse.StorageService>
-{
+ * The List Storage Accounts operation response.
+ */
+public class StorageAccountListResponse extends OperationResponse implements
+        Iterable<StorageAccountListResponse.StorageService> {
     private ArrayList<StorageAccountListResponse.StorageService> storageServices;
-    
+
     /**
-    * @return The StorageServices value.
-    */
-    public ArrayList<StorageAccountListResponse.StorageService> getStorageServices()
-    {
+     * @return The StorageServices value.
+     */
+    public ArrayList<StorageAccountListResponse.StorageService> getStorageServices() {
         return this.storageServices;
     }
-    
+
     /**
-    * @param storageServicesValue The StorageServices value.
-    */
-    public void setStorageServices(final ArrayList<StorageAccountListResponse.StorageService> storageServicesValue)
-    {
+     * @param storageServicesValue
+     *            The StorageServices value.
+     */
+    public void setStorageServices(
+            final ArrayList<StorageAccountListResponse.StorageService> storageServicesValue) {
         this.storageServices = storageServicesValue;
     }
-    
+
     /**
-    * Initializes a new instance of the StorageAccountListResponse class.
-    *
-    */
-    public StorageAccountListResponse()
-    {
+     * Initializes a new instance of the StorageAccountListResponse class.
+     * 
+     */
+    public StorageAccountListResponse() {
         super();
         this.storageServices = new ArrayList<StorageAccountListResponse.StorageService>();
     }
-    
+
     /**
-    * Gets the sequence of StorageServices.
-    *
-    */
-    public Iterator<StorageAccountListResponse.StorageService> iterator()
-    {
+     * Gets the sequence of StorageServices.
+     * 
+     */
+    public Iterator<StorageAccountListResponse.StorageService> iterator() {
         return this.getStorageServices().iterator();
     }
-    
+
     /**
-    * A Storage Service associated with your subscription.
-    */
-    public static class StorageService
-    {
+     * A Storage Service associated with your subscription.
+     */
+    public static class StorageService {
         private HashMap<String, String> extendedProperties;
-        
+
         /**
-        * Optional. Represents the name of an extended storage account
-        * property. Each extended property must have both a defined name and
-        * value. You can have a maximum of 50 extended property name/value
-        * pairs.  The maximum length of the Name element is 64 characters,
-        * only alphanumeric characters and underscores are valid in the Name,
-        * and the name must start with a letter. Attempting to use other
-        * characters, starting the Name with a non-letter character, or
-        * entering a name that is identical to that of another extended
-        * property owned by the same storage account, will result in a status
-        * code 400 (Bad Request) error.  Each extended property value has a
-        * maximum length of 255 characters.
-        * @return The ExtendedProperties value.
-        */
-        public HashMap<String, String> getExtendedProperties()
-        {
+         * Optional. Represents the name of an extended storage account
+         * property. Each extended property must have both a defined name and
+         * value. You can have a maximum of 50 extended property name/value
+         * pairs. The maximum length of the Name element is 64 characters, only
+         * alphanumeric characters and underscores are valid in the Name, and
+         * the name must start with a letter. Attempting to use other
+         * characters, starting the Name with a non-letter character, or
+         * entering a name that is identical to that of another extended
+         * property owned by the same storage account, will result in a status
+         * code 400 (Bad Request) error. Each extended property value has a
+         * maximum length of 255 characters.
+         * 
+         * @return The ExtendedProperties value.
+         */
+        public HashMap<String, String> getExtendedProperties() {
             return this.extendedProperties;
         }
-        
+
         /**
-        * Optional. Represents the name of an extended storage account
-        * property. Each extended property must have both a defined name and
-        * value. You can have a maximum of 50 extended property name/value
-        * pairs.  The maximum length of the Name element is 64 characters,
-        * only alphanumeric characters and underscores are valid in the Name,
-        * and the name must start with a letter. Attempting to use other
-        * characters, starting the Name with a non-letter character, or
-        * entering a name that is identical to that of another extended
-        * property owned by the same storage account, will result in a status
-        * code 400 (Bad Request) error.  Each extended property value has a
-        * maximum length of 255 characters.
-        * @param extendedPropertiesValue The ExtendedProperties value.
-        */
-        public void setExtendedProperties(final HashMap<String, String> extendedPropertiesValue)
-        {
+         * Optional. Represents the name of an extended storage account
+         * property. Each extended property must have both a defined name and
+         * value. You can have a maximum of 50 extended property name/value
+         * pairs. The maximum length of the Name element is 64 characters, only
+         * alphanumeric characters and underscores are valid in the Name, and
+         * the name must start with a letter. Attempting to use other
+         * characters, starting the Name with a non-letter character, or
+         * entering a name that is identical to that of another extended
+         * property owned by the same storage account, will result in a status
+         * code 400 (Bad Request) error. Each extended property value has a
+         * maximum length of 255 characters.
+         * 
+         * @param extendedPropertiesValue
+         *            The ExtendedProperties value.
+         */
+        public void setExtendedProperties(
+                final HashMap<String, String> extendedPropertiesValue) {
             this.extendedProperties = extendedPropertiesValue;
         }
-        
+
         private StorageServiceProperties properties;
-        
+
         /**
-        * Details about the storage account.
-        * @return The Properties value.
-        */
-        public StorageServiceProperties getProperties()
-        {
+         * Details about the storage account.
+         * 
+         * @return The Properties value.
+         */
+        public StorageServiceProperties getProperties() {
             return this.properties;
         }
-        
+
         /**
-        * Details about the storage account.
-        * @param propertiesValue The Properties value.
-        */
-        public void setProperties(final StorageServiceProperties propertiesValue)
-        {
+         * Details about the storage account.
+         * 
+         * @param propertiesValue
+         *            The Properties value.
+         */
+        public void setProperties(final StorageServiceProperties propertiesValue) {
             this.properties = propertiesValue;
         }
-        
+
         private String serviceName;
-        
+
         /**
-        * The name of the storage account. This name is the DNS prefix name and
-        * can be used to access blobs, queues, and tables in the storage
-        * account.  For example, if the service name is MyStorageAccount you
-        * could access the blob containers by calling:
-        * http://MyStorageAccount.blob.core.windows.net/mycontainer/
-        * @return The ServiceName value.
-        */
-        public String getServiceName()
-        {
+         * The name of the storage account. This name is the DNS prefix name and
+         * can be used to access blobs, queues, and tables in the storage
+         * account. For example, if the service name is MyStorageAccount you
+         * could access the blob containers by calling:
+         * http://MyStorageAccount.blob.core.windows.net/mycontainer/
+         * 
+         * @return The ServiceName value.
+         */
+        public String getServiceName() {
             return this.serviceName;
         }
-        
+
         /**
-        * The name of the storage account. This name is the DNS prefix name and
-        * can be used to access blobs, queues, and tables in the storage
-        * account.  For example, if the service name is MyStorageAccount you
-        * could access the blob containers by calling:
-        * http://MyStorageAccount.blob.core.windows.net/mycontainer/
-        * @param serviceNameValue The ServiceName value.
-        */
-        public void setServiceName(final String serviceNameValue)
-        {
+         * The name of the storage account. This name is the DNS prefix name and
+         * can be used to access blobs, queues, and tables in the storage
+         * account. For example, if the service name is MyStorageAccount you
+         * could access the blob containers by calling:
+         * http://MyStorageAccount.blob.core.windows.net/mycontainer/
+         * 
+         * @param serviceNameValue
+         *            The ServiceName value.
+         */
+        public void setServiceName(final String serviceNameValue) {
             this.serviceName = serviceNameValue;
         }
-        
+
         private URI uri;
-        
+
         /**
-        * The Service Management API request URI used to perform Get Storage
-        * Account Properties requests against the storage account.
-        * @return The Uri value.
-        */
-        public URI getUri()
-        {
+         * The Service Management API request URI used to perform Get Storage
+         * Account Properties requests against the storage account.
+         * 
+         * @return The Uri value.
+         */
+        public URI getUri() {
             return this.uri;
         }
-        
+
         /**
-        * The Service Management API request URI used to perform Get Storage
-        * Account Properties requests against the storage account.
-        * @param uriValue The Uri value.
-        */
-        public void setUri(final URI uriValue)
-        {
+         * The Service Management API request URI used to perform Get Storage
+         * Account Properties requests against the storage account.
+         * 
+         * @param uriValue
+         *            The Uri value.
+         */
+        public void setUri(final URI uriValue) {
             this.uri = uriValue;
         }
-        
+
         /**
-        * Initializes a new instance of the StorageService class.
-        *
-        */
-        public StorageService()
-        {
+         * Initializes a new instance of the StorageService class.
+         * 
+         */
+        public StorageService() {
             this.extendedProperties = new HashMap<String, String>();
         }
     }

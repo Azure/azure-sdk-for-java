@@ -36,132 +36,157 @@ import javax.xml.transform.TransformerException;
 import org.xml.sax.SAXException;
 
 /**
-* The SQL Database Management API includes operations for managing SQL Database
-* servers for a subscription.  (see
-* http://msdn.microsoft.com/en-us/library/windowsazure/gg715271.aspx for more
-* information)
-*/
-public interface ServerOperations
-{
+ * The SQL Database Management API includes operations for managing SQL Database
+ * servers for a subscription. (see
+ * http://msdn.microsoft.com/en-us/library/windowsazure/gg715271.aspx for more
+ * information)
+ */
+public interface ServerOperations {
     /**
-    * Sets the administrative password of a SQL Database server for a
-    * subscription.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/gg715272.aspx for
-    * more information)
-    *
-    * @param serverName The server that will have the change made to the
-    * administrative user.
-    * @param parameters Parameters for the Manage Administrator Password
-    * operation.
-    * @throws ParserConfigurationException Thrown if there was an error
-    * configuring the parser for the response body.
-    * @throws SAXException Thrown if there was an error parsing the response
-    * body.
-    * @throws TransformerException Thrown if there was an error creating the
-    * DOM transformer.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
-    OperationResponse changeAdministratorPassword(String serverName, ServerChangeAdministratorPasswordParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
-    
+     * Sets the administrative password of a SQL Database server for a
+     * subscription. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715272.aspx for
+     * more information)
+     * 
+     * @param serverName
+     *            The server that will have the change made to the
+     *            administrative user.
+     * @param parameters
+     *            Parameters for the Manage Administrator Password operation.
+     * @throws ParserConfigurationException
+     *             Thrown if there was an error configuring the parser for the
+     *             response body.
+     * @throws SAXException
+     *             Thrown if there was an error parsing the response body.
+     * @throws TransformerException
+     *             Thrown if there was an error creating the DOM transformer.
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @return A standard service response including an HTTP status code and
+     *         request ID.
+     */
+    OperationResponse changeAdministratorPassword(String serverName,
+            ServerChangeAdministratorPasswordParameters parameters)
+            throws ParserConfigurationException, SAXException,
+            TransformerException, IOException, ServiceException;
+
     /**
-    * Sets the administrative password of a SQL Database server for a
-    * subscription.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/gg715272.aspx for
-    * more information)
-    *
-    * @param serverName The server that will have the change made to the
-    * administrative user.
-    * @param parameters Parameters for the Manage Administrator Password
-    * operation.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
-    Future<OperationResponse> changeAdministratorPasswordAsync(String serverName, ServerChangeAdministratorPasswordParameters parameters);
-    
+     * Sets the administrative password of a SQL Database server for a
+     * subscription. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715272.aspx for
+     * more information)
+     * 
+     * @param serverName
+     *            The server that will have the change made to the
+     *            administrative user.
+     * @param parameters
+     *            Parameters for the Manage Administrator Password operation.
+     * @return A standard service response including an HTTP status code and
+     *         request ID.
+     */
+    Future<OperationResponse> changeAdministratorPasswordAsync(
+            String serverName,
+            ServerChangeAdministratorPasswordParameters parameters);
+
     /**
-    * Adds a new SQL Database server to a subscription.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/gg715274.aspx for
-    * more information)
-    *
-    * @param parameters Parameters supplied to the Create Server operation.
-    * @throws ParserConfigurationException Thrown if there was an error
-    * configuring the parser for the response body.
-    * @throws SAXException Thrown if there was an error parsing the response
-    * body.
-    * @throws TransformerException Thrown if there was an error creating the
-    * DOM transformer.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @return The response returned from the Create Server operation.
-    */
-    ServerCreateResponse create(ServerCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
-    
+     * Adds a new SQL Database server to a subscription. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715274.aspx for
+     * more information)
+     * 
+     * @param parameters
+     *            Parameters supplied to the Create Server operation.
+     * @throws ParserConfigurationException
+     *             Thrown if there was an error configuring the parser for the
+     *             response body.
+     * @throws SAXException
+     *             Thrown if there was an error parsing the response body.
+     * @throws TransformerException
+     *             Thrown if there was an error creating the DOM transformer.
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @return The response returned from the Create Server operation.
+     */
+    ServerCreateResponse create(ServerCreateParameters parameters)
+            throws ParserConfigurationException, SAXException,
+            TransformerException, IOException, ServiceException;
+
     /**
-    * Adds a new SQL Database server to a subscription.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/gg715274.aspx for
-    * more information)
-    *
-    * @param parameters Parameters supplied to the Create Server operation.
-    * @return The response returned from the Create Server operation.
-    */
+     * Adds a new SQL Database server to a subscription. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715274.aspx for
+     * more information)
+     * 
+     * @param parameters
+     *            Parameters supplied to the Create Server operation.
+     * @return The response returned from the Create Server operation.
+     */
     Future<ServerCreateResponse> createAsync(ServerCreateParameters parameters);
-    
+
     /**
-    * Drops a SQL Database server from a subscription.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/gg715285.aspx for
-    * more information)
-    *
-    * @param serverName The name of the server to be deleted.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
-    OperationResponse delete(String serverName) throws IOException, ServiceException;
-    
+     * Drops a SQL Database server from a subscription. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715285.aspx for
+     * more information)
+     * 
+     * @param serverName
+     *            The name of the server to be deleted.
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @return A standard service response including an HTTP status code and
+     *         request ID.
+     */
+    OperationResponse delete(String serverName) throws IOException,
+            ServiceException;
+
     /**
-    * Drops a SQL Database server from a subscription.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/gg715285.aspx for
-    * more information)
-    *
-    * @param serverName The name of the server to be deleted.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
+     * Drops a SQL Database server from a subscription. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715285.aspx for
+     * more information)
+     * 
+     * @param serverName
+     *            The name of the server to be deleted.
+     * @return A standard service response including an HTTP status code and
+     *         request ID.
+     */
     Future<OperationResponse> deleteAsync(String serverName);
-    
+
     /**
-    * Returns all SQL Database servers that are provisioned for a subscription.
-    * (see http://msdn.microsoft.com/en-us/library/windowsazure/gg715269.aspx
-    * for more information)
-    *
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParserConfigurationException Thrown if there was a serious
-    * configuration error with the document parser.
-    * @throws SAXException Thrown if there was an error parsing the XML
-    * response.
-    * @return The response structure for the Server List operation.
-    */
-    ServerListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException;
-    
+     * Returns all SQL Database servers that are provisioned for a subscription.
+     * (see http://msdn.microsoft.com/en-us/library/windowsazure/gg715269.aspx
+     * for more information)
+     * 
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @throws ParserConfigurationException
+     *             Thrown if there was a serious configuration error with the
+     *             document parser.
+     * @throws SAXException
+     *             Thrown if there was an error parsing the XML response.
+     * @return The response structure for the Server List operation.
+     */
+    ServerListResponse list() throws IOException, ServiceException,
+            ParserConfigurationException, SAXException;
+
     /**
-    * Returns all SQL Database servers that are provisioned for a subscription.
-    * (see http://msdn.microsoft.com/en-us/library/windowsazure/gg715269.aspx
-    * for more information)
-    *
-    * @return The response structure for the Server List operation.
-    */
+     * Returns all SQL Database servers that are provisioned for a subscription.
+     * (see http://msdn.microsoft.com/en-us/library/windowsazure/gg715269.aspx
+     * for more information)
+     * 
+     * @return The response structure for the Server List operation.
+     */
     Future<ServerListResponse> listAsync();
 }

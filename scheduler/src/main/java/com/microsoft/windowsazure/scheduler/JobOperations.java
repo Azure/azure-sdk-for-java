@@ -46,197 +46,247 @@ import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.util.concurrent.Future;
 
-public interface JobOperations
-{
+public interface JobOperations {
     /**
-    * If the user wants the server to create the job id then he can use a POST
-    * request to the jobs resource.
-    *
-    * @param parameters Parameters supplied to the Create Job operation.
-    * @return The Create Job operation response.
-    */
-    JobCreateResponse create(JobCreateParameters parameters) throws UnsupportedEncodingException, IOException, ServiceException, ParseException, URISyntaxException;
-    
+     * If the user wants the server to create the job id then he can use a POST
+     * request to the jobs resource.
+     * 
+     * @param parameters
+     *            Parameters supplied to the Create Job operation.
+     * @return The Create Job operation response.
+     */
+    JobCreateResponse create(JobCreateParameters parameters)
+            throws UnsupportedEncodingException, IOException, ServiceException,
+            ParseException, URISyntaxException;
+
     /**
-    * If the user wants the server to create the job id then he can use a POST
-    * request to the jobs resource.
-    *
-    * @param parameters Parameters supplied to the Create Job operation.
-    * @return The Create Job operation response.
-    */
+     * If the user wants the server to create the job id then he can use a POST
+     * request to the jobs resource.
+     * 
+     * @param parameters
+     *            Parameters supplied to the Create Job operation.
+     * @return The Create Job operation response.
+     */
     Future<JobCreateResponse> createAsync(JobCreateParameters parameters);
-    
+
     /**
-    * Jobs can be created or updated with a PUT operation to a job's address.
-    * The resource name is the ID of the job. Doing a PUT operation on a jobId
-    * that already exists will completely overwrite the existing job. Putting
-    * an existing job (replace) will reset internal execution counters.
-    *
-    * @param jobId Id of the job to create or update.
-    * @param parameters Parameters supplied to the job operation.
-    * @return The Update Job operation response.
-    */
-    JobCreateOrUpdateResponse createOrUpdate(String jobId, JobCreateOrUpdateParameters parameters) throws UnsupportedEncodingException, IOException, ServiceException, ParseException, URISyntaxException;
-    
+     * Jobs can be created or updated with a PUT operation to a job's address.
+     * The resource name is the ID of the job. Doing a PUT operation on a jobId
+     * that already exists will completely overwrite the existing job. Putting
+     * an existing job (replace) will reset internal execution counters.
+     * 
+     * @param jobId
+     *            Id of the job to create or update.
+     * @param parameters
+     *            Parameters supplied to the job operation.
+     * @return The Update Job operation response.
+     */
+    JobCreateOrUpdateResponse createOrUpdate(String jobId,
+            JobCreateOrUpdateParameters parameters)
+            throws UnsupportedEncodingException, IOException, ServiceException,
+            ParseException, URISyntaxException;
+
     /**
-    * Jobs can be created or updated with a PUT operation to a job's address.
-    * The resource name is the ID of the job. Doing a PUT operation on a jobId
-    * that already exists will completely overwrite the existing job. Putting
-    * an existing job (replace) will reset internal execution counters.
-    *
-    * @param jobId Id of the job to create or update.
-    * @param parameters Parameters supplied to the job operation.
-    * @return The Update Job operation response.
-    */
-    Future<JobCreateOrUpdateResponse> createOrUpdateAsync(String jobId, JobCreateOrUpdateParameters parameters);
-    
+     * Jobs can be created or updated with a PUT operation to a job's address.
+     * The resource name is the ID of the job. Doing a PUT operation on a jobId
+     * that already exists will completely overwrite the existing job. Putting
+     * an existing job (replace) will reset internal execution counters.
+     * 
+     * @param jobId
+     *            Id of the job to create or update.
+     * @param parameters
+     *            Parameters supplied to the job operation.
+     * @return The Update Job operation response.
+     */
+    Future<JobCreateOrUpdateResponse> createOrUpdateAsync(String jobId,
+            JobCreateOrUpdateParameters parameters);
+
     /**
-    * Deletes a job.
-    *
-    * @param jobId Id of the job to delete.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
+     * Deletes a job.
+     * 
+     * @param jobId
+     *            Id of the job to delete.
+     * @return A standard service response including an HTTP status code and
+     *         request ID.
+     */
     OperationResponse delete(String jobId) throws IOException, ServiceException;
-    
+
     /**
-    * Deletes a job.
-    *
-    * @param jobId Id of the job to delete.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
+     * Deletes a job.
+     * 
+     * @param jobId
+     *            Id of the job to delete.
+     * @return A standard service response including an HTTP status code and
+     *         request ID.
+     */
     Future<OperationResponse> deleteAsync(String jobId);
-    
+
     /**
-    * The status of an individual job can be access by a GET call to a job's
-    * address, jobId.
-    *
-    * @param jobId Id of the job to get.
-    * @return The Get Job operation response.
-    */
-    JobGetResponse get(String jobId) throws IOException, ServiceException, ParseException, URISyntaxException;
-    
+     * The status of an individual job can be access by a GET call to a job's
+     * address, jobId.
+     * 
+     * @param jobId
+     *            Id of the job to get.
+     * @return The Get Job operation response.
+     */
+    JobGetResponse get(String jobId) throws IOException, ServiceException,
+            ParseException, URISyntaxException;
+
     /**
-    * The status of an individual job can be access by a GET call to a job's
-    * address, jobId.
-    *
-    * @param jobId Id of the job to get.
-    * @return The Get Job operation response.
-    */
+     * The status of an individual job can be access by a GET call to a job's
+     * address, jobId.
+     * 
+     * @param jobId
+     *            Id of the job to get.
+     * @return The Get Job operation response.
+     */
     Future<JobGetResponse> getAsync(String jobId);
-    
+
     /**
-    * Job history tracks the updates and executions of a job.
-    *
-    * @param jobId Id of the job to get the history of.
-    * @param parameters Parameters supplied to the Get Job History operation.
-    * @return The Get Job History operation response.
-    */
-    JobGetHistoryResponse getHistory(String jobId, JobGetHistoryParameters parameters) throws IOException, ServiceException, ParseException;
-    
+     * Job history tracks the updates and executions of a job.
+     * 
+     * @param jobId
+     *            Id of the job to get the history of.
+     * @param parameters
+     *            Parameters supplied to the Get Job History operation.
+     * @return The Get Job History operation response.
+     */
+    JobGetHistoryResponse getHistory(String jobId,
+            JobGetHistoryParameters parameters) throws IOException,
+            ServiceException, ParseException;
+
     /**
-    * Job history tracks the updates and executions of a job.
-    *
-    * @param jobId Id of the job to get the history of.
-    * @param parameters Parameters supplied to the Get Job History operation.
-    * @return The Get Job History operation response.
-    */
-    Future<JobGetHistoryResponse> getHistoryAsync(String jobId, JobGetHistoryParameters parameters);
-    
+     * Job history tracks the updates and executions of a job.
+     * 
+     * @param jobId
+     *            Id of the job to get the history of.
+     * @param parameters
+     *            Parameters supplied to the Get Job History operation.
+     * @return The Get Job History operation response.
+     */
+    Future<JobGetHistoryResponse> getHistoryAsync(String jobId,
+            JobGetHistoryParameters parameters);
+
     /**
-    * Job history tracks the updates and executions of a job.
-    *
-    * @param jobId Id of the job to get the history of.
-    * @param parameters Parameters supplied to the Get Job History With Filter
-    * operation.
-    * @return The Get Job History operation response.
-    */
-    JobGetHistoryResponse getHistoryWithFilter(String jobId, JobGetHistoryWithFilterParameters parameters) throws IOException, ServiceException, ParseException;
-    
+     * Job history tracks the updates and executions of a job.
+     * 
+     * @param jobId
+     *            Id of the job to get the history of.
+     * @param parameters
+     *            Parameters supplied to the Get Job History With Filter
+     *            operation.
+     * @return The Get Job History operation response.
+     */
+    JobGetHistoryResponse getHistoryWithFilter(String jobId,
+            JobGetHistoryWithFilterParameters parameters) throws IOException,
+            ServiceException, ParseException;
+
     /**
-    * Job history tracks the updates and executions of a job.
-    *
-    * @param jobId Id of the job to get the history of.
-    * @param parameters Parameters supplied to the Get Job History With Filter
-    * operation.
-    * @return The Get Job History operation response.
-    */
-    Future<JobGetHistoryResponse> getHistoryWithFilterAsync(String jobId, JobGetHistoryWithFilterParameters parameters);
-    
+     * Job history tracks the updates and executions of a job.
+     * 
+     * @param jobId
+     *            Id of the job to get the history of.
+     * @param parameters
+     *            Parameters supplied to the Get Job History With Filter
+     *            operation.
+     * @return The Get Job History operation response.
+     */
+    Future<JobGetHistoryResponse> getHistoryWithFilterAsync(String jobId,
+            JobGetHistoryWithFilterParameters parameters);
+
     /**
-    * Fetch all jobs in a job collection.
-    *
-    * @param parameters Parameters supplied to the List Jobs operation.
-    * @return The List Jobs operation response.
-    */
-    JobListResponse list(JobListParameters parameters) throws IOException, ServiceException, ParseException, URISyntaxException;
-    
+     * Fetch all jobs in a job collection.
+     * 
+     * @param parameters
+     *            Parameters supplied to the List Jobs operation.
+     * @return The List Jobs operation response.
+     */
+    JobListResponse list(JobListParameters parameters) throws IOException,
+            ServiceException, ParseException, URISyntaxException;
+
     /**
-    * Fetch all jobs in a job collection.
-    *
-    * @param parameters Parameters supplied to the List Jobs operation.
-    * @return The List Jobs operation response.
-    */
+     * Fetch all jobs in a job collection.
+     * 
+     * @param parameters
+     *            Parameters supplied to the List Jobs operation.
+     * @return The List Jobs operation response.
+     */
     Future<JobListResponse> listAsync(JobListParameters parameters);
-    
+
     /**
-    * Fetch jobs in a job collection via a filter.
-    *
-    * @param parameters Parameters supplied to the List Jobs with filter
-    * operation.
-    * @return The List Jobs operation response.
-    */
-    JobListResponse listWithFilter(JobListWithFilterParameters parameters) throws IOException, ServiceException, ParseException, URISyntaxException;
-    
+     * Fetch jobs in a job collection via a filter.
+     * 
+     * @param parameters
+     *            Parameters supplied to the List Jobs with filter operation.
+     * @return The List Jobs operation response.
+     */
+    JobListResponse listWithFilter(JobListWithFilterParameters parameters)
+            throws IOException, ServiceException, ParseException,
+            URISyntaxException;
+
     /**
-    * Fetch jobs in a job collection via a filter.
-    *
-    * @param parameters Parameters supplied to the List Jobs with filter
-    * operation.
-    * @return The List Jobs operation response.
-    */
-    Future<JobListResponse> listWithFilterAsync(JobListWithFilterParameters parameters);
-    
+     * Fetch jobs in a job collection via a filter.
+     * 
+     * @param parameters
+     *            Parameters supplied to the List Jobs with filter operation.
+     * @return The List Jobs operation response.
+     */
+    Future<JobListResponse> listWithFilterAsync(
+            JobListWithFilterParameters parameters);
+
     /**
-    * Job collections can be updated through a simple PATCH operation. The
-    * format of the request is the same as that for creating a job, though if
-    * a field is unspecified we will carry forward the current value.
-    *
-    * @param parameters Parameters supplied to the Update Jobs State operation.
-    * @return The Update Jobs State operation response.
-    */
-    JobCollectionJobsUpdateStateResponse updateJobCollectionState(JobCollectionJobsUpdateStateParameters parameters) throws UnsupportedEncodingException, IOException, ServiceException, ParseException, URISyntaxException;
-    
+     * Job collections can be updated through a simple PATCH operation. The
+     * format of the request is the same as that for creating a job, though if a
+     * field is unspecified we will carry forward the current value.
+     * 
+     * @param parameters
+     *            Parameters supplied to the Update Jobs State operation.
+     * @return The Update Jobs State operation response.
+     */
+    JobCollectionJobsUpdateStateResponse updateJobCollectionState(
+            JobCollectionJobsUpdateStateParameters parameters)
+            throws UnsupportedEncodingException, IOException, ServiceException,
+            ParseException, URISyntaxException;
+
     /**
-    * Job collections can be updated through a simple PATCH operation. The
-    * format of the request is the same as that for creating a job, though if
-    * a field is unspecified we will carry forward the current value.
-    *
-    * @param parameters Parameters supplied to the Update Jobs State operation.
-    * @return The Update Jobs State operation response.
-    */
-    Future<JobCollectionJobsUpdateStateResponse> updateJobCollectionStateAsync(JobCollectionJobsUpdateStateParameters parameters);
-    
+     * Job collections can be updated through a simple PATCH operation. The
+     * format of the request is the same as that for creating a job, though if a
+     * field is unspecified we will carry forward the current value.
+     * 
+     * @param parameters
+     *            Parameters supplied to the Update Jobs State operation.
+     * @return The Update Jobs State operation response.
+     */
+    Future<JobCollectionJobsUpdateStateResponse> updateJobCollectionStateAsync(
+            JobCollectionJobsUpdateStateParameters parameters);
+
     /**
-    * Jobs can be updated through a simple PATCH operation to a job's address.
-    * The format of the request is the same as that for creating a job, though
-    * if a field is unspecified we will carry forward the current value.
-    *
-    * @param jobId Id of the job to update.
-    * @param parameters Parameters supplied to the Update Job State operation.
-    * @return The Update Job State operation response.
-    */
-    JobUpdateStateResponse updateState(String jobId, JobUpdateStateParameters parameters) throws UnsupportedEncodingException, IOException, ServiceException, ParseException, URISyntaxException;
-    
+     * Jobs can be updated through a simple PATCH operation to a job's address.
+     * The format of the request is the same as that for creating a job, though
+     * if a field is unspecified we will carry forward the current value.
+     * 
+     * @param jobId
+     *            Id of the job to update.
+     * @param parameters
+     *            Parameters supplied to the Update Job State operation.
+     * @return The Update Job State operation response.
+     */
+    JobUpdateStateResponse updateState(String jobId,
+            JobUpdateStateParameters parameters)
+            throws UnsupportedEncodingException, IOException, ServiceException,
+            ParseException, URISyntaxException;
+
     /**
-    * Jobs can be updated through a simple PATCH operation to a job's address.
-    * The format of the request is the same as that for creating a job, though
-    * if a field is unspecified we will carry forward the current value.
-    *
-    * @param jobId Id of the job to update.
-    * @param parameters Parameters supplied to the Update Job State operation.
-    * @return The Update Job State operation response.
-    */
-    Future<JobUpdateStateResponse> updateStateAsync(String jobId, JobUpdateStateParameters parameters);
+     * Jobs can be updated through a simple PATCH operation to a job's address.
+     * The format of the request is the same as that for creating a job, though
+     * if a field is unspecified we will carry forward the current value.
+     * 
+     * @param jobId
+     *            Id of the job to update.
+     * @param parameters
+     *            Parameters supplied to the Update Job State operation.
+     * @return The Update Job State operation response.
+     */
+    Future<JobUpdateStateResponse> updateStateAsync(String jobId,
+            JobUpdateStateParameters parameters);
 }

@@ -26,47 +26,48 @@ package com.microsoft.windowsazure.management.servicebus.models;
 import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
-* The response to a query for the availability status of a namespace name.
-*/
-public class CheckNamespaceAvailabilityResponse extends OperationResponse
-{
+ * The response to a query for the availability status of a namespace name.
+ */
+public class CheckNamespaceAvailabilityResponse extends OperationResponse {
     private boolean isAvailable;
-    
+
     /**
-    * Whether or not the namespace is available.
-    * @return The IsAvailable value.
-    */
-    public boolean isAvailable()
-    {
+     * Whether or not the namespace is available.
+     * 
+     * @return The IsAvailable value.
+     */
+    public boolean isAvailable() {
         return this.isAvailable;
     }
-    
+
     /**
-    * Whether or not the namespace is available.
-    * @param isAvailableValue The IsAvailable value.
-    */
-    public void setIsAvailable(final boolean isAvailableValue)
-    {
+     * Whether or not the namespace is available.
+     * 
+     * @param isAvailableValue
+     *            The IsAvailable value.
+     */
+    public void setIsAvailable(final boolean isAvailableValue) {
         this.isAvailable = isAvailableValue;
     }
-    
+
     private String reasonDetails;
-    
+
     /**
-    * The reason the namespace is unavailable.
-    * @return The ReasonDetails value.
-    */
-    public String getReasonDetails()
-    {
+     * The reason the namespace is unavailable.
+     * 
+     * @return The ReasonDetails value.
+     */
+    public String getReasonDetails() {
         return this.reasonDetails;
     }
-    
+
     /**
-    * The reason the namespace is unavailable.
-    * @param reasonDetailsValue The ReasonDetails value.
-    */
-    public void setReasonDetails(final String reasonDetailsValue)
-    {
+     * The reason the namespace is unavailable.
+     * 
+     * @param reasonDetailsValue
+     *            The ReasonDetails value.
+     */
+    public void setReasonDetails(final String reasonDetailsValue) {
         this.reasonDetails = reasonDetailsValue;
     }
 }

@@ -29,8 +29,7 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
 /**
  * Generic implementation of Delete operation usable by most entities.
  */
-public class DefaultActionOperation implements EntityActionOperation
-{
+public class DefaultActionOperation implements EntityActionOperation {
 
     /** The proxy data. */
     private EntityProxyData proxyData;
@@ -56,8 +55,7 @@ public class DefaultActionOperation implements EntityActionOperation
      * @param name
      *            the name
      */
-    public DefaultActionOperation(String name)
-    {
+    public DefaultActionOperation(String name) {
         this();
         this.name = name;
     }
@@ -65,8 +63,7 @@ public class DefaultActionOperation implements EntityActionOperation
     /**
      * Instantiates a new default action operation.
      */
-    public DefaultActionOperation()
-    {
+    public DefaultActionOperation() {
         this.queryParameters = new MultivaluedMapImpl();
         this.bodyParameters = new HashMap<String, Object>();
     }
@@ -80,8 +77,7 @@ public class DefaultActionOperation implements EntityActionOperation
      * EntityProxyData)
      */
     @Override
-    public void setProxyData(EntityProxyData proxyData)
-    {
+    public void setProxyData(EntityProxyData proxyData) {
         this.proxyData = proxyData;
     }
 
@@ -90,8 +86,7 @@ public class DefaultActionOperation implements EntityActionOperation
      * 
      * @return the proxy data
      */
-    protected EntityProxyData getProxyData()
-    {
+    protected EntityProxyData getProxyData() {
         return proxyData;
     }
 
@@ -103,8 +98,7 @@ public class DefaultActionOperation implements EntityActionOperation
      * #getUri()
      */
     @Override
-    public String getUri()
-    {
+    public String getUri() {
         return name;
     }
 
@@ -115,8 +109,7 @@ public class DefaultActionOperation implements EntityActionOperation
      * EntityActionOperation#getQueryParameters()
      */
     @Override
-    public MultivaluedMap<String, String> getQueryParameters()
-    {
+    public MultivaluedMap<String, String> getQueryParameters() {
         return this.queryParameters;
     }
 
@@ -128,8 +121,7 @@ public class DefaultActionOperation implements EntityActionOperation
      * java.lang.String)
      */
     @Override
-    public DefaultActionOperation addQueryParameter(String key, String value)
-    {
+    public DefaultActionOperation addQueryParameter(String key, String value) {
         this.queryParameters.add(key, value);
         return this;
     }
@@ -142,8 +134,7 @@ public class DefaultActionOperation implements EntityActionOperation
      * #getContentType()
      */
     @Override
-    public MediaType getContentType()
-    {
+    public MediaType getContentType() {
         return this.contentType;
     }
 
@@ -155,8 +146,7 @@ public class DefaultActionOperation implements EntityActionOperation
      * @return the default action operation
      */
     @Override
-    public DefaultActionOperation setContentType(MediaType contentType)
-    {
+    public DefaultActionOperation setContentType(MediaType contentType) {
         this.contentType = contentType;
         return this;
     }
@@ -169,8 +159,7 @@ public class DefaultActionOperation implements EntityActionOperation
      * #getAcceptType()
      */
     @Override
-    public MediaType getAcceptType()
-    {
+    public MediaType getAcceptType() {
         return this.acceptType;
     }
 
@@ -181,8 +170,7 @@ public class DefaultActionOperation implements EntityActionOperation
      *            the accept type
      * @return the default action operation
      */
-    public DefaultActionOperation setAcceptType(MediaType acceptType)
-    {
+    public DefaultActionOperation setAcceptType(MediaType acceptType) {
         this.acceptType = acceptType;
         return this;
     }
@@ -194,8 +182,7 @@ public class DefaultActionOperation implements EntityActionOperation
      * EntityActionOperation#getVerb()
      */
     @Override
-    public String getVerb()
-    {
+    public String getVerb() {
         return "GET";
     }
 
@@ -206,8 +193,7 @@ public class DefaultActionOperation implements EntityActionOperation
      * EntityActionOperation#getRequestContents()
      */
     @Override
-    public Object getRequestContents()
-    {
+    public Object getRequestContents() {
         return null;
     }
 
@@ -219,8 +205,7 @@ public class DefaultActionOperation implements EntityActionOperation
      * #processResponse(java.lang.Object)
      */
     @Override
-    public Object processResponse(Object rawResponse) throws ServiceException
-    {
+    public Object processResponse(Object rawResponse) throws ServiceException {
         PipelineHelpers.ThrowIfNotSuccess((ClientResponse) rawResponse);
         return rawResponse;
     }
@@ -232,8 +217,7 @@ public class DefaultActionOperation implements EntityActionOperation
      * EntityActionOperation#getBodyParameters()
      */
     @Override
-    public Map<String, Object> getBodyParameters()
-    {
+    public Map<String, Object> getBodyParameters() {
         return this.bodyParameters;
     }
 
@@ -245,8 +229,7 @@ public class DefaultActionOperation implements EntityActionOperation
      * java.lang.Object)
      */
     @Override
-    public EntityActionOperation addBodyParameter(String key, Object value)
-    {
+    public EntityActionOperation addBodyParameter(String key, Object value) {
         this.bodyParameters.put(key, value);
         return this;
     }

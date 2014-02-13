@@ -26,201 +26,210 @@ package com.microsoft.windowsazure.management.compute.models;
 import java.util.ArrayList;
 
 /**
-* Parameters supplied to the Create Virtual Machine operation.
-*/
-public class VirtualMachineCreateParameters
-{
+ * Parameters supplied to the Create Virtual Machine operation.
+ */
+public class VirtualMachineCreateParameters {
     private String availabilitySetName;
-    
+
     /**
-    * Optional. Specifies the name of an availability set to which to add the
-    * virtual machine. This value controls the virtual machine allocation in
-    * the Windows Azure environment. Virtual machines specified in the same
-    * availability set are allocated to different nodes to maximize
-    * availability.
-    * @return The AvailabilitySetName value.
-    */
-    public String getAvailabilitySetName()
-    {
+     * Optional. Specifies the name of an availability set to which to add the
+     * virtual machine. This value controls the virtual machine allocation in
+     * the Windows Azure environment. Virtual machines specified in the same
+     * availability set are allocated to different nodes to maximize
+     * availability.
+     * 
+     * @return The AvailabilitySetName value.
+     */
+    public String getAvailabilitySetName() {
         return this.availabilitySetName;
     }
-    
+
     /**
-    * Optional. Specifies the name of an availability set to which to add the
-    * virtual machine. This value controls the virtual machine allocation in
-    * the Windows Azure environment. Virtual machines specified in the same
-    * availability set are allocated to different nodes to maximize
-    * availability.
-    * @param availabilitySetNameValue The AvailabilitySetName value.
-    */
-    public void setAvailabilitySetName(final String availabilitySetNameValue)
-    {
+     * Optional. Specifies the name of an availability set to which to add the
+     * virtual machine. This value controls the virtual machine allocation in
+     * the Windows Azure environment. Virtual machines specified in the same
+     * availability set are allocated to different nodes to maximize
+     * availability.
+     * 
+     * @param availabilitySetNameValue
+     *            The AvailabilitySetName value.
+     */
+    public void setAvailabilitySetName(final String availabilitySetNameValue) {
         this.availabilitySetName = availabilitySetNameValue;
     }
-    
+
     private ArrayList<ConfigurationSet> configurationSets;
-    
+
     /**
-    * Contains the collection of configuration sets that contain system and
-    * application configuration settings.
-    * @return The ConfigurationSets value.
-    */
-    public ArrayList<ConfigurationSet> getConfigurationSets()
-    {
+     * Contains the collection of configuration sets that contain system and
+     * application configuration settings.
+     * 
+     * @return The ConfigurationSets value.
+     */
+    public ArrayList<ConfigurationSet> getConfigurationSets() {
         return this.configurationSets;
     }
-    
+
     /**
-    * Contains the collection of configuration sets that contain system and
-    * application configuration settings.
-    * @param configurationSetsValue The ConfigurationSets value.
-    */
-    public void setConfigurationSets(final ArrayList<ConfigurationSet> configurationSetsValue)
-    {
+     * Contains the collection of configuration sets that contain system and
+     * application configuration settings.
+     * 
+     * @param configurationSetsValue
+     *            The ConfigurationSets value.
+     */
+    public void setConfigurationSets(
+            final ArrayList<ConfigurationSet> configurationSetsValue) {
         this.configurationSets = configurationSetsValue;
     }
-    
+
     private ArrayList<DataVirtualHardDisk> dataVirtualHardDisks;
-    
+
     /**
-    * Contains the parameters Windows Azure used to create the data disk for
-    * the virtual machine.
-    * @return The DataVirtualHardDisks value.
-    */
-    public ArrayList<DataVirtualHardDisk> getDataVirtualHardDisks()
-    {
+     * Contains the parameters Windows Azure used to create the data disk for
+     * the virtual machine.
+     * 
+     * @return The DataVirtualHardDisks value.
+     */
+    public ArrayList<DataVirtualHardDisk> getDataVirtualHardDisks() {
         return this.dataVirtualHardDisks;
     }
-    
+
     /**
-    * Contains the parameters Windows Azure used to create the data disk for
-    * the virtual machine.
-    * @param dataVirtualHardDisksValue The DataVirtualHardDisks value.
-    */
-    public void setDataVirtualHardDisks(final ArrayList<DataVirtualHardDisk> dataVirtualHardDisksValue)
-    {
+     * Contains the parameters Windows Azure used to create the data disk for
+     * the virtual machine.
+     * 
+     * @param dataVirtualHardDisksValue
+     *            The DataVirtualHardDisks value.
+     */
+    public void setDataVirtualHardDisks(
+            final ArrayList<DataVirtualHardDisk> dataVirtualHardDisksValue) {
         this.dataVirtualHardDisks = dataVirtualHardDisksValue;
     }
-    
+
     private OSVirtualHardDisk oSVirtualHardDisk;
-    
+
     /**
-    * Contains the parameters Windows Azure used to create the operating system
-    * disk for the virtual machine.
-    * @return The OSVirtualHardDisk value.
-    */
-    public OSVirtualHardDisk getOSVirtualHardDisk()
-    {
+     * Contains the parameters Windows Azure used to create the operating system
+     * disk for the virtual machine.
+     * 
+     * @return The OSVirtualHardDisk value.
+     */
+    public OSVirtualHardDisk getOSVirtualHardDisk() {
         return this.oSVirtualHardDisk;
     }
-    
+
     /**
-    * Contains the parameters Windows Azure used to create the operating system
-    * disk for the virtual machine.
-    * @param oSVirtualHardDiskValue The OSVirtualHardDisk value.
-    */
-    public void setOSVirtualHardDisk(final OSVirtualHardDisk oSVirtualHardDiskValue)
-    {
+     * Contains the parameters Windows Azure used to create the operating system
+     * disk for the virtual machine.
+     * 
+     * @param oSVirtualHardDiskValue
+     *            The OSVirtualHardDisk value.
+     */
+    public void setOSVirtualHardDisk(
+            final OSVirtualHardDisk oSVirtualHardDiskValue) {
         this.oSVirtualHardDisk = oSVirtualHardDiskValue;
     }
-    
+
     private Boolean provisionGuestAgent;
-    
+
     /**
-    * Optional. Indicates whether the WindowsAzureGuestAgent service is
-    * installed on the Virtual Machine. To run a resource extension in
-    * aVirtual Machine, this service must be installed.
-    * @return The ProvisionGuestAgent value.
-    */
-    public Boolean isProvisionGuestAgent()
-    {
+     * Optional. Indicates whether the WindowsAzureGuestAgent service is
+     * installed on the Virtual Machine. To run a resource extension in aVirtual
+     * Machine, this service must be installed.
+     * 
+     * @return The ProvisionGuestAgent value.
+     */
+    public Boolean isProvisionGuestAgent() {
         return this.provisionGuestAgent;
     }
-    
+
     /**
-    * Optional. Indicates whether the WindowsAzureGuestAgent service is
-    * installed on the Virtual Machine. To run a resource extension in
-    * aVirtual Machine, this service must be installed.
-    * @param provisionGuestAgentValue The ProvisionGuestAgent value.
-    */
-    public void setProvisionGuestAgent(final Boolean provisionGuestAgentValue)
-    {
+     * Optional. Indicates whether the WindowsAzureGuestAgent service is
+     * installed on the Virtual Machine. To run a resource extension in aVirtual
+     * Machine, this service must be installed.
+     * 
+     * @param provisionGuestAgentValue
+     *            The ProvisionGuestAgent value.
+     */
+    public void setProvisionGuestAgent(final Boolean provisionGuestAgentValue) {
         this.provisionGuestAgent = provisionGuestAgentValue;
     }
-    
+
     private ArrayList<ResourceExtensionReference> resourceExtensionReferences;
-    
+
     /**
-    * Optional. Contains a collection of resource extensions that are to be
-    * installed on the Virtual Machine. This element is used if
-    * ProvisionGuestAgent is set to true.
-    * @return The ResourceExtensionReferences value.
-    */
-    public ArrayList<ResourceExtensionReference> getResourceExtensionReferences()
-    {
+     * Optional. Contains a collection of resource extensions that are to be
+     * installed on the Virtual Machine. This element is used if
+     * ProvisionGuestAgent is set to true.
+     * 
+     * @return The ResourceExtensionReferences value.
+     */
+    public ArrayList<ResourceExtensionReference> getResourceExtensionReferences() {
         return this.resourceExtensionReferences;
     }
-    
+
     /**
-    * Optional. Contains a collection of resource extensions that are to be
-    * installed on the Virtual Machine. This element is used if
-    * ProvisionGuestAgent is set to true.
-    * @param resourceExtensionReferencesValue The ResourceExtensionReferences
-    * value.
-    */
-    public void setResourceExtensionReferences(final ArrayList<ResourceExtensionReference> resourceExtensionReferencesValue)
-    {
+     * Optional. Contains a collection of resource extensions that are to be
+     * installed on the Virtual Machine. This element is used if
+     * ProvisionGuestAgent is set to true.
+     * 
+     * @param resourceExtensionReferencesValue
+     *            The ResourceExtensionReferences value.
+     */
+    public void setResourceExtensionReferences(
+            final ArrayList<ResourceExtensionReference> resourceExtensionReferencesValue) {
         this.resourceExtensionReferences = resourceExtensionReferencesValue;
     }
-    
+
     private String roleName;
-    
+
     /**
-    * Required. Specifies the name for the virtual machine. The name must be
-    * unique within the deployment.
-    * @return The RoleName value.
-    */
-    public String getRoleName()
-    {
+     * Required. Specifies the name for the virtual machine. The name must be
+     * unique within the deployment.
+     * 
+     * @return The RoleName value.
+     */
+    public String getRoleName() {
         return this.roleName;
     }
-    
+
     /**
-    * Required. Specifies the name for the virtual machine. The name must be
-    * unique within the deployment.
-    * @param roleNameValue The RoleName value.
-    */
-    public void setRoleName(final String roleNameValue)
-    {
+     * Required. Specifies the name for the virtual machine. The name must be
+     * unique within the deployment.
+     * 
+     * @param roleNameValue
+     *            The RoleName value.
+     */
+    public void setRoleName(final String roleNameValue) {
         this.roleName = roleNameValue;
     }
-    
+
     private String roleSize;
-    
+
     /**
-    * The size of the virtual machine.
-    * @return The RoleSize value.
-    */
-    public String getRoleSize()
-    {
+     * The size of the virtual machine.
+     * 
+     * @return The RoleSize value.
+     */
+    public String getRoleSize() {
         return this.roleSize;
     }
-    
+
     /**
-    * The size of the virtual machine.
-    * @param roleSizeValue The RoleSize value.
-    */
-    public void setRoleSize(final String roleSizeValue)
-    {
+     * The size of the virtual machine.
+     * 
+     * @param roleSizeValue
+     *            The RoleSize value.
+     */
+    public void setRoleSize(final String roleSizeValue) {
         this.roleSize = roleSizeValue;
     }
-    
+
     /**
-    * Initializes a new instance of the VirtualMachineCreateParameters class.
-    *
-    */
-    public VirtualMachineCreateParameters()
-    {
+     * Initializes a new instance of the VirtualMachineCreateParameters class.
+     * 
+     */
+    public VirtualMachineCreateParameters() {
         this.configurationSets = new ArrayList<ConfigurationSet>();
         this.dataVirtualHardDisks = new ArrayList<DataVirtualHardDisk>();
         this.resourceExtensionReferences = new ArrayList<ResourceExtensionReference>();

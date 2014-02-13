@@ -65,948 +65,1005 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
-* Operations for managing service certificates for your subscription.  (see
-* http://msdn.microsoft.com/en-us/library/windowsazure/ee795178.aspx for more
-* information)
-*/
-public class ServiceCertificateOperationsImpl implements ServiceOperations<ComputeManagementClientImpl>, ServiceCertificateOperations
-{
+ * Operations for managing service certificates for your subscription. (see
+ * http://msdn.microsoft.com/en-us/library/windowsazure/ee795178.aspx for more
+ * information)
+ */
+public class ServiceCertificateOperationsImpl implements
+        ServiceOperations<ComputeManagementClientImpl>,
+        ServiceCertificateOperations {
     /**
-    * Initializes a new instance of the ServiceCertificateOperationsImpl class.
-    *
-    * @param client Reference to the service client.
-    */
-    ServiceCertificateOperationsImpl(ComputeManagementClientImpl client)
-    {
+     * Initializes a new instance of the ServiceCertificateOperationsImpl class.
+     * 
+     * @param client
+     *            Reference to the service client.
+     */
+    ServiceCertificateOperationsImpl(ComputeManagementClientImpl client) {
         this.client = client;
     }
-    
+
     private ComputeManagementClientImpl client;
-    
+
     /**
-    * Gets a reference to the
-    * microsoft.windowsazure.management.compute.ComputeManagementClientImpl.
-    * @return The Client value.
-    */
-    public ComputeManagementClientImpl getClient()
-    {
+     * Gets a reference to the
+     * microsoft.windowsazure.management.compute.ComputeManagementClientImpl.
+     * 
+     * @return The Client value.
+     */
+    public ComputeManagementClientImpl getClient() {
         return this.client;
     }
-    
+
     /**
-    * The Add Service Certificate operation adds a certificate to a hosted
-    * service.  The Add Service Certificate operation is an asynchronous
-    * operation. To determine whether the management service has finished
-    * processing the request, call Get Operation Status.   (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460817.aspx for
-    * more information)
-    *
-    * @param serviceName The DNS prefix name of your service.
-    * @param parameters Parameters supplied to the Create Service Certificate
-    * operation.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
+     * The Add Service Certificate operation adds a certificate to a hosted
+     * service. The Add Service Certificate operation is an asynchronous
+     * operation. To determine whether the management service has finished
+     * processing the request, call Get Operation Status. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460817.aspx for
+     * more information)
+     * 
+     * @param serviceName
+     *            The DNS prefix name of your service.
+     * @param parameters
+     *            Parameters supplied to the Create Service Certificate
+     *            operation.
+     * @return A standard service response including an HTTP status code and
+     *         request ID.
+     */
     @Override
-    public Future<OperationResponse> beginCreatingAsync(final String serviceName, final ServiceCertificateCreateParameters parameters)
-    {
-        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
-            @Override
-            public OperationResponse call() throws Exception
-            {
-                return beginCreating(serviceName, parameters);
-            }
-         });
+    public Future<OperationResponse> beginCreatingAsync(
+            final String serviceName,
+            final ServiceCertificateCreateParameters parameters) {
+        return this.getClient().getExecutorService()
+                .submit(new Callable<OperationResponse>() {
+                    @Override
+                    public OperationResponse call() throws Exception {
+                        return beginCreating(serviceName, parameters);
+                    }
+                });
     }
-    
+
     /**
-    * The Add Service Certificate operation adds a certificate to a hosted
-    * service.  The Add Service Certificate operation is an asynchronous
-    * operation. To determine whether the management service has finished
-    * processing the request, call Get Operation Status.   (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460817.aspx for
-    * more information)
-    *
-    * @param serviceName The DNS prefix name of your service.
-    * @param parameters Parameters supplied to the Create Service Certificate
-    * operation.
-    * @throws ParserConfigurationException Thrown if there was an error
-    * configuring the parser for the response body.
-    * @throws SAXException Thrown if there was an error parsing the response
-    * body.
-    * @throws TransformerException Thrown if there was an error creating the
-    * DOM transformer.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
+     * The Add Service Certificate operation adds a certificate to a hosted
+     * service. The Add Service Certificate operation is an asynchronous
+     * operation. To determine whether the management service has finished
+     * processing the request, call Get Operation Status. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460817.aspx for
+     * more information)
+     * 
+     * @param serviceName
+     *            The DNS prefix name of your service.
+     * @param parameters
+     *            Parameters supplied to the Create Service Certificate
+     *            operation.
+     * @throws ParserConfigurationException
+     *             Thrown if there was an error configuring the parser for the
+     *             response body.
+     * @throws SAXException
+     *             Thrown if there was an error parsing the response body.
+     * @throws TransformerException
+     *             Thrown if there was an error creating the DOM transformer.
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @return A standard service response including an HTTP status code and
+     *         request ID.
+     */
     @Override
-    public OperationResponse beginCreating(String serviceName, ServiceCertificateCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
-    {
+    public OperationResponse beginCreating(String serviceName,
+            ServiceCertificateCreateParameters parameters)
+            throws ParserConfigurationException, SAXException,
+            TransformerException, IOException, ServiceException {
         // Validate
-        if (serviceName == null)
-        {
+        if (serviceName == null) {
             throw new NullPointerException("serviceName");
         }
         // TODO: Validate serviceName is a valid DNS name.
-        if (parameters == null)
-        {
+        if (parameters == null) {
             throw new NullPointerException("parameters");
         }
-        if (parameters.getData() == null)
-        {
+        if (parameters.getData() == null) {
             throw new NullPointerException("parameters.Data");
         }
-        
+
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this, "beginCreatingAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "beginCreatingAsync",
+                    tracingParameters);
         }
-        
+
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/certificates";
-        
+        String url = this.getClient().getBaseUri() + "/"
+                + this.getClient().getCredentials().getSubscriptionId()
+                + "/services/hostedservices/" + serviceName + "/certificates";
+
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
-        
+
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
         httpRequest.setHeader("x-ms-version", "2013-11-01");
-        
+
         // Serialize Request
         String requestContent = null;
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
+                .newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory
+                .newDocumentBuilder();
         Document requestDoc = documentBuilder.newDocument();
-        
-        Element certificateFileElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CertificateFile");
+
+        Element certificateFileElement = requestDoc.createElementNS(
+                "http://schemas.microsoft.com/windowsazure", "CertificateFile");
         requestDoc.appendChild(certificateFileElement);
-        
-        Element dataElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Data");
-        dataElement.appendChild(requestDoc.createTextNode(new String(Base64.encodeBase64(parameters.getData()))));
+
+        Element dataElement = requestDoc.createElementNS(
+                "http://schemas.microsoft.com/windowsazure", "Data");
+        dataElement.appendChild(requestDoc.createTextNode(new String(Base64
+                .encodeBase64(parameters.getData()))));
         certificateFileElement.appendChild(dataElement);
-        
-        Element certificateFormatElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CertificateFormat");
-        certificateFormatElement.appendChild(requestDoc.createTextNode(ComputeManagementClientImpl.certificateFormatToString(parameters.getCertificateFormat())));
+
+        Element certificateFormatElement = requestDoc.createElementNS(
+                "http://schemas.microsoft.com/windowsazure",
+                "CertificateFormat");
+        certificateFormatElement.appendChild(requestDoc
+                .createTextNode(ComputeManagementClientImpl
+                        .certificateFormatToString(parameters
+                                .getCertificateFormat())));
         certificateFileElement.appendChild(certificateFormatElement);
-        
-        if (parameters.getPassword() != null)
-        {
-            Element passwordElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Password");
-            passwordElement.appendChild(requestDoc.createTextNode(parameters.getPassword()));
+
+        if (parameters.getPassword() != null) {
+            Element passwordElement = requestDoc.createElementNS(
+                    "http://schemas.microsoft.com/windowsazure", "Password");
+            passwordElement.appendChild(requestDoc.createTextNode(parameters
+                    .getPassword()));
             certificateFileElement.appendChild(passwordElement);
         }
-        
+
         DOMSource domSource = new DOMSource(requestDoc);
         StringWriter stringWriter = new StringWriter();
         StreamResult streamResult = new StreamResult(stringWriter);
-        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        TransformerFactory transformerFactory = TransformerFactory
+                .newInstance();
         Transformer transformer = transformerFactory.newTransformer();
         transformer.transform(domSource, streamResult);
         requestContent = stringWriter.toString();
         StringEntity entity = new StringEntity(requestContent);
         httpRequest.setEntity(entity);
         httpRequest.setHeader("Content-Type", "application/xml");
-        
+
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            httpResponse = this.getClient().getHttpClient()
+                    .execute(httpRequest);
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_ACCEPTED)
-            {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
+                ServiceException ex = ServiceException.createFromXml(
+                        httpRequest, requestContent, httpResponse,
+                        httpResponse.getEntity());
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-            
+
             // Create Result
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader(
+                        "x-ms-request-id").getValue());
             }
-            
-            if (shouldTrace)
-            {
+
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
     }
-    
+
     /**
-    * The Delete Service Certificate operation deletes a service certificate
-    * from the certificate store of a hosted service.  The Delete Service
-    * Certificate operation is an asynchronous operation. To determine whether
-    * the management service has finished processing the request, call Get
-    * Operation Status.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460803.aspx for
-    * more information)
-    *
-    * @param parameters Parameters supplied to the Delete Service Certificate
-    * operation.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
+     * The Delete Service Certificate operation deletes a service certificate
+     * from the certificate store of a hosted service. The Delete Service
+     * Certificate operation is an asynchronous operation. To determine whether
+     * the management service has finished processing the request, call Get
+     * Operation Status. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460803.aspx for
+     * more information)
+     * 
+     * @param parameters
+     *            Parameters supplied to the Delete Service Certificate
+     *            operation.
+     * @return A standard service response including an HTTP status code and
+     *         request ID.
+     */
     @Override
-    public Future<OperationResponse> beginDeletingAsync(final ServiceCertificateDeleteParameters parameters)
-    {
-        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
-            @Override
-            public OperationResponse call() throws Exception
-            {
-                return beginDeleting(parameters);
-            }
-         });
+    public Future<OperationResponse> beginDeletingAsync(
+            final ServiceCertificateDeleteParameters parameters) {
+        return this.getClient().getExecutorService()
+                .submit(new Callable<OperationResponse>() {
+                    @Override
+                    public OperationResponse call() throws Exception {
+                        return beginDeleting(parameters);
+                    }
+                });
     }
-    
+
     /**
-    * The Delete Service Certificate operation deletes a service certificate
-    * from the certificate store of a hosted service.  The Delete Service
-    * Certificate operation is an asynchronous operation. To determine whether
-    * the management service has finished processing the request, call Get
-    * Operation Status.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460803.aspx for
-    * more information)
-    *
-    * @param parameters Parameters supplied to the Delete Service Certificate
-    * operation.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
+     * The Delete Service Certificate operation deletes a service certificate
+     * from the certificate store of a hosted service. The Delete Service
+     * Certificate operation is an asynchronous operation. To determine whether
+     * the management service has finished processing the request, call Get
+     * Operation Status. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460803.aspx for
+     * more information)
+     * 
+     * @param parameters
+     *            Parameters supplied to the Delete Service Certificate
+     *            operation.
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @return A standard service response including an HTTP status code and
+     *         request ID.
+     */
     @Override
-    public OperationResponse beginDeleting(ServiceCertificateDeleteParameters parameters) throws IOException, ServiceException
-    {
+    public OperationResponse beginDeleting(
+            ServiceCertificateDeleteParameters parameters) throws IOException,
+            ServiceException {
         // Validate
-        if (parameters == null)
-        {
+        if (parameters == null) {
             throw new NullPointerException("parameters");
         }
-        if (parameters.getServiceName() == null)
-        {
+        if (parameters.getServiceName() == null) {
             throw new NullPointerException("parameters.ServiceName");
         }
         // TODO: Validate parameters.ServiceName is a valid DNS name.
-        if (parameters.getThumbprint() == null)
-        {
+        if (parameters.getThumbprint() == null) {
             throw new NullPointerException("parameters.Thumbprint");
         }
-        if (parameters.getThumbprintAlgorithm() == null)
-        {
+        if (parameters.getThumbprintAlgorithm() == null) {
             throw new NullPointerException("parameters.ThumbprintAlgorithm");
         }
-        
+
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this, "beginDeletingAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "beginDeletingAsync",
+                    tracingParameters);
         }
-        
+
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + parameters.getServiceName() + "/certificates/" + parameters.getThumbprintAlgorithm() + "-" + parameters.getThumbprint();
-        
+        String url = this.getClient().getBaseUri() + "/"
+                + this.getClient().getCredentials().getSubscriptionId()
+                + "/services/hostedservices/" + parameters.getServiceName()
+                + "/certificates/" + parameters.getThumbprintAlgorithm() + "-"
+                + parameters.getThumbprint();
+
         // Create HTTP transport objects
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
-        
+
         // Set Headers
         httpRequest.setHeader("x-ms-version", "2013-11-01");
-        
+
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            httpResponse = this.getClient().getHttpClient()
+                    .execute(httpRequest);
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_ACCEPTED)
-            {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
+                ServiceException ex = ServiceException.createFromXml(
+                        httpRequest, null, httpResponse,
+                        httpResponse.getEntity());
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-            
+
             // Create Result
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader(
+                        "x-ms-request-id").getValue());
             }
-            
-            if (shouldTrace)
-            {
+
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
     }
-    
+
     /**
-    * The Add Service Certificate operation adds a certificate to a hosted
-    * service.  The Add Service Certificate operation is an asynchronous
-    * operation. To determine whether the management service has finished
-    * processing the request, call Get Operation Status.  This overload will
-    * (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460817.aspx for
-    * more information)
-    *
-    * @param serviceName The DNS prefix name of your service.
-    * @param parameters Parameters supplied to the Create Service Certificate
-    * operation.
-    * @return The response body contains the status of the specified
-    * asynchronous operation, indicating whether it has succeeded, is
-    * inprogress, or has failed. Note that this status is distinct from the
-    * HTTP status code returned for the Get Operation Status operation itself.
-    * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
-    * operation failed, the response body includes the HTTP status code for
-    * the failed request, and also includes error information regarding the
-    * failure.
-    */
+     * The Add Service Certificate operation adds a certificate to a hosted
+     * service. The Add Service Certificate operation is an asynchronous
+     * operation. To determine whether the management service has finished
+     * processing the request, call Get Operation Status. This overload will
+     * (see http://msdn.microsoft.com/en-us/library/windowsazure/ee460817.aspx
+     * for more information)
+     * 
+     * @param serviceName
+     *            The DNS prefix name of your service.
+     * @param parameters
+     *            Parameters supplied to the Create Service Certificate
+     *            operation.
+     * @return The response body contains the status of the specified
+     *         asynchronous operation, indicating whether it has succeeded, is
+     *         inprogress, or has failed. Note that this status is distinct from
+     *         the HTTP status code returned for the Get Operation Status
+     *         operation itself. If the asynchronous operation succeeded, the
+     *         response body includes the HTTP status code for the successful
+     *         request. If the asynchronous operation failed, the response body
+     *         includes the HTTP status code for the failed request, and also
+     *         includes error information regarding the failure.
+     */
     @Override
-    public Future<ComputeOperationStatusResponse> createAsync(final String serviceName, final ServiceCertificateCreateParameters parameters)
-    {
-        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
-            @Override
-            public ComputeOperationStatusResponse call() throws Exception
-            {
-                return create(serviceName, parameters);
-            }
-         });
+    public Future<ComputeOperationStatusResponse> createAsync(
+            final String serviceName,
+            final ServiceCertificateCreateParameters parameters) {
+        return this.getClient().getExecutorService()
+                .submit(new Callable<ComputeOperationStatusResponse>() {
+                    @Override
+                    public ComputeOperationStatusResponse call()
+                            throws Exception {
+                        return create(serviceName, parameters);
+                    }
+                });
     }
-    
+
     /**
-    * The Add Service Certificate operation adds a certificate to a hosted
-    * service.  The Add Service Certificate operation is an asynchronous
-    * operation. To determine whether the management service has finished
-    * processing the request, call Get Operation Status.  This overload will
-    * (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460817.aspx for
-    * more information)
-    *
-    * @param serviceName The DNS prefix name of your service.
-    * @param parameters Parameters supplied to the Create Service Certificate
-    * operation.
-    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
-    * or otherwise occupied, and the thread is interrupted, either before or
-    * during the activity. Occasionally a method may wish to test whether the
-    * current thread has been interrupted, and if so, to immediately throw
-    * this exception. The following code can be used to achieve this effect:
-    * @throws ExecutionException Thrown when attempting to retrieve the result
-    * of a task that aborted by throwing an exception. This exception can be
-    * inspected using the Throwable.getCause() method.
-    * @throws ServiceException Thrown if the server returned an error for the
-    * request.
-    * @throws IOException Thrown if there was an error setting up tracing for
-    * the request.
-    * @throws ParserConfigurationException Thrown if there was an error
-    * configuring the parser for the response body.
-    * @throws SAXException Thrown if there was an error parsing the response
-    * body.
-    * @throws TransformerException Thrown if there was an error creating the
-    * DOM transformer.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws URISyntaxException Thrown if there was an error parsing a URI in
-    * the response.
-    * @return The response body contains the status of the specified
-    * asynchronous operation, indicating whether it has succeeded, is
-    * inprogress, or has failed. Note that this status is distinct from the
-    * HTTP status code returned for the Get Operation Status operation itself.
-    * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
-    * operation failed, the response body includes the HTTP status code for
-    * the failed request, and also includes error information regarding the
-    * failure.
-    */
+     * The Add Service Certificate operation adds a certificate to a hosted
+     * service. The Add Service Certificate operation is an asynchronous
+     * operation. To determine whether the management service has finished
+     * processing the request, call Get Operation Status. This overload will
+     * (see http://msdn.microsoft.com/en-us/library/windowsazure/ee460817.aspx
+     * for more information)
+     * 
+     * @param serviceName
+     *            The DNS prefix name of your service.
+     * @param parameters
+     *            Parameters supplied to the Create Service Certificate
+     *            operation.
+     * @throws InterruptedException
+     *             Thrown when a thread is waiting, sleeping, or otherwise
+     *             occupied, and the thread is interrupted, either before or
+     *             during the activity. Occasionally a method may wish to test
+     *             whether the current thread has been interrupted, and if so,
+     *             to immediately throw this exception. The following code can
+     *             be used to achieve this effect:
+     * @throws ExecutionException
+     *             Thrown when attempting to retrieve the result of a task that
+     *             aborted by throwing an exception. This exception can be
+     *             inspected using the Throwable.getCause() method.
+     * @throws ServiceException
+     *             Thrown if the server returned an error for the request.
+     * @throws IOException
+     *             Thrown if there was an error setting up tracing for the
+     *             request.
+     * @throws ParserConfigurationException
+     *             Thrown if there was an error configuring the parser for the
+     *             response body.
+     * @throws SAXException
+     *             Thrown if there was an error parsing the response body.
+     * @throws TransformerException
+     *             Thrown if there was an error creating the DOM transformer.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @throws URISyntaxException
+     *             Thrown if there was an error parsing a URI in the response.
+     * @return The response body contains the status of the specified
+     *         asynchronous operation, indicating whether it has succeeded, is
+     *         inprogress, or has failed. Note that this status is distinct from
+     *         the HTTP status code returned for the Get Operation Status
+     *         operation itself. If the asynchronous operation succeeded, the
+     *         response body includes the HTTP status code for the successful
+     *         request. If the asynchronous operation failed, the response body
+     *         includes the HTTP status code for the failed request, and also
+     *         includes error information regarding the failure.
+     */
     @Override
-    public ComputeOperationStatusResponse create(String serviceName, ServiceCertificateCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, ServiceException, URISyntaxException
-    {
+    public ComputeOperationStatusResponse create(String serviceName,
+            ServiceCertificateCreateParameters parameters)
+            throws InterruptedException, ExecutionException, ServiceException,
+            IOException, ParserConfigurationException, SAXException,
+            TransformerException, ServiceException, URISyntaxException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this, "createAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "createAsync",
+                    tracingParameters);
         }
-        try
-        {
-            if (shouldTrace)
-            {
-                client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
+        try {
+            if (shouldTrace) {
+                client2 = this
+                        .getClient()
+                        .withRequestFilterLast(
+                                new ClientRequestTrackingHandler(invocationId))
+                        .withResponseFilterLast(
+                                new ClientRequestTrackingHandler(invocationId));
             }
-            
-            OperationResponse response = client2.getServiceCertificatesOperations().beginCreatingAsync(serviceName, parameters).get();
-            ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
+
+            OperationResponse response = client2
+                    .getServiceCertificatesOperations()
+                    .beginCreatingAsync(serviceName, parameters).get();
+            ComputeOperationStatusResponse result = client2
+                    .getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
-            while ((result.getStatus() != OperationStatus.InProgress) == false)
-            {
+            while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
-                result = client2.getOperationStatusAsync(response.getRequestId()).get();
+                result = client2.getOperationStatusAsync(
+                        response.getRequestId()).get();
                 delayInSeconds = 30;
             }
-            
-            if (shouldTrace)
-            {
+
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
-            
-            if (result.getStatus() != OperationStatus.Succeeded)
-            {
-                if (result.getError() != null)
-                {
-                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+
+            if (result.getStatus() != OperationStatus.Succeeded) {
+                if (result.getError() != null) {
+                    ServiceException ex = new ServiceException(result
+                            .getError().getCode()
+                            + " : "
+                            + result.getError().getMessage());
                     ex.setErrorCode(result.getError().getCode());
                     ex.setErrorMessage(result.getError().getMessage());
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else
-                {
+                } else {
                     ServiceException ex = new ServiceException("");
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
                 }
             }
-            
+
             return result;
-        }
-        finally
-        {
-            if (this.getClient() != null && shouldTrace)
-            {
+        } finally {
+            if (this.getClient() != null && shouldTrace) {
                 this.getClient().close();
             }
         }
     }
-    
+
     /**
-    * The Delete Service Certificate operation deletes a service certificate
-    * from the certificate store of a hosted service.  The Delete Service
-    * Certificate operation is an asynchronous operation. To determine whether
-    * the management service has finished processing the request, call Get
-    * Operation Status.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460803.aspx for
-    * more information)
-    *
-    * @param parameters Parameters supplied to the Delete Service Certificate
-    * operation.
-    * @return The response body contains the status of the specified
-    * asynchronous operation, indicating whether it has succeeded, is
-    * inprogress, or has failed. Note that this status is distinct from the
-    * HTTP status code returned for the Get Operation Status operation itself.
-    * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
-    * operation failed, the response body includes the HTTP status code for
-    * the failed request, and also includes error information regarding the
-    * failure.
-    */
+     * The Delete Service Certificate operation deletes a service certificate
+     * from the certificate store of a hosted service. The Delete Service
+     * Certificate operation is an asynchronous operation. To determine whether
+     * the management service has finished processing the request, call Get
+     * Operation Status. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460803.aspx for
+     * more information)
+     * 
+     * @param parameters
+     *            Parameters supplied to the Delete Service Certificate
+     *            operation.
+     * @return The response body contains the status of the specified
+     *         asynchronous operation, indicating whether it has succeeded, is
+     *         inprogress, or has failed. Note that this status is distinct from
+     *         the HTTP status code returned for the Get Operation Status
+     *         operation itself. If the asynchronous operation succeeded, the
+     *         response body includes the HTTP status code for the successful
+     *         request. If the asynchronous operation failed, the response body
+     *         includes the HTTP status code for the failed request, and also
+     *         includes error information regarding the failure.
+     */
     @Override
-    public Future<ComputeOperationStatusResponse> deleteAsync(final ServiceCertificateDeleteParameters parameters)
-    {
-        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
-            @Override
-            public ComputeOperationStatusResponse call() throws Exception
-            {
-                return delete(parameters);
-            }
-         });
+    public Future<ComputeOperationStatusResponse> deleteAsync(
+            final ServiceCertificateDeleteParameters parameters) {
+        return this.getClient().getExecutorService()
+                .submit(new Callable<ComputeOperationStatusResponse>() {
+                    @Override
+                    public ComputeOperationStatusResponse call()
+                            throws Exception {
+                        return delete(parameters);
+                    }
+                });
     }
-    
+
     /**
-    * The Delete Service Certificate operation deletes a service certificate
-    * from the certificate store of a hosted service.  The Delete Service
-    * Certificate operation is an asynchronous operation. To determine whether
-    * the management service has finished processing the request, call Get
-    * Operation Status.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460803.aspx for
-    * more information)
-    *
-    * @param parameters Parameters supplied to the Delete Service Certificate
-    * operation.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
-    * or otherwise occupied, and the thread is interrupted, either before or
-    * during the activity. Occasionally a method may wish to test whether the
-    * current thread has been interrupted, and if so, to immediately throw
-    * this exception. The following code can be used to achieve this effect:
-    * @throws ExecutionException Thrown when attempting to retrieve the result
-    * of a task that aborted by throwing an exception. This exception can be
-    * inspected using the Throwable.getCause() method.
-    * @throws ServiceException Thrown if the server returned an error for the
-    * request.
-    * @return The response body contains the status of the specified
-    * asynchronous operation, indicating whether it has succeeded, is
-    * inprogress, or has failed. Note that this status is distinct from the
-    * HTTP status code returned for the Get Operation Status operation itself.
-    * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
-    * operation failed, the response body includes the HTTP status code for
-    * the failed request, and also includes error information regarding the
-    * failure.
-    */
+     * The Delete Service Certificate operation deletes a service certificate
+     * from the certificate store of a hosted service. The Delete Service
+     * Certificate operation is an asynchronous operation. To determine whether
+     * the management service has finished processing the request, call Get
+     * Operation Status. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460803.aspx for
+     * more information)
+     * 
+     * @param parameters
+     *            Parameters supplied to the Delete Service Certificate
+     *            operation.
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @throws InterruptedException
+     *             Thrown when a thread is waiting, sleeping, or otherwise
+     *             occupied, and the thread is interrupted, either before or
+     *             during the activity. Occasionally a method may wish to test
+     *             whether the current thread has been interrupted, and if so,
+     *             to immediately throw this exception. The following code can
+     *             be used to achieve this effect:
+     * @throws ExecutionException
+     *             Thrown when attempting to retrieve the result of a task that
+     *             aborted by throwing an exception. This exception can be
+     *             inspected using the Throwable.getCause() method.
+     * @throws ServiceException
+     *             Thrown if the server returned an error for the request.
+     * @return The response body contains the status of the specified
+     *         asynchronous operation, indicating whether it has succeeded, is
+     *         inprogress, or has failed. Note that this status is distinct from
+     *         the HTTP status code returned for the Get Operation Status
+     *         operation itself. If the asynchronous operation succeeded, the
+     *         response body includes the HTTP status code for the successful
+     *         request. If the asynchronous operation failed, the response body
+     *         includes the HTTP status code for the failed request, and also
+     *         includes error information regarding the failure.
+     */
     @Override
-    public ComputeOperationStatusResponse delete(ServiceCertificateDeleteParameters parameters) throws IOException, ServiceException, InterruptedException, ExecutionException, ServiceException
-    {
+    public ComputeOperationStatusResponse delete(
+            ServiceCertificateDeleteParameters parameters) throws IOException,
+            ServiceException, InterruptedException, ExecutionException,
+            ServiceException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this, "deleteAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "deleteAsync",
+                    tracingParameters);
         }
-        try
-        {
-            if (shouldTrace)
-            {
-                client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
+        try {
+            if (shouldTrace) {
+                client2 = this
+                        .getClient()
+                        .withRequestFilterLast(
+                                new ClientRequestTrackingHandler(invocationId))
+                        .withResponseFilterLast(
+                                new ClientRequestTrackingHandler(invocationId));
             }
-            
-            OperationResponse response = client2.getServiceCertificatesOperations().beginDeletingAsync(parameters).get();
-            ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
+
+            OperationResponse response = client2
+                    .getServiceCertificatesOperations()
+                    .beginDeletingAsync(parameters).get();
+            ComputeOperationStatusResponse result = client2
+                    .getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
-            while ((result.getStatus() != OperationStatus.InProgress) == false)
-            {
+            while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
-                result = client2.getOperationStatusAsync(response.getRequestId()).get();
+                result = client2.getOperationStatusAsync(
+                        response.getRequestId()).get();
                 delayInSeconds = 30;
             }
-            
-            if (shouldTrace)
-            {
+
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
-            
-            if (result.getStatus() != OperationStatus.Succeeded)
-            {
-                if (result.getError() != null)
-                {
-                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+
+            if (result.getStatus() != OperationStatus.Succeeded) {
+                if (result.getError() != null) {
+                    ServiceException ex = new ServiceException(result
+                            .getError().getCode()
+                            + " : "
+                            + result.getError().getMessage());
                     ex.setErrorCode(result.getError().getCode());
                     ex.setErrorMessage(result.getError().getMessage());
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else
-                {
+                } else {
                     ServiceException ex = new ServiceException("");
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
                 }
             }
-            
+
             return result;
-        }
-        finally
-        {
-            if (this.getClient() != null && shouldTrace)
-            {
+        } finally {
+            if (this.getClient() != null && shouldTrace) {
                 this.getClient().close();
             }
         }
     }
-    
+
     /**
-    * The Get Service Certificate operation returns the public data for the
-    * specified X.509 certificate associated with a hosted service.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460792.aspx for
-    * more information)
-    *
-    * @param parameters Parameters supplied to the Get Service Certificate
-    * operation.
-    * @return The Get Service Certificate operation response.
-    */
+     * The Get Service Certificate operation returns the public data for the
+     * specified X.509 certificate associated with a hosted service. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460792.aspx for
+     * more information)
+     * 
+     * @param parameters
+     *            Parameters supplied to the Get Service Certificate operation.
+     * @return The Get Service Certificate operation response.
+     */
     @Override
-    public Future<ServiceCertificateGetResponse> getAsync(final ServiceCertificateGetParameters parameters)
-    {
-        return this.getClient().getExecutorService().submit(new Callable<ServiceCertificateGetResponse>() { 
-            @Override
-            public ServiceCertificateGetResponse call() throws Exception
-            {
-                return get(parameters);
-            }
-         });
+    public Future<ServiceCertificateGetResponse> getAsync(
+            final ServiceCertificateGetParameters parameters) {
+        return this.getClient().getExecutorService()
+                .submit(new Callable<ServiceCertificateGetResponse>() {
+                    @Override
+                    public ServiceCertificateGetResponse call()
+                            throws Exception {
+                        return get(parameters);
+                    }
+                });
     }
-    
+
     /**
-    * The Get Service Certificate operation returns the public data for the
-    * specified X.509 certificate associated with a hosted service.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460792.aspx for
-    * more information)
-    *
-    * @param parameters Parameters supplied to the Get Service Certificate
-    * operation.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParserConfigurationException Thrown if there was a serious
-    * configuration error with the document parser.
-    * @throws SAXException Thrown if there was an error parsing the XML
-    * response.
-    * @throws URISyntaxException Thrown if there was an error parsing a URI in
-    * the response.
-    * @return The Get Service Certificate operation response.
-    */
+     * The Get Service Certificate operation returns the public data for the
+     * specified X.509 certificate associated with a hosted service. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460792.aspx for
+     * more information)
+     * 
+     * @param parameters
+     *            Parameters supplied to the Get Service Certificate operation.
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @throws ParserConfigurationException
+     *             Thrown if there was a serious configuration error with the
+     *             document parser.
+     * @throws SAXException
+     *             Thrown if there was an error parsing the XML response.
+     * @throws URISyntaxException
+     *             Thrown if there was an error parsing a URI in the response.
+     * @return The Get Service Certificate operation response.
+     */
     @Override
-    public ServiceCertificateGetResponse get(ServiceCertificateGetParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
-    {
+    public ServiceCertificateGetResponse get(
+            ServiceCertificateGetParameters parameters) throws IOException,
+            ServiceException, ParserConfigurationException, SAXException,
+            URISyntaxException {
         // Validate
-        if (parameters == null)
-        {
+        if (parameters == null) {
             throw new NullPointerException("parameters");
         }
-        if (parameters.getServiceName() == null)
-        {
+        if (parameters.getServiceName() == null) {
             throw new NullPointerException("parameters.ServiceName");
         }
         // TODO: Validate parameters.ServiceName is a valid DNS name.
-        if (parameters.getThumbprint() == null)
-        {
+        if (parameters.getThumbprint() == null) {
             throw new NullPointerException("parameters.Thumbprint");
         }
-        if (parameters.getThumbprintAlgorithm() == null)
-        {
+        if (parameters.getThumbprintAlgorithm() == null) {
             throw new NullPointerException("parameters.ThumbprintAlgorithm");
         }
-        
+
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this, "getAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "getAsync",
+                    tracingParameters);
         }
-        
+
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + parameters.getServiceName() + "/certificates/" + parameters.getThumbprintAlgorithm() + "-" + parameters.getThumbprint();
-        
+        String url = this.getClient().getBaseUri() + "/"
+                + this.getClient().getCredentials().getSubscriptionId()
+                + "/services/hostedservices/" + parameters.getServiceName()
+                + "/certificates/" + parameters.getThumbprintAlgorithm() + "-"
+                + parameters.getThumbprint();
+
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
-        
+
         // Set Headers
         httpRequest.setHeader("x-ms-version", "2013-11-01");
-        
+
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            httpResponse = this.getClient().getHttpClient()
+                    .execute(httpRequest);
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+            if (statusCode != HttpStatus.SC_OK) {
+                ServiceException ex = ServiceException.createFromXml(
+                        httpRequest, null, httpResponse,
+                        httpResponse.getEntity());
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-            
+
             // Create Result
             ServiceCertificateGetResponse result = null;
             // Deserialize Response
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new ServiceCertificateGetResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
+                    .newInstance();
             documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            DocumentBuilder documentBuilder = documentBuilderFactory
+                    .newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
-            
+
             NodeList elements = responseDoc.getElementsByTagName("Certificate");
-            Element certificateElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (certificateElement != null)
-            {
-                NodeList elements2 = certificateElement.getElementsByTagName("Data");
-                Element dataElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (dataElement != null)
-                {
+            Element certificateElement = elements.getLength() > 0 ? ((Element) elements
+                    .item(0)) : null;
+            if (certificateElement != null) {
+                NodeList elements2 = certificateElement
+                        .getElementsByTagName("Data");
+                Element dataElement = elements2.getLength() > 0 ? ((Element) elements2
+                        .item(0)) : null;
+                if (dataElement != null) {
                     byte[] dataInstance;
-                    dataInstance = dataElement.getTextContent() != null ? Base64.decodeBase64(dataElement.getTextContent().getBytes()) : null;
+                    dataInstance = dataElement.getTextContent() != null ? Base64
+                            .decodeBase64(dataElement.getTextContent()
+                                    .getBytes()) : null;
                     result.setData(dataInstance);
                 }
             }
-            
+
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader(
+                        "x-ms-request-id").getValue());
             }
-            
-            if (shouldTrace)
-            {
+
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
     }
-    
+
     /**
-    * The List Service Certificates operation lists all of the service
-    * certificates associated with the specified hosted service.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj154105.aspx for
-    * more information)
-    *
-    * @param serviceName The DNS prefix name of your hosted service.
-    * @return The List Service Certificates operation response.
-    */
+     * The List Service Certificates operation lists all of the service
+     * certificates associated with the specified hosted service. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154105.aspx for
+     * more information)
+     * 
+     * @param serviceName
+     *            The DNS prefix name of your hosted service.
+     * @return The List Service Certificates operation response.
+     */
     @Override
-    public Future<ServiceCertificateListResponse> listAsync(final String serviceName)
-    {
-        return this.getClient().getExecutorService().submit(new Callable<ServiceCertificateListResponse>() { 
-            @Override
-            public ServiceCertificateListResponse call() throws Exception
-            {
-                return list(serviceName);
-            }
-         });
+    public Future<ServiceCertificateListResponse> listAsync(
+            final String serviceName) {
+        return this.getClient().getExecutorService()
+                .submit(new Callable<ServiceCertificateListResponse>() {
+                    @Override
+                    public ServiceCertificateListResponse call()
+                            throws Exception {
+                        return list(serviceName);
+                    }
+                });
     }
-    
+
     /**
-    * The List Service Certificates operation lists all of the service
-    * certificates associated with the specified hosted service.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj154105.aspx for
-    * more information)
-    *
-    * @param serviceName The DNS prefix name of your hosted service.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParserConfigurationException Thrown if there was a serious
-    * configuration error with the document parser.
-    * @throws SAXException Thrown if there was an error parsing the XML
-    * response.
-    * @throws URISyntaxException Thrown if there was an error parsing a URI in
-    * the response.
-    * @return The List Service Certificates operation response.
-    */
+     * The List Service Certificates operation lists all of the service
+     * certificates associated with the specified hosted service. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154105.aspx for
+     * more information)
+     * 
+     * @param serviceName
+     *            The DNS prefix name of your hosted service.
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @throws ParserConfigurationException
+     *             Thrown if there was a serious configuration error with the
+     *             document parser.
+     * @throws SAXException
+     *             Thrown if there was an error parsing the XML response.
+     * @throws URISyntaxException
+     *             Thrown if there was an error parsing a URI in the response.
+     * @return The List Service Certificates operation response.
+     */
     @Override
-    public ServiceCertificateListResponse list(String serviceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
-    {
+    public ServiceCertificateListResponse list(String serviceName)
+            throws IOException, ServiceException, ParserConfigurationException,
+            SAXException, URISyntaxException {
         // Validate
-        if (serviceName == null)
-        {
+        if (serviceName == null) {
             throw new NullPointerException("serviceName");
         }
         // TODO: Validate serviceName is a valid DNS name.
-        
+
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
-            CloudTracing.enter(invocationId, this, "listAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "listAsync",
+                    tracingParameters);
         }
-        
+
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/certificates";
-        
+        String url = this.getClient().getBaseUri() + "/"
+                + this.getClient().getCredentials().getSubscriptionId()
+                + "/services/hostedservices/" + serviceName + "/certificates";
+
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
-        
+
         // Set Headers
         httpRequest.setHeader("x-ms-version", "2013-11-01");
-        
+
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            httpResponse = this.getClient().getHttpClient()
+                    .execute(httpRequest);
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+            if (statusCode != HttpStatus.SC_OK) {
+                ServiceException ex = ServiceException.createFromXml(
+                        httpRequest, null, httpResponse,
+                        httpResponse.getEntity());
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-            
+
             // Create Result
             ServiceCertificateListResponse result = null;
             // Deserialize Response
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new ServiceCertificateListResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
+                    .newInstance();
             documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            DocumentBuilder documentBuilder = documentBuilderFactory
+                    .newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
-            
-            NodeList elements = responseDoc.getElementsByTagName("Certificates");
-            Element certificatesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (certificatesSequenceElement != null)
-            {
-                for (int i1 = 0; i1 < certificatesSequenceElement.getElementsByTagName("Certificate").getLength(); i1 = i1 + 1)
-                {
-                    org.w3c.dom.Element certificatesElement = ((org.w3c.dom.Element) certificatesSequenceElement.getElementsByTagName("Certificate").item(i1));
+
+            NodeList elements = responseDoc
+                    .getElementsByTagName("Certificates");
+            Element certificatesSequenceElement = elements.getLength() > 0 ? ((Element) elements
+                    .item(0)) : null;
+            if (certificatesSequenceElement != null) {
+                for (int i1 = 0; i1 < certificatesSequenceElement
+                        .getElementsByTagName("Certificate").getLength(); i1 = i1 + 1) {
+                    org.w3c.dom.Element certificatesElement = ((org.w3c.dom.Element) certificatesSequenceElement
+                            .getElementsByTagName("Certificate").item(i1));
                     ServiceCertificateListResponse.Certificate certificateInstance = new ServiceCertificateListResponse.Certificate();
                     result.getCertificates().add(certificateInstance);
-                    
-                    NodeList elements2 = certificatesElement.getElementsByTagName("CertificateUrl");
-                    Element certificateUrlElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                    if (certificateUrlElement != null)
-                    {
+
+                    NodeList elements2 = certificatesElement
+                            .getElementsByTagName("CertificateUrl");
+                    Element certificateUrlElement = elements2.getLength() > 0 ? ((Element) elements2
+                            .item(0)) : null;
+                    if (certificateUrlElement != null) {
                         URI certificateUrlInstance;
-                        certificateUrlInstance = new URI(certificateUrlElement.getTextContent());
-                        certificateInstance.setCertificateUri(certificateUrlInstance);
+                        certificateUrlInstance = new URI(
+                                certificateUrlElement.getTextContent());
+                        certificateInstance
+                                .setCertificateUri(certificateUrlInstance);
                     }
-                    
-                    NodeList elements3 = certificatesElement.getElementsByTagName("Thumbprint");
-                    Element thumbprintElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                    if (thumbprintElement != null)
-                    {
+
+                    NodeList elements3 = certificatesElement
+                            .getElementsByTagName("Thumbprint");
+                    Element thumbprintElement = elements3.getLength() > 0 ? ((Element) elements3
+                            .item(0)) : null;
+                    if (thumbprintElement != null) {
                         String thumbprintInstance;
                         thumbprintInstance = thumbprintElement.getTextContent();
                         certificateInstance.setThumbprint(thumbprintInstance);
                     }
-                    
-                    NodeList elements4 = certificatesElement.getElementsByTagName("ThumbprintAlgorithm");
-                    Element thumbprintAlgorithmElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                    if (thumbprintAlgorithmElement != null)
-                    {
+
+                    NodeList elements4 = certificatesElement
+                            .getElementsByTagName("ThumbprintAlgorithm");
+                    Element thumbprintAlgorithmElement = elements4.getLength() > 0 ? ((Element) elements4
+                            .item(0)) : null;
+                    if (thumbprintAlgorithmElement != null) {
                         String thumbprintAlgorithmInstance;
-                        thumbprintAlgorithmInstance = thumbprintAlgorithmElement.getTextContent();
-                        certificateInstance.setThumbprintAlgorithm(thumbprintAlgorithmInstance);
+                        thumbprintAlgorithmInstance = thumbprintAlgorithmElement
+                                .getTextContent();
+                        certificateInstance
+                                .setThumbprintAlgorithm(thumbprintAlgorithmInstance);
                     }
-                    
-                    NodeList elements5 = certificatesElement.getElementsByTagName("Data");
-                    Element dataElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                    if (dataElement != null)
-                    {
+
+                    NodeList elements5 = certificatesElement
+                            .getElementsByTagName("Data");
+                    Element dataElement = elements5.getLength() > 0 ? ((Element) elements5
+                            .item(0)) : null;
+                    if (dataElement != null) {
                         byte[] dataInstance;
-                        dataInstance = dataElement.getTextContent() != null ? Base64.decodeBase64(dataElement.getTextContent().getBytes()) : null;
+                        dataInstance = dataElement.getTextContent() != null ? Base64
+                                .decodeBase64(dataElement.getTextContent()
+                                        .getBytes()) : null;
                         certificateInstance.setData(dataInstance);
                     }
                 }
             }
-            
+
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader(
+                        "x-ms-request-id").getValue());
             }
-            
-            if (shouldTrace)
-            {
+
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }

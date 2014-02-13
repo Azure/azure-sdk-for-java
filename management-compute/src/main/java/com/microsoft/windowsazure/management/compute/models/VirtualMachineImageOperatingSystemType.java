@@ -24,12 +24,11 @@
 package com.microsoft.windowsazure.management.compute.models;
 
 /**
-* Known values for the operating system type of the OS in a virtual machine
-* image.
-*/
-public class VirtualMachineImageOperatingSystemType
-{
+ * Known values for the operating system type of the OS in a virtual machine
+ * image.
+ */
+public class VirtualMachineImageOperatingSystemType {
     public static final String Linux = "Linux";
-    
+
     public static final String Windows = "Windows";
 }

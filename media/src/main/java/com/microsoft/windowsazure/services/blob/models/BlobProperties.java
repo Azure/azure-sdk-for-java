@@ -25,8 +25,7 @@ import com.microsoft.windowsazure.core.RFC1123DateAdapter;
  * Represents the HTML properties and system properties that may be set on a
  * blob.
  */
-public class BlobProperties
-{
+public class BlobProperties {
     private Date lastModified;
     private String etag;
     private String contentType;
@@ -54,8 +53,7 @@ public class BlobProperties
      */
     @XmlElement(name = "Last-Modified")
     @XmlJavaTypeAdapter(RFC1123DateAdapter.class)
-    public Date getLastModified()
-    {
+    public Date getLastModified() {
         return lastModified;
     }
 
@@ -71,8 +69,7 @@ public class BlobProperties
      *            A {@link java.util.Date} containing the last modified time of
      *            the blob.
      */
-    public void setLastModified(Date lastModified)
-    {
+    public void setLastModified(Date lastModified) {
         this.lastModified = lastModified;
     }
 
@@ -88,8 +85,7 @@ public class BlobProperties
      *         the blob.
      */
     @XmlElement(name = "Etag")
-    public String getEtag()
-    {
+    public String getEtag() {
         return etag;
     }
 
@@ -104,8 +100,7 @@ public class BlobProperties
      *            A {@link String} containing the server-assigned ETag value for
      *            the blob.
      */
-    public void setEtag(String etag)
-    {
+    public void setEtag(String etag) {
         this.etag = etag;
     }
 
@@ -116,8 +111,7 @@ public class BlobProperties
      *         blob.
      */
     @XmlElement(name = "Content-Type")
-    public String getContentType()
-    {
+    public String getContentType() {
         return contentType;
     }
 
@@ -130,8 +124,7 @@ public class BlobProperties
      *            A {@link String} containing the MIME content type value for
      *            the blob.
      */
-    public void setContentType(String contentType)
-    {
+    public void setContentType(String contentType) {
         this.contentType = contentType;
     }
 
@@ -141,8 +134,7 @@ public class BlobProperties
      * @return The size of the blob in bytes.
      */
     @XmlElement(name = "Content-Length")
-    public long getContentLength()
-    {
+    public long getContentLength() {
         return contentLength;
     }
 
@@ -154,8 +146,7 @@ public class BlobProperties
      * @param contentLength
      *            The size of the blob in bytes.
      */
-    public void setContentLength(long contentLength)
-    {
+    public void setContentLength(long contentLength) {
         this.contentLength = contentLength;
     }
 
@@ -166,8 +157,7 @@ public class BlobProperties
      *         if any.
      */
     @XmlElement(name = "Content-Encoding")
-    public String getContentEncoding()
-    {
+    public String getContentEncoding() {
         return contentEncoding;
     }
 
@@ -180,8 +170,7 @@ public class BlobProperties
      *            A {@link String} containing the HTTP content encoding value to
      *            set.
      */
-    public void setContentEncoding(String contentEncoding)
-    {
+    public void setContentEncoding(String contentEncoding) {
         this.contentEncoding = contentEncoding;
     }
 
@@ -192,8 +181,7 @@ public class BlobProperties
      *         if any.
      */
     @XmlElement(name = "Content-Language")
-    public String getContentLanguage()
-    {
+    public String getContentLanguage() {
         return contentLanguage;
     }
 
@@ -206,8 +194,7 @@ public class BlobProperties
      *            A {@link String} containing the HTTP content language value to
      *            set.
      */
-    public void setContentLanguage(String contentLanguage)
-    {
+    public void setContentLanguage(String contentLanguage) {
         this.contentLanguage = contentLanguage;
     }
 
@@ -218,8 +205,7 @@ public class BlobProperties
      *         content.
      */
     @XmlElement(name = "Content-MD5")
-    public String getContentMD5()
-    {
+    public String getContentMD5() {
         return contentMD5;
     }
 
@@ -232,8 +218,7 @@ public class BlobProperties
      *            A {@link String} containing the MD5 hash value of the blob
      *            content.
      */
-    public void setContentMD5(String contentMD5)
-    {
+    public void setContentMD5(String contentMD5) {
         this.contentMD5 = contentMD5;
     }
 
@@ -244,8 +229,7 @@ public class BlobProperties
      *         blob.
      */
     @XmlElement(name = "Cache-Control")
-    public String getCacheControl()
-    {
+    public String getCacheControl() {
         return cacheControl;
     }
 
@@ -258,8 +242,7 @@ public class BlobProperties
      *            A {@link String} containing the HTTP cache control value of
      *            the blob.
      */
-    public void setCacheControl(String cacheControl)
-    {
+    public void setCacheControl(String cacheControl) {
         this.cacheControl = cacheControl;
     }
 
@@ -271,8 +254,7 @@ public class BlobProperties
      *         "PageBlob" for page blobs.
      */
     @XmlElement(name = "BlobType")
-    public String getBlobType()
-    {
+    public String getBlobType() {
         return blobType;
     }
 
@@ -284,8 +266,7 @@ public class BlobProperties
      *            A {@link String} containing "BlockBlob" for block blobs, or
      *            "PageBlob" for page blobs.
      */
-    public void setBlobType(String blobType)
-    {
+    public void setBlobType(String blobType) {
         this.blobType = blobType;
     }
 
@@ -298,8 +279,7 @@ public class BlobProperties
      *         lease, and "unlocked" for blobs without an active lease.
      */
     @XmlElement(name = "LeaseStatus")
-    public String getLeaseStatus()
-    {
+    public String getLeaseStatus() {
         return leaseStatus;
     }
 
@@ -312,8 +292,7 @@ public class BlobProperties
      *            A {@link String} containing "locked" for blobs with an active
      *            lease, and "unlocked" for blobs without an active lease.
      */
-    public void setLeaseStatus(String leaseStatus)
-    {
+    public void setLeaseStatus(String leaseStatus) {
         this.leaseStatus = leaseStatus;
     }
 
@@ -324,8 +303,7 @@ public class BlobProperties
      * @return The current sequence number of the page blob.
      */
     @XmlElement(name = "x-ms-blob-sequence-number")
-    public long getSequenceNumber()
-    {
+    public long getSequenceNumber() {
         return sequenceNumber;
     }
 
@@ -337,8 +315,7 @@ public class BlobProperties
      * @param sequenceNumber
      *            The current sequence number of the page blob.
      */
-    public void setSequenceNumber(long sequenceNumber)
-    {
+    public void setSequenceNumber(long sequenceNumber) {
         this.sequenceNumber = sequenceNumber;
     }
 }

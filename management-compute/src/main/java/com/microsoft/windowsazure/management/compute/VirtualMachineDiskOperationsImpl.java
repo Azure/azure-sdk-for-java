@@ -71,103 +71,117 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
-* The Service Management API includes operations for managing the disks in your
-* subscription.  (see
-* http://msdn.microsoft.com/en-us/library/windowsazure/jj157188.aspx for more
-* information)
-*/
-public class VirtualMachineDiskOperationsImpl implements ServiceOperations<ComputeManagementClientImpl>, VirtualMachineDiskOperations
-{
+ * The Service Management API includes operations for managing the disks in your
+ * subscription. (see
+ * http://msdn.microsoft.com/en-us/library/windowsazure/jj157188.aspx for more
+ * information)
+ */
+public class VirtualMachineDiskOperationsImpl implements
+        ServiceOperations<ComputeManagementClientImpl>,
+        VirtualMachineDiskOperations {
     /**
-    * Initializes a new instance of the VirtualMachineDiskOperationsImpl class.
-    *
-    * @param client Reference to the service client.
-    */
-    VirtualMachineDiskOperationsImpl(ComputeManagementClientImpl client)
-    {
+     * Initializes a new instance of the VirtualMachineDiskOperationsImpl class.
+     * 
+     * @param client
+     *            Reference to the service client.
+     */
+    VirtualMachineDiskOperationsImpl(ComputeManagementClientImpl client) {
         this.client = client;
     }
-    
+
     private ComputeManagementClientImpl client;
-    
+
     /**
-    * Gets a reference to the
-    * microsoft.windowsazure.management.compute.ComputeManagementClientImpl.
-    * @return The Client value.
-    */
-    public ComputeManagementClientImpl getClient()
-    {
+     * Gets a reference to the
+     * microsoft.windowsazure.management.compute.ComputeManagementClientImpl.
+     * 
+     * @return The Client value.
+     */
+    public ComputeManagementClientImpl getClient() {
         return this.client;
     }
-    
+
     /**
-    * The Delete Data Disk operation removes the specified data disk from a
-    * virtual machine.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157179.aspx for
-    * more information)
-    *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of the deployment.
-    * @param roleName The name of the role to delete the data disk from.
-    * @param logicalUnitNumber The logical unit number of the disk.
-    * @param deleteFromStorage Optional. Specifies that the source blob for the
-    * disk should also be deleted from storage.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
+     * The Delete Data Disk operation removes the specified data disk from a
+     * virtual machine. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157179.aspx for
+     * more information)
+     * 
+     * @param serviceName
+     *            The name of your service.
+     * @param deploymentName
+     *            The name of the deployment.
+     * @param roleName
+     *            The name of the role to delete the data disk from.
+     * @param logicalUnitNumber
+     *            The logical unit number of the disk.
+     * @param deleteFromStorage
+     *            Optional. Specifies that the source blob for the disk should
+     *            also be deleted from storage.
+     * @return A standard service response including an HTTP status code and
+     *         request ID.
+     */
     @Override
-    public Future<OperationResponse> beginDeletingDataDiskAsync(final String serviceName, final String deploymentName, final String roleName, final int logicalUnitNumber, final boolean deleteFromStorage)
-    {
-        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
-            @Override
-            public OperationResponse call() throws Exception
-            {
-                return beginDeletingDataDisk(serviceName, deploymentName, roleName, logicalUnitNumber, deleteFromStorage);
-            }
-         });
+    public Future<OperationResponse> beginDeletingDataDiskAsync(
+            final String serviceName, final String deploymentName,
+            final String roleName, final int logicalUnitNumber,
+            final boolean deleteFromStorage) {
+        return this.getClient().getExecutorService()
+                .submit(new Callable<OperationResponse>() {
+                    @Override
+                    public OperationResponse call() throws Exception {
+                        return beginDeletingDataDisk(serviceName,
+                                deploymentName, roleName, logicalUnitNumber,
+                                deleteFromStorage);
+                    }
+                });
     }
-    
+
     /**
-    * The Delete Data Disk operation removes the specified data disk from a
-    * virtual machine.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157179.aspx for
-    * more information)
-    *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of the deployment.
-    * @param roleName The name of the role to delete the data disk from.
-    * @param logicalUnitNumber The logical unit number of the disk.
-    * @param deleteFromStorage Optional. Specifies that the source blob for the
-    * disk should also be deleted from storage.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
+     * The Delete Data Disk operation removes the specified data disk from a
+     * virtual machine. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157179.aspx for
+     * more information)
+     * 
+     * @param serviceName
+     *            The name of your service.
+     * @param deploymentName
+     *            The name of the deployment.
+     * @param roleName
+     *            The name of the role to delete the data disk from.
+     * @param logicalUnitNumber
+     *            The logical unit number of the disk.
+     * @param deleteFromStorage
+     *            Optional. Specifies that the source blob for the disk should
+     *            also be deleted from storage.
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @return A standard service response including an HTTP status code and
+     *         request ID.
+     */
     @Override
-    public OperationResponse beginDeletingDataDisk(String serviceName, String deploymentName, String roleName, int logicalUnitNumber, boolean deleteFromStorage) throws IOException, ServiceException
-    {
+    public OperationResponse beginDeletingDataDisk(String serviceName,
+            String deploymentName, String roleName, int logicalUnitNumber,
+            boolean deleteFromStorage) throws IOException, ServiceException {
         // Validate
-        if (serviceName == null)
-        {
+        if (serviceName == null) {
             throw new NullPointerException("serviceName");
         }
-        if (deploymentName == null)
-        {
+        if (deploymentName == null) {
             throw new NullPointerException("deploymentName");
         }
-        if (roleName == null)
-        {
+        if (roleName == null) {
             throw new NullPointerException("roleName");
         }
-        
+
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
@@ -175,684 +189,763 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             tracingParameters.put("roleName", roleName);
             tracingParameters.put("logicalUnitNumber", logicalUnitNumber);
             tracingParameters.put("deleteFromStorage", deleteFromStorage);
-            CloudTracing.enter(invocationId, this, "beginDeletingDataDiskAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this,
+                    "beginDeletingDataDiskAsync", tracingParameters);
         }
-        
+
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "/roles/" + roleName + "/DataDisks/" + logicalUnitNumber + "?";
-        if (deleteFromStorage == true)
-        {
+        String url = this.getClient().getBaseUri() + "/"
+                + this.getClient().getCredentials().getSubscriptionId()
+                + "/services/hostedservices/" + serviceName + "/deployments/"
+                + deploymentName + "/roles/" + roleName + "/DataDisks/"
+                + logicalUnitNumber + "?";
+        if (deleteFromStorage == true) {
             url = url + "comp=" + "media";
         }
-        
+
         // Create HTTP transport objects
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
-        
+
         // Set Headers
         httpRequest.setHeader("x-ms-version", "2013-11-01");
-        
+
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            httpResponse = this.getClient().getHttpClient()
+                    .execute(httpRequest);
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_ACCEPTED)
-            {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
+                ServiceException ex = ServiceException.createFromXml(
+                        httpRequest, null, httpResponse,
+                        httpResponse.getEntity());
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-            
+
             // Create Result
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader(
+                        "x-ms-request-id").getValue());
             }
-            
-            if (shouldTrace)
-            {
+
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
     }
-    
+
     /**
-    * The Add Data Disk operation adds a data disk to a virtual machine. There
-    * are three ways to create the data disk using the Add Data Disk
-    * operation.  Option 1 – Attach an empty data disk to the role by
-    * specifying the disk label and location of the disk image.  Do not
-    * include the DiskName and SourceMediaLink elements in the request body.
-    * Include the MediaLink element and reference a blob that is in the same
-    * geographical region as the role.  You can also omit the MediaLink
-    * element. In this usage, Windows Azure will create the data disk in the
-    * storage account configured as default for the role.   Option 2 – Attach
-    * an existing data disk that is in the image repository.  Do not include
-    * the DiskName and SourceMediaLink elements in the request body.  Specify
-    * the data disk to use by including the DiskName element.  Note: If
-    * included the in the response body, the MediaLink and LogicalDiskSizeInGB
-    * elements are ignored.  Option 3 - Specify the location of a blob in your
-    * storage account that contain a disk image to use.  Include the
-    * SourceMediaLink element. Note: If the MediaLink element isincluded, it
-    * is ignored.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157199.aspx for
-    * more information)
-    *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of the deployment.
-    * @param roleName The name of the role to add the data disk to.
-    * @param parameters Parameters supplied to the Create Virtual Machine Data
-    * Disk operation.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
+     * The Add Data Disk operation adds a data disk to a virtual machine. There
+     * are three ways to create the data disk using the Add Data Disk operation.
+     * Option 1 – Attach an empty data disk to the role by specifying the disk
+     * label and location of the disk image. Do not include the DiskName and
+     * SourceMediaLink elements in the request body. Include the MediaLink
+     * element and reference a blob that is in the same geographical region as
+     * the role. You can also omit the MediaLink element. In this usage, Windows
+     * Azure will create the data disk in the storage account configured as
+     * default for the role. Option 2 – Attach an existing data disk that is in
+     * the image repository. Do not include the DiskName and SourceMediaLink
+     * elements in the request body. Specify the data disk to use by including
+     * the DiskName element. Note: If included the in the response body, the
+     * MediaLink and LogicalDiskSizeInGB elements are ignored. Option 3 -
+     * Specify the location of a blob in your storage account that contain a
+     * disk image to use. Include the SourceMediaLink element. Note: If the
+     * MediaLink element isincluded, it is ignored. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157199.aspx for
+     * more information)
+     * 
+     * @param serviceName
+     *            The name of your service.
+     * @param deploymentName
+     *            The name of the deployment.
+     * @param roleName
+     *            The name of the role to add the data disk to.
+     * @param parameters
+     *            Parameters supplied to the Create Virtual Machine Data Disk
+     *            operation.
+     * @return A standard service response including an HTTP status code and
+     *         request ID.
+     */
     @Override
-    public Future<OperationResponse> createDataDiskAsync(final String serviceName, final String deploymentName, final String roleName, final VirtualMachineDiskCreateDataDiskParameters parameters)
-    {
-        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
-            @Override
-            public OperationResponse call() throws Exception
-            {
-                return createDataDisk(serviceName, deploymentName, roleName, parameters);
-            }
-         });
+    public Future<OperationResponse> createDataDiskAsync(
+            final String serviceName, final String deploymentName,
+            final String roleName,
+            final VirtualMachineDiskCreateDataDiskParameters parameters) {
+        return this.getClient().getExecutorService()
+                .submit(new Callable<OperationResponse>() {
+                    @Override
+                    public OperationResponse call() throws Exception {
+                        return createDataDisk(serviceName, deploymentName,
+                                roleName, parameters);
+                    }
+                });
     }
-    
+
     /**
-    * The Add Data Disk operation adds a data disk to a virtual machine. There
-    * are three ways to create the data disk using the Add Data Disk
-    * operation.  Option 1 – Attach an empty data disk to the role by
-    * specifying the disk label and location of the disk image.  Do not
-    * include the DiskName and SourceMediaLink elements in the request body.
-    * Include the MediaLink element and reference a blob that is in the same
-    * geographical region as the role.  You can also omit the MediaLink
-    * element. In this usage, Windows Azure will create the data disk in the
-    * storage account configured as default for the role.   Option 2 – Attach
-    * an existing data disk that is in the image repository.  Do not include
-    * the DiskName and SourceMediaLink elements in the request body.  Specify
-    * the data disk to use by including the DiskName element.  Note: If
-    * included the in the response body, the MediaLink and LogicalDiskSizeInGB
-    * elements are ignored.  Option 3 - Specify the location of a blob in your
-    * storage account that contain a disk image to use.  Include the
-    * SourceMediaLink element. Note: If the MediaLink element isincluded, it
-    * is ignored.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157199.aspx for
-    * more information)
-    *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of the deployment.
-    * @param roleName The name of the role to add the data disk to.
-    * @param parameters Parameters supplied to the Create Virtual Machine Data
-    * Disk operation.
-    * @throws ParserConfigurationException Thrown if there was an error
-    * configuring the parser for the response body.
-    * @throws SAXException Thrown if there was an error parsing the response
-    * body.
-    * @throws TransformerException Thrown if there was an error creating the
-    * DOM transformer.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
+     * The Add Data Disk operation adds a data disk to a virtual machine. There
+     * are three ways to create the data disk using the Add Data Disk operation.
+     * Option 1 – Attach an empty data disk to the role by specifying the disk
+     * label and location of the disk image. Do not include the DiskName and
+     * SourceMediaLink elements in the request body. Include the MediaLink
+     * element and reference a blob that is in the same geographical region as
+     * the role. You can also omit the MediaLink element. In this usage, Windows
+     * Azure will create the data disk in the storage account configured as
+     * default for the role. Option 2 – Attach an existing data disk that is in
+     * the image repository. Do not include the DiskName and SourceMediaLink
+     * elements in the request body. Specify the data disk to use by including
+     * the DiskName element. Note: If included the in the response body, the
+     * MediaLink and LogicalDiskSizeInGB elements are ignored. Option 3 -
+     * Specify the location of a blob in your storage account that contain a
+     * disk image to use. Include the SourceMediaLink element. Note: If the
+     * MediaLink element isincluded, it is ignored. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157199.aspx for
+     * more information)
+     * 
+     * @param serviceName
+     *            The name of your service.
+     * @param deploymentName
+     *            The name of the deployment.
+     * @param roleName
+     *            The name of the role to add the data disk to.
+     * @param parameters
+     *            Parameters supplied to the Create Virtual Machine Data Disk
+     *            operation.
+     * @throws ParserConfigurationException
+     *             Thrown if there was an error configuring the parser for the
+     *             response body.
+     * @throws SAXException
+     *             Thrown if there was an error parsing the response body.
+     * @throws TransformerException
+     *             Thrown if there was an error creating the DOM transformer.
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @return A standard service response including an HTTP status code and
+     *         request ID.
+     */
     @Override
-    public OperationResponse createDataDisk(String serviceName, String deploymentName, String roleName, VirtualMachineDiskCreateDataDiskParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
-    {
+    public OperationResponse createDataDisk(String serviceName,
+            String deploymentName, String roleName,
+            VirtualMachineDiskCreateDataDiskParameters parameters)
+            throws ParserConfigurationException, SAXException,
+            TransformerException, IOException, ServiceException {
         // Validate
-        if (serviceName == null)
-        {
+        if (serviceName == null) {
             throw new NullPointerException("serviceName");
         }
-        if (deploymentName == null)
-        {
+        if (deploymentName == null) {
             throw new NullPointerException("deploymentName");
         }
-        if (roleName == null)
-        {
+        if (roleName == null) {
             throw new NullPointerException("roleName");
         }
-        if (parameters == null)
-        {
+        if (parameters == null) {
             throw new NullPointerException("parameters");
         }
-        if (parameters.getMediaLinkUri() == null)
-        {
+        if (parameters.getMediaLinkUri() == null) {
             throw new NullPointerException("parameters.MediaLinkUri");
         }
-        
+
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
             tracingParameters.put("deploymentName", deploymentName);
             tracingParameters.put("roleName", roleName);
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this, "createDataDiskAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "createDataDiskAsync",
+                    tracingParameters);
         }
-        
+
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "/roles/" + roleName + "/DataDisks";
-        
+        String url = this.getClient().getBaseUri() + "/"
+                + this.getClient().getCredentials().getSubscriptionId()
+                + "/services/hostedservices/" + serviceName + "/deployments/"
+                + deploymentName + "/roles/" + roleName + "/DataDisks";
+
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
-        
+
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
         httpRequest.setHeader("x-ms-version", "2013-11-01");
-        
+
         // Serialize Request
         String requestContent = null;
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
+                .newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory
+                .newDocumentBuilder();
         Document requestDoc = documentBuilder.newDocument();
-        
-        Element dataVirtualHardDiskElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisk");
+
+        Element dataVirtualHardDiskElement = requestDoc.createElementNS(
+                "http://schemas.microsoft.com/windowsazure",
+                "DataVirtualHardDisk");
         requestDoc.appendChild(dataVirtualHardDiskElement);
-        
-        Element hostCachingElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "HostCaching");
-        hostCachingElement.appendChild(requestDoc.createTextNode(parameters.getHostCaching().toString()));
+
+        Element hostCachingElement = requestDoc.createElementNS(
+                "http://schemas.microsoft.com/windowsazure", "HostCaching");
+        hostCachingElement.appendChild(requestDoc.createTextNode(parameters
+                .getHostCaching().toString()));
         dataVirtualHardDiskElement.appendChild(hostCachingElement);
-        
-        if (parameters.getDiskLabel() != null)
-        {
-            Element diskLabelElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DiskLabel");
-            diskLabelElement.appendChild(requestDoc.createTextNode(parameters.getDiskLabel()));
+
+        if (parameters.getDiskLabel() != null) {
+            Element diskLabelElement = requestDoc.createElementNS(
+                    "http://schemas.microsoft.com/windowsazure", "DiskLabel");
+            diskLabelElement.appendChild(requestDoc.createTextNode(parameters
+                    .getDiskLabel()));
             dataVirtualHardDiskElement.appendChild(diskLabelElement);
         }
-        
-        if (parameters.getDiskName() != null)
-        {
-            Element diskNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DiskName");
-            diskNameElement.appendChild(requestDoc.createTextNode(parameters.getDiskName()));
+
+        if (parameters.getDiskName() != null) {
+            Element diskNameElement = requestDoc.createElementNS(
+                    "http://schemas.microsoft.com/windowsazure", "DiskName");
+            diskNameElement.appendChild(requestDoc.createTextNode(parameters
+                    .getDiskName()));
             dataVirtualHardDiskElement.appendChild(diskNameElement);
         }
-        
-        if (parameters.getLogicalUnitNumber() != null)
-        {
-            Element lunElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Lun");
-            lunElement.appendChild(requestDoc.createTextNode(Integer.toString(parameters.getLogicalUnitNumber())));
+
+        if (parameters.getLogicalUnitNumber() != null) {
+            Element lunElement = requestDoc.createElementNS(
+                    "http://schemas.microsoft.com/windowsazure", "Lun");
+            lunElement.appendChild(requestDoc.createTextNode(Integer
+                    .toString(parameters.getLogicalUnitNumber())));
             dataVirtualHardDiskElement.appendChild(lunElement);
         }
-        
-        Element logicalDiskSizeInGBElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LogicalDiskSizeInGB");
-        logicalDiskSizeInGBElement.appendChild(requestDoc.createTextNode(Integer.toString(parameters.getLogicalDiskSizeInGB())));
+
+        Element logicalDiskSizeInGBElement = requestDoc.createElementNS(
+                "http://schemas.microsoft.com/windowsazure",
+                "LogicalDiskSizeInGB");
+        logicalDiskSizeInGBElement.appendChild(requestDoc
+                .createTextNode(Integer.toString(parameters
+                        .getLogicalDiskSizeInGB())));
         dataVirtualHardDiskElement.appendChild(logicalDiskSizeInGBElement);
-        
-        Element mediaLinkElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "MediaLink");
-        mediaLinkElement.appendChild(requestDoc.createTextNode(parameters.getMediaLinkUri().toString()));
+
+        Element mediaLinkElement = requestDoc.createElementNS(
+                "http://schemas.microsoft.com/windowsazure", "MediaLink");
+        mediaLinkElement.appendChild(requestDoc.createTextNode(parameters
+                .getMediaLinkUri().toString()));
         dataVirtualHardDiskElement.appendChild(mediaLinkElement);
-        
-        if (parameters.getSourceMediaLinkUri() != null)
-        {
-            Element sourceMediaLinkElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SourceMediaLink");
-            sourceMediaLinkElement.appendChild(requestDoc.createTextNode(parameters.getSourceMediaLinkUri().toString()));
+
+        if (parameters.getSourceMediaLinkUri() != null) {
+            Element sourceMediaLinkElement = requestDoc.createElementNS(
+                    "http://schemas.microsoft.com/windowsazure",
+                    "SourceMediaLink");
+            sourceMediaLinkElement.appendChild(requestDoc
+                    .createTextNode(parameters.getSourceMediaLinkUri()
+                            .toString()));
             dataVirtualHardDiskElement.appendChild(sourceMediaLinkElement);
         }
-        
+
         DOMSource domSource = new DOMSource(requestDoc);
         StringWriter stringWriter = new StringWriter();
         StreamResult streamResult = new StreamResult(stringWriter);
-        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        TransformerFactory transformerFactory = TransformerFactory
+                .newInstance();
         Transformer transformer = transformerFactory.newTransformer();
         transformer.transform(domSource, streamResult);
         requestContent = stringWriter.toString();
         StringEntity entity = new StringEntity(requestContent);
         httpRequest.setEntity(entity);
         httpRequest.setHeader("Content-Type", "application/xml");
-        
+
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            httpResponse = this.getClient().getHttpClient()
+                    .execute(httpRequest);
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_CREATED)
-            {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+            if (statusCode != HttpStatus.SC_CREATED) {
+                ServiceException ex = ServiceException.createFromXml(
+                        httpRequest, requestContent, httpResponse,
+                        httpResponse.getEntity());
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-            
+
             // Create Result
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader(
+                        "x-ms-request-id").getValue());
             }
-            
-            if (shouldTrace)
-            {
+
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
     }
-    
+
     /**
-    * The Add Disk operation adds a disk to the user image repository. The disk
-    * can be an operating system disk or a data disk.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157178.aspx for
-    * more information)
-    *
-    * @param parameters Parameters supplied to the Create Virtual Machine Disk
-    * operation.
-    * @return A virtual machine disk associated with your subscription.
-    */
+     * The Add Disk operation adds a disk to the user image repository. The disk
+     * can be an operating system disk or a data disk. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157178.aspx for
+     * more information)
+     * 
+     * @param parameters
+     *            Parameters supplied to the Create Virtual Machine Disk
+     *            operation.
+     * @return A virtual machine disk associated with your subscription.
+     */
     @Override
-    public Future<VirtualMachineDiskCreateDiskResponse> createDiskAsync(final VirtualMachineDiskCreateDiskParameters parameters)
-    {
-        return this.getClient().getExecutorService().submit(new Callable<VirtualMachineDiskCreateDiskResponse>() { 
-            @Override
-            public VirtualMachineDiskCreateDiskResponse call() throws Exception
-            {
-                return createDisk(parameters);
-            }
-         });
+    public Future<VirtualMachineDiskCreateDiskResponse> createDiskAsync(
+            final VirtualMachineDiskCreateDiskParameters parameters) {
+        return this.getClient().getExecutorService()
+                .submit(new Callable<VirtualMachineDiskCreateDiskResponse>() {
+                    @Override
+                    public VirtualMachineDiskCreateDiskResponse call()
+                            throws Exception {
+                        return createDisk(parameters);
+                    }
+                });
     }
-    
+
     /**
-    * The Add Disk operation adds a disk to the user image repository. The disk
-    * can be an operating system disk or a data disk.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157178.aspx for
-    * more information)
-    *
-    * @param parameters Parameters supplied to the Create Virtual Machine Disk
-    * operation.
-    * @throws ParserConfigurationException Thrown if there was an error
-    * configuring the parser for the response body.
-    * @throws SAXException Thrown if there was an error parsing the response
-    * body.
-    * @throws TransformerException Thrown if there was an error creating the
-    * DOM transformer.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws URISyntaxException Thrown if there was an error parsing a URI in
-    * the response.
-    * @return A virtual machine disk associated with your subscription.
-    */
+     * The Add Disk operation adds a disk to the user image repository. The disk
+     * can be an operating system disk or a data disk. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157178.aspx for
+     * more information)
+     * 
+     * @param parameters
+     *            Parameters supplied to the Create Virtual Machine Disk
+     *            operation.
+     * @throws ParserConfigurationException
+     *             Thrown if there was an error configuring the parser for the
+     *             response body.
+     * @throws SAXException
+     *             Thrown if there was an error parsing the response body.
+     * @throws TransformerException
+     *             Thrown if there was an error creating the DOM transformer.
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @throws URISyntaxException
+     *             Thrown if there was an error parsing a URI in the response.
+     * @return A virtual machine disk associated with your subscription.
+     */
     @Override
-    public VirtualMachineDiskCreateDiskResponse createDisk(VirtualMachineDiskCreateDiskParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException
-    {
+    public VirtualMachineDiskCreateDiskResponse createDisk(
+            VirtualMachineDiskCreateDiskParameters parameters)
+            throws ParserConfigurationException, SAXException,
+            TransformerException, IOException, ServiceException,
+            URISyntaxException {
         // Validate
-        if (parameters == null)
-        {
+        if (parameters == null) {
             throw new NullPointerException("parameters");
         }
-        if (parameters.getLabel() == null)
-        {
+        if (parameters.getLabel() == null) {
             throw new NullPointerException("parameters.Label");
         }
-        if (parameters.getMediaLinkUri() == null)
-        {
+        if (parameters.getMediaLinkUri() == null) {
             throw new NullPointerException("parameters.MediaLinkUri");
         }
-        if (parameters.getName() == null)
-        {
+        if (parameters.getName() == null) {
             throw new NullPointerException("parameters.Name");
         }
-        
+
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this, "createDiskAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "createDiskAsync",
+                    tracingParameters);
         }
-        
+
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/disks";
-        
+        String url = this.getClient().getBaseUri() + "/"
+                + this.getClient().getCredentials().getSubscriptionId()
+                + "/services/disks";
+
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
-        
+
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
         httpRequest.setHeader("x-ms-version", "2013-11-01");
-        
+
         // Serialize Request
         String requestContent = null;
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
+                .newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory
+                .newDocumentBuilder();
         Document requestDoc = documentBuilder.newDocument();
-        
-        Element diskElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Disk");
+
+        Element diskElement = requestDoc.createElementNS(
+                "http://schemas.microsoft.com/windowsazure", "Disk");
         requestDoc.appendChild(diskElement);
-        
-        if (parameters.getOperatingSystemType() != null)
-        {
-            Element osElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "OS");
-            osElement.appendChild(requestDoc.createTextNode(parameters.getOperatingSystemType()));
+
+        if (parameters.getOperatingSystemType() != null) {
+            Element osElement = requestDoc.createElementNS(
+                    "http://schemas.microsoft.com/windowsazure", "OS");
+            osElement.appendChild(requestDoc.createTextNode(parameters
+                    .getOperatingSystemType()));
             diskElement.appendChild(osElement);
         }
-        
-        Element labelElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Label");
-        labelElement.appendChild(requestDoc.createTextNode(parameters.getLabel()));
+
+        Element labelElement = requestDoc.createElementNS(
+                "http://schemas.microsoft.com/windowsazure", "Label");
+        labelElement.appendChild(requestDoc.createTextNode(parameters
+                .getLabel()));
         diskElement.appendChild(labelElement);
-        
-        Element mediaLinkElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "MediaLink");
-        mediaLinkElement.appendChild(requestDoc.createTextNode(parameters.getMediaLinkUri().toString()));
+
+        Element mediaLinkElement = requestDoc.createElementNS(
+                "http://schemas.microsoft.com/windowsazure", "MediaLink");
+        mediaLinkElement.appendChild(requestDoc.createTextNode(parameters
+                .getMediaLinkUri().toString()));
         diskElement.appendChild(mediaLinkElement);
-        
-        Element nameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
-        nameElement.appendChild(requestDoc.createTextNode(parameters.getName()));
+
+        Element nameElement = requestDoc.createElementNS(
+                "http://schemas.microsoft.com/windowsazure", "Name");
+        nameElement
+                .appendChild(requestDoc.createTextNode(parameters.getName()));
         diskElement.appendChild(nameElement);
-        
+
         DOMSource domSource = new DOMSource(requestDoc);
         StringWriter stringWriter = new StringWriter();
         StreamResult streamResult = new StreamResult(stringWriter);
-        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        TransformerFactory transformerFactory = TransformerFactory
+                .newInstance();
         Transformer transformer = transformerFactory.newTransformer();
         transformer.transform(domSource, streamResult);
         requestContent = stringWriter.toString();
         StringEntity entity = new StringEntity(requestContent);
         httpRequest.setEntity(entity);
         httpRequest.setHeader("Content-Type", "application/xml");
-        
+
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            httpResponse = this.getClient().getHttpClient()
+                    .execute(httpRequest);
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+            if (statusCode != HttpStatus.SC_OK) {
+                ServiceException ex = ServiceException.createFromXml(
+                        httpRequest, requestContent, httpResponse,
+                        httpResponse.getEntity());
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-            
+
             // Create Result
             VirtualMachineDiskCreateDiskResponse result = null;
             // Deserialize Response
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new VirtualMachineDiskCreateDiskResponse();
-            DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+            DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory
+                    .newInstance();
             documentBuilderFactory2.setNamespaceAware(true);
-            DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
+            DocumentBuilder documentBuilder2 = documentBuilderFactory2
+                    .newDocumentBuilder();
             Document responseDoc = documentBuilder2.parse(responseContent);
-            
+
             NodeList elements = responseDoc.getElementsByTagName("Disk");
-            Element diskElement2 = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (diskElement2 != null)
-            {
+            Element diskElement2 = elements.getLength() > 0 ? ((Element) elements
+                    .item(0)) : null;
+            if (diskElement2 != null) {
                 NodeList elements2 = diskElement2.getElementsByTagName("OS");
-                Element osElement2 = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (osElement2 != null)
-                {
+                Element osElement2 = elements2.getLength() > 0 ? ((Element) elements2
+                        .item(0)) : null;
+                if (osElement2 != null) {
                     String osInstance;
                     osInstance = osElement2.getTextContent();
                     result.setOperatingSystem(osInstance);
                 }
-                
+
                 NodeList elements3 = diskElement2.getElementsByTagName("Label");
-                Element labelElement2 = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                if (labelElement2 != null)
-                {
+                Element labelElement2 = elements3.getLength() > 0 ? ((Element) elements3
+                        .item(0)) : null;
+                if (labelElement2 != null) {
                     String labelInstance;
                     labelInstance = labelElement2.getTextContent();
                     result.setLabel(labelInstance);
                 }
-                
-                NodeList elements4 = diskElement2.getElementsByTagName("AffinityGroup");
-                Element affinityGroupElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                if (affinityGroupElement != null)
-                {
+
+                NodeList elements4 = diskElement2
+                        .getElementsByTagName("AffinityGroup");
+                Element affinityGroupElement = elements4.getLength() > 0 ? ((Element) elements4
+                        .item(0)) : null;
+                if (affinityGroupElement != null) {
                     String affinityGroupInstance;
-                    affinityGroupInstance = affinityGroupElement.getTextContent();
+                    affinityGroupInstance = affinityGroupElement
+                            .getTextContent();
                     result.setAffinityGroup(affinityGroupInstance);
                 }
-                
-                NodeList elements5 = diskElement2.getElementsByTagName("Location");
-                Element locationElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                if (locationElement != null)
-                {
+
+                NodeList elements5 = diskElement2
+                        .getElementsByTagName("Location");
+                Element locationElement = elements5.getLength() > 0 ? ((Element) elements5
+                        .item(0)) : null;
+                if (locationElement != null) {
                     String locationInstance;
                     locationInstance = locationElement.getTextContent();
                     result.setLocation(locationInstance);
                 }
-                
-                NodeList elements6 = diskElement2.getElementsByTagName("LogicalDiskSizeInGB");
-                Element logicalDiskSizeInGBElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                if (logicalDiskSizeInGBElement != null)
-                {
+
+                NodeList elements6 = diskElement2
+                        .getElementsByTagName("LogicalDiskSizeInGB");
+                Element logicalDiskSizeInGBElement = elements6.getLength() > 0 ? ((Element) elements6
+                        .item(0)) : null;
+                if (logicalDiskSizeInGBElement != null) {
                     int logicalDiskSizeInGBInstance;
-                    logicalDiskSizeInGBInstance = DatatypeConverter.parseInt(logicalDiskSizeInGBElement.getTextContent());
+                    logicalDiskSizeInGBInstance = DatatypeConverter
+                            .parseInt(logicalDiskSizeInGBElement
+                                    .getTextContent());
                     result.setLogicalSizeInGB(logicalDiskSizeInGBInstance);
                 }
-                
-                NodeList elements7 = diskElement2.getElementsByTagName("MediaLink");
-                Element mediaLinkElement2 = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                if (mediaLinkElement2 != null)
-                {
+
+                NodeList elements7 = diskElement2
+                        .getElementsByTagName("MediaLink");
+                Element mediaLinkElement2 = elements7.getLength() > 0 ? ((Element) elements7
+                        .item(0)) : null;
+                if (mediaLinkElement2 != null) {
                     URI mediaLinkInstance;
-                    mediaLinkInstance = new URI(mediaLinkElement2.getTextContent());
+                    mediaLinkInstance = new URI(
+                            mediaLinkElement2.getTextContent());
                     result.setMediaLinkUri(mediaLinkInstance);
                 }
-                
+
                 NodeList elements8 = diskElement2.getElementsByTagName("Name");
-                Element nameElement2 = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                if (nameElement2 != null)
-                {
+                Element nameElement2 = elements8.getLength() > 0 ? ((Element) elements8
+                        .item(0)) : null;
+                if (nameElement2 != null) {
                     String nameInstance;
                     nameInstance = nameElement2.getTextContent();
                     result.setName(nameInstance);
                 }
-                
-                NodeList elements9 = diskElement2.getElementsByTagName("SourceImageName");
-                Element sourceImageNameElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-                if (sourceImageNameElement != null)
-                {
+
+                NodeList elements9 = diskElement2
+                        .getElementsByTagName("SourceImageName");
+                Element sourceImageNameElement = elements9.getLength() > 0 ? ((Element) elements9
+                        .item(0)) : null;
+                if (sourceImageNameElement != null) {
                     String sourceImageNameInstance;
-                    sourceImageNameInstance = sourceImageNameElement.getTextContent();
+                    sourceImageNameInstance = sourceImageNameElement
+                            .getTextContent();
                     result.setSourceImageName(sourceImageNameInstance);
                 }
-                
-                NodeList elements10 = diskElement2.getElementsByTagName("AttachedTo");
-                Element attachedToElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
-                if (attachedToElement != null)
-                {
+
+                NodeList elements10 = diskElement2
+                        .getElementsByTagName("AttachedTo");
+                Element attachedToElement = elements10.getLength() > 0 ? ((Element) elements10
+                        .item(0)) : null;
+                if (attachedToElement != null) {
                     VirtualMachineDiskCreateDiskResponse.VirtualMachineDiskUsageDetails attachedToInstance = new VirtualMachineDiskCreateDiskResponse.VirtualMachineDiskUsageDetails();
                     result.setUsageDetails(attachedToInstance);
-                    
-                    NodeList elements11 = attachedToElement.getElementsByTagName("HostedServiceName");
-                    Element hostedServiceNameElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
-                    if (hostedServiceNameElement != null)
-                    {
+
+                    NodeList elements11 = attachedToElement
+                            .getElementsByTagName("HostedServiceName");
+                    Element hostedServiceNameElement = elements11.getLength() > 0 ? ((Element) elements11
+                            .item(0)) : null;
+                    if (hostedServiceNameElement != null) {
                         String hostedServiceNameInstance;
-                        hostedServiceNameInstance = hostedServiceNameElement.getTextContent();
-                        attachedToInstance.setHostedServiceName(hostedServiceNameInstance);
+                        hostedServiceNameInstance = hostedServiceNameElement
+                                .getTextContent();
+                        attachedToInstance
+                                .setHostedServiceName(hostedServiceNameInstance);
                     }
-                    
-                    NodeList elements12 = attachedToElement.getElementsByTagName("DeploymentName");
-                    Element deploymentNameElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
-                    if (deploymentNameElement != null)
-                    {
+
+                    NodeList elements12 = attachedToElement
+                            .getElementsByTagName("DeploymentName");
+                    Element deploymentNameElement = elements12.getLength() > 0 ? ((Element) elements12
+                            .item(0)) : null;
+                    if (deploymentNameElement != null) {
                         String deploymentNameInstance;
-                        deploymentNameInstance = deploymentNameElement.getTextContent();
-                        attachedToInstance.setDeploymentName(deploymentNameInstance);
+                        deploymentNameInstance = deploymentNameElement
+                                .getTextContent();
+                        attachedToInstance
+                                .setDeploymentName(deploymentNameInstance);
                     }
-                    
-                    NodeList elements13 = attachedToElement.getElementsByTagName("RoleName");
-                    Element roleNameElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
-                    if (roleNameElement != null)
-                    {
+
+                    NodeList elements13 = attachedToElement
+                            .getElementsByTagName("RoleName");
+                    Element roleNameElement = elements13.getLength() > 0 ? ((Element) elements13
+                            .item(0)) : null;
+                    if (roleNameElement != null) {
                         String roleNameInstance;
                         roleNameInstance = roleNameElement.getTextContent();
                         attachedToInstance.setRoleName(roleNameInstance);
                     }
                 }
-                
-                NodeList elements14 = diskElement2.getElementsByTagName("IsPremium");
-                Element isPremiumElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
-                if (isPremiumElement != null && (isPremiumElement.getTextContent() == null || isPremiumElement.getTextContent().isEmpty() == true) == false)
-                {
+
+                NodeList elements14 = diskElement2
+                        .getElementsByTagName("IsPremium");
+                Element isPremiumElement = elements14.getLength() > 0 ? ((Element) elements14
+                        .item(0)) : null;
+                if (isPremiumElement != null
+                        && (isPremiumElement.getTextContent() == null || isPremiumElement
+                                .getTextContent().isEmpty() == true) == false) {
                     boolean isPremiumInstance;
-                    isPremiumInstance = DatatypeConverter.parseBoolean(isPremiumElement.getTextContent());
+                    isPremiumInstance = DatatypeConverter
+                            .parseBoolean(isPremiumElement.getTextContent());
                     result.setIsPremium(isPremiumInstance);
                 }
             }
-            
+
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader(
+                        "x-ms-request-id").getValue());
             }
-            
-            if (shouldTrace)
-            {
+
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
     }
-    
+
     /**
-    * The Delete Data Disk operation removes the specified data disk from a
-    * virtual machine.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157179.aspx for
-    * more information)
-    *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of the deployment.
-    * @param roleName The name of the role to delete the data disk from.
-    * @param logicalUnitNumber The logical unit number of the disk.
-    * @param deleteFromStorage Optional. Specifies that the source blob for the
-    * disk should also be deleted from storage.
-    * @return The response body contains the status of the specified
-    * asynchronous operation, indicating whether it has succeeded, is
-    * inprogress, or has failed. Note that this status is distinct from the
-    * HTTP status code returned for the Get Operation Status operation itself.
-    * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
-    * operation failed, the response body includes the HTTP status code for
-    * the failed request, and also includes error information regarding the
-    * failure.
-    */
+     * The Delete Data Disk operation removes the specified data disk from a
+     * virtual machine. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157179.aspx for
+     * more information)
+     * 
+     * @param serviceName
+     *            The name of your service.
+     * @param deploymentName
+     *            The name of the deployment.
+     * @param roleName
+     *            The name of the role to delete the data disk from.
+     * @param logicalUnitNumber
+     *            The logical unit number of the disk.
+     * @param deleteFromStorage
+     *            Optional. Specifies that the source blob for the disk should
+     *            also be deleted from storage.
+     * @return The response body contains the status of the specified
+     *         asynchronous operation, indicating whether it has succeeded, is
+     *         inprogress, or has failed. Note that this status is distinct from
+     *         the HTTP status code returned for the Get Operation Status
+     *         operation itself. If the asynchronous operation succeeded, the
+     *         response body includes the HTTP status code for the successful
+     *         request. If the asynchronous operation failed, the response body
+     *         includes the HTTP status code for the failed request, and also
+     *         includes error information regarding the failure.
+     */
     @Override
-    public Future<ComputeOperationStatusResponse> deleteDataDiskAsync(final String serviceName, final String deploymentName, final String roleName, final int logicalUnitNumber, final boolean deleteFromStorage)
-    {
-        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
-            @Override
-            public ComputeOperationStatusResponse call() throws Exception
-            {
-                return deleteDataDisk(serviceName, deploymentName, roleName, logicalUnitNumber, deleteFromStorage);
-            }
-         });
+    public Future<ComputeOperationStatusResponse> deleteDataDiskAsync(
+            final String serviceName, final String deploymentName,
+            final String roleName, final int logicalUnitNumber,
+            final boolean deleteFromStorage) {
+        return this.getClient().getExecutorService()
+                .submit(new Callable<ComputeOperationStatusResponse>() {
+                    @Override
+                    public ComputeOperationStatusResponse call()
+                            throws Exception {
+                        return deleteDataDisk(serviceName, deploymentName,
+                                roleName, logicalUnitNumber, deleteFromStorage);
+                    }
+                });
     }
-    
+
     /**
-    * The Delete Data Disk operation removes the specified data disk from a
-    * virtual machine.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157179.aspx for
-    * more information)
-    *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of the deployment.
-    * @param roleName The name of the role to delete the data disk from.
-    * @param logicalUnitNumber The logical unit number of the disk.
-    * @param deleteFromStorage Optional. Specifies that the source blob for the
-    * disk should also be deleted from storage.
-    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
-    * or otherwise occupied, and the thread is interrupted, either before or
-    * during the activity. Occasionally a method may wish to test whether the
-    * current thread has been interrupted, and if so, to immediately throw
-    * this exception. The following code can be used to achieve this effect:
-    * @throws ExecutionException Thrown when attempting to retrieve the result
-    * of a task that aborted by throwing an exception. This exception can be
-    * inspected using the Throwable.getCause() method.
-    * @throws ServiceException Thrown if the server returned an error for the
-    * request.
-    * @throws IOException Thrown if there was an error setting up tracing for
-    * the request.
-    * @return The response body contains the status of the specified
-    * asynchronous operation, indicating whether it has succeeded, is
-    * inprogress, or has failed. Note that this status is distinct from the
-    * HTTP status code returned for the Get Operation Status operation itself.
-    * If the asynchronous operation succeeded, the response body includes the
-    * HTTP status code for the successful request.  If the asynchronous
-    * operation failed, the response body includes the HTTP status code for
-    * the failed request, and also includes error information regarding the
-    * failure.
-    */
+     * The Delete Data Disk operation removes the specified data disk from a
+     * virtual machine. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157179.aspx for
+     * more information)
+     * 
+     * @param serviceName
+     *            The name of your service.
+     * @param deploymentName
+     *            The name of the deployment.
+     * @param roleName
+     *            The name of the role to delete the data disk from.
+     * @param logicalUnitNumber
+     *            The logical unit number of the disk.
+     * @param deleteFromStorage
+     *            Optional. Specifies that the source blob for the disk should
+     *            also be deleted from storage.
+     * @throws InterruptedException
+     *             Thrown when a thread is waiting, sleeping, or otherwise
+     *             occupied, and the thread is interrupted, either before or
+     *             during the activity. Occasionally a method may wish to test
+     *             whether the current thread has been interrupted, and if so,
+     *             to immediately throw this exception. The following code can
+     *             be used to achieve this effect:
+     * @throws ExecutionException
+     *             Thrown when attempting to retrieve the result of a task that
+     *             aborted by throwing an exception. This exception can be
+     *             inspected using the Throwable.getCause() method.
+     * @throws ServiceException
+     *             Thrown if the server returned an error for the request.
+     * @throws IOException
+     *             Thrown if there was an error setting up tracing for the
+     *             request.
+     * @return The response body contains the status of the specified
+     *         asynchronous operation, indicating whether it has succeeded, is
+     *         inprogress, or has failed. Note that this status is distinct from
+     *         the HTTP status code returned for the Get Operation Status
+     *         operation itself. If the asynchronous operation succeeded, the
+     *         response body includes the HTTP status code for the successful
+     *         request. If the asynchronous operation failed, the response body
+     *         includes the HTTP status code for the failed request, and also
+     *         includes error information regarding the failure.
+     */
     @Override
-    public ComputeOperationStatusResponse deleteDataDisk(String serviceName, String deploymentName, String roleName, int logicalUnitNumber, boolean deleteFromStorage) throws InterruptedException, ExecutionException, ServiceException, IOException
-    {
+    public ComputeOperationStatusResponse deleteDataDisk(String serviceName,
+            String deploymentName, String roleName, int logicalUnitNumber,
+            boolean deleteFromStorage) throws InterruptedException,
+            ExecutionException, ServiceException, IOException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
@@ -860,977 +953,1085 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             tracingParameters.put("roleName", roleName);
             tracingParameters.put("logicalUnitNumber", logicalUnitNumber);
             tracingParameters.put("deleteFromStorage", deleteFromStorage);
-            CloudTracing.enter(invocationId, this, "deleteDataDiskAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "deleteDataDiskAsync",
+                    tracingParameters);
         }
-        try
-        {
-            if (shouldTrace)
-            {
-                client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
+        try {
+            if (shouldTrace) {
+                client2 = this
+                        .getClient()
+                        .withRequestFilterLast(
+                                new ClientRequestTrackingHandler(invocationId))
+                        .withResponseFilterLast(
+                                new ClientRequestTrackingHandler(invocationId));
             }
-            
-            OperationResponse response = client2.getVirtualMachineDisksOperations().beginDeletingDataDiskAsync(serviceName, deploymentName, roleName, logicalUnitNumber, deleteFromStorage).get();
-            ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
+
+            OperationResponse response = client2
+                    .getVirtualMachineDisksOperations()
+                    .beginDeletingDataDiskAsync(serviceName, deploymentName,
+                            roleName, logicalUnitNumber, deleteFromStorage)
+                    .get();
+            ComputeOperationStatusResponse result = client2
+                    .getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
-            while ((result.getStatus() != OperationStatus.InProgress) == false)
-            {
+            while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
-                result = client2.getOperationStatusAsync(response.getRequestId()).get();
+                result = client2.getOperationStatusAsync(
+                        response.getRequestId()).get();
                 delayInSeconds = 30;
             }
-            
-            if (shouldTrace)
-            {
+
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
-            
-            if (result.getStatus() != OperationStatus.Succeeded)
-            {
-                if (result.getError() != null)
-                {
-                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+
+            if (result.getStatus() != OperationStatus.Succeeded) {
+                if (result.getError() != null) {
+                    ServiceException ex = new ServiceException(result
+                            .getError().getCode()
+                            + " : "
+                            + result.getError().getMessage());
                     ex.setErrorCode(result.getError().getCode());
                     ex.setErrorMessage(result.getError().getMessage());
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else
-                {
+                } else {
                     ServiceException ex = new ServiceException("");
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
                 }
             }
-            
+
             return result;
-        }
-        finally
-        {
-            if (this.getClient() != null && shouldTrace)
-            {
+        } finally {
+            if (this.getClient() != null && shouldTrace) {
                 this.getClient().close();
             }
         }
     }
-    
+
     /**
-    * The Delete Disk operation deletes the specified data or operating system
-    * disk from your image repository.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157200.aspx for
-    * more information)
-    *
-    * @param diskName The name of the disk to delete.
-    * @param deleteFromStorage Optional. Specifies that the source blob for the
-    * disk should also be deleted from storage.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
+     * The Delete Disk operation deletes the specified data or operating system
+     * disk from your image repository. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157200.aspx for
+     * more information)
+     * 
+     * @param diskName
+     *            The name of the disk to delete.
+     * @param deleteFromStorage
+     *            Optional. Specifies that the source blob for the disk should
+     *            also be deleted from storage.
+     * @return A standard service response including an HTTP status code and
+     *         request ID.
+     */
     @Override
-    public Future<OperationResponse> deleteDiskAsync(final String diskName, final boolean deleteFromStorage)
-    {
-        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
-            @Override
-            public OperationResponse call() throws Exception
-            {
-                return deleteDisk(diskName, deleteFromStorage);
-            }
-         });
+    public Future<OperationResponse> deleteDiskAsync(final String diskName,
+            final boolean deleteFromStorage) {
+        return this.getClient().getExecutorService()
+                .submit(new Callable<OperationResponse>() {
+                    @Override
+                    public OperationResponse call() throws Exception {
+                        return deleteDisk(diskName, deleteFromStorage);
+                    }
+                });
     }
-    
+
     /**
-    * The Delete Disk operation deletes the specified data or operating system
-    * disk from your image repository.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157200.aspx for
-    * more information)
-    *
-    * @param diskName The name of the disk to delete.
-    * @param deleteFromStorage Optional. Specifies that the source blob for the
-    * disk should also be deleted from storage.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
+     * The Delete Disk operation deletes the specified data or operating system
+     * disk from your image repository. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157200.aspx for
+     * more information)
+     * 
+     * @param diskName
+     *            The name of the disk to delete.
+     * @param deleteFromStorage
+     *            Optional. Specifies that the source blob for the disk should
+     *            also be deleted from storage.
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @return A standard service response including an HTTP status code and
+     *         request ID.
+     */
     @Override
-    public OperationResponse deleteDisk(String diskName, boolean deleteFromStorage) throws IOException, ServiceException
-    {
+    public OperationResponse deleteDisk(String diskName,
+            boolean deleteFromStorage) throws IOException, ServiceException {
         // Validate
-        if (diskName == null)
-        {
+        if (diskName == null) {
             throw new NullPointerException("diskName");
         }
-        
+
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("diskName", diskName);
             tracingParameters.put("deleteFromStorage", deleteFromStorage);
-            CloudTracing.enter(invocationId, this, "deleteDiskAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "deleteDiskAsync",
+                    tracingParameters);
         }
-        
+
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/disks/" + diskName + "?";
-        if (deleteFromStorage == true)
-        {
+        String url = this.getClient().getBaseUri() + "/"
+                + this.getClient().getCredentials().getSubscriptionId()
+                + "/services/disks/" + diskName + "?";
+        if (deleteFromStorage == true) {
             url = url + "comp=" + "media";
         }
-        
+
         // Create HTTP transport objects
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
-        
+
         // Set Headers
         httpRequest.setHeader("x-ms-version", "2013-11-01");
-        
+
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            httpResponse = this.getClient().getHttpClient()
+                    .execute(httpRequest);
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+            if (statusCode != HttpStatus.SC_OK) {
+                ServiceException ex = ServiceException.createFromXml(
+                        httpRequest, null, httpResponse,
+                        httpResponse.getEntity());
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-            
+
             // Create Result
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader(
+                        "x-ms-request-id").getValue());
             }
-            
-            if (shouldTrace)
-            {
+
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
     }
-    
+
     /**
-    * The Get Data Disk operation retrieves the specified data disk from a
-    * virtual machine.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157180.aspx for
-    * more information)
-    *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of the deployment.
-    * @param roleName The name of the role.
-    * @param logicalUnitNumber The logical unit number of the disk.
-    * @return The Get Data Disk operation response.
-    */
+     * The Get Data Disk operation retrieves the specified data disk from a
+     * virtual machine. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157180.aspx for
+     * more information)
+     * 
+     * @param serviceName
+     *            The name of your service.
+     * @param deploymentName
+     *            The name of the deployment.
+     * @param roleName
+     *            The name of the role.
+     * @param logicalUnitNumber
+     *            The logical unit number of the disk.
+     * @return The Get Data Disk operation response.
+     */
     @Override
-    public Future<VirtualMachineDiskGetDataDiskResponse> getDataDiskAsync(final String serviceName, final String deploymentName, final String roleName, final int logicalUnitNumber)
-    {
-        return this.getClient().getExecutorService().submit(new Callable<VirtualMachineDiskGetDataDiskResponse>() { 
-            @Override
-            public VirtualMachineDiskGetDataDiskResponse call() throws Exception
-            {
-                return getDataDisk(serviceName, deploymentName, roleName, logicalUnitNumber);
-            }
-         });
+    public Future<VirtualMachineDiskGetDataDiskResponse> getDataDiskAsync(
+            final String serviceName, final String deploymentName,
+            final String roleName, final int logicalUnitNumber) {
+        return this.getClient().getExecutorService()
+                .submit(new Callable<VirtualMachineDiskGetDataDiskResponse>() {
+                    @Override
+                    public VirtualMachineDiskGetDataDiskResponse call()
+                            throws Exception {
+                        return getDataDisk(serviceName, deploymentName,
+                                roleName, logicalUnitNumber);
+                    }
+                });
     }
-    
+
     /**
-    * The Get Data Disk operation retrieves the specified data disk from a
-    * virtual machine.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157180.aspx for
-    * more information)
-    *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of the deployment.
-    * @param roleName The name of the role.
-    * @param logicalUnitNumber The logical unit number of the disk.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParserConfigurationException Thrown if there was a serious
-    * configuration error with the document parser.
-    * @throws SAXException Thrown if there was an error parsing the XML
-    * response.
-    * @throws URISyntaxException Thrown if there was an error parsing a URI in
-    * the response.
-    * @return The Get Data Disk operation response.
-    */
+     * The Get Data Disk operation retrieves the specified data disk from a
+     * virtual machine. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157180.aspx for
+     * more information)
+     * 
+     * @param serviceName
+     *            The name of your service.
+     * @param deploymentName
+     *            The name of the deployment.
+     * @param roleName
+     *            The name of the role.
+     * @param logicalUnitNumber
+     *            The logical unit number of the disk.
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @throws ParserConfigurationException
+     *             Thrown if there was a serious configuration error with the
+     *             document parser.
+     * @throws SAXException
+     *             Thrown if there was an error parsing the XML response.
+     * @throws URISyntaxException
+     *             Thrown if there was an error parsing a URI in the response.
+     * @return The Get Data Disk operation response.
+     */
     @Override
-    public VirtualMachineDiskGetDataDiskResponse getDataDisk(String serviceName, String deploymentName, String roleName, int logicalUnitNumber) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
-    {
+    public VirtualMachineDiskGetDataDiskResponse getDataDisk(
+            String serviceName, String deploymentName, String roleName,
+            int logicalUnitNumber) throws IOException, ServiceException,
+            ParserConfigurationException, SAXException, URISyntaxException {
         // Validate
-        if (serviceName == null)
-        {
+        if (serviceName == null) {
             throw new NullPointerException("serviceName");
         }
-        if (deploymentName == null)
-        {
+        if (deploymentName == null) {
             throw new NullPointerException("deploymentName");
         }
-        if (roleName == null)
-        {
+        if (roleName == null) {
             throw new NullPointerException("roleName");
         }
-        
+
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
             tracingParameters.put("deploymentName", deploymentName);
             tracingParameters.put("roleName", roleName);
             tracingParameters.put("logicalUnitNumber", logicalUnitNumber);
-            CloudTracing.enter(invocationId, this, "getDataDiskAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "getDataDiskAsync",
+                    tracingParameters);
         }
-        
+
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "/roles/" + roleName + "/DataDisks/" + logicalUnitNumber;
-        
+        String url = this.getClient().getBaseUri() + "/"
+                + this.getClient().getCredentials().getSubscriptionId()
+                + "/services/hostedservices/" + serviceName + "/deployments/"
+                + deploymentName + "/roles/" + roleName + "/DataDisks/"
+                + logicalUnitNumber;
+
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
-        
+
         // Set Headers
         httpRequest.setHeader("x-ms-version", "2013-11-01");
-        
+
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            httpResponse = this.getClient().getHttpClient()
+                    .execute(httpRequest);
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+            if (statusCode != HttpStatus.SC_OK) {
+                ServiceException ex = ServiceException.createFromXml(
+                        httpRequest, null, httpResponse,
+                        httpResponse.getEntity());
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-            
+
             // Create Result
             VirtualMachineDiskGetDataDiskResponse result = null;
             // Deserialize Response
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new VirtualMachineDiskGetDataDiskResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
+                    .newInstance();
             documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            DocumentBuilder documentBuilder = documentBuilderFactory
+                    .newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
-            
-            NodeList elements = responseDoc.getElementsByTagName("DataVirtualHardDisk");
-            Element dataVirtualHardDiskElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (dataVirtualHardDiskElement != null)
-            {
-                NodeList elements2 = dataVirtualHardDiskElement.getElementsByTagName("HostCaching");
-                Element hostCachingElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (hostCachingElement != null)
-                {
+
+            NodeList elements = responseDoc
+                    .getElementsByTagName("DataVirtualHardDisk");
+            Element dataVirtualHardDiskElement = elements.getLength() > 0 ? ((Element) elements
+                    .item(0)) : null;
+            if (dataVirtualHardDiskElement != null) {
+                NodeList elements2 = dataVirtualHardDiskElement
+                        .getElementsByTagName("HostCaching");
+                Element hostCachingElement = elements2.getLength() > 0 ? ((Element) elements2
+                        .item(0)) : null;
+                if (hostCachingElement != null) {
                     VirtualHardDiskHostCaching hostCachingInstance;
-                    hostCachingInstance = VirtualHardDiskHostCaching.valueOf(hostCachingElement.getTextContent());
+                    hostCachingInstance = VirtualHardDiskHostCaching
+                            .valueOf(hostCachingElement.getTextContent());
                     result.setHostCaching(hostCachingInstance);
                 }
-                
-                NodeList elements3 = dataVirtualHardDiskElement.getElementsByTagName("DiskLabel");
-                Element diskLabelElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                if (diskLabelElement != null)
-                {
+
+                NodeList elements3 = dataVirtualHardDiskElement
+                        .getElementsByTagName("DiskLabel");
+                Element diskLabelElement = elements3.getLength() > 0 ? ((Element) elements3
+                        .item(0)) : null;
+                if (diskLabelElement != null) {
                     String diskLabelInstance;
                     diskLabelInstance = diskLabelElement.getTextContent();
                     result.setDiskLabel(diskLabelInstance);
                 }
-                
-                NodeList elements4 = dataVirtualHardDiskElement.getElementsByTagName("DiskName");
-                Element diskNameElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                if (diskNameElement != null)
-                {
+
+                NodeList elements4 = dataVirtualHardDiskElement
+                        .getElementsByTagName("DiskName");
+                Element diskNameElement = elements4.getLength() > 0 ? ((Element) elements4
+                        .item(0)) : null;
+                if (diskNameElement != null) {
                     String diskNameInstance;
                     diskNameInstance = diskNameElement.getTextContent();
                     result.setDiskName(diskNameInstance);
                 }
-                
-                NodeList elements5 = dataVirtualHardDiskElement.getElementsByTagName("Lun");
-                Element lunElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                if (lunElement != null && (lunElement.getTextContent() == null || lunElement.getTextContent().isEmpty() == true) == false)
-                {
+
+                NodeList elements5 = dataVirtualHardDiskElement
+                        .getElementsByTagName("Lun");
+                Element lunElement = elements5.getLength() > 0 ? ((Element) elements5
+                        .item(0)) : null;
+                if (lunElement != null
+                        && (lunElement.getTextContent() == null || lunElement
+                                .getTextContent().isEmpty() == true) == false) {
                     int lunInstance;
-                    lunInstance = DatatypeConverter.parseInt(lunElement.getTextContent());
+                    lunInstance = DatatypeConverter.parseInt(lunElement
+                            .getTextContent());
                     result.setLogicalUnitNumber(lunInstance);
                 }
-                
-                NodeList elements6 = dataVirtualHardDiskElement.getElementsByTagName("LogicalDiskSizeInGB");
-                Element logicalDiskSizeInGBElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                if (logicalDiskSizeInGBElement != null)
-                {
+
+                NodeList elements6 = dataVirtualHardDiskElement
+                        .getElementsByTagName("LogicalDiskSizeInGB");
+                Element logicalDiskSizeInGBElement = elements6.getLength() > 0 ? ((Element) elements6
+                        .item(0)) : null;
+                if (logicalDiskSizeInGBElement != null) {
                     int logicalDiskSizeInGBInstance;
-                    logicalDiskSizeInGBInstance = DatatypeConverter.parseInt(logicalDiskSizeInGBElement.getTextContent());
+                    logicalDiskSizeInGBInstance = DatatypeConverter
+                            .parseInt(logicalDiskSizeInGBElement
+                                    .getTextContent());
                     result.setLogicalDiskSizeInGB(logicalDiskSizeInGBInstance);
                 }
-                
-                NodeList elements7 = dataVirtualHardDiskElement.getElementsByTagName("MediaLink");
-                Element mediaLinkElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                if (mediaLinkElement != null)
-                {
+
+                NodeList elements7 = dataVirtualHardDiskElement
+                        .getElementsByTagName("MediaLink");
+                Element mediaLinkElement = elements7.getLength() > 0 ? ((Element) elements7
+                        .item(0)) : null;
+                if (mediaLinkElement != null) {
                     URI mediaLinkInstance;
-                    mediaLinkInstance = new URI(mediaLinkElement.getTextContent());
+                    mediaLinkInstance = new URI(
+                            mediaLinkElement.getTextContent());
                     result.setMediaLinkUri(mediaLinkInstance);
                 }
             }
-            
+
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader(
+                        "x-ms-request-id").getValue());
             }
-            
-            if (shouldTrace)
-            {
+
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
     }
-    
+
     /**
-    * The Get Disk operation retrieves a disk from the user image repository.
-    * The disk can be an operating system disk or a data disk.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157178.aspx for
-    * more information)
-    *
-    * @param diskName The name of the disk.
-    * @return A virtual machine disk associated with your subscription.
-    */
+     * The Get Disk operation retrieves a disk from the user image repository.
+     * The disk can be an operating system disk or a data disk. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157178.aspx for
+     * more information)
+     * 
+     * @param diskName
+     *            The name of the disk.
+     * @return A virtual machine disk associated with your subscription.
+     */
     @Override
-    public Future<VirtualMachineDiskGetDiskResponse> getDiskAsync(final String diskName)
-    {
-        return this.getClient().getExecutorService().submit(new Callable<VirtualMachineDiskGetDiskResponse>() { 
-            @Override
-            public VirtualMachineDiskGetDiskResponse call() throws Exception
-            {
-                return getDisk(diskName);
-            }
-         });
+    public Future<VirtualMachineDiskGetDiskResponse> getDiskAsync(
+            final String diskName) {
+        return this.getClient().getExecutorService()
+                .submit(new Callable<VirtualMachineDiskGetDiskResponse>() {
+                    @Override
+                    public VirtualMachineDiskGetDiskResponse call()
+                            throws Exception {
+                        return getDisk(diskName);
+                    }
+                });
     }
-    
+
     /**
-    * The Get Disk operation retrieves a disk from the user image repository.
-    * The disk can be an operating system disk or a data disk.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157178.aspx for
-    * more information)
-    *
-    * @param diskName The name of the disk.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParserConfigurationException Thrown if there was a serious
-    * configuration error with the document parser.
-    * @throws SAXException Thrown if there was an error parsing the XML
-    * response.
-    * @throws URISyntaxException Thrown if there was an error parsing a URI in
-    * the response.
-    * @return A virtual machine disk associated with your subscription.
-    */
+     * The Get Disk operation retrieves a disk from the user image repository.
+     * The disk can be an operating system disk or a data disk. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157178.aspx for
+     * more information)
+     * 
+     * @param diskName
+     *            The name of the disk.
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @throws ParserConfigurationException
+     *             Thrown if there was a serious configuration error with the
+     *             document parser.
+     * @throws SAXException
+     *             Thrown if there was an error parsing the XML response.
+     * @throws URISyntaxException
+     *             Thrown if there was an error parsing a URI in the response.
+     * @return A virtual machine disk associated with your subscription.
+     */
     @Override
-    public VirtualMachineDiskGetDiskResponse getDisk(String diskName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
-    {
+    public VirtualMachineDiskGetDiskResponse getDisk(String diskName)
+            throws IOException, ServiceException, ParserConfigurationException,
+            SAXException, URISyntaxException {
         // Validate
-        if (diskName == null)
-        {
+        if (diskName == null) {
             throw new NullPointerException("diskName");
         }
-        
+
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("diskName", diskName);
-            CloudTracing.enter(invocationId, this, "getDiskAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "getDiskAsync",
+                    tracingParameters);
         }
-        
+
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/disks/" + diskName;
-        
+        String url = this.getClient().getBaseUri() + "/"
+                + this.getClient().getCredentials().getSubscriptionId()
+                + "/services/disks/" + diskName;
+
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
-        
+
         // Set Headers
         httpRequest.setHeader("x-ms-version", "2013-11-01");
-        
+
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            httpResponse = this.getClient().getHttpClient()
+                    .execute(httpRequest);
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+            if (statusCode != HttpStatus.SC_OK) {
+                ServiceException ex = ServiceException.createFromXml(
+                        httpRequest, null, httpResponse,
+                        httpResponse.getEntity());
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-            
+
             // Create Result
             VirtualMachineDiskGetDiskResponse result = null;
             // Deserialize Response
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new VirtualMachineDiskGetDiskResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
+                    .newInstance();
             documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            DocumentBuilder documentBuilder = documentBuilderFactory
+                    .newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
-            
+
             NodeList elements = responseDoc.getElementsByTagName("Disk");
-            Element diskElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (diskElement != null)
-            {
-                NodeList elements2 = diskElement.getElementsByTagName("AffinityGroup");
-                Element affinityGroupElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (affinityGroupElement != null)
-                {
+            Element diskElement = elements.getLength() > 0 ? ((Element) elements
+                    .item(0)) : null;
+            if (diskElement != null) {
+                NodeList elements2 = diskElement
+                        .getElementsByTagName("AffinityGroup");
+                Element affinityGroupElement = elements2.getLength() > 0 ? ((Element) elements2
+                        .item(0)) : null;
+                if (affinityGroupElement != null) {
                     String affinityGroupInstance;
-                    affinityGroupInstance = affinityGroupElement.getTextContent();
+                    affinityGroupInstance = affinityGroupElement
+                            .getTextContent();
                     result.setAffinityGroup(affinityGroupInstance);
                 }
-                
-                NodeList elements3 = diskElement.getElementsByTagName("Location");
-                Element locationElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                if (locationElement != null)
-                {
+
+                NodeList elements3 = diskElement
+                        .getElementsByTagName("Location");
+                Element locationElement = elements3.getLength() > 0 ? ((Element) elements3
+                        .item(0)) : null;
+                if (locationElement != null) {
                     String locationInstance;
                     locationInstance = locationElement.getTextContent();
                     result.setLocation(locationInstance);
                 }
-                
+
                 NodeList elements4 = diskElement.getElementsByTagName("Label");
-                Element labelElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                if (labelElement != null)
-                {
+                Element labelElement = elements4.getLength() > 0 ? ((Element) elements4
+                        .item(0)) : null;
+                if (labelElement != null) {
                     String labelInstance;
                     labelInstance = labelElement.getTextContent();
                     result.setLabel(labelInstance);
                 }
-                
-                NodeList elements5 = diskElement.getElementsByTagName("LogicalDiskSizeInGB");
-                Element logicalDiskSizeInGBElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                if (logicalDiskSizeInGBElement != null)
-                {
+
+                NodeList elements5 = diskElement
+                        .getElementsByTagName("LogicalDiskSizeInGB");
+                Element logicalDiskSizeInGBElement = elements5.getLength() > 0 ? ((Element) elements5
+                        .item(0)) : null;
+                if (logicalDiskSizeInGBElement != null) {
                     int logicalDiskSizeInGBInstance;
-                    logicalDiskSizeInGBInstance = DatatypeConverter.parseInt(logicalDiskSizeInGBElement.getTextContent());
+                    logicalDiskSizeInGBInstance = DatatypeConverter
+                            .parseInt(logicalDiskSizeInGBElement
+                                    .getTextContent());
                     result.setLogicalSizeInGB(logicalDiskSizeInGBInstance);
                 }
-                
-                NodeList elements6 = diskElement.getElementsByTagName("MediaLink");
-                Element mediaLinkElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                if (mediaLinkElement != null)
-                {
+
+                NodeList elements6 = diskElement
+                        .getElementsByTagName("MediaLink");
+                Element mediaLinkElement = elements6.getLength() > 0 ? ((Element) elements6
+                        .item(0)) : null;
+                if (mediaLinkElement != null) {
                     URI mediaLinkInstance;
-                    mediaLinkInstance = new URI(mediaLinkElement.getTextContent());
+                    mediaLinkInstance = new URI(
+                            mediaLinkElement.getTextContent());
                     result.setMediaLinkUri(mediaLinkInstance);
                 }
-                
+
                 NodeList elements7 = diskElement.getElementsByTagName("Name");
-                Element nameElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                if (nameElement != null)
-                {
+                Element nameElement = elements7.getLength() > 0 ? ((Element) elements7
+                        .item(0)) : null;
+                if (nameElement != null) {
                     String nameInstance;
                     nameInstance = nameElement.getTextContent();
                     result.setName(nameInstance);
                 }
-                
+
                 NodeList elements8 = diskElement.getElementsByTagName("OS");
-                Element osElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                if (osElement != null)
-                {
+                Element osElement = elements8.getLength() > 0 ? ((Element) elements8
+                        .item(0)) : null;
+                if (osElement != null) {
                     String osInstance;
                     osInstance = osElement.getTextContent();
                     result.setOperatingSystemType(osInstance);
                 }
-                
-                NodeList elements9 = diskElement.getElementsByTagName("SourceImageName");
-                Element sourceImageNameElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-                if (sourceImageNameElement != null)
-                {
+
+                NodeList elements9 = diskElement
+                        .getElementsByTagName("SourceImageName");
+                Element sourceImageNameElement = elements9.getLength() > 0 ? ((Element) elements9
+                        .item(0)) : null;
+                if (sourceImageNameElement != null) {
                     String sourceImageNameInstance;
-                    sourceImageNameInstance = sourceImageNameElement.getTextContent();
+                    sourceImageNameInstance = sourceImageNameElement
+                            .getTextContent();
                     result.setSourceImageName(sourceImageNameInstance);
                 }
-                
-                NodeList elements10 = diskElement.getElementsByTagName("AttachedTo");
-                Element attachedToElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
-                if (attachedToElement != null)
-                {
+
+                NodeList elements10 = diskElement
+                        .getElementsByTagName("AttachedTo");
+                Element attachedToElement = elements10.getLength() > 0 ? ((Element) elements10
+                        .item(0)) : null;
+                if (attachedToElement != null) {
                     VirtualMachineDiskGetDiskResponse.VirtualMachineDiskUsageDetails attachedToInstance = new VirtualMachineDiskGetDiskResponse.VirtualMachineDiskUsageDetails();
                     result.setUsageDetails(attachedToInstance);
-                    
-                    NodeList elements11 = attachedToElement.getElementsByTagName("HostedServiceName");
-                    Element hostedServiceNameElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
-                    if (hostedServiceNameElement != null)
-                    {
+
+                    NodeList elements11 = attachedToElement
+                            .getElementsByTagName("HostedServiceName");
+                    Element hostedServiceNameElement = elements11.getLength() > 0 ? ((Element) elements11
+                            .item(0)) : null;
+                    if (hostedServiceNameElement != null) {
                         String hostedServiceNameInstance;
-                        hostedServiceNameInstance = hostedServiceNameElement.getTextContent();
-                        attachedToInstance.setHostedServiceName(hostedServiceNameInstance);
+                        hostedServiceNameInstance = hostedServiceNameElement
+                                .getTextContent();
+                        attachedToInstance
+                                .setHostedServiceName(hostedServiceNameInstance);
                     }
-                    
-                    NodeList elements12 = attachedToElement.getElementsByTagName("DeploymentName");
-                    Element deploymentNameElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
-                    if (deploymentNameElement != null)
-                    {
+
+                    NodeList elements12 = attachedToElement
+                            .getElementsByTagName("DeploymentName");
+                    Element deploymentNameElement = elements12.getLength() > 0 ? ((Element) elements12
+                            .item(0)) : null;
+                    if (deploymentNameElement != null) {
                         String deploymentNameInstance;
-                        deploymentNameInstance = deploymentNameElement.getTextContent();
-                        attachedToInstance.setDeploymentName(deploymentNameInstance);
+                        deploymentNameInstance = deploymentNameElement
+                                .getTextContent();
+                        attachedToInstance
+                                .setDeploymentName(deploymentNameInstance);
                     }
-                    
-                    NodeList elements13 = attachedToElement.getElementsByTagName("RoleName");
-                    Element roleNameElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
-                    if (roleNameElement != null)
-                    {
+
+                    NodeList elements13 = attachedToElement
+                            .getElementsByTagName("RoleName");
+                    Element roleNameElement = elements13.getLength() > 0 ? ((Element) elements13
+                            .item(0)) : null;
+                    if (roleNameElement != null) {
                         String roleNameInstance;
                         roleNameInstance = roleNameElement.getTextContent();
                         attachedToInstance.setRoleName(roleNameInstance);
                     }
                 }
-                
-                NodeList elements14 = diskElement.getElementsByTagName("IsCorrupted");
-                Element isCorruptedElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
-                if (isCorruptedElement != null && (isCorruptedElement.getTextContent() == null || isCorruptedElement.getTextContent().isEmpty() == true) == false)
-                {
+
+                NodeList elements14 = diskElement
+                        .getElementsByTagName("IsCorrupted");
+                Element isCorruptedElement = elements14.getLength() > 0 ? ((Element) elements14
+                        .item(0)) : null;
+                if (isCorruptedElement != null
+                        && (isCorruptedElement.getTextContent() == null || isCorruptedElement
+                                .getTextContent().isEmpty() == true) == false) {
                     boolean isCorruptedInstance;
-                    isCorruptedInstance = DatatypeConverter.parseBoolean(isCorruptedElement.getTextContent());
+                    isCorruptedInstance = DatatypeConverter
+                            .parseBoolean(isCorruptedElement.getTextContent());
                     result.setIsCorrupted(isCorruptedInstance);
                 }
-                
-                NodeList elements15 = diskElement.getElementsByTagName("IsPremium");
-                Element isPremiumElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
-                if (isPremiumElement != null && (isPremiumElement.getTextContent() == null || isPremiumElement.getTextContent().isEmpty() == true) == false)
-                {
+
+                NodeList elements15 = diskElement
+                        .getElementsByTagName("IsPremium");
+                Element isPremiumElement = elements15.getLength() > 0 ? ((Element) elements15
+                        .item(0)) : null;
+                if (isPremiumElement != null
+                        && (isPremiumElement.getTextContent() == null || isPremiumElement
+                                .getTextContent().isEmpty() == true) == false) {
                     boolean isPremiumInstance;
-                    isPremiumInstance = DatatypeConverter.parseBoolean(isPremiumElement.getTextContent());
+                    isPremiumInstance = DatatypeConverter
+                            .parseBoolean(isPremiumElement.getTextContent());
                     result.setIsPremium(isPremiumInstance);
                 }
             }
-            
+
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader(
+                        "x-ms-request-id").getValue());
             }
-            
-            if (shouldTrace)
-            {
+
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
     }
-    
+
     /**
-    * The List Disks operation retrieves a list of the disks in your image
-    * repository.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157176.aspx for
-    * more information)
-    *
-    * @return The List Disks operation response.
-    */
+     * The List Disks operation retrieves a list of the disks in your image
+     * repository. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157176.aspx for
+     * more information)
+     * 
+     * @return The List Disks operation response.
+     */
     @Override
-    public Future<VirtualMachineDiskListResponse> listDisksAsync()
-    {
-        return this.getClient().getExecutorService().submit(new Callable<VirtualMachineDiskListResponse>() { 
-            @Override
-            public VirtualMachineDiskListResponse call() throws Exception
-            {
-                return listDisks();
-            }
-         });
+    public Future<VirtualMachineDiskListResponse> listDisksAsync() {
+        return this.getClient().getExecutorService()
+                .submit(new Callable<VirtualMachineDiskListResponse>() {
+                    @Override
+                    public VirtualMachineDiskListResponse call()
+                            throws Exception {
+                        return listDisks();
+                    }
+                });
     }
-    
+
     /**
-    * The List Disks operation retrieves a list of the disks in your image
-    * repository.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157176.aspx for
-    * more information)
-    *
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParserConfigurationException Thrown if there was a serious
-    * configuration error with the document parser.
-    * @throws SAXException Thrown if there was an error parsing the XML
-    * response.
-    * @throws URISyntaxException Thrown if there was an error parsing a URI in
-    * the response.
-    * @return The List Disks operation response.
-    */
+     * The List Disks operation retrieves a list of the disks in your image
+     * repository. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157176.aspx for
+     * more information)
+     * 
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @throws ParserConfigurationException
+     *             Thrown if there was a serious configuration error with the
+     *             document parser.
+     * @throws SAXException
+     *             Thrown if there was an error parsing the XML response.
+     * @throws URISyntaxException
+     *             Thrown if there was an error parsing a URI in the response.
+     * @return The List Disks operation response.
+     */
     @Override
-    public VirtualMachineDiskListResponse listDisks() throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
-    {
+    public VirtualMachineDiskListResponse listDisks() throws IOException,
+            ServiceException, ParserConfigurationException, SAXException,
+            URISyntaxException {
         // Validate
-        
+
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
-            CloudTracing.enter(invocationId, this, "listDisksAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "listDisksAsync",
+                    tracingParameters);
         }
-        
+
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/disks";
-        
+        String url = this.getClient().getBaseUri() + "/"
+                + this.getClient().getCredentials().getSubscriptionId()
+                + "/services/disks";
+
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
-        
+
         // Set Headers
         httpRequest.setHeader("x-ms-version", "2013-11-01");
-        
+
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            httpResponse = this.getClient().getHttpClient()
+                    .execute(httpRequest);
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+            if (statusCode != HttpStatus.SC_OK) {
+                ServiceException ex = ServiceException.createFromXml(
+                        httpRequest, null, httpResponse,
+                        httpResponse.getEntity());
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-            
+
             // Create Result
             VirtualMachineDiskListResponse result = null;
             // Deserialize Response
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new VirtualMachineDiskListResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
+                    .newInstance();
             documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            DocumentBuilder documentBuilder = documentBuilderFactory
+                    .newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
-            
+
             NodeList elements = responseDoc.getElementsByTagName("Disks");
-            Element disksSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (disksSequenceElement != null)
-            {
-                for (int i1 = 0; i1 < disksSequenceElement.getElementsByTagName("Disk").getLength(); i1 = i1 + 1)
-                {
-                    org.w3c.dom.Element disksElement = ((org.w3c.dom.Element) disksSequenceElement.getElementsByTagName("Disk").item(i1));
+            Element disksSequenceElement = elements.getLength() > 0 ? ((Element) elements
+                    .item(0)) : null;
+            if (disksSequenceElement != null) {
+                for (int i1 = 0; i1 < disksSequenceElement
+                        .getElementsByTagName("Disk").getLength(); i1 = i1 + 1) {
+                    org.w3c.dom.Element disksElement = ((org.w3c.dom.Element) disksSequenceElement
+                            .getElementsByTagName("Disk").item(i1));
                     VirtualMachineDiskListResponse.VirtualMachineDisk diskInstance = new VirtualMachineDiskListResponse.VirtualMachineDisk();
                     result.getDisks().add(diskInstance);
-                    
-                    NodeList elements2 = disksElement.getElementsByTagName("AffinityGroup");
-                    Element affinityGroupElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                    if (affinityGroupElement != null)
-                    {
+
+                    NodeList elements2 = disksElement
+                            .getElementsByTagName("AffinityGroup");
+                    Element affinityGroupElement = elements2.getLength() > 0 ? ((Element) elements2
+                            .item(0)) : null;
+                    if (affinityGroupElement != null) {
                         String affinityGroupInstance;
-                        affinityGroupInstance = affinityGroupElement.getTextContent();
+                        affinityGroupInstance = affinityGroupElement
+                                .getTextContent();
                         diskInstance.setAffinityGroup(affinityGroupInstance);
                     }
-                    
-                    NodeList elements3 = disksElement.getElementsByTagName("Location");
-                    Element locationElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                    if (locationElement != null)
-                    {
+
+                    NodeList elements3 = disksElement
+                            .getElementsByTagName("Location");
+                    Element locationElement = elements3.getLength() > 0 ? ((Element) elements3
+                            .item(0)) : null;
+                    if (locationElement != null) {
                         String locationInstance;
                         locationInstance = locationElement.getTextContent();
                         diskInstance.setLocation(locationInstance);
                     }
-                    
-                    NodeList elements4 = disksElement.getElementsByTagName("Label");
-                    Element labelElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                    if (labelElement != null)
-                    {
+
+                    NodeList elements4 = disksElement
+                            .getElementsByTagName("Label");
+                    Element labelElement = elements4.getLength() > 0 ? ((Element) elements4
+                            .item(0)) : null;
+                    if (labelElement != null) {
                         String labelInstance;
                         labelInstance = labelElement.getTextContent();
                         diskInstance.setLabel(labelInstance);
                     }
-                    
-                    NodeList elements5 = disksElement.getElementsByTagName("LogicalDiskSizeInGB");
-                    Element logicalDiskSizeInGBElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                    if (logicalDiskSizeInGBElement != null)
-                    {
+
+                    NodeList elements5 = disksElement
+                            .getElementsByTagName("LogicalDiskSizeInGB");
+                    Element logicalDiskSizeInGBElement = elements5.getLength() > 0 ? ((Element) elements5
+                            .item(0)) : null;
+                    if (logicalDiskSizeInGBElement != null) {
                         int logicalDiskSizeInGBInstance;
-                        logicalDiskSizeInGBInstance = DatatypeConverter.parseInt(logicalDiskSizeInGBElement.getTextContent());
-                        diskInstance.setLogicalSizeInGB(logicalDiskSizeInGBInstance);
+                        logicalDiskSizeInGBInstance = DatatypeConverter
+                                .parseInt(logicalDiskSizeInGBElement
+                                        .getTextContent());
+                        diskInstance
+                                .setLogicalSizeInGB(logicalDiskSizeInGBInstance);
                     }
-                    
-                    NodeList elements6 = disksElement.getElementsByTagName("MediaLink");
-                    Element mediaLinkElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                    if (mediaLinkElement != null)
-                    {
+
+                    NodeList elements6 = disksElement
+                            .getElementsByTagName("MediaLink");
+                    Element mediaLinkElement = elements6.getLength() > 0 ? ((Element) elements6
+                            .item(0)) : null;
+                    if (mediaLinkElement != null) {
                         URI mediaLinkInstance;
-                        mediaLinkInstance = new URI(mediaLinkElement.getTextContent());
+                        mediaLinkInstance = new URI(
+                                mediaLinkElement.getTextContent());
                         diskInstance.setMediaLinkUri(mediaLinkInstance);
                     }
-                    
-                    NodeList elements7 = disksElement.getElementsByTagName("Name");
-                    Element nameElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                    if (nameElement != null)
-                    {
+
+                    NodeList elements7 = disksElement
+                            .getElementsByTagName("Name");
+                    Element nameElement = elements7.getLength() > 0 ? ((Element) elements7
+                            .item(0)) : null;
+                    if (nameElement != null) {
                         String nameInstance;
                         nameInstance = nameElement.getTextContent();
                         diskInstance.setName(nameInstance);
                     }
-                    
-                    NodeList elements8 = disksElement.getElementsByTagName("OS");
-                    Element osElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                    if (osElement != null)
-                    {
+
+                    NodeList elements8 = disksElement
+                            .getElementsByTagName("OS");
+                    Element osElement = elements8.getLength() > 0 ? ((Element) elements8
+                            .item(0)) : null;
+                    if (osElement != null) {
                         String osInstance;
                         osInstance = osElement.getTextContent();
                         diskInstance.setOperatingSystemType(osInstance);
                     }
-                    
-                    NodeList elements9 = disksElement.getElementsByTagName("SourceImageName");
-                    Element sourceImageNameElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-                    if (sourceImageNameElement != null)
-                    {
+
+                    NodeList elements9 = disksElement
+                            .getElementsByTagName("SourceImageName");
+                    Element sourceImageNameElement = elements9.getLength() > 0 ? ((Element) elements9
+                            .item(0)) : null;
+                    if (sourceImageNameElement != null) {
                         String sourceImageNameInstance;
-                        sourceImageNameInstance = sourceImageNameElement.getTextContent();
-                        diskInstance.setSourceImageName(sourceImageNameInstance);
+                        sourceImageNameInstance = sourceImageNameElement
+                                .getTextContent();
+                        diskInstance
+                                .setSourceImageName(sourceImageNameInstance);
                     }
-                    
-                    NodeList elements10 = disksElement.getElementsByTagName("AttachedTo");
-                    Element attachedToElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
-                    if (attachedToElement != null)
-                    {
+
+                    NodeList elements10 = disksElement
+                            .getElementsByTagName("AttachedTo");
+                    Element attachedToElement = elements10.getLength() > 0 ? ((Element) elements10
+                            .item(0)) : null;
+                    if (attachedToElement != null) {
                         VirtualMachineDiskListResponse.VirtualMachineDiskUsageDetails attachedToInstance = new VirtualMachineDiskListResponse.VirtualMachineDiskUsageDetails();
                         diskInstance.setUsageDetails(attachedToInstance);
-                        
-                        NodeList elements11 = attachedToElement.getElementsByTagName("HostedServiceName");
-                        Element hostedServiceNameElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
-                        if (hostedServiceNameElement != null)
-                        {
+
+                        NodeList elements11 = attachedToElement
+                                .getElementsByTagName("HostedServiceName");
+                        Element hostedServiceNameElement = elements11
+                                .getLength() > 0 ? ((Element) elements11
+                                .item(0)) : null;
+                        if (hostedServiceNameElement != null) {
                             String hostedServiceNameInstance;
-                            hostedServiceNameInstance = hostedServiceNameElement.getTextContent();
-                            attachedToInstance.setHostedServiceName(hostedServiceNameInstance);
+                            hostedServiceNameInstance = hostedServiceNameElement
+                                    .getTextContent();
+                            attachedToInstance
+                                    .setHostedServiceName(hostedServiceNameInstance);
                         }
-                        
-                        NodeList elements12 = attachedToElement.getElementsByTagName("DeploymentName");
-                        Element deploymentNameElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
-                        if (deploymentNameElement != null)
-                        {
+
+                        NodeList elements12 = attachedToElement
+                                .getElementsByTagName("DeploymentName");
+                        Element deploymentNameElement = elements12.getLength() > 0 ? ((Element) elements12
+                                .item(0)) : null;
+                        if (deploymentNameElement != null) {
                             String deploymentNameInstance;
-                            deploymentNameInstance = deploymentNameElement.getTextContent();
-                            attachedToInstance.setDeploymentName(deploymentNameInstance);
+                            deploymentNameInstance = deploymentNameElement
+                                    .getTextContent();
+                            attachedToInstance
+                                    .setDeploymentName(deploymentNameInstance);
                         }
-                        
-                        NodeList elements13 = attachedToElement.getElementsByTagName("RoleName");
-                        Element roleNameElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
-                        if (roleNameElement != null)
-                        {
+
+                        NodeList elements13 = attachedToElement
+                                .getElementsByTagName("RoleName");
+                        Element roleNameElement = elements13.getLength() > 0 ? ((Element) elements13
+                                .item(0)) : null;
+                        if (roleNameElement != null) {
                             String roleNameInstance;
                             roleNameInstance = roleNameElement.getTextContent();
                             attachedToInstance.setRoleName(roleNameInstance);
                         }
                     }
-                    
-                    NodeList elements14 = disksElement.getElementsByTagName("IsCorrupted");
-                    Element isCorruptedElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
-                    if (isCorruptedElement != null && (isCorruptedElement.getTextContent() == null || isCorruptedElement.getTextContent().isEmpty() == true) == false)
-                    {
+
+                    NodeList elements14 = disksElement
+                            .getElementsByTagName("IsCorrupted");
+                    Element isCorruptedElement = elements14.getLength() > 0 ? ((Element) elements14
+                            .item(0)) : null;
+                    if (isCorruptedElement != null
+                            && (isCorruptedElement.getTextContent() == null || isCorruptedElement
+                                    .getTextContent().isEmpty() == true) == false) {
                         boolean isCorruptedInstance;
-                        isCorruptedInstance = DatatypeConverter.parseBoolean(isCorruptedElement.getTextContent());
+                        isCorruptedInstance = DatatypeConverter
+                                .parseBoolean(isCorruptedElement
+                                        .getTextContent());
                         diskInstance.setIsCorrupted(isCorruptedInstance);
                     }
-                    
-                    NodeList elements15 = disksElement.getElementsByTagName("IsPremium");
-                    Element isPremiumElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
-                    if (isPremiumElement != null && (isPremiumElement.getTextContent() == null || isPremiumElement.getTextContent().isEmpty() == true) == false)
-                    {
+
+                    NodeList elements15 = disksElement
+                            .getElementsByTagName("IsPremium");
+                    Element isPremiumElement = elements15.getLength() > 0 ? ((Element) elements15
+                            .item(0)) : null;
+                    if (isPremiumElement != null
+                            && (isPremiumElement.getTextContent() == null || isPremiumElement
+                                    .getTextContent().isEmpty() == true) == false) {
                         boolean isPremiumInstance;
-                        isPremiumInstance = DatatypeConverter.parseBoolean(isPremiumElement.getTextContent());
+                        isPremiumInstance = DatatypeConverter
+                                .parseBoolean(isPremiumElement.getTextContent());
                         diskInstance.setIsPremium(isPremiumInstance);
                     }
                 }
             }
-            
+
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader(
+                        "x-ms-request-id").getValue());
             }
-            
-            if (shouldTrace)
-            {
+
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
     }
-    
+
     /**
-    * The Update Data Disk operation updates the specified data disk attached
-    * to the specified virtual machine.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157190.aspx for
-    * more information)
-    *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of the deployment.
-    * @param roleName The name of the role to add the data disk to.
-    * @param logicalUnitNumber The logical unit number of the disk.
-    * @param parameters Parameters supplied to the Update Virtual Machine Data
-    * Disk operation.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
+     * The Update Data Disk operation updates the specified data disk attached
+     * to the specified virtual machine. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157190.aspx for
+     * more information)
+     * 
+     * @param serviceName
+     *            The name of your service.
+     * @param deploymentName
+     *            The name of the deployment.
+     * @param roleName
+     *            The name of the role to add the data disk to.
+     * @param logicalUnitNumber
+     *            The logical unit number of the disk.
+     * @param parameters
+     *            Parameters supplied to the Update Virtual Machine Data Disk
+     *            operation.
+     * @return A standard service response including an HTTP status code and
+     *         request ID.
+     */
     @Override
-    public Future<OperationResponse> updateDataDiskAsync(final String serviceName, final String deploymentName, final String roleName, final int logicalUnitNumber, final VirtualMachineDiskUpdateDataDiskParameters parameters)
-    {
-        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
-            @Override
-            public OperationResponse call() throws Exception
-            {
-                return updateDataDisk(serviceName, deploymentName, roleName, logicalUnitNumber, parameters);
-            }
-         });
+    public Future<OperationResponse> updateDataDiskAsync(
+            final String serviceName, final String deploymentName,
+            final String roleName, final int logicalUnitNumber,
+            final VirtualMachineDiskUpdateDataDiskParameters parameters) {
+        return this.getClient().getExecutorService()
+                .submit(new Callable<OperationResponse>() {
+                    @Override
+                    public OperationResponse call() throws Exception {
+                        return updateDataDisk(serviceName, deploymentName,
+                                roleName, logicalUnitNumber, parameters);
+                    }
+                });
     }
-    
+
     /**
-    * The Update Data Disk operation updates the specified data disk attached
-    * to the specified virtual machine.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157190.aspx for
-    * more information)
-    *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of the deployment.
-    * @param roleName The name of the role to add the data disk to.
-    * @param logicalUnitNumber The logical unit number of the disk.
-    * @param parameters Parameters supplied to the Update Virtual Machine Data
-    * Disk operation.
-    * @throws ParserConfigurationException Thrown if there was an error
-    * configuring the parser for the response body.
-    * @throws SAXException Thrown if there was an error parsing the response
-    * body.
-    * @throws TransformerException Thrown if there was an error creating the
-    * DOM transformer.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
+     * The Update Data Disk operation updates the specified data disk attached
+     * to the specified virtual machine. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157190.aspx for
+     * more information)
+     * 
+     * @param serviceName
+     *            The name of your service.
+     * @param deploymentName
+     *            The name of the deployment.
+     * @param roleName
+     *            The name of the role to add the data disk to.
+     * @param logicalUnitNumber
+     *            The logical unit number of the disk.
+     * @param parameters
+     *            Parameters supplied to the Update Virtual Machine Data Disk
+     *            operation.
+     * @throws ParserConfigurationException
+     *             Thrown if there was an error configuring the parser for the
+     *             response body.
+     * @throws SAXException
+     *             Thrown if there was an error parsing the response body.
+     * @throws TransformerException
+     *             Thrown if there was an error creating the DOM transformer.
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @return A standard service response including an HTTP status code and
+     *         request ID.
+     */
     @Override
-    public OperationResponse updateDataDisk(String serviceName, String deploymentName, String roleName, int logicalUnitNumber, VirtualMachineDiskUpdateDataDiskParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
-    {
+    public OperationResponse updateDataDisk(String serviceName,
+            String deploymentName, String roleName, int logicalUnitNumber,
+            VirtualMachineDiskUpdateDataDiskParameters parameters)
+            throws ParserConfigurationException, SAXException,
+            TransformerException, IOException, ServiceException {
         // Validate
-        if (serviceName == null)
-        {
+        if (serviceName == null) {
             throw new NullPointerException("serviceName");
         }
-        if (deploymentName == null)
-        {
+        if (deploymentName == null) {
             throw new NullPointerException("deploymentName");
         }
-        if (roleName == null)
-        {
+        if (roleName == null) {
             throw new NullPointerException("roleName");
         }
-        if (parameters == null)
-        {
+        if (parameters == null) {
             throw new NullPointerException("parameters");
         }
-        if (parameters.getMediaLinkUri() == null)
-        {
+        if (parameters.getMediaLinkUri() == null) {
             throw new NullPointerException("parameters.MediaLinkUri");
         }
-        
+
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
@@ -1838,385 +2039,431 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             tracingParameters.put("roleName", roleName);
             tracingParameters.put("logicalUnitNumber", logicalUnitNumber);
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this, "updateDataDiskAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "updateDataDiskAsync",
+                    tracingParameters);
         }
-        
+
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "/roles/" + roleName + "/DataDisks/" + logicalUnitNumber;
-        
+        String url = this.getClient().getBaseUri() + "/"
+                + this.getClient().getCredentials().getSubscriptionId()
+                + "/services/hostedservices/" + serviceName + "/deployments/"
+                + deploymentName + "/roles/" + roleName + "/DataDisks/"
+                + logicalUnitNumber;
+
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
-        
+
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
         httpRequest.setHeader("x-ms-version", "2013-11-01");
-        
+
         // Serialize Request
         String requestContent = null;
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
+                .newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory
+                .newDocumentBuilder();
         Document requestDoc = documentBuilder.newDocument();
-        
-        Element dataVirtualHardDiskElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisk");
+
+        Element dataVirtualHardDiskElement = requestDoc.createElementNS(
+                "http://schemas.microsoft.com/windowsazure",
+                "DataVirtualHardDisk");
         requestDoc.appendChild(dataVirtualHardDiskElement);
-        
-        Element hostCachingElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "HostCaching");
-        hostCachingElement.appendChild(requestDoc.createTextNode(parameters.getHostCaching().toString()));
+
+        Element hostCachingElement = requestDoc.createElementNS(
+                "http://schemas.microsoft.com/windowsazure", "HostCaching");
+        hostCachingElement.appendChild(requestDoc.createTextNode(parameters
+                .getHostCaching().toString()));
         dataVirtualHardDiskElement.appendChild(hostCachingElement);
-        
-        if (parameters.getDiskLabel() != null)
-        {
-            Element diskLabelElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DiskLabel");
-            diskLabelElement.appendChild(requestDoc.createTextNode(parameters.getDiskLabel()));
+
+        if (parameters.getDiskLabel() != null) {
+            Element diskLabelElement = requestDoc.createElementNS(
+                    "http://schemas.microsoft.com/windowsazure", "DiskLabel");
+            diskLabelElement.appendChild(requestDoc.createTextNode(parameters
+                    .getDiskLabel()));
             dataVirtualHardDiskElement.appendChild(diskLabelElement);
         }
-        
-        if (parameters.getDiskName() != null)
-        {
-            Element diskNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DiskName");
-            diskNameElement.appendChild(requestDoc.createTextNode(parameters.getDiskName()));
+
+        if (parameters.getDiskName() != null) {
+            Element diskNameElement = requestDoc.createElementNS(
+                    "http://schemas.microsoft.com/windowsazure", "DiskName");
+            diskNameElement.appendChild(requestDoc.createTextNode(parameters
+                    .getDiskName()));
             dataVirtualHardDiskElement.appendChild(diskNameElement);
         }
-        
-        if (parameters.getLogicalUnitNumber() != null)
-        {
-            Element lunElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Lun");
-            lunElement.appendChild(requestDoc.createTextNode(Integer.toString(parameters.getLogicalUnitNumber())));
+
+        if (parameters.getLogicalUnitNumber() != null) {
+            Element lunElement = requestDoc.createElementNS(
+                    "http://schemas.microsoft.com/windowsazure", "Lun");
+            lunElement.appendChild(requestDoc.createTextNode(Integer
+                    .toString(parameters.getLogicalUnitNumber())));
             dataVirtualHardDiskElement.appendChild(lunElement);
         }
-        
-        Element logicalDiskSizeInGBElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LogicalDiskSizeInGB");
-        logicalDiskSizeInGBElement.appendChild(requestDoc.createTextNode(Integer.toString(parameters.getLogicalDiskSizeInGB())));
+
+        Element logicalDiskSizeInGBElement = requestDoc.createElementNS(
+                "http://schemas.microsoft.com/windowsazure",
+                "LogicalDiskSizeInGB");
+        logicalDiskSizeInGBElement.appendChild(requestDoc
+                .createTextNode(Integer.toString(parameters
+                        .getLogicalDiskSizeInGB())));
         dataVirtualHardDiskElement.appendChild(logicalDiskSizeInGBElement);
-        
-        Element mediaLinkElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "MediaLink");
-        mediaLinkElement.appendChild(requestDoc.createTextNode(parameters.getMediaLinkUri().toString()));
+
+        Element mediaLinkElement = requestDoc.createElementNS(
+                "http://schemas.microsoft.com/windowsazure", "MediaLink");
+        mediaLinkElement.appendChild(requestDoc.createTextNode(parameters
+                .getMediaLinkUri().toString()));
         dataVirtualHardDiskElement.appendChild(mediaLinkElement);
-        
+
         DOMSource domSource = new DOMSource(requestDoc);
         StringWriter stringWriter = new StringWriter();
         StreamResult streamResult = new StreamResult(stringWriter);
-        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        TransformerFactory transformerFactory = TransformerFactory
+                .newInstance();
         Transformer transformer = transformerFactory.newTransformer();
         transformer.transform(domSource, streamResult);
         requestContent = stringWriter.toString();
         StringEntity entity = new StringEntity(requestContent);
         httpRequest.setEntity(entity);
         httpRequest.setHeader("Content-Type", "application/xml");
-        
+
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            httpResponse = this.getClient().getHttpClient()
+                    .execute(httpRequest);
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+            if (statusCode != HttpStatus.SC_OK) {
+                ServiceException ex = ServiceException.createFromXml(
+                        httpRequest, requestContent, httpResponse,
+                        httpResponse.getEntity());
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-            
+
             // Create Result
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader(
+                        "x-ms-request-id").getValue());
             }
-            
-            if (shouldTrace)
-            {
+
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
     }
-    
+
     /**
-    * The Add Disk operation adds a disk to the user image repository. The disk
-    * can be an operating system disk or a data disk.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157178.aspx for
-    * more information)
-    *
-    * @param diskName The name of the disk being updated.
-    * @param parameters Parameters supplied to the Update Virtual Machine Disk
-    * operation.
-    * @return A virtual machine disk associated with your subscription.
-    */
+     * The Add Disk operation adds a disk to the user image repository. The disk
+     * can be an operating system disk or a data disk. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157178.aspx for
+     * more information)
+     * 
+     * @param diskName
+     *            The name of the disk being updated.
+     * @param parameters
+     *            Parameters supplied to the Update Virtual Machine Disk
+     *            operation.
+     * @return A virtual machine disk associated with your subscription.
+     */
     @Override
-    public Future<VirtualMachineDiskUpdateDiskResponse> updateDiskAsync(final String diskName, final VirtualMachineDiskUpdateDiskParameters parameters)
-    {
-        return this.getClient().getExecutorService().submit(new Callable<VirtualMachineDiskUpdateDiskResponse>() { 
-            @Override
-            public VirtualMachineDiskUpdateDiskResponse call() throws Exception
-            {
-                return updateDisk(diskName, parameters);
-            }
-         });
+    public Future<VirtualMachineDiskUpdateDiskResponse> updateDiskAsync(
+            final String diskName,
+            final VirtualMachineDiskUpdateDiskParameters parameters) {
+        return this.getClient().getExecutorService()
+                .submit(new Callable<VirtualMachineDiskUpdateDiskResponse>() {
+                    @Override
+                    public VirtualMachineDiskUpdateDiskResponse call()
+                            throws Exception {
+                        return updateDisk(diskName, parameters);
+                    }
+                });
     }
-    
+
     /**
-    * The Add Disk operation adds a disk to the user image repository. The disk
-    * can be an operating system disk or a data disk.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157178.aspx for
-    * more information)
-    *
-    * @param diskName The name of the disk being updated.
-    * @param parameters Parameters supplied to the Update Virtual Machine Disk
-    * operation.
-    * @throws ParserConfigurationException Thrown if there was an error
-    * configuring the parser for the response body.
-    * @throws SAXException Thrown if there was an error parsing the response
-    * body.
-    * @throws TransformerException Thrown if there was an error creating the
-    * DOM transformer.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws URISyntaxException Thrown if there was an error parsing a URI in
-    * the response.
-    * @return A virtual machine disk associated with your subscription.
-    */
+     * The Add Disk operation adds a disk to the user image repository. The disk
+     * can be an operating system disk or a data disk. (see
+     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157178.aspx for
+     * more information)
+     * 
+     * @param diskName
+     *            The name of the disk being updated.
+     * @param parameters
+     *            Parameters supplied to the Update Virtual Machine Disk
+     *            operation.
+     * @throws ParserConfigurationException
+     *             Thrown if there was an error configuring the parser for the
+     *             response body.
+     * @throws SAXException
+     *             Thrown if there was an error parsing the response body.
+     * @throws TransformerException
+     *             Thrown if there was an error creating the DOM transformer.
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @throws URISyntaxException
+     *             Thrown if there was an error parsing a URI in the response.
+     * @return A virtual machine disk associated with your subscription.
+     */
     @Override
-    public VirtualMachineDiskUpdateDiskResponse updateDisk(String diskName, VirtualMachineDiskUpdateDiskParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException
-    {
+    public VirtualMachineDiskUpdateDiskResponse updateDisk(String diskName,
+            VirtualMachineDiskUpdateDiskParameters parameters)
+            throws ParserConfigurationException, SAXException,
+            TransformerException, IOException, ServiceException,
+            URISyntaxException {
         // Validate
-        if (diskName == null)
-        {
+        if (diskName == null) {
             throw new NullPointerException("diskName");
         }
-        if (parameters == null)
-        {
+        if (parameters == null) {
             throw new NullPointerException("parameters");
         }
-        if (parameters.getLabel() == null)
-        {
+        if (parameters.getLabel() == null) {
             throw new NullPointerException("parameters.Label");
         }
-        if (parameters.getName() == null)
-        {
+        if (parameters.getName() == null) {
             throw new NullPointerException("parameters.Name");
         }
-        
+
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("diskName", diskName);
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this, "updateDiskAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "updateDiskAsync",
+                    tracingParameters);
         }
-        
+
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/disks/" + diskName;
-        
+        String url = this.getClient().getBaseUri() + "/"
+                + this.getClient().getCredentials().getSubscriptionId()
+                + "/services/disks/" + diskName;
+
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
-        
+
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
         httpRequest.setHeader("x-ms-version", "2013-11-01");
-        
+
         // Serialize Request
         String requestContent = null;
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
+                .newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory
+                .newDocumentBuilder();
         Document requestDoc = documentBuilder.newDocument();
-        
-        Element diskElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Disk");
+
+        Element diskElement = requestDoc.createElementNS(
+                "http://schemas.microsoft.com/windowsazure", "Disk");
         requestDoc.appendChild(diskElement);
-        
-        if (parameters.isHasOperatingSystem() != null)
-        {
-            Element hasOperatingSystemElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "HasOperatingSystem");
-            hasOperatingSystemElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.isHasOperatingSystem()).toLowerCase()));
+
+        if (parameters.isHasOperatingSystem() != null) {
+            Element hasOperatingSystemElement = requestDoc.createElementNS(
+                    "http://schemas.microsoft.com/windowsazure",
+                    "HasOperatingSystem");
+            hasOperatingSystemElement.appendChild(requestDoc
+                    .createTextNode(Boolean.toString(
+                            parameters.isHasOperatingSystem()).toLowerCase()));
             diskElement.appendChild(hasOperatingSystemElement);
         }
-        
-        if (parameters.getOperatingSystemType() != null)
-        {
-            Element osElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "OS");
-            osElement.appendChild(requestDoc.createTextNode(parameters.getOperatingSystemType()));
+
+        if (parameters.getOperatingSystemType() != null) {
+            Element osElement = requestDoc.createElementNS(
+                    "http://schemas.microsoft.com/windowsazure", "OS");
+            osElement.appendChild(requestDoc.createTextNode(parameters
+                    .getOperatingSystemType()));
             diskElement.appendChild(osElement);
         }
-        
-        Element labelElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Label");
-        labelElement.appendChild(requestDoc.createTextNode(parameters.getLabel()));
+
+        Element labelElement = requestDoc.createElementNS(
+                "http://schemas.microsoft.com/windowsazure", "Label");
+        labelElement.appendChild(requestDoc.createTextNode(parameters
+                .getLabel()));
         diskElement.appendChild(labelElement);
-        
-        if (parameters.getMediaLinkUri() != null)
-        {
-            Element mediaLinkElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "MediaLink");
-            mediaLinkElement.appendChild(requestDoc.createTextNode(parameters.getMediaLinkUri().toString()));
+
+        if (parameters.getMediaLinkUri() != null) {
+            Element mediaLinkElement = requestDoc.createElementNS(
+                    "http://schemas.microsoft.com/windowsazure", "MediaLink");
+            mediaLinkElement.appendChild(requestDoc.createTextNode(parameters
+                    .getMediaLinkUri().toString()));
             diskElement.appendChild(mediaLinkElement);
         }
-        
-        Element nameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
-        nameElement.appendChild(requestDoc.createTextNode(parameters.getName()));
+
+        Element nameElement = requestDoc.createElementNS(
+                "http://schemas.microsoft.com/windowsazure", "Name");
+        nameElement
+                .appendChild(requestDoc.createTextNode(parameters.getName()));
         diskElement.appendChild(nameElement);
-        
+
         DOMSource domSource = new DOMSource(requestDoc);
         StringWriter stringWriter = new StringWriter();
         StreamResult streamResult = new StreamResult(stringWriter);
-        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        TransformerFactory transformerFactory = TransformerFactory
+                .newInstance();
         Transformer transformer = transformerFactory.newTransformer();
         transformer.transform(domSource, streamResult);
         requestContent = stringWriter.toString();
         StringEntity entity = new StringEntity(requestContent);
         httpRequest.setEntity(entity);
         httpRequest.setHeader("Content-Type", "application/xml");
-        
+
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            httpResponse = this.getClient().getHttpClient()
+                    .execute(httpRequest);
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
-                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+            if (statusCode != HttpStatus.SC_OK) {
+                ServiceException ex = ServiceException.createFromXml(
+                        httpRequest, requestContent, httpResponse,
+                        httpResponse.getEntity());
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-            
+
             // Create Result
             VirtualMachineDiskUpdateDiskResponse result = null;
             // Deserialize Response
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new VirtualMachineDiskUpdateDiskResponse();
-            DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
+            DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory
+                    .newInstance();
             documentBuilderFactory2.setNamespaceAware(true);
-            DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
+            DocumentBuilder documentBuilder2 = documentBuilderFactory2
+                    .newDocumentBuilder();
             Document responseDoc = documentBuilder2.parse(responseContent);
-            
+
             NodeList elements = responseDoc.getElementsByTagName("Disk");
-            Element diskElement2 = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (diskElement2 != null)
-            {
+            Element diskElement2 = elements.getLength() > 0 ? ((Element) elements
+                    .item(0)) : null;
+            if (diskElement2 != null) {
                 NodeList elements2 = diskElement2.getElementsByTagName("OS");
-                Element osElement2 = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (osElement2 != null)
-                {
+                Element osElement2 = elements2.getLength() > 0 ? ((Element) elements2
+                        .item(0)) : null;
+                if (osElement2 != null) {
                     String osInstance;
                     osInstance = osElement2.getTextContent();
                     result.setOperatingSystem(osInstance);
                 }
-                
+
                 NodeList elements3 = diskElement2.getElementsByTagName("Label");
-                Element labelElement2 = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                if (labelElement2 != null)
-                {
+                Element labelElement2 = elements3.getLength() > 0 ? ((Element) elements3
+                        .item(0)) : null;
+                if (labelElement2 != null) {
                     String labelInstance;
                     labelInstance = labelElement2.getTextContent();
                     result.setLabel(labelInstance);
                 }
-                
-                NodeList elements4 = diskElement2.getElementsByTagName("AffinityGroup");
-                Element affinityGroupElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                if (affinityGroupElement != null)
-                {
+
+                NodeList elements4 = diskElement2
+                        .getElementsByTagName("AffinityGroup");
+                Element affinityGroupElement = elements4.getLength() > 0 ? ((Element) elements4
+                        .item(0)) : null;
+                if (affinityGroupElement != null) {
                     String affinityGroupInstance;
-                    affinityGroupInstance = affinityGroupElement.getTextContent();
+                    affinityGroupInstance = affinityGroupElement
+                            .getTextContent();
                     result.setAffinityGroup(affinityGroupInstance);
                 }
-                
-                NodeList elements5 = diskElement2.getElementsByTagName("Location");
-                Element locationElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                if (locationElement != null)
-                {
+
+                NodeList elements5 = diskElement2
+                        .getElementsByTagName("Location");
+                Element locationElement = elements5.getLength() > 0 ? ((Element) elements5
+                        .item(0)) : null;
+                if (locationElement != null) {
                     String locationInstance;
                     locationInstance = locationElement.getTextContent();
                     result.setLocation(locationInstance);
                 }
-                
-                NodeList elements6 = diskElement2.getElementsByTagName("LogicalDiskSizeInGB");
-                Element logicalDiskSizeInGBElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                if (logicalDiskSizeInGBElement != null)
-                {
+
+                NodeList elements6 = diskElement2
+                        .getElementsByTagName("LogicalDiskSizeInGB");
+                Element logicalDiskSizeInGBElement = elements6.getLength() > 0 ? ((Element) elements6
+                        .item(0)) : null;
+                if (logicalDiskSizeInGBElement != null) {
                     int logicalDiskSizeInGBInstance;
-                    logicalDiskSizeInGBInstance = DatatypeConverter.parseInt(logicalDiskSizeInGBElement.getTextContent());
+                    logicalDiskSizeInGBInstance = DatatypeConverter
+                            .parseInt(logicalDiskSizeInGBElement
+                                    .getTextContent());
                     result.setLogicalSizeInGB(logicalDiskSizeInGBInstance);
                 }
-                
-                NodeList elements7 = diskElement2.getElementsByTagName("MediaLink");
-                Element mediaLinkElement2 = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                if (mediaLinkElement2 != null)
-                {
+
+                NodeList elements7 = diskElement2
+                        .getElementsByTagName("MediaLink");
+                Element mediaLinkElement2 = elements7.getLength() > 0 ? ((Element) elements7
+                        .item(0)) : null;
+                if (mediaLinkElement2 != null) {
                     URI mediaLinkInstance;
-                    mediaLinkInstance = new URI(mediaLinkElement2.getTextContent());
+                    mediaLinkInstance = new URI(
+                            mediaLinkElement2.getTextContent());
                     result.setMediaLinkUri(mediaLinkInstance);
                 }
-                
+
                 NodeList elements8 = diskElement2.getElementsByTagName("Name");
-                Element nameElement2 = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                if (nameElement2 != null)
-                {
+                Element nameElement2 = elements8.getLength() > 0 ? ((Element) elements8
+                        .item(0)) : null;
+                if (nameElement2 != null) {
                     String nameInstance;
                     nameInstance = nameElement2.getTextContent();
                     result.setName(nameInstance);
                 }
-                
-                NodeList elements9 = diskElement2.getElementsByTagName("IsPremium");
-                Element isPremiumElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-                if (isPremiumElement != null && (isPremiumElement.getTextContent() == null || isPremiumElement.getTextContent().isEmpty() == true) == false)
-                {
+
+                NodeList elements9 = diskElement2
+                        .getElementsByTagName("IsPremium");
+                Element isPremiumElement = elements9.getLength() > 0 ? ((Element) elements9
+                        .item(0)) : null;
+                if (isPremiumElement != null
+                        && (isPremiumElement.getTextContent() == null || isPremiumElement
+                                .getTextContent().isEmpty() == true) == false) {
                     boolean isPremiumInstance;
-                    isPremiumInstance = DatatypeConverter.parseBoolean(isPremiumElement.getTextContent());
+                    isPremiumInstance = DatatypeConverter
+                            .parseBoolean(isPremiumElement.getTextContent());
                     result.setIsPremium(isPremiumInstance);
                 }
             }
-            
+
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader(
+                        "x-ms-request-id").getValue());
             }
-            
-            if (shouldTrace)
-            {
+
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }

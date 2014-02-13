@@ -51,12 +51,10 @@ import com.microsoft.windowsazure.services.media.models.ProtectionKey;
 import com.microsoft.windowsazure.services.media.models.Task;
 import com.microsoft.windowsazure.services.media.models.Task.CreateBatchOperation;
 
-public class AssetIntegrationTest extends IntegrationTestBase
-{
+public class AssetIntegrationTest extends IntegrationTestBase {
 
     private void verifyInfosEqual(String message, AssetInfo expected,
-            AssetInfo actual)
-    {
+            AssetInfo actual) {
         verifyAssetProperties(message, expected.getName(),
                 expected.getAlternateId(), expected.getOptions(),
                 expected.getState(), actual);
@@ -64,16 +62,14 @@ public class AssetIntegrationTest extends IntegrationTestBase
 
     private void verifyAssetProperties(String message, String testName,
             String altId, AssetOption encryptionOption, AssetState assetState,
-            AssetInfo actualAsset)
-    {
+            AssetInfo actualAsset) {
         verifyAssetProperties(message, testName, altId, encryptionOption,
                 assetState, null, null, null, actualAsset);
     }
 
     private void verifyAssetProperties(String message, String testName,
             String altId, AssetOption encryptionOption, AssetState assetState,
-            String id, Date created, Date lastModified, AssetInfo actualAsset)
-    {
+            String id, Date created, Date lastModified, AssetInfo actualAsset) {
         assertNotNull(message, actualAsset);
         assertEquals(message + " Name", testName, actualAsset.getName());
         assertEquals(message + " AlternateId", altId,
@@ -81,25 +77,21 @@ public class AssetIntegrationTest extends IntegrationTestBase
         assertEquals(message + " Options", encryptionOption,
                 actualAsset.getOptions());
         assertEquals(message + " State", assetState, actualAsset.getState());
-        if (id != null)
-        {
+        if (id != null) {
             assertEquals(message + " Id", id, actualAsset.getId());
         }
-        if (created != null)
-        {
+        if (created != null) {
             assertEquals(message + " Created", created,
                     actualAsset.getCreated());
         }
-        if (lastModified != null)
-        {
+        if (lastModified != null) {
             assertEquals(message + " LastModified", lastModified,
                     actualAsset.getLastModified());
         }
     }
 
     @Test
-    public void createAssetOptionsSuccess() throws Exception
-    {
+    public void createAssetOptionsSuccess() throws Exception {
         // Arrange
         String testName = testAssetPrefix + "createAssetOptionsSuccess";
         String altId = "altId";
@@ -117,8 +109,7 @@ public class AssetIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void createAssetMeanString() throws Exception
-    {
+    public void createAssetMeanString() throws Exception {
         // Arrange
         String meanString = "'\"(?++\\+&==/&?''$@://   +ne <some><XML></stuff>"
                 + "{\"jsonLike\":\"Created\":\"\\/Date(1336368841597)\\/\",\"Name\":null,cksum value\"}}"
@@ -136,39 +127,32 @@ public class AssetIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void createAssetNullNameSuccess() throws Exception
-    {
+    public void createAssetNullNameSuccess() throws Exception {
         // Arrange
 
         // Act
         AssetInfo actualAsset = null;
-        try
-        {
+        try {
             actualAsset = service.create(Asset.create());
             // Assert
             verifyAssetProperties("actualAsset", "", "", AssetOption.None,
                     AssetState.Initialized, actualAsset);
-        } finally
-        {
+        } finally {
             // Clean up the anonymous asset now while we have the id, because we
             // do not want to delete all anonymous assets in the bulk-cleanup
             // code.
-            try
-            {
-                if (actualAsset != null)
-                {
+            try {
+                if (actualAsset != null) {
                     service.delete(Asset.delete(actualAsset.getId()));
                 }
-            } catch (ServiceException ex)
-            {
+            } catch (ServiceException ex) {
                 ex.printStackTrace();
             }
         }
     }
 
     @Test
-    public void getAssetSuccess() throws Exception
-    {
+    public void getAssetSuccess() throws Exception {
         // Arrange
         String testName = testAssetPrefix + "GetAssetSuccess";
         String altId = "altId";
@@ -187,24 +171,21 @@ public class AssetIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void getAssetInvalidId() throws ServiceException
-    {
+    public void getAssetInvalidId() throws ServiceException {
         expectedException.expect(ServiceException.class);
         expectedException.expect(new ServiceExceptionMatcher(400));
         service.get(Asset.get(invalidId));
     }
 
     @Test
-    public void getAssetNonexistId() throws ServiceException
-    {
+    public void getAssetNonexistId() throws ServiceException {
         expectedException.expect(ServiceException.class);
         expectedException.expect(new ServiceExceptionMatcher(404));
         service.get(Asset.get(validButNonexistAssetId));
     }
 
     @Test
-    public void listAssetSuccess() throws ServiceException
-    {
+    public void listAssetSuccess() throws ServiceException {
         // Arrange
         String altId = "altId";
         AssetOption encryptionOption = AssetOption.StorageEncrypted;
@@ -213,8 +194,7 @@ public class AssetIntegrationTest extends IntegrationTestBase
         String[] assetNames = new String[] { testAssetPrefix + "assetA",
                 testAssetPrefix + "assetB" };
         List<AssetInfo> expectedAssets = new ArrayList<AssetInfo>();
-        for (int i = 0; i < assetNames.length; i++)
-        {
+        for (int i = 0; i < assetNames.length; i++) {
             String name = assetNames[i];
             expectedAssets.add(service.create(Asset.create().setName(name)
                     .setAlternateId(altId).setOptions(encryptionOption)
@@ -227,12 +207,10 @@ public class AssetIntegrationTest extends IntegrationTestBase
         // Assert
 
         verifyListResultContains("listAssets", expectedAssets, listAssetResult,
-                new ComponentDelegate()
-                {
+                new ComponentDelegate() {
                     @Override
                     public void verifyEquals(String message, Object expected,
-                            Object actual)
-                    {
+                            Object actual) {
                         verifyInfosEqual(message, (AssetInfo) expected,
                                 (AssetInfo) actual);
                     }
@@ -240,16 +218,14 @@ public class AssetIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void canListAssetsWithOptions() throws ServiceException
-    {
+    public void canListAssetsWithOptions() throws ServiceException {
         String[] assetNames = new String[] {
                 testAssetPrefix + "assetListOptionsA",
                 testAssetPrefix + "assetListOptionsB",
                 testAssetPrefix + "assetListOptionsC",
                 testAssetPrefix + "assetListOptionsD" };
         List<AssetInfo> expectedAssets = new ArrayList<AssetInfo>();
-        for (int i = 0; i < assetNames.length; i++)
-        {
+        for (int i = 0; i < assetNames.length; i++) {
             String name = assetNames[i];
             expectedAssets.add(service.create(Asset.create().setName(name)));
         }
@@ -263,8 +239,7 @@ public class AssetIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void updateAssetSuccess() throws Exception
-    {
+    public void updateAssetSuccess() throws Exception {
         // Arrange
         String originalTestName = testAssetPrefix
                 + "updateAssetSuccessOriginal";
@@ -288,8 +263,7 @@ public class AssetIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void updateAssetNoChangesSuccess() throws Exception
-    {
+    public void updateAssetNoChangesSuccess() throws Exception {
         // Arrange
         String originalTestName = testAssetPrefix
                 + "updateAssetNoChangesSuccess";
@@ -306,16 +280,14 @@ public class AssetIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void updateAssetFailedWithInvalidId() throws ServiceException
-    {
+    public void updateAssetFailedWithInvalidId() throws ServiceException {
         expectedException.expect(ServiceException.class);
         expectedException.expect(new ServiceExceptionMatcher(404));
         service.update(Asset.update(validButNonexistAssetId));
     }
 
     @Test
-    public void deleteAssetSuccess() throws Exception
-    {
+    public void deleteAssetSuccess() throws Exception {
         // Arrange
         String assetName = testAssetPrefix + "deleteAssetSuccess";
         AssetInfo assetInfo = service.create(Asset.create().setName(assetName));
@@ -336,8 +308,7 @@ public class AssetIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void deleteAssetFailedWithInvalidId() throws ServiceException
-    {
+    public void deleteAssetFailedWithInvalidId() throws ServiceException {
         expectedException.expect(ServiceException.class);
         expectedException.expect(new ServiceExceptionMatcher(404));
         service.delete(Asset.delete(validButNonexistAssetId));
@@ -345,8 +316,7 @@ public class AssetIntegrationTest extends IntegrationTestBase
 
     @Test
     public void linkAssetContentKeySuccess() throws ServiceException,
-            URISyntaxException
-    {
+            URISyntaxException {
         // Arrange
         String originalTestName = testAssetPrefix
                 + "linkAssetContentKeySuccess";
@@ -376,8 +346,7 @@ public class AssetIntegrationTest extends IntegrationTestBase
 
     @Test
     public void linkAssetContentKeyInvalidIdFailed() throws ServiceException,
-            URISyntaxException
-    {
+            URISyntaxException {
         // Arrange
 
         // Act
@@ -391,8 +360,7 @@ public class AssetIntegrationTest extends IntegrationTestBase
 
     @Test
     public void canGetParentBackFromAsset() throws ServiceException,
-            InterruptedException
-    {
+            InterruptedException {
         // Arrange
         String originalAssetName = testAssetPrefix
                 + "canGetParentBackFromAsset";

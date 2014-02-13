@@ -28,240 +28,250 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
-* The List Available Extensions operation response.
-*/
-public class HostedServiceListAvailableExtensionsResponse extends OperationResponse implements Iterable<HostedServiceListAvailableExtensionsResponse.ExtensionImage>
-{
+ * The List Available Extensions operation response.
+ */
+public class HostedServiceListAvailableExtensionsResponse extends
+        OperationResponse implements
+        Iterable<HostedServiceListAvailableExtensionsResponse.ExtensionImage> {
     private ArrayList<HostedServiceListAvailableExtensionsResponse.ExtensionImage> extensionImages;
-    
+
     /**
-    * The extensions that are available to add to your cloud service.
-    * @return The ExtensionImages value.
-    */
-    public ArrayList<HostedServiceListAvailableExtensionsResponse.ExtensionImage> getExtensionImages()
-    {
+     * The extensions that are available to add to your cloud service.
+     * 
+     * @return The ExtensionImages value.
+     */
+    public ArrayList<HostedServiceListAvailableExtensionsResponse.ExtensionImage> getExtensionImages() {
         return this.extensionImages;
     }
-    
+
     /**
-    * The extensions that are available to add to your cloud service.
-    * @param extensionImagesValue The ExtensionImages value.
-    */
-    public void setExtensionImages(final ArrayList<HostedServiceListAvailableExtensionsResponse.ExtensionImage> extensionImagesValue)
-    {
+     * The extensions that are available to add to your cloud service.
+     * 
+     * @param extensionImagesValue
+     *            The ExtensionImages value.
+     */
+    public void setExtensionImages(
+            final ArrayList<HostedServiceListAvailableExtensionsResponse.ExtensionImage> extensionImagesValue) {
         this.extensionImages = extensionImagesValue;
     }
-    
+
     /**
-    * Initializes a new instance of the
-    * HostedServiceListAvailableExtensionsResponse class.
-    *
-    */
-    public HostedServiceListAvailableExtensionsResponse()
-    {
+     * Initializes a new instance of the
+     * HostedServiceListAvailableExtensionsResponse class.
+     * 
+     */
+    public HostedServiceListAvailableExtensionsResponse() {
         super();
         this.extensionImages = new ArrayList<HostedServiceListAvailableExtensionsResponse.ExtensionImage>();
     }
-    
+
     /**
-    * Gets the sequence of ExtensionImages.
-    *
-    */
-    public Iterator<HostedServiceListAvailableExtensionsResponse.ExtensionImage> iterator()
-    {
+     * Gets the sequence of ExtensionImages.
+     * 
+     */
+    public Iterator<HostedServiceListAvailableExtensionsResponse.ExtensionImage> iterator() {
         return this.getExtensionImages().iterator();
     }
-    
+
     /**
-    * An extension available to add to your cloud service.
-    */
-    public static class ExtensionImage
-    {
+     * An extension available to add to your cloud service.
+     */
+    public static class ExtensionImage {
         private String description;
-        
+
         /**
-        * The description of the extension.
-        * @return The Description value.
-        */
-        public String getDescription()
-        {
+         * The description of the extension.
+         * 
+         * @return The Description value.
+         */
+        public String getDescription() {
             return this.description;
         }
-        
+
         /**
-        * The description of the extension.
-        * @param descriptionValue The Description value.
-        */
-        public void setDescription(final String descriptionValue)
-        {
+         * The description of the extension.
+         * 
+         * @param descriptionValue
+         *            The Description value.
+         */
+        public void setDescription(final String descriptionValue) {
             this.description = descriptionValue;
         }
-        
+
         private HostingResources hostingResources;
-        
+
         /**
-        * The type of resource that supports the extension. This value can be
-        * WebRole, WorkerRole, or WebRole|WorkerRole.
-        * @return The HostingResources value.
-        */
-        public HostingResources getHostingResources()
-        {
+         * The type of resource that supports the extension. This value can be
+         * WebRole, WorkerRole, or WebRole|WorkerRole.
+         * 
+         * @return The HostingResources value.
+         */
+        public HostingResources getHostingResources() {
             return this.hostingResources;
         }
-        
+
         /**
-        * The type of resource that supports the extension. This value can be
-        * WebRole, WorkerRole, or WebRole|WorkerRole.
-        * @param hostingResourcesValue The HostingResources value.
-        */
-        public void setHostingResources(final HostingResources hostingResourcesValue)
-        {
+         * The type of resource that supports the extension. This value can be
+         * WebRole, WorkerRole, or WebRole|WorkerRole.
+         * 
+         * @param hostingResourcesValue
+         *            The HostingResources value.
+         */
+        public void setHostingResources(
+                final HostingResources hostingResourcesValue) {
             this.hostingResources = hostingResourcesValue;
         }
-        
+
         private String label;
-        
+
         /**
-        * The label that is used to identify the extension.
-        * @return The Label value.
-        */
-        public String getLabel()
-        {
+         * The label that is used to identify the extension.
+         * 
+         * @return The Label value.
+         */
+        public String getLabel() {
             return this.label;
         }
-        
+
         /**
-        * The label that is used to identify the extension.
-        * @param labelValue The Label value.
-        */
-        public void setLabel(final String labelValue)
-        {
+         * The label that is used to identify the extension.
+         * 
+         * @param labelValue
+         *            The Label value.
+         */
+        public void setLabel(final String labelValue) {
             this.label = labelValue;
         }
-        
+
         private String privateConfigurationSchema;
-        
+
         /**
-        * The schema of the private configuration.
-        * @return The PrivateConfigurationSchema value.
-        */
-        public String getPrivateConfigurationSchema()
-        {
+         * The schema of the private configuration.
+         * 
+         * @return The PrivateConfigurationSchema value.
+         */
+        public String getPrivateConfigurationSchema() {
             return this.privateConfigurationSchema;
         }
-        
+
         /**
-        * The schema of the private configuration.
-        * @param privateConfigurationSchemaValue The PrivateConfigurationSchema
-        * value.
-        */
-        public void setPrivateConfigurationSchema(final String privateConfigurationSchemaValue)
-        {
+         * The schema of the private configuration.
+         * 
+         * @param privateConfigurationSchemaValue
+         *            The PrivateConfigurationSchema value.
+         */
+        public void setPrivateConfigurationSchema(
+                final String privateConfigurationSchemaValue) {
             this.privateConfigurationSchema = privateConfigurationSchemaValue;
         }
-        
+
         private String providerNamespace;
-        
+
         /**
-        * The provider namespace of the extension. The provider namespace for
-        * Windows Azure extensions is Microsoft.Windows.Azure.Extensions.
-        * @return The ProviderNamespace value.
-        */
-        public String getProviderNamespace()
-        {
+         * The provider namespace of the extension. The provider namespace for
+         * Windows Azure extensions is Microsoft.Windows.Azure.Extensions.
+         * 
+         * @return The ProviderNamespace value.
+         */
+        public String getProviderNamespace() {
             return this.providerNamespace;
         }
-        
+
         /**
-        * The provider namespace of the extension. The provider namespace for
-        * Windows Azure extensions is Microsoft.Windows.Azure.Extensions.
-        * @param providerNamespaceValue The ProviderNamespace value.
-        */
-        public void setProviderNamespace(final String providerNamespaceValue)
-        {
+         * The provider namespace of the extension. The provider namespace for
+         * Windows Azure extensions is Microsoft.Windows.Azure.Extensions.
+         * 
+         * @param providerNamespaceValue
+         *            The ProviderNamespace value.
+         */
+        public void setProviderNamespace(final String providerNamespaceValue) {
             this.providerNamespace = providerNamespaceValue;
         }
-        
+
         private String publicConfigurationSchema;
-        
+
         /**
-        * The schema of the public configuration.
-        * @return The PublicConfigurationSchema value.
-        */
-        public String getPublicConfigurationSchema()
-        {
+         * The schema of the public configuration.
+         * 
+         * @return The PublicConfigurationSchema value.
+         */
+        public String getPublicConfigurationSchema() {
             return this.publicConfigurationSchema;
         }
-        
+
         /**
-        * The schema of the public configuration.
-        * @param publicConfigurationSchemaValue The PublicConfigurationSchema
-        * value.
-        */
-        public void setPublicConfigurationSchema(final String publicConfigurationSchemaValue)
-        {
+         * The schema of the public configuration.
+         * 
+         * @param publicConfigurationSchemaValue
+         *            The PublicConfigurationSchema value.
+         */
+        public void setPublicConfigurationSchema(
+                final String publicConfigurationSchemaValue) {
             this.publicConfigurationSchema = publicConfigurationSchemaValue;
         }
-        
+
         private String thumbprintAlgorithm;
-        
+
         /**
-        * The thumbprint algorithm of the certificate that is used for
-        * encryption.
-        * @return The ThumbprintAlgorithm value.
-        */
-        public String getThumbprintAlgorithm()
-        {
+         * The thumbprint algorithm of the certificate that is used for
+         * encryption.
+         * 
+         * @return The ThumbprintAlgorithm value.
+         */
+        public String getThumbprintAlgorithm() {
             return this.thumbprintAlgorithm;
         }
-        
+
         /**
-        * The thumbprint algorithm of the certificate that is used for
-        * encryption.
-        * @param thumbprintAlgorithmValue The ThumbprintAlgorithm value.
-        */
-        public void setThumbprintAlgorithm(final String thumbprintAlgorithmValue)
-        {
+         * The thumbprint algorithm of the certificate that is used for
+         * encryption.
+         * 
+         * @param thumbprintAlgorithmValue
+         *            The ThumbprintAlgorithm value.
+         */
+        public void setThumbprintAlgorithm(final String thumbprintAlgorithmValue) {
             this.thumbprintAlgorithm = thumbprintAlgorithmValue;
         }
-        
+
         private String type;
-        
+
         /**
-        * Required. The type of the extension.
-        * @return The Type value.
-        */
-        public String getType()
-        {
+         * Required. The type of the extension.
+         * 
+         * @return The Type value.
+         */
+        public String getType() {
             return this.type;
         }
-        
+
         /**
-        * Required. The type of the extension.
-        * @param typeValue The Type value.
-        */
-        public void setType(final String typeValue)
-        {
+         * Required. The type of the extension.
+         * 
+         * @param typeValue
+         *            The Type value.
+         */
+        public void setType(final String typeValue) {
             this.type = typeValue;
         }
-        
+
         private String version;
-        
+
         /**
-        * The version of the extension.
-        * @return The Version value.
-        */
-        public String getVersion()
-        {
+         * The version of the extension.
+         * 
+         * @return The Version value.
+         */
+        public String getVersion() {
             return this.version;
         }
-        
+
         /**
-        * The version of the extension.
-        * @param versionValue The Version value.
-        */
-        public void setVersion(final String versionValue)
-        {
+         * The version of the extension.
+         * 
+         * @param versionValue
+         *            The Version value.
+         */
+        public void setVersion(final String versionValue) {
             this.version = versionValue;
         }
     }

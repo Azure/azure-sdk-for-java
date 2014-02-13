@@ -28,8 +28,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "NotificationEndPointType", namespace = Constants.ODATA_DATA_NS)
-public class NotificationEndPointType implements MediaServiceDTO
-{
+public class NotificationEndPointType implements MediaServiceDTO {
 
     /** The id. */
     @XmlElement(name = "Id", namespace = Constants.ODATA_DATA_NS)
@@ -56,8 +55,7 @@ public class NotificationEndPointType implements MediaServiceDTO
      * 
      * @return the id.
      */
-    public String getId()
-    {
+    public String getId() {
         return id;
     }
 
@@ -68,8 +66,7 @@ public class NotificationEndPointType implements MediaServiceDTO
      *            id the id to set
      * @return the notification end point type
      */
-    public NotificationEndPointType setId(String id)
-    {
+    public NotificationEndPointType setId(String id) {
         this.id = id;
         return this;
     }
@@ -79,8 +76,7 @@ public class NotificationEndPointType implements MediaServiceDTO
      * 
      * @return the name.
      */
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
@@ -91,8 +87,7 @@ public class NotificationEndPointType implements MediaServiceDTO
      *            name the name to set
      * @return the notification end point type
      */
-    public NotificationEndPointType setName(String name)
-    {
+    public NotificationEndPointType setName(String name) {
         this.name = name;
         return this;
     }
@@ -102,8 +97,7 @@ public class NotificationEndPointType implements MediaServiceDTO
      * 
      * @return the created
      */
-    public Date getCreated()
-    {
+    public Date getCreated() {
         return this.created;
     }
 
@@ -114,8 +108,7 @@ public class NotificationEndPointType implements MediaServiceDTO
      *            the created
      * @return the notification end point type
      */
-    public NotificationEndPointType setCreated(Date created)
-    {
+    public NotificationEndPointType setCreated(Date created) {
         this.created = created;
         return this;
     }
@@ -125,8 +118,7 @@ public class NotificationEndPointType implements MediaServiceDTO
      * 
      * @return the end point type
      */
-    public int getEndPointType()
-    {
+    public int getEndPointType() {
         return this.endPointType;
     }
 
@@ -137,8 +129,7 @@ public class NotificationEndPointType implements MediaServiceDTO
      *            the endpoint type
      * @return the notification end point type
      */
-    public NotificationEndPointType setEndPointType(int endpointType)
-    {
+    public NotificationEndPointType setEndPointType(int endpointType) {
         this.endPointType = endpointType;
         return this;
     }
@@ -148,8 +139,7 @@ public class NotificationEndPointType implements MediaServiceDTO
      * 
      * @return the end point address
      */
-    public String getEndPointAddress()
-    {
+    public String getEndPointAddress() {
         return this.endPointAddress;
     }
 
@@ -160,8 +150,7 @@ public class NotificationEndPointType implements MediaServiceDTO
      *            the endpoint address
      * @return the notification end point type
      */
-    public NotificationEndPointType setEndPointAddress(String endpointAddress)
-    {
+    public NotificationEndPointType setEndPointAddress(String endpointAddress) {
         this.endPointAddress = endpointAddress;
         return this;
     }

@@ -25,8 +25,7 @@ import javax.xml.bind.annotation.XmlElement;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class JobNotificationSubscriptionType implements MediaServiceDTO
-{
+public class JobNotificationSubscriptionType implements MediaServiceDTO {
 
     /** The ID of the notification end point. */
     @XmlElement(name = "NotificationEndPointId", namespace = Constants.ODATA_DATA_NS)
@@ -41,8 +40,7 @@ public class JobNotificationSubscriptionType implements MediaServiceDTO
      * 
      * @return the ID of the notification end point.
      */
-    public String getNotificationEndPointId()
-    {
+    public String getNotificationEndPointId() {
         return this.notificationEndPointId;
     }
 
@@ -54,8 +52,7 @@ public class JobNotificationSubscriptionType implements MediaServiceDTO
      * @return the job notification subscription type
      */
     public JobNotificationSubscriptionType setNotificationEndPointId(
-            String notificationEndPointId)
-    {
+            String notificationEndPointId) {
         this.notificationEndPointId = notificationEndPointId;
         return this;
     }
@@ -65,8 +62,7 @@ public class JobNotificationSubscriptionType implements MediaServiceDTO
      * 
      * @return an integer representing the target job state.
      */
-    public int getTargetJobState()
-    {
+    public int getTargetJobState() {
         return targetJobState;
     }
 
@@ -77,8 +73,7 @@ public class JobNotificationSubscriptionType implements MediaServiceDTO
      *            the target job state
      * @return the target job state
      */
-    public JobNotificationSubscriptionType setTargetJobState(int targetJobState)
-    {
+    public JobNotificationSubscriptionType setTargetJobState(int targetJobState) {
         this.targetJobState = targetJobState;
         return this;
     }

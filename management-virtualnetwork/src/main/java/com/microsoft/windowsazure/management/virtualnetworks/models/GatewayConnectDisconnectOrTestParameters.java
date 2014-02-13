@@ -26,57 +26,59 @@ package com.microsoft.windowsazure.management.virtualnetworks.models;
 import java.net.InetAddress;
 
 /**
-* The parameters for the Connect, Disconnect, or Test request
-*/
-public class GatewayConnectDisconnectOrTestParameters
-{
+ * The parameters for the Connect, Disconnect, or Test request
+ */
+public class GatewayConnectDisconnectOrTestParameters {
     private InetAddress iPAddress;
-    
+
     /**
-    * Required if operation is set to Test; otherwise not used. Specifies the
-    * IP address of the target local network site with which the gateway will
-    * test connectivity.
-    * @return The IPAddress value.
-    */
-    public InetAddress getIPAddress()
-    {
+     * Required if operation is set to Test; otherwise not used. Specifies the
+     * IP address of the target local network site with which the gateway will
+     * test connectivity.
+     * 
+     * @return The IPAddress value.
+     */
+    public InetAddress getIPAddress() {
         return this.iPAddress;
     }
-    
+
     /**
-    * Required if operation is set to Test; otherwise not used. Specifies the
-    * IP address of the target local network site with which the gateway will
-    * test connectivity.
-    * @param iPAddressValue The IPAddress value.
-    */
-    public void setIPAddress(final InetAddress iPAddressValue)
-    {
+     * Required if operation is set to Test; otherwise not used. Specifies the
+     * IP address of the target local network site with which the gateway will
+     * test connectivity.
+     * 
+     * @param iPAddressValue
+     *            The IPAddress value.
+     */
+    public void setIPAddress(final InetAddress iPAddressValue) {
         this.iPAddress = iPAddressValue;
     }
-    
+
     private GatewayConnectionUpdateOperation operation;
-    
+
     /**
-    * Required. Specifies the operation to perform on the connection. Can be
-    * set to Connect, Disconnect or Test to connect to a local network,
-    * disconnect from a local network, or test the gateway’s connection to a
-    * local network site.
-    * @return The Operation value.
-    */
-    public GatewayConnectionUpdateOperation getOperation()
-    {
+     * Required. Specifies the operation to perform on the connection. Can be
+     * set to Connect, Disconnect or Test to connect to a local network,
+     * disconnect from a local network, or test the gateway’s connection to a
+     * local network site.
+     * 
+     * @return The Operation value.
+     */
+    public GatewayConnectionUpdateOperation getOperation() {
         return this.operation;
     }
-    
+
     /**
-    * Required. Specifies the operation to perform on the connection. Can be
-    * set to Connect, Disconnect or Test to connect to a local network,
-    * disconnect from a local network, or test the gateway’s connection to a
-    * local network site.
-    * @param operationValue The Operation value.
-    */
-    public void setOperation(final GatewayConnectionUpdateOperation operationValue)
-    {
+     * Required. Specifies the operation to perform on the connection. Can be
+     * set to Connect, Disconnect or Test to connect to a local network,
+     * disconnect from a local network, or test the gateway’s connection to a
+     * local network site.
+     * 
+     * @param operationValue
+     *            The Operation value.
+     */
+    public void setOperation(
+            final GatewayConnectionUpdateOperation operationValue) {
         this.operation = operationValue;
     }
 }

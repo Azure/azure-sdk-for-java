@@ -28,15 +28,13 @@ import com.microsoft.windowsazure.services.media.MediaConfiguration;
 import com.microsoft.windowsazure.services.queue.QueueConfiguration;
 
 @SuppressWarnings("deprecation")
-public abstract class ScenarioTestBase
-{
+public abstract class ScenarioTestBase {
     protected static Configuration config;
 
     @Rule
     public SetupManager setupManager = new SetupManager();
 
-    protected static void initializeConfig()
-    {
+    protected static void initializeConfig() {
         config = new Configuration();
 
         overrideWithEnv(config, BlobConfiguration.ACCOUNT_NAME);
@@ -54,8 +52,7 @@ public abstract class ScenarioTestBase
         overrideWithEnv(config, MediaConfiguration.OAUTH_SCOPE);
     }
 
-    private static void overrideWithEnv(Configuration config, String key)
-    {
+    private static void overrideWithEnv(Configuration config, String key) {
         String value = System.getenv(key);
         if (value == null)
             return;
@@ -63,60 +60,47 @@ public abstract class ScenarioTestBase
         config.setProperty(key, value);
     }
 
-    protected void signalSetupStarting()
-    {
+    protected void signalSetupStarting() {
         setupManager.startSetup();
     }
 
-    protected void signalSetupFinished()
-    {
+    protected void signalSetupFinished() {
         setupManager.endSetup();
     }
 
-    protected class SetupManager implements MethodRule
-    {
+    protected class SetupManager implements MethodRule {
         private boolean shouldCapture;
 
         @Override
         public Statement apply(Statement base, FrameworkMethod method,
-                Object target)
-        {
+                Object target) {
             return new SetupManagerStatement(base);
         }
 
-        public void startSetup()
-        {
+        public void startSetup() {
             this.shouldCapture = true;
         }
 
-        public void endSetup()
-        {
+        public void endSetup() {
             this.shouldCapture = false;
         }
 
-        private class SetupManagerStatement extends Statement
-        {
+        private class SetupManagerStatement extends Statement {
             private final Statement next;
 
-            public SetupManagerStatement(Statement base)
-            {
+            public SetupManagerStatement(Statement base) {
                 next = base;
             }
 
             @Override
-            public void evaluate() throws Throwable
-            {
-                try
-                {
+            public void evaluate() throws Throwable {
+                try {
                     next.evaluate();
-                } catch (Throwable e)
-                {
-                    if (shouldCapture)
-                    {
+                } catch (Throwable e) {
+                    if (shouldCapture) {
                         e.printStackTrace();
                         fail("Error occured during setup: " + e.getMessage());
-                    } else
-                    {
+                    } else {
                         throw e;
                     }
                 }

@@ -25,8 +25,7 @@ import com.microsoft.windowsazure.services.blob.BlobContract;
  * metadata in the results. Options that are not set will not be passed to the
  * server with a request.
  */
-public class ListContainersOptions extends BlobServiceOptions
-{
+public class ListContainersOptions extends BlobServiceOptions {
     private String prefix;
     private String marker;
     private int maxResults;
@@ -44,8 +43,7 @@ public class ListContainersOptions extends BlobServiceOptions
      * @return A reference to this {@link ListContainersOptions} instance.
      */
     @Override
-    public ListContainersOptions setTimeout(Integer timeout)
-    {
+    public ListContainersOptions setTimeout(Integer timeout) {
         super.setTimeout(timeout);
         return this;
     }
@@ -57,8 +55,7 @@ public class ListContainersOptions extends BlobServiceOptions
      * @return A {@link String} containing the container name prefix value, if
      *         any.
      */
-    public String getPrefix()
-    {
+    public String getPrefix() {
         return prefix;
     }
 
@@ -75,8 +72,7 @@ public class ListContainersOptions extends BlobServiceOptions
      *            use to filter the request results.
      * @return A reference to this {@link ListContainersOptions} instance.
      */
-    public ListContainersOptions setPrefix(String prefix)
-    {
+    public ListContainersOptions setPrefix(String prefix) {
         this.prefix = prefix;
         return this;
     }
@@ -87,8 +83,7 @@ public class ListContainersOptions extends BlobServiceOptions
      * @return A {@link String} containing the marker value to use to specify
      *         the beginning of the request results.
      */
-    public String getMarker()
-    {
+    public String getMarker() {
         return marker;
     }
 
@@ -118,8 +113,7 @@ public class ListContainersOptions extends BlobServiceOptions
      *            the beginning of the request results.
      * @return A reference to this {@link ListContainersOptions} instance.
      */
-    public ListContainersOptions setMarker(String marker)
-    {
+    public ListContainersOptions setMarker(String marker) {
         this.marker = marker;
         return this;
     }
@@ -130,8 +124,7 @@ public class ListContainersOptions extends BlobServiceOptions
      * 
      * @return The maximum number of results to return.
      */
-    public int getMaxResults()
-    {
+    public int getMaxResults() {
         return maxResults;
     }
 
@@ -162,8 +155,7 @@ public class ListContainersOptions extends BlobServiceOptions
      *            The maximum number of results to return.
      * @return A reference to this {@link ListContainersOptions} instance.
      */
-    public ListContainersOptions setMaxResults(int maxResults)
-    {
+    public ListContainersOptions setMaxResults(int maxResults) {
         this.maxResults = maxResults;
         return this;
     }
@@ -176,8 +168,7 @@ public class ListContainersOptions extends BlobServiceOptions
      * @return <code>true</code> to include container metadata in the response
      *         to the request.
      */
-    public boolean isIncludeMetadata()
-    {
+    public boolean isIncludeMetadata() {
         return includeMetadata;
     }
 
@@ -194,8 +185,7 @@ public class ListContainersOptions extends BlobServiceOptions
      *            response to the request.
      * @return A reference to this {@link ListContainersOptions} instance.
      */
-    public ListContainersOptions setIncludeMetadata(boolean includeMetadata)
-    {
+    public ListContainersOptions setIncludeMetadata(boolean includeMetadata) {
         this.includeMetadata = includeMetadata;
         return this;
     }

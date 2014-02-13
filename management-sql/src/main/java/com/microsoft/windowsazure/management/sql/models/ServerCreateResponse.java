@@ -26,27 +26,27 @@ package com.microsoft.windowsazure.management.sql.models;
 import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
-* The response returned from the Create Server operation.
-*/
-public class ServerCreateResponse extends OperationResponse
-{
+ * The response returned from the Create Server operation.
+ */
+public class ServerCreateResponse extends OperationResponse {
     private String serverName;
-    
+
     /**
-    * Gets or sets the name of the server that was created.
-    * @return The ServerName value.
-    */
-    public String getServerName()
-    {
+     * Gets or sets the name of the server that was created.
+     * 
+     * @return The ServerName value.
+     */
+    public String getServerName() {
         return this.serverName;
     }
-    
+
     /**
-    * Gets or sets the name of the server that was created.
-    * @param serverNameValue The ServerName value.
-    */
-    public void setServerName(final String serverNameValue)
-    {
+     * Gets or sets the name of the server that was created.
+     * 
+     * @param serverNameValue
+     *            The ServerName value.
+     */
+    public void setServerName(final String serverNameValue) {
         this.serverName = serverNameValue;
     }
 }

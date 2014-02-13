@@ -23,11 +23,10 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-public enum HostingResources
-{
+public enum HostingResources {
     WebRole,
-    
+
     WorkerRole,
-    
+
     WebOrWorkerRole,
 }

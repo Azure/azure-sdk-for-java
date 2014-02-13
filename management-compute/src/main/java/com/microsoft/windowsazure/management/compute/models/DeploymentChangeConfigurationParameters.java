@@ -26,155 +26,160 @@ package com.microsoft.windowsazure.management.compute.models;
 import java.util.HashMap;
 
 /**
-* Parameters supplied to the Change Configuration Deployment operation.
-*/
-public class DeploymentChangeConfigurationParameters
-{
+ * Parameters supplied to the Change Configuration Deployment operation.
+ */
+public class DeploymentChangeConfigurationParameters {
     private String configuration;
-    
+
     /**
-    * Required. The encoded service configuration file for the deployment.
-    * @return The Configuration value.
-    */
-    public String getConfiguration()
-    {
+     * Required. The encoded service configuration file for the deployment.
+     * 
+     * @return The Configuration value.
+     */
+    public String getConfiguration() {
         return this.configuration;
     }
-    
+
     /**
-    * Required. The encoded service configuration file for the deployment.
-    * @param configurationValue The Configuration value.
-    */
-    public void setConfiguration(final String configurationValue)
-    {
+     * Required. The encoded service configuration file for the deployment.
+     * 
+     * @param configurationValue
+     *            The Configuration value.
+     */
+    public void setConfiguration(final String configurationValue) {
         this.configuration = configurationValue;
     }
-    
+
     private HashMap<String, String> extendedProperties;
-    
+
     /**
-    * Optional. Represents the name of an extended deployment property. Each
-    * extended property must have both a defined name and value. You can have
-    * a maximum of 25 extended property name/value pairs. The maximum length
-    * of the Name element is 64 characters, only alphanumeric characters and
-    * underscores are valid in the Name, and the name must start with a
-    * letter. Attempting to use other characters, starting the Name with a
-    * non-letter character, or entering a name that is identical to that of
-    * another extended property owned by the same hosted service, will result
-    * in a status code 400 (Bad Request) error.
-    * @return The ExtendedProperties value.
-    */
-    public HashMap<String, String> getExtendedProperties()
-    {
+     * Optional. Represents the name of an extended deployment property. Each
+     * extended property must have both a defined name and value. You can have a
+     * maximum of 25 extended property name/value pairs. The maximum length of
+     * the Name element is 64 characters, only alphanumeric characters and
+     * underscores are valid in the Name, and the name must start with a letter.
+     * Attempting to use other characters, starting the Name with a non-letter
+     * character, or entering a name that is identical to that of another
+     * extended property owned by the same hosted service, will result in a
+     * status code 400 (Bad Request) error.
+     * 
+     * @return The ExtendedProperties value.
+     */
+    public HashMap<String, String> getExtendedProperties() {
         return this.extendedProperties;
     }
-    
+
     /**
-    * Optional. Represents the name of an extended deployment property. Each
-    * extended property must have both a defined name and value. You can have
-    * a maximum of 25 extended property name/value pairs. The maximum length
-    * of the Name element is 64 characters, only alphanumeric characters and
-    * underscores are valid in the Name, and the name must start with a
-    * letter. Attempting to use other characters, starting the Name with a
-    * non-letter character, or entering a name that is identical to that of
-    * another extended property owned by the same hosted service, will result
-    * in a status code 400 (Bad Request) error.
-    * @param extendedPropertiesValue The ExtendedProperties value.
-    */
-    public void setExtendedProperties(final HashMap<String, String> extendedPropertiesValue)
-    {
+     * Optional. Represents the name of an extended deployment property. Each
+     * extended property must have both a defined name and value. You can have a
+     * maximum of 25 extended property name/value pairs. The maximum length of
+     * the Name element is 64 characters, only alphanumeric characters and
+     * underscores are valid in the Name, and the name must start with a letter.
+     * Attempting to use other characters, starting the Name with a non-letter
+     * character, or entering a name that is identical to that of another
+     * extended property owned by the same hosted service, will result in a
+     * status code 400 (Bad Request) error.
+     * 
+     * @param extendedPropertiesValue
+     *            The ExtendedProperties value.
+     */
+    public void setExtendedProperties(
+            final HashMap<String, String> extendedPropertiesValue) {
         this.extendedProperties = extendedPropertiesValue;
     }
-    
+
     private ExtensionConfiguration extensionConfiguration;
-    
+
     /**
-    * Optional. Represents an extension that is added to the cloud service. In
-    * Windows Azure, a process can run as an extension of a cloud service. For
-    * example, Remote Desktop Access or the Windows Azure Diagnostics Agent
-    * can run as extensions to the cloud service. You must add an extension to
-    * the cloud service by using Add Extension before it can be added to the
-    * deployment.
-    * @return The ExtensionConfiguration value.
-    */
-    public ExtensionConfiguration getExtensionConfiguration()
-    {
+     * Optional. Represents an extension that is added to the cloud service. In
+     * Windows Azure, a process can run as an extension of a cloud service. For
+     * example, Remote Desktop Access or the Windows Azure Diagnostics Agent can
+     * run as extensions to the cloud service. You must add an extension to the
+     * cloud service by using Add Extension before it can be added to the
+     * deployment.
+     * 
+     * @return The ExtensionConfiguration value.
+     */
+    public ExtensionConfiguration getExtensionConfiguration() {
         return this.extensionConfiguration;
     }
-    
+
     /**
-    * Optional. Represents an extension that is added to the cloud service. In
-    * Windows Azure, a process can run as an extension of a cloud service. For
-    * example, Remote Desktop Access or the Windows Azure Diagnostics Agent
-    * can run as extensions to the cloud service. You must add an extension to
-    * the cloud service by using Add Extension before it can be added to the
-    * deployment.
-    * @param extensionConfigurationValue The ExtensionConfiguration value.
-    */
-    public void setExtensionConfiguration(final ExtensionConfiguration extensionConfigurationValue)
-    {
+     * Optional. Represents an extension that is added to the cloud service. In
+     * Windows Azure, a process can run as an extension of a cloud service. For
+     * example, Remote Desktop Access or the Windows Azure Diagnostics Agent can
+     * run as extensions to the cloud service. You must add an extension to the
+     * cloud service by using Add Extension before it can be added to the
+     * deployment.
+     * 
+     * @param extensionConfigurationValue
+     *            The ExtensionConfiguration value.
+     */
+    public void setExtensionConfiguration(
+            final ExtensionConfiguration extensionConfigurationValue) {
         this.extensionConfiguration = extensionConfigurationValue;
     }
-    
+
     private DeploymentChangeConfigurationMode mode;
-    
+
     /**
-    * Optional. Possible values are: Auto, Manual.  If not specified the
-    * default value is Auto. If set to Manual, WalkUpgradeDomain must be
-    * called to apply the update. If set to Auto, the update is automatically
-    * applied to each update domain for the service.
-    * @return The Mode value.
-    */
-    public DeploymentChangeConfigurationMode getMode()
-    {
+     * Optional. Possible values are: Auto, Manual. If not specified the default
+     * value is Auto. If set to Manual, WalkUpgradeDomain must be called to
+     * apply the update. If set to Auto, the update is automatically applied to
+     * each update domain for the service.
+     * 
+     * @return The Mode value.
+     */
+    public DeploymentChangeConfigurationMode getMode() {
         return this.mode;
     }
-    
+
     /**
-    * Optional. Possible values are: Auto, Manual.  If not specified the
-    * default value is Auto. If set to Manual, WalkUpgradeDomain must be
-    * called to apply the update. If set to Auto, the update is automatically
-    * applied to each update domain for the service.
-    * @param modeValue The Mode value.
-    */
-    public void setMode(final DeploymentChangeConfigurationMode modeValue)
-    {
+     * Optional. Possible values are: Auto, Manual. If not specified the default
+     * value is Auto. If set to Manual, WalkUpgradeDomain must be called to
+     * apply the update. If set to Auto, the update is automatically applied to
+     * each update domain for the service.
+     * 
+     * @param modeValue
+     *            The Mode value.
+     */
+    public void setMode(final DeploymentChangeConfigurationMode modeValue) {
         this.mode = modeValue;
     }
-    
+
     private Boolean treatWarningsAsError;
-    
+
     /**
-    * Optional. Indicates whether to treat package validation warnings as
-    * errors. The default value is false. If set to true, the Created
-    * Deployment operation fails if there are validation warnings on the
-    * service package.
-    * @return The TreatWarningsAsError value.
-    */
-    public Boolean isTreatWarningsAsError()
-    {
+     * Optional. Indicates whether to treat package validation warnings as
+     * errors. The default value is false. If set to true, the Created
+     * Deployment operation fails if there are validation warnings on the
+     * service package.
+     * 
+     * @return The TreatWarningsAsError value.
+     */
+    public Boolean isTreatWarningsAsError() {
         return this.treatWarningsAsError;
     }
-    
+
     /**
-    * Optional. Indicates whether to treat package validation warnings as
-    * errors. The default value is false. If set to true, the Created
-    * Deployment operation fails if there are validation warnings on the
-    * service package.
-    * @param treatWarningsAsErrorValue The TreatWarningsAsError value.
-    */
-    public void setTreatWarningsAsError(final Boolean treatWarningsAsErrorValue)
-    {
+     * Optional. Indicates whether to treat package validation warnings as
+     * errors. The default value is false. If set to true, the Created
+     * Deployment operation fails if there are validation warnings on the
+     * service package.
+     * 
+     * @param treatWarningsAsErrorValue
+     *            The TreatWarningsAsError value.
+     */
+    public void setTreatWarningsAsError(final Boolean treatWarningsAsErrorValue) {
         this.treatWarningsAsError = treatWarningsAsErrorValue;
     }
-    
+
     /**
-    * Initializes a new instance of the DeploymentChangeConfigurationParameters
-    * class.
-    *
-    */
-    public DeploymentChangeConfigurationParameters()
-    {
+     * Initializes a new instance of the DeploymentChangeConfigurationParameters
+     * class.
+     * 
+     */
+    public DeploymentChangeConfigurationParameters() {
         this.extendedProperties = new HashMap<String, String>();
     }
 }

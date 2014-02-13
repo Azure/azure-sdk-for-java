@@ -24,71 +24,74 @@
 package com.microsoft.windowsazure.management.compute.models;
 
 /**
-* Parameters supplied to the Create Service Certificate operation.
-*/
-public class ServiceCertificateCreateParameters
-{
+ * Parameters supplied to the Create Service Certificate operation.
+ */
+public class ServiceCertificateCreateParameters {
     private CertificateFormat certificateFormat;
-    
+
     /**
-    * The service certificate format. Windows Azure supports the pfx and cer
-    * file formats.
-    * @return The CertificateFormat value.
-    */
-    public CertificateFormat getCertificateFormat()
-    {
+     * The service certificate format. Windows Azure supports the pfx and cer
+     * file formats.
+     * 
+     * @return The CertificateFormat value.
+     */
+    public CertificateFormat getCertificateFormat() {
         return this.certificateFormat;
     }
-    
+
     /**
-    * The service certificate format. Windows Azure supports the pfx and cer
-    * file formats.
-    * @param certificateFormatValue The CertificateFormat value.
-    */
-    public void setCertificateFormat(final CertificateFormat certificateFormatValue)
-    {
+     * The service certificate format. Windows Azure supports the pfx and cer
+     * file formats.
+     * 
+     * @param certificateFormatValue
+     *            The CertificateFormat value.
+     */
+    public void setCertificateFormat(
+            final CertificateFormat certificateFormatValue) {
         this.certificateFormat = certificateFormatValue;
     }
-    
+
     private byte[] data;
-    
+
     /**
-    * The pfx or .cer file.
-    * @return The Data value.
-    */
-    public byte[] getData()
-    {
+     * The pfx or .cer file.
+     * 
+     * @return The Data value.
+     */
+    public byte[] getData() {
         return this.data;
     }
-    
+
     /**
-    * The pfx or .cer file.
-    * @param dataValue The Data value.
-    */
-    public void setData(final byte[] dataValue)
-    {
+     * The pfx or .cer file.
+     * 
+     * @param dataValue
+     *            The Data value.
+     */
+    public void setData(final byte[] dataValue) {
         this.data = dataValue;
     }
-    
+
     private String password;
-    
+
     /**
-    * The password for a .pfx certificate. A .cer certificate does not require
-    * a password.
-    * @return The Password value.
-    */
-    public String getPassword()
-    {
+     * The password for a .pfx certificate. A .cer certificate does not require
+     * a password.
+     * 
+     * @return The Password value.
+     */
+    public String getPassword() {
         return this.password;
     }
-    
+
     /**
-    * The password for a .pfx certificate. A .cer certificate does not require
-    * a password.
-    * @param passwordValue The Password value.
-    */
-    public void setPassword(final String passwordValue)
-    {
+     * The password for a .pfx certificate. A .cer certificate does not require
+     * a password.
+     * 
+     * @param passwordValue
+     *            The Password value.
+     */
+    public void setPassword(final String passwordValue) {
         this.password = passwordValue;
     }
 }

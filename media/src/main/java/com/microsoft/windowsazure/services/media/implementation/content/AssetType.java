@@ -27,8 +27,7 @@ import javax.xml.bind.annotation.XmlElement;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class AssetType implements MediaServiceDTO
-{
+public class AssetType implements MediaServiceDTO {
 
     @XmlElement(name = "Id", namespace = Constants.ODATA_DATA_NS)
     protected String id;
@@ -54,8 +53,7 @@ public class AssetType implements MediaServiceDTO
     /**
      * @return the id
      */
-    public String getId()
-    {
+    public String getId() {
         return id;
     }
 
@@ -63,8 +61,7 @@ public class AssetType implements MediaServiceDTO
      * @param id
      *            the id to set
      */
-    public AssetType setId(String id)
-    {
+    public AssetType setId(String id) {
         this.id = id;
         return this;
     }
@@ -72,8 +69,7 @@ public class AssetType implements MediaServiceDTO
     /**
      * @return the state
      */
-    public Integer getState()
-    {
+    public Integer getState() {
         return state;
     }
 
@@ -81,8 +77,7 @@ public class AssetType implements MediaServiceDTO
      * @param state
      *            the state to set
      */
-    public AssetType setState(Integer state)
-    {
+    public AssetType setState(Integer state) {
         this.state = state;
         return this;
     }
@@ -90,8 +85,7 @@ public class AssetType implements MediaServiceDTO
     /**
      * @return the created
      */
-    public Date getCreated()
-    {
+    public Date getCreated() {
         return created;
     }
 
@@ -99,8 +93,7 @@ public class AssetType implements MediaServiceDTO
      * @param created
      *            the created to set
      */
-    public AssetType setCreated(Date created)
-    {
+    public AssetType setCreated(Date created) {
         this.created = created;
         return this;
     }
@@ -108,8 +101,7 @@ public class AssetType implements MediaServiceDTO
     /**
      * @return the lastModified
      */
-    public Date getLastModified()
-    {
+    public Date getLastModified() {
         return lastModified;
     }
 
@@ -117,8 +109,7 @@ public class AssetType implements MediaServiceDTO
      * @param lastModified
      *            the lastModified to set
      */
-    public AssetType setLastModified(Date lastModified)
-    {
+    public AssetType setLastModified(Date lastModified) {
         this.lastModified = lastModified;
         return this;
     }
@@ -126,8 +117,7 @@ public class AssetType implements MediaServiceDTO
     /**
      * @return the alternateId
      */
-    public String getAlternateId()
-    {
+    public String getAlternateId() {
         return alternateId;
     }
 
@@ -135,8 +125,7 @@ public class AssetType implements MediaServiceDTO
      * @param alternateId
      *            the alternateId to set
      */
-    public AssetType setAlternateId(String alternateId)
-    {
+    public AssetType setAlternateId(String alternateId) {
         this.alternateId = alternateId;
         return this;
     }
@@ -144,8 +133,7 @@ public class AssetType implements MediaServiceDTO
     /**
      * @return the name
      */
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
@@ -153,8 +141,7 @@ public class AssetType implements MediaServiceDTO
      * @param name
      *            the name to set
      */
-    public AssetType setName(String name)
-    {
+    public AssetType setName(String name) {
         this.name = name;
         return this;
     }
@@ -162,8 +149,7 @@ public class AssetType implements MediaServiceDTO
     /**
      * @return the options
      */
-    public Integer getOptions()
-    {
+    public Integer getOptions() {
         return options;
     }
 
@@ -171,8 +157,7 @@ public class AssetType implements MediaServiceDTO
      * @param options
      *            the options to set
      */
-    public AssetType setOptions(Integer options)
-    {
+    public AssetType setOptions(Integer options) {
         this.options = options;
         return this;
     }

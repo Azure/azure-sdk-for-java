@@ -24,47 +24,48 @@
 package com.microsoft.windowsazure.management.monitoring.metrics.models;
 
 /**
-* An availability metric name config.
-*/
-public class NameConfig
-{
+ * An availability metric name config.
+ */
+public class NameConfig {
     private String displayName;
-    
+
     /**
-    * Availability metric name config display name.
-    * @return The DisplayName value.
-    */
-    public String getDisplayName()
-    {
+     * Availability metric name config display name.
+     * 
+     * @return The DisplayName value.
+     */
+    public String getDisplayName() {
         return this.displayName;
     }
-    
+
     /**
-    * Availability metric name config display name.
-    * @param displayNameValue The DisplayName value.
-    */
-    public void setDisplayName(final String displayNameValue)
-    {
+     * Availability metric name config display name.
+     * 
+     * @param displayNameValue
+     *            The DisplayName value.
+     */
+    public void setDisplayName(final String displayNameValue) {
         this.displayName = displayNameValue;
     }
-    
+
     private String name;
-    
+
     /**
-    * Availability metric name config name.
-    * @return The Name value.
-    */
-    public String getName()
-    {
+     * Availability metric name config name.
+     * 
+     * @return The Name value.
+     */
+    public String getName() {
         return this.name;
     }
-    
+
     /**
-    * Availability metric name config name.
-    * @param nameValue The Name value.
-    */
-    public void setName(final String nameValue)
-    {
+     * Availability metric name config name.
+     * 
+     * @param nameValue
+     *            The Name value.
+     */
+    public void setName(final String nameValue) {
         this.name = nameValue;
     }
 }
