@@ -72,9 +72,9 @@ public class AffinityGroupOperationsTests extends ManagementIntegrationTestBase 
         }
         catch (ServiceException e) {
             e.printStackTrace();
-        }  
+        }
     }
-    
+
     @Test
     public void createAffinityGroup() throws Exception {
         // Arrange
@@ -83,19 +83,21 @@ public class AffinityGroupOperationsTests extends ManagementIntegrationTestBase 
         createParameters.setLocation(affinityGroupLocation2);
         createParameters.setLabel(affinityGroupLabel2);
         createParameters.setDescription(affinityGroupDescription2);
-        
+  
         // Act
-        OperationResponse operationResponse = managementClient.getAffinityGroupsOperations().create(createParameters);
-        
+        OperationResponse operationResponse = managementClient
+                .getAffinityGroupsOperations().create(createParameters);
+
         // Assert
         Assert.assertEquals(201, operationResponse.getStatusCode());
         Assert.assertNotNull(operationResponse.getRequestId());
     }
-    
+
     @Test
     public void getAffinityGroups() throws Exception {
         // Act
-        AffinityGroupGetResponse affinityGroupResponse = managementClient.getAffinityGroupsOperations().get(affinityGroupName1);
+        AffinityGroupGetResponse affinityGroupResponse = managementClient
+                .getAffinityGroupsOperations().get(affinityGroupName1);
 
         // Assert
         Assert.assertEquals(200, affinityGroupResponse.getStatusCode());
