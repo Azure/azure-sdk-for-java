@@ -24,26 +24,23 @@
 package com.microsoft.windowsazure.management.virtualnetworks.models;
 
 /**
- * Parameters supplied to the Set Network Configuration operation.
- */
+* Parameters supplied to the Set Network Configuration operation.
+*/
 public class NetworkSetConfigurationParameters {
     private String configuration;
-
+    
     /**
-     * The network configuration for this subscription.
-     * 
-     * @return The Configuration value.
-     */
+    * The network configuration for this subscription.
+    * @return The Configuration value.
+    */
     public String getConfiguration() {
         return this.configuration;
     }
-
+    
     /**
-     * The network configuration for this subscription.
-     * 
-     * @param configurationValue
-     *            The Configuration value.
-     */
+    * The network configuration for this subscription.
+    * @param configurationValue The Configuration value.
+    */
     public void setConfiguration(final String configurationValue) {
         this.configuration = configurationValue;
     }

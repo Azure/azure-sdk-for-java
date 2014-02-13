@@ -24,14 +24,14 @@
 package com.microsoft.windowsazure.management.virtualnetworks.models;
 
 /**
- * Possible values for Gateway Profile.
- */
+* Possible values for Gateway Profile.
+*/
 public enum GatewayProfile {
     Small,
-
+    
     Medium,
-
+    
     Large,
-
+    
     ExtraLarge,
 }

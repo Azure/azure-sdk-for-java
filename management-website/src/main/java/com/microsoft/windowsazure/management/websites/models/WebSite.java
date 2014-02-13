@@ -30,962 +30,833 @@ import java.util.Calendar;
 import java.util.HashMap;
 
 /**
- * Describes a website.
- */
+* Describes a website.
+*/
 public class WebSite {
     private boolean adminEnabled;
-
+    
     /**
-     * Read-only. This value is always true.
-     * 
-     * @return The AdminEnabled value.
-     */
+    * Read-only. This value is always true.
+    * @return The AdminEnabled value.
+    */
     public boolean isAdminEnabled() {
         return this.adminEnabled;
     }
-
+    
     /**
-     * Read-only. This value is always true.
-     * 
-     * @param adminEnabledValue
-     *            The AdminEnabled value.
-     */
+    * Read-only. This value is always true.
+    * @param adminEnabledValue The AdminEnabled value.
+    */
     public void setAdminEnabled(final boolean adminEnabledValue) {
         this.adminEnabled = adminEnabledValue;
     }
-
+    
     private WebSpaceAvailabilityState availabilityState;
-
+    
     /**
-     * The state of the availability of management information for the site.
-     * Possible values are Normal or Limited. Normal means that the site is
-     * running correctly and that management information for the site is
-     * available. Limited means that only partial management information for the
-     * site is available and that detailed site information is unavailable.
-     * 
-     * @return The AvailabilityState value.
-     */
+    * The state of the availability of management information for the site.
+    * Possible values are Normal or Limited. Normal means that the site is
+    * running correctly and that management information for the site is
+    * available. Limited means that only partial management information for
+    * the site is available and that detailed site information is unavailable.
+    * @return The AvailabilityState value.
+    */
     public WebSpaceAvailabilityState getAvailabilityState() {
         return this.availabilityState;
     }
-
+    
     /**
-     * The state of the availability of management information for the site.
-     * Possible values are Normal or Limited. Normal means that the site is
-     * running correctly and that management information for the site is
-     * available. Limited means that only partial management information for the
-     * site is available and that detailed site information is unavailable.
-     * 
-     * @param availabilityStateValue
-     *            The AvailabilityState value.
-     */
-    public void setAvailabilityState(
-            final WebSpaceAvailabilityState availabilityStateValue) {
+    * The state of the availability of management information for the site.
+    * Possible values are Normal or Limited. Normal means that the site is
+    * running correctly and that management information for the site is
+    * available. Limited means that only partial management information for
+    * the site is available and that detailed site information is unavailable.
+    * @param availabilityStateValue The AvailabilityState value.
+    */
+    public void setAvailabilityState(final WebSpaceAvailabilityState availabilityStateValue) {
         this.availabilityState = availabilityStateValue;
     }
-
+    
     private WebSiteComputeMode computeMode;
-
+    
     /**
-     * The Compute Mode for the web site. Possible values are Shared or
-     * Dedicated.
-     * 
-     * @return The ComputeMode value.
-     */
+    * The Compute Mode for the web site. Possible values are Shared or
+    * Dedicated.
+    * @return The ComputeMode value.
+    */
     public WebSiteComputeMode getComputeMode() {
         return this.computeMode;
     }
-
+    
     /**
-     * The Compute Mode for the web site. Possible values are Shared or
-     * Dedicated.
-     * 
-     * @param computeModeValue
-     *            The ComputeMode value.
-     */
+    * The Compute Mode for the web site. Possible values are Shared or
+    * Dedicated.
+    * @param computeModeValue The ComputeMode value.
+    */
     public void setComputeMode(final WebSiteComputeMode computeModeValue) {
         this.computeMode = computeModeValue;
     }
-
+    
     private boolean enabled;
-
+    
     /**
-     * true if the site is enabled; otherwise, false. Setting this value to
-     * false disables the site (takes the site off line).
-     * 
-     * @return The Enabled value.
-     */
+    * true if the site is enabled; otherwise, false. Setting this value to
+    * false disables the site (takes the site off line).
+    * @return The Enabled value.
+    */
     public boolean isEnabled() {
         return this.enabled;
     }
-
+    
     /**
-     * true if the site is enabled; otherwise, false. Setting this value to
-     * false disables the site (takes the site off line).
-     * 
-     * @param enabledValue
-     *            The Enabled value.
-     */
+    * true if the site is enabled; otherwise, false. Setting this value to
+    * false disables the site (takes the site off line).
+    * @param enabledValue The Enabled value.
+    */
     public void setEnabled(final boolean enabledValue) {
         this.enabled = enabledValue;
     }
-
+    
     private ArrayList<String> enabledHostNames;
-
+    
     /**
-     * An array of strings that contains enabled hostnames for the site. By
-     * default, these are [SiteName].azurewebsites.net and
-     * [SiteName].scm.azurewebsites.net.
-     * 
-     * @return The EnabledHostNames value.
-     */
+    * An array of strings that contains enabled hostnames for the site. By
+    * default, these are [SiteName].azurewebsites.net and
+    * [SiteName].scm.azurewebsites.net.
+    * @return The EnabledHostNames value.
+    */
     public ArrayList<String> getEnabledHostNames() {
         return this.enabledHostNames;
     }
-
+    
     /**
-     * An array of strings that contains enabled hostnames for the site. By
-     * default, these are [SiteName].azurewebsites.net and
-     * [SiteName].scm.azurewebsites.net.
-     * 
-     * @param enabledHostNamesValue
-     *            The EnabledHostNames value.
-     */
-    public void setEnabledHostNames(
-            final ArrayList<String> enabledHostNamesValue) {
+    * An array of strings that contains enabled hostnames for the site. By
+    * default, these are [SiteName].azurewebsites.net and
+    * [SiteName].scm.azurewebsites.net.
+    * @param enabledHostNamesValue The EnabledHostNames value.
+    */
+    public void setEnabledHostNames(final ArrayList<String> enabledHostNamesValue) {
         this.enabledHostNames = enabledHostNamesValue;
     }
-
+    
     private ArrayList<String> hostNames;
-
+    
     /**
-     * An array of strings that contains the public hostnames for the site,
-     * including custom domains. Important: When you add a custom domain in a
-     * PUT operation, be sure to include every hostname that you want for the
-     * web site. To delete a custom domain name in a PUT operation, include all
-     * of the hostnames for the site that you want to keep, but leave out the
-     * one that you wangt to delete.
-     * 
-     * @return The HostNames value.
-     */
+    * An array of strings that contains the public hostnames for the site,
+    * including custom domains. Important: When you add a custom domain in a
+    * PUT operation, be sure to include every hostname that you want for the
+    * web site. To delete a custom domain name in a PUT operation, include all
+    * of the hostnames for the site that you want to keep, but leave out the
+    * one that you wangt to delete.
+    * @return The HostNames value.
+    */
     public ArrayList<String> getHostNames() {
         return this.hostNames;
     }
-
+    
     /**
-     * An array of strings that contains the public hostnames for the site,
-     * including custom domains. Important: When you add a custom domain in a
-     * PUT operation, be sure to include every hostname that you want for the
-     * web site. To delete a custom domain name in a PUT operation, include all
-     * of the hostnames for the site that you want to keep, but leave out the
-     * one that you wangt to delete.
-     * 
-     * @param hostNamesValue
-     *            The HostNames value.
-     */
+    * An array of strings that contains the public hostnames for the site,
+    * including custom domains. Important: When you add a custom domain in a
+    * PUT operation, be sure to include every hostname that you want for the
+    * web site. To delete a custom domain name in a PUT operation, include all
+    * of the hostnames for the site that you want to keep, but leave out the
+    * one that you wangt to delete.
+    * @param hostNamesValue The HostNames value.
+    */
     public void setHostNames(final ArrayList<String> hostNamesValue) {
         this.hostNames = hostNamesValue;
     }
-
+    
     private ArrayList<WebSite.WebSiteHostNameSslState> hostNameSslStates;
-
+    
     /**
-     * SSL states bound to the website.
-     * 
-     * @return The HostNameSslStates value.
-     */
+    * SSL states bound to the website.
+    * @return The HostNameSslStates value.
+    */
     public ArrayList<WebSite.WebSiteHostNameSslState> getHostNameSslStates() {
         return this.hostNameSslStates;
     }
-
+    
     /**
-     * SSL states bound to the website.
-     * 
-     * @param hostNameSslStatesValue
-     *            The HostNameSslStates value.
-     */
-    public void setHostNameSslStates(
-            final ArrayList<WebSite.WebSiteHostNameSslState> hostNameSslStatesValue) {
+    * SSL states bound to the website.
+    * @param hostNameSslStatesValue The HostNameSslStates value.
+    */
+    public void setHostNameSslStates(final ArrayList<WebSite.WebSiteHostNameSslState> hostNameSslStatesValue) {
         this.hostNameSslStates = hostNameSslStatesValue;
     }
-
+    
     private Calendar lastModifiedTimeUtc;
-
+    
     /**
-     * A dateTime value that contains, in Coordinated Universal Time, the last
-     * time the web site was modified.
-     * 
-     * @return The LastModifiedTimeUtc value.
-     */
+    * A dateTime value that contains, in Coordinated Universal Time, the last
+    * time the web site was modified.
+    * @return The LastModifiedTimeUtc value.
+    */
     public Calendar getLastModifiedTimeUtc() {
         return this.lastModifiedTimeUtc;
     }
-
+    
     /**
-     * A dateTime value that contains, in Coordinated Universal Time, the last
-     * time the web site was modified.
-     * 
-     * @param lastModifiedTimeUtcValue
-     *            The LastModifiedTimeUtc value.
-     */
+    * A dateTime value that contains, in Coordinated Universal Time, the last
+    * time the web site was modified.
+    * @param lastModifiedTimeUtcValue The LastModifiedTimeUtc value.
+    */
     public void setLastModifiedTimeUtc(final Calendar lastModifiedTimeUtcValue) {
         this.lastModifiedTimeUtc = lastModifiedTimeUtcValue;
     }
-
+    
     private String name;
-
+    
     /**
-     * The name of the web site.
-     * 
-     * @return The Name value.
-     */
+    * The name of the web site.
+    * @return The Name value.
+    */
     public String getName() {
         return this.name;
     }
-
+    
     /**
-     * The name of the web site.
-     * 
-     * @param nameValue
-     *            The Name value.
-     */
+    * The name of the web site.
+    * @param nameValue The Name value.
+    */
     public void setName(final String nameValue) {
         this.name = nameValue;
     }
-
+    
     private String owner;
-
+    
     /**
-     * Owner of the web site.
-     * 
-     * @return The Owner value.
-     */
+    * Owner of the web site.
+    * @return The Owner value.
+    */
     public String getOwner() {
         return this.owner;
     }
-
+    
     /**
-     * Owner of the web site.
-     * 
-     * @param ownerValue
-     *            The Owner value.
-     */
+    * Owner of the web site.
+    * @param ownerValue The Owner value.
+    */
     public void setOwner(final String ownerValue) {
         this.owner = ownerValue;
     }
-
+    
     private String repositorySiteName;
-
+    
     /**
-     * The name of the repository web site.
-     * 
-     * @return The RepositorySiteName value.
-     */
+    * The name of the repository web site.
+    * @return The RepositorySiteName value.
+    */
     public String getRepositorySiteName() {
         return this.repositorySiteName;
     }
-
+    
     /**
-     * The name of the repository web site.
-     * 
-     * @param repositorySiteNameValue
-     *            The RepositorySiteName value.
-     */
+    * The name of the repository web site.
+    * @param repositorySiteNameValue The RepositorySiteName value.
+    */
     public void setRepositorySiteName(final String repositorySiteNameValue) {
         this.repositorySiteName = repositorySiteNameValue;
     }
-
+    
     private WebSiteRuntimeAvailabilityState runtimeAvailabilityState;
-
+    
     /**
-     * Possible values are Normal, Degraded, or NotAvailable. Normal: the web
-     * site is running correctly. Degraded: the web site is running temporarily
-     * in a degraded mode (typically with less memory and a shared instance.)
-     * Not Available: due to an unexpected issue, the site has been excluded
-     * from provisioning. This typically occurs only for free sites.
-     * 
-     * @return The RuntimeAvailabilityState value.
-     */
+    * Possible values are Normal, Degraded, or NotAvailable. Normal: the web
+    * site is running correctly. Degraded: the web site is running temporarily
+    * in a degraded mode (typically with less memory and a shared instance.)
+    * Not Available: due to an unexpected issue, the site has been excluded
+    * from provisioning. This typically occurs only for free sites.
+    * @return The RuntimeAvailabilityState value.
+    */
     public WebSiteRuntimeAvailabilityState getRuntimeAvailabilityState() {
         return this.runtimeAvailabilityState;
     }
-
+    
     /**
-     * Possible values are Normal, Degraded, or NotAvailable. Normal: the web
-     * site is running correctly. Degraded: the web site is running temporarily
-     * in a degraded mode (typically with less memory and a shared instance.)
-     * Not Available: due to an unexpected issue, the site has been excluded
-     * from provisioning. This typically occurs only for free sites.
-     * 
-     * @param runtimeAvailabilityStateValue
-     *            The RuntimeAvailabilityState value.
-     */
-    public void setRuntimeAvailabilityState(
-            final WebSiteRuntimeAvailabilityState runtimeAvailabilityStateValue) {
+    * Possible values are Normal, Degraded, or NotAvailable. Normal: the web
+    * site is running correctly. Degraded: the web site is running temporarily
+    * in a degraded mode (typically with less memory and a shared instance.)
+    * Not Available: due to an unexpected issue, the site has been excluded
+    * from provisioning. This typically occurs only for free sites.
+    * @param runtimeAvailabilityStateValue The RuntimeAvailabilityState value.
+    */
+    public void setRuntimeAvailabilityState(final WebSiteRuntimeAvailabilityState runtimeAvailabilityStateValue) {
         this.runtimeAvailabilityState = runtimeAvailabilityStateValue;
     }
-
+    
     private String serverFarm;
-
+    
     /**
-     * String. If a server farm exists, this value is DefaultServerFarm.
-     * 
-     * @return The ServerFarm value.
-     */
+    * String. If a server farm exists, this value is DefaultServerFarm.
+    * @return The ServerFarm value.
+    */
     public String getServerFarm() {
         return this.serverFarm;
     }
-
+    
     /**
-     * String. If a server farm exists, this value is DefaultServerFarm.
-     * 
-     * @param serverFarmValue
-     *            The ServerFarm value.
-     */
+    * String. If a server farm exists, this value is DefaultServerFarm.
+    * @param serverFarmValue The ServerFarm value.
+    */
     public void setServerFarm(final String serverFarmValue) {
         this.serverFarm = serverFarmValue;
     }
-
+    
     private WebSiteMode siteMode;
-
+    
     /**
-     * String that represents the web site mode. If the web site mode is Free,
-     * this value is Limited. If the web site mode is Shared, this value is
-     * Basic. Note: The SiteMode value is not used for Reserved mode. Reserved
-     * mode uses the ComputeMode setting.
-     * 
-     * @return The SiteMode value.
-     */
+    * String that represents the web site mode. If the web site mode is Free,
+    * this value is Limited. If the web site mode is Shared, this value is
+    * Basic.  Note: The SiteMode value is not used for Reserved mode. Reserved
+    * mode uses the ComputeMode setting.
+    * @return The SiteMode value.
+    */
     public WebSiteMode getSiteMode() {
         return this.siteMode;
     }
-
+    
     /**
-     * String that represents the web site mode. If the web site mode is Free,
-     * this value is Limited. If the web site mode is Shared, this value is
-     * Basic. Note: The SiteMode value is not used for Reserved mode. Reserved
-     * mode uses the ComputeMode setting.
-     * 
-     * @param siteModeValue
-     *            The SiteMode value.
-     */
+    * String that represents the web site mode. If the web site mode is Free,
+    * this value is Limited. If the web site mode is Shared, this value is
+    * Basic.  Note: The SiteMode value is not used for Reserved mode. Reserved
+    * mode uses the ComputeMode setting.
+    * @param siteModeValue The SiteMode value.
+    */
     public void setSiteMode(final WebSiteMode siteModeValue) {
         this.siteMode = siteModeValue;
     }
-
+    
     private WebSite.WebSiteProperties siteProperties;
-
+    
     /**
-     * Contains AppSettings, Metadata, and Properties for a site.
-     * 
-     * @return The SiteProperties value.
-     */
+    * Contains AppSettings, Metadata, and Properties for a site.
+    * @return The SiteProperties value.
+    */
     public WebSite.WebSiteProperties getSiteProperties() {
         return this.siteProperties;
     }
-
+    
     /**
-     * Contains AppSettings, Metadata, and Properties for a site.
-     * 
-     * @param sitePropertiesValue
-     *            The SiteProperties value.
-     */
-    public void setSiteProperties(
-            final WebSite.WebSiteProperties sitePropertiesValue) {
+    * Contains AppSettings, Metadata, and Properties for a site.
+    * @param sitePropertiesValue The SiteProperties value.
+    */
+    public void setSiteProperties(final WebSite.WebSiteProperties sitePropertiesValue) {
         this.siteProperties = sitePropertiesValue;
     }
-
+    
     private ArrayList<WebSite.WebSiteSslCertificate> sslCertificates;
-
+    
     /**
-     * SSL certificates bound to the web site.
-     * 
-     * @return The SslCertificates value.
-     */
+    * SSL certificates bound to the web site.
+    * @return The SslCertificates value.
+    */
     public ArrayList<WebSite.WebSiteSslCertificate> getSslCertificates() {
         return this.sslCertificates;
     }
-
+    
     /**
-     * SSL certificates bound to the web site.
-     * 
-     * @param sslCertificatesValue
-     *            The SslCertificates value.
-     */
-    public void setSslCertificates(
-            final ArrayList<WebSite.WebSiteSslCertificate> sslCertificatesValue) {
+    * SSL certificates bound to the web site.
+    * @param sslCertificatesValue The SslCertificates value.
+    */
+    public void setSslCertificates(final ArrayList<WebSite.WebSiteSslCertificate> sslCertificatesValue) {
         this.sslCertificates = sslCertificatesValue;
     }
-
+    
     private String state;
-
+    
     /**
-     * A string that describes the state of the web site. Possible values are
-     * Stopped or Running.
-     * 
-     * @return The State value.
-     */
+    * A string that describes the state of the web site. Possible values are
+    * Stopped or Running.
+    * @return The State value.
+    */
     public String getState() {
         return this.state;
     }
-
+    
     /**
-     * A string that describes the state of the web site. Possible values are
-     * Stopped or Running.
-     * 
-     * @param stateValue
-     *            The State value.
-     */
+    * A string that describes the state of the web site. Possible values are
+    * Stopped or Running.
+    * @param stateValue The State value.
+    */
     public void setState(final String stateValue) {
         this.state = stateValue;
     }
-
+    
     private URI uri;
-
+    
     /**
-     * Direct URL to the web site endpoint on Windows Azure Web Sites, including
-     * the subscription ID, webspace name, and site name.
-     * 
-     * @return The Uri value.
-     */
+    * Direct URL to the web site endpoint on Windows Azure Web Sites, including
+    * the subscription ID, webspace name, and site name.
+    * @return The Uri value.
+    */
     public URI getUri() {
         return this.uri;
     }
-
+    
     /**
-     * Direct URL to the web site endpoint on Windows Azure Web Sites, including
-     * the subscription ID, webspace name, and site name.
-     * 
-     * @param uriValue
-     *            The Uri value.
-     */
+    * Direct URL to the web site endpoint on Windows Azure Web Sites, including
+    * the subscription ID, webspace name, and site name.
+    * @param uriValue The Uri value.
+    */
     public void setUri(final URI uriValue) {
         this.uri = uriValue;
     }
-
+    
     private WebSiteUsageState usageState;
-
+    
     /**
-     * Possible values are Normal or Exceeded. If any quota is exceeded, the
-     * UsageState value changes to Exceeded and the site goes off line.
-     * 
-     * @return The UsageState value.
-     */
+    * Possible values are Normal or Exceeded. If any quota is exceeded, the
+    * UsageState value changes to Exceeded and the site goes off line.
+    * @return The UsageState value.
+    */
     public WebSiteUsageState getUsageState() {
         return this.usageState;
     }
-
+    
     /**
-     * Possible values are Normal or Exceeded. If any quota is exceeded, the
-     * UsageState value changes to Exceeded and the site goes off line.
-     * 
-     * @param usageStateValue
-     *            The UsageState value.
-     */
+    * Possible values are Normal or Exceeded. If any quota is exceeded, the
+    * UsageState value changes to Exceeded and the site goes off line.
+    * @param usageStateValue The UsageState value.
+    */
     public void setUsageState(final WebSiteUsageState usageStateValue) {
         this.usageState = usageStateValue;
     }
-
+    
     private String webSpace;
-
+    
     /**
-     * The name of the webspace in which the web site is located. This property
-     * is read-only.
-     * 
-     * @return The WebSpace value.
-     */
+    * The name of the webspace in which the web site is located. This property
+    * is read-only.
+    * @return The WebSpace value.
+    */
     public String getWebSpace() {
         return this.webSpace;
     }
-
+    
     /**
-     * The name of the webspace in which the web site is located. This property
-     * is read-only.
-     * 
-     * @param webSpaceValue
-     *            The WebSpace value.
-     */
+    * The name of the webspace in which the web site is located. This property
+    * is read-only.
+    * @param webSpaceValue The WebSpace value.
+    */
     public void setWebSpace(final String webSpaceValue) {
         this.webSpace = webSpaceValue;
     }
-
+    
     /**
-     * Initializes a new instance of the WebSite class.
-     * 
-     */
+    * Initializes a new instance of the WebSite class.
+    *
+    */
     public WebSite() {
         this.enabledHostNames = new ArrayList<String>();
         this.hostNames = new ArrayList<String>();
         this.hostNameSslStates = new ArrayList<WebSite.WebSiteHostNameSslState>();
         this.sslCertificates = new ArrayList<WebSite.WebSiteSslCertificate>();
     }
-
+    
     /**
-     * SSL states bound to a website.
-     */
+    * SSL states bound to a website.
+    */
     public static class WebSiteHostNameSslState {
         private String name;
-
+        
         /**
-         * The URL of the web site.
-         * 
-         * @return The Name value.
-         */
+        * The URL of the web site.
+        * @return The Name value.
+        */
         public String getName() {
             return this.name;
         }
-
+        
         /**
-         * The URL of the web site.
-         * 
-         * @param nameValue
-         *            The Name value.
-         */
+        * The URL of the web site.
+        * @param nameValue The Name value.
+        */
         public void setName(final String nameValue) {
             this.name = nameValue;
         }
-
+        
         private WebSiteSslState sslState;
-
+        
         /**
-         * The SSL state. Possible values are Disabled, SniEnabled, or
-         * IpBasedEnabled.
-         * 
-         * @return The SslState value.
-         */
+        * The SSL state. Possible values are Disabled, SniEnabled, or
+        * IpBasedEnabled.
+        * @return The SslState value.
+        */
         public WebSiteSslState getSslState() {
             return this.sslState;
         }
-
+        
         /**
-         * The SSL state. Possible values are Disabled, SniEnabled, or
-         * IpBasedEnabled.
-         * 
-         * @param sslStateValue
-         *            The SslState value.
-         */
+        * The SSL state. Possible values are Disabled, SniEnabled, or
+        * IpBasedEnabled.
+        * @param sslStateValue The SslState value.
+        */
         public void setSslState(final WebSiteSslState sslStateValue) {
             this.sslState = sslStateValue;
         }
-
+        
         private String thumbprint;
-
+        
         /**
-         * A string that contains the thumbprint of the SSL certificate.
-         * 
-         * @return The Thumbprint value.
-         */
+        * A string that contains the thumbprint of the SSL certificate.
+        * @return The Thumbprint value.
+        */
         public String getThumbprint() {
             return this.thumbprint;
         }
-
+        
         /**
-         * A string that contains the thumbprint of the SSL certificate.
-         * 
-         * @param thumbprintValue
-         *            The Thumbprint value.
-         */
+        * A string that contains the thumbprint of the SSL certificate.
+        * @param thumbprintValue The Thumbprint value.
+        */
         public void setThumbprint(final String thumbprintValue) {
             this.thumbprint = thumbprintValue;
         }
-
+        
         private InetAddress virtualIP;
-
+        
         /**
-         * String. The IP address assigned to the hostname if the hostname uses
-         * IP SSL.
-         * 
-         * @return The VirtualIP value.
-         */
+        * String. The IP address assigned to the hostname if the hostname uses
+        * IP SSL.
+        * @return The VirtualIP value.
+        */
         public InetAddress getVirtualIP() {
             return this.virtualIP;
         }
-
+        
         /**
-         * String. The IP address assigned to the hostname if the hostname uses
-         * IP SSL.
-         * 
-         * @param virtualIPValue
-         *            The VirtualIP value.
-         */
+        * String. The IP address assigned to the hostname if the hostname uses
+        * IP SSL.
+        * @param virtualIPValue The VirtualIP value.
+        */
         public void setVirtualIP(final InetAddress virtualIPValue) {
             this.virtualIP = virtualIPValue;
         }
     }
-
+    
     public static class WebSiteProperties {
         private HashMap<String, String> appSettings;
-
+        
         /**
-         * A set of name/value pairs that contain application settings for a
-         * site.
-         * 
-         * @return The AppSettings value.
-         */
+        * A set of name/value pairs that contain application settings for a
+        * site.
+        * @return The AppSettings value.
+        */
         public HashMap<String, String> getAppSettings() {
             return this.appSettings;
         }
-
+        
         /**
-         * A set of name/value pairs that contain application settings for a
-         * site.
-         * 
-         * @param appSettingsValue
-         *            The AppSettings value.
-         */
-        public void setAppSettings(
-                final HashMap<String, String> appSettingsValue) {
+        * A set of name/value pairs that contain application settings for a
+        * site.
+        * @param appSettingsValue The AppSettings value.
+        */
+        public void setAppSettings(final HashMap<String, String> appSettingsValue) {
             this.appSettings = appSettingsValue;
         }
-
+        
         private HashMap<String, String> metadata;
-
+        
         /**
-         * A set of name/value pairs that contain metadata information for a
-         * site.
-         * 
-         * @return The Metadata value.
-         */
+        * A set of name/value pairs that contain metadata information for a
+        * site.
+        * @return The Metadata value.
+        */
         public HashMap<String, String> getMetadata() {
             return this.metadata;
         }
-
+        
         /**
-         * A set of name/value pairs that contain metadata information for a
-         * site.
-         * 
-         * @param metadataValue
-         *            The Metadata value.
-         */
+        * A set of name/value pairs that contain metadata information for a
+        * site.
+        * @param metadataValue The Metadata value.
+        */
         public void setMetadata(final HashMap<String, String> metadataValue) {
             this.metadata = metadataValue;
         }
-
+        
         private HashMap<String, String> properties;
-
+        
         /**
-         * A set of name/value pairs that contain properties for a site.
-         * 
-         * @return The Properties value.
-         */
+        * A set of name/value pairs that contain properties for a site.
+        * @return The Properties value.
+        */
         public HashMap<String, String> getProperties() {
             return this.properties;
         }
-
+        
         /**
-         * A set of name/value pairs that contain properties for a site.
-         * 
-         * @param propertiesValue
-         *            The Properties value.
-         */
+        * A set of name/value pairs that contain properties for a site.
+        * @param propertiesValue The Properties value.
+        */
         public void setProperties(final HashMap<String, String> propertiesValue) {
             this.properties = propertiesValue;
         }
-
+        
         /**
-         * Initializes a new instance of the WebSiteProperties class.
-         * 
-         */
+        * Initializes a new instance of the WebSiteProperties class.
+        *
+        */
         public WebSiteProperties() {
             this.appSettings = new HashMap<String, String>();
             this.metadata = new HashMap<String, String>();
             this.properties = new HashMap<String, String>();
         }
     }
-
+    
     /**
-     * Contains SSL certificate properties.
-     */
+    * Contains SSL certificate properties.
+    */
     public static class WebSiteSslCertificate {
         private Calendar expirationDate;
-
+        
         /**
-         * A dateTime value that contains the expiration date of the
-         * certificate.
-         * 
-         * @return The ExpirationDate value.
-         */
+        * A dateTime value that contains the expiration date of the certificate.
+        * @return The ExpirationDate value.
+        */
         public Calendar getExpirationDate() {
             return this.expirationDate;
         }
-
+        
         /**
-         * A dateTime value that contains the expiration date of the
-         * certificate.
-         * 
-         * @param expirationDateValue
-         *            The ExpirationDate value.
-         */
+        * A dateTime value that contains the expiration date of the certificate.
+        * @param expirationDateValue The ExpirationDate value.
+        */
         public void setExpirationDate(final Calendar expirationDateValue) {
             this.expirationDate = expirationDateValue;
         }
-
+        
         private String friendlyName;
-
+        
         /**
-         * A string that contains the friendly name of the certificate.
-         * 
-         * @return The FriendlyName value.
-         */
+        * A string that contains the friendly name of the certificate.
+        * @return The FriendlyName value.
+        */
         public String getFriendlyName() {
             return this.friendlyName;
         }
-
+        
         /**
-         * A string that contains the friendly name of the certificate.
-         * 
-         * @param friendlyNameValue
-         *            The FriendlyName value.
-         */
+        * A string that contains the friendly name of the certificate.
+        * @param friendlyNameValue The FriendlyName value.
+        */
         public void setFriendlyName(final String friendlyNameValue) {
             this.friendlyName = friendlyNameValue;
         }
-
+        
         private ArrayList<String> hostNames;
-
+        
         /**
-         * An array of strings that contain the hostnames to which the
-         * certificate is bound.
-         * 
-         * @return The HostNames value.
-         */
+        * An array of strings that contain the hostnames to which the
+        * certificate is bound.
+        * @return The HostNames value.
+        */
         public ArrayList<String> getHostNames() {
             return this.hostNames;
         }
-
+        
         /**
-         * An array of strings that contain the hostnames to which the
-         * certificate is bound.
-         * 
-         * @param hostNamesValue
-         *            The HostNames value.
-         */
+        * An array of strings that contain the hostnames to which the
+        * certificate is bound.
+        * @param hostNamesValue The HostNames value.
+        */
         public void setHostNames(final ArrayList<String> hostNamesValue) {
             this.hostNames = hostNamesValue;
         }
-
+        
         private Calendar issueDate;
-
+        
         /**
-         * A dateTime value that contains the date that the certificate was
-         * issued.
-         * 
-         * @return The IssueDate value.
-         */
+        * A dateTime value that contains the date that the certificate was
+        * issued.
+        * @return The IssueDate value.
+        */
         public Calendar getIssueDate() {
             return this.issueDate;
         }
-
+        
         /**
-         * A dateTime value that contains the date that the certificate was
-         * issued.
-         * 
-         * @param issueDateValue
-         *            The IssueDate value.
-         */
+        * A dateTime value that contains the date that the certificate was
+        * issued.
+        * @param issueDateValue The IssueDate value.
+        */
         public void setIssueDate(final Calendar issueDateValue) {
             this.issueDate = issueDateValue;
         }
-
+        
         private String issuer;
-
+        
         /**
-         * A string that identifies the issuer of the certificate.
-         * 
-         * @return The Issuer value.
-         */
+        * A string that identifies the issuer of the certificate.
+        * @return The Issuer value.
+        */
         public String getIssuer() {
             return this.issuer;
         }
-
+        
         /**
-         * A string that identifies the issuer of the certificate.
-         * 
-         * @param issuerValue
-         *            The Issuer value.
-         */
+        * A string that identifies the issuer of the certificate.
+        * @param issuerValue The Issuer value.
+        */
         public void setIssuer(final String issuerValue) {
             this.issuer = issuerValue;
         }
-
+        
         private Boolean isToBeDeleted;
-
+        
         /**
-         * Boolean. true if the certificate is to be deleted.
-         * 
-         * @return The IsToBeDeleted value.
-         */
+        * Boolean. true if the certificate is to be deleted.
+        * @return The IsToBeDeleted value.
+        */
         public Boolean isToBeDeleted() {
             return this.isToBeDeleted;
         }
-
+        
         /**
-         * Boolean. true if the certificate is to be deleted.
-         * 
-         * @param isToBeDeletedValue
-         *            The IsToBeDeleted value.
-         */
+        * Boolean. true if the certificate is to be deleted.
+        * @param isToBeDeletedValue The IsToBeDeleted value.
+        */
         public void setIsToBeDeleted(final Boolean isToBeDeletedValue) {
             this.isToBeDeleted = isToBeDeletedValue;
         }
-
+        
         private Boolean isValid;
-
+        
         /**
-         * Boolean. true if the certificate is valid; otherwise, false.
-         * 
-         * @return The IsValid value.
-         */
+        * Boolean. true if the certificate is valid; otherwise, false.
+        * @return The IsValid value.
+        */
         public Boolean isValid() {
             return this.isValid;
         }
-
+        
         /**
-         * Boolean. true if the certificate is valid; otherwise, false.
-         * 
-         * @param isValidValue
-         *            The IsValid value.
-         */
+        * Boolean. true if the certificate is valid; otherwise, false.
+        * @param isValidValue The IsValid value.
+        */
         public void setIsValid(final Boolean isValidValue) {
             this.isValid = isValidValue;
         }
-
+        
         private String password;
-
+        
         /**
-         * A string that contains the password for the certificate.
-         * 
-         * @return The Password value.
-         */
+        * A string that contains the password for the certificate.
+        * @return The Password value.
+        */
         public String getPassword() {
             return this.password;
         }
-
+        
         /**
-         * A string that contains the password for the certificate.
-         * 
-         * @param passwordValue
-         *            The Password value.
-         */
+        * A string that contains the password for the certificate.
+        * @param passwordValue The Password value.
+        */
         public void setPassword(final String passwordValue) {
             this.password = passwordValue;
         }
-
+        
         private byte[] pfxBlob;
-
+        
         /**
-         * A base64Binary value that contains the PfxBlob of the certificate.
-         * 
-         * @return The PfxBlob value.
-         */
+        * A base64Binary value that contains the PfxBlob of the certificate.
+        * @return The PfxBlob value.
+        */
         public byte[] getPfxBlob() {
             return this.pfxBlob;
         }
-
+        
         /**
-         * A base64Binary value that contains the PfxBlob of the certificate.
-         * 
-         * @param pfxBlobValue
-         *            The PfxBlob value.
-         */
+        * A base64Binary value that contains the PfxBlob of the certificate.
+        * @param pfxBlobValue The PfxBlob value.
+        */
         public void setPfxBlob(final byte[] pfxBlobValue) {
             this.pfxBlob = pfxBlobValue;
         }
-
+        
         private URI selfLinkUri;
-
+        
         /**
-         * An anyURI value that contains the endpoint of the site to which the
-         * certificate is bound.
-         * 
-         * @return The SelfLinkUri value.
-         */
+        * An anyURI value that contains the endpoint of the site to which the
+        * certificate is bound.
+        * @return The SelfLinkUri value.
+        */
         public URI getSelfLinkUri() {
             return this.selfLinkUri;
         }
-
+        
         /**
-         * An anyURI value that contains the endpoint of the site to which the
-         * certificate is bound.
-         * 
-         * @param selfLinkUriValue
-         *            The SelfLinkUri value.
-         */
+        * An anyURI value that contains the endpoint of the site to which the
+        * certificate is bound.
+        * @param selfLinkUriValue The SelfLinkUri value.
+        */
         public void setSelfLinkUri(final URI selfLinkUriValue) {
             this.selfLinkUri = selfLinkUriValue;
         }
-
+        
         private String siteName;
-
+        
         /**
-         * A string that contains the name of the site to which the certificate
-         * is bound.
-         * 
-         * @return The SiteName value.
-         */
+        * A string that contains the name of the site to which the certificate
+        * is bound.
+        * @return The SiteName value.
+        */
         public String getSiteName() {
             return this.siteName;
         }
-
+        
         /**
-         * A string that contains the name of the site to which the certificate
-         * is bound.
-         * 
-         * @param siteNameValue
-         *            The SiteName value.
-         */
+        * A string that contains the name of the site to which the certificate
+        * is bound.
+        * @param siteNameValue The SiteName value.
+        */
         public void setSiteName(final String siteNameValue) {
             this.siteName = siteNameValue;
         }
-
+        
         private String subjectName;
-
+        
         /**
-         * A string that contains the name of the entity to whom the certificate
-         * was issued.
-         * 
-         * @return The SubjectName value.
-         */
+        * A string that contains the name of the entity to whom the certificate
+        * was issued.
+        * @return The SubjectName value.
+        */
         public String getSubjectName() {
             return this.subjectName;
         }
-
+        
         /**
-         * A string that contains the name of the entity to whom the certificate
-         * was issued.
-         * 
-         * @param subjectNameValue
-         *            The SubjectName value.
-         */
+        * A string that contains the name of the entity to whom the certificate
+        * was issued.
+        * @param subjectNameValue The SubjectName value.
+        */
         public void setSubjectName(final String subjectNameValue) {
             this.subjectName = subjectNameValue;
         }
-
+        
         private String thumbprint;
-
+        
         /**
-         * A string that contains the certificate thumbprint.
-         * 
-         * @return The Thumbprint value.
-         */
+        * A string that contains the certificate thumbprint.
+        * @return The Thumbprint value.
+        */
         public String getThumbprint() {
             return this.thumbprint;
         }
-
+        
         /**
-         * A string that contains the certificate thumbprint.
-         * 
-         * @param thumbprintValue
-         *            The Thumbprint value.
-         */
+        * A string that contains the certificate thumbprint.
+        * @param thumbprintValue The Thumbprint value.
+        */
         public void setThumbprint(final String thumbprintValue) {
             this.thumbprint = thumbprintValue;
         }
-
+        
         /**
-         * Initializes a new instance of the WebSiteSslCertificate class.
-         * 
-         */
+        * Initializes a new instance of the WebSiteSslCertificate class.
+        *
+        */
         public WebSiteSslCertificate() {
             this.hostNames = new ArrayList<String>();
         }

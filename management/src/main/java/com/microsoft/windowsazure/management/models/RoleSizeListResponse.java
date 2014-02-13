@@ -28,178 +28,155 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
- * The List Role Sizes operation response.
- */
-public class RoleSizeListResponse extends OperationResponse implements
-        Iterable<RoleSizeListResponse.RoleSize> {
+* The List Role Sizes operation response.
+*/
+public class RoleSizeListResponse extends OperationResponse implements Iterable<RoleSizeListResponse.RoleSize> {
     private ArrayList<RoleSizeListResponse.RoleSize> roleSizes;
-
+    
     /**
-     * The role sizes that are valid for your subscription.
-     * 
-     * @return The RoleSizes value.
-     */
+    * The role sizes that are valid for your subscription.
+    * @return The RoleSizes value.
+    */
     public ArrayList<RoleSizeListResponse.RoleSize> getRoleSizes() {
         return this.roleSizes;
     }
-
+    
     /**
-     * The role sizes that are valid for your subscription.
-     * 
-     * @param roleSizesValue
-     *            The RoleSizes value.
-     */
-    public void setRoleSizes(
-            final ArrayList<RoleSizeListResponse.RoleSize> roleSizesValue) {
+    * The role sizes that are valid for your subscription.
+    * @param roleSizesValue The RoleSizes value.
+    */
+    public void setRoleSizes(final ArrayList<RoleSizeListResponse.RoleSize> roleSizesValue) {
         this.roleSizes = roleSizesValue;
     }
-
+    
     /**
-     * Initializes a new instance of the RoleSizeListResponse class.
-     * 
-     */
+    * Initializes a new instance of the RoleSizeListResponse class.
+    *
+    */
     public RoleSizeListResponse() {
         super();
         this.roleSizes = new ArrayList<RoleSizeListResponse.RoleSize>();
     }
-
+    
     /**
-     * Gets the sequence of RoleSizes.
-     * 
-     */
+    * Gets the sequence of RoleSizes.
+    *
+    */
     public Iterator<RoleSizeListResponse.RoleSize> iterator() {
         return this.getRoleSizes().iterator();
     }
-
+    
     /**
-     * A role size that is valid for your subscription.
-     */
+    * A role size that is valid for your subscription.
+    */
     public static class RoleSize {
         private int cores;
-
+        
         /**
-         * Number of cores available for the role size.
-         * 
-         * @return The Cores value.
-         */
+        * Number of cores available for the role size.
+        * @return The Cores value.
+        */
         public int getCores() {
             return this.cores;
         }
-
+        
         /**
-         * Number of cores available for the role size.
-         * 
-         * @param coresValue
-         *            The Cores value.
-         */
+        * Number of cores available for the role size.
+        * @param coresValue The Cores value.
+        */
         public void setCores(final int coresValue) {
             this.cores = coresValue;
         }
-
+        
         private String label;
-
+        
         /**
-         * Localized label of the role size.
-         * 
-         * @return The Label value.
-         */
+        * Localized label of the role size.
+        * @return The Label value.
+        */
         public String getLabel() {
             return this.label;
         }
-
+        
         /**
-         * Localized label of the role size.
-         * 
-         * @param labelValue
-         *            The Label value.
-         */
+        * Localized label of the role size.
+        * @param labelValue The Label value.
+        */
         public void setLabel(final String labelValue) {
             this.label = labelValue;
         }
-
+        
         private int memoryInMb;
-
+        
         /**
-         * Memory available for the role size.
-         * 
-         * @return The MemoryInMb value.
-         */
+        * Memory available for the role size.
+        * @return The MemoryInMb value.
+        */
         public int getMemoryInMb() {
             return this.memoryInMb;
         }
-
+        
         /**
-         * Memory available for the role size.
-         * 
-         * @param memoryInMbValue
-         *            The MemoryInMb value.
-         */
+        * Memory available for the role size.
+        * @param memoryInMbValue The MemoryInMb value.
+        */
         public void setMemoryInMb(final int memoryInMbValue) {
             this.memoryInMb = memoryInMbValue;
         }
-
+        
         private String name;
-
+        
         /**
-         * The name of a role size that is valid for your subscription.
-         * 
-         * @return The Name value.
-         */
+        * The name of a role size that is valid for your subscription.
+        * @return The Name value.
+        */
         public String getName() {
             return this.name;
         }
-
+        
         /**
-         * The name of a role size that is valid for your subscription.
-         * 
-         * @param nameValue
-         *            The Name value.
-         */
+        * The name of a role size that is valid for your subscription.
+        * @param nameValue The Name value.
+        */
         public void setName(final String nameValue) {
             this.name = nameValue;
         }
-
+        
         private boolean supportedByVirtualMachines;
-
+        
         /**
-         * Indicating if the role size is supported by VMs.
-         * 
-         * @return The SupportedByVirtualMachines value.
-         */
+        * Indicating if the role size is supported by VMs.
+        * @return The SupportedByVirtualMachines value.
+        */
         public boolean isSupportedByVirtualMachines() {
             return this.supportedByVirtualMachines;
         }
-
+        
         /**
-         * Indicating if the role size is supported by VMs.
-         * 
-         * @param supportedByVirtualMachinesValue
-         *            The SupportedByVirtualMachines value.
-         */
-        public void setSupportedByVirtualMachines(
-                final boolean supportedByVirtualMachinesValue) {
+        * Indicating if the role size is supported by VMs.
+        * @param supportedByVirtualMachinesValue The SupportedByVirtualMachines
+        * value.
+        */
+        public void setSupportedByVirtualMachines(final boolean supportedByVirtualMachinesValue) {
             this.supportedByVirtualMachines = supportedByVirtualMachinesValue;
         }
-
+        
         private boolean supportedByWebWorkerRoles;
-
+        
         /**
-         * Indicating if the role size is supported by web/worker roles.
-         * 
-         * @return The SupportedByWebWorkerRoles value.
-         */
+        * Indicating if the role size is supported by web/worker roles.
+        * @return The SupportedByWebWorkerRoles value.
+        */
         public boolean isSupportedByWebWorkerRoles() {
             return this.supportedByWebWorkerRoles;
         }
-
+        
         /**
-         * Indicating if the role size is supported by web/worker roles.
-         * 
-         * @param supportedByWebWorkerRolesValue
-         *            The SupportedByWebWorkerRoles value.
-         */
-        public void setSupportedByWebWorkerRoles(
-                final boolean supportedByWebWorkerRolesValue) {
+        * Indicating if the role size is supported by web/worker roles.
+        * @param supportedByWebWorkerRolesValue The SupportedByWebWorkerRoles
+        * value.
+        */
+        public void setSupportedByWebWorkerRoles(final boolean supportedByWebWorkerRolesValue) {
             this.supportedByWebWorkerRoles = supportedByWebWorkerRolesValue;
         }
     }

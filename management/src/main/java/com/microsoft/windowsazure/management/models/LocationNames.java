@@ -24,24 +24,24 @@
 package com.microsoft.windowsazure.management.models;
 
 /**
- * Known location names for Windows Azure. You can obtain a complete list of the
- * latest locations available to your subscription from the List Locations
- * Operation.
- */
+* Known location names for Windows Azure.  You can obtain a complete list of
+* the latest locations available to your subscription from the List Locations
+* Operation.
+*/
 public class LocationNames {
     public static final String WestEurope = "West Europe";
-
+    
     public static final String SoutheastAsia = "Southeast Asia";
-
+    
     public static final String EastAsia = "East Asia";
-
+    
     public static final String NorthCentralUS = "North Central US";
-
+    
     public static final String NorthEurope = "North Europe";
-
+    
     public static final String SouthCentralUS = "South Central US";
-
+    
     public static final String WestUS = "West US";
-
+    
     public static final String EastUS = "East US";
 }

@@ -24,84 +24,84 @@
 package com.microsoft.windowsazure.management.models;
 
 /**
- * The name of a subscription operation.
- */
+* The name of a subscription operation.
+*/
 public class SubscriptionOperationNames {
     public static final String ActivateDomainName = "ActivateDomainName";
-
+    
     public static final String AddCertificates = "AddCertificates";
-
+    
     public static final String AddSubscriptionCertificate = "AddSubscriptionCertificate";
-
+    
     public static final String ChangeDeploymentConfiguration = "ChangeDeploymentConfiguration";
-
+    
     public static final String ChangeDeploymentConfigurationBySlot = "ChangeDeploymentConfigurationBySlot";
-
+    
     public static final String CommitImageUpload = "CommitImageUpload";
-
+    
     public static final String CreateAffinityGroup = "CreateAffinityGroup";
-
+    
     public static final String CreateDeployment = "CreateDeployment";
-
+    
     public static final String CreateDeploymentBySlot = "CreateDeploymentBySlot";
-
+    
     public static final String CreateHostedService = "CreateHostedService";
-
+    
     public static final String CreateStorageService = "CreateStorageService";
-
+    
     public static final String DeleteAffinityGroup = "DeleteAffinityGroup";
-
+    
     public static final String DeleteCertificate = "DeleteCertificate";
-
+    
     public static final String DeleteDeployment = "DeleteDeployment";
-
+    
     public static final String DeleteHostedService = "DeleteHostedService";
-
+    
     public static final String DeleteImage = "DeleteImage";
-
+    
     public static final String DeleteStorageService = "DeleteStorageService";
-
+    
     public static final String PrepareImageUpload = "PrepareImageUpload";
-
+    
     public static final String RebootDeploymentRoleInstance = "RebootDeploymentRoleInstance";
-
+    
     public static final String RebootDeploymentRoleInstanceBySlot = "RebootDeploymentRoleInstanceBySlot";
-
+    
     public static final String ReimageDeploymentRoleInstance = "ReimageDeploymentRoleInstance";
-
+    
     public static final String ReimageDeploymentRoleInstanceBySlot = "ReimageDeploymentRoleInstanceBySlot";
-
+    
     public static final String RegenerateStorageServiceKeys = "RegenerateStorageServiceKeys";
-
+    
     public static final String RegisterDomainName = "RegisterDomainName";
-
+    
     public static final String RemoveSubscriptionCertificate = "RemoveSubscriptionCertificate";
-
+    
     public static final String RollbackDeploymentUpdateOrUpgrade = "RollbackDeploymentUpdateOrUpgrade";
-
+    
     public static final String SetImageProperties = "SetImageProperties";
-
+    
     public static final String SetParentImage = "SetParentImage";
-
+    
     public static final String SwapDeployment = "SwapDeployment";
-
+    
     public static final String UnregisterDomainName = "UnregisterDomainName";
-
+    
     public static final String UpdateAffinityGroup = "UpdateAffinityGroup";
-
+    
     public static final String UpdateDeploymentStatus = "UpdateDeploymentStatus";
-
+    
     public static final String UpdateDeploymentStatusBySlot = "UpdateDeploymentStatusBySlot";
-
+    
     public static final String UpdateHostedService = "UpdateHostedService";
-
+    
     public static final String UpdateStorageService = "UpdateStorageService";
-
+    
     public static final String UpgradeDeployment = "UpgradeDeployment";
-
+    
     public static final String UpgradeDeploymentBySlot = "UpgradeDeploymentBySlot";
-
+    
     public static final String WalkUpgradeDomain = "WalkUpgradeDomain";
-
+    
     public static final String WalkUpgradeDomainBySlot = "WalkUpgradeDomainBySlot";
 }

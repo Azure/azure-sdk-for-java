@@ -24,26 +24,23 @@
 package com.microsoft.windowsazure.management.virtualnetworks.models;
 
 /**
- * The length of shared key to generate.
- */
+* The length of shared key to generate.
+*/
 public class GatewayResetSharedKeyParameters {
     private int keyLength;
-
+    
     /**
-     * The number of bytes in the shared key. Minimum is 1 and maximum is 128
-     * 
-     * @return The KeyLength value.
-     */
+    * The number of bytes in the shared key.  Minimum is 1 and maximum is 128
+    * @return The KeyLength value.
+    */
     public int getKeyLength() {
         return this.keyLength;
     }
-
+    
     /**
-     * The number of bytes in the shared key. Minimum is 1 and maximum is 128
-     * 
-     * @param keyLengthValue
-     *            The KeyLength value.
-     */
+    * The number of bytes in the shared key.  Minimum is 1 and maximum is 128
+    * @param keyLengthValue The KeyLength value.
+    */
     public void setKeyLength(final int keyLengthValue) {
         this.keyLength = keyLengthValue;
     }

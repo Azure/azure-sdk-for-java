@@ -29,532 +29,460 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 /**
- * The response structure for the Cloud Service List operation.
- */
-public class CloudServiceListResponse extends OperationResponse implements
-        Iterable<CloudServiceListResponse.CloudService> {
+* The response structure for the Cloud Service List operation.
+*/
+public class CloudServiceListResponse extends OperationResponse implements Iterable<CloudServiceListResponse.CloudService> {
     private ArrayList<CloudServiceListResponse.CloudService> cloudServices;
-
+    
     /**
-     * The list of cloud service locations for this subscription.
-     * 
-     * @return The CloudServices value.
-     */
+    * The list of cloud service locations for this subscription.
+    * @return The CloudServices value.
+    */
     public ArrayList<CloudServiceListResponse.CloudService> getCloudServices() {
         return this.cloudServices;
     }
-
+    
     /**
-     * The list of cloud service locations for this subscription.
-     * 
-     * @param cloudServicesValue
-     *            The CloudServices value.
-     */
-    public void setCloudServices(
-            final ArrayList<CloudServiceListResponse.CloudService> cloudServicesValue) {
+    * The list of cloud service locations for this subscription.
+    * @param cloudServicesValue The CloudServices value.
+    */
+    public void setCloudServices(final ArrayList<CloudServiceListResponse.CloudService> cloudServicesValue) {
         this.cloudServices = cloudServicesValue;
     }
-
+    
     /**
-     * Initializes a new instance of the CloudServiceListResponse class.
-     * 
-     */
+    * Initializes a new instance of the CloudServiceListResponse class.
+    *
+    */
     public CloudServiceListResponse() {
         super();
         this.cloudServices = new ArrayList<CloudServiceListResponse.CloudService>();
     }
-
+    
     /**
-     * Gets the sequence of CloudServices.
-     * 
-     */
+    * Gets the sequence of CloudServices.
+    *
+    */
     public Iterator<CloudServiceListResponse.CloudService> iterator() {
         return this.getCloudServices().iterator();
     }
-
+    
     /**
-     * Defines a cloud service-supporting region in which a storm item is
-     * located.
-     */
+    * Defines a cloud service-supporting region in which a storm item is
+    * located.
+    */
     public static class CloudService {
         private String description;
-
+        
         /**
-         * The description of the cloud service region.
-         * 
-         * @return The Description value.
-         */
+        * The description of the cloud service region.
+        * @return The Description value.
+        */
         public String getDescription() {
             return this.description;
         }
-
+        
         /**
-         * The description of the cloud service region.
-         * 
-         * @param descriptionValue
-         *            The Description value.
-         */
+        * The description of the cloud service region.
+        * @param descriptionValue The Description value.
+        */
         public void setDescription(final String descriptionValue) {
             this.description = descriptionValue;
         }
-
+        
         private String geoRegion;
-
+        
         /**
-         * The geographical region in which this cloud service can run.
-         * 
-         * @return The GeoRegion value.
-         */
+        * The geographical region in which this cloud service can run.
+        * @return The GeoRegion value.
+        */
         public String getGeoRegion() {
             return this.geoRegion;
         }
-
+        
         /**
-         * The geographical region in which this cloud service can run.
-         * 
-         * @param geoRegionValue
-         *            The GeoRegion value.
-         */
+        * The geographical region in which this cloud service can run.
+        * @param geoRegionValue The GeoRegion value.
+        */
         public void setGeoRegion(final String geoRegionValue) {
             this.geoRegion = geoRegionValue;
         }
-
+        
         private String label;
-
+        
         /**
-         * The label of the cloud service region.
-         * 
-         * @return The Label value.
-         */
+        * The label of the cloud service region.
+        * @return The Label value.
+        */
         public String getLabel() {
             return this.label;
         }
-
+        
         /**
-         * The label of the cloud service region.
-         * 
-         * @param labelValue
-         *            The Label value.
-         */
+        * The label of the cloud service region.
+        * @param labelValue The Label value.
+        */
         public void setLabel(final String labelValue) {
             this.label = labelValue;
         }
-
+        
         private String name;
-
+        
         /**
-         * The name of the cloud service region.
-         * 
-         * @return The Name value.
-         */
+        * The name of the cloud service region.
+        * @return The Name value.
+        */
         public String getName() {
             return this.name;
         }
-
+        
         /**
-         * The name of the cloud service region.
-         * 
-         * @param nameValue
-         *            The Name value.
-         */
+        * The name of the cloud service region.
+        * @param nameValue The Name value.
+        */
         public void setName(final String nameValue) {
             this.name = nameValue;
         }
-
+        
         private ArrayList<CloudServiceListResponse.CloudService.AddOnResource> resources;
-
+        
         /**
-         * A list of existing store resources installed into a cloud service
-         * region.
-         * 
-         * @return The Resources value.
-         */
+        * A list of existing store resources installed into a cloud service
+        * region.
+        * @return The Resources value.
+        */
         public ArrayList<CloudServiceListResponse.CloudService.AddOnResource> getResources() {
             return this.resources;
         }
-
+        
         /**
-         * A list of existing store resources installed into a cloud service
-         * region.
-         * 
-         * @param resourcesValue
-         *            The Resources value.
-         */
-        public void setResources(
-                final ArrayList<CloudServiceListResponse.CloudService.AddOnResource> resourcesValue) {
+        * A list of existing store resources installed into a cloud service
+        * region.
+        * @param resourcesValue The Resources value.
+        */
+        public void setResources(final ArrayList<CloudServiceListResponse.CloudService.AddOnResource> resourcesValue) {
             this.resources = resourcesValue;
         }
-
+        
         /**
-         * Initializes a new instance of the CloudService class.
-         * 
-         */
+        * Initializes a new instance of the CloudService class.
+        *
+        */
         public CloudService() {
             this.resources = new ArrayList<CloudServiceListResponse.CloudService.AddOnResource>();
         }
-
+        
         /**
-         * A store add-on item.
-         */
+        * A store add-on item.
+        */
         public static class AddOnResource {
             private String eTag;
-
+            
             /**
-             * The ETag for this store resource.
-             * 
-             * @return The ETag value.
-             */
+            * The ETag for this store resource.
+            * @return The ETag value.
+            */
             public String getETag() {
                 return this.eTag;
             }
-
+            
             /**
-             * The ETag for this store resource.
-             * 
-             * @param eTagValue
-             *            The ETag value.
-             */
+            * The ETag for this store resource.
+            * @param eTagValue The ETag value.
+            */
             public void setETag(final String eTagValue) {
                 this.eTag = eTagValue;
             }
-
+            
             private String name;
-
+            
             /**
-             * The user-input name of this store item.
-             * 
-             * @return The Name value.
-             */
+            * The user-input name of this store item.
+            * @return The Name value.
+            */
             public String getName() {
                 return this.name;
             }
-
+            
             /**
-             * The user-input name of this store item.
-             * 
-             * @param nameValue
-             *            The Name value.
-             */
+            * The user-input name of this store item.
+            * @param nameValue The Name value.
+            */
             public void setName(final String nameValue) {
                 this.name = nameValue;
             }
-
+            
             private String namespace;
-
+            
             /**
-             * The namespace in which this store item resides.
-             * 
-             * @return The Namespace value.
-             */
+            * The namespace in which this store item resides.
+            * @return The Namespace value.
+            */
             public String getNamespace() {
                 return this.namespace;
             }
-
+            
             /**
-             * The namespace in which this store item resides.
-             * 
-             * @param namespaceValue
-             *            The Namespace value.
-             */
+            * The namespace in which this store item resides.
+            * @param namespaceValue The Namespace value.
+            */
             public void setNamespace(final String namespaceValue) {
                 this.namespace = namespaceValue;
             }
-
+            
             private HashMap<String, String> outputItems;
-
+            
             /**
-             * Output items associated with an individual store resource.
-             * 
-             * @return The OutputItems value.
-             */
+            * Output items associated with an individual store resource.
+            * @return The OutputItems value.
+            */
             public HashMap<String, String> getOutputItems() {
                 return this.outputItems;
             }
-
+            
             /**
-             * Output items associated with an individual store resource.
-             * 
-             * @param outputItemsValue
-             *            The OutputItems value.
-             */
-            public void setOutputItems(
-                    final HashMap<String, String> outputItemsValue) {
+            * Output items associated with an individual store resource.
+            * @param outputItemsValue The OutputItems value.
+            */
+            public void setOutputItems(final HashMap<String, String> outputItemsValue) {
                 this.outputItems = outputItemsValue;
             }
-
+            
             private String plan;
-
+            
             /**
-             * The plan for this store item as selected by the user.
-             * 
-             * @return The Plan value.
-             */
+            * The plan for this store item as selected by the user.
+            * @return The Plan value.
+            */
             public String getPlan() {
                 return this.plan;
             }
-
+            
             /**
-             * The plan for this store item as selected by the user.
-             * 
-             * @param planValue
-             *            The Plan value.
-             */
+            * The plan for this store item as selected by the user.
+            * @param planValue The Plan value.
+            */
             public void setPlan(final String planValue) {
                 this.plan = planValue;
             }
-
+            
             private String schemaVersion;
-
+            
             /**
-             * The schema version for this resource.
-             * 
-             * @return The SchemaVersion value.
-             */
+            * The schema version for this resource.
+            * @return The SchemaVersion value.
+            */
             public String getSchemaVersion() {
                 return this.schemaVersion;
             }
-
+            
             /**
-             * The schema version for this resource.
-             * 
-             * @param schemaVersionValue
-             *            The SchemaVersion value.
-             */
+            * The schema version for this resource.
+            * @param schemaVersionValue The SchemaVersion value.
+            */
             public void setSchemaVersion(final String schemaVersionValue) {
                 this.schemaVersion = schemaVersionValue;
             }
-
+            
             private String state;
-
+            
             /**
-             * The state of this store resource.
-             * 
-             * @return The State value.
-             */
+            * The state of this store resource.
+            * @return The State value.
+            */
             public String getState() {
                 return this.state;
             }
-
+            
             /**
-             * The state of this store resource.
-             * 
-             * @param stateValue
-             *            The State value.
-             */
+            * The state of this store resource.
+            * @param stateValue The State value.
+            */
             public void setState(final String stateValue) {
                 this.state = stateValue;
             }
-
+            
             private CloudServiceListResponse.CloudService.AddOnResource.OperationStatus status;
-
+            
             /**
-             * Operation status items associated with an individual store
-             * resource.
-             * 
-             * @return The Status value.
-             */
+            * Operation status items associated with an individual store
+            * resource.
+            * @return The Status value.
+            */
             public CloudServiceListResponse.CloudService.AddOnResource.OperationStatus getStatus() {
                 return this.status;
             }
-
+            
             /**
-             * Operation status items associated with an individual store
-             * resource.
-             * 
-             * @param statusValue
-             *            The Status value.
-             */
-            public void setStatus(
-                    final CloudServiceListResponse.CloudService.AddOnResource.OperationStatus statusValue) {
+            * Operation status items associated with an individual store
+            * resource.
+            * @param statusValue The Status value.
+            */
+            public void setStatus(final CloudServiceListResponse.CloudService.AddOnResource.OperationStatus statusValue) {
                 this.status = statusValue;
             }
-
+            
             private String type;
-
+            
             /**
-             * The type of store item.
-             * 
-             * @return The Type value.
-             */
+            * The type of store item.
+            * @return The Type value.
+            */
             public String getType() {
                 return this.type;
             }
-
+            
             /**
-             * The type of store item.
-             * 
-             * @param typeValue
-             *            The Type value.
-             */
+            * The type of store item.
+            * @param typeValue The Type value.
+            */
             public void setType(final String typeValue) {
                 this.type = typeValue;
             }
-
+            
             private ArrayList<CloudServiceListResponse.CloudService.AddOnResource.UsageLimit> usageLimits;
-
+            
             /**
-             * Usage meters associated with an individual store resource.
-             * 
-             * @return The UsageLimits value.
-             */
+            * Usage meters associated with an individual store resource.
+            * @return The UsageLimits value.
+            */
             public ArrayList<CloudServiceListResponse.CloudService.AddOnResource.UsageLimit> getUsageLimits() {
                 return this.usageLimits;
             }
-
+            
             /**
-             * Usage meters associated with an individual store resource.
-             * 
-             * @param usageLimitsValue
-             *            The UsageLimits value.
-             */
-            public void setUsageLimits(
-                    final ArrayList<CloudServiceListResponse.CloudService.AddOnResource.UsageLimit> usageLimitsValue) {
+            * Usage meters associated with an individual store resource.
+            * @param usageLimitsValue The UsageLimits value.
+            */
+            public void setUsageLimits(final ArrayList<CloudServiceListResponse.CloudService.AddOnResource.UsageLimit> usageLimitsValue) {
                 this.usageLimits = usageLimitsValue;
             }
-
+            
             /**
-             * Initializes a new instance of the AddOnResource class.
-             * 
-             */
+            * Initializes a new instance of the AddOnResource class.
+            *
+            */
             public AddOnResource() {
                 this.outputItems = new HashMap<String, String>();
                 this.usageLimits = new ArrayList<CloudServiceListResponse.CloudService.AddOnResource.UsageLimit>();
             }
-
+            
             /**
-             * The operation status of an individual store resource item.
-             */
+            * The operation status of an individual store resource item.
+            */
             public static class OperationStatus {
                 private String result;
-
+                
                 /**
-                 * The result of this operation status.
-                 * 
-                 * @return The Result value.
-                 */
+                * The result of this operation status.
+                * @return The Result value.
+                */
                 public String getResult() {
                     return this.result;
                 }
-
+                
                 /**
-                 * The result of this operation status.
-                 * 
-                 * @param resultValue
-                 *            The Result value.
-                 */
+                * The result of this operation status.
+                * @param resultValue The Result value.
+                */
                 public void setResult(final String resultValue) {
                     this.result = resultValue;
                 }
-
+                
                 private String type;
-
+                
                 /**
-                 * The type of this operation status.
-                 * 
-                 * @return The Type value.
-                 */
+                * The type of this operation status.
+                * @return The Type value.
+                */
                 public String getType() {
                     return this.type;
                 }
-
+                
                 /**
-                 * The type of this operation status.
-                 * 
-                 * @param typeValue
-                 *            The Type value.
-                 */
+                * The type of this operation status.
+                * @param typeValue The Type value.
+                */
                 public void setType(final String typeValue) {
                     this.type = typeValue;
                 }
             }
-
+            
             /**
-             * Describes the current utilization and metering of a store
-             * resource item.
-             */
+            * Describes the current utilization and metering of a store
+            * resource item.
+            */
             public static class UsageLimit {
                 private long amountIncluded;
-
+                
                 /**
-                 * Defines the limit of this usage included in this store
-                 * resource's plan.
-                 * 
-                 * @return The AmountIncluded value.
-                 */
+                * Defines the limit of this usage included in this store
+                * resource's plan.
+                * @return The AmountIncluded value.
+                */
                 public long getAmountIncluded() {
                     return this.amountIncluded;
                 }
-
+                
                 /**
-                 * Defines the limit of this usage included in this store
-                 * resource's plan.
-                 * 
-                 * @param amountIncludedValue
-                 *            The AmountIncluded value.
-                 */
+                * Defines the limit of this usage included in this store
+                * resource's plan.
+                * @param amountIncludedValue The AmountIncluded value.
+                */
                 public void setAmountIncluded(final long amountIncludedValue) {
                     this.amountIncluded = amountIncludedValue;
                 }
-
+                
                 private long amountUsed;
-
+                
                 /**
-                 * The amount of this store resource that has already been used.
-                 * 
-                 * @return The AmountUsed value.
-                 */
+                * The amount of this store resource that has already been used.
+                * @return The AmountUsed value.
+                */
                 public long getAmountUsed() {
                     return this.amountUsed;
                 }
-
+                
                 /**
-                 * The amount of this store resource that has already been used.
-                 * 
-                 * @param amountUsedValue
-                 *            The AmountUsed value.
-                 */
+                * The amount of this store resource that has already been used.
+                * @param amountUsedValue The AmountUsed value.
+                */
                 public void setAmountUsed(final long amountUsedValue) {
                     this.amountUsed = amountUsedValue;
                 }
-
+                
                 private String name;
-
+                
                 /**
-                 * The name of this usage limit.
-                 * 
-                 * @return The Name value.
-                 */
+                * The name of this usage limit.
+                * @return The Name value.
+                */
                 public String getName() {
                     return this.name;
                 }
-
+                
                 /**
-                 * The name of this usage limit.
-                 * 
-                 * @param nameValue
-                 *            The Name value.
-                 */
+                * The name of this usage limit.
+                * @param nameValue The Name value.
+                */
                 public void setName(final String nameValue) {
                     this.name = nameValue;
                 }
-
+                
                 private String unit;
-
+                
                 /**
-                 * The unit in which this usage limit is measured.
-                 * 
-                 * @return The Unit value.
-                 */
+                * The unit in which this usage limit is measured.
+                * @return The Unit value.
+                */
                 public String getUnit() {
                     return this.unit;
                 }
-
+                
                 /**
-                 * The unit in which this usage limit is measured.
-                 * 
-                 * @param unitValue
-                 *            The Unit value.
-                 */
+                * The unit in which this usage limit is measured.
+                * @param unitValue The Unit value.
+                */
                 public void setUnit(final String unitValue) {
                     this.unit = unitValue;
                 }

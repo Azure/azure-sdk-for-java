@@ -26,35 +26,31 @@ package com.microsoft.windowsazure.management.websites.models;
 import java.util.ArrayList;
 
 /**
- * The Get Web Site operation parameters.
- */
+* The Get Web Site operation parameters.
+*/
 public class WebSiteGetParameters {
     private ArrayList<String> propertiesToInclude;
-
+    
     /**
-     * Specifies a list of the names of any addtional parameters to return.
-     * 
-     * @return The PropertiesToInclude value.
-     */
+    * Specifies a list of the names of any addtional parameters to return.
+    * @return The PropertiesToInclude value.
+    */
     public ArrayList<String> getPropertiesToInclude() {
         return this.propertiesToInclude;
     }
-
+    
     /**
-     * Specifies a list of the names of any addtional parameters to return.
-     * 
-     * @param propertiesToIncludeValue
-     *            The PropertiesToInclude value.
-     */
-    public void setPropertiesToInclude(
-            final ArrayList<String> propertiesToIncludeValue) {
+    * Specifies a list of the names of any addtional parameters to return.
+    * @param propertiesToIncludeValue The PropertiesToInclude value.
+    */
+    public void setPropertiesToInclude(final ArrayList<String> propertiesToIncludeValue) {
         this.propertiesToInclude = propertiesToIncludeValue;
     }
-
+    
     /**
-     * Initializes a new instance of the WebSiteGetParameters class.
-     * 
-     */
+    * Initializes a new instance of the WebSiteGetParameters class.
+    *
+    */
     public WebSiteGetParameters() {
         this.propertiesToInclude = new ArrayList<String>();
     }

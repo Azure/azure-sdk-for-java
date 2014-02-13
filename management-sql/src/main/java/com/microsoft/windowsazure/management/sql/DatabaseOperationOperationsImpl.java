@@ -48,82 +48,70 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
- * The SQL Database Management API includes operations for get/stop SQL
- * Databases' operations for a subscription.
- */
-public class DatabaseOperationOperationsImpl implements
-        ServiceOperations<SqlManagementClientImpl>, DatabaseOperationOperations {
+* The SQL Database Management API includes operations for get/stop SQL
+* Databases' operations for a subscription.
+*/
+public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlManagementClientImpl>, DatabaseOperationOperations {
     /**
-     * Initializes a new instance of the DatabaseOperationOperationsImpl class.
-     * 
-     * @param client
-     *            Reference to the service client.
-     */
+    * Initializes a new instance of the DatabaseOperationOperationsImpl class.
+    *
+    * @param client Reference to the service client.
+    */
     DatabaseOperationOperationsImpl(SqlManagementClientImpl client) {
         this.client = client;
     }
-
+    
     private SqlManagementClientImpl client;
-
+    
     /**
-     * Gets a reference to the
-     * microsoft.windowsazure.management.sql.SqlManagementClientImpl.
-     * 
-     * @return The Client value.
-     */
+    * Gets a reference to the
+    * microsoft.windowsazure.management.sql.SqlManagementClientImpl.
+    * @return The Client value.
+    */
     public SqlManagementClientImpl getClient() {
         return this.client;
     }
-
+    
     /**
-     * Returns information about one operation on a given operation Guid.
-     * 
-     * @param serverName
-     *            The name of the SQL Server on which the operation was
-     *            executed.
-     * @param operationGuid
-     *            The Guid of the SQL Server database operation to be obtained.
-     * @return Response containing the database operation for a given operation
-     *         Guid.
-     */
+    * Returns information about one operation on a given operation Guid.
+    *
+    * @param serverName The name of the SQL Server on which the operation was
+    * executed.
+    * @param operationGuid The Guid of the SQL Server database operation to be
+    * obtained.
+    * @return Response containing the database operation for a given operation
+    * Guid.
+    */
     @Override
-    public Future<DatabaseOperationGetResponse> getAsync(
-            final String serverName, final String operationGuid) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<DatabaseOperationGetResponse>() {
-                    @Override
-                    public DatabaseOperationGetResponse call() throws Exception {
-                        return get(serverName, operationGuid);
-                    }
-                });
+    public Future<DatabaseOperationGetResponse> getAsync(final String serverName, final String operationGuid) {
+        return this.getClient().getExecutorService().submit(new Callable<DatabaseOperationGetResponse>() { 
+            @Override
+            public DatabaseOperationGetResponse call() throws Exception {
+                return get(serverName, operationGuid);
+            }
+         });
     }
-
+    
     /**
-     * Returns information about one operation on a given operation Guid.
-     * 
-     * @param serverName
-     *            The name of the SQL Server on which the operation was
-     *            executed.
-     * @param operationGuid
-     *            The Guid of the SQL Server database operation to be obtained.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @throws ParserConfigurationException
-     *             Thrown if there was a serious configuration error with the
-     *             document parser.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the XML response.
-     * @return Response containing the database operation for a given operation
-     *         Guid.
-     */
+    * Returns information about one operation on a given operation Guid.
+    *
+    * @param serverName The name of the SQL Server on which the operation was
+    * executed.
+    * @param operationGuid The Guid of the SQL Server database operation to be
+    * obtained.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return Response containing the database operation for a given operation
+    * Guid.
+    */
     @Override
-    public DatabaseOperationGetResponse get(String serverName,
-            String operationGuid) throws IOException, ServiceException,
-            ParserConfigurationException, SAXException {
+    public DatabaseOperationGetResponse get(String serverName, String operationGuid) throws IOException, ServiceException, ParserConfigurationException, SAXException {
         // Validate
         if (serverName == null) {
             throw new NullPointerException("serverName");
@@ -131,7 +119,7 @@ public class DatabaseOperationOperationsImpl implements
         if (operationGuid == null) {
             throw new NullPointerException("operationGuid");
         }
-
+        
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -140,237 +128,184 @@ public class DatabaseOperationOperationsImpl implements
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serverName", serverName);
             tracingParameters.put("operationGuid", operationGuid);
-            CloudTracing.enter(invocationId, this, "getAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "getAsync", tracingParameters);
         }
-
+        
         // Construct URL
-        String url = this.getClient().getBaseUri()
-                + this.getClient().getCredentials().getSubscriptionId()
-                + "/services/sqlservers/servers/" + serverName
-                + "/databaseoperations/" + operationGuid;
-
+        String url = this.getClient().getBaseUri() + this.getClient().getCredentials().getSubscriptionId() + "/services/sqlservers/servers/" + serverName + "/databaseoperations/" + operationGuid;
+        
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
-
+        
         // Set Headers
         httpRequest.setHeader("x-ms-version", "2012-03-01");
-
+        
         // Send Request
         HttpResponse httpResponse = null;
         try {
             if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient()
-                    .execute(httpRequest);
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
             if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_OK) {
-                ServiceException ex = ServiceException.createFromXml(
-                        httpRequest, null, httpResponse,
-                        httpResponse.getEntity());
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-
+            
             // Create Result
             DatabaseOperationGetResponse result = null;
             // Deserialize Response
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new DatabaseOperationGetResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
-                    .newInstance();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory
-                    .newDocumentBuilder();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
-
-            NodeList elements = responseDoc
-                    .getElementsByTagName("ServiceResource");
-            Element serviceResourceElement = elements.getLength() > 0 ? ((Element) elements
-                    .item(0)) : null;
+            
+            NodeList elements = responseDoc.getElementsByTagName("ServiceResource");
+            Element serviceResourceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (serviceResourceElement != null) {
-                NodeList elements2 = serviceResourceElement
-                        .getElementsByTagName("Name");
-                Element nameElement = elements2.getLength() > 0 ? ((Element) elements2
-                        .item(0)) : null;
+                NodeList elements2 = serviceResourceElement.getElementsByTagName("Name");
+                Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                 if (nameElement != null) {
                     String nameInstance;
                     nameInstance = nameElement.getTextContent();
                     result.setName(nameInstance);
                 }
-
-                NodeList elements3 = serviceResourceElement
-                        .getElementsByTagName("Type");
-                Element typeElement = elements3.getLength() > 0 ? ((Element) elements3
-                        .item(0)) : null;
+                
+                NodeList elements3 = serviceResourceElement.getElementsByTagName("Type");
+                Element typeElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                 if (typeElement != null) {
                     String typeInstance;
                     typeInstance = typeElement.getTextContent();
                     result.setType(typeInstance);
                 }
-
-                NodeList elements4 = serviceResourceElement
-                        .getElementsByTagName("State");
-                Element stateElement = elements4.getLength() > 0 ? ((Element) elements4
-                        .item(0)) : null;
+                
+                NodeList elements4 = serviceResourceElement.getElementsByTagName("State");
+                Element stateElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                 if (stateElement != null) {
                     String stateInstance;
                     stateInstance = stateElement.getTextContent();
                     result.setState(stateInstance);
                 }
-
-                NodeList elements5 = serviceResourceElement
-                        .getElementsByTagName("SelfLink");
-                Element selfLinkElement = elements5.getLength() > 0 ? ((Element) elements5
-                        .item(0)) : null;
+                
+                NodeList elements5 = serviceResourceElement.getElementsByTagName("SelfLink");
+                Element selfLinkElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                 if (selfLinkElement != null) {
                     String selfLinkInstance;
                     selfLinkInstance = selfLinkElement.getTextContent();
                     result.setSelfLink(selfLinkInstance);
                 }
-
-                NodeList elements6 = serviceResourceElement
-                        .getElementsByTagName("ParentLink");
-                Element parentLinkElement = elements6.getLength() > 0 ? ((Element) elements6
-                        .item(0)) : null;
+                
+                NodeList elements6 = serviceResourceElement.getElementsByTagName("ParentLink");
+                Element parentLinkElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                 if (parentLinkElement != null) {
                     String parentLinkInstance;
                     parentLinkInstance = parentLinkElement.getTextContent();
                     result.setParentLink(parentLinkInstance);
                 }
-
-                NodeList elements7 = serviceResourceElement
-                        .getElementsByTagName("Id");
-                Element idElement = elements7.getLength() > 0 ? ((Element) elements7
-                        .item(0)) : null;
+                
+                NodeList elements7 = serviceResourceElement.getElementsByTagName("Id");
+                Element idElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                 if (idElement != null) {
                     String idInstance;
                     idInstance = idElement.getTextContent();
                     result.setId(idInstance);
                 }
-
-                NodeList elements8 = serviceResourceElement
-                        .getElementsByTagName("StateId");
-                Element stateIdElement = elements8.getLength() > 0 ? ((Element) elements8
-                        .item(0)) : null;
+                
+                NodeList elements8 = serviceResourceElement.getElementsByTagName("StateId");
+                Element stateIdElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
                 if (stateIdElement != null) {
                     int stateIdInstance;
-                    stateIdInstance = DatatypeConverter.parseInt(stateIdElement
-                            .getTextContent());
+                    stateIdInstance = DatatypeConverter.parseInt(stateIdElement.getTextContent());
                     result.setStateId(stateIdInstance);
                 }
-
-                NodeList elements9 = serviceResourceElement
-                        .getElementsByTagName("SessionActivityId");
-                Element sessionActivityIdElement = elements9.getLength() > 0 ? ((Element) elements9
-                        .item(0)) : null;
+                
+                NodeList elements9 = serviceResourceElement.getElementsByTagName("SessionActivityId");
+                Element sessionActivityIdElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
                 if (sessionActivityIdElement != null) {
                     String sessionActivityIdInstance;
-                    sessionActivityIdInstance = sessionActivityIdElement
-                            .getTextContent();
+                    sessionActivityIdInstance = sessionActivityIdElement.getTextContent();
                     result.setSessionActivityId(sessionActivityIdInstance);
                 }
-
-                NodeList elements10 = serviceResourceElement
-                        .getElementsByTagName("DatabaseName");
-                Element databaseNameElement = elements10.getLength() > 0 ? ((Element) elements10
-                        .item(0)) : null;
+                
+                NodeList elements10 = serviceResourceElement.getElementsByTagName("DatabaseName");
+                Element databaseNameElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
                 if (databaseNameElement != null) {
                     String databaseNameInstance;
                     databaseNameInstance = databaseNameElement.getTextContent();
                     result.setDatabaseName(databaseNameInstance);
                 }
-
-                NodeList elements11 = serviceResourceElement
-                        .getElementsByTagName("PercentComplete");
-                Element percentCompleteElement = elements11.getLength() > 0 ? ((Element) elements11
-                        .item(0)) : null;
+                
+                NodeList elements11 = serviceResourceElement.getElementsByTagName("PercentComplete");
+                Element percentCompleteElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
                 if (percentCompleteElement != null) {
                     int percentCompleteInstance;
-                    percentCompleteInstance = DatatypeConverter
-                            .parseInt(percentCompleteElement.getTextContent());
+                    percentCompleteInstance = DatatypeConverter.parseInt(percentCompleteElement.getTextContent());
                     result.setPercentComplete(percentCompleteInstance);
                 }
-
-                NodeList elements12 = serviceResourceElement
-                        .getElementsByTagName("ErrorCode");
-                Element errorCodeElement = elements12.getLength() > 0 ? ((Element) elements12
-                        .item(0)) : null;
+                
+                NodeList elements12 = serviceResourceElement.getElementsByTagName("ErrorCode");
+                Element errorCodeElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
                 if (errorCodeElement != null) {
                     int errorCodeInstance;
-                    errorCodeInstance = DatatypeConverter
-                            .parseInt(errorCodeElement.getTextContent());
+                    errorCodeInstance = DatatypeConverter.parseInt(errorCodeElement.getTextContent());
                     result.setErrorCode(errorCodeInstance);
                 }
-
-                NodeList elements13 = serviceResourceElement
-                        .getElementsByTagName("Error");
-                Element errorElement = elements13.getLength() > 0 ? ((Element) elements13
-                        .item(0)) : null;
+                
+                NodeList elements13 = serviceResourceElement.getElementsByTagName("Error");
+                Element errorElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
                 if (errorElement != null) {
                     String errorInstance;
                     errorInstance = errorElement.getTextContent();
                     result.setError(errorInstance);
                 }
-
-                NodeList elements14 = serviceResourceElement
-                        .getElementsByTagName("ErrorSeverity");
-                Element errorSeverityElement = elements14.getLength() > 0 ? ((Element) elements14
-                        .item(0)) : null;
+                
+                NodeList elements14 = serviceResourceElement.getElementsByTagName("ErrorSeverity");
+                Element errorSeverityElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
                 if (errorSeverityElement != null) {
                     int errorSeverityInstance;
-                    errorSeverityInstance = DatatypeConverter
-                            .parseInt(errorSeverityElement.getTextContent());
+                    errorSeverityInstance = DatatypeConverter.parseInt(errorSeverityElement.getTextContent());
                     result.setErrorSeverity(errorSeverityInstance);
                 }
-
-                NodeList elements15 = serviceResourceElement
-                        .getElementsByTagName("ErrorState");
-                Element errorStateElement = elements15.getLength() > 0 ? ((Element) elements15
-                        .item(0)) : null;
+                
+                NodeList elements15 = serviceResourceElement.getElementsByTagName("ErrorState");
+                Element errorStateElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
                 if (errorStateElement != null) {
                     int errorStateInstance;
-                    errorStateInstance = DatatypeConverter
-                            .parseInt(errorStateElement.getTextContent());
+                    errorStateInstance = DatatypeConverter.parseInt(errorStateElement.getTextContent());
                     result.setErrorState(errorStateInstance);
                 }
-
-                NodeList elements16 = serviceResourceElement
-                        .getElementsByTagName("StartTime");
-                Element startTimeElement = elements16.getLength() > 0 ? ((Element) elements16
-                        .item(0)) : null;
+                
+                NodeList elements16 = serviceResourceElement.getElementsByTagName("StartTime");
+                Element startTimeElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
                 if (startTimeElement != null) {
                     Calendar startTimeInstance;
-                    startTimeInstance = DatatypeConverter
-                            .parseDateTime(startTimeElement.getTextContent());
+                    startTimeInstance = DatatypeConverter.parseDateTime(startTimeElement.getTextContent());
                     result.setStartTime(startTimeInstance);
                 }
-
-                NodeList elements17 = serviceResourceElement
-                        .getElementsByTagName("LastModifyTime");
-                Element lastModifyTimeElement = elements17.getLength() > 0 ? ((Element) elements17
-                        .item(0)) : null;
+                
+                NodeList elements17 = serviceResourceElement.getElementsByTagName("LastModifyTime");
+                Element lastModifyTimeElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
                 if (lastModifyTimeElement != null) {
                     Calendar lastModifyTimeInstance;
-                    lastModifyTimeInstance = DatatypeConverter
-                            .parseDateTime(lastModifyTimeElement
-                                    .getTextContent());
+                    lastModifyTimeInstance = DatatypeConverter.parseDateTime(lastModifyTimeElement.getTextContent());
                     result.setLastModifyTime(lastModifyTimeInstance);
                 }
             }
-
+            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader(
-                        "x-ms-request-id").getValue());
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
@@ -381,55 +316,43 @@ public class DatabaseOperationOperationsImpl implements
             }
         }
     }
-
+    
     /**
-     * Returns the list database operations for a given server and database.
-     * 
-     * @param serverName
-     *            The name of the SQL Server to be queried.
-     * @param databaseName
-     *            The name of the Database to be queried.
-     * @return Response containing the list of database operations for a given
-     *         server or database.
-     */
+    * Returns the list database operations for a given server and database.
+    *
+    * @param serverName The name of the SQL Server to be queried.
+    * @param databaseName The name of the Database to be queried.
+    * @return Response containing the list of database operations for a given
+    * server or database.
+    */
     @Override
-    public Future<DatabaseOperationListResponse> listByDatabaseAsync(
-            final String serverName, final String databaseName) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<DatabaseOperationListResponse>() {
-                    @Override
-                    public DatabaseOperationListResponse call()
-                            throws Exception {
-                        return listByDatabase(serverName, databaseName);
-                    }
-                });
+    public Future<DatabaseOperationListResponse> listByDatabaseAsync(final String serverName, final String databaseName) {
+        return this.getClient().getExecutorService().submit(new Callable<DatabaseOperationListResponse>() { 
+            @Override
+            public DatabaseOperationListResponse call() throws Exception {
+                return listByDatabase(serverName, databaseName);
+            }
+         });
     }
-
+    
     /**
-     * Returns the list database operations for a given server and database.
-     * 
-     * @param serverName
-     *            The name of the SQL Server to be queried.
-     * @param databaseName
-     *            The name of the Database to be queried.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @throws ParserConfigurationException
-     *             Thrown if there was a serious configuration error with the
-     *             document parser.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the XML response.
-     * @return Response containing the list of database operations for a given
-     *         server or database.
-     */
+    * Returns the list database operations for a given server and database.
+    *
+    * @param serverName The name of the SQL Server to be queried.
+    * @param databaseName The name of the Database to be queried.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return Response containing the list of database operations for a given
+    * server or database.
+    */
     @Override
-    public DatabaseOperationListResponse listByDatabase(String serverName,
-            String databaseName) throws IOException, ServiceException,
-            ParserConfigurationException, SAXException {
+    public DatabaseOperationListResponse listByDatabase(String serverName, String databaseName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
         // Validate
         if (serverName == null) {
             throw new NullPointerException("serverName");
@@ -437,7 +360,7 @@ public class DatabaseOperationOperationsImpl implements
         if (databaseName == null) {
             throw new NullPointerException("databaseName");
         }
-
+        
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -446,256 +369,191 @@ public class DatabaseOperationOperationsImpl implements
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serverName", serverName);
             tracingParameters.put("databaseName", databaseName);
-            CloudTracing.enter(invocationId, this, "listByDatabaseAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "listByDatabaseAsync", tracingParameters);
         }
-
+        
         // Construct URL
-        String url = this.getClient().getBaseUri()
-                + this.getClient().getCredentials().getSubscriptionId()
-                + "/services/sqlservers/servers/" + serverName
-                + "/databaseoperations" + "?";
+        String url = this.getClient().getBaseUri() + this.getClient().getCredentials().getSubscriptionId() + "/services/sqlservers/servers/" + serverName + "/databaseoperations" + "?";
         url = url + "databaseName=" + URLEncoder.encode(databaseName, "UTF-8");
-
+        
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
-
+        
         // Set Headers
         httpRequest.setHeader("x-ms-version", "2012-03-01");
-
+        
         // Send Request
         HttpResponse httpResponse = null;
         try {
             if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient()
-                    .execute(httpRequest);
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
             if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_OK) {
-                ServiceException ex = ServiceException.createFromXml(
-                        httpRequest, null, httpResponse,
-                        httpResponse.getEntity());
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-
+            
             // Create Result
             DatabaseOperationListResponse result = null;
             // Deserialize Response
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new DatabaseOperationListResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
-                    .newInstance();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory
-                    .newDocumentBuilder();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
-
-            NodeList elements = responseDoc
-                    .getElementsByTagName("ServiceResources");
-            Element serviceResourcesSequenceElement = elements.getLength() > 0 ? ((Element) elements
-                    .item(0)) : null;
+            
+            NodeList elements = responseDoc.getElementsByTagName("ServiceResources");
+            Element serviceResourcesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (serviceResourcesSequenceElement != null) {
-                for (int i1 = 0; i1 < serviceResourcesSequenceElement
-                        .getElementsByTagName("ServiceResource").getLength(); i1 = i1 + 1) {
-                    org.w3c.dom.Element serviceResourcesElement = ((org.w3c.dom.Element) serviceResourcesSequenceElement
-                            .getElementsByTagName("ServiceResource").item(i1));
+                for (int i1 = 0; i1 < serviceResourcesSequenceElement.getElementsByTagName("ServiceResource").getLength(); i1 = i1 + 1) {
+                    org.w3c.dom.Element serviceResourcesElement = ((org.w3c.dom.Element) serviceResourcesSequenceElement.getElementsByTagName("ServiceResource").item(i1));
                     DatabaseOperationListResponse.DatabaseOperation serviceResourceInstance = new DatabaseOperationListResponse.DatabaseOperation();
                     result.getDatabaseOperations().add(serviceResourceInstance);
-
-                    NodeList elements2 = serviceResourcesElement
-                            .getElementsByTagName("Name");
-                    Element nameElement = elements2.getLength() > 0 ? ((Element) elements2
-                            .item(0)) : null;
+                    
+                    NodeList elements2 = serviceResourcesElement.getElementsByTagName("Name");
+                    Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                     if (nameElement != null) {
                         String nameInstance;
                         nameInstance = nameElement.getTextContent();
                         serviceResourceInstance.setName(nameInstance);
                     }
-
-                    NodeList elements3 = serviceResourcesElement
-                            .getElementsByTagName("Type");
-                    Element typeElement = elements3.getLength() > 0 ? ((Element) elements3
-                            .item(0)) : null;
+                    
+                    NodeList elements3 = serviceResourcesElement.getElementsByTagName("Type");
+                    Element typeElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                     if (typeElement != null) {
                         String typeInstance;
                         typeInstance = typeElement.getTextContent();
                         serviceResourceInstance.setType(typeInstance);
                     }
-
-                    NodeList elements4 = serviceResourcesElement
-                            .getElementsByTagName("State");
-                    Element stateElement = elements4.getLength() > 0 ? ((Element) elements4
-                            .item(0)) : null;
+                    
+                    NodeList elements4 = serviceResourcesElement.getElementsByTagName("State");
+                    Element stateElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                     if (stateElement != null) {
                         String stateInstance;
                         stateInstance = stateElement.getTextContent();
                         serviceResourceInstance.setState(stateInstance);
                     }
-
-                    NodeList elements5 = serviceResourcesElement
-                            .getElementsByTagName("SelfLink");
-                    Element selfLinkElement = elements5.getLength() > 0 ? ((Element) elements5
-                            .item(0)) : null;
+                    
+                    NodeList elements5 = serviceResourcesElement.getElementsByTagName("SelfLink");
+                    Element selfLinkElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                     if (selfLinkElement != null) {
                         String selfLinkInstance;
                         selfLinkInstance = selfLinkElement.getTextContent();
                         serviceResourceInstance.setSelfLink(selfLinkInstance);
                     }
-
-                    NodeList elements6 = serviceResourcesElement
-                            .getElementsByTagName("ParentLink");
-                    Element parentLinkElement = elements6.getLength() > 0 ? ((Element) elements6
-                            .item(0)) : null;
+                    
+                    NodeList elements6 = serviceResourcesElement.getElementsByTagName("ParentLink");
+                    Element parentLinkElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                     if (parentLinkElement != null) {
                         String parentLinkInstance;
                         parentLinkInstance = parentLinkElement.getTextContent();
-                        serviceResourceInstance
-                                .setParentLink(parentLinkInstance);
+                        serviceResourceInstance.setParentLink(parentLinkInstance);
                     }
-
-                    NodeList elements7 = serviceResourcesElement
-                            .getElementsByTagName("Id");
-                    Element idElement = elements7.getLength() > 0 ? ((Element) elements7
-                            .item(0)) : null;
+                    
+                    NodeList elements7 = serviceResourcesElement.getElementsByTagName("Id");
+                    Element idElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                     if (idElement != null) {
                         String idInstance;
                         idInstance = idElement.getTextContent();
                         serviceResourceInstance.setId(idInstance);
                     }
-
-                    NodeList elements8 = serviceResourcesElement
-                            .getElementsByTagName("StateId");
-                    Element stateIdElement = elements8.getLength() > 0 ? ((Element) elements8
-                            .item(0)) : null;
+                    
+                    NodeList elements8 = serviceResourcesElement.getElementsByTagName("StateId");
+                    Element stateIdElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
                     if (stateIdElement != null) {
                         int stateIdInstance;
-                        stateIdInstance = DatatypeConverter
-                                .parseInt(stateIdElement.getTextContent());
+                        stateIdInstance = DatatypeConverter.parseInt(stateIdElement.getTextContent());
                         serviceResourceInstance.setStateId(stateIdInstance);
                     }
-
-                    NodeList elements9 = serviceResourcesElement
-                            .getElementsByTagName("SessionActivityId");
-                    Element sessionActivityIdElement = elements9.getLength() > 0 ? ((Element) elements9
-                            .item(0)) : null;
+                    
+                    NodeList elements9 = serviceResourcesElement.getElementsByTagName("SessionActivityId");
+                    Element sessionActivityIdElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
                     if (sessionActivityIdElement != null) {
                         String sessionActivityIdInstance;
-                        sessionActivityIdInstance = sessionActivityIdElement
-                                .getTextContent();
-                        serviceResourceInstance
-                                .setSessionActivityId(sessionActivityIdInstance);
+                        sessionActivityIdInstance = sessionActivityIdElement.getTextContent();
+                        serviceResourceInstance.setSessionActivityId(sessionActivityIdInstance);
                     }
-
-                    NodeList elements10 = serviceResourcesElement
-                            .getElementsByTagName("DatabaseName");
-                    Element databaseNameElement = elements10.getLength() > 0 ? ((Element) elements10
-                            .item(0)) : null;
+                    
+                    NodeList elements10 = serviceResourcesElement.getElementsByTagName("DatabaseName");
+                    Element databaseNameElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
                     if (databaseNameElement != null) {
                         String databaseNameInstance;
-                        databaseNameInstance = databaseNameElement
-                                .getTextContent();
-                        serviceResourceInstance
-                                .setDatabaseName(databaseNameInstance);
+                        databaseNameInstance = databaseNameElement.getTextContent();
+                        serviceResourceInstance.setDatabaseName(databaseNameInstance);
                     }
-
-                    NodeList elements11 = serviceResourcesElement
-                            .getElementsByTagName("PercentComplete");
-                    Element percentCompleteElement = elements11.getLength() > 0 ? ((Element) elements11
-                            .item(0)) : null;
+                    
+                    NodeList elements11 = serviceResourcesElement.getElementsByTagName("PercentComplete");
+                    Element percentCompleteElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
                     if (percentCompleteElement != null) {
                         int percentCompleteInstance;
-                        percentCompleteInstance = DatatypeConverter
-                                .parseInt(percentCompleteElement
-                                        .getTextContent());
-                        serviceResourceInstance
-                                .setPercentComplete(percentCompleteInstance);
+                        percentCompleteInstance = DatatypeConverter.parseInt(percentCompleteElement.getTextContent());
+                        serviceResourceInstance.setPercentComplete(percentCompleteInstance);
                     }
-
-                    NodeList elements12 = serviceResourcesElement
-                            .getElementsByTagName("ErrorCode");
-                    Element errorCodeElement = elements12.getLength() > 0 ? ((Element) elements12
-                            .item(0)) : null;
+                    
+                    NodeList elements12 = serviceResourcesElement.getElementsByTagName("ErrorCode");
+                    Element errorCodeElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
                     if (errorCodeElement != null) {
                         int errorCodeInstance;
-                        errorCodeInstance = DatatypeConverter
-                                .parseInt(errorCodeElement.getTextContent());
+                        errorCodeInstance = DatatypeConverter.parseInt(errorCodeElement.getTextContent());
                         serviceResourceInstance.setErrorCode(errorCodeInstance);
                     }
-
-                    NodeList elements13 = serviceResourcesElement
-                            .getElementsByTagName("Error");
-                    Element errorElement = elements13.getLength() > 0 ? ((Element) elements13
-                            .item(0)) : null;
+                    
+                    NodeList elements13 = serviceResourcesElement.getElementsByTagName("Error");
+                    Element errorElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
                     if (errorElement != null) {
                         String errorInstance;
                         errorInstance = errorElement.getTextContent();
                         serviceResourceInstance.setError(errorInstance);
                     }
-
-                    NodeList elements14 = serviceResourcesElement
-                            .getElementsByTagName("ErrorSeverity");
-                    Element errorSeverityElement = elements14.getLength() > 0 ? ((Element) elements14
-                            .item(0)) : null;
+                    
+                    NodeList elements14 = serviceResourcesElement.getElementsByTagName("ErrorSeverity");
+                    Element errorSeverityElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
                     if (errorSeverityElement != null) {
                         int errorSeverityInstance;
-                        errorSeverityInstance = DatatypeConverter
-                                .parseInt(errorSeverityElement.getTextContent());
-                        serviceResourceInstance
-                                .setErrorSeverity(errorSeverityInstance);
+                        errorSeverityInstance = DatatypeConverter.parseInt(errorSeverityElement.getTextContent());
+                        serviceResourceInstance.setErrorSeverity(errorSeverityInstance);
                     }
-
-                    NodeList elements15 = serviceResourcesElement
-                            .getElementsByTagName("ErrorState");
-                    Element errorStateElement = elements15.getLength() > 0 ? ((Element) elements15
-                            .item(0)) : null;
+                    
+                    NodeList elements15 = serviceResourcesElement.getElementsByTagName("ErrorState");
+                    Element errorStateElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
                     if (errorStateElement != null) {
                         int errorStateInstance;
-                        errorStateInstance = DatatypeConverter
-                                .parseInt(errorStateElement.getTextContent());
-                        serviceResourceInstance
-                                .setErrorState(errorStateInstance);
+                        errorStateInstance = DatatypeConverter.parseInt(errorStateElement.getTextContent());
+                        serviceResourceInstance.setErrorState(errorStateInstance);
                     }
-
-                    NodeList elements16 = serviceResourcesElement
-                            .getElementsByTagName("StartTime");
-                    Element startTimeElement = elements16.getLength() > 0 ? ((Element) elements16
-                            .item(0)) : null;
+                    
+                    NodeList elements16 = serviceResourcesElement.getElementsByTagName("StartTime");
+                    Element startTimeElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
                     if (startTimeElement != null) {
                         Calendar startTimeInstance;
-                        startTimeInstance = DatatypeConverter
-                                .parseDateTime(startTimeElement
-                                        .getTextContent());
+                        startTimeInstance = DatatypeConverter.parseDateTime(startTimeElement.getTextContent());
                         serviceResourceInstance.setStartTime(startTimeInstance);
                     }
-
-                    NodeList elements17 = serviceResourcesElement
-                            .getElementsByTagName("LastModifyTime");
-                    Element lastModifyTimeElement = elements17.getLength() > 0 ? ((Element) elements17
-                            .item(0)) : null;
+                    
+                    NodeList elements17 = serviceResourcesElement.getElementsByTagName("LastModifyTime");
+                    Element lastModifyTimeElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
                     if (lastModifyTimeElement != null) {
                         Calendar lastModifyTimeInstance;
-                        lastModifyTimeInstance = DatatypeConverter
-                                .parseDateTime(lastModifyTimeElement
-                                        .getTextContent());
-                        serviceResourceInstance
-                                .setLastModifyTime(lastModifyTimeInstance);
+                        lastModifyTimeInstance = DatatypeConverter.parseDateTime(lastModifyTimeElement.getTextContent());
+                        serviceResourceInstance.setLastModifyTime(lastModifyTimeInstance);
                     }
                 }
             }
-
+            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader(
-                        "x-ms-request-id").getValue());
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
@@ -706,56 +564,46 @@ public class DatabaseOperationOperationsImpl implements
             }
         }
     }
-
+    
     /**
-     * Returns the list database operations for a given server.
-     * 
-     * @param serverName
-     *            The name of the SQL Server to be queried.
-     * @return Response containing the list of database operations for a given
-     *         server or database.
-     */
+    * Returns the list database operations for a given server.
+    *
+    * @param serverName The name of the SQL Server to be queried.
+    * @return Response containing the list of database operations for a given
+    * server or database.
+    */
     @Override
-    public Future<DatabaseOperationListResponse> listByServerAsync(
-            final String serverName) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<DatabaseOperationListResponse>() {
-                    @Override
-                    public DatabaseOperationListResponse call()
-                            throws Exception {
-                        return listByServer(serverName);
-                    }
-                });
+    public Future<DatabaseOperationListResponse> listByServerAsync(final String serverName) {
+        return this.getClient().getExecutorService().submit(new Callable<DatabaseOperationListResponse>() { 
+            @Override
+            public DatabaseOperationListResponse call() throws Exception {
+                return listByServer(serverName);
+            }
+         });
     }
-
+    
     /**
-     * Returns the list database operations for a given server.
-     * 
-     * @param serverName
-     *            The name of the SQL Server to be queried.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @throws ParserConfigurationException
-     *             Thrown if there was a serious configuration error with the
-     *             document parser.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the XML response.
-     * @return Response containing the list of database operations for a given
-     *         server or database.
-     */
+    * Returns the list database operations for a given server.
+    *
+    * @param serverName The name of the SQL Server to be queried.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return Response containing the list of database operations for a given
+    * server or database.
+    */
     @Override
-    public DatabaseOperationListResponse listByServer(String serverName)
-            throws IOException, ServiceException, ParserConfigurationException,
-            SAXException {
+    public DatabaseOperationListResponse listByServer(String serverName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
         // Validate
         if (serverName == null) {
             throw new NullPointerException("serverName");
         }
-
+        
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -763,255 +611,190 @@ public class DatabaseOperationOperationsImpl implements
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serverName", serverName);
-            CloudTracing.enter(invocationId, this, "listByServerAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "listByServerAsync", tracingParameters);
         }
-
+        
         // Construct URL
-        String url = this.getClient().getBaseUri()
-                + this.getClient().getCredentials().getSubscriptionId()
-                + "/services/sqlservers/servers/" + serverName
-                + "/databaseoperations" + "?" + "contentview=generic";
-
+        String url = this.getClient().getBaseUri() + this.getClient().getCredentials().getSubscriptionId() + "/services/sqlservers/servers/" + serverName + "/databaseoperations" + "?" + "contentview=generic";
+        
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
-
+        
         // Set Headers
         httpRequest.setHeader("x-ms-version", "2012-03-01");
-
+        
         // Send Request
         HttpResponse httpResponse = null;
         try {
             if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient()
-                    .execute(httpRequest);
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
             if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_OK) {
-                ServiceException ex = ServiceException.createFromXml(
-                        httpRequest, null, httpResponse,
-                        httpResponse.getEntity());
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-
+            
             // Create Result
             DatabaseOperationListResponse result = null;
             // Deserialize Response
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new DatabaseOperationListResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
-                    .newInstance();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory
-                    .newDocumentBuilder();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
-
-            NodeList elements = responseDoc
-                    .getElementsByTagName("ServiceResources");
-            Element serviceResourcesSequenceElement = elements.getLength() > 0 ? ((Element) elements
-                    .item(0)) : null;
+            
+            NodeList elements = responseDoc.getElementsByTagName("ServiceResources");
+            Element serviceResourcesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (serviceResourcesSequenceElement != null) {
-                for (int i1 = 0; i1 < serviceResourcesSequenceElement
-                        .getElementsByTagName("ServiceResource").getLength(); i1 = i1 + 1) {
-                    org.w3c.dom.Element serviceResourcesElement = ((org.w3c.dom.Element) serviceResourcesSequenceElement
-                            .getElementsByTagName("ServiceResource").item(i1));
+                for (int i1 = 0; i1 < serviceResourcesSequenceElement.getElementsByTagName("ServiceResource").getLength(); i1 = i1 + 1) {
+                    org.w3c.dom.Element serviceResourcesElement = ((org.w3c.dom.Element) serviceResourcesSequenceElement.getElementsByTagName("ServiceResource").item(i1));
                     DatabaseOperationListResponse.DatabaseOperation serviceResourceInstance = new DatabaseOperationListResponse.DatabaseOperation();
                     result.getDatabaseOperations().add(serviceResourceInstance);
-
-                    NodeList elements2 = serviceResourcesElement
-                            .getElementsByTagName("Name");
-                    Element nameElement = elements2.getLength() > 0 ? ((Element) elements2
-                            .item(0)) : null;
+                    
+                    NodeList elements2 = serviceResourcesElement.getElementsByTagName("Name");
+                    Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                     if (nameElement != null) {
                         String nameInstance;
                         nameInstance = nameElement.getTextContent();
                         serviceResourceInstance.setName(nameInstance);
                     }
-
-                    NodeList elements3 = serviceResourcesElement
-                            .getElementsByTagName("Type");
-                    Element typeElement = elements3.getLength() > 0 ? ((Element) elements3
-                            .item(0)) : null;
+                    
+                    NodeList elements3 = serviceResourcesElement.getElementsByTagName("Type");
+                    Element typeElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                     if (typeElement != null) {
                         String typeInstance;
                         typeInstance = typeElement.getTextContent();
                         serviceResourceInstance.setType(typeInstance);
                     }
-
-                    NodeList elements4 = serviceResourcesElement
-                            .getElementsByTagName("State");
-                    Element stateElement = elements4.getLength() > 0 ? ((Element) elements4
-                            .item(0)) : null;
+                    
+                    NodeList elements4 = serviceResourcesElement.getElementsByTagName("State");
+                    Element stateElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                     if (stateElement != null) {
                         String stateInstance;
                         stateInstance = stateElement.getTextContent();
                         serviceResourceInstance.setState(stateInstance);
                     }
-
-                    NodeList elements5 = serviceResourcesElement
-                            .getElementsByTagName("SelfLink");
-                    Element selfLinkElement = elements5.getLength() > 0 ? ((Element) elements5
-                            .item(0)) : null;
+                    
+                    NodeList elements5 = serviceResourcesElement.getElementsByTagName("SelfLink");
+                    Element selfLinkElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                     if (selfLinkElement != null) {
                         String selfLinkInstance;
                         selfLinkInstance = selfLinkElement.getTextContent();
                         serviceResourceInstance.setSelfLink(selfLinkInstance);
                     }
-
-                    NodeList elements6 = serviceResourcesElement
-                            .getElementsByTagName("ParentLink");
-                    Element parentLinkElement = elements6.getLength() > 0 ? ((Element) elements6
-                            .item(0)) : null;
+                    
+                    NodeList elements6 = serviceResourcesElement.getElementsByTagName("ParentLink");
+                    Element parentLinkElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                     if (parentLinkElement != null) {
                         String parentLinkInstance;
                         parentLinkInstance = parentLinkElement.getTextContent();
-                        serviceResourceInstance
-                                .setParentLink(parentLinkInstance);
+                        serviceResourceInstance.setParentLink(parentLinkInstance);
                     }
-
-                    NodeList elements7 = serviceResourcesElement
-                            .getElementsByTagName("Id");
-                    Element idElement = elements7.getLength() > 0 ? ((Element) elements7
-                            .item(0)) : null;
+                    
+                    NodeList elements7 = serviceResourcesElement.getElementsByTagName("Id");
+                    Element idElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                     if (idElement != null) {
                         String idInstance;
                         idInstance = idElement.getTextContent();
                         serviceResourceInstance.setId(idInstance);
                     }
-
-                    NodeList elements8 = serviceResourcesElement
-                            .getElementsByTagName("StateId");
-                    Element stateIdElement = elements8.getLength() > 0 ? ((Element) elements8
-                            .item(0)) : null;
+                    
+                    NodeList elements8 = serviceResourcesElement.getElementsByTagName("StateId");
+                    Element stateIdElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
                     if (stateIdElement != null) {
                         int stateIdInstance;
-                        stateIdInstance = DatatypeConverter
-                                .parseInt(stateIdElement.getTextContent());
+                        stateIdInstance = DatatypeConverter.parseInt(stateIdElement.getTextContent());
                         serviceResourceInstance.setStateId(stateIdInstance);
                     }
-
-                    NodeList elements9 = serviceResourcesElement
-                            .getElementsByTagName("SessionActivityId");
-                    Element sessionActivityIdElement = elements9.getLength() > 0 ? ((Element) elements9
-                            .item(0)) : null;
+                    
+                    NodeList elements9 = serviceResourcesElement.getElementsByTagName("SessionActivityId");
+                    Element sessionActivityIdElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
                     if (sessionActivityIdElement != null) {
                         String sessionActivityIdInstance;
-                        sessionActivityIdInstance = sessionActivityIdElement
-                                .getTextContent();
-                        serviceResourceInstance
-                                .setSessionActivityId(sessionActivityIdInstance);
+                        sessionActivityIdInstance = sessionActivityIdElement.getTextContent();
+                        serviceResourceInstance.setSessionActivityId(sessionActivityIdInstance);
                     }
-
-                    NodeList elements10 = serviceResourcesElement
-                            .getElementsByTagName("DatabaseName");
-                    Element databaseNameElement = elements10.getLength() > 0 ? ((Element) elements10
-                            .item(0)) : null;
+                    
+                    NodeList elements10 = serviceResourcesElement.getElementsByTagName("DatabaseName");
+                    Element databaseNameElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
                     if (databaseNameElement != null) {
                         String databaseNameInstance;
-                        databaseNameInstance = databaseNameElement
-                                .getTextContent();
-                        serviceResourceInstance
-                                .setDatabaseName(databaseNameInstance);
+                        databaseNameInstance = databaseNameElement.getTextContent();
+                        serviceResourceInstance.setDatabaseName(databaseNameInstance);
                     }
-
-                    NodeList elements11 = serviceResourcesElement
-                            .getElementsByTagName("PercentComplete");
-                    Element percentCompleteElement = elements11.getLength() > 0 ? ((Element) elements11
-                            .item(0)) : null;
+                    
+                    NodeList elements11 = serviceResourcesElement.getElementsByTagName("PercentComplete");
+                    Element percentCompleteElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
                     if (percentCompleteElement != null) {
                         int percentCompleteInstance;
-                        percentCompleteInstance = DatatypeConverter
-                                .parseInt(percentCompleteElement
-                                        .getTextContent());
-                        serviceResourceInstance
-                                .setPercentComplete(percentCompleteInstance);
+                        percentCompleteInstance = DatatypeConverter.parseInt(percentCompleteElement.getTextContent());
+                        serviceResourceInstance.setPercentComplete(percentCompleteInstance);
                     }
-
-                    NodeList elements12 = serviceResourcesElement
-                            .getElementsByTagName("ErrorCode");
-                    Element errorCodeElement = elements12.getLength() > 0 ? ((Element) elements12
-                            .item(0)) : null;
+                    
+                    NodeList elements12 = serviceResourcesElement.getElementsByTagName("ErrorCode");
+                    Element errorCodeElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
                     if (errorCodeElement != null) {
                         int errorCodeInstance;
-                        errorCodeInstance = DatatypeConverter
-                                .parseInt(errorCodeElement.getTextContent());
+                        errorCodeInstance = DatatypeConverter.parseInt(errorCodeElement.getTextContent());
                         serviceResourceInstance.setErrorCode(errorCodeInstance);
                     }
-
-                    NodeList elements13 = serviceResourcesElement
-                            .getElementsByTagName("Error");
-                    Element errorElement = elements13.getLength() > 0 ? ((Element) elements13
-                            .item(0)) : null;
+                    
+                    NodeList elements13 = serviceResourcesElement.getElementsByTagName("Error");
+                    Element errorElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
                     if (errorElement != null) {
                         String errorInstance;
                         errorInstance = errorElement.getTextContent();
                         serviceResourceInstance.setError(errorInstance);
                     }
-
-                    NodeList elements14 = serviceResourcesElement
-                            .getElementsByTagName("ErrorSeverity");
-                    Element errorSeverityElement = elements14.getLength() > 0 ? ((Element) elements14
-                            .item(0)) : null;
+                    
+                    NodeList elements14 = serviceResourcesElement.getElementsByTagName("ErrorSeverity");
+                    Element errorSeverityElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
                     if (errorSeverityElement != null) {
                         int errorSeverityInstance;
-                        errorSeverityInstance = DatatypeConverter
-                                .parseInt(errorSeverityElement.getTextContent());
-                        serviceResourceInstance
-                                .setErrorSeverity(errorSeverityInstance);
+                        errorSeverityInstance = DatatypeConverter.parseInt(errorSeverityElement.getTextContent());
+                        serviceResourceInstance.setErrorSeverity(errorSeverityInstance);
                     }
-
-                    NodeList elements15 = serviceResourcesElement
-                            .getElementsByTagName("ErrorState");
-                    Element errorStateElement = elements15.getLength() > 0 ? ((Element) elements15
-                            .item(0)) : null;
+                    
+                    NodeList elements15 = serviceResourcesElement.getElementsByTagName("ErrorState");
+                    Element errorStateElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
                     if (errorStateElement != null) {
                         int errorStateInstance;
-                        errorStateInstance = DatatypeConverter
-                                .parseInt(errorStateElement.getTextContent());
-                        serviceResourceInstance
-                                .setErrorState(errorStateInstance);
+                        errorStateInstance = DatatypeConverter.parseInt(errorStateElement.getTextContent());
+                        serviceResourceInstance.setErrorState(errorStateInstance);
                     }
-
-                    NodeList elements16 = serviceResourcesElement
-                            .getElementsByTagName("StartTime");
-                    Element startTimeElement = elements16.getLength() > 0 ? ((Element) elements16
-                            .item(0)) : null;
+                    
+                    NodeList elements16 = serviceResourcesElement.getElementsByTagName("StartTime");
+                    Element startTimeElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
                     if (startTimeElement != null) {
                         Calendar startTimeInstance;
-                        startTimeInstance = DatatypeConverter
-                                .parseDateTime(startTimeElement
-                                        .getTextContent());
+                        startTimeInstance = DatatypeConverter.parseDateTime(startTimeElement.getTextContent());
                         serviceResourceInstance.setStartTime(startTimeInstance);
                     }
-
-                    NodeList elements17 = serviceResourcesElement
-                            .getElementsByTagName("LastModifyTime");
-                    Element lastModifyTimeElement = elements17.getLength() > 0 ? ((Element) elements17
-                            .item(0)) : null;
+                    
+                    NodeList elements17 = serviceResourcesElement.getElementsByTagName("LastModifyTime");
+                    Element lastModifyTimeElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
                     if (lastModifyTimeElement != null) {
                         Calendar lastModifyTimeInstance;
-                        lastModifyTimeInstance = DatatypeConverter
-                                .parseDateTime(lastModifyTimeElement
-                                        .getTextContent());
-                        serviceResourceInstance
-                                .setLastModifyTime(lastModifyTimeInstance);
+                        lastModifyTimeInstance = DatatypeConverter.parseDateTime(lastModifyTimeElement.getTextContent());
+                        serviceResourceInstance.setLastModifyTime(lastModifyTimeInstance);
                     }
                 }
             }
-
+            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader(
-                        "x-ms-request-id").getValue());
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }

@@ -25,8 +25,8 @@ package com.microsoft.windowsazure.management.websites.models;
 
 public enum ServerFarmWorkerSize {
     Small,
-
+    
     Medium,
-
+    
     Large,
 }

@@ -26,22 +26,21 @@ package com.microsoft.windowsazure.management.virtualnetworks.models;
 import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
- * A standard storage response including an HTTP status code and request ID.
- */
+* A standard storage response including an HTTP status code and request ID.
+*/
 public class GatewayOperationResponse extends OperationResponse {
     private String operationId;
-
+    
     /**
-     * @return The OperationId value.
-     */
+    * @return The OperationId value.
+    */
     public String getOperationId() {
         return this.operationId;
     }
-
+    
     /**
-     * @param operationIdValue
-     *            The OperationId value.
-     */
+    * @param operationIdValue The OperationId value.
+    */
     public void setOperationId(final String operationIdValue) {
         this.operationId = operationIdValue;
     }

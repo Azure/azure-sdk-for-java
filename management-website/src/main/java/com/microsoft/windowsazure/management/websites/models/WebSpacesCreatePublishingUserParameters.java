@@ -24,68 +24,59 @@
 package com.microsoft.windowsazure.management.websites.models;
 
 /**
- * Parameters supplied to the Create Publishing User operation.
- */
+* Parameters supplied to the Create Publishing User operation.
+*/
 public class WebSpacesCreatePublishingUserParameters {
     private String name;
-
+    
     /**
-     * Optional. The publishing user name
-     * 
-     * @return The Name value.
-     */
+    * Optional. The publishing user name
+    * @return The Name value.
+    */
     public String getName() {
         return this.name;
     }
-
+    
     /**
-     * Optional. The publishing user name
-     * 
-     * @param nameValue
-     *            The Name value.
-     */
+    * Optional. The publishing user name
+    * @param nameValue The Name value.
+    */
     public void setName(final String nameValue) {
         this.name = nameValue;
     }
-
+    
     private String publishingPassword;
-
+    
     /**
-     * Required. The publishing user password
-     * 
-     * @return The PublishingPassword value.
-     */
+    * Required. The publishing user password
+    * @return The PublishingPassword value.
+    */
     public String getPublishingPassword() {
         return this.publishingPassword;
     }
-
+    
     /**
-     * Required. The publishing user password
-     * 
-     * @param publishingPasswordValue
-     *            The PublishingPassword value.
-     */
+    * Required. The publishing user password
+    * @param publishingPasswordValue The PublishingPassword value.
+    */
     public void setPublishingPassword(final String publishingPasswordValue) {
         this.publishingPassword = publishingPasswordValue;
     }
-
+    
     private String publishingUserName;
-
+    
     /**
-     * Required. The publishing user username
-     * 
-     * @return The PublishingUserName value.
-     */
+    * Required. The publishing user username
+    * @return The PublishingUserName value.
+    */
     public String getPublishingUserName() {
         return this.publishingUserName;
     }
-
+    
     /**
-     * Required. The publishing user username
-     * 
-     * @param publishingUserNameValue
-     *            The PublishingUserName value.
-     */
+    * Required. The publishing user username
+    * @param publishingUserNameValue The PublishingUserName value.
+    */
     public void setPublishingUserName(final String publishingUserNameValue) {
         this.publishingUserName = publishingUserNameValue;
     }

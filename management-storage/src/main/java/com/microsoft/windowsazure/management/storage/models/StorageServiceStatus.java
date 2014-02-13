@@ -24,26 +24,26 @@
 package com.microsoft.windowsazure.management.storage.models;
 
 /**
- * The status of the storage account at the time the operation was called.
- */
+* The status of the storage account at the time the operation was called.
+*/
 public enum StorageServiceStatus {
     /**
-     * The Storage Account had been created.
-     */
+    * The Storage Account had been created.
+    */
     Created,
-
+    
     /**
-     * The Storage Account is being created.
-     */
+    * The Storage Account is being created.
+    */
     Creating,
-
+    
     /**
-     * The DNS name for the storage account is being propagated.
-     */
+    * The DNS name for the storage account is being propagated.
+    */
     ResolvingDns,
-
+    
     /**
-     * The Storage Account is being deleted.
-     */
+    * The Storage Account is being deleted.
+    */
     Deleting,
 }

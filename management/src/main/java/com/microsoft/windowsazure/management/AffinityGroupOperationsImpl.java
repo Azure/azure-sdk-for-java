@@ -61,91 +61,80 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
- * Operations for managing affinity groups beneath your subscription. (see
- * http://msdn.microsoft.com/en-us/library/windowsazure/ee460798.aspx for more
- * information)
- */
-public class AffinityGroupOperationsImpl implements
-        ServiceOperations<ManagementClientImpl>, AffinityGroupOperations {
+* Operations for managing affinity groups beneath your subscription.  (see
+* http://msdn.microsoft.com/en-us/library/windowsazure/ee460798.aspx for more
+* information)
+*/
+public class AffinityGroupOperationsImpl implements ServiceOperations<ManagementClientImpl>, AffinityGroupOperations {
     /**
-     * Initializes a new instance of the AffinityGroupOperationsImpl class.
-     * 
-     * @param client
-     *            Reference to the service client.
-     */
+    * Initializes a new instance of the AffinityGroupOperationsImpl class.
+    *
+    * @param client Reference to the service client.
+    */
     AffinityGroupOperationsImpl(ManagementClientImpl client) {
         this.client = client;
     }
-
+    
     private ManagementClientImpl client;
-
+    
     /**
-     * Gets a reference to the
-     * microsoft.windowsazure.management.ManagementClientImpl.
-     * 
-     * @return The Client value.
-     */
+    * Gets a reference to the
+    * microsoft.windowsazure.management.ManagementClientImpl.
+    * @return The Client value.
+    */
     public ManagementClientImpl getClient() {
         return this.client;
     }
-
+    
     /**
-     * The Create Affinity Group operation creates a new affinity group for the
-     * specified subscription. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715317.aspx for
-     * more information)
-     * 
-     * @param parameters
-     *            Parameters supplied to the Create Affinity Group operation.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * The Create Affinity Group operation creates a new affinity group for the
+    * specified subscription.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/gg715317.aspx for
+    * more information)
+    *
+    * @param parameters Parameters supplied to the Create Affinity Group
+    * operation.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public Future<OperationResponse> createAsync(
-            final AffinityGroupCreateParameters parameters) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<OperationResponse>() {
-                    @Override
-                    public OperationResponse call() throws Exception {
-                        return create(parameters);
-                    }
-                });
+    public Future<OperationResponse> createAsync(final AffinityGroupCreateParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception {
+                return create(parameters);
+            }
+         });
     }
-
+    
     /**
-     * The Create Affinity Group operation creates a new affinity group for the
-     * specified subscription. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715317.aspx for
-     * more information)
-     * 
-     * @param parameters
-     *            Parameters supplied to the Create Affinity Group operation.
-     * @throws ParserConfigurationException
-     *             Thrown if there was an error configuring the parser for the
-     *             response body.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the response body.
-     * @throws TransformerException
-     *             Thrown if there was an error creating the DOM transformer.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * The Create Affinity Group operation creates a new affinity group for the
+    * specified subscription.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/gg715317.aspx for
+    * more information)
+    *
+    * @param parameters Parameters supplied to the Create Affinity Group
+    * operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public OperationResponse create(AffinityGroupCreateParameters parameters)
-            throws ParserConfigurationException, SAXException,
-            TransformerException, IOException, ServiceException {
+    public OperationResponse create(AffinityGroupCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
         if (parameters == null) {
             throw new NullPointerException("parameters");
         }
-        if (parameters.getDescription() != null
-                && parameters.getDescription().length() > 1024) {
+        if (parameters.getDescription() != null && parameters.getDescription().length() > 1024) {
             throw new IllegalArgumentException("parameters.Description");
         }
         if (parameters.getLabel() == null) {
@@ -160,7 +149,7 @@ public class AffinityGroupOperationsImpl implements
         if (parameters.getName() == null) {
             throw new NullPointerException("parameters.Name");
         }
-
+        
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -168,104 +157,84 @@ public class AffinityGroupOperationsImpl implements
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this, "createAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "createAsync", tracingParameters);
         }
-
+        
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/"
-                + this.getClient().getCredentials().getSubscriptionId()
-                + "/affinitygroups";
-
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/affinitygroups";
+        
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
-
+        
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
         httpRequest.setHeader("x-ms-version", "2013-03-01");
-
+        
         // Serialize Request
         String requestContent = null;
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
-                .newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory
-                .newDocumentBuilder();
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
         Document requestDoc = documentBuilder.newDocument();
-
-        Element createAffinityGroupElement = requestDoc.createElementNS(
-                "http://schemas.microsoft.com/windowsazure",
-                "CreateAffinityGroup");
+        
+        Element createAffinityGroupElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CreateAffinityGroup");
         requestDoc.appendChild(createAffinityGroupElement);
-
-        Element nameElement = requestDoc.createElementNS(
-                "http://schemas.microsoft.com/windowsazure", "Name");
-        nameElement
-                .appendChild(requestDoc.createTextNode(parameters.getName()));
+        
+        Element nameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+        nameElement.appendChild(requestDoc.createTextNode(parameters.getName()));
         createAffinityGroupElement.appendChild(nameElement);
-
-        Element labelElement = requestDoc.createElementNS(
-                "http://schemas.microsoft.com/windowsazure", "Label");
-        labelElement.appendChild(requestDoc.createTextNode(new String(Base64
-                .encodeBase64(parameters.getLabel().getBytes()))));
+        
+        Element labelElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Label");
+        labelElement.appendChild(requestDoc.createTextNode(new String(Base64.encodeBase64(parameters.getLabel().getBytes()))));
         createAffinityGroupElement.appendChild(labelElement);
-
+        
         if (parameters.getDescription() != null) {
-            Element descriptionElement = requestDoc.createElementNS(
-                    "http://schemas.microsoft.com/windowsazure", "Description");
-            descriptionElement.appendChild(requestDoc.createTextNode(parameters
-                    .getDescription()));
+            Element descriptionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Description");
+            descriptionElement.appendChild(requestDoc.createTextNode(parameters.getDescription()));
             createAffinityGroupElement.appendChild(descriptionElement);
         }
-
-        Element locationElement = requestDoc.createElementNS(
-                "http://schemas.microsoft.com/windowsazure", "Location");
-        locationElement.appendChild(requestDoc.createTextNode(parameters
-                .getLocation()));
+        
+        Element locationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Location");
+        locationElement.appendChild(requestDoc.createTextNode(parameters.getLocation()));
         createAffinityGroupElement.appendChild(locationElement);
-
+        
         DOMSource domSource = new DOMSource(requestDoc);
         StringWriter stringWriter = new StringWriter();
         StreamResult streamResult = new StreamResult(stringWriter);
-        TransformerFactory transformerFactory = TransformerFactory
-                .newInstance();
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = transformerFactory.newTransformer();
         transformer.transform(domSource, streamResult);
         requestContent = stringWriter.toString();
         StringEntity entity = new StringEntity(requestContent);
         httpRequest.setEntity(entity);
         httpRequest.setHeader("Content-Type", "application/xml");
-
+        
         // Send Request
         HttpResponse httpResponse = null;
         try {
             if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient()
-                    .execute(httpRequest);
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
             if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_CREATED) {
-                ServiceException ex = ServiceException.createFromXml(
-                        httpRequest, requestContent, httpResponse,
-                        httpResponse.getEntity());
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-
+            
             // Create Result
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader(
-                        "x-ms-request-id").getValue());
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
@@ -276,54 +245,48 @@ public class AffinityGroupOperationsImpl implements
             }
         }
     }
-
+    
     /**
-     * The Delete Affinity Group operation deletes an affinity group in the
-     * specified subscription. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715314.aspx for
-     * more information)
-     * 
-     * @param affinityGroupName
-     *            The name of your affinity group.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * The Delete Affinity Group operation deletes an affinity group in the
+    * specified subscription.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/gg715314.aspx for
+    * more information)
+    *
+    * @param affinityGroupName The name of your affinity group.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
     public Future<OperationResponse> deleteAsync(final String affinityGroupName) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<OperationResponse>() {
-                    @Override
-                    public OperationResponse call() throws Exception {
-                        return delete(affinityGroupName);
-                    }
-                });
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception {
+                return delete(affinityGroupName);
+            }
+         });
     }
-
+    
     /**
-     * The Delete Affinity Group operation deletes an affinity group in the
-     * specified subscription. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715314.aspx for
-     * more information)
-     * 
-     * @param affinityGroupName
-     *            The name of your affinity group.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * The Delete Affinity Group operation deletes an affinity group in the
+    * specified subscription.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/gg715314.aspx for
+    * more information)
+    *
+    * @param affinityGroupName The name of your affinity group.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public OperationResponse delete(String affinityGroupName)
-            throws IOException, ServiceException {
+    public OperationResponse delete(String affinityGroupName) throws IOException, ServiceException {
         // Validate
         if (affinityGroupName == null) {
             throw new NullPointerException("affinityGroupName");
         }
-
+        
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -331,52 +294,45 @@ public class AffinityGroupOperationsImpl implements
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("affinityGroupName", affinityGroupName);
-            CloudTracing.enter(invocationId, this, "deleteAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "deleteAsync", tracingParameters);
         }
-
+        
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/"
-                + this.getClient().getCredentials().getSubscriptionId()
-                + "/affinitygroups/" + affinityGroupName;
-
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/affinitygroups/" + affinityGroupName;
+        
         // Create HTTP transport objects
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
-
+        
         // Set Headers
         httpRequest.setHeader("x-ms-version", "2013-03-01");
-
+        
         // Send Request
         HttpResponse httpResponse = null;
         try {
             if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient()
-                    .execute(httpRequest);
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
             if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_OK) {
-                ServiceException ex = ServiceException.createFromXml(
-                        httpRequest, null, httpResponse,
-                        httpResponse.getEntity());
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-
+            
             // Create Result
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader(
-                        "x-ms-request-id").getValue());
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
@@ -387,63 +343,54 @@ public class AffinityGroupOperationsImpl implements
             }
         }
     }
-
+    
     /**
-     * The Get Affinity Group Properties operation returns the system properties
-     * associated with the specified affinity group. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460789.aspx for
-     * more information)
-     * 
-     * @param affinityGroupName
-     *            The name of the desired affinity group as returned by the name
-     *            element of the List Affinity Groups operation.
-     * @return The Get Affinity Group operation response.
-     */
+    * The Get Affinity Group Properties operation returns the system properties
+    * associated with the specified affinity group.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460789.aspx for
+    * more information)
+    *
+    * @param affinityGroupName The name of the desired affinity group as
+    * returned by the name element of the List Affinity Groups operation.
+    * @return The Get Affinity Group operation response.
+    */
     @Override
-    public Future<AffinityGroupGetResponse> getAsync(
-            final String affinityGroupName) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<AffinityGroupGetResponse>() {
-                    @Override
-                    public AffinityGroupGetResponse call() throws Exception {
-                        return get(affinityGroupName);
-                    }
-                });
+    public Future<AffinityGroupGetResponse> getAsync(final String affinityGroupName) {
+        return this.getClient().getExecutorService().submit(new Callable<AffinityGroupGetResponse>() { 
+            @Override
+            public AffinityGroupGetResponse call() throws Exception {
+                return get(affinityGroupName);
+            }
+         });
     }
-
+    
     /**
-     * The Get Affinity Group Properties operation returns the system properties
-     * associated with the specified affinity group. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460789.aspx for
-     * more information)
-     * 
-     * @param affinityGroupName
-     *            The name of the desired affinity group as returned by the name
-     *            element of the List Affinity Groups operation.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @throws ParserConfigurationException
-     *             Thrown if there was a serious configuration error with the
-     *             document parser.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the XML response.
-     * @throws URISyntaxException
-     *             Thrown if there was an error parsing a URI in the response.
-     * @return The Get Affinity Group operation response.
-     */
+    * The Get Affinity Group Properties operation returns the system properties
+    * associated with the specified affinity group.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460789.aspx for
+    * more information)
+    *
+    * @param affinityGroupName The name of the desired affinity group as
+    * returned by the name element of the List Affinity Groups operation.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
+    * @return The Get Affinity Group operation response.
+    */
     @Override
-    public AffinityGroupGetResponse get(String affinityGroupName)
-            throws IOException, ServiceException, ParserConfigurationException,
-            SAXException, URISyntaxException {
+    public AffinityGroupGetResponse get(String affinityGroupName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException {
         // Validate
         if (affinityGroupName == null) {
             throw new NullPointerException("affinityGroupName");
         }
-
+        
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -451,196 +398,149 @@ public class AffinityGroupOperationsImpl implements
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("affinityGroupName", affinityGroupName);
-            CloudTracing.enter(invocationId, this, "getAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "getAsync", tracingParameters);
         }
-
+        
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/"
-                + this.getClient().getCredentials().getSubscriptionId()
-                + "/affinitygroups/" + affinityGroupName;
-
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/affinitygroups/" + affinityGroupName;
+        
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
-
+        
         // Set Headers
         httpRequest.setHeader("x-ms-version", "2013-03-01");
-
+        
         // Send Request
         HttpResponse httpResponse = null;
         try {
             if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient()
-                    .execute(httpRequest);
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
             if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_OK) {
-                ServiceException ex = ServiceException.createFromXml(
-                        httpRequest, null, httpResponse,
-                        httpResponse.getEntity());
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-
+            
             // Create Result
             AffinityGroupGetResponse result = null;
             // Deserialize Response
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new AffinityGroupGetResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
-                    .newInstance();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory
-                    .newDocumentBuilder();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
-
-            NodeList elements = responseDoc
-                    .getElementsByTagName("AffinityGroup");
-            Element affinityGroupElement = elements.getLength() > 0 ? ((Element) elements
-                    .item(0)) : null;
+            
+            NodeList elements = responseDoc.getElementsByTagName("AffinityGroup");
+            Element affinityGroupElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (affinityGroupElement != null) {
-                NodeList elements2 = affinityGroupElement
-                        .getElementsByTagName("Name");
-                Element nameElement = elements2.getLength() > 0 ? ((Element) elements2
-                        .item(0)) : null;
+                NodeList elements2 = affinityGroupElement.getElementsByTagName("Name");
+                Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                 if (nameElement != null) {
                     String nameInstance;
                     nameInstance = nameElement.getTextContent();
                     result.setName(nameInstance);
                 }
-
-                NodeList elements3 = affinityGroupElement
-                        .getElementsByTagName("Label");
-                Element labelElement = elements3.getLength() > 0 ? ((Element) elements3
-                        .item(0)) : null;
+                
+                NodeList elements3 = affinityGroupElement.getElementsByTagName("Label");
+                Element labelElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                 if (labelElement != null) {
                     String labelInstance;
-                    labelInstance = labelElement.getTextContent() != null ? new String(
-                            Base64.decodeBase64(labelElement.getTextContent()
-                                    .getBytes())) : null;
+                    labelInstance = labelElement.getTextContent() != null ? new String(Base64.decodeBase64(labelElement.getTextContent().getBytes())) : null;
                     result.setLabel(labelInstance);
                 }
-
-                NodeList elements4 = affinityGroupElement
-                        .getElementsByTagName("Description");
-                Element descriptionElement = elements4.getLength() > 0 ? ((Element) elements4
-                        .item(0)) : null;
+                
+                NodeList elements4 = affinityGroupElement.getElementsByTagName("Description");
+                Element descriptionElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                 if (descriptionElement != null) {
                     String descriptionInstance;
                     descriptionInstance = descriptionElement.getTextContent();
                     result.setDescription(descriptionInstance);
                 }
-
-                NodeList elements5 = affinityGroupElement
-                        .getElementsByTagName("Location");
-                Element locationElement = elements5.getLength() > 0 ? ((Element) elements5
-                        .item(0)) : null;
+                
+                NodeList elements5 = affinityGroupElement.getElementsByTagName("Location");
+                Element locationElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                 if (locationElement != null) {
                     String locationInstance;
                     locationInstance = locationElement.getTextContent();
                     result.setLocation(locationInstance);
                 }
-
-                NodeList elements6 = affinityGroupElement
-                        .getElementsByTagName("HostedServices");
-                Element hostedServicesSequenceElement = elements6.getLength() > 0 ? ((Element) elements6
-                        .item(0)) : null;
+                
+                NodeList elements6 = affinityGroupElement.getElementsByTagName("HostedServices");
+                Element hostedServicesSequenceElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                 if (hostedServicesSequenceElement != null) {
-                    for (int i1 = 0; i1 < hostedServicesSequenceElement
-                            .getElementsByTagName("HostedService").getLength(); i1 = i1 + 1) {
-                        org.w3c.dom.Element hostedServicesElement = ((org.w3c.dom.Element) hostedServicesSequenceElement
-                                .getElementsByTagName("HostedService").item(i1));
+                    for (int i1 = 0; i1 < hostedServicesSequenceElement.getElementsByTagName("HostedService").getLength(); i1 = i1 + 1) {
+                        org.w3c.dom.Element hostedServicesElement = ((org.w3c.dom.Element) hostedServicesSequenceElement.getElementsByTagName("HostedService").item(i1));
                         AffinityGroupGetResponse.HostedServiceReference hostedServiceInstance = new AffinityGroupGetResponse.HostedServiceReference();
                         result.getHostedServices().add(hostedServiceInstance);
-
-                        NodeList elements7 = hostedServicesElement
-                                .getElementsByTagName("Url");
-                        Element urlElement = elements7.getLength() > 0 ? ((Element) elements7
-                                .item(0)) : null;
+                        
+                        NodeList elements7 = hostedServicesElement.getElementsByTagName("Url");
+                        Element urlElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                         if (urlElement != null) {
                             URI urlInstance;
                             urlInstance = new URI(urlElement.getTextContent());
                             hostedServiceInstance.setUri(urlInstance);
                         }
-
-                        NodeList elements8 = hostedServicesElement
-                                .getElementsByTagName("ServiceName");
-                        Element serviceNameElement = elements8.getLength() > 0 ? ((Element) elements8
-                                .item(0)) : null;
+                        
+                        NodeList elements8 = hostedServicesElement.getElementsByTagName("ServiceName");
+                        Element serviceNameElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
                         if (serviceNameElement != null) {
                             String serviceNameInstance;
-                            serviceNameInstance = serviceNameElement
-                                    .getTextContent();
-                            hostedServiceInstance
-                                    .setServiceName(serviceNameInstance);
+                            serviceNameInstance = serviceNameElement.getTextContent();
+                            hostedServiceInstance.setServiceName(serviceNameInstance);
                         }
                     }
                 }
-
-                NodeList elements9 = affinityGroupElement
-                        .getElementsByTagName("StorageServices");
-                Element storageServicesSequenceElement = elements9.getLength() > 0 ? ((Element) elements9
-                        .item(0)) : null;
+                
+                NodeList elements9 = affinityGroupElement.getElementsByTagName("StorageServices");
+                Element storageServicesSequenceElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
                 if (storageServicesSequenceElement != null) {
-                    for (int i2 = 0; i2 < storageServicesSequenceElement
-                            .getElementsByTagName("StorageService").getLength(); i2 = i2 + 1) {
-                        org.w3c.dom.Element storageServicesElement = ((org.w3c.dom.Element) storageServicesSequenceElement
-                                .getElementsByTagName("StorageService")
-                                .item(i2));
+                    for (int i2 = 0; i2 < storageServicesSequenceElement.getElementsByTagName("StorageService").getLength(); i2 = i2 + 1) {
+                        org.w3c.dom.Element storageServicesElement = ((org.w3c.dom.Element) storageServicesSequenceElement.getElementsByTagName("StorageService").item(i2));
                         AffinityGroupGetResponse.StorageServiceReference storageServiceInstance = new AffinityGroupGetResponse.StorageServiceReference();
                         result.getStorageServices().add(storageServiceInstance);
-
-                        NodeList elements10 = storageServicesElement
-                                .getElementsByTagName("Url");
-                        Element urlElement2 = elements10.getLength() > 0 ? ((Element) elements10
-                                .item(0)) : null;
+                        
+                        NodeList elements10 = storageServicesElement.getElementsByTagName("Url");
+                        Element urlElement2 = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
                         if (urlElement2 != null) {
                             URI urlInstance2;
                             urlInstance2 = new URI(urlElement2.getTextContent());
                             storageServiceInstance.setUri(urlInstance2);
                         }
-
-                        NodeList elements11 = storageServicesElement
-                                .getElementsByTagName("ServiceName");
-                        Element serviceNameElement2 = elements11.getLength() > 0 ? ((Element) elements11
-                                .item(0)) : null;
+                        
+                        NodeList elements11 = storageServicesElement.getElementsByTagName("ServiceName");
+                        Element serviceNameElement2 = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
                         if (serviceNameElement2 != null) {
                             String serviceNameInstance2;
-                            serviceNameInstance2 = serviceNameElement2
-                                    .getTextContent();
-                            storageServiceInstance
-                                    .setServiceName(serviceNameInstance2);
+                            serviceNameInstance2 = serviceNameElement2.getTextContent();
+                            storageServiceInstance.setServiceName(serviceNameInstance2);
                         }
                     }
                 }
-
-                NodeList elements12 = affinityGroupElement
-                        .getElementsByTagName("Capabilities");
-                Element capabilitiesSequenceElement = elements12.getLength() > 0 ? ((Element) elements12
-                        .item(0)) : null;
+                
+                NodeList elements12 = affinityGroupElement.getElementsByTagName("Capabilities");
+                Element capabilitiesSequenceElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
                 if (capabilitiesSequenceElement != null) {
-                    for (int i3 = 0; i3 < capabilitiesSequenceElement
-                            .getElementsByTagName("Capability").getLength(); i3 = i3 + 1) {
-                        org.w3c.dom.Element capabilitiesElement = ((org.w3c.dom.Element) capabilitiesSequenceElement
-                                .getElementsByTagName("Capability").item(i3));
-                        result.getCapabilities().add(
-                                capabilitiesElement.getTextContent());
+                    for (int i3 = 0; i3 < capabilitiesSequenceElement.getElementsByTagName("Capability").getLength(); i3 = i3 + 1) {
+                        org.w3c.dom.Element capabilitiesElement = ((org.w3c.dom.Element) capabilitiesSequenceElement.getElementsByTagName("Capability").item(i3));
+                        result.getCapabilities().add(capabilitiesElement.getTextContent());
                     }
                 }
             }
-
+            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader(
-                        "x-ms-request-id").getValue());
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
@@ -651,184 +551,148 @@ public class AffinityGroupOperationsImpl implements
             }
         }
     }
-
+    
     /**
-     * The List Affinity Groups operation lists the affinity groups associated
-     * with the specified subscription. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460797.aspx for
-     * more information)
-     * 
-     * @return The List Affinity Groups operation response.
-     */
+    * The List Affinity Groups operation lists the affinity groups associated
+    * with the specified subscription.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460797.aspx for
+    * more information)
+    *
+    * @return The List Affinity Groups operation response.
+    */
     @Override
     public Future<AffinityGroupListResponse> listAsync() {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<AffinityGroupListResponse>() {
-                    @Override
-                    public AffinityGroupListResponse call() throws Exception {
-                        return list();
-                    }
-                });
+        return this.getClient().getExecutorService().submit(new Callable<AffinityGroupListResponse>() { 
+            @Override
+            public AffinityGroupListResponse call() throws Exception {
+                return list();
+            }
+         });
     }
-
+    
     /**
-     * The List Affinity Groups operation lists the affinity groups associated
-     * with the specified subscription. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460797.aspx for
-     * more information)
-     * 
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @throws ParserConfigurationException
-     *             Thrown if there was a serious configuration error with the
-     *             document parser.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the XML response.
-     * @return The List Affinity Groups operation response.
-     */
+    * The List Affinity Groups operation lists the affinity groups associated
+    * with the specified subscription.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460797.aspx for
+    * more information)
+    *
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return The List Affinity Groups operation response.
+    */
     @Override
-    public AffinityGroupListResponse list() throws IOException,
-            ServiceException, ParserConfigurationException, SAXException {
+    public AffinityGroupListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException {
         // Validate
-
+        
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
         if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
-            CloudTracing.enter(invocationId, this, "listAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "listAsync", tracingParameters);
         }
-
+        
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/"
-                + this.getClient().getCredentials().getSubscriptionId()
-                + "/affinitygroups";
-
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/affinitygroups";
+        
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
-
+        
         // Set Headers
         httpRequest.setHeader("x-ms-version", "2013-03-01");
-
+        
         // Send Request
         HttpResponse httpResponse = null;
         try {
             if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient()
-                    .execute(httpRequest);
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
             if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_OK) {
-                ServiceException ex = ServiceException.createFromXml(
-                        httpRequest, null, httpResponse,
-                        httpResponse.getEntity());
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-
+            
             // Create Result
             AffinityGroupListResponse result = null;
             // Deserialize Response
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new AffinityGroupListResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
-                    .newInstance();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory
-                    .newDocumentBuilder();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
-
-            NodeList elements = responseDoc
-                    .getElementsByTagName("AffinityGroups");
-            Element affinityGroupsSequenceElement = elements.getLength() > 0 ? ((Element) elements
-                    .item(0)) : null;
+            
+            NodeList elements = responseDoc.getElementsByTagName("AffinityGroups");
+            Element affinityGroupsSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (affinityGroupsSequenceElement != null) {
-                for (int i1 = 0; i1 < affinityGroupsSequenceElement
-                        .getElementsByTagName("AffinityGroup").getLength(); i1 = i1 + 1) {
-                    org.w3c.dom.Element affinityGroupsElement = ((org.w3c.dom.Element) affinityGroupsSequenceElement
-                            .getElementsByTagName("AffinityGroup").item(i1));
+                for (int i1 = 0; i1 < affinityGroupsSequenceElement.getElementsByTagName("AffinityGroup").getLength(); i1 = i1 + 1) {
+                    org.w3c.dom.Element affinityGroupsElement = ((org.w3c.dom.Element) affinityGroupsSequenceElement.getElementsByTagName("AffinityGroup").item(i1));
                     AffinityGroupListResponse.AffinityGroup affinityGroupInstance = new AffinityGroupListResponse.AffinityGroup();
                     result.getAffinityGroups().add(affinityGroupInstance);
-
-                    NodeList elements2 = affinityGroupsElement
-                            .getElementsByTagName("Name");
-                    Element nameElement = elements2.getLength() > 0 ? ((Element) elements2
-                            .item(0)) : null;
+                    
+                    NodeList elements2 = affinityGroupsElement.getElementsByTagName("Name");
+                    Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                     if (nameElement != null) {
                         String nameInstance;
                         nameInstance = nameElement.getTextContent();
                         affinityGroupInstance.setName(nameInstance);
                     }
-
-                    NodeList elements3 = affinityGroupsElement
-                            .getElementsByTagName("Label");
-                    Element labelElement = elements3.getLength() > 0 ? ((Element) elements3
-                            .item(0)) : null;
+                    
+                    NodeList elements3 = affinityGroupsElement.getElementsByTagName("Label");
+                    Element labelElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                     if (labelElement != null) {
                         String labelInstance;
-                        labelInstance = labelElement.getTextContent() != null ? new String(
-                                Base64.decodeBase64(labelElement
-                                        .getTextContent().getBytes())) : null;
+                        labelInstance = labelElement.getTextContent() != null ? new String(Base64.decodeBase64(labelElement.getTextContent().getBytes())) : null;
                         affinityGroupInstance.setLabel(labelInstance);
                     }
-
-                    NodeList elements4 = affinityGroupsElement
-                            .getElementsByTagName("Description");
-                    Element descriptionElement = elements4.getLength() > 0 ? ((Element) elements4
-                            .item(0)) : null;
+                    
+                    NodeList elements4 = affinityGroupsElement.getElementsByTagName("Description");
+                    Element descriptionElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                     if (descriptionElement != null) {
                         String descriptionInstance;
-                        descriptionInstance = descriptionElement
-                                .getTextContent();
-                        affinityGroupInstance
-                                .setDescription(descriptionInstance);
+                        descriptionInstance = descriptionElement.getTextContent();
+                        affinityGroupInstance.setDescription(descriptionInstance);
                     }
-
-                    NodeList elements5 = affinityGroupsElement
-                            .getElementsByTagName("Location");
-                    Element locationElement = elements5.getLength() > 0 ? ((Element) elements5
-                            .item(0)) : null;
+                    
+                    NodeList elements5 = affinityGroupsElement.getElementsByTagName("Location");
+                    Element locationElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                     if (locationElement != null) {
                         String locationInstance;
                         locationInstance = locationElement.getTextContent();
                         affinityGroupInstance.setLocation(locationInstance);
                     }
-
-                    NodeList elements6 = affinityGroupsElement
-                            .getElementsByTagName("Capabilities");
-                    Element capabilitiesSequenceElement = elements6.getLength() > 0 ? ((Element) elements6
-                            .item(0)) : null;
+                    
+                    NodeList elements6 = affinityGroupsElement.getElementsByTagName("Capabilities");
+                    Element capabilitiesSequenceElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                     if (capabilitiesSequenceElement != null) {
-                        for (int i2 = 0; i2 < capabilitiesSequenceElement
-                                .getElementsByTagName("Capability").getLength(); i2 = i2 + 1) {
-                            org.w3c.dom.Element capabilitiesElement = ((org.w3c.dom.Element) capabilitiesSequenceElement
-                                    .getElementsByTagName("Capability")
-                                    .item(i2));
-                            affinityGroupInstance.getCapabilities().add(
-                                    capabilitiesElement.getTextContent());
+                        for (int i2 = 0; i2 < capabilitiesSequenceElement.getElementsByTagName("Capability").getLength(); i2 = i2 + 1) {
+                            org.w3c.dom.Element capabilitiesElement = ((org.w3c.dom.Element) capabilitiesSequenceElement.getElementsByTagName("Capability").item(i2));
+                            affinityGroupInstance.getCapabilities().add(capabilitiesElement.getTextContent());
                         }
                     }
                 }
             }
-
+            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader(
-                        "x-ms-request-id").getValue());
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
@@ -839,64 +703,53 @@ public class AffinityGroupOperationsImpl implements
             }
         }
     }
-
+    
     /**
-     * The Update Affinity Group operation updates the label and/or the
-     * description for an affinity group for the specified subscription. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715316.aspx for
-     * more information)
-     * 
-     * @param affinityGroupName
-     *            The name of your affinity group.
-     * @param parameters
-     *            Parameters supplied to the Update Affinity Group operation.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * The Update Affinity Group operation updates the label and/or the
+    * description for an affinity group for the specified subscription.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/gg715316.aspx for
+    * more information)
+    *
+    * @param affinityGroupName The name of your affinity group.
+    * @param parameters Parameters supplied to the Update Affinity Group
+    * operation.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public Future<OperationResponse> updateAsync(
-            final String affinityGroupName,
-            final AffinityGroupUpdateParameters parameters) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<OperationResponse>() {
-                    @Override
-                    public OperationResponse call() throws Exception {
-                        return update(affinityGroupName, parameters);
-                    }
-                });
+    public Future<OperationResponse> updateAsync(final String affinityGroupName, final AffinityGroupUpdateParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception {
+                return update(affinityGroupName, parameters);
+            }
+         });
     }
-
+    
     /**
-     * The Update Affinity Group operation updates the label and/or the
-     * description for an affinity group for the specified subscription. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715316.aspx for
-     * more information)
-     * 
-     * @param affinityGroupName
-     *            The name of your affinity group.
-     * @param parameters
-     *            Parameters supplied to the Update Affinity Group operation.
-     * @throws ParserConfigurationException
-     *             Thrown if there was an error configuring the parser for the
-     *             response body.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the response body.
-     * @throws TransformerException
-     *             Thrown if there was an error creating the DOM transformer.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * The Update Affinity Group operation updates the label and/or the
+    * description for an affinity group for the specified subscription.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/gg715316.aspx for
+    * more information)
+    *
+    * @param affinityGroupName The name of your affinity group.
+    * @param parameters Parameters supplied to the Update Affinity Group
+    * operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public OperationResponse update(String affinityGroupName,
-            AffinityGroupUpdateParameters parameters)
-            throws ParserConfigurationException, SAXException,
-            TransformerException, IOException, ServiceException {
+    public OperationResponse update(String affinityGroupName, AffinityGroupUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
         if (affinityGroupName == null) {
             throw new NullPointerException("affinityGroupName");
@@ -904,8 +757,7 @@ public class AffinityGroupOperationsImpl implements
         if (parameters == null) {
             throw new NullPointerException("parameters");
         }
-        if (parameters.getDescription() != null
-                && parameters.getDescription().length() > 1024) {
+        if (parameters.getDescription() != null && parameters.getDescription().length() > 1024) {
             throw new IllegalArgumentException("parameters.Description");
         }
         if (parameters.getLabel() == null) {
@@ -914,7 +766,7 @@ public class AffinityGroupOperationsImpl implements
         if (parameters.getLabel().length() > 100) {
             throw new IllegalArgumentException("parameters.Label");
         }
-
+        
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -923,92 +775,76 @@ public class AffinityGroupOperationsImpl implements
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("affinityGroupName", affinityGroupName);
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this, "updateAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "updateAsync", tracingParameters);
         }
-
+        
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/"
-                + this.getClient().getCredentials().getSubscriptionId()
-                + "/affinitygroups/" + affinityGroupName;
-
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/affinitygroups/" + affinityGroupName;
+        
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
-
+        
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
         httpRequest.setHeader("x-ms-version", "2013-03-01");
-
+        
         // Serialize Request
         String requestContent = null;
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
-                .newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory
-                .newDocumentBuilder();
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
         Document requestDoc = documentBuilder.newDocument();
-
-        Element updateAffinityGroupElement = requestDoc.createElementNS(
-                "http://schemas.microsoft.com/windowsazure",
-                "UpdateAffinityGroup");
+        
+        Element updateAffinityGroupElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "UpdateAffinityGroup");
         requestDoc.appendChild(updateAffinityGroupElement);
-
-        Element labelElement = requestDoc.createElementNS(
-                "http://schemas.microsoft.com/windowsazure", "Label");
-        labelElement.appendChild(requestDoc.createTextNode(new String(Base64
-                .encodeBase64(parameters.getLabel().getBytes()))));
+        
+        Element labelElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Label");
+        labelElement.appendChild(requestDoc.createTextNode(new String(Base64.encodeBase64(parameters.getLabel().getBytes()))));
         updateAffinityGroupElement.appendChild(labelElement);
-
+        
         if (parameters.getDescription() != null) {
-            Element descriptionElement = requestDoc.createElementNS(
-                    "http://schemas.microsoft.com/windowsazure", "Description");
-            descriptionElement.appendChild(requestDoc.createTextNode(parameters
-                    .getDescription()));
+            Element descriptionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Description");
+            descriptionElement.appendChild(requestDoc.createTextNode(parameters.getDescription()));
             updateAffinityGroupElement.appendChild(descriptionElement);
         }
-
+        
         DOMSource domSource = new DOMSource(requestDoc);
         StringWriter stringWriter = new StringWriter();
         StreamResult streamResult = new StreamResult(stringWriter);
-        TransformerFactory transformerFactory = TransformerFactory
-                .newInstance();
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = transformerFactory.newTransformer();
         transformer.transform(domSource, streamResult);
         requestContent = stringWriter.toString();
         StringEntity entity = new StringEntity(requestContent);
         httpRequest.setEntity(entity);
         httpRequest.setHeader("Content-Type", "application/xml");
-
+        
         // Send Request
         HttpResponse httpResponse = null;
         try {
             if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient()
-                    .execute(httpRequest);
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
             if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_OK) {
-                ServiceException ex = ServiceException.createFromXml(
-                        httpRequest, requestContent, httpResponse,
-                        httpResponse.getEntity());
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-
+            
             // Create Result
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader(
-                        "x-ms-request-id").getValue());
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }

@@ -26,146 +26,131 @@ package com.microsoft.windowsazure.management.models;
 import java.util.Calendar;
 
 /**
- * Parameters supplied to the List Subscription Operations operation.
- */
+* Parameters supplied to the List Subscription Operations operation.
+*/
 public class SubscriptionListOperationsParameters {
     private String continuationToken;
-
+    
     /**
-     * Optional. When there are too many operations to list, such as when the
-     * requested timeframe is very large, the response includes an incomplete
-     * list and a token that can be used to return the rest of the list.
-     * Subsequent requests must include this parameter to continue listing
-     * operations from where the last response left off. If no token is
-     * specified, a filter is not applied and the response will begin at the
-     * specified StartTime.
-     * 
-     * @return The ContinuationToken value.
-     */
+    * Optional. When there are too many operations to list, such as when the
+    * requested timeframe is very large, the response includes an incomplete
+    * list and a token that can be used to return the rest of the list.
+    * Subsequent requests must include this parameter to continue listing
+    * operations from where the last response left off. If no token is
+    * specified, a filter is not applied and the response will begin at the
+    * specified StartTime.
+    * @return The ContinuationToken value.
+    */
     public String getContinuationToken() {
         return this.continuationToken;
     }
-
+    
     /**
-     * Optional. When there are too many operations to list, such as when the
-     * requested timeframe is very large, the response includes an incomplete
-     * list and a token that can be used to return the rest of the list.
-     * Subsequent requests must include this parameter to continue listing
-     * operations from where the last response left off. If no token is
-     * specified, a filter is not applied and the response will begin at the
-     * specified StartTime.
-     * 
-     * @param continuationTokenValue
-     *            The ContinuationToken value.
-     */
+    * Optional. When there are too many operations to list, such as when the
+    * requested timeframe is very large, the response includes an incomplete
+    * list and a token that can be used to return the rest of the list.
+    * Subsequent requests must include this parameter to continue listing
+    * operations from where the last response left off. If no token is
+    * specified, a filter is not applied and the response will begin at the
+    * specified StartTime.
+    * @param continuationTokenValue The ContinuationToken value.
+    */
     public void setContinuationToken(final String continuationTokenValue) {
         this.continuationToken = continuationTokenValue;
     }
-
+    
     private Calendar endTime;
-
+    
     /**
-     * Required. The end of the timeframe to begin listing subscription
-     * operations in UTC format. This parameter and the StartTime parameter
-     * indicate the timeframe to retrieve subscription operations.
-     * 
-     * @return The EndTime value.
-     */
+    * Required. The end of the timeframe to begin listing subscription
+    * operations in UTC format. This parameter and the StartTime parameter
+    * indicate the timeframe to retrieve subscription operations.
+    * @return The EndTime value.
+    */
     public Calendar getEndTime() {
         return this.endTime;
     }
-
+    
     /**
-     * Required. The end of the timeframe to begin listing subscription
-     * operations in UTC format. This parameter and the StartTime parameter
-     * indicate the timeframe to retrieve subscription operations.
-     * 
-     * @param endTimeValue
-     *            The EndTime value.
-     */
+    * Required. The end of the timeframe to begin listing subscription
+    * operations in UTC format. This parameter and the StartTime parameter
+    * indicate the timeframe to retrieve subscription operations.
+    * @param endTimeValue The EndTime value.
+    */
     public void setEndTime(final Calendar endTimeValue) {
         this.endTime = endTimeValue;
     }
-
+    
     private String objectIdFilter;
-
+    
     /**
-     * Optional. Returns subscription operations only for the specified object
-     * type and object ID. This parameter must be set equal to the URL value for
-     * performing an HTTP GET on the object. If no object is specified, a filter
-     * is not applied.
-     * 
-     * @return The ObjectIdFilter value.
-     */
+    * Optional. Returns subscription operations only for the specified object
+    * type and object ID. This parameter must be set equal to the URL value
+    * for performing an HTTP GET on the object. If no object is specified, a
+    * filter is not applied.
+    * @return The ObjectIdFilter value.
+    */
     public String getObjectIdFilter() {
         return this.objectIdFilter;
     }
-
+    
     /**
-     * Optional. Returns subscription operations only for the specified object
-     * type and object ID. This parameter must be set equal to the URL value for
-     * performing an HTTP GET on the object. If no object is specified, a filter
-     * is not applied.
-     * 
-     * @param objectIdFilterValue
-     *            The ObjectIdFilter value.
-     */
+    * Optional. Returns subscription operations only for the specified object
+    * type and object ID. This parameter must be set equal to the URL value
+    * for performing an HTTP GET on the object. If no object is specified, a
+    * filter is not applied.
+    * @param objectIdFilterValue The ObjectIdFilter value.
+    */
     public void setObjectIdFilter(final String objectIdFilterValue) {
         this.objectIdFilter = objectIdFilterValue;
     }
-
+    
     private OperationStatus operationStatus;
-
+    
     /**
-     * Optional. Returns subscription operations only for thespecified result
-     * status, either Succeeded, Failed, or InProgress.This filter can be
-     * combined with the ObjectIdFilter to selectsubscription operations for an
-     * object with a specific resultstatus. If no result status is specified, a
-     * filter is not applied.
-     * 
-     * @return The OperationStatus value.
-     */
+    * Optional. Returns subscription operations only for thespecified result
+    * status, either Succeeded, Failed, or InProgress.This filter can be
+    * combined with the ObjectIdFilter to selectsubscription operations for an
+    * object with a specific resultstatus. If no result status is specified, a
+    * filter is not applied.
+    * @return The OperationStatus value.
+    */
     public OperationStatus getOperationStatus() {
         return this.operationStatus;
     }
-
+    
     /**
-     * Optional. Returns subscription operations only for thespecified result
-     * status, either Succeeded, Failed, or InProgress.This filter can be
-     * combined with the ObjectIdFilter to selectsubscription operations for an
-     * object with a specific resultstatus. If no result status is specified, a
-     * filter is not applied.
-     * 
-     * @param operationStatusValue
-     *            The OperationStatus value.
-     */
+    * Optional. Returns subscription operations only for thespecified result
+    * status, either Succeeded, Failed, or InProgress.This filter can be
+    * combined with the ObjectIdFilter to selectsubscription operations for an
+    * object with a specific resultstatus. If no result status is specified, a
+    * filter is not applied.
+    * @param operationStatusValue The OperationStatus value.
+    */
     public void setOperationStatus(final OperationStatus operationStatusValue) {
         this.operationStatus = operationStatusValue;
     }
-
+    
     private Calendar startTime;
-
+    
     /**
-     * Required. The start of the timeframe to begin listingsubscription
-     * operations in UTC format. This parameter and theEndTime parameter
-     * indicate the timeframe to retrieve subscription operations. This
-     * parameter cannot indicate a start date of more than 90 days in the past.
-     * 
-     * @return The StartTime value.
-     */
+    * Required. The start of the timeframe to begin listingsubscription
+    * operations in UTC format. This parameter and theEndTime parameter
+    * indicate the timeframe to retrieve subscription operations. This
+    * parameter cannot indicate a start date of more than 90 days in the past.
+    * @return The StartTime value.
+    */
     public Calendar getStartTime() {
         return this.startTime;
     }
-
+    
     /**
-     * Required. The start of the timeframe to begin listingsubscription
-     * operations in UTC format. This parameter and theEndTime parameter
-     * indicate the timeframe to retrieve subscription operations. This
-     * parameter cannot indicate a start date of more than 90 days in the past.
-     * 
-     * @param startTimeValue
-     *            The StartTime value.
-     */
+    * Required. The start of the timeframe to begin listingsubscription
+    * operations in UTC format. This parameter and theEndTime parameter
+    * indicate the timeframe to retrieve subscription operations. This
+    * parameter cannot indicate a start date of more than 90 days in the past.
+    * @param startTimeValue The StartTime value.
+    */
     public void setStartTime(final Calendar startTimeValue) {
         this.startTime = startTimeValue;
     }

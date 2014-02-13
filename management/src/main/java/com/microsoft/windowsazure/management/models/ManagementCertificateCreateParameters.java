@@ -24,68 +24,59 @@
 package com.microsoft.windowsazure.management.models;
 
 /**
- * Parameters supplied to the Create Management Certificate operation.
- */
+* Parameters supplied to the Create Management Certificate operation.
+*/
 public class ManagementCertificateCreateParameters {
     private byte[] data;
-
+    
     /**
-     * The certificate’s raw data in base-64 encoded .cer format.
-     * 
-     * @return The Data value.
-     */
+    * The certificate’s raw data in base-64 encoded .cer format.
+    * @return The Data value.
+    */
     public byte[] getData() {
         return this.data;
     }
-
+    
     /**
-     * The certificate’s raw data in base-64 encoded .cer format.
-     * 
-     * @param dataValue
-     *            The Data value.
-     */
+    * The certificate’s raw data in base-64 encoded .cer format.
+    * @param dataValue The Data value.
+    */
     public void setData(final byte[] dataValue) {
         this.data = dataValue;
     }
-
+    
     private byte[] publicKey;
-
+    
     /**
-     * A base64 representation of the management certificate public key.
-     * 
-     * @return The PublicKey value.
-     */
+    * A base64 representation of the management certificate public key.
+    * @return The PublicKey value.
+    */
     public byte[] getPublicKey() {
         return this.publicKey;
     }
-
+    
     /**
-     * A base64 representation of the management certificate public key.
-     * 
-     * @param publicKeyValue
-     *            The PublicKey value.
-     */
+    * A base64 representation of the management certificate public key.
+    * @param publicKeyValue The PublicKey value.
+    */
     public void setPublicKey(final byte[] publicKeyValue) {
         this.publicKey = publicKeyValue;
     }
-
+    
     private String thumbprint;
-
+    
     /**
-     * The thumb print that uniquely identifies the management certificate.
-     * 
-     * @return The Thumbprint value.
-     */
+    * The thumb print that uniquely identifies the management certificate.
+    * @return The Thumbprint value.
+    */
     public String getThumbprint() {
         return this.thumbprint;
     }
-
+    
     /**
-     * The thumb print that uniquely identifies the management certificate.
-     * 
-     * @param thumbprintValue
-     *            The Thumbprint value.
-     */
+    * The thumb print that uniquely identifies the management certificate.
+    * @param thumbprintValue The Thumbprint value.
+    */
     public void setThumbprint(final String thumbprintValue) {
         this.thumbprint = thumbprintValue;
     }

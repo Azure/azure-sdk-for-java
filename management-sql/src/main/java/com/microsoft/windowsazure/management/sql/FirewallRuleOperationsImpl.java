@@ -60,97 +60,81 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
- * The Windows Azure SQL Database Management API includes operations for
- * managing the server-level firewall rules for SQL Database servers.You cannot
- * manage the database-level firewall rules using the Windows Azure SQL Database
- * Management API; they can only be managed by running the Transact-SQL
- * statements against the master or individual user databases. (see
- * http://msdn.microsoft.com/en-us/library/windowsazure/gg715276.aspx for more
- * information)
- */
-public class FirewallRuleOperationsImpl implements
-        ServiceOperations<SqlManagementClientImpl>, FirewallRuleOperations {
+* The Windows Azure SQL Database Management API includes operations for
+* managing the server-level firewall rules for SQL Database servers.You cannot
+* manage the database-level firewall rules using the Windows Azure SQL
+* Database Management API; they can only be managed by running the
+* Transact-SQL statements against the master or individual user databases.
+* (see http://msdn.microsoft.com/en-us/library/windowsazure/gg715276.aspx for
+* more information)
+*/
+public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManagementClientImpl>, FirewallRuleOperations {
     /**
-     * Initializes a new instance of the FirewallRuleOperationsImpl class.
-     * 
-     * @param client
-     *            Reference to the service client.
-     */
+    * Initializes a new instance of the FirewallRuleOperationsImpl class.
+    *
+    * @param client Reference to the service client.
+    */
     FirewallRuleOperationsImpl(SqlManagementClientImpl client) {
         this.client = client;
     }
-
+    
     private SqlManagementClientImpl client;
-
+    
     /**
-     * Gets a reference to the
-     * microsoft.windowsazure.management.sql.SqlManagementClientImpl.
-     * 
-     * @return The Client value.
-     */
+    * Gets a reference to the
+    * microsoft.windowsazure.management.sql.SqlManagementClientImpl.
+    * @return The Client value.
+    */
     public SqlManagementClientImpl getClient() {
         return this.client;
     }
-
+    
     /**
-     * Adds a new server-level firewall rule for a SQL Database server that
-     * belongs to a subscription. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715280.aspx for
-     * more information)
-     * 
-     * @param serverName
-     *            The name of the SQL database server to which this rule will be
-     *            applied.
-     * @param parameters
-     *            Parameters for the Create Firewall Rule operation.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * Adds a new server-level firewall rule for a SQL Database server that
+    * belongs to a subscription.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/gg715280.aspx for
+    * more information)
+    *
+    * @param serverName The name of the SQL database server to which this rule
+    * will be applied.
+    * @param parameters Parameters for the Create Firewall Rule operation.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public Future<FirewallRuleCreateResponse> createAsync(
-            final String serverName,
-            final FirewallRuleCreateParameters parameters) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<FirewallRuleCreateResponse>() {
-                    @Override
-                    public FirewallRuleCreateResponse call() throws Exception {
-                        return create(serverName, parameters);
-                    }
-                });
+    public Future<FirewallRuleCreateResponse> createAsync(final String serverName, final FirewallRuleCreateParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<FirewallRuleCreateResponse>() { 
+            @Override
+            public FirewallRuleCreateResponse call() throws Exception {
+                return create(serverName, parameters);
+            }
+         });
     }
-
+    
     /**
-     * Adds a new server-level firewall rule for a SQL Database server that
-     * belongs to a subscription. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715280.aspx for
-     * more information)
-     * 
-     * @param serverName
-     *            The name of the SQL database server to which this rule will be
-     *            applied.
-     * @param parameters
-     *            Parameters for the Create Firewall Rule operation.
-     * @throws ParserConfigurationException
-     *             Thrown if there was an error configuring the parser for the
-     *             response body.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the response body.
-     * @throws TransformerException
-     *             Thrown if there was an error creating the DOM transformer.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * Adds a new server-level firewall rule for a SQL Database server that
+    * belongs to a subscription.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/gg715280.aspx for
+    * more information)
+    *
+    * @param serverName The name of the SQL database server to which this rule
+    * will be applied.
+    * @param parameters Parameters for the Create Firewall Rule operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public FirewallRuleCreateResponse create(String serverName,
-            FirewallRuleCreateParameters parameters)
-            throws ParserConfigurationException, SAXException,
-            TransformerException, IOException, ServiceException {
+    public FirewallRuleCreateResponse create(String serverName, FirewallRuleCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
         if (serverName == null) {
             throw new NullPointerException("serverName");
@@ -167,7 +151,7 @@ public class FirewallRuleOperationsImpl implements
         if (parameters.getStartIPAddress() == null) {
             throw new NullPointerException("parameters.StartIPAddress");
         }
-
+        
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -176,163 +160,129 @@ public class FirewallRuleOperationsImpl implements
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serverName", serverName);
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this, "createAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "createAsync", tracingParameters);
         }
-
+        
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/"
-                + this.getClient().getCredentials().getSubscriptionId()
-                + "/services/sqlservers/servers/" + serverName
-                + "/firewallrules";
-
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/sqlservers/servers/" + serverName + "/firewallrules";
+        
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
-
+        
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
         httpRequest.setHeader("x-ms-version", "2012-03-01");
-
+        
         // Serialize Request
         String requestContent = null;
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
-                .newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory
-                .newDocumentBuilder();
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
         Document requestDoc = documentBuilder.newDocument();
-
-        Element serviceResourceElement = requestDoc.createElementNS(
-                "http://schemas.microsoft.com/windowsazure", "ServiceResource");
+        
+        Element serviceResourceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ServiceResource");
         requestDoc.appendChild(serviceResourceElement);
-
-        Element nameElement = requestDoc.createElementNS(
-                "http://schemas.microsoft.com/windowsazure", "Name");
-        nameElement
-                .appendChild(requestDoc.createTextNode(parameters.getName()));
+        
+        Element nameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+        nameElement.appendChild(requestDoc.createTextNode(parameters.getName()));
         serviceResourceElement.appendChild(nameElement);
-
-        Element startIPAddressElement = requestDoc.createElementNS(
-                "http://schemas.microsoft.com/windowsazure", "StartIPAddress");
-        startIPAddressElement.appendChild(requestDoc.createTextNode(parameters
-                .getStartIPAddress().toString()));
+        
+        Element startIPAddressElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StartIPAddress");
+        startIPAddressElement.appendChild(requestDoc.createTextNode(parameters.getStartIPAddress().toString()));
         serviceResourceElement.appendChild(startIPAddressElement);
-
-        Element endIPAddressElement = requestDoc.createElementNS(
-                "http://schemas.microsoft.com/windowsazure", "EndIPAddress");
-        endIPAddressElement.appendChild(requestDoc.createTextNode(parameters
-                .getEndIPAddress().toString()));
+        
+        Element endIPAddressElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EndIPAddress");
+        endIPAddressElement.appendChild(requestDoc.createTextNode(parameters.getEndIPAddress().toString()));
         serviceResourceElement.appendChild(endIPAddressElement);
-
+        
         DOMSource domSource = new DOMSource(requestDoc);
         StringWriter stringWriter = new StringWriter();
         StreamResult streamResult = new StreamResult(stringWriter);
-        TransformerFactory transformerFactory = TransformerFactory
-                .newInstance();
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = transformerFactory.newTransformer();
         transformer.transform(domSource, streamResult);
         requestContent = stringWriter.toString();
         StringEntity entity = new StringEntity(requestContent);
         httpRequest.setEntity(entity);
         httpRequest.setHeader("Content-Type", "application/xml");
-
+        
         // Send Request
         HttpResponse httpResponse = null;
         try {
             if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient()
-                    .execute(httpRequest);
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
             if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_CREATED) {
-                ServiceException ex = ServiceException.createFromXml(
-                        httpRequest, requestContent, httpResponse,
-                        httpResponse.getEntity());
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-
+            
             // Create Result
             FirewallRuleCreateResponse result = null;
             // Deserialize Response
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new FirewallRuleCreateResponse();
-            DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory
-                    .newInstance();
+            DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
             documentBuilderFactory2.setNamespaceAware(true);
-            DocumentBuilder documentBuilder2 = documentBuilderFactory2
-                    .newDocumentBuilder();
+            DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
             Document responseDoc = documentBuilder2.parse(responseContent);
-
-            NodeList elements = responseDoc
-                    .getElementsByTagName("ServiceResource");
-            Element serviceResourceElement2 = elements.getLength() > 0 ? ((Element) elements
-                    .item(0)) : null;
+            
+            NodeList elements = responseDoc.getElementsByTagName("ServiceResource");
+            Element serviceResourceElement2 = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (serviceResourceElement2 != null) {
-                NodeList elements2 = serviceResourceElement2
-                        .getElementsByTagName("Name");
-                Element nameElement2 = elements2.getLength() > 0 ? ((Element) elements2
-                        .item(0)) : null;
+                NodeList elements2 = serviceResourceElement2.getElementsByTagName("Name");
+                Element nameElement2 = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                 if (nameElement2 != null) {
                     String nameInstance;
                     nameInstance = nameElement2.getTextContent();
                     result.setName(nameInstance);
                 }
-
-                NodeList elements3 = serviceResourceElement2
-                        .getElementsByTagName("Type");
-                Element typeElement = elements3.getLength() > 0 ? ((Element) elements3
-                        .item(0)) : null;
+                
+                NodeList elements3 = serviceResourceElement2.getElementsByTagName("Type");
+                Element typeElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                 if (typeElement != null) {
                     String typeInstance;
                     typeInstance = typeElement.getTextContent();
                     result.setType(typeInstance);
                 }
-
-                NodeList elements4 = serviceResourceElement2
-                        .getElementsByTagName("State");
-                Element stateElement = elements4.getLength() > 0 ? ((Element) elements4
-                        .item(0)) : null;
+                
+                NodeList elements4 = serviceResourceElement2.getElementsByTagName("State");
+                Element stateElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                 if (stateElement != null) {
                     String stateInstance;
                     stateInstance = stateElement.getTextContent();
                     result.setState(stateInstance);
                 }
-
-                NodeList elements5 = serviceResourceElement2
-                        .getElementsByTagName("StartIPAddress");
-                Element startIPAddressElement2 = elements5.getLength() > 0 ? ((Element) elements5
-                        .item(0)) : null;
+                
+                NodeList elements5 = serviceResourceElement2.getElementsByTagName("StartIPAddress");
+                Element startIPAddressElement2 = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                 if (startIPAddressElement2 != null) {
                     InetAddress startIPAddressInstance;
-                    startIPAddressInstance = InetAddress
-                            .getByName(startIPAddressElement2.getTextContent());
+                    startIPAddressInstance = InetAddress.getByName(startIPAddressElement2.getTextContent());
                     result.setStartIPAddress(startIPAddressInstance);
                 }
-
-                NodeList elements6 = serviceResourceElement2
-                        .getElementsByTagName("EndIPAddress");
-                Element endIPAddressElement2 = elements6.getLength() > 0 ? ((Element) elements6
-                        .item(0)) : null;
+                
+                NodeList elements6 = serviceResourceElement2.getElementsByTagName("EndIPAddress");
+                Element endIPAddressElement2 = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                 if (endIPAddressElement2 != null) {
                     InetAddress endIPAddressInstance;
-                    endIPAddressInstance = InetAddress
-                            .getByName(endIPAddressElement2.getTextContent());
+                    endIPAddressInstance = InetAddress.getByName(endIPAddressElement2.getTextContent());
                     result.setEndIPAddress(endIPAddressInstance);
                 }
             }
-
+            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader(
-                        "x-ms-request-id").getValue());
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
@@ -343,56 +293,47 @@ public class FirewallRuleOperationsImpl implements
             }
         }
     }
-
+    
     /**
-     * Deletes a server-level firewall rule from a SQL Database server that
-     * belongs to a subscription. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715277.aspx for
-     * more information)
-     * 
-     * @param serverName
-     *            The name of the server that will be have new firewall rule
-     *            applied to it.
-     * @param ruleName
-     *            The name of the new firewall rule.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * Deletes a server-level firewall rule from a SQL Database server that
+    * belongs to a subscription.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/gg715277.aspx for
+    * more information)
+    *
+    * @param serverName The name of the server that will be have new firewall
+    * rule applied to it.
+    * @param ruleName The name of the new firewall rule.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public Future<OperationResponse> deleteAsync(final String serverName,
-            final String ruleName) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<OperationResponse>() {
-                    @Override
-                    public OperationResponse call() throws Exception {
-                        return delete(serverName, ruleName);
-                    }
-                });
+    public Future<OperationResponse> deleteAsync(final String serverName, final String ruleName) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception {
+                return delete(serverName, ruleName);
+            }
+         });
     }
-
+    
     /**
-     * Deletes a server-level firewall rule from a SQL Database server that
-     * belongs to a subscription. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715277.aspx for
-     * more information)
-     * 
-     * @param serverName
-     *            The name of the server that will be have new firewall rule
-     *            applied to it.
-     * @param ruleName
-     *            The name of the new firewall rule.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * Deletes a server-level firewall rule from a SQL Database server that
+    * belongs to a subscription.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/gg715277.aspx for
+    * more information)
+    *
+    * @param serverName The name of the server that will be have new firewall
+    * rule applied to it.
+    * @param ruleName The name of the new firewall rule.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public OperationResponse delete(String serverName, String ruleName)
-            throws IOException, ServiceException {
+    public OperationResponse delete(String serverName, String ruleName) throws IOException, ServiceException {
         // Validate
         if (serverName == null) {
             throw new NullPointerException("serverName");
@@ -400,7 +341,7 @@ public class FirewallRuleOperationsImpl implements
         if (ruleName == null) {
             throw new NullPointerException("ruleName");
         }
-
+        
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -409,53 +350,45 @@ public class FirewallRuleOperationsImpl implements
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serverName", serverName);
             tracingParameters.put("ruleName", ruleName);
-            CloudTracing.enter(invocationId, this, "deleteAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "deleteAsync", tracingParameters);
         }
-
+        
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/"
-                + this.getClient().getCredentials().getSubscriptionId()
-                + "/services/sqlservers/servers/" + serverName
-                + "/firewallrules/" + ruleName;
-
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/sqlservers/servers/" + serverName + "/firewallrules/" + ruleName;
+        
         // Create HTTP transport objects
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
-
+        
         // Set Headers
         httpRequest.setHeader("x-ms-version", "2012-03-01");
-
+        
         // Send Request
         HttpResponse httpResponse = null;
         try {
             if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient()
-                    .execute(httpRequest);
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
             if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_OK) {
-                ServiceException ex = ServiceException.createFromXml(
-                        httpRequest, null, httpResponse,
-                        httpResponse.getEntity());
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-
+            
             // Create Result
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader(
-                        "x-ms-request-id").getValue());
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
@@ -466,59 +399,52 @@ public class FirewallRuleOperationsImpl implements
             }
         }
     }
-
+    
     /**
-     * Returns a list of all the server-level firewall rules for a SQL Database
-     * server that belongs to a subscription. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715278.aspx for
-     * more information)
-     * 
-     * @param serverName
-     *            The name of the server for which the call is being made.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * Returns a list of all the server-level firewall rules for a SQL Database
+    * server that belongs to a subscription.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/gg715278.aspx for
+    * more information)
+    *
+    * @param serverName The name of the server for which the call is being made.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
     public Future<FirewallRuleListResponse> listAsync(final String serverName) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<FirewallRuleListResponse>() {
-                    @Override
-                    public FirewallRuleListResponse call() throws Exception {
-                        return list(serverName);
-                    }
-                });
+        return this.getClient().getExecutorService().submit(new Callable<FirewallRuleListResponse>() { 
+            @Override
+            public FirewallRuleListResponse call() throws Exception {
+                return list(serverName);
+            }
+         });
     }
-
+    
     /**
-     * Returns a list of all the server-level firewall rules for a SQL Database
-     * server that belongs to a subscription. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715278.aspx for
-     * more information)
-     * 
-     * @param serverName
-     *            The name of the server for which the call is being made.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @throws ParserConfigurationException
-     *             Thrown if there was a serious configuration error with the
-     *             document parser.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the XML response.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * Returns a list of all the server-level firewall rules for a SQL Database
+    * server that belongs to a subscription.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/gg715278.aspx for
+    * more information)
+    *
+    * @param serverName The name of the server for which the call is being made.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public FirewallRuleListResponse list(String serverName) throws IOException,
-            ServiceException, ParserConfigurationException, SAXException {
+    public FirewallRuleListResponse list(String serverName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
         // Validate
         if (serverName == null) {
             throw new NullPointerException("serverName");
         }
-
+        
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -526,121 +452,94 @@ public class FirewallRuleOperationsImpl implements
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serverName", serverName);
-            CloudTracing.enter(invocationId, this, "listAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "listAsync", tracingParameters);
         }
-
+        
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/"
-                + this.getClient().getCredentials().getSubscriptionId()
-                + "/services/sqlservers/servers/" + serverName
-                + "/firewallrules";
-
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/sqlservers/servers/" + serverName + "/firewallrules";
+        
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
-
+        
         // Set Headers
         httpRequest.setHeader("x-ms-version", "2012-03-01");
-
+        
         // Send Request
         HttpResponse httpResponse = null;
         try {
             if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient()
-                    .execute(httpRequest);
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
             if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_OK) {
-                ServiceException ex = ServiceException.createFromXml(
-                        httpRequest, null, httpResponse,
-                        httpResponse.getEntity());
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-
+            
             // Create Result
             FirewallRuleListResponse result = null;
             // Deserialize Response
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new FirewallRuleListResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
-                    .newInstance();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory
-                    .newDocumentBuilder();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
-
-            NodeList elements = responseDoc
-                    .getElementsByTagName("ServiceResources");
-            Element serviceResourcesSequenceElement = elements.getLength() > 0 ? ((Element) elements
-                    .item(0)) : null;
+            
+            NodeList elements = responseDoc.getElementsByTagName("ServiceResources");
+            Element serviceResourcesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (serviceResourcesSequenceElement != null) {
-                for (int i1 = 0; i1 < serviceResourcesSequenceElement
-                        .getElementsByTagName("ServiceResource").getLength(); i1 = i1 + 1) {
-                    org.w3c.dom.Element serviceResourcesElement = ((org.w3c.dom.Element) serviceResourcesSequenceElement
-                            .getElementsByTagName("ServiceResource").item(i1));
+                for (int i1 = 0; i1 < serviceResourcesSequenceElement.getElementsByTagName("ServiceResource").getLength(); i1 = i1 + 1) {
+                    org.w3c.dom.Element serviceResourcesElement = ((org.w3c.dom.Element) serviceResourcesSequenceElement.getElementsByTagName("ServiceResource").item(i1));
                     FirewallRuleListResponse.FirewallRule serviceResourceInstance = new FirewallRuleListResponse.FirewallRule();
                     result.getFirewallRules().add(serviceResourceInstance);
-
-                    NodeList elements2 = serviceResourcesElement
-                            .getElementsByTagName("Name");
-                    Element nameElement = elements2.getLength() > 0 ? ((Element) elements2
-                            .item(0)) : null;
+                    
+                    NodeList elements2 = serviceResourcesElement.getElementsByTagName("Name");
+                    Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                     if (nameElement != null) {
                         String nameInstance;
                         nameInstance = nameElement.getTextContent();
                         serviceResourceInstance.setName(nameInstance);
                     }
-
-                    NodeList elements3 = serviceResourcesElement
-                            .getElementsByTagName("Type");
-                    Element typeElement = elements3.getLength() > 0 ? ((Element) elements3
-                            .item(0)) : null;
+                    
+                    NodeList elements3 = serviceResourcesElement.getElementsByTagName("Type");
+                    Element typeElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                     if (typeElement != null) {
                         String typeInstance;
                         typeInstance = typeElement.getTextContent();
                         serviceResourceInstance.setType(typeInstance);
                     }
-
-                    NodeList elements4 = serviceResourcesElement
-                            .getElementsByTagName("StartIPAddress");
-                    Element startIPAddressElement = elements4.getLength() > 0 ? ((Element) elements4
-                            .item(0)) : null;
+                    
+                    NodeList elements4 = serviceResourcesElement.getElementsByTagName("StartIPAddress");
+                    Element startIPAddressElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                     if (startIPAddressElement != null) {
                         InetAddress startIPAddressInstance;
-                        startIPAddressInstance = InetAddress
-                                .getByName(startIPAddressElement
-                                        .getTextContent());
-                        serviceResourceInstance
-                                .setStartIPAddress(startIPAddressInstance);
+                        startIPAddressInstance = InetAddress.getByName(startIPAddressElement.getTextContent());
+                        serviceResourceInstance.setStartIPAddress(startIPAddressInstance);
                     }
-
-                    NodeList elements5 = serviceResourcesElement
-                            .getElementsByTagName("EndIPAddress");
-                    Element endIPAddressElement = elements5.getLength() > 0 ? ((Element) elements5
-                            .item(0)) : null;
+                    
+                    NodeList elements5 = serviceResourcesElement.getElementsByTagName("EndIPAddress");
+                    Element endIPAddressElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                     if (endIPAddressElement != null) {
                         InetAddress endIPAddressInstance;
-                        endIPAddressInstance = InetAddress
-                                .getByName(endIPAddressElement.getTextContent());
-                        serviceResourceInstance
-                                .setEndIPAddress(endIPAddressInstance);
+                        endIPAddressInstance = InetAddress.getByName(endIPAddressElement.getTextContent());
+                        serviceResourceInstance.setEndIPAddress(endIPAddressInstance);
                     }
                 }
             }
-
+            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader(
-                        "x-ms-request-id").getValue());
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
@@ -651,70 +550,55 @@ public class FirewallRuleOperationsImpl implements
             }
         }
     }
-
+    
     /**
-     * Updates an existing server-level firewall rule for a SQL Database server
-     * that belongs to a subscription. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715280.aspx for
-     * more information)
-     * 
-     * @param serverName
-     *            The name of the SQL database server to which this rule will be
-     *            applied.
-     * @param ruleName
-     *            The name of the firewall rule to be updated.
-     * @param parameters
-     *            Parameters for the Update Firewall Rule operation.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * Updates an existing server-level firewall rule for a SQL Database server
+    * that belongs to a subscription.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/gg715280.aspx for
+    * more information)
+    *
+    * @param serverName The name of the SQL database server to which this rule
+    * will be applied.
+    * @param ruleName The name of the firewall rule to be updated.
+    * @param parameters Parameters for the Update Firewall Rule operation.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public Future<FirewallRuleUpdateResponse> updateAsync(
-            final String serverName, final String ruleName,
-            final FirewallRuleUpdateParameters parameters) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<FirewallRuleUpdateResponse>() {
-                    @Override
-                    public FirewallRuleUpdateResponse call() throws Exception {
-                        return update(serverName, ruleName, parameters);
-                    }
-                });
+    public Future<FirewallRuleUpdateResponse> updateAsync(final String serverName, final String ruleName, final FirewallRuleUpdateParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<FirewallRuleUpdateResponse>() { 
+            @Override
+            public FirewallRuleUpdateResponse call() throws Exception {
+                return update(serverName, ruleName, parameters);
+            }
+         });
     }
-
+    
     /**
-     * Updates an existing server-level firewall rule for a SQL Database server
-     * that belongs to a subscription. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715280.aspx for
-     * more information)
-     * 
-     * @param serverName
-     *            The name of the SQL database server to which this rule will be
-     *            applied.
-     * @param ruleName
-     *            The name of the firewall rule to be updated.
-     * @param parameters
-     *            Parameters for the Update Firewall Rule operation.
-     * @throws ParserConfigurationException
-     *             Thrown if there was an error configuring the parser for the
-     *             response body.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the response body.
-     * @throws TransformerException
-     *             Thrown if there was an error creating the DOM transformer.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * Updates an existing server-level firewall rule for a SQL Database server
+    * that belongs to a subscription.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/gg715280.aspx for
+    * more information)
+    *
+    * @param serverName The name of the SQL database server to which this rule
+    * will be applied.
+    * @param ruleName The name of the firewall rule to be updated.
+    * @param parameters Parameters for the Update Firewall Rule operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public FirewallRuleUpdateResponse update(String serverName,
-            String ruleName, FirewallRuleUpdateParameters parameters)
-            throws ParserConfigurationException, SAXException,
-            TransformerException, IOException, ServiceException {
+    public FirewallRuleUpdateResponse update(String serverName, String ruleName, FirewallRuleUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
         if (serverName == null) {
             throw new NullPointerException("serverName");
@@ -734,7 +618,7 @@ public class FirewallRuleOperationsImpl implements
         if (parameters.getStartIPAddress() == null) {
             throw new NullPointerException("parameters.StartIPAddress");
         }
-
+        
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -744,163 +628,129 @@ public class FirewallRuleOperationsImpl implements
             tracingParameters.put("serverName", serverName);
             tracingParameters.put("ruleName", ruleName);
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this, "updateAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "updateAsync", tracingParameters);
         }
-
+        
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/"
-                + this.getClient().getCredentials().getSubscriptionId()
-                + "/services/sqlservers/servers/" + serverName
-                + "/firewallrules/" + ruleName;
-
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/sqlservers/servers/" + serverName + "/firewallrules/" + ruleName;
+        
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
-
+        
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
         httpRequest.setHeader("x-ms-version", "2012-03-01");
-
+        
         // Serialize Request
         String requestContent = null;
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
-                .newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory
-                .newDocumentBuilder();
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
         Document requestDoc = documentBuilder.newDocument();
-
-        Element serviceResourceElement = requestDoc.createElementNS(
-                "http://schemas.microsoft.com/windowsazure", "ServiceResource");
+        
+        Element serviceResourceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ServiceResource");
         requestDoc.appendChild(serviceResourceElement);
-
-        Element nameElement = requestDoc.createElementNS(
-                "http://schemas.microsoft.com/windowsazure", "Name");
-        nameElement
-                .appendChild(requestDoc.createTextNode(parameters.getName()));
+        
+        Element nameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+        nameElement.appendChild(requestDoc.createTextNode(parameters.getName()));
         serviceResourceElement.appendChild(nameElement);
-
-        Element startIPAddressElement = requestDoc.createElementNS(
-                "http://schemas.microsoft.com/windowsazure", "StartIPAddress");
-        startIPAddressElement.appendChild(requestDoc.createTextNode(parameters
-                .getStartIPAddress().toString()));
+        
+        Element startIPAddressElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StartIPAddress");
+        startIPAddressElement.appendChild(requestDoc.createTextNode(parameters.getStartIPAddress().toString()));
         serviceResourceElement.appendChild(startIPAddressElement);
-
-        Element endIPAddressElement = requestDoc.createElementNS(
-                "http://schemas.microsoft.com/windowsazure", "EndIPAddress");
-        endIPAddressElement.appendChild(requestDoc.createTextNode(parameters
-                .getEndIPAddress().toString()));
+        
+        Element endIPAddressElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EndIPAddress");
+        endIPAddressElement.appendChild(requestDoc.createTextNode(parameters.getEndIPAddress().toString()));
         serviceResourceElement.appendChild(endIPAddressElement);
-
+        
         DOMSource domSource = new DOMSource(requestDoc);
         StringWriter stringWriter = new StringWriter();
         StreamResult streamResult = new StreamResult(stringWriter);
-        TransformerFactory transformerFactory = TransformerFactory
-                .newInstance();
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = transformerFactory.newTransformer();
         transformer.transform(domSource, streamResult);
         requestContent = stringWriter.toString();
         StringEntity entity = new StringEntity(requestContent);
         httpRequest.setEntity(entity);
         httpRequest.setHeader("Content-Type", "application/xml");
-
+        
         // Send Request
         HttpResponse httpResponse = null;
         try {
             if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient()
-                    .execute(httpRequest);
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
             if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_OK) {
-                ServiceException ex = ServiceException.createFromXml(
-                        httpRequest, requestContent, httpResponse,
-                        httpResponse.getEntity());
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-
+            
             // Create Result
             FirewallRuleUpdateResponse result = null;
             // Deserialize Response
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new FirewallRuleUpdateResponse();
-            DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory
-                    .newInstance();
+            DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
             documentBuilderFactory2.setNamespaceAware(true);
-            DocumentBuilder documentBuilder2 = documentBuilderFactory2
-                    .newDocumentBuilder();
+            DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
             Document responseDoc = documentBuilder2.parse(responseContent);
-
-            NodeList elements = responseDoc
-                    .getElementsByTagName("ServiceResource");
-            Element serviceResourceElement2 = elements.getLength() > 0 ? ((Element) elements
-                    .item(0)) : null;
+            
+            NodeList elements = responseDoc.getElementsByTagName("ServiceResource");
+            Element serviceResourceElement2 = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (serviceResourceElement2 != null) {
-                NodeList elements2 = serviceResourceElement2
-                        .getElementsByTagName("Name");
-                Element nameElement2 = elements2.getLength() > 0 ? ((Element) elements2
-                        .item(0)) : null;
+                NodeList elements2 = serviceResourceElement2.getElementsByTagName("Name");
+                Element nameElement2 = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                 if (nameElement2 != null) {
                     String nameInstance;
                     nameInstance = nameElement2.getTextContent();
                     result.setName(nameInstance);
                 }
-
-                NodeList elements3 = serviceResourceElement2
-                        .getElementsByTagName("Type");
-                Element typeElement = elements3.getLength() > 0 ? ((Element) elements3
-                        .item(0)) : null;
+                
+                NodeList elements3 = serviceResourceElement2.getElementsByTagName("Type");
+                Element typeElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                 if (typeElement != null) {
                     String typeInstance;
                     typeInstance = typeElement.getTextContent();
                     result.setType(typeInstance);
                 }
-
-                NodeList elements4 = serviceResourceElement2
-                        .getElementsByTagName("State");
-                Element stateElement = elements4.getLength() > 0 ? ((Element) elements4
-                        .item(0)) : null;
+                
+                NodeList elements4 = serviceResourceElement2.getElementsByTagName("State");
+                Element stateElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                 if (stateElement != null) {
                     String stateInstance;
                     stateInstance = stateElement.getTextContent();
                     result.setState(stateInstance);
                 }
-
-                NodeList elements5 = serviceResourceElement2
-                        .getElementsByTagName("StartIPAddress");
-                Element startIPAddressElement2 = elements5.getLength() > 0 ? ((Element) elements5
-                        .item(0)) : null;
+                
+                NodeList elements5 = serviceResourceElement2.getElementsByTagName("StartIPAddress");
+                Element startIPAddressElement2 = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                 if (startIPAddressElement2 != null) {
                     InetAddress startIPAddressInstance;
-                    startIPAddressInstance = InetAddress
-                            .getByName(startIPAddressElement2.getTextContent());
+                    startIPAddressInstance = InetAddress.getByName(startIPAddressElement2.getTextContent());
                     result.setStartIPAddress(startIPAddressInstance);
                 }
-
-                NodeList elements6 = serviceResourceElement2
-                        .getElementsByTagName("EndIPAddress");
-                Element endIPAddressElement2 = elements6.getLength() > 0 ? ((Element) elements6
-                        .item(0)) : null;
+                
+                NodeList elements6 = serviceResourceElement2.getElementsByTagName("EndIPAddress");
+                Element endIPAddressElement2 = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                 if (endIPAddressElement2 != null) {
                     InetAddress endIPAddressInstance;
-                    endIPAddressInstance = InetAddress
-                            .getByName(endIPAddressElement2.getTextContent());
+                    endIPAddressInstance = InetAddress.getByName(endIPAddressElement2.getTextContent());
                     result.setEndIPAddress(endIPAddressInstance);
                 }
             }
-
+            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader(
-                        "x-ms-request-id").getValue());
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }

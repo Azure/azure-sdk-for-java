@@ -26,27 +26,23 @@ package com.microsoft.windowsazure.management.scheduler.models;
 import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
- * The Check Name Availability operation response.
- */
-public class JobCollectionCheckNameAvailabilityResponse extends
-        OperationResponse {
+* The Check Name Availability operation response.
+*/
+public class JobCollectionCheckNameAvailabilityResponse extends OperationResponse {
     private boolean isAvailable;
-
+    
     /**
-     * Whether the name is available.
-     * 
-     * @return The IsAvailable value.
-     */
+    * Whether the name is available.
+    * @return The IsAvailable value.
+    */
     public boolean isAvailable() {
         return this.isAvailable;
     }
-
+    
     /**
-     * Whether the name is available.
-     * 
-     * @param isAvailableValue
-     *            The IsAvailable value.
-     */
+    * Whether the name is available.
+    * @param isAvailableValue The IsAvailable value.
+    */
     public void setIsAvailable(final boolean isAvailableValue) {
         this.isAvailable = isAvailableValue;
     }

@@ -24,69 +24,60 @@
 package com.microsoft.windowsazure.management.virtualnetworks.models;
 
 /**
- * The vendor, platform, and os family ofthe requested device configuration
- * script.
- */
+* The vendor, platform, and os family ofthe requested device configuration
+* script.
+*/
 public class GatewayGetDeviceConfigurationScriptParameters {
     private String oSFamily;
-
+    
     /**
-     * The device OS Family.
-     * 
-     * @return The OSFamily value.
-     */
+    * The device OS Family.
+    * @return The OSFamily value.
+    */
     public String getOSFamily() {
         return this.oSFamily;
     }
-
+    
     /**
-     * The device OS Family.
-     * 
-     * @param oSFamilyValue
-     *            The OSFamily value.
-     */
+    * The device OS Family.
+    * @param oSFamilyValue The OSFamily value.
+    */
     public void setOSFamily(final String oSFamilyValue) {
         this.oSFamily = oSFamilyValue;
     }
-
+    
     private String platform;
-
+    
     /**
-     * The device platform.
-     * 
-     * @return The Platform value.
-     */
+    * The device platform.
+    * @return The Platform value.
+    */
     public String getPlatform() {
         return this.platform;
     }
-
+    
     /**
-     * The device platform.
-     * 
-     * @param platformValue
-     *            The Platform value.
-     */
+    * The device platform.
+    * @param platformValue The Platform value.
+    */
     public void setPlatform(final String platformValue) {
         this.platform = platformValue;
     }
-
+    
     private String vendor;
-
+    
     /**
-     * The name of the device vendor.
-     * 
-     * @return The Vendor value.
-     */
+    * The name of the device vendor.
+    * @return The Vendor value.
+    */
     public String getVendor() {
         return this.vendor;
     }
-
+    
     /**
-     * The name of the device vendor.
-     * 
-     * @param vendorValue
-     *            The Vendor value.
-     */
+    * The name of the device vendor.
+    * @param vendorValue The Vendor value.
+    */
     public void setVendor(final String vendorValue) {
         this.vendor = vendorValue;
     }

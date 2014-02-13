@@ -61,102 +61,86 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-public class ReservedIPOperationsImpl implements
-        ServiceOperations<VirtualNetworkManagementClientImpl>,
-        ReservedIPOperations {
+public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetworkManagementClientImpl>, ReservedIPOperations {
     /**
-     * Initializes a new instance of the ReservedIPOperationsImpl class.
-     * 
-     * @param client
-     *            Reference to the service client.
-     */
+    * Initializes a new instance of the ReservedIPOperationsImpl class.
+    *
+    * @param client Reference to the service client.
+    */
     ReservedIPOperationsImpl(VirtualNetworkManagementClientImpl client) {
         this.client = client;
     }
-
+    
     private VirtualNetworkManagementClientImpl client;
-
+    
     /**
-     * Gets a reference to the
-     * microsoft.windowsazure.management.virtualnetworks.
-     * VirtualNetworkManagementClientImpl.
-     * 
-     * @return The Client value.
-     */
+    * Gets a reference to the
+    * microsoft.windowsazure.management.virtualnetworks.VirtualNetworkManagementClientImpl.
+    * @return The Client value.
+    */
     public VirtualNetworkManagementClientImpl getClient() {
         return this.client;
     }
-
+    
     /**
-     * Preview Only. The Create Reserved IP operation creates a reserved IP from
-     * your the subscription.
-     * 
-     * @param parameters
-     *            Parameters supplied to the Create Virtual Machine Image
-     *            operation.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
+    * Preview Only. The Create Reserved IP operation creates a reserved IP from
+    * your the subscription.
+    *
+    * @param parameters Parameters supplied to the Create Virtual Machine Image
+    * operation.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
     @Override
-    public Future<VirtualNetworkOperationStatusResponse> beginCreatingAsync(
-            final NetworkReservedIPCreateParameters parameters) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<VirtualNetworkOperationStatusResponse>() {
-                    @Override
-                    public VirtualNetworkOperationStatusResponse call()
-                            throws Exception {
-                        return beginCreating(parameters);
-                    }
-                });
+    public Future<VirtualNetworkOperationStatusResponse> beginCreatingAsync(final NetworkReservedIPCreateParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<VirtualNetworkOperationStatusResponse>() { 
+            @Override
+            public VirtualNetworkOperationStatusResponse call() throws Exception {
+                return beginCreating(parameters);
+            }
+         });
     }
-
+    
     /**
-     * Preview Only. The Create Reserved IP operation creates a reserved IP from
-     * your the subscription.
-     * 
-     * @param parameters
-     *            Parameters supplied to the Create Virtual Machine Image
-     *            operation.
-     * @throws ParserConfigurationException
-     *             Thrown if there was an error configuring the parser for the
-     *             response body.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the response body.
-     * @throws TransformerException
-     *             Thrown if there was an error creating the DOM transformer.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
+    * Preview Only. The Create Reserved IP operation creates a reserved IP from
+    * your the subscription.
+    *
+    * @param parameters Parameters supplied to the Create Virtual Machine Image
+    * operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
     @Override
-    public VirtualNetworkOperationStatusResponse beginCreating(
-            NetworkReservedIPCreateParameters parameters)
-            throws ParserConfigurationException, SAXException,
-            TransformerException, IOException, ServiceException {
+    public VirtualNetworkOperationStatusResponse beginCreating(NetworkReservedIPCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
         if (parameters == null) {
             throw new NullPointerException("parameters");
         }
-
+        
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -164,119 +148,96 @@ public class ReservedIPOperationsImpl implements
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this, "beginCreatingAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "beginCreatingAsync", tracingParameters);
         }
-
+        
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/"
-                + this.getClient().getCredentials().getSubscriptionId()
-                + "/services/networking/reservedips";
-
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/networking/reservedips";
+        
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
-
+        
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
         httpRequest.setHeader("x-ms-version", "2013-11-01");
-
+        
         // Serialize Request
         String requestContent = null;
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
-                .newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory
-                .newDocumentBuilder();
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
         Document requestDoc = documentBuilder.newDocument();
-
-        Element reservedIPElement = requestDoc.createElementNS(
-                "http://schemas.microsoft.com/windowsazure", "ReservedIP");
+        
+        Element reservedIPElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ReservedIP");
         requestDoc.appendChild(reservedIPElement);
-
+        
         if (parameters.getName() != null) {
-            Element nameElement = requestDoc.createElementNS(
-                    "http://schemas.microsoft.com/windowsazure", "Name");
-            nameElement.appendChild(requestDoc.createTextNode(parameters
-                    .getName()));
+            Element nameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+            nameElement.appendChild(requestDoc.createTextNode(parameters.getName()));
             reservedIPElement.appendChild(nameElement);
         }
-
+        
         if (parameters.getLabel() != null) {
-            Element labelElement = requestDoc.createElementNS(
-                    "http://schemas.microsoft.com/windowsazure", "Label");
-            labelElement.appendChild(requestDoc.createTextNode(parameters
-                    .getLabel()));
+            Element labelElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Label");
+            labelElement.appendChild(requestDoc.createTextNode(parameters.getLabel()));
             reservedIPElement.appendChild(labelElement);
         }
-
+        
         if (parameters.getAffinityGroup() != null) {
-            Element affinityGroupElement = requestDoc.createElementNS(
-                    "http://schemas.microsoft.com/windowsazure",
-                    "AffinityGroup");
-            affinityGroupElement.appendChild(requestDoc
-                    .createTextNode(parameters.getAffinityGroup()));
+            Element affinityGroupElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AffinityGroup");
+            affinityGroupElement.appendChild(requestDoc.createTextNode(parameters.getAffinityGroup()));
             reservedIPElement.appendChild(affinityGroupElement);
         }
-
+        
         if (parameters.getServiceName() != null) {
-            Element serviceNameElement = requestDoc.createElementNS(
-                    "http://schemas.microsoft.com/windowsazure", "ServiceName");
-            serviceNameElement.appendChild(requestDoc.createTextNode(parameters
-                    .getServiceName()));
+            Element serviceNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ServiceName");
+            serviceNameElement.appendChild(requestDoc.createTextNode(parameters.getServiceName()));
             reservedIPElement.appendChild(serviceNameElement);
         }
-
+        
         if (parameters.getDeploymentName() != null) {
-            Element deploymentNameElement = requestDoc.createElementNS(
-                    "http://schemas.microsoft.com/windowsazure",
-                    "DeploymentName");
-            deploymentNameElement.appendChild(requestDoc
-                    .createTextNode(parameters.getDeploymentName()));
+            Element deploymentNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DeploymentName");
+            deploymentNameElement.appendChild(requestDoc.createTextNode(parameters.getDeploymentName()));
             reservedIPElement.appendChild(deploymentNameElement);
         }
-
+        
         DOMSource domSource = new DOMSource(requestDoc);
         StringWriter stringWriter = new StringWriter();
         StreamResult streamResult = new StreamResult(stringWriter);
-        TransformerFactory transformerFactory = TransformerFactory
-                .newInstance();
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = transformerFactory.newTransformer();
         transformer.transform(domSource, streamResult);
         requestContent = stringWriter.toString();
         StringEntity entity = new StringEntity(requestContent);
         httpRequest.setEntity(entity);
         httpRequest.setHeader("Content-Type", "application/xml");
-
+        
         // Send Request
         HttpResponse httpResponse = null;
         try {
             if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient()
-                    .execute(httpRequest);
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
             if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_ACCEPTED) {
-                ServiceException ex = ServiceException.createFromXml(
-                        httpRequest, requestContent, httpResponse,
-                        httpResponse.getEntity());
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-
+            
             // Create Result
             VirtualNetworkOperationStatusResponse result = null;
             result = new VirtualNetworkOperationStatusResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader(
-                        "x-ms-request-id").getValue());
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
@@ -287,55 +248,48 @@ public class ReservedIPOperationsImpl implements
             }
         }
     }
-
+    
     /**
-     * Preview Only. The Delete Reserved IP operation removes a reserved IP from
-     * your the subscription.
-     * 
-     * @param ipName
-     *            The name of the reserved IP.
-     * @return A standard storage response including an HTTP status code and
-     *         request ID.
-     */
+    * Preview Only. The Delete Reserved IP operation removes a reserved IP from
+    * your the subscription.
+    *
+    * @param ipName The name of the reserved IP.
+    * @return A standard storage response including an HTTP status code and
+    * request ID.
+    */
     @Override
     public Future<OperationResponse> beginDeletingAsync(final String ipName) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<OperationResponse>() {
-                    @Override
-                    public OperationResponse call() throws Exception {
-                        return beginDeleting(ipName);
-                    }
-                });
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception {
+                return beginDeleting(ipName);
+            }
+         });
     }
-
+    
     /**
-     * Preview Only. The Delete Reserved IP operation removes a reserved IP from
-     * your the subscription.
-     * 
-     * @param ipName
-     *            The name of the reserved IP.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @throws ParserConfigurationException
-     *             Thrown if there was a serious configuration error with the
-     *             document parser.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the XML response.
-     * @return A standard storage response including an HTTP status code and
-     *         request ID.
-     */
+    * Preview Only. The Delete Reserved IP operation removes a reserved IP from
+    * your the subscription.
+    *
+    * @param ipName The name of the reserved IP.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return A standard storage response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public OperationResponse beginDeleting(String ipName) throws IOException,
-            ServiceException, ParserConfigurationException, SAXException {
+    public OperationResponse beginDeleting(String ipName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
         // Validate
         if (ipName == null) {
             throw new NullPointerException("ipName");
         }
-
+        
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -343,53 +297,46 @@ public class ReservedIPOperationsImpl implements
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("ipName", ipName);
-            CloudTracing.enter(invocationId, this, "beginDeletingAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "beginDeletingAsync", tracingParameters);
         }
-
+        
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/"
-                + this.getClient().getCredentials().getSubscriptionId()
-                + "/services/networking/reservedips/" + ipName;
-
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/networking/reservedips/" + ipName;
+        
         // Create HTTP transport objects
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
-
+        
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
         httpRequest.setHeader("x-ms-version", "2013-11-01");
-
+        
         // Send Request
         HttpResponse httpResponse = null;
         try {
             if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient()
-                    .execute(httpRequest);
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
             if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_ACCEPTED) {
-                ServiceException ex = ServiceException.createFromXml(
-                        httpRequest, null, httpResponse,
-                        httpResponse.getEntity());
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-
+            
             // Create Result
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader(
-                        "x-ms-request-id").getValue());
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
@@ -400,83 +347,69 @@ public class ReservedIPOperationsImpl implements
             }
         }
     }
-
+    
     /**
-     * The Create Reserved IP operation creates a reserved IP from your the
-     * subscription.
-     * 
-     * @param parameters
-     *            Parameters supplied to the Create Virtual Machine Image
-     *            operation.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
+    * The Create Reserved IP operation creates a reserved IP from your the
+    * subscription.
+    *
+    * @param parameters Parameters supplied to the Create Virtual Machine Image
+    * operation.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
     @Override
-    public Future<VirtualNetworkOperationStatusResponse> createAsync(
-            final NetworkReservedIPCreateParameters parameters) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<VirtualNetworkOperationStatusResponse>() {
-                    @Override
-                    public VirtualNetworkOperationStatusResponse call()
-                            throws Exception {
-                        return create(parameters);
-                    }
-                });
+    public Future<VirtualNetworkOperationStatusResponse> createAsync(final NetworkReservedIPCreateParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<VirtualNetworkOperationStatusResponse>() { 
+            @Override
+            public VirtualNetworkOperationStatusResponse call() throws Exception {
+                return create(parameters);
+            }
+         });
     }
-
+    
     /**
-     * The Create Reserved IP operation creates a reserved IP from your the
-     * subscription.
-     * 
-     * @param parameters
-     *            Parameters supplied to the Create Virtual Machine Image
-     *            operation.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @throws ParserConfigurationException
-     *             Thrown if there was a serious configuration error with the
-     *             document parser.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the XML response.
-     * @throws InterruptedException
-     *             Thrown when a thread is waiting, sleeping, or otherwise
-     *             occupied, and the thread is interrupted, either before or
-     *             during the activity. Occasionally a method may wish to test
-     *             whether the current thread has been interrupted, and if so,
-     *             to immediately throw this exception. The following code can
-     *             be used to achieve this effect:
-     * @throws ExecutionException
-     *             Thrown when attempting to retrieve the result of a task that
-     *             aborted by throwing an exception. This exception can be
-     *             inspected using the Throwable.getCause() method.
-     * @throws ServiceException
-     *             Thrown if the server returned an error for the request.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
+    * The Create Reserved IP operation creates a reserved IP from your the
+    * subscription.
+    *
+    * @param parameters Parameters supplied to the Create Virtual Machine Image
+    * operation.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
     @Override
-    public VirtualNetworkOperationStatusResponse create(
-            NetworkReservedIPCreateParameters parameters) throws IOException,
-            ServiceException, ParserConfigurationException, SAXException,
-            InterruptedException, ExecutionException, ServiceException {
+    public VirtualNetworkOperationStatusResponse create(NetworkReservedIPCreateParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException, InterruptedException, ExecutionException, ServiceException {
         VirtualNetworkManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -484,42 +417,29 @@ public class ReservedIPOperationsImpl implements
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this, "createAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "createAsync", tracingParameters);
         }
         try {
             if (shouldTrace) {
-                client2 = this
-                        .getClient()
-                        .withRequestFilterLast(
-                                new ClientRequestTrackingHandler(invocationId))
-                        .withResponseFilterLast(
-                                new ClientRequestTrackingHandler(invocationId));
+                client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
-
-            VirtualNetworkOperationStatusResponse response = client2
-                    .getReservedIPsOperations().beginCreatingAsync(parameters)
-                    .get();
-            VirtualNetworkOperationStatusResponse result = client2
-                    .getOperationStatusAsync(response.getRequestId()).get();
+            
+            VirtualNetworkOperationStatusResponse response = client2.getReservedIPsOperations().beginCreatingAsync(parameters).get();
+            VirtualNetworkOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
-                result = client2.getOperationStatusAsync(
-                        response.getRequestId()).get();
+                result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
-
+            
             if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
-                    ServiceException ex = new ServiceException(result
-                            .getError().getCode()
-                            + " : "
-                            + result.getError().getMessage());
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setErrorCode(result.getError().getCode());
                     ex.setErrorMessage(result.getError().getMessage());
                     if (shouldTrace) {
@@ -534,7 +454,7 @@ public class ReservedIPOperationsImpl implements
                     throw ex;
                 }
             }
-
+            
             return result;
         } finally {
             if (this.getClient() != null && shouldTrace) {
@@ -542,81 +462,67 @@ public class ReservedIPOperationsImpl implements
             }
         }
     }
-
+    
     /**
-     * The Delete Reserved IP operation removes a reserved IP from your the
-     * subscription.
-     * 
-     * @param ipName
-     *            The name of the reserved IP.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
+    * The Delete Reserved IP operation removes a reserved IP from your the
+    * subscription.
+    *
+    * @param ipName The name of the reserved IP.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
     @Override
-    public Future<VirtualNetworkOperationStatusResponse> deleteAsync(
-            final String ipName) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<VirtualNetworkOperationStatusResponse>() {
-                    @Override
-                    public VirtualNetworkOperationStatusResponse call()
-                            throws Exception {
-                        return delete(ipName);
-                    }
-                });
+    public Future<VirtualNetworkOperationStatusResponse> deleteAsync(final String ipName) {
+        return this.getClient().getExecutorService().submit(new Callable<VirtualNetworkOperationStatusResponse>() { 
+            @Override
+            public VirtualNetworkOperationStatusResponse call() throws Exception {
+                return delete(ipName);
+            }
+         });
     }
-
+    
     /**
-     * The Delete Reserved IP operation removes a reserved IP from your the
-     * subscription.
-     * 
-     * @param ipName
-     *            The name of the reserved IP.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @throws ParserConfigurationException
-     *             Thrown if there was a serious configuration error with the
-     *             document parser.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the XML response.
-     * @throws InterruptedException
-     *             Thrown when a thread is waiting, sleeping, or otherwise
-     *             occupied, and the thread is interrupted, either before or
-     *             during the activity. Occasionally a method may wish to test
-     *             whether the current thread has been interrupted, and if so,
-     *             to immediately throw this exception. The following code can
-     *             be used to achieve this effect:
-     * @throws ExecutionException
-     *             Thrown when attempting to retrieve the result of a task that
-     *             aborted by throwing an exception. This exception can be
-     *             inspected using the Throwable.getCause() method.
-     * @throws ServiceException
-     *             Thrown if the server returned an error for the request.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
+    * The Delete Reserved IP operation removes a reserved IP from your the
+    * subscription.
+    *
+    * @param ipName The name of the reserved IP.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
     @Override
-    public VirtualNetworkOperationStatusResponse delete(String ipName)
-            throws IOException, ServiceException, ParserConfigurationException,
-            SAXException, InterruptedException, ExecutionException,
-            ServiceException {
+    public VirtualNetworkOperationStatusResponse delete(String ipName) throws IOException, ServiceException, ParserConfigurationException, SAXException, InterruptedException, ExecutionException, ServiceException {
         VirtualNetworkManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -624,41 +530,29 @@ public class ReservedIPOperationsImpl implements
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("ipName", ipName);
-            CloudTracing.enter(invocationId, this, "deleteAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "deleteAsync", tracingParameters);
         }
         try {
             if (shouldTrace) {
-                client2 = this
-                        .getClient()
-                        .withRequestFilterLast(
-                                new ClientRequestTrackingHandler(invocationId))
-                        .withResponseFilterLast(
-                                new ClientRequestTrackingHandler(invocationId));
+                client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
-
-            OperationResponse response = client2.getReservedIPsOperations()
-                    .beginDeletingAsync(ipName).get();
-            VirtualNetworkOperationStatusResponse result = client2
-                    .getOperationStatusAsync(response.getRequestId()).get();
+            
+            OperationResponse response = client2.getReservedIPsOperations().beginDeletingAsync(ipName).get();
+            VirtualNetworkOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
-                result = client2.getOperationStatusAsync(
-                        response.getRequestId()).get();
+                result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
-
+            
             if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
-                    ServiceException ex = new ServiceException(result
-                            .getError().getCode()
-                            + " : "
-                            + result.getError().getMessage());
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setErrorCode(result.getError().getCode());
                     ex.setErrorMessage(result.getError().getMessage());
                     if (shouldTrace) {
@@ -673,7 +567,7 @@ public class ReservedIPOperationsImpl implements
                     throw ex;
                 }
             }
-
+            
             return result;
         } finally {
             if (this.getClient() != null && shouldTrace) {
@@ -681,53 +575,46 @@ public class ReservedIPOperationsImpl implements
             }
         }
     }
-
+    
     /**
-     * Preview Only. The Get Reserved IP operation retrieves the details for
-     * virtual IP reserved for the subscription.
-     * 
-     * @param ipName
-     *            The name of the reserved IP to retrieve.
-     * @return Preview Only. A reserved IP associated with your subscription.
-     */
+    * Preview Only. The Get Reserved IP operation retrieves the details for
+    * virtual IP reserved for the subscription.
+    *
+    * @param ipName The name of the reserved IP to retrieve.
+    * @return Preview Only. A reserved IP associated with your subscription.
+    */
     @Override
     public Future<NetworkReservedIPGetResponse> getAsync(final String ipName) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<NetworkReservedIPGetResponse>() {
-                    @Override
-                    public NetworkReservedIPGetResponse call() throws Exception {
-                        return get(ipName);
-                    }
-                });
+        return this.getClient().getExecutorService().submit(new Callable<NetworkReservedIPGetResponse>() { 
+            @Override
+            public NetworkReservedIPGetResponse call() throws Exception {
+                return get(ipName);
+            }
+         });
     }
-
+    
     /**
-     * Preview Only. The Get Reserved IP operation retrieves the details for
-     * virtual IP reserved for the subscription.
-     * 
-     * @param ipName
-     *            The name of the reserved IP to retrieve.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @throws ParserConfigurationException
-     *             Thrown if there was a serious configuration error with the
-     *             document parser.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the XML response.
-     * @return Preview Only. A reserved IP associated with your subscription.
-     */
+    * Preview Only. The Get Reserved IP operation retrieves the details for
+    * virtual IP reserved for the subscription.
+    *
+    * @param ipName The name of the reserved IP to retrieve.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return Preview Only. A reserved IP associated with your subscription.
+    */
     @Override
-    public NetworkReservedIPGetResponse get(String ipName) throws IOException,
-            ServiceException, ParserConfigurationException, SAXException {
+    public NetworkReservedIPGetResponse get(String ipName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
         // Validate
         if (ipName == null) {
             throw new NullPointerException("ipName");
         }
-
+        
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -735,160 +622,128 @@ public class ReservedIPOperationsImpl implements
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("ipName", ipName);
-            CloudTracing.enter(invocationId, this, "getAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "getAsync", tracingParameters);
         }
-
+        
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/"
-                + this.getClient().getCredentials().getSubscriptionId()
-                + "/services/networking/reservedips/" + ipName;
-
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/networking/reservedips/" + ipName;
+        
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
-
+        
         // Set Headers
         httpRequest.setHeader("x-ms-version", "2013-11-01");
-
+        
         // Send Request
         HttpResponse httpResponse = null;
         try {
             if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient()
-                    .execute(httpRequest);
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
             if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_OK) {
-                ServiceException ex = ServiceException.createFromXml(
-                        httpRequest, null, httpResponse,
-                        httpResponse.getEntity());
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-
+            
             // Create Result
             NetworkReservedIPGetResponse result = null;
             // Deserialize Response
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new NetworkReservedIPGetResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
-                    .newInstance();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory
-                    .newDocumentBuilder();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
-
+            
             NodeList elements = responseDoc.getElementsByTagName("ReservedIP");
-            Element reservedIPElement = elements.getLength() > 0 ? ((Element) elements
-                    .item(0)) : null;
+            Element reservedIPElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (reservedIPElement != null) {
-                NodeList elements2 = reservedIPElement
-                        .getElementsByTagName("Name");
-                Element nameElement = elements2.getLength() > 0 ? ((Element) elements2
-                        .item(0)) : null;
+                NodeList elements2 = reservedIPElement.getElementsByTagName("Name");
+                Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                 if (nameElement != null) {
                     String nameInstance;
                     nameInstance = nameElement.getTextContent();
                     result.setName(nameInstance);
                 }
-
-                NodeList elements3 = reservedIPElement
-                        .getElementsByTagName("Address");
-                Element addressElement = elements3.getLength() > 0 ? ((Element) elements3
-                        .item(0)) : null;
+                
+                NodeList elements3 = reservedIPElement.getElementsByTagName("Address");
+                Element addressElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                 if (addressElement != null) {
                     InetAddress addressInstance;
-                    addressInstance = InetAddress.getByName(addressElement
-                            .getTextContent());
+                    addressInstance = InetAddress.getByName(addressElement.getTextContent());
                     result.setAddress(addressInstance);
                 }
-
-                NodeList elements4 = reservedIPElement
-                        .getElementsByTagName("Id");
-                Element idElement = elements4.getLength() > 0 ? ((Element) elements4
-                        .item(0)) : null;
+                
+                NodeList elements4 = reservedIPElement.getElementsByTagName("Id");
+                Element idElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                 if (idElement != null) {
                     String idInstance;
                     idInstance = idElement.getTextContent();
                     result.setId(idInstance);
                 }
-
-                NodeList elements5 = reservedIPElement
-                        .getElementsByTagName("Label");
-                Element labelElement = elements5.getLength() > 0 ? ((Element) elements5
-                        .item(0)) : null;
+                
+                NodeList elements5 = reservedIPElement.getElementsByTagName("Label");
+                Element labelElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                 if (labelElement != null) {
                     String labelInstance;
                     labelInstance = labelElement.getTextContent();
                     result.setLabel(labelInstance);
                 }
-
-                NodeList elements6 = reservedIPElement
-                        .getElementsByTagName("AffinityGroup");
-                Element affinityGroupElement = elements6.getLength() > 0 ? ((Element) elements6
-                        .item(0)) : null;
+                
+                NodeList elements6 = reservedIPElement.getElementsByTagName("AffinityGroup");
+                Element affinityGroupElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                 if (affinityGroupElement != null) {
                     String affinityGroupInstance;
-                    affinityGroupInstance = affinityGroupElement
-                            .getTextContent();
+                    affinityGroupInstance = affinityGroupElement.getTextContent();
                     result.setAffinityGroup(affinityGroupInstance);
                 }
-
-                NodeList elements7 = reservedIPElement
-                        .getElementsByTagName("State");
-                Element stateElement = elements7.getLength() > 0 ? ((Element) elements7
-                        .item(0)) : null;
+                
+                NodeList elements7 = reservedIPElement.getElementsByTagName("State");
+                Element stateElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                 if (stateElement != null) {
                     String stateInstance;
                     stateInstance = stateElement.getTextContent();
                     result.setState(stateInstance);
                 }
-
-                NodeList elements8 = reservedIPElement
-                        .getElementsByTagName("InUse");
-                Element inUseElement = elements8.getLength() > 0 ? ((Element) elements8
-                        .item(0)) : null;
+                
+                NodeList elements8 = reservedIPElement.getElementsByTagName("InUse");
+                Element inUseElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
                 if (inUseElement != null) {
                     boolean inUseInstance;
-                    inUseInstance = DatatypeConverter.parseBoolean(inUseElement
-                            .getTextContent());
+                    inUseInstance = DatatypeConverter.parseBoolean(inUseElement.getTextContent());
                     result.setInUse(inUseInstance);
                 }
-
-                NodeList elements9 = reservedIPElement
-                        .getElementsByTagName("ServiceName");
-                Element serviceNameElement = elements9.getLength() > 0 ? ((Element) elements9
-                        .item(0)) : null;
+                
+                NodeList elements9 = reservedIPElement.getElementsByTagName("ServiceName");
+                Element serviceNameElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
                 if (serviceNameElement != null) {
                     String serviceNameInstance;
                     serviceNameInstance = serviceNameElement.getTextContent();
                     result.setServiceName(serviceNameInstance);
                 }
-
-                NodeList elements10 = reservedIPElement
-                        .getElementsByTagName("DeploymentName");
-                Element deploymentNameElement = elements10.getLength() > 0 ? ((Element) elements10
-                        .item(0)) : null;
+                
+                NodeList elements10 = reservedIPElement.getElementsByTagName("DeploymentName");
+                Element deploymentNameElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
                 if (deploymentNameElement != null) {
                     String deploymentNameInstance;
-                    deploymentNameInstance = deploymentNameElement
-                            .getTextContent();
+                    deploymentNameInstance = deploymentNameElement.getTextContent();
                     result.setDeploymentName(deploymentNameInstance);
                 }
             }
-
+            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader(
-                        "x-ms-request-id").getValue());
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
@@ -899,220 +754,175 @@ public class ReservedIPOperationsImpl implements
             }
         }
     }
-
+    
     /**
-     * Preview Only. The List Reserved IP operation retrieves the virtual IPs
-     * reserved for the subscription.
-     * 
-     * @return Preview Only. The response structure for the Server List
-     *         operation
-     */
+    * Preview Only. The List Reserved IP operation retrieves the virtual IPs
+    * reserved for the subscription.
+    *
+    * @return Preview Only. The response structure for the Server List operation
+    */
     @Override
     public Future<NetworkReservedIPListResponse> listAsync() {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<NetworkReservedIPListResponse>() {
-                    @Override
-                    public NetworkReservedIPListResponse call()
-                            throws Exception {
-                        return list();
-                    }
-                });
+        return this.getClient().getExecutorService().submit(new Callable<NetworkReservedIPListResponse>() { 
+            @Override
+            public NetworkReservedIPListResponse call() throws Exception {
+                return list();
+            }
+         });
     }
-
+    
     /**
-     * Preview Only. The List Reserved IP operation retrieves the virtual IPs
-     * reserved for the subscription.
-     * 
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @throws ParserConfigurationException
-     *             Thrown if there was a serious configuration error with the
-     *             document parser.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the XML response.
-     * @return Preview Only. The response structure for the Server List
-     *         operation
-     */
+    * Preview Only. The List Reserved IP operation retrieves the virtual IPs
+    * reserved for the subscription.
+    *
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return Preview Only. The response structure for the Server List operation
+    */
     @Override
-    public NetworkReservedIPListResponse list() throws IOException,
-            ServiceException, ParserConfigurationException, SAXException {
+    public NetworkReservedIPListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException {
         // Validate
-
+        
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
         if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
-            CloudTracing.enter(invocationId, this, "listAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "listAsync", tracingParameters);
         }
-
+        
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/"
-                + this.getClient().getCredentials().getSubscriptionId()
-                + "/services/networking/reservedips";
-
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/networking/reservedips";
+        
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
-
+        
         // Set Headers
         httpRequest.setHeader("x-ms-version", "2013-11-01");
-
+        
         // Send Request
         HttpResponse httpResponse = null;
         try {
             if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient()
-                    .execute(httpRequest);
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
             if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_OK) {
-                ServiceException ex = ServiceException.createFromXml(
-                        httpRequest, null, httpResponse,
-                        httpResponse.getEntity());
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-
+            
             // Create Result
             NetworkReservedIPListResponse result = null;
             // Deserialize Response
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new NetworkReservedIPListResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
-                    .newInstance();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory
-                    .newDocumentBuilder();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
-
+            
             NodeList elements = responseDoc.getElementsByTagName("ReservedIPs");
-            Element reservedIPsSequenceElement = elements.getLength() > 0 ? ((Element) elements
-                    .item(0)) : null;
+            Element reservedIPsSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (reservedIPsSequenceElement != null) {
-                for (int i1 = 0; i1 < reservedIPsSequenceElement
-                        .getElementsByTagName("ReservedIP").getLength(); i1 = i1 + 1) {
-                    org.w3c.dom.Element reservedIPsElement = ((org.w3c.dom.Element) reservedIPsSequenceElement
-                            .getElementsByTagName("ReservedIP").item(i1));
+                for (int i1 = 0; i1 < reservedIPsSequenceElement.getElementsByTagName("ReservedIP").getLength(); i1 = i1 + 1) {
+                    org.w3c.dom.Element reservedIPsElement = ((org.w3c.dom.Element) reservedIPsSequenceElement.getElementsByTagName("ReservedIP").item(i1));
                     NetworkReservedIPListResponse.ReservedIP reservedIPInstance = new NetworkReservedIPListResponse.ReservedIP();
                     result.getReservedIPs().add(reservedIPInstance);
-
-                    NodeList elements2 = reservedIPsElement
-                            .getElementsByTagName("Name");
-                    Element nameElement = elements2.getLength() > 0 ? ((Element) elements2
-                            .item(0)) : null;
+                    
+                    NodeList elements2 = reservedIPsElement.getElementsByTagName("Name");
+                    Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                     if (nameElement != null) {
                         String nameInstance;
                         nameInstance = nameElement.getTextContent();
                         reservedIPInstance.setName(nameInstance);
                     }
-
-                    NodeList elements3 = reservedIPsElement
-                            .getElementsByTagName("Address");
-                    Element addressElement = elements3.getLength() > 0 ? ((Element) elements3
-                            .item(0)) : null;
+                    
+                    NodeList elements3 = reservedIPsElement.getElementsByTagName("Address");
+                    Element addressElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                     if (addressElement != null) {
                         InetAddress addressInstance;
-                        addressInstance = InetAddress.getByName(addressElement
-                                .getTextContent());
+                        addressInstance = InetAddress.getByName(addressElement.getTextContent());
                         reservedIPInstance.setAddress(addressInstance);
                     }
-
-                    NodeList elements4 = reservedIPsElement
-                            .getElementsByTagName("Id");
-                    Element idElement = elements4.getLength() > 0 ? ((Element) elements4
-                            .item(0)) : null;
+                    
+                    NodeList elements4 = reservedIPsElement.getElementsByTagName("Id");
+                    Element idElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                     if (idElement != null) {
                         String idInstance;
                         idInstance = idElement.getTextContent();
                         reservedIPInstance.setId(idInstance);
                     }
-
-                    NodeList elements5 = reservedIPsElement
-                            .getElementsByTagName("Label");
-                    Element labelElement = elements5.getLength() > 0 ? ((Element) elements5
-                            .item(0)) : null;
+                    
+                    NodeList elements5 = reservedIPsElement.getElementsByTagName("Label");
+                    Element labelElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                     if (labelElement != null) {
                         String labelInstance;
                         labelInstance = labelElement.getTextContent();
                         reservedIPInstance.setLabel(labelInstance);
                     }
-
-                    NodeList elements6 = reservedIPsElement
-                            .getElementsByTagName("AffinityGroup");
-                    Element affinityGroupElement = elements6.getLength() > 0 ? ((Element) elements6
-                            .item(0)) : null;
+                    
+                    NodeList elements6 = reservedIPsElement.getElementsByTagName("AffinityGroup");
+                    Element affinityGroupElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                     if (affinityGroupElement != null) {
                         String affinityGroupInstance;
-                        affinityGroupInstance = affinityGroupElement
-                                .getTextContent();
-                        reservedIPInstance
-                                .setAffinityGroup(affinityGroupInstance);
+                        affinityGroupInstance = affinityGroupElement.getTextContent();
+                        reservedIPInstance.setAffinityGroup(affinityGroupInstance);
                     }
-
-                    NodeList elements7 = reservedIPsElement
-                            .getElementsByTagName("State");
-                    Element stateElement = elements7.getLength() > 0 ? ((Element) elements7
-                            .item(0)) : null;
+                    
+                    NodeList elements7 = reservedIPsElement.getElementsByTagName("State");
+                    Element stateElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                     if (stateElement != null) {
                         String stateInstance;
                         stateInstance = stateElement.getTextContent();
                         reservedIPInstance.setState(stateInstance);
                     }
-
-                    NodeList elements8 = reservedIPsElement
-                            .getElementsByTagName("InUse");
-                    Element inUseElement = elements8.getLength() > 0 ? ((Element) elements8
-                            .item(0)) : null;
+                    
+                    NodeList elements8 = reservedIPsElement.getElementsByTagName("InUse");
+                    Element inUseElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
                     if (inUseElement != null) {
                         boolean inUseInstance;
-                        inUseInstance = DatatypeConverter
-                                .parseBoolean(inUseElement.getTextContent());
+                        inUseInstance = DatatypeConverter.parseBoolean(inUseElement.getTextContent());
                         reservedIPInstance.setInUse(inUseInstance);
                     }
-
-                    NodeList elements9 = reservedIPsElement
-                            .getElementsByTagName("ServiceName");
-                    Element serviceNameElement = elements9.getLength() > 0 ? ((Element) elements9
-                            .item(0)) : null;
+                    
+                    NodeList elements9 = reservedIPsElement.getElementsByTagName("ServiceName");
+                    Element serviceNameElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
                     if (serviceNameElement != null) {
                         String serviceNameInstance;
-                        serviceNameInstance = serviceNameElement
-                                .getTextContent();
+                        serviceNameInstance = serviceNameElement.getTextContent();
                         reservedIPInstance.setServiceName(serviceNameInstance);
                     }
-
-                    NodeList elements10 = reservedIPsElement
-                            .getElementsByTagName("DeploymentName");
-                    Element deploymentNameElement = elements10.getLength() > 0 ? ((Element) elements10
-                            .item(0)) : null;
+                    
+                    NodeList elements10 = reservedIPsElement.getElementsByTagName("DeploymentName");
+                    Element deploymentNameElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
                     if (deploymentNameElement != null) {
                         String deploymentNameInstance;
-                        deploymentNameInstance = deploymentNameElement
-                                .getTextContent();
-                        reservedIPInstance
-                                .setDeploymentName(deploymentNameInstance);
+                        deploymentNameInstance = deploymentNameElement.getTextContent();
+                        reservedIPInstance.setDeploymentName(deploymentNameInstance);
                     }
                 }
             }
-
+            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader(
-                        "x-ms-request-id").getValue());
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
