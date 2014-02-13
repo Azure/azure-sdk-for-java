@@ -24,46 +24,46 @@
 package com.microsoft.windowsazure.management.websites.models;
 
 /**
- * Supported historical usage metric names.
- */
+* Supported historical usage metric names.
+*/
 public class HistoricalUsageMetricNames {
     public static final String CpuTime = "CpuTime";
-
+    
     public static final String BytesReceived = "BytesReceived";
-
+    
     public static final String BytesSent = "BytesSent";
-
+    
     public static final String IncomingRequestBytes = "IncomingRequestBytes";
-
+    
     public static final String IncomingRequestResponseBytes = "IncomingRequestResponseBytes";
-
+    
     public static final String OutgoingRequestBytes = "OutgoingRequestBytes";
-
+    
     public static final String OutgoingRequestResponseBytes = "OutgoingRequestResponseBytes";
-
+    
     public static final String LocalReadBytes = "LocalReadBytes";
-
+    
     public static final String LocalWrittenBytes = "LocalWrittenBytes";
-
+    
     public static final String NetworkReadBytes = "NetworkReadBytes";
-
+    
     public static final String NetworkWrittenBytes = "NetworkWrittenBytes";
-
+    
     public static final String Requests = "Requests";
-
+    
     public static final String Http2xx = "Http2xx";
-
+    
     public static final String Http3xx = "Http3xx";
-
+    
     public static final String Http401 = "Http401";
-
+    
     public static final String Http403 = "Http403";
-
+    
     public static final String Http404 = "Http404";
-
+    
     public static final String Http406 = "Http406";
-
+    
     public static final String Http4xx = "Http4xx";
-
+    
     public static final String Http5xx = "Http5xx";
 }

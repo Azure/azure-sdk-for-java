@@ -26,34 +26,31 @@ package com.microsoft.windowsazure.management.compute.models;
 import java.util.ArrayList;
 
 /**
- * The set of access control rules for the endpoint.
- */
+* The set of access control rules for the endpoint.
+*/
 public class EndpointAcl {
     private ArrayList<AccessControlListRule> rules;
-
+    
     /**
-     * The set of access control rules for the endpoint.
-     * 
-     * @return The Rules value.
-     */
+    * The set of access control rules for the endpoint.
+    * @return The Rules value.
+    */
     public ArrayList<AccessControlListRule> getRules() {
         return this.rules;
     }
-
+    
     /**
-     * The set of access control rules for the endpoint.
-     * 
-     * @param rulesValue
-     *            The Rules value.
-     */
+    * The set of access control rules for the endpoint.
+    * @param rulesValue The Rules value.
+    */
     public void setRules(final ArrayList<AccessControlListRule> rulesValue) {
         this.rules = rulesValue;
     }
-
+    
     /**
-     * Initializes a new instance of the EndpointAcl class.
-     * 
-     */
+    * Initializes a new instance of the EndpointAcl class.
+    *
+    */
     public EndpointAcl() {
         this.rules = new ArrayList<AccessControlListRule>();
     }

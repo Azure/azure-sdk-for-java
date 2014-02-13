@@ -24,113 +24,113 @@
 package com.microsoft.windowsazure.management.compute.models;
 
 /**
- * The current status of a role instance.
- */
+* The current status of a role instance.
+*/
 public class RoleInstanceStatus {
     /**
-     * The role state is currently unknown. The state should automatically be
-     * resolved once the role state is detected, so no action is required.
-     */
+    * The role state is currently unknown. The state should automatically be
+    * resolved once the role state is detected, so no action is required.
+    */
     public static final String RoleStateUnknown = "RoleStateUnknown";
-
+    
     /**
-     * The host agent is currently creating resources for the Virtual Machine.
-     */
+    * The host agent is currently creating resources for the Virtual Machine.
+    */
     public static final String CreatingVM = "CreatingVM";
-
+    
     /**
-     * The host agent is starting the Virtual Machine.
-     */
+    * The host agent is starting the Virtual Machine.
+    */
     public static final String StartingVM = "StartingVM";
-
+    
     /**
-     * Windows Azure is creating resources for the role.
-     */
+    * Windows Azure is creating resources for the role.
+    */
     public static final String CreatingRole = "CreatingRole";
-
+    
     /**
-     * Windows Azure is starting the role.
-     */
+    * Windows Azure is starting the role.
+    */
     public static final String StartingRole = "StartingRole";
-
+    
     /**
-     * The role instance has started and is ready to be used.
-     */
+    * The role instance has started and is ready to be used.
+    */
     public static final String ReadyRole = "ReadyRole";
-
+    
     /**
-     * The role instance is unavailable for requests. This state is usually
-     * generated while the role is being created or stopped.
-     */
+    * The role instance is unavailable for requests. This state is usually
+    * generated while the role is being created or stopped.
+    */
     public static final String BusyRole = "BusyRole";
-
+    
     /**
-     * Windows Azure is stopping the role.
-     */
+    * Windows Azure is stopping the role.
+    */
     public static final String StoppingRole = "StoppingRole";
-
+    
     /**
-     * The host agent is stopping the Virtual Machine. This status also
-     * indicates that the role has already been stopped.
-     */
+    * The host agent is stopping the Virtual Machine. This status also
+    * indicates that the role has already been stopped.
+    */
     public static final String StoppingVM = "StoppingVM";
-
+    
     /**
-     * The Virtual Machine is being deleted by the host agent.
-     */
+    * The Virtual Machine is being deleted by the host agent.
+    */
     public static final String DeletingVM = "DeletingVM";
-
+    
     /**
-     * The Virtual Machine is not running. This is the final state of the
-     * shutdown process, and no other status messages should be received after
-     * StoppedVM.
-     */
+    * The Virtual Machine is not running. This is the final state of the
+    * shutdown process, and no other status messages should be received after
+    * StoppedVM.
+    */
     public static final String StoppedVM = "StoppedVM";
-
+    
     /**
-     * The role has unexpectedly stopped or has failed to start. This status
-     * indicates that there is a problem with the role that is causing it to
-     * crash or preventing it from starting, and must be corrected before the
-     * role can be started. The InstanceStateDetails and InstanceErrorCode
-     * fields can hold information about the role error that caused this state,
-     * which may be useful for identifying and debugging the problem.
-     */
+    * The role has unexpectedly stopped or has failed to start. This status
+    * indicates that there is a problem with the role that is causing it to
+    * crash or preventing it from starting, and must be corrected before the
+    * role can be started. The InstanceStateDetails and InstanceErrorCode
+    * fields can hold information about the role error that caused this state,
+    * which may be useful for identifying and debugging the problem.
+    */
     public static final String RestartingRole = "RestartingRole";
-
+    
     /**
-     * The role has continually crashed after being started by Windows Azure.
-     * This status indicates that there is a problem with the role that prevents
-     * it from starting, and may be generated after the StartingRole even
-     * ReadyRole statuses are received. The problem in the role must be found
-     * and corrected before the role can be started. The InstanceStateDetails
-     * and InstanceErrorCode fields can hold information about the role error
-     * that caused this state, which may be useful for identifying and debugging
-     * the problem.
-     */
+    * The role has continually crashed after being started by Windows Azure.
+    * This status indicates that there is a problem with the role that
+    * prevents it from starting, and may be generated after the StartingRole
+    * even ReadyRole statuses are received. The problem in the role must be
+    * found and corrected before the role can be started. The
+    * InstanceStateDetails and InstanceErrorCode fields can hold information
+    * about the role error that caused this state, which may be useful for
+    * identifying and debugging the problem.
+    */
     public static final String CyclingRole = "CyclingRole";
-
+    
     /**
-     * The role has continually failed to start. This status indicates that
-     * there is a problem with the role that prevents it from starting, and may
-     * be generated after the process returns StartingRole. The problem in the
-     * role must be found and corrected before the role can be started. The
-     * InstanceStateDetails and InstanceErrorCode fields can hold information
-     * about the role error that caused this state, which may be useful for
-     * identifying and debugging the problem.
-     */
+    * The role has continually failed to start. This status indicates that
+    * there is a problem with the role that prevents it from starting, and may
+    * be generated after the process returns StartingRole. The problem in the
+    * role must be found and corrected before the role can be started. The
+    * InstanceStateDetails and InstanceErrorCode fields can hold information
+    * about the role error that caused this state, which may be useful for
+    * identifying and debugging the problem.
+    */
     public static final String FailedStartingRole = "FailedStartingRole";
-
+    
     /**
-     * A Windows Azure or container error is preventing the Virtual Machine from
-     * starting. This status is generated by Windows Azure, and does not
-     * indicate an error with the role. It may be generated after the
-     * StartingRole state.
-     */
+    * A Windows Azure or container error is preventing the Virtual Machine from
+    * starting. This status is generated by Windows Azure, and does not
+    * indicate an error with the role. It may be generated after the
+    * StartingRole state.
+    */
     public static final String FailedStartingVM = "FailedStartingVM";
-
+    
     /**
-     * The role has timed out before receiving a status message and is not
-     * responding to requests.
-     */
+    * The role has timed out before receiving a status message and is not
+    * responding to requests.
+    */
     public static final String UnresponsiveRole = "UnresponsiveRole";
 }

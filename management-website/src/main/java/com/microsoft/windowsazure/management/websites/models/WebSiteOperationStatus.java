@@ -24,31 +24,31 @@
 package com.microsoft.windowsazure.management.websites.models;
 
 /**
- * The status of the asynchronous operation.
- */
+* The status of the asynchronous operation.
+*/
 public enum WebSiteOperationStatus {
     /**
-     * The asynchronous request is in progress.
-     */
+    * The asynchronous request is in progress.
+    */
     InProgress,
-
+    
     /**
-     * The asynchronous request failed.
-     */
+    * The asynchronous request failed.
+    */
     Failed,
-
+    
     /**
-     * The asynchronous request succeeded.
-     */
+    * The asynchronous request succeeded.
+    */
     Succeeded,
-
+    
     /**
-     * The asynchronous request timed out.
-     */
+    * The asynchronous request timed out.
+    */
     TimedOut,
-
+    
     /**
-     * The asynchronous request was created.
-     */
+    * The asynchronous request was created.
+    */
     Created,
 }

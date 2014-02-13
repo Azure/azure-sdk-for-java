@@ -26,228 +26,196 @@ package com.microsoft.windowsazure.management.sql.models;
 import java.net.URI;
 
 /**
- * Parameters supplied to the DAC Import operation.
- */
+* Parameters supplied to the DAC Import operation.
+*/
 public class DacImportParameters {
     private String azureEdition;
-
+    
     /**
-     * The edition of this database.
-     * 
-     * @return The AzureEdition value.
-     */
+    * The edition of this database.
+    * @return The AzureEdition value.
+    */
     public String getAzureEdition() {
         return this.azureEdition;
     }
-
+    
     /**
-     * The edition of this database.
-     * 
-     * @param azureEditionValue
-     *            The AzureEdition value.
-     */
+    * The edition of this database.
+    * @param azureEditionValue The AzureEdition value.
+    */
     public void setAzureEdition(final String azureEditionValue) {
         this.azureEdition = azureEditionValue;
     }
-
+    
     private DacImportParameters.BlobCredentialsParameter blobCredentials;
-
+    
     /**
-     * Gets or sets credentials for getting the DAC.
-     * 
-     * @return The BlobCredentials value.
-     */
+    * Gets or sets credentials for getting the DAC.
+    * @return The BlobCredentials value.
+    */
     public DacImportParameters.BlobCredentialsParameter getBlobCredentials() {
         return this.blobCredentials;
     }
-
+    
     /**
-     * Gets or sets credentials for getting the DAC.
-     * 
-     * @param blobCredentialsValue
-     *            The BlobCredentials value.
-     */
-    public void setBlobCredentials(
-            final DacImportParameters.BlobCredentialsParameter blobCredentialsValue) {
+    * Gets or sets credentials for getting the DAC.
+    * @param blobCredentialsValue The BlobCredentials value.
+    */
+    public void setBlobCredentials(final DacImportParameters.BlobCredentialsParameter blobCredentialsValue) {
         this.blobCredentials = blobCredentialsValue;
     }
-
+    
     private DacImportParameters.ConnectionInfoParameter connectionInfo;
-
+    
     /**
-     * Gets or sets connection information for the SQL Server Database.
-     * 
-     * @return The ConnectionInfo value.
-     */
+    * Gets or sets connection information for the SQL Server Database.
+    * @return The ConnectionInfo value.
+    */
     public DacImportParameters.ConnectionInfoParameter getConnectionInfo() {
         return this.connectionInfo;
     }
-
+    
     /**
-     * Gets or sets connection information for the SQL Server Database.
-     * 
-     * @param connectionInfoValue
-     *            The ConnectionInfo value.
-     */
-    public void setConnectionInfo(
-            final DacImportParameters.ConnectionInfoParameter connectionInfoValue) {
+    * Gets or sets connection information for the SQL Server Database.
+    * @param connectionInfoValue The ConnectionInfo value.
+    */
+    public void setConnectionInfo(final DacImportParameters.ConnectionInfoParameter connectionInfoValue) {
         this.connectionInfo = connectionInfoValue;
     }
-
+    
     private int databaseSizeInGB;
-
+    
     /**
-     * Gets or sets the size of this database.
-     * 
-     * @return The DatabaseSizeInGB value.
-     */
+    * Gets or sets the size of this database.
+    * @return The DatabaseSizeInGB value.
+    */
     public int getDatabaseSizeInGB() {
         return this.databaseSizeInGB;
     }
-
+    
     /**
-     * Gets or sets the size of this database.
-     * 
-     * @param databaseSizeInGBValue
-     *            The DatabaseSizeInGB value.
-     */
+    * Gets or sets the size of this database.
+    * @param databaseSizeInGBValue The DatabaseSizeInGB value.
+    */
     public void setDatabaseSizeInGB(final int databaseSizeInGBValue) {
         this.databaseSizeInGB = databaseSizeInGBValue;
     }
-
+    
     /**
-     * Credentials for getting the DAC.
-     */
+    * Credentials for getting the DAC.
+    */
     public static class BlobCredentialsParameter {
         private String storageAccessKey;
-
+        
         /**
-         * Gets or sets the key for the Windows Azure Storage account.
-         * 
-         * @return The StorageAccessKey value.
-         */
+        * Gets or sets the key for the Windows Azure Storage account.
+        * @return The StorageAccessKey value.
+        */
         public String getStorageAccessKey() {
             return this.storageAccessKey;
         }
-
+        
         /**
-         * Gets or sets the key for the Windows Azure Storage account.
-         * 
-         * @param storageAccessKeyValue
-         *            The StorageAccessKey value.
-         */
+        * Gets or sets the key for the Windows Azure Storage account.
+        * @param storageAccessKeyValue The StorageAccessKey value.
+        */
         public void setStorageAccessKey(final String storageAccessKeyValue) {
             this.storageAccessKey = storageAccessKeyValue;
         }
-
+        
         private URI uri;
-
+        
         /**
-         * Gets or sets the URI of the DAC file stored in Windows Azure Blob
-         * Storage.
-         * 
-         * @return The Uri value.
-         */
+        * Gets or sets the URI of the DAC file stored in Windows Azure Blob
+        * Storage.
+        * @return The Uri value.
+        */
         public URI getUri() {
             return this.uri;
         }
-
+        
         /**
-         * Gets or sets the URI of the DAC file stored in Windows Azure Blob
-         * Storage.
-         * 
-         * @param uriValue
-         *            The Uri value.
-         */
+        * Gets or sets the URI of the DAC file stored in Windows Azure Blob
+        * Storage.
+        * @param uriValue The Uri value.
+        */
         public void setUri(final URI uriValue) {
             this.uri = uriValue;
         }
     }
-
+    
     /**
-     * Connection information for the SQL Server Database.
-     */
+    * Connection information for the SQL Server Database.
+    */
     public static class ConnectionInfoParameter {
         private String databaseName;
-
+        
         /**
-         * Gets or sets the name of the database.
-         * 
-         * @return The DatabaseName value.
-         */
+        * Gets or sets the name of the database.
+        * @return The DatabaseName value.
+        */
         public String getDatabaseName() {
             return this.databaseName;
         }
-
+        
         /**
-         * Gets or sets the name of the database.
-         * 
-         * @param databaseNameValue
-         *            The DatabaseName value.
-         */
+        * Gets or sets the name of the database.
+        * @param databaseNameValue The DatabaseName value.
+        */
         public void setDatabaseName(final String databaseNameValue) {
             this.databaseName = databaseNameValue;
         }
-
+        
         private String password;
-
+        
         /**
-         * Gets or sets the password for the database user.
-         * 
-         * @return The Password value.
-         */
+        * Gets or sets the password for the database user.
+        * @return The Password value.
+        */
         public String getPassword() {
             return this.password;
         }
-
+        
         /**
-         * Gets or sets the password for the database user.
-         * 
-         * @param passwordValue
-         *            The Password value.
-         */
+        * Gets or sets the password for the database user.
+        * @param passwordValue The Password value.
+        */
         public void setPassword(final String passwordValue) {
             this.password = passwordValue;
         }
-
+        
         private String serverName;
-
+        
         /**
-         * Gets or sets the SQL server name.
-         * 
-         * @return The ServerName value.
-         */
+        * Gets or sets the SQL server name.
+        * @return The ServerName value.
+        */
         public String getServerName() {
             return this.serverName;
         }
-
+        
         /**
-         * Gets or sets the SQL server name.
-         * 
-         * @param serverNameValue
-         *            The ServerName value.
-         */
+        * Gets or sets the SQL server name.
+        * @param serverNameValue The ServerName value.
+        */
         public void setServerName(final String serverNameValue) {
             this.serverName = serverNameValue;
         }
-
+        
         private String userName;
-
+        
         /**
-         * Gets or sets the username of the database user.
-         * 
-         * @return The UserName value.
-         */
+        * Gets or sets the username of the database user.
+        * @return The UserName value.
+        */
         public String getUserName() {
             return this.userName;
         }
-
+        
         /**
-         * Gets or sets the username of the database user.
-         * 
-         * @param userNameValue
-         *            The UserName value.
-         */
+        * Gets or sets the username of the database user.
+        * @param userNameValue The UserName value.
+        */
         public void setUserName(final String userNameValue) {
             this.userName = userNameValue;
         }

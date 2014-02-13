@@ -27,195 +27,171 @@ import java.net.URI;
 import java.util.Calendar;
 
 /**
- * A service bus namespace.
- */
+* A service bus namespace.
+*/
 public class ServiceBusNamespace {
     private URI acsManagementEndpoint;
-
+    
     /**
-     * ACS endpoint you can use to obtain access tokens. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
-     * more information)
-     * 
-     * @return The AcsManagementEndpoint value.
-     */
+    * ACS endpoint you can use to obtain access tokens.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
+    * more information)
+    * @return The AcsManagementEndpoint value.
+    */
     public URI getAcsManagementEndpoint() {
         return this.acsManagementEndpoint;
     }
-
+    
     /**
-     * ACS endpoint you can use to obtain access tokens. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
-     * more information)
-     * 
-     * @param acsManagementEndpointValue
-     *            The AcsManagementEndpoint value.
-     */
+    * ACS endpoint you can use to obtain access tokens.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
+    * more information)
+    * @param acsManagementEndpointValue The AcsManagementEndpoint value.
+    */
     public void setAcsManagementEndpoint(final URI acsManagementEndpointValue) {
         this.acsManagementEndpoint = acsManagementEndpointValue;
     }
-
+    
     private Calendar createdAt;
-
+    
     /**
-     * The time the namespace was created.
-     * 
-     * @return The CreatedAt value.
-     */
+    * The time the namespace was created.
+    * @return The CreatedAt value.
+    */
     public Calendar getCreatedAt() {
         return this.createdAt;
     }
-
+    
     /**
-     * The time the namespace was created.
-     * 
-     * @param createdAtValue
-     *            The CreatedAt value.
-     */
+    * The time the namespace was created.
+    * @param createdAtValue The CreatedAt value.
+    */
     public void setCreatedAt(final Calendar createdAtValue) {
         this.createdAt = createdAtValue;
     }
-
+    
     private boolean enabled;
-
+    
     /**
-     * Whether or not the namespace is currently enabled.
-     * 
-     * @return The Enabled value.
-     */
+    * Whether or not the namespace is currently enabled.
+    * @return The Enabled value.
+    */
     public boolean isEnabled() {
         return this.enabled;
     }
-
+    
     /**
-     * Whether or not the namespace is currently enabled.
-     * 
-     * @param enabledValue
-     *            The Enabled value.
-     */
+    * Whether or not the namespace is currently enabled.
+    * @param enabledValue The Enabled value.
+    */
     public void setEnabled(final boolean enabledValue) {
         this.enabled = enabledValue;
     }
-
+    
     private String name;
-
+    
     /**
-     * The name of the namespace.
-     * 
-     * @return The Name value.
-     */
+    * The name of the namespace.
+    * @return The Name value.
+    */
     public String getName() {
         return this.name;
     }
-
+    
     /**
-     * The name of the namespace.
-     * 
-     * @param nameValue
-     *            The Name value.
-     */
+    * The name of the namespace.
+    * @param nameValue The Name value.
+    */
     public void setName(final String nameValue) {
         this.name = nameValue;
     }
-
+    
     private String region;
-
+    
     /**
-     * Specifies the targeted region in which the namespace should be created.
-     * It can be any of the following values: East AsiaNorth EuropeWest
-     * EuropeEast USSoutheast AsiaNorth Central USWest USSouth Central US (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
-     * more information)
-     * 
-     * @return The Region value.
-     */
+    * Specifies the targeted region in which the namespace should be created.
+    * It can be any of the following values: East AsiaNorth EuropeWest
+    * EuropeEast USSoutheast AsiaNorth Central USWest USSouth Central US  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
+    * more information)
+    * @return The Region value.
+    */
     public String getRegion() {
         return this.region;
     }
-
+    
     /**
-     * Specifies the targeted region in which the namespace should be created.
-     * It can be any of the following values: East AsiaNorth EuropeWest
-     * EuropeEast USSoutheast AsiaNorth Central USWest USSouth Central US (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
-     * more information)
-     * 
-     * @param regionValue
-     *            The Region value.
-     */
+    * Specifies the targeted region in which the namespace should be created.
+    * It can be any of the following values: East AsiaNorth EuropeWest
+    * EuropeEast USSoutheast AsiaNorth Central USWest USSouth Central US  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
+    * more information)
+    * @param regionValue The Region value.
+    */
     public void setRegion(final String regionValue) {
         this.region = regionValue;
     }
-
+    
     private URI serviceBusEndpoint;
-
+    
     /**
-     * Endpoint you can use to perform messaging or relay operations. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
-     * more information)
-     * 
-     * @return The ServiceBusEndpoint value.
-     */
+    * Endpoint you can use to perform messaging or relay operations.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
+    * more information)
+    * @return The ServiceBusEndpoint value.
+    */
     public URI getServiceBusEndpoint() {
         return this.serviceBusEndpoint;
     }
-
+    
     /**
-     * Endpoint you can use to perform messaging or relay operations. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
-     * more information)
-     * 
-     * @param serviceBusEndpointValue
-     *            The ServiceBusEndpoint value.
-     */
+    * Endpoint you can use to perform messaging or relay operations.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
+    * more information)
+    * @param serviceBusEndpointValue The ServiceBusEndpoint value.
+    */
     public void setServiceBusEndpoint(final URI serviceBusEndpointValue) {
         this.serviceBusEndpoint = serviceBusEndpointValue;
     }
-
+    
     private String status;
-
+    
     /**
-     * Status of the namespace. It can be any of these values:1 =
-     * Created/Active2 = Creating3 = Suspended4 = Deleting (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
-     * more information)
-     * 
-     * @return The Status value.
-     */
+    * Status of the namespace. It can be any of these values:1 =
+    * Created/Active2 = Creating3 = Suspended4 = Deleting  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
+    * more information)
+    * @return The Status value.
+    */
     public String getStatus() {
         return this.status;
     }
-
+    
     /**
-     * Status of the namespace. It can be any of these values:1 =
-     * Created/Active2 = Creating3 = Suspended4 = Deleting (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
-     * more information)
-     * 
-     * @param statusValue
-     *            The Status value.
-     */
+    * Status of the namespace. It can be any of these values:1 =
+    * Created/Active2 = Creating3 = Suspended4 = Deleting  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
+    * more information)
+    * @param statusValue The Status value.
+    */
     public void setStatus(final String statusValue) {
         this.status = statusValue;
     }
-
+    
     private String subscriptionId;
-
+    
     /**
-     * The Id of the Azure subscription associated with the namespace.
-     * 
-     * @return The SubscriptionId value.
-     */
+    * The Id of the Azure subscription associated with the namespace.
+    * @return The SubscriptionId value.
+    */
     public String getSubscriptionId() {
         return this.subscriptionId;
     }
-
+    
     /**
-     * The Id of the Azure subscription associated with the namespace.
-     * 
-     * @param subscriptionIdValue
-     *            The SubscriptionId value.
-     */
+    * The Id of the Azure subscription associated with the namespace.
+    * @param subscriptionIdValue The SubscriptionId value.
+    */
     public void setSubscriptionId(final String subscriptionIdValue) {
         this.subscriptionId = subscriptionIdValue;
     }

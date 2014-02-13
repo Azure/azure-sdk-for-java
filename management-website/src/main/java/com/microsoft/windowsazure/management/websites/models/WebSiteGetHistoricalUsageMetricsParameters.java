@@ -27,85 +27,76 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
- * The Get Web Site Historical Usage Metrics parameters.
- */
+* The Get Web Site Historical Usage Metrics parameters.
+*/
 public class WebSiteGetHistoricalUsageMetricsParameters {
     private Calendar endTime;
-
+    
     /**
-     * The ending time of the metrics to return. If this parameter is not
-     * specified, the current time is used.
-     * 
-     * @return The EndTime value.
-     */
+    * The ending time of the metrics to return. If this parameter is not
+    * specified, the current time is used.
+    * @return The EndTime value.
+    */
     public Calendar getEndTime() {
         return this.endTime;
     }
-
+    
     /**
-     * The ending time of the metrics to return. If this parameter is not
-     * specified, the current time is used.
-     * 
-     * @param endTimeValue
-     *            The EndTime value.
-     */
+    * The ending time of the metrics to return. If this parameter is not
+    * specified, the current time is used.
+    * @param endTimeValue The EndTime value.
+    */
     public void setEndTime(final Calendar endTimeValue) {
         this.endTime = endTimeValue;
     }
-
+    
     private ArrayList<String> metricNames;
-
+    
     /**
-     * Specifies a comma-separated list of the names of the metrics to return.
-     * If the names parameter is not specified, then all available metrics are
-     * returned.
-     * 
-     * @return The MetricNames value.
-     */
+    * Specifies a comma-separated list of the names of the metrics to return.
+    * If the names parameter is not specified, then all available metrics are
+    * returned.
+    * @return The MetricNames value.
+    */
     public ArrayList<String> getMetricNames() {
         return this.metricNames;
     }
-
+    
     /**
-     * Specifies a comma-separated list of the names of the metrics to return.
-     * If the names parameter is not specified, then all available metrics are
-     * returned.
-     * 
-     * @param metricNamesValue
-     *            The MetricNames value.
-     */
+    * Specifies a comma-separated list of the names of the metrics to return.
+    * If the names parameter is not specified, then all available metrics are
+    * returned.
+    * @param metricNamesValue The MetricNames value.
+    */
     public void setMetricNames(final ArrayList<String> metricNamesValue) {
         this.metricNames = metricNamesValue;
     }
-
+    
     private Calendar startTime;
-
+    
     /**
-     * The starting time of the metrics to return. If this parameter is not
-     * specified, the beginning of the current hour is used.
-     * 
-     * @return The StartTime value.
-     */
+    * The starting time of the metrics to return. If this parameter is not
+    * specified, the beginning of the current hour is used.
+    * @return The StartTime value.
+    */
     public Calendar getStartTime() {
         return this.startTime;
     }
-
+    
     /**
-     * The starting time of the metrics to return. If this parameter is not
-     * specified, the beginning of the current hour is used.
-     * 
-     * @param startTimeValue
-     *            The StartTime value.
-     */
+    * The starting time of the metrics to return. If this parameter is not
+    * specified, the beginning of the current hour is used.
+    * @param startTimeValue The StartTime value.
+    */
     public void setStartTime(final Calendar startTimeValue) {
         this.startTime = startTimeValue;
     }
-
+    
     /**
-     * Initializes a new instance of the
-     * WebSiteGetHistoricalUsageMetricsParameters class.
-     * 
-     */
+    * Initializes a new instance of the
+    * WebSiteGetHistoricalUsageMetricsParameters class.
+    *
+    */
     public WebSiteGetHistoricalUsageMetricsParameters() {
         this.metricNames = new ArrayList<String>();
     }

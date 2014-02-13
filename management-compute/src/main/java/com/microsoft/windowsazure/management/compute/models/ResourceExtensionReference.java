@@ -26,155 +26,137 @@ package com.microsoft.windowsazure.management.compute.models;
 import java.util.ArrayList;
 
 /**
- * Required. Specifies the properties of a resource extension that should be
- * installed on the Virtual Machine.
- */
+* Required. Specifies the properties of a resource extension that should be
+* installed on the Virtual Machine.
+*/
 public class ResourceExtensionReference {
     private String name;
-
+    
     /**
-     * Required. Specifies the name of the resource extension. You can use List
-     * Resource Extensions to find the names of available resource extensions.
-     * 
-     * @return The Name value.
-     */
+    * Required. Specifies the name of the resource extension. You can use List
+    * Resource Extensions to find the names of available resource extensions.
+    * @return The Name value.
+    */
     public String getName() {
         return this.name;
     }
-
+    
     /**
-     * Required. Specifies the name of the resource extension. You can use List
-     * Resource Extensions to find the names of available resource extensions.
-     * 
-     * @param nameValue
-     *            The Name value.
-     */
+    * Required. Specifies the name of the resource extension. You can use List
+    * Resource Extensions to find the names of available resource extensions.
+    * @param nameValue The Name value.
+    */
     public void setName(final String nameValue) {
         this.name = nameValue;
     }
-
+    
     private String publisher;
-
+    
     /**
-     * Required. Specifies the name of the publisher who created the resource
-     * extension. You can use List Resource Extensions to find the publisher
-     * name of a resource extension.
-     * 
-     * @return The Publisher value.
-     */
+    * Required. Specifies the name of the publisher who created the resource
+    * extension. You can use List Resource Extensions to find the publisher
+    * name of a resource extension.
+    * @return The Publisher value.
+    */
     public String getPublisher() {
         return this.publisher;
     }
-
+    
     /**
-     * Required. Specifies the name of the publisher who created the resource
-     * extension. You can use List Resource Extensions to find the publisher
-     * name of a resource extension.
-     * 
-     * @param publisherValue
-     *            The Publisher value.
-     */
+    * Required. Specifies the name of the publisher who created the resource
+    * extension. You can use List Resource Extensions to find the publisher
+    * name of a resource extension.
+    * @param publisherValue The Publisher value.
+    */
     public void setPublisher(final String publisherValue) {
         this.publisher = publisherValue;
     }
-
+    
     private String referenceName;
-
+    
     /**
-     * Required. Specifies the reference name of the resource extension.
-     * 
-     * @return The ReferenceName value.
-     */
+    * Required. Specifies the reference name of the resource extension.
+    * @return The ReferenceName value.
+    */
     public String getReferenceName() {
         return this.referenceName;
     }
-
+    
     /**
-     * Required. Specifies the reference name of the resource extension.
-     * 
-     * @param referenceNameValue
-     *            The ReferenceName value.
-     */
+    * Required. Specifies the reference name of the resource extension.
+    * @param referenceNameValue The ReferenceName value.
+    */
     public void setReferenceName(final String referenceNameValue) {
         this.referenceName = referenceNameValue;
     }
-
+    
     private ArrayList<ResourceExtensionParameterValue> resourceExtensionParameterValues;
-
+    
     /**
-     * Optional. Contains a collection of parameters that are passed to the
-     * resource extension when it is installed.
-     * 
-     * @return The ResourceExtensionParameterValues value.
-     */
+    * Optional. Contains a collection of parameters that are passed to the
+    * resource extension when it is installed.
+    * @return The ResourceExtensionParameterValues value.
+    */
     public ArrayList<ResourceExtensionParameterValue> getResourceExtensionParameterValues() {
         return this.resourceExtensionParameterValues;
     }
-
+    
     /**
-     * Optional. Contains a collection of parameters that are passed to the
-     * resource extension when it is installed.
-     * 
-     * @param resourceExtensionParameterValuesValue
-     *            The ResourceExtensionParameterValues value.
-     */
-    public void setResourceExtensionParameterValues(
-            final ArrayList<ResourceExtensionParameterValue> resourceExtensionParameterValuesValue) {
+    * Optional. Contains a collection of parameters that are passed to the
+    * resource extension when it is installed.
+    * @param resourceExtensionParameterValuesValue The
+    * ResourceExtensionParameterValues value.
+    */
+    public void setResourceExtensionParameterValues(final ArrayList<ResourceExtensionParameterValue> resourceExtensionParameterValuesValue) {
         this.resourceExtensionParameterValues = resourceExtensionParameterValuesValue;
     }
-
+    
     private ResourceExtensionReferenceState state;
-
+    
     /**
-     * Optional. Specifies the state of the resource extension.Possible values
-     * are: Enable | Disable. The default value is Enable.
-     * 
-     * @return The State value.
-     */
+    * Optional. Specifies the state of the resource extension.Possible values
+    * are: Enable | Disable. The default value is Enable.
+    * @return The State value.
+    */
     public ResourceExtensionReferenceState getState() {
         return this.state;
     }
-
+    
     /**
-     * Optional. Specifies the state of the resource extension.Possible values
-     * are: Enable | Disable. The default value is Enable.
-     * 
-     * @param stateValue
-     *            The State value.
-     */
+    * Optional. Specifies the state of the resource extension.Possible values
+    * are: Enable | Disable. The default value is Enable.
+    * @param stateValue The State value.
+    */
     public void setState(final ResourceExtensionReferenceState stateValue) {
         this.state = stateValue;
     }
-
+    
     private String version;
-
+    
     /**
-     * Required. Specifies the version of the resource extension. You can use
-     * List Resource Extension Versions to find the version of the resource
-     * extension.
-     * 
-     * @return The Version value.
-     */
+    * Required. Specifies the version of the resource extension. You can use
+    * List Resource Extension Versions to find the version of the resource
+    * extension.
+    * @return The Version value.
+    */
     public String getVersion() {
         return this.version;
     }
-
+    
     /**
-     * Required. Specifies the version of the resource extension. You can use
-     * List Resource Extension Versions to find the version of the resource
-     * extension.
-     * 
-     * @param versionValue
-     *            The Version value.
-     */
+    * Required. Specifies the version of the resource extension. You can use
+    * List Resource Extension Versions to find the version of the resource
+    * extension.
+    * @param versionValue The Version value.
+    */
     public void setVersion(final String versionValue) {
         this.version = versionValue;
     }
-
+    
     /**
-     * Initializes a new instance of the ResourceExtensionReference class.
-     * 
-     */
+    * Initializes a new instance of the ResourceExtensionReference class.
+    *
+    */
     public ResourceExtensionReference() {
         this.resourceExtensionParameterValues = new ArrayList<ResourceExtensionParameterValue>();
     }

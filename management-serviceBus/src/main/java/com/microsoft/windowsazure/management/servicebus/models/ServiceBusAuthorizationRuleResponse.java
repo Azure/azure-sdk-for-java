@@ -26,28 +26,24 @@ package com.microsoft.windowsazure.management.servicebus.models;
 import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
- * A response to a request for a particular authorization rule.
- */
+* A response to a request for a particular authorization rule.
+*/
 public class ServiceBusAuthorizationRuleResponse extends OperationResponse {
     private ServiceBusSharedAccessAuthorizationRule authorizationRule;
-
+    
     /**
-     * The requested authorization rule.
-     * 
-     * @return The AuthorizationRule value.
-     */
+    * The requested authorization rule.
+    * @return The AuthorizationRule value.
+    */
     public ServiceBusSharedAccessAuthorizationRule getAuthorizationRule() {
         return this.authorizationRule;
     }
-
+    
     /**
-     * The requested authorization rule.
-     * 
-     * @param authorizationRuleValue
-     *            The AuthorizationRule value.
-     */
-    public void setAuthorizationRule(
-            final ServiceBusSharedAccessAuthorizationRule authorizationRuleValue) {
+    * The requested authorization rule.
+    * @param authorizationRuleValue The AuthorizationRule value.
+    */
+    public void setAuthorizationRule(final ServiceBusSharedAccessAuthorizationRule authorizationRuleValue) {
         this.authorizationRule = authorizationRuleValue;
     }
 }

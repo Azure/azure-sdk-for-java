@@ -29,412 +29,355 @@ import java.util.Calendar;
 import java.util.Iterator;
 
 /**
- * The Get Web Site Historical Usage Metrics operation response.
- */
-public class WebSiteGetHistoricalUsageMetricsResponse extends OperationResponse
-        implements
-        Iterable<WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetric> {
+* The Get Web Site Historical Usage Metrics operation response.
+*/
+public class WebSiteGetHistoricalUsageMetricsResponse extends OperationResponse implements Iterable<WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetric> {
     private ArrayList<WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetric> usageMetrics;
-
+    
     /**
-     * Historical metric snapshots for the web site.
-     * 
-     * @return The UsageMetrics value.
-     */
+    * Historical metric snapshots for the web site.
+    * @return The UsageMetrics value.
+    */
     public ArrayList<WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetric> getUsageMetrics() {
         return this.usageMetrics;
     }
-
+    
     /**
-     * Historical metric snapshots for the web site.
-     * 
-     * @param usageMetricsValue
-     *            The UsageMetrics value.
-     */
-    public void setUsageMetrics(
-            final ArrayList<WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetric> usageMetricsValue) {
+    * Historical metric snapshots for the web site.
+    * @param usageMetricsValue The UsageMetrics value.
+    */
+    public void setUsageMetrics(final ArrayList<WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetric> usageMetricsValue) {
         this.usageMetrics = usageMetricsValue;
     }
-
+    
     /**
-     * Initializes a new instance of the
-     * WebSiteGetHistoricalUsageMetricsResponse class.
-     * 
-     */
+    * Initializes a new instance of the
+    * WebSiteGetHistoricalUsageMetricsResponse class.
+    *
+    */
     public WebSiteGetHistoricalUsageMetricsResponse() {
         super();
         this.usageMetrics = new ArrayList<WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetric>();
     }
-
+    
     /**
-     * Gets the sequence of UsageMetrics.
-     * 
-     */
+    * Gets the sequence of UsageMetrics.
+    *
+    */
     public Iterator<WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetric> iterator() {
         return this.getUsageMetrics().iterator();
     }
-
+    
     /**
-     * Historical metric snapshot for the web site.
-     */
+    * Historical metric snapshot for the web site.
+    */
     public static class HistoricalUsageMetric {
         private String code;
-
+        
         /**
-         * Reports whether the metric data was returned successfully.
-         * 
-         * @return The Code value.
-         */
+        * Reports whether the metric data was returned successfully.
+        * @return The Code value.
+        */
         public String getCode() {
             return this.code;
         }
-
+        
         /**
-         * Reports whether the metric data was returned successfully.
-         * 
-         * @param codeValue
-         *            The Code value.
-         */
+        * Reports whether the metric data was returned successfully.
+        * @param codeValue The Code value.
+        */
         public void setCode(final String codeValue) {
             this.code = codeValue;
         }
-
+        
         private WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetricData data;
-
+        
         /**
-         * Historical metric snapshot data for the web site.
-         * 
-         * @return The Data value.
-         */
+        * Historical metric snapshot data for the web site.
+        * @return The Data value.
+        */
         public WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetricData getData() {
             return this.data;
         }
-
+        
         /**
-         * Historical metric snapshot data for the web site.
-         * 
-         * @param dataValue
-         *            The Data value.
-         */
-        public void setData(
-                final WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetricData dataValue) {
+        * Historical metric snapshot data for the web site.
+        * @param dataValue The Data value.
+        */
+        public void setData(final WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetricData dataValue) {
             this.data = dataValue;
         }
-
+        
         private String message;
-
+        
         /**
-         * A string for optional message content.
-         * 
-         * @return The Message value.
-         */
+        * A string for optional message content.
+        * @return The Message value.
+        */
         public String getMessage() {
             return this.message;
         }
-
+        
         /**
-         * A string for optional message content.
-         * 
-         * @param messageValue
-         *            The Message value.
-         */
+        * A string for optional message content.
+        * @param messageValue The Message value.
+        */
         public void setMessage(final String messageValue) {
             this.message = messageValue;
         }
     }
-
+    
     /**
-     * Historical metric snapshot data for the web site.
-     */
+    * Historical metric snapshot data for the web site.
+    */
     public static class HistoricalUsageMetricData {
         private String displayName;
-
+        
         /**
-         * The display name of the metric, including spaces.
-         * 
-         * @return The DisplayName value.
-         */
+        * The display name of the metric, including spaces.
+        * @return The DisplayName value.
+        */
         public String getDisplayName() {
             return this.displayName;
         }
-
+        
         /**
-         * The display name of the metric, including spaces.
-         * 
-         * @param displayNameValue
-         *            The DisplayName value.
-         */
+        * The display name of the metric, including spaces.
+        * @param displayNameValue The DisplayName value.
+        */
         public void setDisplayName(final String displayNameValue) {
             this.displayName = displayNameValue;
         }
-
+        
         private Calendar endTime;
-
+        
         /**
-         * The end time of the data reported.
-         * 
-         * @return The EndTime value.
-         */
+        * The end time of the data reported.
+        * @return The EndTime value.
+        */
         public Calendar getEndTime() {
             return this.endTime;
         }
-
+        
         /**
-         * The end time of the data reported.
-         * 
-         * @param endTimeValue
-         *            The EndTime value.
-         */
+        * The end time of the data reported.
+        * @param endTimeValue The EndTime value.
+        */
         public void setEndTime(final Calendar endTimeValue) {
             this.endTime = endTimeValue;
         }
-
+        
         private String name;
-
+        
         /**
-         * The name of the metric.
-         * 
-         * @return The Name value.
-         */
+        * The name of the metric.
+        * @return The Name value.
+        */
         public String getName() {
             return this.name;
         }
-
+        
         /**
-         * The name of the metric.
-         * 
-         * @param nameValue
-         *            The Name value.
-         */
+        * The name of the metric.
+        * @param nameValue The Name value.
+        */
         public void setName(final String nameValue) {
             this.name = nameValue;
         }
-
+        
         private String primaryAggregationType;
-
+        
         /**
-         * The primary data aggregation type. This value is usually Total.
-         * 
-         * @return The PrimaryAggregationType value.
-         */
+        * The primary data aggregation type. This value is usually Total.
+        * @return The PrimaryAggregationType value.
+        */
         public String getPrimaryAggregationType() {
             return this.primaryAggregationType;
         }
-
+        
         /**
-         * The primary data aggregation type. This value is usually Total.
-         * 
-         * @param primaryAggregationTypeValue
-         *            The PrimaryAggregationType value.
-         */
-        public void setPrimaryAggregationType(
-                final String primaryAggregationTypeValue) {
+        * The primary data aggregation type. This value is usually Total.
+        * @param primaryAggregationTypeValue The PrimaryAggregationType value.
+        */
+        public void setPrimaryAggregationType(final String primaryAggregationTypeValue) {
             this.primaryAggregationType = primaryAggregationTypeValue;
         }
-
+        
         private Calendar startTime;
-
+        
         /**
-         * The start time of the data reported.
-         * 
-         * @return The StartTime value.
-         */
+        * The start time of the data reported.
+        * @return The StartTime value.
+        */
         public Calendar getStartTime() {
             return this.startTime;
         }
-
+        
         /**
-         * The start time of the data reported.
-         * 
-         * @param startTimeValue
-         *            The StartTime value.
-         */
+        * The start time of the data reported.
+        * @param startTimeValue The StartTime value.
+        */
         public void setStartTime(final Calendar startTimeValue) {
             this.startTime = startTimeValue;
         }
-
+        
         private String timeGrain;
-
+        
         /**
-         * Length of time (rollup) during which the information was gathered.
-         * For more information, see Supported Rollups.
-         * 
-         * @return The TimeGrain value.
-         */
+        * Length of time (rollup) during which the information was gathered.
+        * For more information, see Supported Rollups.
+        * @return The TimeGrain value.
+        */
         public String getTimeGrain() {
             return this.timeGrain;
         }
-
+        
         /**
-         * Length of time (rollup) during which the information was gathered.
-         * For more information, see Supported Rollups.
-         * 
-         * @param timeGrainValue
-         *            The TimeGrain value.
-         */
+        * Length of time (rollup) during which the information was gathered.
+        * For more information, see Supported Rollups.
+        * @param timeGrainValue The TimeGrain value.
+        */
         public void setTimeGrain(final String timeGrainValue) {
             this.timeGrain = timeGrainValue;
         }
-
+        
         private String unit;
-
+        
         /**
-         * The unit of measurement for the metric (for example, milliseconds,
-         * bytes, or count).
-         * 
-         * @return The Unit value.
-         */
+        * The unit of measurement for the metric (for example, milliseconds,
+        * bytes, or count).
+        * @return The Unit value.
+        */
         public String getUnit() {
             return this.unit;
         }
-
+        
         /**
-         * The unit of measurement for the metric (for example, milliseconds,
-         * bytes, or count).
-         * 
-         * @param unitValue
-         *            The Unit value.
-         */
+        * The unit of measurement for the metric (for example, milliseconds,
+        * bytes, or count).
+        * @param unitValue The Unit value.
+        */
         public void setUnit(final String unitValue) {
             this.unit = unitValue;
         }
-
+        
         private ArrayList<WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetricSample> values;
-
+        
         /**
-         * One or more MetricSample elements.
-         * 
-         * @return The Values value.
-         */
+        * One or more MetricSample elements.
+        * @return The Values value.
+        */
         public ArrayList<WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetricSample> getValues() {
             return this.values;
         }
-
+        
         /**
-         * One or more MetricSample elements.
-         * 
-         * @param valuesValue
-         *            The Values value.
-         */
-        public void setValues(
-                final ArrayList<WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetricSample> valuesValue) {
+        * One or more MetricSample elements.
+        * @param valuesValue The Values value.
+        */
+        public void setValues(final ArrayList<WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetricSample> valuesValue) {
             this.values = valuesValue;
         }
-
+        
         /**
-         * Initializes a new instance of the HistoricalUsageMetricData class.
-         * 
-         */
+        * Initializes a new instance of the HistoricalUsageMetricData class.
+        *
+        */
         public HistoricalUsageMetricData() {
             this.values = new ArrayList<WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetricSample>();
         }
     }
-
+    
     /**
-     * Historical metric snapshot data sample.
-     */
+    * Historical metric snapshot data sample.
+    */
     public static class HistoricalUsageMetricSample {
         private int count;
-
+        
         /**
-         * The metric sample count. This value is usually 1.
-         * 
-         * @return The Count value.
-         */
+        * The metric sample count. This value is usually 1.
+        * @return The Count value.
+        */
         public int getCount() {
             return this.count;
         }
-
+        
         /**
-         * The metric sample count. This value is usually 1.
-         * 
-         * @param countValue
-         *            The Count value.
-         */
+        * The metric sample count. This value is usually 1.
+        * @param countValue The Count value.
+        */
         public void setCount(final int countValue) {
             this.count = countValue;
         }
-
+        
         private String maximum;
-
+        
         /**
-         * Maximum value recorded.
-         * 
-         * @return The Maximum value.
-         */
+        * Maximum value recorded.
+        * @return The Maximum value.
+        */
         public String getMaximum() {
             return this.maximum;
         }
-
+        
         /**
-         * Maximum value recorded.
-         * 
-         * @param maximumValue
-         *            The Maximum value.
-         */
+        * Maximum value recorded.
+        * @param maximumValue The Maximum value.
+        */
         public void setMaximum(final String maximumValue) {
             this.maximum = maximumValue;
         }
-
+        
         private String minimum;
-
+        
         /**
-         * Minimum value recorded.
-         * 
-         * @return The Minimum value.
-         */
+        * Minimum value recorded.
+        * @return The Minimum value.
+        */
         public String getMinimum() {
             return this.minimum;
         }
-
+        
         /**
-         * Minimum value recorded.
-         * 
-         * @param minimumValue
-         *            The Minimum value.
-         */
+        * Minimum value recorded.
+        * @param minimumValue The Minimum value.
+        */
         public void setMinimum(final String minimumValue) {
             this.minimum = minimumValue;
         }
-
+        
         private Calendar timeCreated;
-
+        
         /**
-         * Time the metric was taken.
-         * 
-         * @return The TimeCreated value.
-         */
+        * Time the metric was taken.
+        * @return The TimeCreated value.
+        */
         public Calendar getTimeCreated() {
             return this.timeCreated;
         }
-
+        
         /**
-         * Time the metric was taken.
-         * 
-         * @param timeCreatedValue
-         *            The TimeCreated value.
-         */
+        * Time the metric was taken.
+        * @param timeCreatedValue The TimeCreated value.
+        */
         public void setTimeCreated(final Calendar timeCreatedValue) {
             this.timeCreated = timeCreatedValue;
         }
-
+        
         private String total;
-
+        
         /**
-         * Value of the metric sample for the time taken.
-         * 
-         * @return The Total value.
-         */
+        * Value of the metric sample for the time taken.
+        * @return The Total value.
+        */
         public String getTotal() {
             return this.total;
         }
-
+        
         /**
-         * Value of the metric sample for the time taken.
-         * 
-         * @param totalValue
-         *            The Total value.
-         */
+        * Value of the metric sample for the time taken.
+        * @param totalValue The Total value.
+        */
         public void setTotal(final String totalValue) {
             this.total = totalValue;
         }

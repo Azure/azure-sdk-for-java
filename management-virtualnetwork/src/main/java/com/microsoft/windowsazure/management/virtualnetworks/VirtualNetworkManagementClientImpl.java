@@ -53,128 +53,113 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
- * The Service Management API includes operations for managing the virtual
- * networks your subscription. (see
- * http://msdn.microsoft.com/en-us/library/windowsazure/jj157182.aspx for more
- * information)
- */
-public class VirtualNetworkManagementClientImpl extends
-        ServiceClient<VirtualNetworkManagementClient> implements
-        VirtualNetworkManagementClient {
+* The Service Management API includes operations for managing the virtual
+* networks your subscription.  (see
+* http://msdn.microsoft.com/en-us/library/windowsazure/jj157182.aspx for more
+* information)
+*/
+public class VirtualNetworkManagementClientImpl extends ServiceClient<VirtualNetworkManagementClient> implements VirtualNetworkManagementClient {
     private URI baseUri;
-
+    
     /**
-     * The URI used as the base for all SQL requests.
-     * 
-     * @return The BaseUri value.
-     */
+    * The URI used as the base for all SQL requests.
+    * @return The BaseUri value.
+    */
     public URI getBaseUri() {
         return this.baseUri;
     }
-
+    
     private SubscriptionCloudCredentials credentials;
-
+    
     /**
-     * When you create a Windows Azure subscription, it is uniquely identified
-     * by a subscription ID. The subscription ID forms part of the URI for every
-     * call that you make to the Service Management API. The Windows Azure
-     * Service ManagementAPI use mutual authentication of management
-     * certificates over SSL to ensure that a request made to the service is
-     * secure. No anonymous requests are allowed.
-     * 
-     * @return The Credentials value.
-     */
+    * When you create a Windows Azure subscription, it is uniquely identified
+    * by a subscription ID. The subscription ID forms part of the URI for
+    * every call that you make to the Service Management API.  The Windows
+    * Azure Service ManagementAPI use mutual authentication of management
+    * certificates over SSL to ensure that a request made to the service is
+    * secure.  No anonymous requests are allowed.
+    * @return The Credentials value.
+    */
     public SubscriptionCloudCredentials getCredentials() {
         return this.credentials;
     }
-
+    
     private ClientRootCertificateOperations clientRootCertificates;
-
+    
     /**
-     * @return The ClientRootCertificatesOperations value.
-     */
+    * @return The ClientRootCertificatesOperations value.
+    */
     public ClientRootCertificateOperations getClientRootCertificatesOperations() {
         return this.clientRootCertificates;
     }
-
+    
     private GatewayOperations gateways;
-
+    
     /**
-     * @return The GatewaysOperations value.
-     */
+    * @return The GatewaysOperations value.
+    */
     public GatewayOperations getGatewaysOperations() {
         return this.gateways;
     }
-
+    
     private NetworkOperations networks;
-
+    
     /**
-     * @return The NetworksOperations value.
-     */
+    * @return The NetworksOperations value.
+    */
     public NetworkOperations getNetworksOperations() {
         return this.networks;
     }
-
+    
     private ReservedIPOperations reservedIPs;
-
+    
     /**
-     * @return The ReservedIPsOperations value.
-     */
+    * @return The ReservedIPsOperations value.
+    */
     public ReservedIPOperations getReservedIPsOperations() {
         return this.reservedIPs;
     }
-
+    
     private StaticIPOperations staticIPs;
-
+    
     /**
-     * @return The StaticIPsOperations value.
-     */
+    * @return The StaticIPsOperations value.
+    */
     public StaticIPOperations getStaticIPsOperations() {
         return this.staticIPs;
     }
-
+    
     /**
-     * Initializes a new instance of the VirtualNetworkManagementClientImpl
-     * class.
-     * 
-     * @param httpBuilder
-     *            The HTTP client builder.
-     * @param executorService
-     *            The executor service.
-     */
-    private VirtualNetworkManagementClientImpl(HttpClientBuilder httpBuilder,
-            ExecutorService executorService) {
+    * Initializes a new instance of the VirtualNetworkManagementClientImpl
+    * class.
+    *
+    * @param httpBuilder The HTTP client builder.
+    * @param executorService The executor service.
+    */
+    private VirtualNetworkManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService) {
         super(httpBuilder, executorService);
-        this.clientRootCertificates = new ClientRootCertificateOperationsImpl(
-                this);
+        this.clientRootCertificates = new ClientRootCertificateOperationsImpl(this);
         this.gateways = new GatewayOperationsImpl(this);
         this.networks = new NetworkOperationsImpl(this);
         this.reservedIPs = new ReservedIPOperationsImpl(this);
         this.staticIPs = new StaticIPOperationsImpl(this);
     }
-
+    
     /**
-     * Initializes a new instance of the VirtualNetworkManagementClientImpl
-     * class.
-     * 
-     * @param httpBuilder
-     *            The HTTP client builder.
-     * @param executorService
-     *            The executor service.
-     * @param credentials
-     *            When you create a Windows Azure subscription, it is uniquely
-     *            identified by a subscription ID. The subscription ID forms
-     *            part of the URI for every call that you make to the Service
-     *            Management API. The Windows Azure Service ManagementAPI use
-     *            mutual authentication of management certificates over SSL to
-     *            ensure that a request made to the service is secure. No
-     *            anonymous requests are allowed.
-     * @param baseUri
-     *            The URI used as the base for all SQL requests.
-     */
-    public VirtualNetworkManagementClientImpl(HttpClientBuilder httpBuilder,
-            ExecutorService executorService,
-            SubscriptionCloudCredentials credentials, URI baseUri) {
+    * Initializes a new instance of the VirtualNetworkManagementClientImpl
+    * class.
+    *
+    * @param httpBuilder The HTTP client builder.
+    * @param executorService The executor service.
+    * @param credentials When you create a Windows Azure subscription, it is
+    * uniquely identified by a subscription ID. The subscription ID forms part
+    * of the URI for every call that you make to the Service Management API.
+    * The Windows Azure Service ManagementAPI use mutual authentication of
+    * management certificates over SSL to ensure that a request made to the
+    * service is secure.  No anonymous requests are allowed.
+    * @param baseUri The URI used as the base for all SQL requests.
+    */
+    public VirtualNetworkManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, SubscriptionCloudCredentials credentials, URI baseUri) {
         this(httpBuilder, executorService);
         if (credentials == null) {
             throw new NullPointerException("credentials");
@@ -185,33 +170,26 @@ public class VirtualNetworkManagementClientImpl extends
         this.credentials = credentials;
         this.baseUri = baseUri;
     }
-
+    
     /**
-     * Initializes a new instance of the VirtualNetworkManagementClientImpl
-     * class. Initializes a new instance of the
-     * VirtualNetworkManagementClientImpl class.
-     * 
-     * @param httpBuilder
-     *            The HTTP client builder.
-     * @param executorService
-     *            The executor service.
-     * @param credentials
-     *            When you create a Windows Azure subscription, it is uniquely
-     *            identified by a subscription ID. The subscription ID forms
-     *            part of the URI for every call that you make to the Service
-     *            Management API. The Windows Azure Service ManagementAPI use
-     *            mutual authentication of management certificates over SSL to
-     *            ensure that a request made to the service is secure. No
-     *            anonymous requests are allowed.
-     * @throws URISyntaxException
-     *             Thrown if there was an error parsing a URI in the response.
-     */
+    * Initializes a new instance of the VirtualNetworkManagementClientImpl
+    * class.
+    * Initializes a new instance of the VirtualNetworkManagementClientImpl
+    * class.
+    *
+    * @param httpBuilder The HTTP client builder.
+    * @param executorService The executor service.
+    * @param credentials When you create a Windows Azure subscription, it is
+    * uniquely identified by a subscription ID. The subscription ID forms part
+    * of the URI for every call that you make to the Service Management API.
+    * The Windows Azure Service ManagementAPI use mutual authentication of
+    * management certificates over SSL to ensure that a request made to the
+    * service is secure.  No anonymous requests are allowed.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
+    */
     @Inject
-    public VirtualNetworkManagementClientImpl(
-            HttpClientBuilder httpBuilder,
-            ExecutorService executorService,
-            @Named(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS) SubscriptionCloudCredentials credentials)
-            throws java.net.URISyntaxException {
+    public VirtualNetworkManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, @Named(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS) SubscriptionCloudCredentials credentials) throws java.net.URISyntaxException {
         this(httpBuilder, executorService);
         if (credentials == null) {
             throw new NullPointerException("credentials");
@@ -219,97 +197,83 @@ public class VirtualNetworkManagementClientImpl extends
         this.credentials = credentials;
         this.baseUri = new URI("https://management.core.windows.net");
     }
-
+    
     /**
-     * 
-     * @param httpBuilder
-     *            The HTTP client builder.
-     * @param executorService
-     *            The executor service.
-     */
-    protected VirtualNetworkManagementClientImpl newInstance(
-            HttpClientBuilder httpBuilder, ExecutorService executorService) {
-        return new VirtualNetworkManagementClientImpl(httpBuilder,
-                executorService, this.getCredentials(), this.getBaseUri());
+    *
+    * @param httpBuilder The HTTP client builder.
+    * @param executorService The executor service.
+    */
+    protected VirtualNetworkManagementClientImpl newInstance(HttpClientBuilder httpBuilder, ExecutorService executorService) {
+        return new VirtualNetworkManagementClientImpl(httpBuilder, executorService, this.getCredentials(), this.getBaseUri());
     }
-
+    
     /**
-     * The Get Operation Status operation returns the status of thespecified
-     * operation. After calling an asynchronous operation, you can call Get
-     * Operation Status to determine whether the operation has succeeded,
-     * failed, or is still in progress. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460783.aspx for
-     * more information)
-     * 
-     * @param requestId
-     *            The request ID for the request you wish to track. The request
-     *            ID is returned in the x-ms-request-id response header for
-     *            every request.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
+    * The Get Operation Status operation returns the status of thespecified
+    * operation. After calling an asynchronous operation, you can call Get
+    * Operation Status to determine whether the operation has succeeded,
+    * failed, or is still in progress.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460783.aspx for
+    * more information)
+    *
+    * @param requestId The request ID for the request you wish to track. The
+    * request ID is returned in the x-ms-request-id response header for every
+    * request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
     @Override
-    public Future<VirtualNetworkOperationStatusResponse> getOperationStatusAsync(
-            final String requestId) {
-        return this.getExecutorService().submit(
-                new Callable<VirtualNetworkOperationStatusResponse>() {
-                    @Override
-                    public VirtualNetworkOperationStatusResponse call()
-                            throws Exception {
-                        return getOperationStatus(requestId);
-                    }
-                });
+    public Future<VirtualNetworkOperationStatusResponse> getOperationStatusAsync(final String requestId) {
+        return this.getExecutorService().submit(new Callable<VirtualNetworkOperationStatusResponse>() { 
+            @Override
+            public VirtualNetworkOperationStatusResponse call() throws Exception {
+                return getOperationStatus(requestId);
+            }
+         });
     }
-
+    
     /**
-     * The Get Operation Status operation returns the status of thespecified
-     * operation. After calling an asynchronous operation, you can call Get
-     * Operation Status to determine whether the operation has succeeded,
-     * failed, or is still in progress. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460783.aspx for
-     * more information)
-     * 
-     * @param requestId
-     *            The request ID for the request you wish to track. The request
-     *            ID is returned in the x-ms-request-id response header for
-     *            every request.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @throws ParserConfigurationException
-     *             Thrown if there was a serious configuration error with the
-     *             document parser.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the XML response.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
+    * The Get Operation Status operation returns the status of thespecified
+    * operation. After calling an asynchronous operation, you can call Get
+    * Operation Status to determine whether the operation has succeeded,
+    * failed, or is still in progress.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460783.aspx for
+    * more information)
+    *
+    * @param requestId The request ID for the request you wish to track. The
+    * request ID is returned in the x-ms-request-id response header for every
+    * request.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
     @Override
-    public VirtualNetworkOperationStatusResponse getOperationStatus(
-            String requestId) throws IOException, ServiceException,
-            ParserConfigurationException, SAXException {
+    public VirtualNetworkOperationStatusResponse getOperationStatus(String requestId) throws IOException, ServiceException, ParserConfigurationException, SAXException {
         // Validate
         if (requestId == null) {
             throw new NullPointerException("requestId");
         }
-
+        
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -317,21 +281,18 @@ public class VirtualNetworkManagementClientImpl extends
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("requestId", requestId);
-            CloudTracing.enter(invocationId, this, "getOperationStatusAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "getOperationStatusAsync", tracingParameters);
         }
-
+        
         // Construct URL
-        String url = this.getBaseUri() + "/"
-                + this.getCredentials().getSubscriptionId() + "/operations/"
-                + requestId;
-
+        String url = this.getBaseUri() + "/" + this.getCredentials().getSubscriptionId() + "/operations/" + requestId;
+        
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
-
+        
         // Set Headers
         httpRequest.setHeader("x-ms-version", "2013-11-01");
-
+        
         // Send Request
         HttpResponse httpResponse = null;
         try {
@@ -344,85 +305,66 @@ public class VirtualNetworkManagementClientImpl extends
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_OK) {
-                ServiceException ex = ServiceException.createFromXml(
-                        httpRequest, null, httpResponse,
-                        httpResponse.getEntity());
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-
+            
             // Create Result
             VirtualNetworkOperationStatusResponse result = null;
             // Deserialize Response
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new VirtualNetworkOperationStatusResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
-                    .newInstance();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory
-                    .newDocumentBuilder();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
-
+            
             NodeList elements = responseDoc.getElementsByTagName("Operation");
-            Element operationElement = elements.getLength() > 0 ? ((Element) elements
-                    .item(0)) : null;
+            Element operationElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (operationElement != null) {
-                NodeList elements2 = operationElement
-                        .getElementsByTagName("ID");
-                Element idElement = elements2.getLength() > 0 ? ((Element) elements2
-                        .item(0)) : null;
+                NodeList elements2 = operationElement.getElementsByTagName("ID");
+                Element idElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                 if (idElement != null) {
                     String idInstance;
                     idInstance = idElement.getTextContent();
                     result.setId(idInstance);
                 }
-
-                NodeList elements3 = operationElement
-                        .getElementsByTagName("Status");
-                Element statusElement = elements3.getLength() > 0 ? ((Element) elements3
-                        .item(0)) : null;
+                
+                NodeList elements3 = operationElement.getElementsByTagName("Status");
+                Element statusElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                 if (statusElement != null) {
                     OperationStatus statusInstance;
-                    statusInstance = OperationStatus.valueOf(statusElement
-                            .getTextContent());
+                    statusInstance = OperationStatus.valueOf(statusElement.getTextContent());
                     result.setStatus(statusInstance);
                 }
-
-                NodeList elements4 = operationElement
-                        .getElementsByTagName("HttpStatusCode");
-                Element httpStatusCodeElement = elements4.getLength() > 0 ? ((Element) elements4
-                        .item(0)) : null;
+                
+                NodeList elements4 = operationElement.getElementsByTagName("HttpStatusCode");
+                Element httpStatusCodeElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                 if (httpStatusCodeElement != null) {
                     Integer httpStatusCodeInstance;
-                    httpStatusCodeInstance = Integer
-                            .valueOf(httpStatusCodeElement.getTextContent());
+                    httpStatusCodeInstance = Integer.valueOf(httpStatusCodeElement.getTextContent());
                     result.setHttpStatusCode(httpStatusCodeInstance);
                 }
-
-                NodeList elements5 = operationElement
-                        .getElementsByTagName("Error");
-                Element errorElement = elements5.getLength() > 0 ? ((Element) elements5
-                        .item(0)) : null;
+                
+                NodeList elements5 = operationElement.getElementsByTagName("Error");
+                Element errorElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                 if (errorElement != null) {
                     VirtualNetworkOperationStatusResponse.ErrorDetails errorInstance = new VirtualNetworkOperationStatusResponse.ErrorDetails();
                     result.setError(errorInstance);
-
-                    NodeList elements6 = errorElement
-                            .getElementsByTagName("Code");
-                    Element codeElement = elements6.getLength() > 0 ? ((Element) elements6
-                            .item(0)) : null;
+                    
+                    NodeList elements6 = errorElement.getElementsByTagName("Code");
+                    Element codeElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                     if (codeElement != null) {
                         String codeInstance;
                         codeInstance = codeElement.getTextContent();
                         errorInstance.setCode(codeInstance);
                     }
-
-                    NodeList elements7 = errorElement
-                            .getElementsByTagName("Message");
-                    Element messageElement = elements7.getLength() > 0 ? ((Element) elements7
-                            .item(0)) : null;
+                    
+                    NodeList elements7 = errorElement.getElementsByTagName("Message");
+                    Element messageElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                     if (messageElement != null) {
                         String messageInstance;
                         messageInstance = messageElement.getTextContent();
@@ -430,13 +372,12 @@ public class VirtualNetworkManagementClientImpl extends
                     }
                 }
             }
-
+            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader(
-                        "x-ms-request-id").getValue());
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
@@ -447,16 +388,14 @@ public class VirtualNetworkManagementClientImpl extends
             }
         }
     }
-
+    
     /**
-     * Parse enum values for type LocalNetworkConnectionType.
-     * 
-     * @param value
-     *            The value to parse.
-     * @return The enum value.
-     */
-    static LocalNetworkConnectionType parseLocalNetworkConnectionType(
-            String value) {
+    * Parse enum values for type LocalNetworkConnectionType.
+    *
+    * @param value The value to parse.
+    * @return The enum value.
+    */
+     static LocalNetworkConnectionType parseLocalNetworkConnectionType(String value) {
         if ("IPsec".equals(value)) {
             return LocalNetworkConnectionType.IPSecurity;
         }
@@ -465,16 +404,14 @@ public class VirtualNetworkManagementClientImpl extends
         }
         throw new IllegalArgumentException("value");
     }
-
+    
     /**
-     * Convert an enum of type LocalNetworkConnectionType to a string.
-     * 
-     * @param value
-     *            The value to convert to a string.
-     * @return The enum value as a string.
-     */
-    static String localNetworkConnectionTypeToString(
-            LocalNetworkConnectionType value) {
+    * Convert an enum of type LocalNetworkConnectionType to a string.
+    *
+    * @param value The value to convert to a string.
+    * @return The enum value as a string.
+    */
+     static String localNetworkConnectionTypeToString(LocalNetworkConnectionType value) {
         if (value == LocalNetworkConnectionType.IPSecurity) {
             return "IPsec";
         }

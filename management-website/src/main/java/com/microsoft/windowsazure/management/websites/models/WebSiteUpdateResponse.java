@@ -26,26 +26,23 @@ package com.microsoft.windowsazure.management.websites.models;
 import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
- * The Update Web Site operation response.
- */
+* The Update Web Site operation response.
+*/
 public class WebSiteUpdateResponse extends OperationResponse {
     private WebSite webSite;
-
+    
     /**
-     * Details of the updated website.
-     * 
-     * @return The WebSite value.
-     */
+    * Details of the updated website.
+    * @return The WebSite value.
+    */
     public WebSite getWebSite() {
         return this.webSite;
     }
-
+    
     /**
-     * Details of the updated website.
-     * 
-     * @param webSiteValue
-     *            The WebSite value.
-     */
+    * Details of the updated website.
+    * @param webSiteValue The WebSite value.
+    */
     public void setWebSite(final WebSite webSiteValue) {
         this.webSite = webSiteValue;
     }

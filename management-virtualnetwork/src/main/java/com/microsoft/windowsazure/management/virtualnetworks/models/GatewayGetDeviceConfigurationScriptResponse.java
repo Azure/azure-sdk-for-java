@@ -26,28 +26,24 @@ package com.microsoft.windowsazure.management.virtualnetworks.models;
 import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
- * The configuration script returned from the get device configuration script
- * request.
- */
-public class GatewayGetDeviceConfigurationScriptResponse extends
-        OperationResponse {
+* The configuration script returned from the get device configuration script
+* request.
+*/
+public class GatewayGetDeviceConfigurationScriptResponse extends OperationResponse {
     private String configurationScript;
-
+    
     /**
-     * The requested configuration script for the local network device.
-     * 
-     * @return The ConfigurationScript value.
-     */
+    * The requested configuration script for the local network device.
+    * @return The ConfigurationScript value.
+    */
     public String getConfigurationScript() {
         return this.configurationScript;
     }
-
+    
     /**
-     * The requested configuration script for the local network device.
-     * 
-     * @param configurationScriptValue
-     *            The ConfigurationScript value.
-     */
+    * The requested configuration script for the local network device.
+    * @param configurationScriptValue The ConfigurationScript value.
+    */
     public void setConfigurationScript(final String configurationScriptValue) {
         this.configurationScript = configurationScriptValue;
     }

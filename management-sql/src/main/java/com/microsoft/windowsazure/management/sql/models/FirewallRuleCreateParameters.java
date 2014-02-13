@@ -26,68 +26,59 @@ package com.microsoft.windowsazure.management.sql.models;
 import java.net.InetAddress;
 
 /**
- * The parameters for the Create Firewall Rule operation.
- */
+* The parameters for the Create Firewall Rule operation.
+*/
 public class FirewallRuleCreateParameters {
     private InetAddress endIPAddress;
-
+    
     /**
-     * Gets or sets the ending IP address applied to this firewall rule.
-     * 
-     * @return The EndIPAddress value.
-     */
+    * Gets or sets the ending IP address applied to this firewall rule.
+    * @return The EndIPAddress value.
+    */
     public InetAddress getEndIPAddress() {
         return this.endIPAddress;
     }
-
+    
     /**
-     * Gets or sets the ending IP address applied to this firewall rule.
-     * 
-     * @param endIPAddressValue
-     *            The EndIPAddress value.
-     */
+    * Gets or sets the ending IP address applied to this firewall rule.
+    * @param endIPAddressValue The EndIPAddress value.
+    */
     public void setEndIPAddress(final InetAddress endIPAddressValue) {
         this.endIPAddress = endIPAddressValue;
     }
-
+    
     private String name;
-
+    
     /**
-     * Gets or sets the name of this firewall rule.
-     * 
-     * @return The Name value.
-     */
+    * Gets or sets the name of this firewall rule.
+    * @return The Name value.
+    */
     public String getName() {
         return this.name;
     }
-
+    
     /**
-     * Gets or sets the name of this firewall rule.
-     * 
-     * @param nameValue
-     *            The Name value.
-     */
+    * Gets or sets the name of this firewall rule.
+    * @param nameValue The Name value.
+    */
     public void setName(final String nameValue) {
         this.name = nameValue;
     }
-
+    
     private InetAddress startIPAddress;
-
+    
     /**
-     * Gets or sets the beginning IP address applied to this firewall rule.
-     * 
-     * @return The StartIPAddress value.
-     */
+    * Gets or sets the beginning IP address applied to this firewall rule.
+    * @return The StartIPAddress value.
+    */
     public InetAddress getStartIPAddress() {
         return this.startIPAddress;
     }
-
+    
     /**
-     * Gets or sets the beginning IP address applied to this firewall rule.
-     * 
-     * @param startIPAddressValue
-     *            The StartIPAddress value.
-     */
+    * Gets or sets the beginning IP address applied to this firewall rule.
+    * @param startIPAddressValue The StartIPAddress value.
+    */
     public void setStartIPAddress(final InetAddress startIPAddressValue) {
         this.startIPAddress = startIPAddressValue;
     }

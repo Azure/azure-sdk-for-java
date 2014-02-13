@@ -54,61 +54,52 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-public class SchedulerManagementClientImpl extends
-        ServiceClient<SchedulerManagementClient> implements
-        SchedulerManagementClient {
+public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManagementClient> implements SchedulerManagementClient {
     private URI baseUri;
-
+    
     /**
-     * @return The BaseUri value.
-     */
+    * @return The BaseUri value.
+    */
     public URI getBaseUri() {
         return this.baseUri;
     }
-
+    
     private SubscriptionCloudCredentials credentials;
-
+    
     /**
-     * @return The Credentials value.
-     */
+    * @return The Credentials value.
+    */
     public SubscriptionCloudCredentials getCredentials() {
         return this.credentials;
     }
-
+    
     private JobCollectionOperations jobCollections;
-
+    
     /**
-     * @return The JobCollectionsOperations value.
-     */
+    * @return The JobCollectionsOperations value.
+    */
     public JobCollectionOperations getJobCollectionsOperations() {
         return this.jobCollections;
     }
-
+    
     /**
-     * Initializes a new instance of the SchedulerManagementClientImpl class.
-     * 
-     * @param httpBuilder
-     *            The HTTP client builder.
-     * @param executorService
-     *            The executor service.
-     */
-    private SchedulerManagementClientImpl(HttpClientBuilder httpBuilder,
-            ExecutorService executorService) {
+    * Initializes a new instance of the SchedulerManagementClientImpl class.
+    *
+    * @param httpBuilder The HTTP client builder.
+    * @param executorService The executor service.
+    */
+    private SchedulerManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService) {
         super(httpBuilder, executorService);
         this.jobCollections = new JobCollectionOperationsImpl(this);
     }
-
+    
     /**
-     * Initializes a new instance of the SchedulerManagementClientImpl class.
-     * 
-     * @param httpBuilder
-     *            The HTTP client builder.
-     * @param executorService
-     *            The executor service.
-     */
-    public SchedulerManagementClientImpl(HttpClientBuilder httpBuilder,
-            ExecutorService executorService,
-            SubscriptionCloudCredentials credentials, URI baseUri) {
+    * Initializes a new instance of the SchedulerManagementClientImpl class.
+    *
+    * @param httpBuilder The HTTP client builder.
+    * @param executorService The executor service.
+    */
+    public SchedulerManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, SubscriptionCloudCredentials credentials, URI baseUri) {
         this(httpBuilder, executorService);
         if (credentials == null) {
             throw new NullPointerException("credentials");
@@ -119,24 +110,18 @@ public class SchedulerManagementClientImpl extends
         this.credentials = credentials;
         this.baseUri = baseUri;
     }
-
+    
     /**
-     * Initializes a new instance of the SchedulerManagementClientImpl class.
-     * Initializes a new instance of the SchedulerManagementClientImpl class.
-     * 
-     * @param httpBuilder
-     *            The HTTP client builder.
-     * @param executorService
-     *            The executor service.
-     * @throws URISyntaxException
-     *             Thrown if there was an error parsing a URI in the response.
-     */
+    * Initializes a new instance of the SchedulerManagementClientImpl class.
+    * Initializes a new instance of the SchedulerManagementClientImpl class.
+    *
+    * @param httpBuilder The HTTP client builder.
+    * @param executorService The executor service.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
+    */
     @Inject
-    public SchedulerManagementClientImpl(
-            HttpClientBuilder httpBuilder,
-            ExecutorService executorService,
-            @Named(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS) SubscriptionCloudCredentials credentials)
-            throws java.net.URISyntaxException {
+    public SchedulerManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, @Named(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS) SubscriptionCloudCredentials credentials) throws java.net.URISyntaxException {
         this(httpBuilder, executorService);
         if (credentials == null) {
             throw new NullPointerException("credentials");
@@ -144,97 +129,83 @@ public class SchedulerManagementClientImpl extends
         this.credentials = credentials;
         this.baseUri = new URI("https://management.core.windows.net/");
     }
-
+    
     /**
-     * 
-     * @param httpBuilder
-     *            The HTTP client builder.
-     * @param executorService
-     *            The executor service.
-     */
-    protected SchedulerManagementClientImpl newInstance(
-            HttpClientBuilder httpBuilder, ExecutorService executorService) {
-        return new SchedulerManagementClientImpl(httpBuilder, executorService,
-                this.getCredentials(), this.getBaseUri());
+    *
+    * @param httpBuilder The HTTP client builder.
+    * @param executorService The executor service.
+    */
+    protected SchedulerManagementClientImpl newInstance(HttpClientBuilder httpBuilder, ExecutorService executorService) {
+        return new SchedulerManagementClientImpl(httpBuilder, executorService, this.getCredentials(), this.getBaseUri());
     }
-
+    
     /**
-     * The Get Operation Status operation returns the status of thespecified
-     * operation. After calling an asynchronous operation, you can call Get
-     * Operation Status to determine whether the operation has succeeded,
-     * failed, or is still in progress. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460783.aspx for
-     * more information)
-     * 
-     * @param requestId
-     *            The request ID for the request you wish to track. The request
-     *            ID is returned in the x-ms-request-id response header for
-     *            every request.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
+    * The Get Operation Status operation returns the status of thespecified
+    * operation. After calling an asynchronous operation, you can call Get
+    * Operation Status to determine whether the operation has succeeded,
+    * failed, or is still in progress.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460783.aspx for
+    * more information)
+    *
+    * @param requestId The request ID for the request you wish to track. The
+    * request ID is returned in the x-ms-request-id response header for every
+    * request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
     @Override
-    public Future<SchedulerOperationStatusResponse> getOperationStatusAsync(
-            final String requestId) {
-        return this.getExecutorService().submit(
-                new Callable<SchedulerOperationStatusResponse>() {
-                    @Override
-                    public SchedulerOperationStatusResponse call()
-                            throws Exception {
-                        return getOperationStatus(requestId);
-                    }
-                });
+    public Future<SchedulerOperationStatusResponse> getOperationStatusAsync(final String requestId) {
+        return this.getExecutorService().submit(new Callable<SchedulerOperationStatusResponse>() { 
+            @Override
+            public SchedulerOperationStatusResponse call() throws Exception {
+                return getOperationStatus(requestId);
+            }
+         });
     }
-
+    
     /**
-     * The Get Operation Status operation returns the status of thespecified
-     * operation. After calling an asynchronous operation, you can call Get
-     * Operation Status to determine whether the operation has succeeded,
-     * failed, or is still in progress. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460783.aspx for
-     * more information)
-     * 
-     * @param requestId
-     *            The request ID for the request you wish to track. The request
-     *            ID is returned in the x-ms-request-id response header for
-     *            every request.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @throws ParserConfigurationException
-     *             Thrown if there was a serious configuration error with the
-     *             document parser.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the XML response.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
+    * The Get Operation Status operation returns the status of thespecified
+    * operation. After calling an asynchronous operation, you can call Get
+    * Operation Status to determine whether the operation has succeeded,
+    * failed, or is still in progress.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460783.aspx for
+    * more information)
+    *
+    * @param requestId The request ID for the request you wish to track. The
+    * request ID is returned in the x-ms-request-id response header for every
+    * request.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
     @Override
-    public SchedulerOperationStatusResponse getOperationStatus(String requestId)
-            throws IOException, ServiceException, ParserConfigurationException,
-            SAXException {
+    public SchedulerOperationStatusResponse getOperationStatus(String requestId) throws IOException, ServiceException, ParserConfigurationException, SAXException {
         // Validate
         if (requestId == null) {
             throw new NullPointerException("requestId");
         }
-
+        
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -242,21 +213,18 @@ public class SchedulerManagementClientImpl extends
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("requestId", requestId);
-            CloudTracing.enter(invocationId, this, "getOperationStatusAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "getOperationStatusAsync", tracingParameters);
         }
-
+        
         // Construct URL
-        String url = this.getBaseUri()
-                + this.getCredentials().getSubscriptionId() + "/operations/"
-                + requestId;
-
+        String url = this.getBaseUri() + this.getCredentials().getSubscriptionId() + "/operations/" + requestId;
+        
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
-
+        
         // Set Headers
         httpRequest.setHeader("x-ms-version", "2013-03-01");
-
+        
         // Send Request
         HttpResponse httpResponse = null;
         try {
@@ -269,85 +237,66 @@ public class SchedulerManagementClientImpl extends
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_OK) {
-                ServiceException ex = ServiceException.createFromXml(
-                        httpRequest, null, httpResponse,
-                        httpResponse.getEntity());
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-
+            
             // Create Result
             SchedulerOperationStatusResponse result = null;
             // Deserialize Response
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new SchedulerOperationStatusResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
-                    .newInstance();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory
-                    .newDocumentBuilder();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
-
+            
             NodeList elements = responseDoc.getElementsByTagName("Operation");
-            Element operationElement = elements.getLength() > 0 ? ((Element) elements
-                    .item(0)) : null;
+            Element operationElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (operationElement != null) {
-                NodeList elements2 = operationElement
-                        .getElementsByTagName("ID");
-                Element idElement = elements2.getLength() > 0 ? ((Element) elements2
-                        .item(0)) : null;
+                NodeList elements2 = operationElement.getElementsByTagName("ID");
+                Element idElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                 if (idElement != null) {
                     String idInstance;
                     idInstance = idElement.getTextContent();
                     result.setId(idInstance);
                 }
-
-                NodeList elements3 = operationElement
-                        .getElementsByTagName("Status");
-                Element statusElement = elements3.getLength() > 0 ? ((Element) elements3
-                        .item(0)) : null;
+                
+                NodeList elements3 = operationElement.getElementsByTagName("Status");
+                Element statusElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                 if (statusElement != null) {
                     SchedulerOperationStatus statusInstance;
-                    statusInstance = SchedulerOperationStatus
-                            .valueOf(statusElement.getTextContent());
+                    statusInstance = SchedulerOperationStatus.valueOf(statusElement.getTextContent());
                     result.setStatus(statusInstance);
                 }
-
-                NodeList elements4 = operationElement
-                        .getElementsByTagName("HttpStatusCode");
-                Element httpStatusCodeElement = elements4.getLength() > 0 ? ((Element) elements4
-                        .item(0)) : null;
+                
+                NodeList elements4 = operationElement.getElementsByTagName("HttpStatusCode");
+                Element httpStatusCodeElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                 if (httpStatusCodeElement != null) {
                     Integer httpStatusCodeInstance;
-                    httpStatusCodeInstance = Integer
-                            .valueOf(httpStatusCodeElement.getTextContent());
+                    httpStatusCodeInstance = Integer.valueOf(httpStatusCodeElement.getTextContent());
                     result.setHttpStatusCode(httpStatusCodeInstance);
                 }
-
-                NodeList elements5 = operationElement
-                        .getElementsByTagName("Error");
-                Element errorElement = elements5.getLength() > 0 ? ((Element) elements5
-                        .item(0)) : null;
+                
+                NodeList elements5 = operationElement.getElementsByTagName("Error");
+                Element errorElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                 if (errorElement != null) {
                     SchedulerOperationStatusResponse.ErrorDetails errorInstance = new SchedulerOperationStatusResponse.ErrorDetails();
                     result.setError(errorInstance);
-
-                    NodeList elements6 = errorElement
-                            .getElementsByTagName("Code");
-                    Element codeElement = elements6.getLength() > 0 ? ((Element) elements6
-                            .item(0)) : null;
+                    
+                    NodeList elements6 = errorElement.getElementsByTagName("Code");
+                    Element codeElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                     if (codeElement != null) {
                         String codeInstance;
                         codeInstance = codeElement.getTextContent();
                         errorInstance.setCode(codeInstance);
                     }
-
-                    NodeList elements7 = errorElement
-                            .getElementsByTagName("Message");
-                    Element messageElement = elements7.getLength() > 0 ? ((Element) elements7
-                            .item(0)) : null;
+                    
+                    NodeList elements7 = errorElement.getElementsByTagName("Message");
+                    Element messageElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                     if (messageElement != null) {
                         String messageInstance;
                         messageInstance = messageElement.getTextContent();
@@ -355,13 +304,12 @@ public class SchedulerManagementClientImpl extends
                     }
                 }
             }
-
+            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader(
-                        "x-ms-request-id").getValue());
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
@@ -372,70 +320,60 @@ public class SchedulerManagementClientImpl extends
             }
         }
     }
-
+    
     /**
-     * Gets a list of properties for the resource provider, including supported
-     * regions and plans.
-     * 
-     * @return The Resource Provider Get Properties operation response.
-     */
+    * Gets a list of properties for the resource provider, including supported
+    * regions and plans.
+    *
+    * @return The Resource Provider Get Properties operation response.
+    */
     @Override
     public Future<ResourceProviderGetPropertiesResponse> getResourceProviderPropertiesAsync() {
-        return this.getExecutorService().submit(
-                new Callable<ResourceProviderGetPropertiesResponse>() {
-                    @Override
-                    public ResourceProviderGetPropertiesResponse call()
-                            throws Exception {
-                        return getResourceProviderProperties();
-                    }
-                });
+        return this.getExecutorService().submit(new Callable<ResourceProviderGetPropertiesResponse>() { 
+            @Override
+            public ResourceProviderGetPropertiesResponse call() throws Exception {
+                return getResourceProviderProperties();
+            }
+         });
     }
-
+    
     /**
-     * Gets a list of properties for the resource provider, including supported
-     * regions and plans.
-     * 
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @throws ParserConfigurationException
-     *             Thrown if there was a serious configuration error with the
-     *             document parser.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the XML response.
-     * @return The Resource Provider Get Properties operation response.
-     */
+    * Gets a list of properties for the resource provider, including supported
+    * regions and plans.
+    *
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return The Resource Provider Get Properties operation response.
+    */
     @Override
-    public ResourceProviderGetPropertiesResponse getResourceProviderProperties()
-            throws IOException, ServiceException, ParserConfigurationException,
-            SAXException {
+    public ResourceProviderGetPropertiesResponse getResourceProviderProperties() throws IOException, ServiceException, ParserConfigurationException, SAXException {
         // Validate
-
+        
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
         if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
-            CloudTracing.enter(invocationId, this,
-                    "getResourceProviderPropertiesAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "getResourceProviderPropertiesAsync", tracingParameters);
         }
-
+        
         // Construct URL
-        String url = this.getBaseUri()
-                + this.getCredentials().getSubscriptionId()
-                + "/resourceproviders/" + "scheduler" + "/Properties" + "?";
+        String url = this.getBaseUri() + this.getCredentials().getSubscriptionId() + "/resourceproviders/" + "scheduler" + "/Properties" + "?";
         url = url + "resourceType=" + "JobCollections";
-
+        
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
-
+        
         // Set Headers
         httpRequest.setHeader("x-ms-version", "2013-03-01");
-
+        
         // Send Request
         HttpResponse httpResponse = null;
         try {
@@ -448,59 +386,41 @@ public class SchedulerManagementClientImpl extends
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_OK) {
-                ServiceException ex = ServiceException.createFromXml(
-                        httpRequest, null, httpResponse,
-                        httpResponse.getEntity());
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-
+            
             // Create Result
             ResourceProviderGetPropertiesResponse result = null;
             // Deserialize Response
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new ResourceProviderGetPropertiesResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
-                    .newInstance();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory
-                    .newDocumentBuilder();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
-
-            NodeList elements = responseDoc
-                    .getElementsByTagName("ResourceProviderProperties");
-            Element resourceProviderPropertiesSequenceElement = elements
-                    .getLength() > 0 ? ((Element) elements.item(0)) : null;
+            
+            NodeList elements = responseDoc.getElementsByTagName("ResourceProviderProperties");
+            Element resourceProviderPropertiesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (resourceProviderPropertiesSequenceElement != null) {
-                for (int i1 = 0; i1 < resourceProviderPropertiesSequenceElement
-                        .getElementsByTagName("ResourceProviderProperty")
-                        .getLength(); i1 = i1 + 1) {
-                    org.w3c.dom.Element resourceProviderPropertiesElement = ((org.w3c.dom.Element) resourceProviderPropertiesSequenceElement
-                            .getElementsByTagName("ResourceProviderProperty")
-                            .item(i1));
-                    NodeList elements2 = resourceProviderPropertiesElement
-                            .getElementsByTagName("Key");
-                    String resourceProviderPropertiesKey = elements2
-                            .getLength() > 0 ? ((org.w3c.dom.Element) elements2
-                            .item(0)).getTextContent() : null;
-                    NodeList elements3 = resourceProviderPropertiesElement
-                            .getElementsByTagName("Value");
-                    String resourceProviderPropertiesValue = elements3
-                            .getLength() > 0 ? ((org.w3c.dom.Element) elements3
-                            .item(0)).getTextContent() : null;
-                    result.getProperties().put(resourceProviderPropertiesKey,
-                            resourceProviderPropertiesValue);
+                for (int i1 = 0; i1 < resourceProviderPropertiesSequenceElement.getElementsByTagName("ResourceProviderProperty").getLength(); i1 = i1 + 1) {
+                    org.w3c.dom.Element resourceProviderPropertiesElement = ((org.w3c.dom.Element) resourceProviderPropertiesSequenceElement.getElementsByTagName("ResourceProviderProperty").item(i1));
+                    NodeList elements2 = resourceProviderPropertiesElement.getElementsByTagName("Key");
+                    String resourceProviderPropertiesKey = elements2.getLength() > 0 ? ((org.w3c.dom.Element) elements2.item(0)).getTextContent() : null;
+                    NodeList elements3 = resourceProviderPropertiesElement.getElementsByTagName("Value");
+                    String resourceProviderPropertiesValue = elements3.getLength() > 0 ? ((org.w3c.dom.Element) elements3.item(0)).getTextContent() : null;
+                    result.getProperties().put(resourceProviderPropertiesKey, resourceProviderPropertiesValue);
                 }
             }
-
+            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader(
-                        "x-ms-request-id").getValue());
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
@@ -511,63 +431,56 @@ public class SchedulerManagementClientImpl extends
             }
         }
     }
-
+    
     /**
-     * Register the Scheduler resource provider with your subscription.
-     * 
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * Register the Scheduler resource provider with your subscription.
+    *
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
     public Future<OperationResponse> registerResourceProviderAsync() {
-        return this.getExecutorService().submit(
-                new Callable<OperationResponse>() {
-                    @Override
-                    public OperationResponse call() throws Exception {
-                        return registerResourceProvider();
-                    }
-                });
+        return this.getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception {
+                return registerResourceProvider();
+            }
+         });
     }
-
+    
     /**
-     * Register the Scheduler resource provider with your subscription.
-     * 
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * Register the Scheduler resource provider with your subscription.
+    *
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public OperationResponse registerResourceProvider() throws IOException,
-            ServiceException {
+    public OperationResponse registerResourceProvider() throws IOException, ServiceException {
         // Validate
-
+        
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
         if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
-            CloudTracing.enter(invocationId, this,
-                    "registerResourceProviderAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "registerResourceProviderAsync", tracingParameters);
         }
-
+        
         // Construct URL
-        String url = this.getBaseUri()
-                + this.getCredentials().getSubscriptionId() + "/services" + "?"
-                + "&" + "action=register";
+        String url = this.getBaseUri() + this.getCredentials().getSubscriptionId() + "/services" + "?" + "&" + "action=register";
         url = url + "service=" + "scheduler" + "." + "JobCollections";
-
+        
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
-
+        
         // Set Headers
         httpRequest.setHeader("x-ms-version", "2013-03-01");
-
+        
         // Send Request
         HttpResponse httpResponse = null;
         try {
@@ -580,24 +493,21 @@ public class SchedulerManagementClientImpl extends
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_OK) {
-                ServiceException ex = ServiceException.createFromXml(
-                        httpRequest, null, httpResponse,
-                        httpResponse.getEntity());
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-
+            
             // Create Result
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader(
-                        "x-ms-request-id").getValue());
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
@@ -608,63 +518,56 @@ public class SchedulerManagementClientImpl extends
             }
         }
     }
-
+    
     /**
-     * Unregister the Scheduler resource provider with your subscription.
-     * 
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * Unregister the Scheduler resource provider with your subscription.
+    *
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
     public Future<OperationResponse> unregisterResourceProviderAsync() {
-        return this.getExecutorService().submit(
-                new Callable<OperationResponse>() {
-                    @Override
-                    public OperationResponse call() throws Exception {
-                        return unregisterResourceProvider();
-                    }
-                });
+        return this.getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception {
+                return unregisterResourceProvider();
+            }
+         });
     }
-
+    
     /**
-     * Unregister the Scheduler resource provider with your subscription.
-     * 
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * Unregister the Scheduler resource provider with your subscription.
+    *
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public OperationResponse unregisterResourceProvider() throws IOException,
-            ServiceException {
+    public OperationResponse unregisterResourceProvider() throws IOException, ServiceException {
         // Validate
-
+        
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
         if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
-            CloudTracing.enter(invocationId, this,
-                    "unregisterResourceProviderAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "unregisterResourceProviderAsync", tracingParameters);
         }
-
+        
         // Construct URL
-        String url = this.getBaseUri()
-                + this.getCredentials().getSubscriptionId() + "/services" + "?"
-                + "&" + "action=unregister";
+        String url = this.getBaseUri() + this.getCredentials().getSubscriptionId() + "/services" + "?" + "&" + "action=unregister";
         url = url + "service=" + "scheduler" + "." + "JobCollections";
-
+        
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
-
+        
         // Set Headers
         httpRequest.setHeader("x-ms-version", "2013-03-01");
-
+        
         // Send Request
         HttpResponse httpResponse = null;
         try {
@@ -677,24 +580,21 @@ public class SchedulerManagementClientImpl extends
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_OK) {
-                ServiceException ex = ServiceException.createFromXml(
-                        httpRequest, null, httpResponse,
-                        httpResponse.getEntity());
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-
+            
             // Create Result
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader(
-                        "x-ms-request-id").getValue());
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }

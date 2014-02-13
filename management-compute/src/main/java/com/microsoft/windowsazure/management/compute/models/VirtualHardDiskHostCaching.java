@@ -24,13 +24,13 @@
 package com.microsoft.windowsazure.management.compute.models;
 
 /**
- * Specifies the platform caching behavior of the data disk blob for read/write
- * efficiency.
- */
+* Specifies the platform caching behavior of the data disk blob for read/write
+* efficiency.
+*/
 public enum VirtualHardDiskHostCaching {
     None,
-
+    
     ReadOnly,
-
+    
     ReadWrite,
 }

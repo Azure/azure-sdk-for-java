@@ -24,72 +24,63 @@
 package com.microsoft.windowsazure.management.compute.models;
 
 /**
- * Required. Specifies the key, value, and type of the parameter.
- */
+* Required. Specifies the key, value, and type of the parameter.
+*/
 public class ResourceExtensionParameterValue {
     private String key;
-
+    
     /**
-     * Key
-     * 
-     * @return The Key value.
-     */
+    * Key
+    * @return The Key value.
+    */
     public String getKey() {
         return this.key;
     }
-
+    
     /**
-     * Key
-     * 
-     * @param keyValue
-     *            The Key value.
-     */
+    * Key
+    * @param keyValue The Key value.
+    */
     public void setKey(final String keyValue) {
         this.key = keyValue;
     }
-
+    
     private ResourceExtensionParameterValueType type;
-
+    
     /**
-     * If this value is set to Private, the parameter will not be returned by
-     * Get Deployment. You can only specify one public parameter and one private
-     * parameter for a maximum of two parameters.
-     * 
-     * @return The Type value.
-     */
+    * If this value is set to Private, the parameter will not be returned by
+    * Get Deployment. You can only specify one public parameter and one
+    * private parameter for a maximum of two parameters.
+    * @return The Type value.
+    */
     public ResourceExtensionParameterValueType getType() {
         return this.type;
     }
-
+    
     /**
-     * If this value is set to Private, the parameter will not be returned by
-     * Get Deployment. You can only specify one public parameter and one private
-     * parameter for a maximum of two parameters.
-     * 
-     * @param typeValue
-     *            The Type value.
-     */
+    * If this value is set to Private, the parameter will not be returned by
+    * Get Deployment. You can only specify one public parameter and one
+    * private parameter for a maximum of two parameters.
+    * @param typeValue The Type value.
+    */
     public void setType(final ResourceExtensionParameterValueType typeValue) {
         this.type = typeValue;
     }
-
+    
     private String value;
-
+    
     /**
-     * Value
-     * 
-     * @return The Value value.
-     */
+    * Value
+    * @return The Value value.
+    */
     public String getValue() {
         return this.value;
     }
-
+    
     /**
-     * Value
-     * 
-     * @param valueValue
-     *            The Value value.
-     */
+    * Value
+    * @param valueValue The Value value.
+    */
     public void setValue(final String valueValue) {
         this.value = valueValue;
     }

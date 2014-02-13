@@ -28,71 +28,63 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
- * The List Publishing Users operation response.
- */
-public class WebSpacesListPublishingUsersResponse extends OperationResponse
-        implements Iterable<WebSpacesListPublishingUsersResponse.User> {
+* The List Publishing Users operation response.
+*/
+public class WebSpacesListPublishingUsersResponse extends OperationResponse implements Iterable<WebSpacesListPublishingUsersResponse.User> {
     private ArrayList<WebSpacesListPublishingUsersResponse.User> users;
-
+    
     /**
-     * The publishing users.
-     * 
-     * @return The Users value.
-     */
+    * The publishing users.
+    * @return The Users value.
+    */
     public ArrayList<WebSpacesListPublishingUsersResponse.User> getUsers() {
         return this.users;
     }
-
+    
     /**
-     * The publishing users.
-     * 
-     * @param usersValue
-     *            The Users value.
-     */
-    public void setUsers(
-            final ArrayList<WebSpacesListPublishingUsersResponse.User> usersValue) {
+    * The publishing users.
+    * @param usersValue The Users value.
+    */
+    public void setUsers(final ArrayList<WebSpacesListPublishingUsersResponse.User> usersValue) {
         this.users = usersValue;
     }
-
+    
     /**
-     * Initializes a new instance of the WebSpacesListPublishingUsersResponse
-     * class.
-     * 
-     */
+    * Initializes a new instance of the WebSpacesListPublishingUsersResponse
+    * class.
+    *
+    */
     public WebSpacesListPublishingUsersResponse() {
         super();
         this.users = new ArrayList<WebSpacesListPublishingUsersResponse.User>();
     }
-
+    
     /**
-     * Gets the sequence of Users.
-     * 
-     */
+    * Gets the sequence of Users.
+    *
+    */
     public Iterator<WebSpacesListPublishingUsersResponse.User> iterator() {
         return this.getUsers().iterator();
     }
-
+    
     /**
-     * Information about a single publishing user.
-     */
+    * Information about a single publishing user.
+    */
     public static class User {
         private String name;
-
+        
         /**
-         * The publishing user name.
-         * 
-         * @return The Name value.
-         */
+        * The publishing user name.
+        * @return The Name value.
+        */
         public String getName() {
             return this.name;
         }
-
+        
         /**
-         * The publishing user name.
-         * 
-         * @param nameValue
-         *            The Name value.
-         */
+        * The publishing user name.
+        * @param nameValue The Name value.
+        */
         public void setName(final String nameValue) {
             this.name = nameValue;
         }

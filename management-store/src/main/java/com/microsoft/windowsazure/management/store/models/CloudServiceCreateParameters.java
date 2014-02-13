@@ -24,89 +24,77 @@
 package com.microsoft.windowsazure.management.store.models;
 
 /**
- * Represents the data passed to the Create Cloud Service API method.
- */
+* Represents the data passed to the Create Cloud Service API method.
+*/
 public class CloudServiceCreateParameters {
     private String description;
-
+    
     /**
-     * The description for the cloud service to be created.
-     * 
-     * @return The Description value.
-     */
+    * The description for the cloud service to be created.
+    * @return The Description value.
+    */
     public String getDescription() {
         return this.description;
     }
-
+    
     /**
-     * The description for the cloud service to be created.
-     * 
-     * @param descriptionValue
-     *            The Description value.
-     */
+    * The description for the cloud service to be created.
+    * @param descriptionValue The Description value.
+    */
     public void setDescription(final String descriptionValue) {
         this.description = descriptionValue;
     }
-
+    
     private String geoRegion;
-
+    
     /**
-     * The geographical region to create the cloud service in.
-     * 
-     * @return The GeoRegion value.
-     */
+    * The geographical region to create the cloud service in.
+    * @return The GeoRegion value.
+    */
     public String getGeoRegion() {
         return this.geoRegion;
     }
-
+    
     /**
-     * The geographical region to create the cloud service in.
-     * 
-     * @param geoRegionValue
-     *            The GeoRegion value.
-     */
+    * The geographical region to create the cloud service in.
+    * @param geoRegionValue The GeoRegion value.
+    */
     public void setGeoRegion(final String geoRegionValue) {
         this.geoRegion = geoRegionValue;
     }
-
+    
     private String label;
-
+    
     /**
-     * The label of the cloud service to be created.
-     * 
-     * @return The Label value.
-     */
+    * The label of the cloud service to be created.
+    * @return The Label value.
+    */
     public String getLabel() {
         return this.label;
     }
-
+    
     /**
-     * The label of the cloud service to be created.
-     * 
-     * @param labelValue
-     *            The Label value.
-     */
+    * The label of the cloud service to be created.
+    * @param labelValue The Label value.
+    */
     public void setLabel(final String labelValue) {
         this.label = labelValue;
     }
-
+    
     private String name;
-
+    
     /**
-     * The name of the cloud service to be created.
-     * 
-     * @return The Name value.
-     */
+    * The name of the cloud service to be created.
+    * @return The Name value.
+    */
     public String getName() {
         return this.name;
     }
-
+    
     /**
-     * The name of the cloud service to be created.
-     * 
-     * @param nameValue
-     *            The Name value.
-     */
+    * The name of the cloud service to be created.
+    * @param nameValue The Name value.
+    */
     public void setName(final String nameValue) {
         this.name = nameValue;
     }

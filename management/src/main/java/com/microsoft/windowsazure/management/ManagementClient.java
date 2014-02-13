@@ -34,138 +34,124 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 /**
- * The Service Management API provides programmatic access to much of the
- * functionality available through the Management Portal. The Service Management
- * API is a REST API. All API operations are performed over SSL and mutually
- * authenticated using X.509 v3 certificates. (see
- * http://msdn.microsoft.com/en-us/library/windowsazure/ee460799.aspx for more
- * information)
- */
+* The Service Management API provides programmatic access to much of the
+* functionality available through the Management Portal. The Service
+* Management API is a REST API. All API operations are performed over SSL and
+* mutually authenticated using X.509 v3 certificates.  (see
+* http://msdn.microsoft.com/en-us/library/windowsazure/ee460799.aspx for more
+* information)
+*/
 public interface ManagementClient extends FilterableService<ManagementClient> {
     /**
-     * The URI used as the base for all Service Management requests.
-     * 
-     * @return The BaseUri value.
-     */
+    * The URI used as the base for all Service Management requests.
+    * @return The BaseUri value.
+    */
     URI getBaseUri();
-
+    
     /**
-     * When you create a Windows Azure subscription, it is uniquely identified
-     * by a subscription ID. The subscription ID forms part of the URI for every
-     * call that you make to the Service Management API. The Windows Azure
-     * Service ManagementAPI use mutual authentication of management
-     * certificates over SSL to ensure that a request made to the service is
-     * secure. No anonymous requests are allowed.
-     * 
-     * @return The Credentials value.
-     */
+    * When you create a Windows Azure subscription, it is uniquely identified
+    * by a subscription ID. The subscription ID forms part of the URI for
+    * every call that you make to the Service Management API.  The Windows
+    * Azure Service ManagementAPI use mutual authentication of management
+    * certificates over SSL to ensure that a request made to the service is
+    * secure.  No anonymous requests are allowed.
+    * @return The Credentials value.
+    */
     SubscriptionCloudCredentials getCredentials();
-
+    
     /**
-     * Operations for managing affinity groups beneath your subscription. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460798.aspx for
-     * more information)
-     * 
-     * @return The AffinityGroupsOperations value.
-     */
+    * Operations for managing affinity groups beneath your subscription.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460798.aspx for
+    * more information)
+    * @return The AffinityGroupsOperations value.
+    */
     AffinityGroupOperations getAffinityGroupsOperations();
-
+    
     /**
-     * The Service Management API includes operations for listing the available
-     * data center locations for a hosted service in your subscription. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441299.aspx for
-     * more information)
-     * 
-     * @return The LocationsOperations value.
-     */
+    * The Service Management API includes operations for listing the available
+    * data center locations for a hosted service in your subscription.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/gg441299.aspx for
+    * more information)
+    * @return The LocationsOperations value.
+    */
     LocationOperations getLocationsOperations();
-
+    
     /**
-     * You can use management certificates, which are also known as subscription
-     * certificates, to authenticate clients attempting to connect to resources
-     * associated with your Windows Azure subscription. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154124.aspx for
-     * more information)
-     * 
-     * @return The ManagementCertificatesOperations value.
-     */
+    * You can use management certificates, which are also known as subscription
+    * certificates, to authenticate clients attempting to connect to resources
+    * associated with your Windows Azure subscription.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj154124.aspx for
+    * more information)
+    * @return The ManagementCertificatesOperations value.
+    */
     ManagementCertificateOperations getManagementCertificatesOperations();
-
+    
     /**
-     * The Service Management API includes operations for listing the available
-     * role sizes for VMs in your subscription.
-     * 
-     * @return The RoleSizesOperations value.
-     */
+    * The Service Management API includes operations for listing the available
+    * role sizes for VMs in your subscription.
+    * @return The RoleSizesOperations value.
+    */
     RoleSizeOperations getRoleSizesOperations();
-
+    
     /**
-     * Operation for listing subscription operations and details. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715315.aspx for
-     * more information)
-     * 
-     * @return The SubscriptionsOperations value.
-     */
+    * Operation for listing subscription operations and details.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/gg715315.aspx for
+    * more information)
+    * @return The SubscriptionsOperations value.
+    */
     SubscriptionOperations getSubscriptionsOperations();
-
+    
     /**
-     * The Get Operation Status operation returns the status of thespecified
-     * operation. After calling an asynchronous operation, you can call Get
-     * Operation Status to determine whether the operation has succeeded,
-     * failed, or is still in progress. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460783.aspx for
-     * more information)
-     * 
-     * @param requestId
-     *            The request ID for the request you wish to track. The request
-     *            ID is returned in the x-ms-request-id response header for
-     *            every request.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @throws ParserConfigurationException
-     *             Thrown if there was a serious configuration error with the
-     *             document parser.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the XML response.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
-    OperationStatusResponse getOperationStatus(String requestId)
-            throws IOException, ServiceException, ParserConfigurationException,
-            SAXException;
-
+    * The Get Operation Status operation returns the status of thespecified
+    * operation. After calling an asynchronous operation, you can call Get
+    * Operation Status to determine whether the operation has succeeded,
+    * failed, or is still in progress.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460783.aspx for
+    * more information)
+    *
+    * @param requestId The request ID for the request you wish to track. The
+    * request ID is returned in the x-ms-request-id response header for every
+    * request.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    OperationStatusResponse getOperationStatus(String requestId) throws IOException, ServiceException, ParserConfigurationException, SAXException;
+    
     /**
-     * The Get Operation Status operation returns the status of thespecified
-     * operation. After calling an asynchronous operation, you can call Get
-     * Operation Status to determine whether the operation has succeeded,
-     * failed, or is still in progress. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460783.aspx for
-     * more information)
-     * 
-     * @param requestId
-     *            The request ID for the request you wish to track. The request
-     *            ID is returned in the x-ms-request-id response header for
-     *            every request.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
+    * The Get Operation Status operation returns the status of thespecified
+    * operation. After calling an asynchronous operation, you can call Get
+    * Operation Status to determine whether the operation has succeeded,
+    * failed, or is still in progress.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460783.aspx for
+    * more information)
+    *
+    * @param requestId The request ID for the request you wish to track. The
+    * request ID is returned in the x-ms-request-id response header for every
+    * request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
     Future<OperationStatusResponse> getOperationStatusAsync(String requestId);
 }

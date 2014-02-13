@@ -26,28 +26,25 @@ package com.microsoft.windowsazure.management.virtualnetworks.models;
 import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
- * The response to the get shared key request.
- */
+* The response to the get shared key request.
+*/
 public class GatewayGetSharedKeyResponse extends OperationResponse {
     private String sharedKey;
-
+    
     /**
-     * Contains the shared key used by the gateway to authenticate connections
-     * to sites on a virtual network.
-     * 
-     * @return The SharedKey value.
-     */
+    * Contains the shared key used by the gateway to authenticate connections
+    * to sites on a virtual network.
+    * @return The SharedKey value.
+    */
     public String getSharedKey() {
         return this.sharedKey;
     }
-
+    
     /**
-     * Contains the shared key used by the gateway to authenticate connections
-     * to sites on a virtual network.
-     * 
-     * @param sharedKeyValue
-     *            The SharedKey value.
-     */
+    * Contains the shared key used by the gateway to authenticate connections
+    * to sites on a virtual network.
+    * @param sharedKeyValue The SharedKey value.
+    */
     public void setSharedKey(final String sharedKeyValue) {
         this.sharedKey = sharedKeyValue;
     }

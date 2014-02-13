@@ -26,26 +26,23 @@ package com.microsoft.windowsazure.management.sql.models;
 import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
- * Response for an DAC Import/Export request.
- */
+* Response for an DAC Import/Export request.
+*/
 public class DacImportExportResponse extends OperationResponse {
     private String guid;
-
+    
     /**
-     * Gets or sets the operation's identifier.
-     * 
-     * @return The Guid value.
-     */
+    * Gets or sets the operation's identifier.
+    * @return The Guid value.
+    */
     public String getGuid() {
         return this.guid;
     }
-
+    
     /**
-     * Gets or sets the operation's identifier.
-     * 
-     * @param guidValue
-     *            The Guid value.
-     */
+    * Gets or sets the operation's identifier.
+    * @param guidValue The Guid value.
+    */
     public void setGuid(final String guidValue) {
         this.guid = guidValue;
     }

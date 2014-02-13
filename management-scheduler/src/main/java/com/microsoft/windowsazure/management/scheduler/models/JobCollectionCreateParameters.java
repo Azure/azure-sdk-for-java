@@ -24,73 +24,63 @@
 package com.microsoft.windowsazure.management.scheduler.models;
 
 /**
- * Parameters supplied to the Create Job Collection operation.
- */
+* Parameters supplied to the Create Job Collection operation.
+*/
 public class JobCollectionCreateParameters {
     private JobCollectionIntrinsicSettings intrinsicSettings;
-
+    
     /**
-     * Intrinsic settings for the scheduler job collections.
-     * 
-     * @return The IntrinsicSettings value.
-     */
+    * Intrinsic settings for the scheduler job collections.
+    * @return The IntrinsicSettings value.
+    */
     public JobCollectionIntrinsicSettings getIntrinsicSettings() {
         return this.intrinsicSettings;
     }
-
+    
     /**
-     * Intrinsic settings for the scheduler job collections.
-     * 
-     * @param intrinsicSettingsValue
-     *            The IntrinsicSettings value.
-     */
-    public void setIntrinsicSettings(
-            final JobCollectionIntrinsicSettings intrinsicSettingsValue) {
+    * Intrinsic settings for the scheduler job collections.
+    * @param intrinsicSettingsValue The IntrinsicSettings value.
+    */
+    public void setIntrinsicSettings(final JobCollectionIntrinsicSettings intrinsicSettingsValue) {
         this.intrinsicSettings = intrinsicSettingsValue;
     }
-
+    
     private String label;
-
+    
     /**
-     * Label for the resource.
-     * 
-     * @return The Label value.
-     */
+    * Label for the resource.
+    * @return The Label value.
+    */
     public String getLabel() {
         return this.label;
     }
-
+    
     /**
-     * Label for the resource.
-     * 
-     * @param labelValue
-     *            The Label value.
-     */
+    * Label for the resource.
+    * @param labelValue The Label value.
+    */
     public void setLabel(final String labelValue) {
         this.label = labelValue;
     }
-
+    
     private String schemaVersion;
-
+    
     /**
-     * The version of the Intrinsic Properties for your Resource. If not
-     * specified, you must conform to the contract resource version you
-     * registered as default.
-     * 
-     * @return The SchemaVersion value.
-     */
+    * The version of the Intrinsic Properties for your Resource. If not
+    * specified, you must conform to the contract resource version you
+    * registered as default.
+    * @return The SchemaVersion value.
+    */
     public String getSchemaVersion() {
         return this.schemaVersion;
     }
-
+    
     /**
-     * The version of the Intrinsic Properties for your Resource. If not
-     * specified, you must conform to the contract resource version you
-     * registered as default.
-     * 
-     * @param schemaVersionValue
-     *            The SchemaVersion value.
-     */
+    * The version of the Intrinsic Properties for your Resource. If not
+    * specified, you must conform to the contract resource version you
+    * registered as default.
+    * @param schemaVersionValue The SchemaVersion value.
+    */
     public void setSchemaVersion(final String schemaVersionValue) {
         this.schemaVersion = schemaVersionValue;
     }

@@ -35,163 +35,143 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 /**
- * The Service Bus Management API is a REST API for managing Service Bus queues,
- * topics, rules and subscriptions. (see
- * http://msdn.microsoft.com/en-us/library/windowsazure/hh780776.aspx for more
- * information)
- */
-public interface ServiceBusManagementClient extends
-        FilterableService<ServiceBusManagementClient> {
+* The Service Bus Management API is a REST API for managing Service Bus queues,
+* topics, rules and subscriptions.  (see
+* http://msdn.microsoft.com/en-us/library/windowsazure/hh780776.aspx for more
+* information)
+*/
+public interface ServiceBusManagementClient extends FilterableService<ServiceBusManagementClient> {
     /**
-     * The URI used as the base for all Service Bus requests.
-     * 
-     * @return The BaseUri value.
-     */
+    * The URI used as the base for all Service Bus requests.
+    * @return The BaseUri value.
+    */
     URI getBaseUri();
-
+    
     /**
-     * When you create a Windows Azure subscription, it is uniquely identified
-     * by a subscription ID. The subscription ID forms part of the URI for every
-     * call that you make to the Service Management API. The Windows Azure
-     * Service ManagementAPI use mutual authentication of management
-     * certificates over SSL to ensure that a request made to the service is
-     * secure. No anonymous requests are allowed.
-     * 
-     * @return The Credentials value.
-     */
+    * When you create a Windows Azure subscription, it is uniquely identified
+    * by a subscription ID. The subscription ID forms part of the URI for
+    * every call that you make to the Service Management API.  The Windows
+    * Azure Service ManagementAPI use mutual authentication of management
+    * certificates over SSL to ensure that a request made to the service is
+    * secure.  No anonymous requests are allowed.
+    * @return The Credentials value.
+    */
     SubscriptionCloudCredentials getCredentials();
-
+    
     /**
-     * The Service Bus Management API includes operations for managing Service
-     * Bus namespaces.
-     * 
-     * @return The NamespacesOperations value.
-     */
+    * The Service Bus Management API includes operations for managing Service
+    * Bus namespaces.
+    * @return The NamespacesOperations value.
+    */
     NamespaceOperations getNamespacesOperations();
-
+    
     /**
-     * The Service Bus Management API includes operations for managing Service
-     * Bus notification hubs.
-     * 
-     * @return The NotificationHubsOperations value.
-     */
+    * The Service Bus Management API includes operations for managing Service
+    * Bus notification hubs.
+    * @return The NotificationHubsOperations value.
+    */
     NotificationHubOperations getNotificationHubsOperations();
-
+    
     /**
-     * The Service Bus Management API includes operations for managing Service
-     * Bus queues.
-     * 
-     * @return The QueuesOperations value.
-     */
+    * The Service Bus Management API includes operations for managing Service
+    * Bus queues.
+    * @return The QueuesOperations value.
+    */
     QueueOperations getQueuesOperations();
-
+    
     /**
-     * The Service Bus Management API includes operations for managing Service
-     * Bus relays.
-     * 
-     * @return The RelaysOperations value.
-     */
+    * The Service Bus Management API includes operations for managing Service
+    * Bus relays.
+    * @return The RelaysOperations value.
+    */
     RelayOperations getRelaysOperations();
-
+    
     /**
-     * The Service Bus Management API includes operations for managing Service
-     * Bus topics for a namespace.
-     * 
-     * @return The TopicsOperations value.
-     */
+    * The Service Bus Management API includes operations for managing Service
+    * Bus topics for a namespace.
+    * @return The TopicsOperations value.
+    */
     TopicOperations getTopicsOperations();
-
+    
     /**
-     * The Get Operation Status operation returns the status of thespecified
-     * operation. After calling an asynchronous operation, you can call Get
-     * Operation Status to determine whether the operation has succeeded,
-     * failed, or is still in progress. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460783.aspx for
-     * more information)
-     * 
-     * @param requestId
-     *            The request ID for the request you wish to track. The request
-     *            ID is returned in the x-ms-request-id response header for
-     *            every request.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @throws ParserConfigurationException
-     *             Thrown if there was a serious configuration error with the
-     *             document parser.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the XML response.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
-    ServiceBusOperationStatusResponse getOperationStatus(String requestId)
-            throws IOException, ServiceException, ParserConfigurationException,
-            SAXException;
-
+    * The Get Operation Status operation returns the status of thespecified
+    * operation. After calling an asynchronous operation, you can call Get
+    * Operation Status to determine whether the operation has succeeded,
+    * failed, or is still in progress.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460783.aspx for
+    * more information)
+    *
+    * @param requestId The request ID for the request you wish to track. The
+    * request ID is returned in the x-ms-request-id response header for every
+    * request.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    ServiceBusOperationStatusResponse getOperationStatus(String requestId) throws IOException, ServiceException, ParserConfigurationException, SAXException;
+    
     /**
-     * The Get Operation Status operation returns the status of thespecified
-     * operation. After calling an asynchronous operation, you can call Get
-     * Operation Status to determine whether the operation has succeeded,
-     * failed, or is still in progress. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460783.aspx for
-     * more information)
-     * 
-     * @param requestId
-     *            The request ID for the request you wish to track. The request
-     *            ID is returned in the x-ms-request-id response header for
-     *            every request.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
-    Future<ServiceBusOperationStatusResponse> getOperationStatusAsync(
-            String requestId);
-
+    * The Get Operation Status operation returns the status of thespecified
+    * operation. After calling an asynchronous operation, you can call Get
+    * Operation Status to determine whether the operation has succeeded,
+    * failed, or is still in progress.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460783.aspx for
+    * more information)
+    *
+    * @param requestId The request ID for the request you wish to track. The
+    * request ID is returned in the x-ms-request-id response header for every
+    * request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    Future<ServiceBusOperationStatusResponse> getOperationStatusAsync(String requestId);
+    
     /**
-     * Retrieves the list of regions that support the creation and management of
-     * Service Bus service namespaces. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj860465.aspx for
-     * more information)
-     * 
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @throws ParserConfigurationException
-     *             Thrown if there was a serious configuration error with the
-     *             document parser.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the XML response.
-     * @return A response to a request for a list of regions.
-     */
-    ServiceBusRegionsResponse getServiceBusRegions() throws IOException,
-            ServiceException, ParserConfigurationException, SAXException;
-
+    * Retrieves the list of regions that support the creation and management of
+    * Service Bus service namespaces.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj860465.aspx for
+    * more information)
+    *
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return A response to a request for a list of regions.
+    */
+    ServiceBusRegionsResponse getServiceBusRegions() throws IOException, ServiceException, ParserConfigurationException, SAXException;
+    
     /**
-     * Retrieves the list of regions that support the creation and management of
-     * Service Bus service namespaces. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj860465.aspx for
-     * more information)
-     * 
-     * @return A response to a request for a list of regions.
-     */
+    * Retrieves the list of regions that support the creation and management of
+    * Service Bus service namespaces.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj860465.aspx for
+    * more information)
+    *
+    * @return A response to a request for a list of regions.
+    */
     Future<ServiceBusRegionsResponse> getServiceBusRegionsAsync();
 }

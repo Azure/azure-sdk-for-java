@@ -26,26 +26,23 @@ package com.microsoft.windowsazure.management.websites.models;
 import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
- * The Get Web Site Details operation response.
- */
+* The Get Web Site Details operation response.
+*/
 public class WebSiteGetResponse extends OperationResponse {
     private WebSite webSite;
-
+    
     /**
-     * Details for the requested website.
-     * 
-     * @return The WebSite value.
-     */
+    * Details for the requested website.
+    * @return The WebSite value.
+    */
     public WebSite getWebSite() {
         return this.webSite;
     }
-
+    
     /**
-     * Details for the requested website.
-     * 
-     * @param webSiteValue
-     *            The WebSite value.
-     */
+    * Details for the requested website.
+    * @param webSiteValue The WebSite value.
+    */
     public void setWebSite(final WebSite webSiteValue) {
         this.webSite = webSiteValue;
     }

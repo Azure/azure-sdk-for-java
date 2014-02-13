@@ -24,91 +24,79 @@
 package com.microsoft.windowsazure.management.compute.models;
 
 /**
- * An access control rule for a public endpoint.
- */
+* An access control rule for a public endpoint.
+*/
 public class AccessControlListRule {
     private String action;
-
+    
     /**
-     * the action allowed by this Access Control List Rule.
-     * 
-     * @return The Action value.
-     */
+    * the action allowed by this Access Control List Rule.
+    * @return The Action value.
+    */
     public String getAction() {
         return this.action;
     }
-
+    
     /**
-     * the action allowed by this Access Control List Rule.
-     * 
-     * @param actionValue
-     *            The Action value.
-     */
+    * the action allowed by this Access Control List Rule.
+    * @param actionValue The Action value.
+    */
     public void setAction(final String actionValue) {
         this.action = actionValue;
     }
-
+    
     private String description;
-
+    
     /**
-     * the description for this Access Control List Rule.
-     * 
-     * @return The Description value.
-     */
+    * the description for this Access Control List Rule.
+    * @return The Description value.
+    */
     public String getDescription() {
         return this.description;
     }
-
+    
     /**
-     * the description for this Access Control List Rule.
-     * 
-     * @param descriptionValue
-     *            The Description value.
-     */
+    * the description for this Access Control List Rule.
+    * @param descriptionValue The Description value.
+    */
     public void setDescription(final String descriptionValue) {
         this.description = descriptionValue;
     }
-
+    
     private Integer order;
-
+    
     /**
-     * the order of application for this Access Control List Rule.
-     * 
-     * @return The Order value.
-     */
+    * the order of application for this Access Control List Rule.
+    * @return The Order value.
+    */
     public Integer getOrder() {
         return this.order;
     }
-
+    
     /**
-     * the order of application for this Access Control List Rule.
-     * 
-     * @param orderValue
-     *            The Order value.
-     */
+    * the order of application for this Access Control List Rule.
+    * @param orderValue The Order value.
+    */
     public void setOrder(final Integer orderValue) {
         this.order = orderValue;
     }
-
+    
     private String remoteSubnet;
-
+    
     /**
-     * the remote subnet that is granted access for this Access Control List
-     * Rule.
-     * 
-     * @return The RemoteSubnet value.
-     */
+    * the remote subnet that is granted access for this Access Control List
+    * Rule.
+    * @return The RemoteSubnet value.
+    */
     public String getRemoteSubnet() {
         return this.remoteSubnet;
     }
-
+    
     /**
-     * the remote subnet that is granted access for this Access Control List
-     * Rule.
-     * 
-     * @param remoteSubnetValue
-     *            The RemoteSubnet value.
-     */
+    * the remote subnet that is granted access for this Access Control List
+    * Rule.
+    * @param remoteSubnetValue The RemoteSubnet value.
+    */
     public void setRemoteSubnet(final String remoteSubnetValue) {
         this.remoteSubnet = remoteSubnetValue;
     }

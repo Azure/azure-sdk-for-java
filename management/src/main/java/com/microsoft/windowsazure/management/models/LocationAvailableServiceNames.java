@@ -24,14 +24,14 @@
 package com.microsoft.windowsazure.management.models;
 
 /**
- * Indicates the services available at a location.
- */
+* Indicates the services available at a location.
+*/
 public class LocationAvailableServiceNames {
     public static final String Compute = "Compute";
-
+    
     public static final String Storage = "Storage";
-
+    
     public static final String PersistentVMRole = "PersistentVMRole";
-
+    
     public static final String HighMemory = "HighMemory";
 }

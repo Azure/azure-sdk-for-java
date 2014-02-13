@@ -40,428 +40,337 @@ import javax.xml.transform.TransformerException;
 import org.xml.sax.SAXException;
 
 /**
- * The Service Bus Management API includes operations for managing Service Bus
- * namespaces.
- */
+* The Service Bus Management API includes operations for managing Service Bus
+* namespaces.
+*/
 public interface NamespaceOperations {
     /**
-     * Checks the availability of the given service namespace across all Windows
-     * Azure subscriptions. This is useful because the domain name is created
-     * based on the service namespace name. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj870968.aspx for
-     * more information)
-     * 
-     * @param namespaceName
-     *            The namespace name.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @throws ParserConfigurationException
-     *             Thrown if there was a serious configuration error with the
-     *             document parser.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the XML response.
-     * @return The response to a query for the availability status of a
-     *         namespace name.
-     */
-    CheckNamespaceAvailabilityResponse checkAvailability(String namespaceName)
-            throws IOException, ServiceException, ParserConfigurationException,
-            SAXException;
-
+    * Checks the availability of the given service namespace across all Windows
+    * Azure subscriptions. This is useful because the domain name is created
+    * based on the service namespace name.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj870968.aspx for
+    * more information)
+    *
+    * @param namespaceName The namespace name.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return The response to a query for the availability status of a
+    * namespace name.
+    */
+    CheckNamespaceAvailabilityResponse checkAvailability(String namespaceName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
+    
     /**
-     * Checks the availability of the given service namespace across all Windows
-     * Azure subscriptions. This is useful because the domain name is created
-     * based on the service namespace name. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj870968.aspx for
-     * more information)
-     * 
-     * @param namespaceName
-     *            The namespace name.
-     * @return The response to a query for the availability status of a
-     *         namespace name.
-     */
-    Future<CheckNamespaceAvailabilityResponse> checkAvailabilityAsync(
-            String namespaceName);
-
+    * Checks the availability of the given service namespace across all Windows
+    * Azure subscriptions. This is useful because the domain name is created
+    * based on the service namespace name.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj870968.aspx for
+    * more information)
+    *
+    * @param namespaceName The namespace name.
+    * @return The response to a query for the availability status of a
+    * namespace name.
+    */
+    Future<CheckNamespaceAvailabilityResponse> checkAvailabilityAsync(String namespaceName);
+    
     /**
-     * Creates a new service namespace. Once created, this namespace's resource
-     * manifest is immutable. This operation is idempotent. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj856303.aspx for
-     * more information)
-     * 
-     * @param namespaceName
-     *            The namespace name.
-     * @param region
-     *            The namespace region.
-     * @throws ParserConfigurationException
-     *             Thrown if there was an error configuring the parser for the
-     *             response body.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the response body.
-     * @throws TransformerException
-     *             Thrown if there was an error creating the DOM transformer.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @throws URISyntaxException
-     *             Thrown if there was an error parsing a URI in the response.
-     * @return The response to a request for a particular namespace.
-     */
-    ServiceBusNamespaceResponse create(String namespaceName, String region)
-            throws ParserConfigurationException, SAXException,
-            TransformerException, IOException, ServiceException,
-            URISyntaxException;
-
+    * Creates a new service namespace. Once created, this namespace's resource
+    * manifest is immutable. This operation is idempotent.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj856303.aspx for
+    * more information)
+    *
+    * @param namespaceName The namespace name.
+    * @param region The namespace region.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
+    * @return The response to a request for a particular namespace.
+    */
+    ServiceBusNamespaceResponse create(String namespaceName, String region) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException;
+    
     /**
-     * Creates a new service namespace. Once created, this namespace's resource
-     * manifest is immutable. This operation is idempotent. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj856303.aspx for
-     * more information)
-     * 
-     * @param namespaceName
-     *            The namespace name.
-     * @param region
-     *            The namespace region.
-     * @return The response to a request for a particular namespace.
-     */
-    Future<ServiceBusNamespaceResponse> createAsync(String namespaceName,
-            String region);
-
+    * Creates a new service namespace. Once created, this namespace's resource
+    * manifest is immutable. This operation is idempotent.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj856303.aspx for
+    * more information)
+    *
+    * @param namespaceName The namespace name.
+    * @param region The namespace region.
+    * @return The response to a request for a particular namespace.
+    */
+    Future<ServiceBusNamespaceResponse> createAsync(String namespaceName, String region);
+    
     /**
-     * The create namespace authorization rule operation creates an
-     * authorization rule for a namespace
-     * 
-     * @param namespaceName
-     *            The namespace name.
-     * @param rule
-     *            The shared access authorization rule.
-     * @throws ParserConfigurationException
-     *             Thrown if there was an error configuring the parser for the
-     *             response body.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the response body.
-     * @throws TransformerException
-     *             Thrown if there was an error creating the DOM transformer.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return A response to a request for a particular authorization rule.
-     */
-    ServiceBusAuthorizationRuleResponse createAuthorizationRule(
-            String namespaceName, ServiceBusSharedAccessAuthorizationRule rule)
-            throws ParserConfigurationException, SAXException,
-            TransformerException, IOException, ServiceException;
-
+    * The create namespace authorization rule operation creates an
+    * authorization rule for a namespace
+    *
+    * @param namespaceName The namespace name.
+    * @param rule The shared access authorization rule.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A response to a request for a particular authorization rule.
+    */
+    ServiceBusAuthorizationRuleResponse createAuthorizationRule(String namespaceName, ServiceBusSharedAccessAuthorizationRule rule) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    
     /**
-     * The create namespace authorization rule operation creates an
-     * authorization rule for a namespace
-     * 
-     * @param namespaceName
-     *            The namespace name.
-     * @param rule
-     *            The shared access authorization rule.
-     * @return A response to a request for a particular authorization rule.
-     */
-    Future<ServiceBusAuthorizationRuleResponse> createAuthorizationRuleAsync(
-            String namespaceName, ServiceBusSharedAccessAuthorizationRule rule);
-
+    * The create namespace authorization rule operation creates an
+    * authorization rule for a namespace
+    *
+    * @param namespaceName The namespace name.
+    * @param rule The shared access authorization rule.
+    * @return A response to a request for a particular authorization rule.
+    */
+    Future<ServiceBusAuthorizationRuleResponse> createAuthorizationRuleAsync(String namespaceName, ServiceBusSharedAccessAuthorizationRule rule);
+    
     /**
-     * Deletes an existing namespace. This operation also removes all associated
-     * entities including queues, topics, relay points, and messages stored
-     * under the namespace. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj856296.aspx for
-     * more information)
-     * 
-     * @param namespaceName
-     *            The namespace name.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return A standard storage response including an HTTP status code and
-     *         request ID.
-     */
-    OperationResponse delete(String namespaceName) throws IOException,
-            ServiceException;
-
+    * Deletes an existing namespace. This operation also removes all associated
+    * entities including queues, topics, relay points, and messages stored
+    * under the namespace.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj856296.aspx for
+    * more information)
+    *
+    * @param namespaceName The namespace name.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard storage response including an HTTP status code and
+    * request ID.
+    */
+    OperationResponse delete(String namespaceName) throws IOException, ServiceException;
+    
     /**
-     * Deletes an existing namespace. This operation also removes all associated
-     * entities including queues, topics, relay points, and messages stored
-     * under the namespace. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj856296.aspx for
-     * more information)
-     * 
-     * @param namespaceName
-     *            The namespace name.
-     * @return A standard storage response including an HTTP status code and
-     *         request ID.
-     */
+    * Deletes an existing namespace. This operation also removes all associated
+    * entities including queues, topics, relay points, and messages stored
+    * under the namespace.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj856296.aspx for
+    * more information)
+    *
+    * @param namespaceName The namespace name.
+    * @return A standard storage response including an HTTP status code and
+    * request ID.
+    */
     Future<OperationResponse> deleteAsync(String namespaceName);
-
+    
     /**
-     * The delete namespace authorization rule operation deletes an
-     * authorization rule for a namespace
-     * 
-     * @param namespaceName
-     *            The namespace name.
-     * @param ruleName
-     *            The rule name.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return A standard storage response including an HTTP status code and
-     *         request ID.
-     */
-    OperationResponse deleteAuthorizationRule(String namespaceName,
-            String ruleName) throws IOException, ServiceException;
-
+    * The delete namespace authorization rule operation deletes an
+    * authorization rule for a namespace
+    *
+    * @param namespaceName The namespace name.
+    * @param ruleName The rule name.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard storage response including an HTTP status code and
+    * request ID.
+    */
+    OperationResponse deleteAuthorizationRule(String namespaceName, String ruleName) throws IOException, ServiceException;
+    
     /**
-     * The delete namespace authorization rule operation deletes an
-     * authorization rule for a namespace
-     * 
-     * @param namespaceName
-     *            The namespace name.
-     * @param ruleName
-     *            The rule name.
-     * @return A standard storage response including an HTTP status code and
-     *         request ID.
-     */
-    Future<OperationResponse> deleteAuthorizationRuleAsync(
-            String namespaceName, String ruleName);
-
+    * The delete namespace authorization rule operation deletes an
+    * authorization rule for a namespace
+    *
+    * @param namespaceName The namespace name.
+    * @param ruleName The rule name.
+    * @return A standard storage response including an HTTP status code and
+    * request ID.
+    */
+    Future<OperationResponse> deleteAuthorizationRuleAsync(String namespaceName, String ruleName);
+    
     /**
-     * Returns the description for the specified namespace. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/dn140232.aspx for
-     * more information)
-     * 
-     * @param namespaceName
-     *            The namespace name.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @throws ParserConfigurationException
-     *             Thrown if there was a serious configuration error with the
-     *             document parser.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the XML response.
-     * @throws URISyntaxException
-     *             Thrown if there was an error parsing a URI in the response.
-     * @return The response to a request for a particular namespace.
-     */
-    ServiceBusNamespaceResponse get(String namespaceName) throws IOException,
-            ServiceException, ParserConfigurationException, SAXException,
-            URISyntaxException;
-
+    * Returns the description for the specified namespace.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/dn140232.aspx for
+    * more information)
+    *
+    * @param namespaceName The namespace name.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
+    * @return The response to a request for a particular namespace.
+    */
+    ServiceBusNamespaceResponse get(String namespaceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException;
+    
     /**
-     * Returns the description for the specified namespace. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/dn140232.aspx for
-     * more information)
-     * 
-     * @param namespaceName
-     *            The namespace name.
-     * @return The response to a request for a particular namespace.
-     */
+    * Returns the description for the specified namespace.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/dn140232.aspx for
+    * more information)
+    *
+    * @param namespaceName The namespace name.
+    * @return The response to a request for a particular namespace.
+    */
     Future<ServiceBusNamespaceResponse> getAsync(String namespaceName);
-
+    
     /**
-     * The get authorization rule operation gets an authorization rule for a
-     * namespace by name.
-     * 
-     * @param namespaceName
-     *            The namespace to get the authorization rule for.
-     * @param entityName
-     *            The entity name to get the authorization rule for.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @throws ParserConfigurationException
-     *             Thrown if there was a serious configuration error with the
-     *             document parser.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the XML response.
-     * @return A response to a request for a particular authorization rule.
-     */
-    ServiceBusAuthorizationRuleResponse getAuthorizationRule(
-            String namespaceName, String entityName) throws IOException,
-            ServiceException, ParserConfigurationException, SAXException;
-
+    * The get authorization rule operation gets an authorization rule for a
+    * namespace by name.
+    *
+    * @param namespaceName The namespace to get the authorization rule for.
+    * @param entityName The entity name to get the authorization rule for.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return A response to a request for a particular authorization rule.
+    */
+    ServiceBusAuthorizationRuleResponse getAuthorizationRule(String namespaceName, String entityName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
+    
     /**
-     * The get authorization rule operation gets an authorization rule for a
-     * namespace by name.
-     * 
-     * @param namespaceName
-     *            The namespace to get the authorization rule for.
-     * @param entityName
-     *            The entity name to get the authorization rule for.
-     * @return A response to a request for a particular authorization rule.
-     */
-    Future<ServiceBusAuthorizationRuleResponse> getAuthorizationRuleAsync(
-            String namespaceName, String entityName);
-
+    * The get authorization rule operation gets an authorization rule for a
+    * namespace by name.
+    *
+    * @param namespaceName The namespace to get the authorization rule for.
+    * @param entityName The entity name to get the authorization rule for.
+    * @return A response to a request for a particular authorization rule.
+    */
+    Future<ServiceBusAuthorizationRuleResponse> getAuthorizationRuleAsync(String namespaceName, String entityName);
+    
     /**
-     * The namespace description is an XML AtomPub document that defines the
-     * desired semantics for a service namespace. The namespace description
-     * contains the following properties. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
-     * more information)
-     * 
-     * @param namespaceName
-     *            The namespace name.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @throws ParserConfigurationException
-     *             Thrown if there was a serious configuration error with the
-     *             document parser.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the XML response.
-     * @return A response to a request for a list of namespaces.
-     */
-    ServiceBusNamespaceDescriptionResponse getNamespaceDescription(
-            String namespaceName) throws IOException, ServiceException,
-            ParserConfigurationException, SAXException;
-
+    * The namespace description is an XML AtomPub document that defines the
+    * desired semantics for a service namespace. The namespace description
+    * contains the following properties.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
+    * more information)
+    *
+    * @param namespaceName The namespace name.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return A response to a request for a list of namespaces.
+    */
+    ServiceBusNamespaceDescriptionResponse getNamespaceDescription(String namespaceName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
+    
     /**
-     * The namespace description is an XML AtomPub document that defines the
-     * desired semantics for a service namespace. The namespace description
-     * contains the following properties. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
-     * more information)
-     * 
-     * @param namespaceName
-     *            The namespace name.
-     * @return A response to a request for a list of namespaces.
-     */
-    Future<ServiceBusNamespaceDescriptionResponse> getNamespaceDescriptionAsync(
-            String namespaceName);
-
+    * The namespace description is an XML AtomPub document that defines the
+    * desired semantics for a service namespace. The namespace description
+    * contains the following properties.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
+    * more information)
+    *
+    * @param namespaceName The namespace name.
+    * @return A response to a request for a list of namespaces.
+    */
+    Future<ServiceBusNamespaceDescriptionResponse> getNamespaceDescriptionAsync(String namespaceName);
+    
     /**
-     * Lists the available namespaces. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/dn140232.asp for
-     * more information)
-     * 
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @throws ParserConfigurationException
-     *             Thrown if there was a serious configuration error with the
-     *             document parser.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the XML response.
-     * @throws URISyntaxException
-     *             Thrown if there was an error parsing a URI in the response.
-     * @return The response to the request for a listing of namespaces.
-     */
-    ServiceBusNamespacesResponse list() throws IOException, ServiceException,
-            ParserConfigurationException, SAXException, URISyntaxException;
-
+    * Lists the available namespaces.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/dn140232.asp for
+    * more information)
+    *
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
+    * @return The response to the request for a listing of namespaces.
+    */
+    ServiceBusNamespacesResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException;
+    
     /**
-     * Lists the available namespaces. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/dn140232.asp for
-     * more information)
-     * 
-     * @return The response to the request for a listing of namespaces.
-     */
+    * Lists the available namespaces.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/dn140232.asp for
+    * more information)
+    *
+    * @return The response to the request for a listing of namespaces.
+    */
     Future<ServiceBusNamespacesResponse> listAsync();
-
+    
     /**
-     * The get authorization rules operation gets the authorization rules for a
-     * namespace.
-     * 
-     * @param namespaceName
-     *            The namespace to get the authorization rule for.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @throws ParserConfigurationException
-     *             Thrown if there was a serious configuration error with the
-     *             document parser.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the XML response.
-     * @return A response to a request for a list of authorization rules.
-     */
-    ServiceBusAuthorizationRulesResponse listAuthorizationRules(
-            String namespaceName) throws IOException, ServiceException,
-            ParserConfigurationException, SAXException;
-
+    * The get authorization rules operation gets the authorization rules for a
+    * namespace.
+    *
+    * @param namespaceName The namespace to get the authorization rule for.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return A response to a request for a list of authorization rules.
+    */
+    ServiceBusAuthorizationRulesResponse listAuthorizationRules(String namespaceName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
+    
     /**
-     * The get authorization rules operation gets the authorization rules for a
-     * namespace.
-     * 
-     * @param namespaceName
-     *            The namespace to get the authorization rule for.
-     * @return A response to a request for a list of authorization rules.
-     */
-    Future<ServiceBusAuthorizationRulesResponse> listAuthorizationRulesAsync(
-            String namespaceName);
-
+    * The get authorization rules operation gets the authorization rules for a
+    * namespace.
+    *
+    * @param namespaceName The namespace to get the authorization rule for.
+    * @return A response to a request for a list of authorization rules.
+    */
+    Future<ServiceBusAuthorizationRulesResponse> listAuthorizationRulesAsync(String namespaceName);
+    
     /**
-     * The update authorization rule operation updates an authorization rule for
-     * a namespace.
-     * 
-     * @param namespaceName
-     *            The namespace name.
-     * @param rule
-     *            Updated access authorization rule.
-     * @throws ParserConfigurationException
-     *             Thrown if there was an error configuring the parser for the
-     *             response body.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the response body.
-     * @throws TransformerException
-     *             Thrown if there was an error creating the DOM transformer.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return A response to a request for a particular authorization rule.
-     */
-    ServiceBusAuthorizationRuleResponse updateAuthorizationRule(
-            String namespaceName, ServiceBusSharedAccessAuthorizationRule rule)
-            throws ParserConfigurationException, SAXException,
-            TransformerException, IOException, ServiceException;
-
+    * The update authorization rule operation updates an authorization rule for
+    * a namespace.
+    *
+    * @param namespaceName The namespace name.
+    * @param rule Updated access authorization rule.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A response to a request for a particular authorization rule.
+    */
+    ServiceBusAuthorizationRuleResponse updateAuthorizationRule(String namespaceName, ServiceBusSharedAccessAuthorizationRule rule) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    
     /**
-     * The update authorization rule operation updates an authorization rule for
-     * a namespace.
-     * 
-     * @param namespaceName
-     *            The namespace name.
-     * @param rule
-     *            Updated access authorization rule.
-     * @return A response to a request for a particular authorization rule.
-     */
-    Future<ServiceBusAuthorizationRuleResponse> updateAuthorizationRuleAsync(
-            String namespaceName, ServiceBusSharedAccessAuthorizationRule rule);
+    * The update authorization rule operation updates an authorization rule for
+    * a namespace.
+    *
+    * @param namespaceName The namespace name.
+    * @param rule Updated access authorization rule.
+    * @return A response to a request for a particular authorization rule.
+    */
+    Future<ServiceBusAuthorizationRuleResponse> updateAuthorizationRuleAsync(String namespaceName, ServiceBusSharedAccessAuthorizationRule rule);
 }

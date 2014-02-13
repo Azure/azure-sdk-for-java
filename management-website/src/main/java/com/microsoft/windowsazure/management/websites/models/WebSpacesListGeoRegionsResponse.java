@@ -28,112 +28,98 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
- * The Get DNS Suffix operation response.
- */
-public class WebSpacesListGeoRegionsResponse extends OperationResponse
-        implements Iterable<WebSpacesListGeoRegionsResponse.GeoRegion> {
+* The Get DNS Suffix operation response.
+*/
+public class WebSpacesListGeoRegionsResponse extends OperationResponse implements Iterable<WebSpacesListGeoRegionsResponse.GeoRegion> {
     private ArrayList<WebSpacesListGeoRegionsResponse.GeoRegion> geoRegions;
-
+    
     /**
-     * The available geo regions.
-     * 
-     * @return The GeoRegions value.
-     */
+    * The available geo regions.
+    * @return The GeoRegions value.
+    */
     public ArrayList<WebSpacesListGeoRegionsResponse.GeoRegion> getGeoRegions() {
         return this.geoRegions;
     }
-
+    
     /**
-     * The available geo regions.
-     * 
-     * @param geoRegionsValue
-     *            The GeoRegions value.
-     */
-    public void setGeoRegions(
-            final ArrayList<WebSpacesListGeoRegionsResponse.GeoRegion> geoRegionsValue) {
+    * The available geo regions.
+    * @param geoRegionsValue The GeoRegions value.
+    */
+    public void setGeoRegions(final ArrayList<WebSpacesListGeoRegionsResponse.GeoRegion> geoRegionsValue) {
         this.geoRegions = geoRegionsValue;
     }
-
+    
     /**
-     * Initializes a new instance of the WebSpacesListGeoRegionsResponse class.
-     * 
-     */
+    * Initializes a new instance of the WebSpacesListGeoRegionsResponse class.
+    *
+    */
     public WebSpacesListGeoRegionsResponse() {
         super();
         this.geoRegions = new ArrayList<WebSpacesListGeoRegionsResponse.GeoRegion>();
     }
-
+    
     /**
-     * Gets the sequence of GeoRegions.
-     * 
-     */
+    * Gets the sequence of GeoRegions.
+    *
+    */
     public Iterator<WebSpacesListGeoRegionsResponse.GeoRegion> iterator() {
         return this.getGeoRegions().iterator();
     }
-
+    
     /**
-     * An available geo region for a web space.
-     */
+    * An available geo region for a web space.
+    */
     public static class GeoRegion {
         private String description;
-
+        
         /**
-         * Geo Region description.
-         * 
-         * @return The Description value.
-         */
+        * Geo Region description.
+        * @return The Description value.
+        */
         public String getDescription() {
             return this.description;
         }
-
+        
         /**
-         * Geo Region description.
-         * 
-         * @param descriptionValue
-         *            The Description value.
-         */
+        * Geo Region description.
+        * @param descriptionValue The Description value.
+        */
         public void setDescription(final String descriptionValue) {
             this.description = descriptionValue;
         }
-
+        
         private String name;
-
+        
         /**
-         * Name of the region.
-         * 
-         * @return The Name value.
-         */
+        * Name of the region.
+        * @return The Name value.
+        */
         public String getName() {
             return this.name;
         }
-
+        
         /**
-         * Name of the region.
-         * 
-         * @param nameValue
-         *            The Name value.
-         */
+        * Name of the region.
+        * @param nameValue The Name value.
+        */
         public void setName(final String nameValue) {
             this.name = nameValue;
         }
-
+        
         private int sortOrder;
-
+        
         /**
-         * Sort order.
-         * 
-         * @return The SortOrder value.
-         */
+        * Sort order.
+        * @return The SortOrder value.
+        */
         public int getSortOrder() {
             return this.sortOrder;
         }
-
+        
         /**
-         * Sort order.
-         * 
-         * @param sortOrderValue
-         *            The SortOrder value.
-         */
+        * Sort order.
+        * @param sortOrderValue The SortOrder value.
+        */
         public void setSortOrder(final int sortOrderValue) {
             this.sortOrder = sortOrderValue;
         }

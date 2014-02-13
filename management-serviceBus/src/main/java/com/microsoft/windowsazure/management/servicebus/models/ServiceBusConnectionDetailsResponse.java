@@ -28,46 +28,41 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
- * The set of connection details for a service bus entity.
- */
-public class ServiceBusConnectionDetailsResponse extends OperationResponse
-        implements Iterable<ServiceBusConnectionDetail> {
+* The set of connection details for a service bus entity.
+*/
+public class ServiceBusConnectionDetailsResponse extends OperationResponse implements Iterable<ServiceBusConnectionDetail> {
     private ArrayList<ServiceBusConnectionDetail> connectionDetails;
-
+    
     /**
-     * The set of connection details for a service bus entitiy.
-     * 
-     * @return The ConnectionDetails value.
-     */
+    * The set of connection details for a service bus entitiy.
+    * @return The ConnectionDetails value.
+    */
     public ArrayList<ServiceBusConnectionDetail> getConnectionDetails() {
         return this.connectionDetails;
     }
-
+    
     /**
-     * The set of connection details for a service bus entitiy.
-     * 
-     * @param connectionDetailsValue
-     *            The ConnectionDetails value.
-     */
-    public void setConnectionDetails(
-            final ArrayList<ServiceBusConnectionDetail> connectionDetailsValue) {
+    * The set of connection details for a service bus entitiy.
+    * @param connectionDetailsValue The ConnectionDetails value.
+    */
+    public void setConnectionDetails(final ArrayList<ServiceBusConnectionDetail> connectionDetailsValue) {
         this.connectionDetails = connectionDetailsValue;
     }
-
+    
     /**
-     * Initializes a new instance of the ServiceBusConnectionDetailsResponse
-     * class.
-     * 
-     */
+    * Initializes a new instance of the ServiceBusConnectionDetailsResponse
+    * class.
+    *
+    */
     public ServiceBusConnectionDetailsResponse() {
         super();
         this.connectionDetails = new ArrayList<ServiceBusConnectionDetail>();
     }
-
+    
     /**
-     * Gets the sequence of ConnectionDetails.
-     * 
-     */
+    * Gets the sequence of ConnectionDetails.
+    *
+    */
     public Iterator<ServiceBusConnectionDetail> iterator() {
         return this.getConnectionDetails().iterator();
     }

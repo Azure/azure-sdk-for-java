@@ -24,18 +24,18 @@
 package com.microsoft.windowsazure.management.compute.models;
 
 /**
- * The status of the cloud service.
- */
+* The status of the cloud service.
+*/
 public enum HostedServiceStatus {
     Created,
-
+    
     Creating,
-
+    
     Deleting,
-
+    
     Deleted,
-
+    
     Changing,
-
+    
     ResolvingDns,
 }

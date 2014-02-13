@@ -35,353 +35,275 @@ import javax.xml.transform.TransformerException;
 import org.xml.sax.SAXException;
 
 /**
- * Provides REST operations for working with Store add-ins from the Windows
- * Azure store service.
- */
+* Provides REST operations for working with Store add-ins from the Windows
+* Azure store service.
+*/
 public interface AddOnOperations {
     /**
-     * The Create Store Item operation creates Windows Azure Store entries in a
-     * Windows Azure subscription.
-     * 
-     * @param cloudServiceName
-     *            The name of the cloud service to which this store item will be
-     *            assigned.
-     * @param resourceName
-     *            The name of this resource.
-     * @param addOnName
-     *            The add on name.
-     * @param parameters
-     *            Parameters used to specify how the Create procedure will
-     *            function.
-     * @throws ParserConfigurationException
-     *             Thrown if there was an error configuring the parser for the
-     *             response body.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the response body.
-     * @throws TransformerException
-     *             Thrown if there was an error creating the DOM transformer.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
-    AddOnOperationStatusResponse beginCreating(String cloudServiceName,
-            String resourceName, String addOnName,
-            AddOnCreateParameters parameters)
-            throws ParserConfigurationException, SAXException,
-            TransformerException, IOException, ServiceException;
-
+    * The Create Store Item operation creates Windows Azure Store entries in a
+    * Windows Azure subscription.
+    *
+    * @param cloudServiceName The name of the cloud service to which this store
+    * item will be assigned.
+    * @param resourceName The name of this resource.
+    * @param addOnName The add on name.
+    * @param parameters Parameters used to specify how the Create procedure
+    * will function.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    AddOnOperationStatusResponse beginCreating(String cloudServiceName, String resourceName, String addOnName, AddOnCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    
     /**
-     * The Create Store Item operation creates Windows Azure Store entries in a
-     * Windows Azure subscription.
-     * 
-     * @param cloudServiceName
-     *            The name of the cloud service to which this store item will be
-     *            assigned.
-     * @param resourceName
-     *            The name of this resource.
-     * @param addOnName
-     *            The add on name.
-     * @param parameters
-     *            Parameters used to specify how the Create procedure will
-     *            function.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
-    Future<AddOnOperationStatusResponse> beginCreatingAsync(
-            String cloudServiceName, String resourceName, String addOnName,
-            AddOnCreateParameters parameters);
-
+    * The Create Store Item operation creates Windows Azure Store entries in a
+    * Windows Azure subscription.
+    *
+    * @param cloudServiceName The name of the cloud service to which this store
+    * item will be assigned.
+    * @param resourceName The name of this resource.
+    * @param addOnName The add on name.
+    * @param parameters Parameters used to specify how the Create procedure
+    * will function.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    Future<AddOnOperationStatusResponse> beginCreatingAsync(String cloudServiceName, String resourceName, String addOnName, AddOnCreateParameters parameters);
+    
     /**
-     * The Delete Store Item operation deletes Windows Azure Store entries that
-     * re provisioned for a subscription.
-     * 
-     * @param cloudServiceName
-     *            The name of the cloud service to which this store item will be
-     *            assigned.
-     * @param resourceProviderNamespace
-     *            The namespace in which this store item resides.
-     * @param resourceProviderType
-     *            The type of store item to be deleted.
-     * @param resourceProviderName
-     *            The name of this resource provider.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
-    AddOnOperationStatusResponse beginDeleting(String cloudServiceName,
-            String resourceProviderNamespace, String resourceProviderType,
-            String resourceProviderName) throws IOException, ServiceException;
-
+    * The Delete Store Item operation deletes Windows Azure Store entries that
+    * re provisioned for a subscription.
+    *
+    * @param cloudServiceName The name of the cloud service to which this store
+    * item will be assigned.
+    * @param resourceProviderNamespace The namespace in which this store item
+    * resides.
+    * @param resourceProviderType The type of store item to be deleted.
+    * @param resourceProviderName The name of this resource provider.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    AddOnOperationStatusResponse beginDeleting(String cloudServiceName, String resourceProviderNamespace, String resourceProviderType, String resourceProviderName) throws IOException, ServiceException;
+    
     /**
-     * The Delete Store Item operation deletes Windows Azure Store entries that
-     * re provisioned for a subscription.
-     * 
-     * @param cloudServiceName
-     *            The name of the cloud service to which this store item will be
-     *            assigned.
-     * @param resourceProviderNamespace
-     *            The namespace in which this store item resides.
-     * @param resourceProviderType
-     *            The type of store item to be deleted.
-     * @param resourceProviderName
-     *            The name of this resource provider.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
-    Future<AddOnOperationStatusResponse> beginDeletingAsync(
-            String cloudServiceName, String resourceProviderNamespace,
-            String resourceProviderType, String resourceProviderName);
-
+    * The Delete Store Item operation deletes Windows Azure Store entries that
+    * re provisioned for a subscription.
+    *
+    * @param cloudServiceName The name of the cloud service to which this store
+    * item will be assigned.
+    * @param resourceProviderNamespace The namespace in which this store item
+    * resides.
+    * @param resourceProviderType The type of store item to be deleted.
+    * @param resourceProviderName The name of this resource provider.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    Future<AddOnOperationStatusResponse> beginDeletingAsync(String cloudServiceName, String resourceProviderNamespace, String resourceProviderType, String resourceProviderName);
+    
     /**
-     * The Create Store Item operation creates Windows Azure Store entries in a
-     * Windows Azure subscription.
-     * 
-     * @param cloudServiceName
-     *            The name of the cloud service to which this store item will be
-     *            assigned.
-     * @param resourceName
-     *            The name of this resource.
-     * @param addOnName
-     *            The add on name.
-     * @param parameters
-     *            Parameters used to specify how the Create procedure will
-     *            function.
-     * @throws InterruptedException
-     *             Thrown when a thread is waiting, sleeping, or otherwise
-     *             occupied, and the thread is interrupted, either before or
-     *             during the activity. Occasionally a method may wish to test
-     *             whether the current thread has been interrupted, and if so,
-     *             to immediately throw this exception. The following code can
-     *             be used to achieve this effect:
-     * @throws ExecutionException
-     *             Thrown when attempting to retrieve the result of a task that
-     *             aborted by throwing an exception. This exception can be
-     *             inspected using the Throwable.getCause() method.
-     * @throws ServiceException
-     *             Thrown if the server returned an error for the request.
-     * @throws IOException
-     *             Thrown if there was an error setting up tracing for the
-     *             request.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
-    AddOnOperationStatusResponse create(String cloudServiceName,
-            String resourceName, String addOnName,
-            AddOnCreateParameters parameters) throws InterruptedException,
-            ExecutionException, ServiceException, IOException;
-
+    * The Create Store Item operation creates Windows Azure Store entries in a
+    * Windows Azure subscription.
+    *
+    * @param cloudServiceName The name of the cloud service to which this store
+    * item will be assigned.
+    * @param resourceName The name of this resource.
+    * @param addOnName The add on name.
+    * @param parameters Parameters used to specify how the Create procedure
+    * will function.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    AddOnOperationStatusResponse create(String cloudServiceName, String resourceName, String addOnName, AddOnCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
+    
     /**
-     * The Create Store Item operation creates Windows Azure Store entries in a
-     * Windows Azure subscription.
-     * 
-     * @param cloudServiceName
-     *            The name of the cloud service to which this store item will be
-     *            assigned.
-     * @param resourceName
-     *            The name of this resource.
-     * @param addOnName
-     *            The add on name.
-     * @param parameters
-     *            Parameters used to specify how the Create procedure will
-     *            function.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
-    Future<AddOnOperationStatusResponse> createAsync(String cloudServiceName,
-            String resourceName, String addOnName,
-            AddOnCreateParameters parameters);
-
+    * The Create Store Item operation creates Windows Azure Store entries in a
+    * Windows Azure subscription.
+    *
+    * @param cloudServiceName The name of the cloud service to which this store
+    * item will be assigned.
+    * @param resourceName The name of this resource.
+    * @param addOnName The add on name.
+    * @param parameters Parameters used to specify how the Create procedure
+    * will function.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    Future<AddOnOperationStatusResponse> createAsync(String cloudServiceName, String resourceName, String addOnName, AddOnCreateParameters parameters);
+    
     /**
-     * The Delete Store Item operation deletes Windows Azure Storeentries that
-     * are provisioned for a subscription.
-     * 
-     * @param cloudServiceName
-     *            The name of the cloud service to which this store item will be
-     *            assigned.
-     * @param resourceProviderNamespace
-     *            The namespace in which this store item resides.
-     * @param resourceProviderType
-     *            The type of store item to be deleted.
-     * @param resourceProviderName
-     *            The name of this resource provider.
-     * @throws InterruptedException
-     *             Thrown when a thread is waiting, sleeping, or otherwise
-     *             occupied, and the thread is interrupted, either before or
-     *             during the activity. Occasionally a method may wish to test
-     *             whether the current thread has been interrupted, and if so,
-     *             to immediately throw this exception. The following code can
-     *             be used to achieve this effect:
-     * @throws ExecutionException
-     *             Thrown when attempting to retrieve the result of a task that
-     *             aborted by throwing an exception. This exception can be
-     *             inspected using the Throwable.getCause() method.
-     * @throws ServiceException
-     *             Thrown if the server returned an error for the request.
-     * @throws IOException
-     *             Thrown if there was an error setting up tracing for the
-     *             request.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
-    AddOnOperationStatusResponse delete(String cloudServiceName,
-            String resourceProviderNamespace, String resourceProviderType,
-            String resourceProviderName) throws InterruptedException,
-            ExecutionException, ServiceException, IOException;
-
+    * The Delete Store Item operation deletes Windows Azure Storeentries that
+    * are provisioned for a subscription.
+    *
+    * @param cloudServiceName The name of the cloud service to which this store
+    * item will be assigned.
+    * @param resourceProviderNamespace The namespace in which this store item
+    * resides.
+    * @param resourceProviderType The type of store item to be deleted.
+    * @param resourceProviderName The name of this resource provider.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    AddOnOperationStatusResponse delete(String cloudServiceName, String resourceProviderNamespace, String resourceProviderType, String resourceProviderName) throws InterruptedException, ExecutionException, ServiceException, IOException;
+    
     /**
-     * The Delete Store Item operation deletes Windows Azure Storeentries that
-     * are provisioned for a subscription.
-     * 
-     * @param cloudServiceName
-     *            The name of the cloud service to which this store item will be
-     *            assigned.
-     * @param resourceProviderNamespace
-     *            The namespace in which this store item resides.
-     * @param resourceProviderType
-     *            The type of store item to be deleted.
-     * @param resourceProviderName
-     *            The name of this resource provider.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
-    Future<AddOnOperationStatusResponse> deleteAsync(String cloudServiceName,
-            String resourceProviderNamespace, String resourceProviderType,
-            String resourceProviderName);
-
+    * The Delete Store Item operation deletes Windows Azure Storeentries that
+    * are provisioned for a subscription.
+    *
+    * @param cloudServiceName The name of the cloud service to which this store
+    * item will be assigned.
+    * @param resourceProviderNamespace The namespace in which this store item
+    * resides.
+    * @param resourceProviderType The type of store item to be deleted.
+    * @param resourceProviderName The name of this resource provider.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    Future<AddOnOperationStatusResponse> deleteAsync(String cloudServiceName, String resourceProviderNamespace, String resourceProviderType, String resourceProviderName);
+    
     /**
-     * The Update Store Item operation creates Windows Azure Store entries in a
-     * Windows Azure subscription.
-     * 
-     * @param cloudServiceName
-     *            The name of the cloud service to which this store item will be
-     *            assigned.
-     * @param resourceName
-     *            The name of this resource.
-     * @param addOnName
-     *            The addon name.
-     * @param parameters
-     *            Parameters used to specify how the Create procedure will
-     *            function.
-     * @throws ParserConfigurationException
-     *             Thrown if there was an error configuring the parser for the
-     *             response body.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the response body.
-     * @throws TransformerException
-     *             Thrown if there was an error creating the DOM transformer.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
-    AddOnOperationStatusResponse update(String cloudServiceName,
-            String resourceName, String addOnName,
-            AddOnUpdateParameters parameters)
-            throws ParserConfigurationException, SAXException,
-            TransformerException, IOException, ServiceException;
-
+    * The Update Store Item operation creates Windows Azure Store entries in a
+    * Windows Azure subscription.
+    *
+    * @param cloudServiceName The name of the cloud service to which this store
+    * item will be assigned.
+    * @param resourceName The name of this resource.
+    * @param addOnName The addon name.
+    * @param parameters Parameters used to specify how the Create procedure
+    * will function.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    AddOnOperationStatusResponse update(String cloudServiceName, String resourceName, String addOnName, AddOnUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    
     /**
-     * The Update Store Item operation creates Windows Azure Store entries in a
-     * Windows Azure subscription.
-     * 
-     * @param cloudServiceName
-     *            The name of the cloud service to which this store item will be
-     *            assigned.
-     * @param resourceName
-     *            The name of this resource.
-     * @param addOnName
-     *            The addon name.
-     * @param parameters
-     *            Parameters used to specify how the Create procedure will
-     *            function.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
-    Future<AddOnOperationStatusResponse> updateAsync(String cloudServiceName,
-            String resourceName, String addOnName,
-            AddOnUpdateParameters parameters);
+    * The Update Store Item operation creates Windows Azure Store entries in a
+    * Windows Azure subscription.
+    *
+    * @param cloudServiceName The name of the cloud service to which this store
+    * item will be assigned.
+    * @param resourceName The name of this resource.
+    * @param addOnName The addon name.
+    * @param parameters Parameters used to specify how the Create procedure
+    * will function.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    Future<AddOnOperationStatusResponse> updateAsync(String cloudServiceName, String resourceName, String addOnName, AddOnUpdateParameters parameters);
 }

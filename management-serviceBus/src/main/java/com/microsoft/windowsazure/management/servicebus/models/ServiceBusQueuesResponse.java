@@ -28,44 +28,40 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
- * A response to a request for a list of queues.
- */
-public class ServiceBusQueuesResponse extends OperationResponse implements
-        Iterable<ServiceBusQueue> {
+* A response to a request for a list of queues.
+*/
+public class ServiceBusQueuesResponse extends OperationResponse implements Iterable<ServiceBusQueue> {
     private ArrayList<ServiceBusQueue> queues;
-
+    
     /**
-     * The listing of queues.
-     * 
-     * @return The Queues value.
-     */
+    * The listing of queues.
+    * @return The Queues value.
+    */
     public ArrayList<ServiceBusQueue> getQueues() {
         return this.queues;
     }
-
+    
     /**
-     * The listing of queues.
-     * 
-     * @param queuesValue
-     *            The Queues value.
-     */
+    * The listing of queues.
+    * @param queuesValue The Queues value.
+    */
     public void setQueues(final ArrayList<ServiceBusQueue> queuesValue) {
         this.queues = queuesValue;
     }
-
+    
     /**
-     * Initializes a new instance of the ServiceBusQueuesResponse class.
-     * 
-     */
+    * Initializes a new instance of the ServiceBusQueuesResponse class.
+    *
+    */
     public ServiceBusQueuesResponse() {
         super();
         this.queues = new ArrayList<ServiceBusQueue>();
     }
-
+    
     /**
-     * Gets the sequence of Queues.
-     * 
-     */
+    * Gets the sequence of Queues.
+    *
+    */
     public Iterator<ServiceBusQueue> iterator() {
         return this.getQueues().iterator();
     }

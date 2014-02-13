@@ -26,49 +26,43 @@ package com.microsoft.windowsazure.management.storage.models;
 import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
- * The response to a storage account check name availability request.
- */
+* The response to a storage account check name availability request.
+*/
 public class CheckNameAvailabilityResponse extends OperationResponse {
     private boolean isAvailable;
-
+    
     /**
-     * The result of the availability request. True if the name is available,
-     * false otherwise
-     * 
-     * @return The IsAvailable value.
-     */
+    * The result of the availability request.  True if the name is available,
+    * false otherwise
+    * @return The IsAvailable value.
+    */
     public boolean isAvailable() {
         return this.isAvailable;
     }
-
+    
     /**
-     * The result of the availability request. True if the name is available,
-     * false otherwise
-     * 
-     * @param isAvailableValue
-     *            The IsAvailable value.
-     */
+    * The result of the availability request.  True if the name is available,
+    * false otherwise
+    * @param isAvailableValue The IsAvailable value.
+    */
     public void setIsAvailable(final boolean isAvailableValue) {
         this.isAvailable = isAvailableValue;
     }
-
+    
     private String reason;
-
+    
     /**
-     * The reason for unavailability, if the requested name is unavailable
-     * 
-     * @return The Reason value.
-     */
+    * The reason for unavailability, if the requested name is unavailable
+    * @return The Reason value.
+    */
     public String getReason() {
         return this.reason;
     }
-
+    
     /**
-     * The reason for unavailability, if the requested name is unavailable
-     * 
-     * @param reasonValue
-     *            The Reason value.
-     */
+    * The reason for unavailability, if the requested name is unavailable
+    * @param reasonValue The Reason value.
+    */
     public void setReason(final String reasonValue) {
         this.reason = reasonValue;
     }

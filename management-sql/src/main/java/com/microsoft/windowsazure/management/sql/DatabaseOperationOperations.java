@@ -32,118 +32,93 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 /**
- * The SQL Database Management API includes operations for get/stop SQL
- * Databases' operations for a subscription.
- */
+* The SQL Database Management API includes operations for get/stop SQL
+* Databases' operations for a subscription.
+*/
 public interface DatabaseOperationOperations {
     /**
-     * Returns information about one operation on a given operation Guid.
-     * 
-     * @param serverName
-     *            The name of the SQL Server on which the operation was
-     *            executed.
-     * @param operationGuid
-     *            The Guid of the SQL Server database operation to be obtained.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @throws ParserConfigurationException
-     *             Thrown if there was a serious configuration error with the
-     *             document parser.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the XML response.
-     * @return Response containing the database operation for a given operation
-     *         Guid.
-     */
-    DatabaseOperationGetResponse get(String serverName, String operationGuid)
-            throws IOException, ServiceException, ParserConfigurationException,
-            SAXException;
-
+    * Returns information about one operation on a given operation Guid.
+    *
+    * @param serverName The name of the SQL Server on which the operation was
+    * executed.
+    * @param operationGuid The Guid of the SQL Server database operation to be
+    * obtained.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return Response containing the database operation for a given operation
+    * Guid.
+    */
+    DatabaseOperationGetResponse get(String serverName, String operationGuid) throws IOException, ServiceException, ParserConfigurationException, SAXException;
+    
     /**
-     * Returns information about one operation on a given operation Guid.
-     * 
-     * @param serverName
-     *            The name of the SQL Server on which the operation was
-     *            executed.
-     * @param operationGuid
-     *            The Guid of the SQL Server database operation to be obtained.
-     * @return Response containing the database operation for a given operation
-     *         Guid.
-     */
-    Future<DatabaseOperationGetResponse> getAsync(String serverName,
-            String operationGuid);
-
+    * Returns information about one operation on a given operation Guid.
+    *
+    * @param serverName The name of the SQL Server on which the operation was
+    * executed.
+    * @param operationGuid The Guid of the SQL Server database operation to be
+    * obtained.
+    * @return Response containing the database operation for a given operation
+    * Guid.
+    */
+    Future<DatabaseOperationGetResponse> getAsync(String serverName, String operationGuid);
+    
     /**
-     * Returns the list database operations for a given server and database.
-     * 
-     * @param serverName
-     *            The name of the SQL Server to be queried.
-     * @param databaseName
-     *            The name of the Database to be queried.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @throws ParserConfigurationException
-     *             Thrown if there was a serious configuration error with the
-     *             document parser.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the XML response.
-     * @return Response containing the list of database operations for a given
-     *         server or database.
-     */
-    DatabaseOperationListResponse listByDatabase(String serverName,
-            String databaseName) throws IOException, ServiceException,
-            ParserConfigurationException, SAXException;
-
+    * Returns the list database operations for a given server and database.
+    *
+    * @param serverName The name of the SQL Server to be queried.
+    * @param databaseName The name of the Database to be queried.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return Response containing the list of database operations for a given
+    * server or database.
+    */
+    DatabaseOperationListResponse listByDatabase(String serverName, String databaseName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
+    
     /**
-     * Returns the list database operations for a given server and database.
-     * 
-     * @param serverName
-     *            The name of the SQL Server to be queried.
-     * @param databaseName
-     *            The name of the Database to be queried.
-     * @return Response containing the list of database operations for a given
-     *         server or database.
-     */
-    Future<DatabaseOperationListResponse> listByDatabaseAsync(
-            String serverName, String databaseName);
-
+    * Returns the list database operations for a given server and database.
+    *
+    * @param serverName The name of the SQL Server to be queried.
+    * @param databaseName The name of the Database to be queried.
+    * @return Response containing the list of database operations for a given
+    * server or database.
+    */
+    Future<DatabaseOperationListResponse> listByDatabaseAsync(String serverName, String databaseName);
+    
     /**
-     * Returns the list database operations for a given server.
-     * 
-     * @param serverName
-     *            The name of the SQL Server to be queried.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @throws ParserConfigurationException
-     *             Thrown if there was a serious configuration error with the
-     *             document parser.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the XML response.
-     * @return Response containing the list of database operations for a given
-     *         server or database.
-     */
-    DatabaseOperationListResponse listByServer(String serverName)
-            throws IOException, ServiceException, ParserConfigurationException,
-            SAXException;
-
+    * Returns the list database operations for a given server.
+    *
+    * @param serverName The name of the SQL Server to be queried.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return Response containing the list of database operations for a given
+    * server or database.
+    */
+    DatabaseOperationListResponse listByServer(String serverName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
+    
     /**
-     * Returns the list database operations for a given server.
-     * 
-     * @param serverName
-     *            The name of the SQL Server to be queried.
-     * @return Response containing the list of database operations for a given
-     *         server or database.
-     */
+    * Returns the list database operations for a given server.
+    *
+    * @param serverName The name of the SQL Server to be queried.
+    * @return Response containing the list of database operations for a given
+    * server or database.
+    */
     Future<DatabaseOperationListResponse> listByServerAsync(String serverName);
 }

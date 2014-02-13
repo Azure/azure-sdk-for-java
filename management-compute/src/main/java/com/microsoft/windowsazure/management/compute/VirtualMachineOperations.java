@@ -45,1517 +45,1174 @@ import javax.xml.transform.TransformerException;
 import org.xml.sax.SAXException;
 
 /**
- * The Service Management API includes operations for managing the virtual
- * machines in your subscription. (see
- * http://msdn.microsoft.com/en-us/library/windowsazure/jj157206.aspx for more
- * information)
- */
+* The Service Management API includes operations for managing the virtual
+* machines in your subscription.  (see
+* http://msdn.microsoft.com/en-us/library/windowsazure/jj157206.aspx for more
+* information)
+*/
 public interface VirtualMachineOperations {
     /**
-     * The Capture Role operation creates a copy of the operating system virtual
-     * hard disk (VHD) that is deployed in the virtual machine, saves the VHD
-     * copy in the same storage location as the operating system VHD, and
-     * registers the copy as an image in your image gallery. From the captured
-     * image, you can create additional customized virtual machines. For more
-     * information about images and disks, see Manage Disks and Images. For more
-     * information about capturing images, see How to Capture an Image of a
-     * Virtual Machine Running Windows Server 2008 R2 or How to Capture an Image
-     * of a Virtual Machine Running Linux. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157201.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of your service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param virtualMachineName
-     *            The name of the virtual machine to restart.
-     * @param parameters
-     *            Parameters supplied to the Capture Virtual Machine operation.
-     * @throws ParserConfigurationException
-     *             Thrown if there was an error configuring the parser for the
-     *             response body.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the response body.
-     * @throws TransformerException
-     *             Thrown if there was an error creating the DOM transformer.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
-    OperationResponse beginCapturing(String serviceName, String deploymentName,
-            String virtualMachineName,
-            VirtualMachineCaptureParameters parameters)
-            throws ParserConfigurationException, SAXException,
-            TransformerException, IOException, ServiceException;
-
+    * The Capture Role operation creates a copy of the operating system virtual
+    * hard disk (VHD) that is deployed in the virtual machine, saves the VHD
+    * copy in the same storage location as the operating system VHD, and
+    * registers the copy as an image in your image gallery. From the captured
+    * image, you can create additional customized virtual machines. For more
+    * information about images and disks, see Manage Disks and Images. For
+    * more information about capturing images, see How to Capture an Image of
+    * a Virtual Machine Running Windows Server 2008 R2 or How to Capture an
+    * Image of a Virtual Machine Running Linux.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157201.aspx for
+    * more information)
+    *
+    * @param serviceName The name of your service.
+    * @param deploymentName The name of your deployment.
+    * @param virtualMachineName The name of the virtual machine to restart.
+    * @param parameters Parameters supplied to the Capture Virtual Machine
+    * operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    OperationResponse beginCapturing(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineCaptureParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    
     /**
-     * The Capture Role operation creates a copy of the operating system virtual
-     * hard disk (VHD) that is deployed in the virtual machine, saves the VHD
-     * copy in the same storage location as the operating system VHD, and
-     * registers the copy as an image in your image gallery. From the captured
-     * image, you can create additional customized virtual machines. For more
-     * information about images and disks, see Manage Disks and Images. For more
-     * information about capturing images, see How to Capture an Image of a
-     * Virtual Machine Running Windows Server 2008 R2 or How to Capture an Image
-     * of a Virtual Machine Running Linux. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157201.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of your service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param virtualMachineName
-     *            The name of the virtual machine to restart.
-     * @param parameters
-     *            Parameters supplied to the Capture Virtual Machine operation.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
-    Future<OperationResponse> beginCapturingAsync(String serviceName,
-            String deploymentName, String virtualMachineName,
-            VirtualMachineCaptureParameters parameters);
-
+    * The Capture Role operation creates a copy of the operating system virtual
+    * hard disk (VHD) that is deployed in the virtual machine, saves the VHD
+    * copy in the same storage location as the operating system VHD, and
+    * registers the copy as an image in your image gallery. From the captured
+    * image, you can create additional customized virtual machines. For more
+    * information about images and disks, see Manage Disks and Images. For
+    * more information about capturing images, see How to Capture an Image of
+    * a Virtual Machine Running Windows Server 2008 R2 or How to Capture an
+    * Image of a Virtual Machine Running Linux.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157201.aspx for
+    * more information)
+    *
+    * @param serviceName The name of your service.
+    * @param deploymentName The name of your deployment.
+    * @param virtualMachineName The name of the virtual machine to restart.
+    * @param parameters Parameters supplied to the Capture Virtual Machine
+    * operation.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    Future<OperationResponse> beginCapturingAsync(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineCaptureParameters parameters);
+    
     /**
-     * The Add Role operation adds a virtual machine to an existing deployment.
-     * You can refer to the OSDisk in the Add Role operation in the following
-     * ways. Platform/User Image – Set the SourceImageName to a platform or user
-     * image. You can optionally specify the DiskName and MediaLink values as
-     * part the operation to control the name and location of target disk. When
-     * DiskName and MediaLink are specified in this mode, they must not already
-     * exist in the system, otherwise a conflict fault is returned. UserDisk –
-     * Set DiskName to a user supplied image in image repository.
-     * SourceImageName must be set to NULL. All other properties are ignored.
-     * Blob in a Storage Account – Set MediaLink to a blob containing the image.
-     * SourceImageName and DiskName are set to NULL. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157186.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of your service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param parameters
-     *            Parameters supplied to the Create Virtual Machine operation.
-     * @throws ParserConfigurationException
-     *             Thrown if there was an error configuring the parser for the
-     *             response body.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the response body.
-     * @throws TransformerException
-     *             Thrown if there was an error creating the DOM transformer.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
-    OperationResponse beginCreating(String serviceName, String deploymentName,
-            VirtualMachineCreateParameters parameters)
-            throws ParserConfigurationException, SAXException,
-            TransformerException, IOException, ServiceException;
-
+    * The Add Role operation adds a virtual machine to an existing deployment.
+    * You can refer to the OSDisk in the Add Role operation in the following
+    * ways.  Platform/User Image – Set the SourceImageName to a platform or
+    * user image. You can optionally specify the DiskName and MediaLink values
+    * as part the operation to control the name and location of target disk.
+    * When DiskName and MediaLink are specified in this mode, they must not
+    * already exist in the system, otherwise a conflict fault is returned.
+    * UserDisk – Set DiskName to a user supplied image in image repository.
+    * SourceImageName must be set to NULL. All other properties are ignored.
+    * Blob in a Storage Account – Set MediaLink to a blob containing the
+    * image. SourceImageName and DiskName are set to NULL.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157186.aspx for
+    * more information)
+    *
+    * @param serviceName The name of your service.
+    * @param deploymentName The name of your deployment.
+    * @param parameters Parameters supplied to the Create Virtual Machine
+    * operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    OperationResponse beginCreating(String serviceName, String deploymentName, VirtualMachineCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    
     /**
-     * The Add Role operation adds a virtual machine to an existing deployment.
-     * You can refer to the OSDisk in the Add Role operation in the following
-     * ways. Platform/User Image – Set the SourceImageName to a platform or user
-     * image. You can optionally specify the DiskName and MediaLink values as
-     * part the operation to control the name and location of target disk. When
-     * DiskName and MediaLink are specified in this mode, they must not already
-     * exist in the system, otherwise a conflict fault is returned. UserDisk –
-     * Set DiskName to a user supplied image in image repository.
-     * SourceImageName must be set to NULL. All other properties are ignored.
-     * Blob in a Storage Account – Set MediaLink to a blob containing the image.
-     * SourceImageName and DiskName are set to NULL. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157186.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of your service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param parameters
-     *            Parameters supplied to the Create Virtual Machine operation.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
-    Future<OperationResponse> beginCreatingAsync(String serviceName,
-            String deploymentName, VirtualMachineCreateParameters parameters);
-
+    * The Add Role operation adds a virtual machine to an existing deployment.
+    * You can refer to the OSDisk in the Add Role operation in the following
+    * ways.  Platform/User Image – Set the SourceImageName to a platform or
+    * user image. You can optionally specify the DiskName and MediaLink values
+    * as part the operation to control the name and location of target disk.
+    * When DiskName and MediaLink are specified in this mode, they must not
+    * already exist in the system, otherwise a conflict fault is returned.
+    * UserDisk – Set DiskName to a user supplied image in image repository.
+    * SourceImageName must be set to NULL. All other properties are ignored.
+    * Blob in a Storage Account – Set MediaLink to a blob containing the
+    * image. SourceImageName and DiskName are set to NULL.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157186.aspx for
+    * more information)
+    *
+    * @param serviceName The name of your service.
+    * @param deploymentName The name of your deployment.
+    * @param parameters Parameters supplied to the Create Virtual Machine
+    * operation.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    Future<OperationResponse> beginCreatingAsync(String serviceName, String deploymentName, VirtualMachineCreateParameters parameters);
+    
     /**
-     * The Create Virtual Machine Deployment operation provisions a virtual
-     * machine based on the supplied configuration. When you create a deployment
-     * of a virtual machine, you should make sure that the cloud service and the
-     * disk or image that you use are located in the same region. For example,
-     * if the cloud service was created in the West US region, the disk or image
-     * that you use should also be located in a stor4age account in the West US
-     * region. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157194.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of your service.
-     * @param parameters
-     *            Parameters supplied to the Create Virtual Machine Deployment
-     *            operation.
-     * @throws ParserConfigurationException
-     *             Thrown if there was an error configuring the parser for the
-     *             response body.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the response body.
-     * @throws TransformerException
-     *             Thrown if there was an error creating the DOM transformer.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
-    OperationResponse beginCreatingDeployment(String serviceName,
-            VirtualMachineCreateDeploymentParameters parameters)
-            throws ParserConfigurationException, SAXException,
-            TransformerException, IOException, ServiceException;
-
+    * The Create Virtual Machine Deployment operation provisions a virtual
+    * machine based on the supplied configuration.  When you create a
+    * deployment of a virtual machine, you should make sure that the cloud
+    * service and the disk or image that you use are located in the same
+    * region. For example, if the cloud service was created in the West US
+    * region, the disk or image that you use should also be located in a
+    * stor4age account in the West US region.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157194.aspx for
+    * more information)
+    *
+    * @param serviceName The name of your service.
+    * @param parameters Parameters supplied to the Create Virtual Machine
+    * Deployment operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    OperationResponse beginCreatingDeployment(String serviceName, VirtualMachineCreateDeploymentParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    
     /**
-     * The Create Virtual Machine Deployment operation provisions a virtual
-     * machine based on the supplied configuration. When you create a deployment
-     * of a virtual machine, you should make sure that the cloud service and the
-     * disk or image that you use are located in the same region. For example,
-     * if the cloud service was created in the West US region, the disk or image
-     * that you use should also be located in a stor4age account in the West US
-     * region. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157194.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of your service.
-     * @param parameters
-     *            Parameters supplied to the Create Virtual Machine Deployment
-     *            operation.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
-    Future<OperationResponse> beginCreatingDeploymentAsync(String serviceName,
-            VirtualMachineCreateDeploymentParameters parameters);
-
+    * The Create Virtual Machine Deployment operation provisions a virtual
+    * machine based on the supplied configuration.  When you create a
+    * deployment of a virtual machine, you should make sure that the cloud
+    * service and the disk or image that you use are located in the same
+    * region. For example, if the cloud service was created in the West US
+    * region, the disk or image that you use should also be located in a
+    * stor4age account in the West US region.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157194.aspx for
+    * more information)
+    *
+    * @param serviceName The name of your service.
+    * @param parameters Parameters supplied to the Create Virtual Machine
+    * Deployment operation.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    Future<OperationResponse> beginCreatingDeploymentAsync(String serviceName, VirtualMachineCreateDeploymentParameters parameters);
+    
     /**
-     * The Delete Role operation deletes the specified virtual machine. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157184.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of your service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param virtualMachineName
-     *            The name of the virtual machine to delete.
-     * @param deleteFromStorage
-     *            Optional. Specifies that the source blob(s) for the virtual
-     *            machine should also be deleted from storage.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
-    OperationResponse beginDeleting(String serviceName, String deploymentName,
-            String virtualMachineName, boolean deleteFromStorage)
-            throws IOException, ServiceException;
-
+    * The Delete Role operation deletes the specified virtual machine.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157184.aspx for
+    * more information)
+    *
+    * @param serviceName The name of your service.
+    * @param deploymentName The name of your deployment.
+    * @param virtualMachineName The name of the virtual machine to delete.
+    * @param deleteFromStorage Optional. Specifies that the source blob(s) for
+    * the virtual machine should also be deleted from storage.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    OperationResponse beginDeleting(String serviceName, String deploymentName, String virtualMachineName, boolean deleteFromStorage) throws IOException, ServiceException;
+    
     /**
-     * The Delete Role operation deletes the specified virtual machine. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157184.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of your service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param virtualMachineName
-     *            The name of the virtual machine to delete.
-     * @param deleteFromStorage
-     *            Optional. Specifies that the source blob(s) for the virtual
-     *            machine should also be deleted from storage.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
-    Future<OperationResponse> beginDeletingAsync(String serviceName,
-            String deploymentName, String virtualMachineName,
-            boolean deleteFromStorage);
-
+    * The Delete Role operation deletes the specified virtual machine.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157184.aspx for
+    * more information)
+    *
+    * @param serviceName The name of your service.
+    * @param deploymentName The name of your deployment.
+    * @param virtualMachineName The name of the virtual machine to delete.
+    * @param deleteFromStorage Optional. Specifies that the source blob(s) for
+    * the virtual machine should also be deleted from storage.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    Future<OperationResponse> beginDeletingAsync(String serviceName, String deploymentName, String virtualMachineName, boolean deleteFromStorage);
+    
     /**
-     * The Restart role operation restarts the specified virtual machine. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157197.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of your service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param virtualMachineName
-     *            The name of the virtual machine to restart.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
-    OperationResponse beginRestarting(String serviceName,
-            String deploymentName, String virtualMachineName)
-            throws IOException, ServiceException;
-
+    * The Restart role operation restarts the specified virtual machine.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157197.aspx for
+    * more information)
+    *
+    * @param serviceName The name of your service.
+    * @param deploymentName The name of your deployment.
+    * @param virtualMachineName The name of the virtual machine to restart.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    OperationResponse beginRestarting(String serviceName, String deploymentName, String virtualMachineName) throws IOException, ServiceException;
+    
     /**
-     * The Restart role operation restarts the specified virtual machine. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157197.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of your service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param virtualMachineName
-     *            The name of the virtual machine to restart.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
-    Future<OperationResponse> beginRestartingAsync(String serviceName,
-            String deploymentName, String virtualMachineName);
-
+    * The Restart role operation restarts the specified virtual machine.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157197.aspx for
+    * more information)
+    *
+    * @param serviceName The name of your service.
+    * @param deploymentName The name of your deployment.
+    * @param virtualMachineName The name of the virtual machine to restart.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    Future<OperationResponse> beginRestartingAsync(String serviceName, String deploymentName, String virtualMachineName);
+    
     /**
-     * The Shutdown Role operation shuts down the specified virtual machine.
-     * (see http://msdn.microsoft.com/en-us/library/windowsazure/jj157195.aspx
-     * for more information)
-     * 
-     * @param serviceName
-     *            The name of your service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param virtualMachineName
-     *            The name of the virtual machine to shutdown.
-     * @param parameters
-     *            The parameters for the shutdown vm operation.
-     * @throws ParserConfigurationException
-     *             Thrown if there was an error configuring the parser for the
-     *             response body.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the response body.
-     * @throws TransformerException
-     *             Thrown if there was an error creating the DOM transformer.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
-    OperationResponse beginShutdown(String serviceName, String deploymentName,
-            String virtualMachineName,
-            VirtualMachineShutdownParameters parameters)
-            throws ParserConfigurationException, SAXException,
-            TransformerException, IOException, ServiceException;
-
+    * The Shutdown Role operation shuts down the specified virtual machine.
+    * (see http://msdn.microsoft.com/en-us/library/windowsazure/jj157195.aspx
+    * for more information)
+    *
+    * @param serviceName The name of your service.
+    * @param deploymentName The name of your deployment.
+    * @param virtualMachineName The name of the virtual machine to shutdown.
+    * @param parameters The parameters for the shutdown vm operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    OperationResponse beginShutdown(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineShutdownParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    
     /**
-     * The Shutdown Role operation shuts down the specified virtual machine.
-     * (see http://msdn.microsoft.com/en-us/library/windowsazure/jj157195.aspx
-     * for more information)
-     * 
-     * @param serviceName
-     *            The name of your service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param virtualMachineName
-     *            The name of the virtual machine to shutdown.
-     * @param parameters
-     *            The parameters for the shutdown vm operation.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
-    Future<OperationResponse> beginShutdownAsync(String serviceName,
-            String deploymentName, String virtualMachineName,
-            VirtualMachineShutdownParameters parameters);
-
+    * The Shutdown Role operation shuts down the specified virtual machine.
+    * (see http://msdn.microsoft.com/en-us/library/windowsazure/jj157195.aspx
+    * for more information)
+    *
+    * @param serviceName The name of your service.
+    * @param deploymentName The name of your deployment.
+    * @param virtualMachineName The name of the virtual machine to shutdown.
+    * @param parameters The parameters for the shutdown vm operation.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    Future<OperationResponse> beginShutdownAsync(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineShutdownParameters parameters);
+    
     /**
-     * The Shutdown Roles operation stops the specified set of virtual machines.
-     * 
-     * @param serviceName
-     *            The name of your service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param parameters
-     *            The set of virtual machine roles to shutdown and their post
-     *            shutdown state.
-     * @throws ParserConfigurationException
-     *             Thrown if there was an error configuring the parser for the
-     *             response body.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the response body.
-     * @throws TransformerException
-     *             Thrown if there was an error creating the DOM transformer.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
-    OperationResponse beginShuttingDownRoles(String serviceName,
-            String deploymentName,
-            VirtualMachineShutdownRolesParameters parameters)
-            throws ParserConfigurationException, SAXException,
-            TransformerException, IOException, ServiceException;
-
+    * The Shutdown Roles operation stops the specified set of virtual machines.
+    *
+    * @param serviceName The name of your service.
+    * @param deploymentName The name of your deployment.
+    * @param parameters The set of virtual machine roles to shutdown and their
+    * post shutdown state.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    OperationResponse beginShuttingDownRoles(String serviceName, String deploymentName, VirtualMachineShutdownRolesParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    
     /**
-     * The Shutdown Roles operation stops the specified set of virtual machines.
-     * 
-     * @param serviceName
-     *            The name of your service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param parameters
-     *            The set of virtual machine roles to shutdown and their post
-     *            shutdown state.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
-    Future<OperationResponse> beginShuttingDownRolesAsync(String serviceName,
-            String deploymentName,
-            VirtualMachineShutdownRolesParameters parameters);
-
+    * The Shutdown Roles operation stops the specified set of virtual machines.
+    *
+    * @param serviceName The name of your service.
+    * @param deploymentName The name of your deployment.
+    * @param parameters The set of virtual machine roles to shutdown and their
+    * post shutdown state.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    Future<OperationResponse> beginShuttingDownRolesAsync(String serviceName, String deploymentName, VirtualMachineShutdownRolesParameters parameters);
+    
     /**
-     * The Start Role operation starts the specified virtual machine. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157189.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of your service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param virtualMachineName
-     *            The name of the virtual machine to start.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
-    OperationResponse beginStarting(String serviceName, String deploymentName,
-            String virtualMachineName) throws IOException, ServiceException;
-
+    * The Start Role operation starts the specified virtual machine.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157189.aspx for
+    * more information)
+    *
+    * @param serviceName The name of your service.
+    * @param deploymentName The name of your deployment.
+    * @param virtualMachineName The name of the virtual machine to start.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    OperationResponse beginStarting(String serviceName, String deploymentName, String virtualMachineName) throws IOException, ServiceException;
+    
     /**
-     * The Start Role operation starts the specified virtual machine. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157189.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of your service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param virtualMachineName
-     *            The name of the virtual machine to start.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
-    Future<OperationResponse> beginStartingAsync(String serviceName,
-            String deploymentName, String virtualMachineName);
-
+    * The Start Role operation starts the specified virtual machine.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157189.aspx for
+    * more information)
+    *
+    * @param serviceName The name of your service.
+    * @param deploymentName The name of your deployment.
+    * @param virtualMachineName The name of the virtual machine to start.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    Future<OperationResponse> beginStartingAsync(String serviceName, String deploymentName, String virtualMachineName);
+    
     /**
-     * The Start Roles operation starts the specified set of virtual machines.
-     * 
-     * @param serviceName
-     *            The name of your service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param parameters
-     *            The set of virtual machine roles to start.
-     * @throws ParserConfigurationException
-     *             Thrown if there was an error configuring the parser for the
-     *             response body.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the response body.
-     * @throws TransformerException
-     *             Thrown if there was an error creating the DOM transformer.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
-    OperationResponse beginStartingRoles(String serviceName,
-            String deploymentName, VirtualMachineStartRolesParameters parameters)
-            throws ParserConfigurationException, SAXException,
-            TransformerException, IOException, ServiceException;
-
+    * The Start Roles operation starts the specified set of virtual machines.
+    *
+    * @param serviceName The name of your service.
+    * @param deploymentName The name of your deployment.
+    * @param parameters The set of virtual machine roles to start.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    OperationResponse beginStartingRoles(String serviceName, String deploymentName, VirtualMachineStartRolesParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    
     /**
-     * The Start Roles operation starts the specified set of virtual machines.
-     * 
-     * @param serviceName
-     *            The name of your service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param parameters
-     *            The set of virtual machine roles to start.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
-    Future<OperationResponse> beginStartingRolesAsync(String serviceName,
-            String deploymentName, VirtualMachineStartRolesParameters parameters);
-
+    * The Start Roles operation starts the specified set of virtual machines.
+    *
+    * @param serviceName The name of your service.
+    * @param deploymentName The name of your deployment.
+    * @param parameters The set of virtual machine roles to start.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    Future<OperationResponse> beginStartingRolesAsync(String serviceName, String deploymentName, VirtualMachineStartRolesParameters parameters);
+    
     /**
-     * The Update Role operation adds a virtual machine to an existing
-     * deployment. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157187.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of your service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param virtualMachineName
-     *            The name of your virtual machine.
-     * @param parameters
-     *            Parameters supplied to the Update Virtual Machine operation.
-     * @throws ParserConfigurationException
-     *             Thrown if there was an error configuring the parser for the
-     *             response body.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the response body.
-     * @throws TransformerException
-     *             Thrown if there was an error creating the DOM transformer.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
-    OperationResponse beginUpdating(String serviceName, String deploymentName,
-            String virtualMachineName, VirtualMachineUpdateParameters parameters)
-            throws ParserConfigurationException, SAXException,
-            TransformerException, IOException, ServiceException;
-
+    * The Update Role operation adds a virtual machine to an existing
+    * deployment.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157187.aspx for
+    * more information)
+    *
+    * @param serviceName The name of your service.
+    * @param deploymentName The name of your deployment.
+    * @param virtualMachineName The name of your virtual machine.
+    * @param parameters Parameters supplied to the Update Virtual Machine
+    * operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    OperationResponse beginUpdating(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    
     /**
-     * The Update Role operation adds a virtual machine to an existing
-     * deployment. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157187.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of your service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param virtualMachineName
-     *            The name of your virtual machine.
-     * @param parameters
-     *            Parameters supplied to the Update Virtual Machine operation.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
-    Future<OperationResponse> beginUpdatingAsync(String serviceName,
-            String deploymentName, String virtualMachineName,
-            VirtualMachineUpdateParameters parameters);
-
+    * The Update Role operation adds a virtual machine to an existing
+    * deployment.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157187.aspx for
+    * more information)
+    *
+    * @param serviceName The name of your service.
+    * @param deploymentName The name of your deployment.
+    * @param virtualMachineName The name of your virtual machine.
+    * @param parameters Parameters supplied to the Update Virtual Machine
+    * operation.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    Future<OperationResponse> beginUpdatingAsync(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineUpdateParameters parameters);
+    
     /**
-     * The UpdateLoadBalancedEndpointSet operation changes the specified
-     * load-balanced InputEndpoints on all the roles of an Infrastructure as a
-     * Service deployment. Non load-balanced endpoints must be changed using
-     * UpdateRole.
-     * 
-     * @param serviceName
-     *            The name of your service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param parameters
-     *            Parameters supplied to the Update Load Balanced Endpoint Set
-     *            operation.
-     * @throws ParserConfigurationException
-     *             Thrown if there was an error configuring the parser for the
-     *             response body.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the response body.
-     * @throws TransformerException
-     *             Thrown if there was an error creating the DOM transformer.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
-    OperationResponse beginUpdatingLoadBalancedEndpointSet(String serviceName,
-            String deploymentName,
-            VirtualMachineUpdateLoadBalancedSetParameters parameters)
-            throws ParserConfigurationException, SAXException,
-            TransformerException, IOException, ServiceException;
-
+    * The UpdateLoadBalancedEndpointSet operation changes the specified
+    * load-balanced InputEndpoints on all the roles of an Infrastructure as a
+    * Service deployment. Non load-balanced endpoints must be changed using
+    * UpdateRole.
+    *
+    * @param serviceName The name of your service.
+    * @param deploymentName The name of your deployment.
+    * @param parameters Parameters supplied to the Update Load Balanced
+    * Endpoint Set operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    OperationResponse beginUpdatingLoadBalancedEndpointSet(String serviceName, String deploymentName, VirtualMachineUpdateLoadBalancedSetParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    
     /**
-     * The UpdateLoadBalancedEndpointSet operation changes the specified
-     * load-balanced InputEndpoints on all the roles of an Infrastructure as a
-     * Service deployment. Non load-balanced endpoints must be changed using
-     * UpdateRole.
-     * 
-     * @param serviceName
-     *            The name of your service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param parameters
-     *            Parameters supplied to the Update Load Balanced Endpoint Set
-     *            operation.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
-    Future<OperationResponse> beginUpdatingLoadBalancedEndpointSetAsync(
-            String serviceName, String deploymentName,
-            VirtualMachineUpdateLoadBalancedSetParameters parameters);
-
+    * The UpdateLoadBalancedEndpointSet operation changes the specified
+    * load-balanced InputEndpoints on all the roles of an Infrastructure as a
+    * Service deployment. Non load-balanced endpoints must be changed using
+    * UpdateRole.
+    *
+    * @param serviceName The name of your service.
+    * @param deploymentName The name of your deployment.
+    * @param parameters Parameters supplied to the Update Load Balanced
+    * Endpoint Set operation.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    Future<OperationResponse> beginUpdatingLoadBalancedEndpointSetAsync(String serviceName, String deploymentName, VirtualMachineUpdateLoadBalancedSetParameters parameters);
+    
     /**
-     * The Capture Role operation creates a copy of the operating system virtual
-     * hard disk (VHD) that is deployed in the virtual machine, saves the VHD
-     * copy in the same storage location as the operating system VHD, and
-     * registers the copy as an image in your image gallery. From the captured
-     * image, you can create additional customized virtual machines. For more
-     * information about images and disks, see Manage Disks and Images. For more
-     * information about capturing images, see How to Capture an Image of a
-     * Virtual Machine Running Windows Server 2008 R2 or How to Capture an Image
-     * of a Virtual Machine Running Linux. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157201.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of your service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param virtualMachineName
-     *            The name of the virtual machine to restart.
-     * @param parameters
-     *            Parameters supplied to the Capture Virtual Machine operation.
-     * @throws InterruptedException
-     *             Thrown when a thread is waiting, sleeping, or otherwise
-     *             occupied, and the thread is interrupted, either before or
-     *             during the activity. Occasionally a method may wish to test
-     *             whether the current thread has been interrupted, and if so,
-     *             to immediately throw this exception. The following code can
-     *             be used to achieve this effect:
-     * @throws ExecutionException
-     *             Thrown when attempting to retrieve the result of a task that
-     *             aborted by throwing an exception. This exception can be
-     *             inspected using the Throwable.getCause() method.
-     * @throws ServiceException
-     *             Thrown if the server returned an error for the request.
-     * @throws IOException
-     *             Thrown if there was an error setting up tracing for the
-     *             request.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
-    ComputeOperationStatusResponse capture(String serviceName,
-            String deploymentName, String virtualMachineName,
-            VirtualMachineCaptureParameters parameters)
-            throws InterruptedException, ExecutionException, ServiceException,
-            IOException;
-
+    * The Capture Role operation creates a copy of the operating system virtual
+    * hard disk (VHD) that is deployed in the virtual machine, saves the VHD
+    * copy in the same storage location as the operating system VHD, and
+    * registers the copy as an image in your image gallery. From the captured
+    * image, you can create additional customized virtual machines. For more
+    * information about images and disks, see Manage Disks and Images. For
+    * more information about capturing images, see How to Capture an Image of
+    * a Virtual Machine Running Windows Server 2008 R2 or How to Capture an
+    * Image of a Virtual Machine Running Linux.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157201.aspx for
+    * more information)
+    *
+    * @param serviceName The name of your service.
+    * @param deploymentName The name of your deployment.
+    * @param virtualMachineName The name of the virtual machine to restart.
+    * @param parameters Parameters supplied to the Capture Virtual Machine
+    * operation.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    ComputeOperationStatusResponse capture(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineCaptureParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
+    
     /**
-     * The Capture Role operation creates a copy of the operating system virtual
-     * hard disk (VHD) that is deployed in the virtual machine, saves the VHD
-     * copy in the same storage location as the operating system VHD, and
-     * registers the copy as an image in your image gallery. From the captured
-     * image, you can create additional customized virtual machines. For more
-     * information about images and disks, see Manage Disks and Images. For more
-     * information about capturing images, see How to Capture an Image of a
-     * Virtual Machine Running Windows Server 2008 R2 or How to Capture an Image
-     * of a Virtual Machine Running Linux. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157201.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of your service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param virtualMachineName
-     *            The name of the virtual machine to restart.
-     * @param parameters
-     *            Parameters supplied to the Capture Virtual Machine operation.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
-    Future<ComputeOperationStatusResponse> captureAsync(String serviceName,
-            String deploymentName, String virtualMachineName,
-            VirtualMachineCaptureParameters parameters);
-
+    * The Capture Role operation creates a copy of the operating system virtual
+    * hard disk (VHD) that is deployed in the virtual machine, saves the VHD
+    * copy in the same storage location as the operating system VHD, and
+    * registers the copy as an image in your image gallery. From the captured
+    * image, you can create additional customized virtual machines. For more
+    * information about images and disks, see Manage Disks and Images. For
+    * more information about capturing images, see How to Capture an Image of
+    * a Virtual Machine Running Windows Server 2008 R2 or How to Capture an
+    * Image of a Virtual Machine Running Linux.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157201.aspx for
+    * more information)
+    *
+    * @param serviceName The name of your service.
+    * @param deploymentName The name of your deployment.
+    * @param virtualMachineName The name of the virtual machine to restart.
+    * @param parameters Parameters supplied to the Capture Virtual Machine
+    * operation.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    Future<ComputeOperationStatusResponse> captureAsync(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineCaptureParameters parameters);
+    
     /**
-     * The Add Role operation adds a virtual machine to an existing deployment.
-     * You can refer to the OSDisk in the Add Role operation in the following
-     * ways. Platform/User Image – Set the SourceImageName to a platform or user
-     * image. You can optionally specify the DiskName and MediaLink values as
-     * part the operation to control the name and location of target disk. When
-     * DiskName and MediaLink are specified in this mode, they must not already
-     * exist in the system, otherwise a conflict fault is returned. UserDisk –
-     * Set DiskName to a user supplied image in image repository.
-     * SourceImageName must be set to NULL. All other properties are ignored.
-     * Blob in a Storage Account – Set MediaLink to a blob containing the image.
-     * SourceImageName and DiskName are set to NULL. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157186.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of your service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param parameters
-     *            Parameters supplied to the Create Virtual Machine operation.
-     * @throws InterruptedException
-     *             Thrown when a thread is waiting, sleeping, or otherwise
-     *             occupied, and the thread is interrupted, either before or
-     *             during the activity. Occasionally a method may wish to test
-     *             whether the current thread has been interrupted, and if so,
-     *             to immediately throw this exception. The following code can
-     *             be used to achieve this effect:
-     * @throws ExecutionException
-     *             Thrown when attempting to retrieve the result of a task that
-     *             aborted by throwing an exception. This exception can be
-     *             inspected using the Throwable.getCause() method.
-     * @throws ServiceException
-     *             Thrown if the server returned an error for the request.
-     * @throws IOException
-     *             Thrown if there was an error setting up tracing for the
-     *             request.
-     * @throws ParserConfigurationException
-     *             Thrown if there was an error configuring the parser for the
-     *             response body.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the response body.
-     * @throws TransformerException
-     *             Thrown if there was an error creating the DOM transformer.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @throws URISyntaxException
-     *             Thrown if there was an error parsing a URI in the response.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
-    ComputeOperationStatusResponse create(String serviceName,
-            String deploymentName, VirtualMachineCreateParameters parameters)
-            throws InterruptedException, ExecutionException, ServiceException,
-            IOException, ParserConfigurationException, SAXException,
-            TransformerException, ServiceException, URISyntaxException;
-
+    * The Add Role operation adds a virtual machine to an existing deployment.
+    * You can refer to the OSDisk in the Add Role operation in the following
+    * ways.  Platform/User Image – Set the SourceImageName to a platform or
+    * user image. You can optionally specify the DiskName and MediaLink values
+    * as part the operation to control the name and location of target disk.
+    * When DiskName and MediaLink are specified in this mode, they must not
+    * already exist in the system, otherwise a conflict fault is returned.
+    * UserDisk – Set DiskName to a user supplied image in image repository.
+    * SourceImageName must be set to NULL. All other properties are ignored.
+    * Blob in a Storage Account – Set MediaLink to a blob containing the
+    * image. SourceImageName and DiskName are set to NULL.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157186.aspx for
+    * more information)
+    *
+    * @param serviceName The name of your service.
+    * @param deploymentName The name of your deployment.
+    * @param parameters Parameters supplied to the Create Virtual Machine
+    * operation.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    ComputeOperationStatusResponse create(String serviceName, String deploymentName, VirtualMachineCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, ServiceException, URISyntaxException;
+    
     /**
-     * The Add Role operation adds a virtual machine to an existing deployment.
-     * You can refer to the OSDisk in the Add Role operation in the following
-     * ways. Platform/User Image – Set the SourceImageName to a platform or user
-     * image. You can optionally specify the DiskName and MediaLink values as
-     * part the operation to control the name and location of target disk. When
-     * DiskName and MediaLink are specified in this mode, they must not already
-     * exist in the system, otherwise a conflict fault is returned. UserDisk –
-     * Set DiskName to a user supplied image in image repository.
-     * SourceImageName must be set to NULL. All other properties are ignored.
-     * Blob in a Storage Account – Set MediaLink to a blob containing the image.
-     * SourceImageName and DiskName are set to NULL. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157186.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of your service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param parameters
-     *            Parameters supplied to the Create Virtual Machine operation.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
-    Future<ComputeOperationStatusResponse> createAsync(String serviceName,
-            String deploymentName, VirtualMachineCreateParameters parameters);
-
+    * The Add Role operation adds a virtual machine to an existing deployment.
+    * You can refer to the OSDisk in the Add Role operation in the following
+    * ways.  Platform/User Image – Set the SourceImageName to a platform or
+    * user image. You can optionally specify the DiskName and MediaLink values
+    * as part the operation to control the name and location of target disk.
+    * When DiskName and MediaLink are specified in this mode, they must not
+    * already exist in the system, otherwise a conflict fault is returned.
+    * UserDisk – Set DiskName to a user supplied image in image repository.
+    * SourceImageName must be set to NULL. All other properties are ignored.
+    * Blob in a Storage Account – Set MediaLink to a blob containing the
+    * image. SourceImageName and DiskName are set to NULL.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157186.aspx for
+    * more information)
+    *
+    * @param serviceName The name of your service.
+    * @param deploymentName The name of your deployment.
+    * @param parameters Parameters supplied to the Create Virtual Machine
+    * operation.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    Future<ComputeOperationStatusResponse> createAsync(String serviceName, String deploymentName, VirtualMachineCreateParameters parameters);
+    
     /**
-     * The Create Virtual Machine Deployment operation provisions a virtual
-     * machine based on the supplied configuration. When you create a deployment
-     * of a virtual machine, you should make sure that the cloud service and the
-     * disk or image that you use are located in the same region. For example,
-     * if the cloud service was created in the West US region, the disk or image
-     * that you use should also be located in a stor4age account in the West US
-     * region. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157194.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of your service.
-     * @param parameters
-     *            Parameters supplied to the Create Virtual Machine Deployment
-     *            operation.
-     * @throws InterruptedException
-     *             Thrown when a thread is waiting, sleeping, or otherwise
-     *             occupied, and the thread is interrupted, either before or
-     *             during the activity. Occasionally a method may wish to test
-     *             whether the current thread has been interrupted, and if so,
-     *             to immediately throw this exception. The following code can
-     *             be used to achieve this effect:
-     * @throws ExecutionException
-     *             Thrown when attempting to retrieve the result of a task that
-     *             aborted by throwing an exception. This exception can be
-     *             inspected using the Throwable.getCause() method.
-     * @throws ServiceException
-     *             Thrown if the server returned an error for the request.
-     * @throws IOException
-     *             Thrown if there was an error setting up tracing for the
-     *             request.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
-    ComputeOperationStatusResponse createDeployment(String serviceName,
-            VirtualMachineCreateDeploymentParameters parameters)
-            throws InterruptedException, ExecutionException, ServiceException,
-            IOException;
-
+    * The Create Virtual Machine Deployment operation provisions a virtual
+    * machine based on the supplied configuration.  When you create a
+    * deployment of a virtual machine, you should make sure that the cloud
+    * service and the disk or image that you use are located in the same
+    * region. For example, if the cloud service was created in the West US
+    * region, the disk or image that you use should also be located in a
+    * stor4age account in the West US region.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157194.aspx for
+    * more information)
+    *
+    * @param serviceName The name of your service.
+    * @param parameters Parameters supplied to the Create Virtual Machine
+    * Deployment operation.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    ComputeOperationStatusResponse createDeployment(String serviceName, VirtualMachineCreateDeploymentParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
+    
     /**
-     * The Create Virtual Machine Deployment operation provisions a virtual
-     * machine based on the supplied configuration. When you create a deployment
-     * of a virtual machine, you should make sure that the cloud service and the
-     * disk or image that you use are located in the same region. For example,
-     * if the cloud service was created in the West US region, the disk or image
-     * that you use should also be located in a stor4age account in the West US
-     * region. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157194.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of your service.
-     * @param parameters
-     *            Parameters supplied to the Create Virtual Machine Deployment
-     *            operation.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
-    Future<ComputeOperationStatusResponse> createDeploymentAsync(
-            String serviceName,
-            VirtualMachineCreateDeploymentParameters parameters);
-
+    * The Create Virtual Machine Deployment operation provisions a virtual
+    * machine based on the supplied configuration.  When you create a
+    * deployment of a virtual machine, you should make sure that the cloud
+    * service and the disk or image that you use are located in the same
+    * region. For example, if the cloud service was created in the West US
+    * region, the disk or image that you use should also be located in a
+    * stor4age account in the West US region.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157194.aspx for
+    * more information)
+    *
+    * @param serviceName The name of your service.
+    * @param parameters Parameters supplied to the Create Virtual Machine
+    * Deployment operation.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    Future<ComputeOperationStatusResponse> createDeploymentAsync(String serviceName, VirtualMachineCreateDeploymentParameters parameters);
+    
     /**
-     * The Delete Role operation deletes the specified virtual machine. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157184.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of your service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param virtualMachineName
-     *            The name of the virtual machine to delete.
-     * @param deleteFromStorage
-     *            Optional. Specifies that the source blob(s) for the virtual
-     *            machine should also be deleted from storage.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @throws InterruptedException
-     *             Thrown when a thread is waiting, sleeping, or otherwise
-     *             occupied, and the thread is interrupted, either before or
-     *             during the activity. Occasionally a method may wish to test
-     *             whether the current thread has been interrupted, and if so,
-     *             to immediately throw this exception. The following code can
-     *             be used to achieve this effect:
-     * @throws ExecutionException
-     *             Thrown when attempting to retrieve the result of a task that
-     *             aborted by throwing an exception. This exception can be
-     *             inspected using the Throwable.getCause() method.
-     * @throws ServiceException
-     *             Thrown if the server returned an error for the request.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
-    ComputeOperationStatusResponse delete(String serviceName,
-            String deploymentName, String virtualMachineName,
-            boolean deleteFromStorage) throws IOException, ServiceException,
-            InterruptedException, ExecutionException, ServiceException;
-
+    * The Delete Role operation deletes the specified virtual machine.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157184.aspx for
+    * more information)
+    *
+    * @param serviceName The name of your service.
+    * @param deploymentName The name of your deployment.
+    * @param virtualMachineName The name of the virtual machine to delete.
+    * @param deleteFromStorage Optional. Specifies that the source blob(s) for
+    * the virtual machine should also be deleted from storage.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    ComputeOperationStatusResponse delete(String serviceName, String deploymentName, String virtualMachineName, boolean deleteFromStorage) throws IOException, ServiceException, InterruptedException, ExecutionException, ServiceException;
+    
     /**
-     * The Delete Role operation deletes the specified virtual machine. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157184.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of your service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param virtualMachineName
-     *            The name of the virtual machine to delete.
-     * @param deleteFromStorage
-     *            Optional. Specifies that the source blob(s) for the virtual
-     *            machine should also be deleted from storage.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
-    Future<ComputeOperationStatusResponse> deleteAsync(String serviceName,
-            String deploymentName, String virtualMachineName,
-            boolean deleteFromStorage);
-
+    * The Delete Role operation deletes the specified virtual machine.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157184.aspx for
+    * more information)
+    *
+    * @param serviceName The name of your service.
+    * @param deploymentName The name of your deployment.
+    * @param virtualMachineName The name of the virtual machine to delete.
+    * @param deleteFromStorage Optional. Specifies that the source blob(s) for
+    * the virtual machine should also be deleted from storage.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    Future<ComputeOperationStatusResponse> deleteAsync(String serviceName, String deploymentName, String virtualMachineName, boolean deleteFromStorage);
+    
     /**
-     * The Get Role operation retrieves information about the specified virtual
-     * machine. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157193.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of your service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param virtualMachineName
-     *            The name of the virtual machine.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @throws ParserConfigurationException
-     *             Thrown if there was a serious configuration error with the
-     *             document parser.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the XML response.
-     * @throws URISyntaxException
-     *             Thrown if there was an error parsing a URI in the response.
-     * @return The Get Virtual Machine operation response.
-     */
-    VirtualMachineGetResponse get(String serviceName, String deploymentName,
-            String virtualMachineName) throws IOException, ServiceException,
-            ParserConfigurationException, SAXException, URISyntaxException;
-
+    * The Get Role operation retrieves information about the specified virtual
+    * machine.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157193.aspx for
+    * more information)
+    *
+    * @param serviceName The name of your service.
+    * @param deploymentName The name of your deployment.
+    * @param virtualMachineName The name of the virtual machine.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
+    * @return The Get Virtual Machine operation response.
+    */
+    VirtualMachineGetResponse get(String serviceName, String deploymentName, String virtualMachineName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException;
+    
     /**
-     * The Get Role operation retrieves information about the specified virtual
-     * machine. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157193.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of your service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param virtualMachineName
-     *            The name of the virtual machine.
-     * @return The Get Virtual Machine operation response.
-     */
-    Future<VirtualMachineGetResponse> getAsync(String serviceName,
-            String deploymentName, String virtualMachineName);
-
+    * The Get Role operation retrieves information about the specified virtual
+    * machine.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157193.aspx for
+    * more information)
+    *
+    * @param serviceName The name of your service.
+    * @param deploymentName The name of your deployment.
+    * @param virtualMachineName The name of the virtual machine.
+    * @return The Get Virtual Machine operation response.
+    */
+    Future<VirtualMachineGetResponse> getAsync(String serviceName, String deploymentName, String virtualMachineName);
+    
     /**
-     * The Download RDP file operation retrieves the Remote Desktop Protocol
-     * configuration file from the specified virtual machine. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157183.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of your service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param virtualMachineName
-     *            The name of the virtual machine.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return The Download RDP file operation response.
-     */
-    VirtualMachineGetRemoteDesktopFileResponse getRemoteDesktopFile(
-            String serviceName, String deploymentName, String virtualMachineName)
-            throws IOException, ServiceException;
-
+    * The Download RDP file operation retrieves the Remote Desktop Protocol
+    * configuration file from the specified virtual machine.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157183.aspx for
+    * more information)
+    *
+    * @param serviceName The name of your service.
+    * @param deploymentName The name of your deployment.
+    * @param virtualMachineName The name of the virtual machine.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return The Download RDP file operation response.
+    */
+    VirtualMachineGetRemoteDesktopFileResponse getRemoteDesktopFile(String serviceName, String deploymentName, String virtualMachineName) throws IOException, ServiceException;
+    
     /**
-     * The Download RDP file operation retrieves the Remote Desktop Protocol
-     * configuration file from the specified virtual machine. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157183.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of your service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param virtualMachineName
-     *            The name of the virtual machine.
-     * @return The Download RDP file operation response.
-     */
-    Future<VirtualMachineGetRemoteDesktopFileResponse> getRemoteDesktopFileAsync(
-            String serviceName, String deploymentName, String virtualMachineName);
-
+    * The Download RDP file operation retrieves the Remote Desktop Protocol
+    * configuration file from the specified virtual machine.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157183.aspx for
+    * more information)
+    *
+    * @param serviceName The name of your service.
+    * @param deploymentName The name of your deployment.
+    * @param virtualMachineName The name of the virtual machine.
+    * @return The Download RDP file operation response.
+    */
+    Future<VirtualMachineGetRemoteDesktopFileResponse> getRemoteDesktopFileAsync(String serviceName, String deploymentName, String virtualMachineName);
+    
     /**
-     * The Restart role operation restarts the specified virtual machine. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157197.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of your service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param virtualMachineName
-     *            The name of the virtual machine to restart.
-     * @throws InterruptedException
-     *             Thrown when a thread is waiting, sleeping, or otherwise
-     *             occupied, and the thread is interrupted, either before or
-     *             during the activity. Occasionally a method may wish to test
-     *             whether the current thread has been interrupted, and if so,
-     *             to immediately throw this exception. The following code can
-     *             be used to achieve this effect:
-     * @throws ExecutionException
-     *             Thrown when attempting to retrieve the result of a task that
-     *             aborted by throwing an exception. This exception can be
-     *             inspected using the Throwable.getCause() method.
-     * @throws ServiceException
-     *             Thrown if the server returned an error for the request.
-     * @throws IOException
-     *             Thrown if there was an error setting up tracing for the
-     *             request.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
-    ComputeOperationStatusResponse restart(String serviceName,
-            String deploymentName, String virtualMachineName)
-            throws InterruptedException, ExecutionException, ServiceException,
-            IOException;
-
+    * The Restart role operation restarts the specified virtual machine.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157197.aspx for
+    * more information)
+    *
+    * @param serviceName The name of your service.
+    * @param deploymentName The name of your deployment.
+    * @param virtualMachineName The name of the virtual machine to restart.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    ComputeOperationStatusResponse restart(String serviceName, String deploymentName, String virtualMachineName) throws InterruptedException, ExecutionException, ServiceException, IOException;
+    
     /**
-     * The Restart role operation restarts the specified virtual machine. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157197.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of your service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param virtualMachineName
-     *            The name of the virtual machine to restart.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
-    Future<ComputeOperationStatusResponse> restartAsync(String serviceName,
-            String deploymentName, String virtualMachineName);
-
+    * The Restart role operation restarts the specified virtual machine.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157197.aspx for
+    * more information)
+    *
+    * @param serviceName The name of your service.
+    * @param deploymentName The name of your deployment.
+    * @param virtualMachineName The name of the virtual machine to restart.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    Future<ComputeOperationStatusResponse> restartAsync(String serviceName, String deploymentName, String virtualMachineName);
+    
     /**
-     * The Shutdown Role operation shuts down the specified virtual machine.
-     * (see http://msdn.microsoft.com/en-us/library/windowsazure/jj157195.aspx
-     * for more information)
-     * 
-     * @param serviceName
-     *            The name of your service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param virtualMachineName
-     *            The name of the virtual machine to shutdown.
-     * @param parameters
-     *            The parameters for the shutdown vm operation.
-     * @throws InterruptedException
-     *             Thrown when a thread is waiting, sleeping, or otherwise
-     *             occupied, and the thread is interrupted, either before or
-     *             during the activity. Occasionally a method may wish to test
-     *             whether the current thread has been interrupted, and if so,
-     *             to immediately throw this exception. The following code can
-     *             be used to achieve this effect:
-     * @throws ExecutionException
-     *             Thrown when attempting to retrieve the result of a task that
-     *             aborted by throwing an exception. This exception can be
-     *             inspected using the Throwable.getCause() method.
-     * @throws ServiceException
-     *             Thrown if the server returned an error for the request.
-     * @throws IOException
-     *             Thrown if there was an error setting up tracing for the
-     *             request.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
-    ComputeOperationStatusResponse shutdown(String serviceName,
-            String deploymentName, String virtualMachineName,
-            VirtualMachineShutdownParameters parameters)
-            throws InterruptedException, ExecutionException, ServiceException,
-            IOException;
-
+    * The Shutdown Role operation shuts down the specified virtual machine.
+    * (see http://msdn.microsoft.com/en-us/library/windowsazure/jj157195.aspx
+    * for more information)
+    *
+    * @param serviceName The name of your service.
+    * @param deploymentName The name of your deployment.
+    * @param virtualMachineName The name of the virtual machine to shutdown.
+    * @param parameters The parameters for the shutdown vm operation.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    ComputeOperationStatusResponse shutdown(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineShutdownParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
+    
     /**
-     * The Shutdown Role operation shuts down the specified virtual machine.
-     * (see http://msdn.microsoft.com/en-us/library/windowsazure/jj157195.aspx
-     * for more information)
-     * 
-     * @param serviceName
-     *            The name of your service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param virtualMachineName
-     *            The name of the virtual machine to shutdown.
-     * @param parameters
-     *            The parameters for the shutdown vm operation.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
-    Future<ComputeOperationStatusResponse> shutdownAsync(String serviceName,
-            String deploymentName, String virtualMachineName,
-            VirtualMachineShutdownParameters parameters);
-
+    * The Shutdown Role operation shuts down the specified virtual machine.
+    * (see http://msdn.microsoft.com/en-us/library/windowsazure/jj157195.aspx
+    * for more information)
+    *
+    * @param serviceName The name of your service.
+    * @param deploymentName The name of your deployment.
+    * @param virtualMachineName The name of the virtual machine to shutdown.
+    * @param parameters The parameters for the shutdown vm operation.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    Future<ComputeOperationStatusResponse> shutdownAsync(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineShutdownParameters parameters);
+    
     /**
-     * The Shutdown Roles operation stops the specified set of virtual machines.
-     * 
-     * @param serviceName
-     *            The name of your service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param parameters
-     *            The set of virtual machine roles to shutdown and their post
-     *            shutdown state.
-     * @throws InterruptedException
-     *             Thrown when a thread is waiting, sleeping, or otherwise
-     *             occupied, and the thread is interrupted, either before or
-     *             during the activity. Occasionally a method may wish to test
-     *             whether the current thread has been interrupted, and if so,
-     *             to immediately throw this exception. The following code can
-     *             be used to achieve this effect:
-     * @throws ExecutionException
-     *             Thrown when attempting to retrieve the result of a task that
-     *             aborted by throwing an exception. This exception can be
-     *             inspected using the Throwable.getCause() method.
-     * @throws ServiceException
-     *             Thrown if the server returned an error for the request.
-     * @throws IOException
-     *             Thrown if there was an error setting up tracing for the
-     *             request.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
-    ComputeOperationStatusResponse shutdownRoles(String serviceName,
-            String deploymentName,
-            VirtualMachineShutdownRolesParameters parameters)
-            throws InterruptedException, ExecutionException, ServiceException,
-            IOException;
-
+    * The Shutdown Roles operation stops the specified set of virtual machines.
+    *
+    * @param serviceName The name of your service.
+    * @param deploymentName The name of your deployment.
+    * @param parameters The set of virtual machine roles to shutdown and their
+    * post shutdown state.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    ComputeOperationStatusResponse shutdownRoles(String serviceName, String deploymentName, VirtualMachineShutdownRolesParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
+    
     /**
-     * The Shutdown Roles operation stops the specified set of virtual machines.
-     * 
-     * @param serviceName
-     *            The name of your service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param parameters
-     *            The set of virtual machine roles to shutdown and their post
-     *            shutdown state.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
-    Future<ComputeOperationStatusResponse> shutdownRolesAsync(
-            String serviceName, String deploymentName,
-            VirtualMachineShutdownRolesParameters parameters);
-
+    * The Shutdown Roles operation stops the specified set of virtual machines.
+    *
+    * @param serviceName The name of your service.
+    * @param deploymentName The name of your deployment.
+    * @param parameters The set of virtual machine roles to shutdown and their
+    * post shutdown state.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    Future<ComputeOperationStatusResponse> shutdownRolesAsync(String serviceName, String deploymentName, VirtualMachineShutdownRolesParameters parameters);
+    
     /**
-     * The Start Role operation starts the specified virtual machine. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157189.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of your service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param virtualMachineName
-     *            The name of the virtual machine to start.
-     * @throws InterruptedException
-     *             Thrown when a thread is waiting, sleeping, or otherwise
-     *             occupied, and the thread is interrupted, either before or
-     *             during the activity. Occasionally a method may wish to test
-     *             whether the current thread has been interrupted, and if so,
-     *             to immediately throw this exception. The following code can
-     *             be used to achieve this effect:
-     * @throws ExecutionException
-     *             Thrown when attempting to retrieve the result of a task that
-     *             aborted by throwing an exception. This exception can be
-     *             inspected using the Throwable.getCause() method.
-     * @throws ServiceException
-     *             Thrown if the server returned an error for the request.
-     * @throws IOException
-     *             Thrown if there was an error setting up tracing for the
-     *             request.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
-    ComputeOperationStatusResponse start(String serviceName,
-            String deploymentName, String virtualMachineName)
-            throws InterruptedException, ExecutionException, ServiceException,
-            IOException;
-
+    * The Start Role operation starts the specified virtual machine.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157189.aspx for
+    * more information)
+    *
+    * @param serviceName The name of your service.
+    * @param deploymentName The name of your deployment.
+    * @param virtualMachineName The name of the virtual machine to start.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    ComputeOperationStatusResponse start(String serviceName, String deploymentName, String virtualMachineName) throws InterruptedException, ExecutionException, ServiceException, IOException;
+    
     /**
-     * The Start Role operation starts the specified virtual machine. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157189.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of your service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param virtualMachineName
-     *            The name of the virtual machine to start.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
-    Future<ComputeOperationStatusResponse> startAsync(String serviceName,
-            String deploymentName, String virtualMachineName);
-
+    * The Start Role operation starts the specified virtual machine.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157189.aspx for
+    * more information)
+    *
+    * @param serviceName The name of your service.
+    * @param deploymentName The name of your deployment.
+    * @param virtualMachineName The name of the virtual machine to start.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    Future<ComputeOperationStatusResponse> startAsync(String serviceName, String deploymentName, String virtualMachineName);
+    
     /**
-     * The Start Roles operation starts the specified set of virtual machines.
-     * 
-     * @param serviceName
-     *            The name of your service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param parameters
-     *            The set of virtual machine roles to start.
-     * @throws InterruptedException
-     *             Thrown when a thread is waiting, sleeping, or otherwise
-     *             occupied, and the thread is interrupted, either before or
-     *             during the activity. Occasionally a method may wish to test
-     *             whether the current thread has been interrupted, and if so,
-     *             to immediately throw this exception. The following code can
-     *             be used to achieve this effect:
-     * @throws ExecutionException
-     *             Thrown when attempting to retrieve the result of a task that
-     *             aborted by throwing an exception. This exception can be
-     *             inspected using the Throwable.getCause() method.
-     * @throws ServiceException
-     *             Thrown if the server returned an error for the request.
-     * @throws IOException
-     *             Thrown if there was an error setting up tracing for the
-     *             request.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
-    ComputeOperationStatusResponse startRoles(String serviceName,
-            String deploymentName, VirtualMachineStartRolesParameters parameters)
-            throws InterruptedException, ExecutionException, ServiceException,
-            IOException;
-
+    * The Start Roles operation starts the specified set of virtual machines.
+    *
+    * @param serviceName The name of your service.
+    * @param deploymentName The name of your deployment.
+    * @param parameters The set of virtual machine roles to start.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    ComputeOperationStatusResponse startRoles(String serviceName, String deploymentName, VirtualMachineStartRolesParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
+    
     /**
-     * The Start Roles operation starts the specified set of virtual machines.
-     * 
-     * @param serviceName
-     *            The name of your service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param parameters
-     *            The set of virtual machine roles to start.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
-    Future<ComputeOperationStatusResponse> startRolesAsync(String serviceName,
-            String deploymentName, VirtualMachineStartRolesParameters parameters);
-
+    * The Start Roles operation starts the specified set of virtual machines.
+    *
+    * @param serviceName The name of your service.
+    * @param deploymentName The name of your deployment.
+    * @param parameters The set of virtual machine roles to start.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    Future<ComputeOperationStatusResponse> startRolesAsync(String serviceName, String deploymentName, VirtualMachineStartRolesParameters parameters);
+    
     /**
-     * The Update Role operation adds a virtual machine to an existing
-     * deployment. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157187.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of your service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param virtualMachineName
-     *            The name of your virtual machine.
-     * @param parameters
-     *            Parameters supplied to the Update Virtual Machine operation.
-     * @throws ParserConfigurationException
-     *             Thrown if there was an error configuring the parser for the
-     *             response body.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the response body.
-     * @throws TransformerException
-     *             Thrown if there was an error creating the DOM transformer.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @throws URISyntaxException
-     *             Thrown if there was an error parsing a URI in the response.
-     * @throws InterruptedException
-     *             Thrown when a thread is waiting, sleeping, or otherwise
-     *             occupied, and the thread is interrupted, either before or
-     *             during the activity. Occasionally a method may wish to test
-     *             whether the current thread has been interrupted, and if so,
-     *             to immediately throw this exception. The following code can
-     *             be used to achieve this effect:
-     * @throws ExecutionException
-     *             Thrown when attempting to retrieve the result of a task that
-     *             aborted by throwing an exception. This exception can be
-     *             inspected using the Throwable.getCause() method.
-     * @throws ServiceException
-     *             Thrown if the server returned an error for the request.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
-    ComputeOperationStatusResponse update(String serviceName,
-            String deploymentName, String virtualMachineName,
-            VirtualMachineUpdateParameters parameters)
-            throws ParserConfigurationException, SAXException,
-            TransformerException, IOException, ServiceException,
-            URISyntaxException, InterruptedException, ExecutionException,
-            ServiceException;
-
+    * The Update Role operation adds a virtual machine to an existing
+    * deployment.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157187.aspx for
+    * more information)
+    *
+    * @param serviceName The name of your service.
+    * @param deploymentName The name of your deployment.
+    * @param virtualMachineName The name of your virtual machine.
+    * @param parameters Parameters supplied to the Update Virtual Machine
+    * operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    ComputeOperationStatusResponse update(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException, InterruptedException, ExecutionException, ServiceException;
+    
     /**
-     * The Update Role operation adds a virtual machine to an existing
-     * deployment. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157187.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of your service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param virtualMachineName
-     *            The name of your virtual machine.
-     * @param parameters
-     *            Parameters supplied to the Update Virtual Machine operation.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
-    Future<ComputeOperationStatusResponse> updateAsync(String serviceName,
-            String deploymentName, String virtualMachineName,
-            VirtualMachineUpdateParameters parameters);
-
+    * The Update Role operation adds a virtual machine to an existing
+    * deployment.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157187.aspx for
+    * more information)
+    *
+    * @param serviceName The name of your service.
+    * @param deploymentName The name of your deployment.
+    * @param virtualMachineName The name of your virtual machine.
+    * @param parameters Parameters supplied to the Update Virtual Machine
+    * operation.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    Future<ComputeOperationStatusResponse> updateAsync(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineUpdateParameters parameters);
+    
     /**
-     * The UpdateLoadBalancedEndpointSet operation changes the specified
-     * load-balanced InputEndpoints on all the roles of an Infrastructure as a
-     * Service deployment. Non load-balanced endpoints must be changed using
-     * UpdateRole.
-     * 
-     * @param serviceName
-     *            The name of your service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param parameters
-     *            Parameters supplied to the Update Load Balanced Endpoint Set
-     *            operation.
-     * @throws InterruptedException
-     *             Thrown when a thread is waiting, sleeping, or otherwise
-     *             occupied, and the thread is interrupted, either before or
-     *             during the activity. Occasionally a method may wish to test
-     *             whether the current thread has been interrupted, and if so,
-     *             to immediately throw this exception. The following code can
-     *             be used to achieve this effect:
-     * @throws ExecutionException
-     *             Thrown when attempting to retrieve the result of a task that
-     *             aborted by throwing an exception. This exception can be
-     *             inspected using the Throwable.getCause() method.
-     * @throws ServiceException
-     *             Thrown if the server returned an error for the request.
-     * @throws IOException
-     *             Thrown if there was an error setting up tracing for the
-     *             request.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
-    ComputeOperationStatusResponse updateLoadBalancedEndpointSet(
-            String serviceName, String deploymentName,
-            VirtualMachineUpdateLoadBalancedSetParameters parameters)
-            throws InterruptedException, ExecutionException, ServiceException,
-            IOException;
-
+    * The UpdateLoadBalancedEndpointSet operation changes the specified
+    * load-balanced InputEndpoints on all the roles of an Infrastructure as a
+    * Service deployment. Non load-balanced endpoints must be changed using
+    * UpdateRole.
+    *
+    * @param serviceName The name of your service.
+    * @param deploymentName The name of your deployment.
+    * @param parameters Parameters supplied to the Update Load Balanced
+    * Endpoint Set operation.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    ComputeOperationStatusResponse updateLoadBalancedEndpointSet(String serviceName, String deploymentName, VirtualMachineUpdateLoadBalancedSetParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
+    
     /**
-     * The UpdateLoadBalancedEndpointSet operation changes the specified
-     * load-balanced InputEndpoints on all the roles of an Infrastructure as a
-     * Service deployment. Non load-balanced endpoints must be changed using
-     * UpdateRole.
-     * 
-     * @param serviceName
-     *            The name of your service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param parameters
-     *            Parameters supplied to the Update Load Balanced Endpoint Set
-     *            operation.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
-    Future<ComputeOperationStatusResponse> updateLoadBalancedEndpointSetAsync(
-            String serviceName, String deploymentName,
-            VirtualMachineUpdateLoadBalancedSetParameters parameters);
+    * The UpdateLoadBalancedEndpointSet operation changes the specified
+    * load-balanced InputEndpoints on all the roles of an Infrastructure as a
+    * Service deployment. Non load-balanced endpoints must be changed using
+    * UpdateRole.
+    *
+    * @param serviceName The name of your service.
+    * @param deploymentName The name of your deployment.
+    * @param parameters Parameters supplied to the Update Load Balanced
+    * Endpoint Set operation.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    Future<ComputeOperationStatusResponse> updateLoadBalancedEndpointSetAsync(String serviceName, String deploymentName, VirtualMachineUpdateLoadBalancedSetParameters parameters);
 }

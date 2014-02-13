@@ -26,28 +26,25 @@ package com.microsoft.windowsazure.management.compute.models;
 import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
- * The Get Service Certificate operation response.
- */
+* The Get Service Certificate operation response.
+*/
 public class ServiceCertificateGetResponse extends OperationResponse {
     private byte[] data;
-
+    
     /**
-     * The public portion of the X.509 service certificate as a form of the .cer
-     * file.
-     * 
-     * @return The Data value.
-     */
+    * The public portion of the X.509 service certificate as a form of the .cer
+    * file.
+    * @return The Data value.
+    */
     public byte[] getData() {
         return this.data;
     }
-
+    
     /**
-     * The public portion of the X.509 service certificate as a form of the .cer
-     * file.
-     * 
-     * @param dataValue
-     *            The Data value.
-     */
+    * The public portion of the X.509 service certificate as a form of the .cer
+    * file.
+    * @param dataValue The Data value.
+    */
     public void setData(final byte[] dataValue) {
         this.data = dataValue;
     }

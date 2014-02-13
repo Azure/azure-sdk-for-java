@@ -24,112 +24,97 @@
 package com.microsoft.windowsazure.management.virtualnetworks.models;
 
 /**
- * Preview Only. Parameters supplied to the Create Reserved IP operation.
- */
+* Preview Only. Parameters supplied to the Create Reserved IP operation.
+*/
 public class NetworkReservedIPCreateParameters {
     private String affinityGroup;
-
+    
     /**
-     * An affinity group, which indirectly refers to the location where the
-     * virtual network exists.
-     * 
-     * @return The AffinityGroup value.
-     */
+    * An affinity group, which indirectly refers to the location where the
+    * virtual network exists.
+    * @return The AffinityGroup value.
+    */
     public String getAffinityGroup() {
         return this.affinityGroup;
     }
-
+    
     /**
-     * An affinity group, which indirectly refers to the location where the
-     * virtual network exists.
-     * 
-     * @param affinityGroupValue
-     *            The AffinityGroup value.
-     */
+    * An affinity group, which indirectly refers to the location where the
+    * virtual network exists.
+    * @param affinityGroupValue The AffinityGroup value.
+    */
     public void setAffinityGroup(final String affinityGroupValue) {
         this.affinityGroup = affinityGroupValue;
     }
-
+    
     private String deploymentName;
-
+    
     /**
-     * The name of the deployment the IP belongs to, if being used.
-     * 
-     * @return The DeploymentName value.
-     */
+    * The name of the deployment the IP belongs to, if being used.
+    * @return The DeploymentName value.
+    */
     public String getDeploymentName() {
         return this.deploymentName;
     }
-
+    
     /**
-     * The name of the deployment the IP belongs to, if being used.
-     * 
-     * @param deploymentNameValue
-     *            The DeploymentName value.
-     */
+    * The name of the deployment the IP belongs to, if being used.
+    * @param deploymentNameValue The DeploymentName value.
+    */
     public void setDeploymentName(final String deploymentNameValue) {
         this.deploymentName = deploymentNameValue;
     }
-
+    
     private String label;
-
+    
     /**
-     * The friendly identifier of the site.
-     * 
-     * @return The Label value.
-     */
+    * The friendly identifier of the site.
+    * @return The Label value.
+    */
     public String getLabel() {
         return this.label;
     }
-
+    
     /**
-     * The friendly identifier of the site.
-     * 
-     * @param labelValue
-     *            The Label value.
-     */
+    * The friendly identifier of the site.
+    * @param labelValue The Label value.
+    */
     public void setLabel(final String labelValue) {
         this.label = labelValue;
     }
-
+    
     private String name;
-
+    
     /**
-     * Name of the reserved IP.
-     * 
-     * @return The Name value.
-     */
+    * Name of the reserved IP.
+    * @return The Name value.
+    */
     public String getName() {
         return this.name;
     }
-
+    
     /**
-     * Name of the reserved IP.
-     * 
-     * @param nameValue
-     *            The Name value.
-     */
+    * Name of the reserved IP.
+    * @param nameValue The Name value.
+    */
     public void setName(final String nameValue) {
         this.name = nameValue;
     }
-
+    
     private String serviceName;
-
+    
     /**
-     * The name of the service the IP belongs to, if being used.
-     * 
-     * @return The ServiceName value.
-     */
+    * The name of the service the IP belongs to, if being used.
+    * @return The ServiceName value.
+    */
     public String getServiceName() {
         return this.serviceName;
     }
-
+    
     /**
-     * The name of the service the IP belongs to, if being used.
-     * 
-     * @param serviceNameValue
-     *            The ServiceName value.
-     */
+    * The name of the service the IP belongs to, if being used.
+    * @param serviceNameValue The ServiceName value.
+    */
     public void setServiceName(final String serviceNameValue) {
         this.serviceName = serviceNameValue;
     }

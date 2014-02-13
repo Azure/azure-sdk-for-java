@@ -76,94 +76,81 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
- * The Service Management API includes operations for managing the storage
- * accounts beneath your subscription. (see
- * http://msdn.microsoft.com/en-us/library/windowsazure/ee460790.aspx for more
- * information)
- */
-public class StorageAccountOperationsImpl implements
-        ServiceOperations<StorageManagementClientImpl>,
-        StorageAccountOperations {
+* The Service Management API includes operations for managing the storage
+* accounts beneath your subscription.  (see
+* http://msdn.microsoft.com/en-us/library/windowsazure/ee460790.aspx for more
+* information)
+*/
+public class StorageAccountOperationsImpl implements ServiceOperations<StorageManagementClientImpl>, StorageAccountOperations {
     /**
-     * Initializes a new instance of the StorageAccountOperationsImpl class.
-     * 
-     * @param client
-     *            Reference to the service client.
-     */
+    * Initializes a new instance of the StorageAccountOperationsImpl class.
+    *
+    * @param client Reference to the service client.
+    */
     StorageAccountOperationsImpl(StorageManagementClientImpl client) {
         this.client = client;
     }
-
+    
     private StorageManagementClientImpl client;
-
+    
     /**
-     * Gets a reference to the
-     * microsoft.windowsazure.management.storage.StorageManagementClientImpl.
-     * 
-     * @return The Client value.
-     */
+    * Gets a reference to the
+    * microsoft.windowsazure.management.storage.StorageManagementClientImpl.
+    * @return The Client value.
+    */
     public StorageManagementClientImpl getClient() {
         return this.client;
     }
-
+    
     /**
-     * The Create Storage Account operation creates a new storage account in
-     * Windows Azure. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/hh264518.aspx for
-     * more information)
-     * 
-     * @param parameters
-     *            Parameters supplied to the Create Storage Account operation.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * The Create Storage Account operation creates a new storage account in
+    * Windows Azure.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/hh264518.aspx for
+    * more information)
+    *
+    * @param parameters Parameters supplied to the Create Storage Account
+    * operation.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public Future<OperationResponse> beginCreatingAsync(
-            final StorageAccountCreateParameters parameters) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<OperationResponse>() {
-                    @Override
-                    public OperationResponse call() throws Exception {
-                        return beginCreating(parameters);
-                    }
-                });
+    public Future<OperationResponse> beginCreatingAsync(final StorageAccountCreateParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception {
+                return beginCreating(parameters);
+            }
+         });
     }
-
+    
     /**
-     * The Create Storage Account operation creates a new storage account in
-     * Windows Azure. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/hh264518.aspx for
-     * more information)
-     * 
-     * @param parameters
-     *            Parameters supplied to the Create Storage Account operation.
-     * @throws ParserConfigurationException
-     *             Thrown if there was an error configuring the parser for the
-     *             response body.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the response body.
-     * @throws TransformerException
-     *             Thrown if there was an error creating the DOM transformer.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * The Create Storage Account operation creates a new storage account in
+    * Windows Azure.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/hh264518.aspx for
+    * more information)
+    *
+    * @param parameters Parameters supplied to the Create Storage Account
+    * operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public OperationResponse beginCreating(
-            StorageAccountCreateParameters parameters)
-            throws ParserConfigurationException, SAXException,
-            TransformerException, IOException, ServiceException {
+    public OperationResponse beginCreating(StorageAccountCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
         if (parameters == null) {
             throw new NullPointerException("parameters");
         }
-        if (parameters.getDescription() != null
-                && parameters.getDescription().length() > 1024) {
+        if (parameters.getDescription() != null && parameters.getDescription().length() > 1024) {
             throw new IllegalArgumentException("parameters.Description");
         }
         if (parameters.getLabel() == null) {
@@ -182,19 +169,16 @@ public class StorageAccountOperationsImpl implements
             throw new IllegalArgumentException("parameters.ServiceName");
         }
         for (char serviceNameChar : parameters.getServiceName().toCharArray()) {
-            if (Character.isLowerCase(serviceNameChar) == false
-                    && Character.isDigit(serviceNameChar) == false) {
+            if (Character.isLowerCase(serviceNameChar) == false && Character.isDigit(serviceNameChar) == false) {
                 throw new IllegalArgumentException("parameters.ServiceName");
             }
         }
         // TODO: Validate parameters.ServiceName is a valid DNS name.
-        int locationCount = (parameters.getAffinityGroup() != null ? 1 : 0)
-                + (parameters.getLocation() != null ? 1 : 0);
+        int locationCount = (parameters.getAffinityGroup() != null ? 1 : 0) + (parameters.getLocation() != null ? 1 : 0);
         if (locationCount != 1) {
-            throw new IllegalArgumentException(
-                    "Only one of parameters.AffinityGroup, parameters.Location may be provided.");
+            throw new IllegalArgumentException("Only one of parameters.AffinityGroup, parameters.Location may be provided.");
         }
-
+        
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -202,169 +186,121 @@ public class StorageAccountOperationsImpl implements
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this, "beginCreatingAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "beginCreatingAsync", tracingParameters);
         }
-
+        
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/"
-                + this.getClient().getCredentials().getSubscriptionId()
-                + "/services/storageservices";
-
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/storageservices";
+        
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
-
+        
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
         httpRequest.setHeader("x-ms-version", "2013-03-01");
-
+        
         // Serialize Request
         String requestContent = null;
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
-                .newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory
-                .newDocumentBuilder();
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
         Document requestDoc = documentBuilder.newDocument();
-
-        Element createStorageServiceInputElement = requestDoc.createElementNS(
-                "http://schemas.microsoft.com/windowsazure",
-                "CreateStorageServiceInput");
+        
+        Element createStorageServiceInputElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CreateStorageServiceInput");
         requestDoc.appendChild(createStorageServiceInputElement);
-
-        Element serviceNameElement = requestDoc.createElementNS(
-                "http://schemas.microsoft.com/windowsazure", "ServiceName");
-        serviceNameElement.appendChild(requestDoc.createTextNode(parameters
-                .getServiceName()));
+        
+        Element serviceNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ServiceName");
+        serviceNameElement.appendChild(requestDoc.createTextNode(parameters.getServiceName()));
         createStorageServiceInputElement.appendChild(serviceNameElement);
-
-        Element labelElement = requestDoc.createElementNS(
-                "http://schemas.microsoft.com/windowsazure", "Label");
-        labelElement.appendChild(requestDoc.createTextNode(new String(Base64
-                .encodeBase64(parameters.getLabel().getBytes()))));
+        
+        Element labelElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Label");
+        labelElement.appendChild(requestDoc.createTextNode(new String(Base64.encodeBase64(parameters.getLabel().getBytes()))));
         createStorageServiceInputElement.appendChild(labelElement);
-
+        
         if (parameters.getDescription() != null) {
-            Element descriptionElement = requestDoc.createElementNS(
-                    "http://schemas.microsoft.com/windowsazure", "Description");
-            descriptionElement.appendChild(requestDoc.createTextNode(parameters
-                    .getDescription()));
+            Element descriptionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Description");
+            descriptionElement.appendChild(requestDoc.createTextNode(parameters.getDescription()));
             createStorageServiceInputElement.appendChild(descriptionElement);
         } else {
-            Element emptyElement = requestDoc.createElementNS(
-                    "http://schemas.microsoft.com/windowsazure", "Description");
-            Attr nilAttribute = requestDoc.createAttributeNS(
-                    "http://www.w3.org/2001/XMLSchema-instance", "nil");
+            Element emptyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Description");
+            Attr nilAttribute = requestDoc.createAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
             nilAttribute.setValue("true");
             emptyElement.setAttributeNode(nilAttribute);
             createStorageServiceInputElement.appendChild(emptyElement);
         }
-
+        
         if (parameters.getLocation() != null) {
-            Element locationElement = requestDoc.createElementNS(
-                    "http://schemas.microsoft.com/windowsazure", "Location");
-            locationElement.appendChild(requestDoc.createTextNode(parameters
-                    .getLocation()));
+            Element locationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Location");
+            locationElement.appendChild(requestDoc.createTextNode(parameters.getLocation()));
             createStorageServiceInputElement.appendChild(locationElement);
         }
-
+        
         if (parameters.getAffinityGroup() != null) {
-            Element affinityGroupElement = requestDoc.createElementNS(
-                    "http://schemas.microsoft.com/windowsazure",
-                    "AffinityGroup");
-            affinityGroupElement.appendChild(requestDoc
-                    .createTextNode(parameters.getAffinityGroup()));
+            Element affinityGroupElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AffinityGroup");
+            affinityGroupElement.appendChild(requestDoc.createTextNode(parameters.getAffinityGroup()));
             createStorageServiceInputElement.appendChild(affinityGroupElement);
         }
-
-        Element geoReplicationEnabledElement = requestDoc.createElementNS(
-                "http://schemas.microsoft.com/windowsazure",
-                "GeoReplicationEnabled");
-        geoReplicationEnabledElement.appendChild(requestDoc
-                .createTextNode(Boolean.toString(
-                        parameters.isGeoReplicationEnabled()).toLowerCase()));
-        createStorageServiceInputElement
-                .appendChild(geoReplicationEnabledElement);
-
+        
+        Element geoReplicationEnabledElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "GeoReplicationEnabled");
+        geoReplicationEnabledElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.isGeoReplicationEnabled()).toLowerCase()));
+        createStorageServiceInputElement.appendChild(geoReplicationEnabledElement);
+        
         if (parameters.getExtendedProperties() != null) {
-            Element extendedPropertiesDictionaryElement = requestDoc
-                    .createElementNS(
-                            "http://schemas.microsoft.com/windowsazure",
-                            "ExtendedProperties");
-            for (Map.Entry<String, String> entry : parameters
-                    .getExtendedProperties().entrySet()) {
+            Element extendedPropertiesDictionaryElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperties");
+            for (Map.Entry<String, String> entry : parameters.getExtendedProperties().entrySet()) {
                 String extendedPropertiesKey = entry.getKey();
                 String extendedPropertiesValue = entry.getValue();
-                Element extendedPropertiesElement = requestDoc.createElementNS(
-                        "http://schemas.microsoft.com/windowsazure",
-                        "ExtendedProperty");
-                extendedPropertiesDictionaryElement
-                        .appendChild(extendedPropertiesElement);
-
-                Element extendedPropertiesKeyElement = requestDoc
-                        .createElementNS(
-                                "http://schemas.microsoft.com/windowsazure",
-                                "Name");
-                extendedPropertiesKeyElement.appendChild(requestDoc
-                        .createTextNode(extendedPropertiesKey));
-                extendedPropertiesElement
-                        .appendChild(extendedPropertiesKeyElement);
-
-                Element extendedPropertiesValueElement = requestDoc
-                        .createElementNS(
-                                "http://schemas.microsoft.com/windowsazure",
-                                "Value");
-                extendedPropertiesValueElement.appendChild(requestDoc
-                        .createTextNode(extendedPropertiesValue));
-                extendedPropertiesElement
-                        .appendChild(extendedPropertiesValueElement);
+                Element extendedPropertiesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperty");
+                extendedPropertiesDictionaryElement.appendChild(extendedPropertiesElement);
+                
+                Element extendedPropertiesKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                extendedPropertiesKeyElement.appendChild(requestDoc.createTextNode(extendedPropertiesKey));
+                extendedPropertiesElement.appendChild(extendedPropertiesKeyElement);
+                
+                Element extendedPropertiesValueElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Value");
+                extendedPropertiesValueElement.appendChild(requestDoc.createTextNode(extendedPropertiesValue));
+                extendedPropertiesElement.appendChild(extendedPropertiesValueElement);
             }
-            createStorageServiceInputElement
-                    .appendChild(extendedPropertiesDictionaryElement);
+            createStorageServiceInputElement.appendChild(extendedPropertiesDictionaryElement);
         }
-
+        
         DOMSource domSource = new DOMSource(requestDoc);
         StringWriter stringWriter = new StringWriter();
         StreamResult streamResult = new StreamResult(stringWriter);
-        TransformerFactory transformerFactory = TransformerFactory
-                .newInstance();
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = transformerFactory.newTransformer();
         transformer.transform(domSource, streamResult);
         requestContent = stringWriter.toString();
         StringEntity entity = new StringEntity(requestContent);
         httpRequest.setEntity(entity);
         httpRequest.setHeader("Content-Type", "application/xml");
-
+        
         // Send Request
         HttpResponse httpResponse = null;
         try {
             if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient()
-                    .execute(httpRequest);
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
             if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_ACCEPTED) {
-                ServiceException ex = ServiceException.createFromXml(
-                        httpRequest, requestContent, httpResponse,
-                        httpResponse.getEntity());
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-
+            
             // Create Result
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader(
-                        "x-ms-request-id").getValue());
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
@@ -375,62 +311,52 @@ public class StorageAccountOperationsImpl implements
             }
         }
     }
-
+    
     /**
-     * The Check Name Availability operation checks if a storage account name is
-     * available for use in Windows Azure. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154125.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The desired storage account name to check for availability.
-     * @return The response to a storage account check name availability
-     *         request.
-     */
+    * The Check Name Availability operation checks if a storage account name is
+    * available for use in Windows Azure.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj154125.aspx for
+    * more information)
+    *
+    * @param serviceName The desired storage account name to check for
+    * availability.
+    * @return The response to a storage account check name availability request.
+    */
     @Override
-    public Future<CheckNameAvailabilityResponse> checkNameAvailabilityAsync(
-            final String serviceName) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<CheckNameAvailabilityResponse>() {
-                    @Override
-                    public CheckNameAvailabilityResponse call()
-                            throws Exception {
-                        return checkNameAvailability(serviceName);
-                    }
-                });
+    public Future<CheckNameAvailabilityResponse> checkNameAvailabilityAsync(final String serviceName) {
+        return this.getClient().getExecutorService().submit(new Callable<CheckNameAvailabilityResponse>() { 
+            @Override
+            public CheckNameAvailabilityResponse call() throws Exception {
+                return checkNameAvailability(serviceName);
+            }
+         });
     }
-
+    
     /**
-     * The Check Name Availability operation checks if a storage account name is
-     * available for use in Windows Azure. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154125.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The desired storage account name to check for availability.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @throws ParserConfigurationException
-     *             Thrown if there was a serious configuration error with the
-     *             document parser.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the XML response.
-     * @return The response to a storage account check name availability
-     *         request.
-     */
+    * The Check Name Availability operation checks if a storage account name is
+    * available for use in Windows Azure.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj154125.aspx for
+    * more information)
+    *
+    * @param serviceName The desired storage account name to check for
+    * availability.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return The response to a storage account check name availability request.
+    */
     @Override
-    public CheckNameAvailabilityResponse checkNameAvailability(
-            String serviceName) throws IOException, ServiceException,
-            ParserConfigurationException, SAXException {
+    public CheckNameAvailabilityResponse checkNameAvailability(String serviceName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
         // Validate
         if (serviceName == null) {
             throw new NullPointerException("serviceName");
         }
-
+        
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -438,80 +364,63 @@ public class StorageAccountOperationsImpl implements
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
-            CloudTracing.enter(invocationId, this,
-                    "checkNameAvailabilityAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "checkNameAvailabilityAsync", tracingParameters);
         }
-
+        
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/"
-                + this.getClient().getCredentials().getSubscriptionId()
-                + "/services/storageservices/operations/isavailable/"
-                + serviceName;
-
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/storageservices/operations/isavailable/" + serviceName;
+        
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
-
+        
         // Set Headers
         httpRequest.setHeader("x-ms-version", "2013-03-01");
-
+        
         // Send Request
         HttpResponse httpResponse = null;
         try {
             if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient()
-                    .execute(httpRequest);
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
             if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_OK) {
-                ServiceException ex = ServiceException.createFromXml(
-                        httpRequest, null, httpResponse,
-                        httpResponse.getEntity());
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-
+            
             // Create Result
             CheckNameAvailabilityResponse result = null;
             // Deserialize Response
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new CheckNameAvailabilityResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
-                    .newInstance();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory
-                    .newDocumentBuilder();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
-
-            NodeList elements = responseDoc
-                    .getElementsByTagName("AvailabilityResponse");
-            Element availabilityResponseElement = elements.getLength() > 0 ? ((Element) elements
-                    .item(0)) : null;
+            
+            NodeList elements = responseDoc.getElementsByTagName("AvailabilityResponse");
+            Element availabilityResponseElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (availabilityResponseElement != null) {
-                NodeList elements2 = availabilityResponseElement
-                        .getElementsByTagName("Result");
-                Element resultElement = elements2.getLength() > 0 ? ((Element) elements2
-                        .item(0)) : null;
+                NodeList elements2 = availabilityResponseElement.getElementsByTagName("Result");
+                Element resultElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                 if (resultElement != null) {
                     boolean resultInstance;
-                    resultInstance = DatatypeConverter
-                            .parseBoolean(resultElement.getTextContent());
+                    resultInstance = DatatypeConverter.parseBoolean(resultElement.getTextContent());
                     result.setIsAvailable(resultInstance);
                 }
-
-                NodeList elements3 = availabilityResponseElement
-                        .getElementsByTagName("Reason");
-                Element reasonElement = elements3.getLength() > 0 ? ((Element) elements3
-                        .item(0)) : null;
+                
+                NodeList elements3 = availabilityResponseElement.getElementsByTagName("Reason");
+                Element reasonElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                 if (reasonElement != null) {
                     boolean isNil = false;
-                    Attr nilAttribute = reasonElement.getAttributeNodeNS(
-                            "http://www.w3.org/2001/XMLSchema-instance", "nil");
+                    Attr nilAttribute = reasonElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                     if (nilAttribute != null) {
                         isNil = "true".equals(nilAttribute.getValue());
                     }
@@ -522,13 +431,12 @@ public class StorageAccountOperationsImpl implements
                     }
                 }
             }
-
+            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader(
-                        "x-ms-request-id").getValue());
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
@@ -539,77 +447,67 @@ public class StorageAccountOperationsImpl implements
             }
         }
     }
-
+    
     /**
-     * The Create Storage Account operation creates a new storage account in
-     * Windows Azure. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/hh264518.aspx for
-     * more information)
-     * 
-     * @param parameters
-     *            Parameters supplied to the Create Storage Account operation.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
+    * The Create Storage Account operation creates a new storage account in
+    * Windows Azure.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/hh264518.aspx for
+    * more information)
+    *
+    * @param parameters Parameters supplied to the Create Storage Account
+    * operation.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
     @Override
-    public Future<StorageOperationStatusResponse> createAsync(
-            final StorageAccountCreateParameters parameters) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<StorageOperationStatusResponse>() {
-                    @Override
-                    public StorageOperationStatusResponse call()
-                            throws Exception {
-                        return create(parameters);
-                    }
-                });
+    public Future<StorageOperationStatusResponse> createAsync(final StorageAccountCreateParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<StorageOperationStatusResponse>() { 
+            @Override
+            public StorageOperationStatusResponse call() throws Exception {
+                return create(parameters);
+            }
+         });
     }
-
+    
     /**
-     * The Create Storage Account operation creates a new storage account in
-     * Windows Azure. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/hh264518.aspx for
-     * more information)
-     * 
-     * @param parameters
-     *            Parameters supplied to the Create Storage Account operation.
-     * @throws InterruptedException
-     *             Thrown when a thread is waiting, sleeping, or otherwise
-     *             occupied, and the thread is interrupted, either before or
-     *             during the activity. Occasionally a method may wish to test
-     *             whether the current thread has been interrupted, and if so,
-     *             to immediately throw this exception. The following code can
-     *             be used to achieve this effect:
-     * @throws ExecutionException
-     *             Thrown when attempting to retrieve the result of a task that
-     *             aborted by throwing an exception. This exception can be
-     *             inspected using the Throwable.getCause() method.
-     * @throws ServiceException
-     *             Thrown if the server returned an error for the request.
-     * @throws IOException
-     *             Thrown if there was an error setting up tracing for the
-     *             request.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
+    * The Create Storage Account operation creates a new storage account in
+    * Windows Azure.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/hh264518.aspx for
+    * more information)
+    *
+    * @param parameters Parameters supplied to the Create Storage Account
+    * operation.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
     @Override
-    public StorageOperationStatusResponse create(
-            StorageAccountCreateParameters parameters)
-            throws InterruptedException, ExecutionException, ServiceException,
-            IOException {
+    public StorageOperationStatusResponse create(StorageAccountCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
         StorageManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -617,41 +515,29 @@ public class StorageAccountOperationsImpl implements
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this, "createAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "createAsync", tracingParameters);
         }
         try {
             if (shouldTrace) {
-                client2 = this
-                        .getClient()
-                        .withRequestFilterLast(
-                                new ClientRequestTrackingHandler(invocationId))
-                        .withResponseFilterLast(
-                                new ClientRequestTrackingHandler(invocationId));
+                client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
-
-            OperationResponse response = client2.getStorageAccountsOperations()
-                    .beginCreatingAsync(parameters).get();
-            StorageOperationStatusResponse result = client2
-                    .getOperationStatusAsync(response.getRequestId()).get();
+            
+            OperationResponse response = client2.getStorageAccountsOperations().beginCreatingAsync(parameters).get();
+            StorageOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
-                result = client2.getOperationStatusAsync(
-                        response.getRequestId()).get();
+                result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
-
+            
             if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
-                    ServiceException ex = new ServiceException(result
-                            .getError().getCode()
-                            + " : "
-                            + result.getError().getMessage());
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setErrorCode(result.getError().getCode());
                     ex.setErrorMessage(result.getError().getMessage());
                     if (shouldTrace) {
@@ -666,7 +552,7 @@ public class StorageAccountOperationsImpl implements
                     throw ex;
                 }
             }
-
+            
             return result;
         } finally {
             if (this.getClient() != null && shouldTrace) {
@@ -674,54 +560,48 @@ public class StorageAccountOperationsImpl implements
             }
         }
     }
-
+    
     /**
-     * The Delete Storage Account operation deletes the specifiedstorage account
-     * from Windows Azure. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/hh264517.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of the storage account.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * The Delete Storage Account operation deletes the specifiedstorage account
+    * from Windows Azure.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/hh264517.aspx for
+    * more information)
+    *
+    * @param serviceName The name of the storage account.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
     public Future<OperationResponse> deleteAsync(final String serviceName) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<OperationResponse>() {
-                    @Override
-                    public OperationResponse call() throws Exception {
-                        return delete(serviceName);
-                    }
-                });
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception {
+                return delete(serviceName);
+            }
+         });
     }
-
+    
     /**
-     * The Delete Storage Account operation deletes the specifiedstorage account
-     * from Windows Azure. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/hh264517.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of the storage account.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * The Delete Storage Account operation deletes the specifiedstorage account
+    * from Windows Azure.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/hh264517.aspx for
+    * more information)
+    *
+    * @param serviceName The name of the storage account.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public OperationResponse delete(String serviceName) throws IOException,
-            ServiceException {
+    public OperationResponse delete(String serviceName) throws IOException, ServiceException {
         // Validate
         if (serviceName == null) {
             throw new NullPointerException("serviceName");
         }
-
+        
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -729,52 +609,45 @@ public class StorageAccountOperationsImpl implements
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
-            CloudTracing.enter(invocationId, this, "deleteAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "deleteAsync", tracingParameters);
         }
-
+        
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/"
-                + this.getClient().getCredentials().getSubscriptionId()
-                + "/services/storageservices/" + serviceName;
-
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/storageservices/" + serviceName;
+        
         // Create HTTP transport objects
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
-
+        
         // Set Headers
         httpRequest.setHeader("x-ms-version", "2013-03-01");
-
+        
         // Send Request
         HttpResponse httpResponse = null;
         try {
             if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient()
-                    .execute(httpRequest);
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
             if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_OK) {
-                ServiceException ex = ServiceException.createFromXml(
-                        httpRequest, null, httpResponse,
-                        httpResponse.getEntity());
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-
+            
             // Create Result
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader(
-                        "x-ms-request-id").getValue());
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
@@ -785,60 +658,52 @@ public class StorageAccountOperationsImpl implements
             }
         }
     }
-
+    
     /**
-     * The Get Storage Account Properties operation returns system properties
-     * for the specified storage account. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460802.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            Name of the storage account to get.
-     * @return The Get Storage Account Properties operation response.
-     */
+    * The Get Storage Account Properties operation returns system properties
+    * for the specified storage account.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460802.aspx for
+    * more information)
+    *
+    * @param serviceName Name of the storage account to get.
+    * @return The Get Storage Account Properties operation response.
+    */
     @Override
     public Future<StorageAccountGetResponse> getAsync(final String serviceName) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<StorageAccountGetResponse>() {
-                    @Override
-                    public StorageAccountGetResponse call() throws Exception {
-                        return get(serviceName);
-                    }
-                });
+        return this.getClient().getExecutorService().submit(new Callable<StorageAccountGetResponse>() { 
+            @Override
+            public StorageAccountGetResponse call() throws Exception {
+                return get(serviceName);
+            }
+         });
     }
-
+    
     /**
-     * The Get Storage Account Properties operation returns system properties
-     * for the specified storage account. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460802.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            Name of the storage account to get.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @throws ParserConfigurationException
-     *             Thrown if there was a serious configuration error with the
-     *             document parser.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the XML response.
-     * @throws URISyntaxException
-     *             Thrown if there was an error parsing a URI in the response.
-     * @return The Get Storage Account Properties operation response.
-     */
+    * The Get Storage Account Properties operation returns system properties
+    * for the specified storage account.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460802.aspx for
+    * more information)
+    *
+    * @param serviceName Name of the storage account to get.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
+    * @return The Get Storage Account Properties operation response.
+    */
     @Override
-    public StorageAccountGetResponse get(String serviceName)
-            throws IOException, ServiceException, ParserConfigurationException,
-            SAXException, URISyntaxException {
+    public StorageAccountGetResponse get(String serviceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException {
         // Validate
         if (serviceName == null) {
             throw new NullPointerException("serviceName");
         }
-
+        
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -846,303 +711,205 @@ public class StorageAccountOperationsImpl implements
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
-            CloudTracing.enter(invocationId, this, "getAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "getAsync", tracingParameters);
         }
-
+        
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/"
-                + this.getClient().getCredentials().getSubscriptionId()
-                + "/services/storageservices/" + serviceName;
-
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/storageservices/" + serviceName;
+        
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
-
+        
         // Set Headers
         httpRequest.setHeader("x-ms-version", "2013-03-01");
-
+        
         // Send Request
         HttpResponse httpResponse = null;
         try {
             if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient()
-                    .execute(httpRequest);
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
             if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_OK) {
-                ServiceException ex = ServiceException.createFromXml(
-                        httpRequest, null, httpResponse,
-                        httpResponse.getEntity());
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-
+            
             // Create Result
             StorageAccountGetResponse result = null;
             // Deserialize Response
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new StorageAccountGetResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
-                    .newInstance();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory
-                    .newDocumentBuilder();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
-
-            NodeList elements = responseDoc
-                    .getElementsByTagName("StorageService");
-            Element storageServiceElement = elements.getLength() > 0 ? ((Element) elements
-                    .item(0)) : null;
+            
+            NodeList elements = responseDoc.getElementsByTagName("StorageService");
+            Element storageServiceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (storageServiceElement != null) {
-                NodeList elements2 = storageServiceElement
-                        .getElementsByTagName("Url");
-                Element urlElement = elements2.getLength() > 0 ? ((Element) elements2
-                        .item(0)) : null;
+                NodeList elements2 = storageServiceElement.getElementsByTagName("Url");
+                Element urlElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                 if (urlElement != null) {
                     URI urlInstance;
                     urlInstance = new URI(urlElement.getTextContent());
                     result.setUri(urlInstance);
                 }
-
-                NodeList elements3 = storageServiceElement
-                        .getElementsByTagName("ServiceName");
-                Element serviceNameElement = elements3.getLength() > 0 ? ((Element) elements3
-                        .item(0)) : null;
+                
+                NodeList elements3 = storageServiceElement.getElementsByTagName("ServiceName");
+                Element serviceNameElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                 if (serviceNameElement != null) {
                     String serviceNameInstance;
                     serviceNameInstance = serviceNameElement.getTextContent();
                     result.setServiceName(serviceNameInstance);
                 }
-
-                NodeList elements4 = storageServiceElement
-                        .getElementsByTagName("StorageServiceProperties");
-                Element storageServicePropertiesElement = elements4.getLength() > 0 ? ((Element) elements4
-                        .item(0)) : null;
+                
+                NodeList elements4 = storageServiceElement.getElementsByTagName("StorageServiceProperties");
+                Element storageServicePropertiesElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                 if (storageServicePropertiesElement != null) {
                     StorageServiceProperties storageServicePropertiesInstance = new StorageServiceProperties();
                     result.setProperties(storageServicePropertiesInstance);
-
-                    NodeList elements5 = storageServicePropertiesElement
-                            .getElementsByTagName("Description");
-                    Element descriptionElement = elements5.getLength() > 0 ? ((Element) elements5
-                            .item(0)) : null;
+                    
+                    NodeList elements5 = storageServicePropertiesElement.getElementsByTagName("Description");
+                    Element descriptionElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                     if (descriptionElement != null) {
                         boolean isNil = false;
-                        Attr nilAttribute = descriptionElement
-                                .getAttributeNodeNS(
-                                        "http://www.w3.org/2001/XMLSchema-instance",
-                                        "nil");
+                        Attr nilAttribute = descriptionElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                         if (nilAttribute != null) {
                             isNil = "true".equals(nilAttribute.getValue());
                         }
                         if (isNil == false) {
                             String descriptionInstance;
-                            descriptionInstance = descriptionElement
-                                    .getTextContent();
-                            storageServicePropertiesInstance
-                                    .setDescription(descriptionInstance);
+                            descriptionInstance = descriptionElement.getTextContent();
+                            storageServicePropertiesInstance.setDescription(descriptionInstance);
                         }
                     }
-
-                    NodeList elements6 = storageServicePropertiesElement
-                            .getElementsByTagName("AffinityGroup");
-                    Element affinityGroupElement = elements6.getLength() > 0 ? ((Element) elements6
-                            .item(0)) : null;
+                    
+                    NodeList elements6 = storageServicePropertiesElement.getElementsByTagName("AffinityGroup");
+                    Element affinityGroupElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                     if (affinityGroupElement != null) {
                         String affinityGroupInstance;
-                        affinityGroupInstance = affinityGroupElement
-                                .getTextContent();
-                        storageServicePropertiesInstance
-                                .setAffinityGroup(affinityGroupInstance);
+                        affinityGroupInstance = affinityGroupElement.getTextContent();
+                        storageServicePropertiesInstance.setAffinityGroup(affinityGroupInstance);
                     }
-
-                    NodeList elements7 = storageServicePropertiesElement
-                            .getElementsByTagName("Location");
-                    Element locationElement = elements7.getLength() > 0 ? ((Element) elements7
-                            .item(0)) : null;
+                    
+                    NodeList elements7 = storageServicePropertiesElement.getElementsByTagName("Location");
+                    Element locationElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                     if (locationElement != null) {
                         String locationInstance;
                         locationInstance = locationElement.getTextContent();
-                        storageServicePropertiesInstance
-                                .setLocation(locationInstance);
+                        storageServicePropertiesInstance.setLocation(locationInstance);
                     }
-
-                    NodeList elements8 = storageServicePropertiesElement
-                            .getElementsByTagName("Label");
-                    Element labelElement = elements8.getLength() > 0 ? ((Element) elements8
-                            .item(0)) : null;
+                    
+                    NodeList elements8 = storageServicePropertiesElement.getElementsByTagName("Label");
+                    Element labelElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
                     if (labelElement != null) {
                         String labelInstance;
-                        labelInstance = labelElement.getTextContent() != null ? new String(
-                                Base64.decodeBase64(labelElement
-                                        .getTextContent().getBytes())) : null;
-                        storageServicePropertiesInstance
-                                .setLabel(labelInstance);
+                        labelInstance = labelElement.getTextContent() != null ? new String(Base64.decodeBase64(labelElement.getTextContent().getBytes())) : null;
+                        storageServicePropertiesInstance.setLabel(labelInstance);
                     }
-
-                    NodeList elements9 = storageServicePropertiesElement
-                            .getElementsByTagName("Status");
-                    Element statusElement = elements9.getLength() > 0 ? ((Element) elements9
-                            .item(0)) : null;
+                    
+                    NodeList elements9 = storageServicePropertiesElement.getElementsByTagName("Status");
+                    Element statusElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
                     if (statusElement != null) {
                         StorageServiceStatus statusInstance;
-                        statusInstance = StorageServiceStatus
-                                .valueOf(statusElement.getTextContent());
-                        storageServicePropertiesInstance
-                                .setStatus(statusInstance);
+                        statusInstance = StorageServiceStatus.valueOf(statusElement.getTextContent());
+                        storageServicePropertiesInstance.setStatus(statusInstance);
                     }
-
-                    NodeList elements10 = storageServicePropertiesElement
-                            .getElementsByTagName("Endpoints");
-                    Element endpointsSequenceElement = elements10.getLength() > 0 ? ((Element) elements10
-                            .item(0)) : null;
+                    
+                    NodeList elements10 = storageServicePropertiesElement.getElementsByTagName("Endpoints");
+                    Element endpointsSequenceElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
                     if (endpointsSequenceElement != null) {
-                        for (int i1 = 0; i1 < endpointsSequenceElement
-                                .getElementsByTagName("Endpoint").getLength(); i1 = i1 + 1) {
-                            org.w3c.dom.Element endpointsElement = ((org.w3c.dom.Element) endpointsSequenceElement
-                                    .getElementsByTagName("Endpoint").item(i1));
-                            storageServicePropertiesInstance.getEndpoints()
-                                    .add(new URI(endpointsElement
-                                            .getTextContent()));
+                        for (int i1 = 0; i1 < endpointsSequenceElement.getElementsByTagName("Endpoint").getLength(); i1 = i1 + 1) {
+                            org.w3c.dom.Element endpointsElement = ((org.w3c.dom.Element) endpointsSequenceElement.getElementsByTagName("Endpoint").item(i1));
+                            storageServicePropertiesInstance.getEndpoints().add(new URI(endpointsElement.getTextContent()));
                         }
                     }
-
-                    NodeList elements11 = storageServicePropertiesElement
-                            .getElementsByTagName("GeoReplicationEnabled");
-                    Element geoReplicationEnabledElement = elements11
-                            .getLength() > 0 ? ((Element) elements11.item(0))
-                            : null;
+                    
+                    NodeList elements11 = storageServicePropertiesElement.getElementsByTagName("GeoReplicationEnabled");
+                    Element geoReplicationEnabledElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
                     if (geoReplicationEnabledElement != null) {
                         boolean geoReplicationEnabledInstance;
-                        geoReplicationEnabledInstance = DatatypeConverter
-                                .parseBoolean(geoReplicationEnabledElement
-                                        .getTextContent());
-                        storageServicePropertiesInstance
-                                .setGeoReplicationEnabled(geoReplicationEnabledInstance);
+                        geoReplicationEnabledInstance = DatatypeConverter.parseBoolean(geoReplicationEnabledElement.getTextContent());
+                        storageServicePropertiesInstance.setGeoReplicationEnabled(geoReplicationEnabledInstance);
                     }
-
-                    NodeList elements12 = storageServicePropertiesElement
-                            .getElementsByTagName("GeoPrimaryRegion");
-                    Element geoPrimaryRegionElement = elements12.getLength() > 0 ? ((Element) elements12
-                            .item(0)) : null;
+                    
+                    NodeList elements12 = storageServicePropertiesElement.getElementsByTagName("GeoPrimaryRegion");
+                    Element geoPrimaryRegionElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
                     if (geoPrimaryRegionElement != null) {
                         String geoPrimaryRegionInstance;
-                        geoPrimaryRegionInstance = geoPrimaryRegionElement
-                                .getTextContent();
-                        storageServicePropertiesInstance
-                                .setGeoPrimaryRegion(geoPrimaryRegionInstance);
+                        geoPrimaryRegionInstance = geoPrimaryRegionElement.getTextContent();
+                        storageServicePropertiesInstance.setGeoPrimaryRegion(geoPrimaryRegionInstance);
                     }
-
-                    NodeList elements13 = storageServicePropertiesElement
-                            .getElementsByTagName("StatusOfPrimary");
-                    Element statusOfPrimaryElement = elements13.getLength() > 0 ? ((Element) elements13
-                            .item(0)) : null;
-                    if (statusOfPrimaryElement != null
-                            && (statusOfPrimaryElement.getTextContent() == null || statusOfPrimaryElement
-                                    .getTextContent().isEmpty() == true) == false) {
+                    
+                    NodeList elements13 = storageServicePropertiesElement.getElementsByTagName("StatusOfPrimary");
+                    Element statusOfPrimaryElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
+                    if (statusOfPrimaryElement != null && (statusOfPrimaryElement.getTextContent() == null || statusOfPrimaryElement.getTextContent().isEmpty() == true) == false) {
                         GeoRegionStatus statusOfPrimaryInstance;
-                        statusOfPrimaryInstance = GeoRegionStatus
-                                .valueOf(statusOfPrimaryElement
-                                        .getTextContent());
-                        storageServicePropertiesInstance
-                                .setStatusOfGeoPrimaryRegion(statusOfPrimaryInstance);
+                        statusOfPrimaryInstance = GeoRegionStatus.valueOf(statusOfPrimaryElement.getTextContent());
+                        storageServicePropertiesInstance.setStatusOfGeoPrimaryRegion(statusOfPrimaryInstance);
                     }
-
-                    NodeList elements14 = storageServicePropertiesElement
-                            .getElementsByTagName("LastGeoFailoverTime");
-                    Element lastGeoFailoverTimeElement = elements14.getLength() > 0 ? ((Element) elements14
-                            .item(0)) : null;
-                    if (lastGeoFailoverTimeElement != null
-                            && (lastGeoFailoverTimeElement.getTextContent() == null || lastGeoFailoverTimeElement
-                                    .getTextContent().isEmpty() == true) == false) {
+                    
+                    NodeList elements14 = storageServicePropertiesElement.getElementsByTagName("LastGeoFailoverTime");
+                    Element lastGeoFailoverTimeElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
+                    if (lastGeoFailoverTimeElement != null && (lastGeoFailoverTimeElement.getTextContent() == null || lastGeoFailoverTimeElement.getTextContent().isEmpty() == true) == false) {
                         Calendar lastGeoFailoverTimeInstance;
-                        lastGeoFailoverTimeInstance = DatatypeConverter
-                                .parseDateTime(lastGeoFailoverTimeElement
-                                        .getTextContent());
-                        storageServicePropertiesInstance
-                                .setLastGeoFailoverTime(lastGeoFailoverTimeInstance);
+                        lastGeoFailoverTimeInstance = DatatypeConverter.parseDateTime(lastGeoFailoverTimeElement.getTextContent());
+                        storageServicePropertiesInstance.setLastGeoFailoverTime(lastGeoFailoverTimeInstance);
                     }
-
-                    NodeList elements15 = storageServicePropertiesElement
-                            .getElementsByTagName("GeoSecondaryRegion");
-                    Element geoSecondaryRegionElement = elements15.getLength() > 0 ? ((Element) elements15
-                            .item(0)) : null;
+                    
+                    NodeList elements15 = storageServicePropertiesElement.getElementsByTagName("GeoSecondaryRegion");
+                    Element geoSecondaryRegionElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
                     if (geoSecondaryRegionElement != null) {
                         String geoSecondaryRegionInstance;
-                        geoSecondaryRegionInstance = geoSecondaryRegionElement
-                                .getTextContent();
-                        storageServicePropertiesInstance
-                                .setGeoSecondaryRegion(geoSecondaryRegionInstance);
+                        geoSecondaryRegionInstance = geoSecondaryRegionElement.getTextContent();
+                        storageServicePropertiesInstance.setGeoSecondaryRegion(geoSecondaryRegionInstance);
                     }
-
-                    NodeList elements16 = storageServicePropertiesElement
-                            .getElementsByTagName("StatusOfSecondary");
-                    Element statusOfSecondaryElement = elements16.getLength() > 0 ? ((Element) elements16
-                            .item(0)) : null;
-                    if (statusOfSecondaryElement != null
-                            && (statusOfSecondaryElement.getTextContent() == null || statusOfSecondaryElement
-                                    .getTextContent().isEmpty() == true) == false) {
+                    
+                    NodeList elements16 = storageServicePropertiesElement.getElementsByTagName("StatusOfSecondary");
+                    Element statusOfSecondaryElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
+                    if (statusOfSecondaryElement != null && (statusOfSecondaryElement.getTextContent() == null || statusOfSecondaryElement.getTextContent().isEmpty() == true) == false) {
                         GeoRegionStatus statusOfSecondaryInstance;
-                        statusOfSecondaryInstance = GeoRegionStatus
-                                .valueOf(statusOfSecondaryElement
-                                        .getTextContent());
-                        storageServicePropertiesInstance
-                                .setStatusOfGeoSecondaryRegion(statusOfSecondaryInstance);
+                        statusOfSecondaryInstance = GeoRegionStatus.valueOf(statusOfSecondaryElement.getTextContent());
+                        storageServicePropertiesInstance.setStatusOfGeoSecondaryRegion(statusOfSecondaryInstance);
                     }
                 }
-
-                NodeList elements17 = storageServiceElement
-                        .getElementsByTagName("ExtendedProperties");
-                Element extendedPropertiesSequenceElement = elements17
-                        .getLength() > 0 ? ((Element) elements17.item(0))
-                        : null;
+                
+                NodeList elements17 = storageServiceElement.getElementsByTagName("ExtendedProperties");
+                Element extendedPropertiesSequenceElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
                 if (extendedPropertiesSequenceElement != null) {
-                    for (int i2 = 0; i2 < extendedPropertiesSequenceElement
-                            .getElementsByTagName("ExtendedProperty")
-                            .getLength(); i2 = i2 + 1) {
-                        org.w3c.dom.Element extendedPropertiesElement = ((org.w3c.dom.Element) extendedPropertiesSequenceElement
-                                .getElementsByTagName("ExtendedProperty").item(
-                                        i2));
-                        NodeList elements18 = extendedPropertiesElement
-                                .getElementsByTagName("Name");
-                        String extendedPropertiesKey = elements18.getLength() > 0 ? ((org.w3c.dom.Element) elements18
-                                .item(0)).getTextContent() : null;
-                        NodeList elements19 = extendedPropertiesElement
-                                .getElementsByTagName("Value");
-                        String extendedPropertiesValue = elements19.getLength() > 0 ? ((org.w3c.dom.Element) elements19
-                                .item(0)).getTextContent() : null;
-                        result.getExtendedProperties().put(
-                                extendedPropertiesKey, extendedPropertiesValue);
+                    for (int i2 = 0; i2 < extendedPropertiesSequenceElement.getElementsByTagName("ExtendedProperty").getLength(); i2 = i2 + 1) {
+                        org.w3c.dom.Element extendedPropertiesElement = ((org.w3c.dom.Element) extendedPropertiesSequenceElement.getElementsByTagName("ExtendedProperty").item(i2));
+                        NodeList elements18 = extendedPropertiesElement.getElementsByTagName("Name");
+                        String extendedPropertiesKey = elements18.getLength() > 0 ? ((org.w3c.dom.Element) elements18.item(0)).getTextContent() : null;
+                        NodeList elements19 = extendedPropertiesElement.getElementsByTagName("Value");
+                        String extendedPropertiesValue = elements19.getLength() > 0 ? ((org.w3c.dom.Element) elements19.item(0)).getTextContent() : null;
+                        result.getExtendedProperties().put(extendedPropertiesKey, extendedPropertiesValue);
                     }
                 }
-
-                NodeList elements20 = storageServiceElement
-                        .getElementsByTagName("Capabilities");
-                Element capabilitiesSequenceElement = elements20.getLength() > 0 ? ((Element) elements20
-                        .item(0)) : null;
+                
+                NodeList elements20 = storageServiceElement.getElementsByTagName("Capabilities");
+                Element capabilitiesSequenceElement = elements20.getLength() > 0 ? ((Element) elements20.item(0)) : null;
                 if (capabilitiesSequenceElement != null) {
-                    for (int i3 = 0; i3 < capabilitiesSequenceElement
-                            .getElementsByTagName("Capability").getLength(); i3 = i3 + 1) {
-                        org.w3c.dom.Element capabilitiesElement = ((org.w3c.dom.Element) capabilitiesSequenceElement
-                                .getElementsByTagName("Capability").item(i3));
-                        result.getCapabilities().add(
-                                capabilitiesElement.getTextContent());
+                    for (int i3 = 0; i3 < capabilitiesSequenceElement.getElementsByTagName("Capability").getLength(); i3 = i3 + 1) {
+                        org.w3c.dom.Element capabilitiesElement = ((org.w3c.dom.Element) capabilitiesSequenceElement.getElementsByTagName("Capability").item(i3));
+                        result.getCapabilities().add(capabilitiesElement.getTextContent());
                     }
                 }
             }
-
+            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader(
-                        "x-ms-request-id").getValue());
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
@@ -1153,62 +920,52 @@ public class StorageAccountOperationsImpl implements
             }
         }
     }
-
+    
     /**
-     * The Get Storage Keys operation returns the primary and secondary access
-     * keys for the specified storage account. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460785.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of the desired storage account.
-     * @return The primary and secondary access keys for a storage account.
-     */
+    * The Get Storage Keys operation returns the primary and secondary access
+    * keys for the specified storage account.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460785.aspx for
+    * more information)
+    *
+    * @param serviceName The name of the desired storage account.
+    * @return The primary and secondary access keys for a storage account.
+    */
     @Override
-    public Future<StorageAccountGetKeysResponse> getKeysAsync(
-            final String serviceName) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<StorageAccountGetKeysResponse>() {
-                    @Override
-                    public StorageAccountGetKeysResponse call()
-                            throws Exception {
-                        return getKeys(serviceName);
-                    }
-                });
+    public Future<StorageAccountGetKeysResponse> getKeysAsync(final String serviceName) {
+        return this.getClient().getExecutorService().submit(new Callable<StorageAccountGetKeysResponse>() { 
+            @Override
+            public StorageAccountGetKeysResponse call() throws Exception {
+                return getKeys(serviceName);
+            }
+         });
     }
-
+    
     /**
-     * The Get Storage Keys operation returns the primary and secondary access
-     * keys for the specified storage account. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460785.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of the desired storage account.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @throws ParserConfigurationException
-     *             Thrown if there was a serious configuration error with the
-     *             document parser.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the XML response.
-     * @throws URISyntaxException
-     *             Thrown if there was an error parsing a URI in the response.
-     * @return The primary and secondary access keys for a storage account.
-     */
+    * The Get Storage Keys operation returns the primary and secondary access
+    * keys for the specified storage account.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460785.aspx for
+    * more information)
+    *
+    * @param serviceName The name of the desired storage account.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
+    * @return The primary and secondary access keys for a storage account.
+    */
     @Override
-    public StorageAccountGetKeysResponse getKeys(String serviceName)
-            throws IOException, ServiceException, ParserConfigurationException,
-            SAXException, URISyntaxException {
+    public StorageAccountGetKeysResponse getKeys(String serviceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException {
         // Validate
         if (serviceName == null) {
             throw new NullPointerException("serviceName");
         }
-
+        
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -1216,89 +973,71 @@ public class StorageAccountOperationsImpl implements
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
-            CloudTracing.enter(invocationId, this, "getKeysAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "getKeysAsync", tracingParameters);
         }
-
+        
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/"
-                + this.getClient().getCredentials().getSubscriptionId()
-                + "/services/storageservices/" + serviceName + "/keys";
-
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/storageservices/" + serviceName + "/keys";
+        
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
-
+        
         // Set Headers
         httpRequest.setHeader("x-ms-version", "2013-03-01");
-
+        
         // Send Request
         HttpResponse httpResponse = null;
         try {
             if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient()
-                    .execute(httpRequest);
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
             if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_OK) {
-                ServiceException ex = ServiceException.createFromXml(
-                        httpRequest, null, httpResponse,
-                        httpResponse.getEntity());
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-
+            
             // Create Result
             StorageAccountGetKeysResponse result = null;
             // Deserialize Response
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new StorageAccountGetKeysResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
-                    .newInstance();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory
-                    .newDocumentBuilder();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
-
-            NodeList elements = responseDoc
-                    .getElementsByTagName("StorageService");
-            Element storageServiceElement = elements.getLength() > 0 ? ((Element) elements
-                    .item(0)) : null;
+            
+            NodeList elements = responseDoc.getElementsByTagName("StorageService");
+            Element storageServiceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (storageServiceElement != null) {
-                NodeList elements2 = storageServiceElement
-                        .getElementsByTagName("Url");
-                Element urlElement = elements2.getLength() > 0 ? ((Element) elements2
-                        .item(0)) : null;
+                NodeList elements2 = storageServiceElement.getElementsByTagName("Url");
+                Element urlElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                 if (urlElement != null) {
                     URI urlInstance;
                     urlInstance = new URI(urlElement.getTextContent());
                     result.setUri(urlInstance);
                 }
-
-                NodeList elements3 = storageServiceElement
-                        .getElementsByTagName("StorageServiceKeys");
-                Element storageServiceKeysElement = elements3.getLength() > 0 ? ((Element) elements3
-                        .item(0)) : null;
+                
+                NodeList elements3 = storageServiceElement.getElementsByTagName("StorageServiceKeys");
+                Element storageServiceKeysElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                 if (storageServiceKeysElement != null) {
-                    NodeList elements4 = storageServiceKeysElement
-                            .getElementsByTagName("Primary");
-                    Element primaryElement = elements4.getLength() > 0 ? ((Element) elements4
-                            .item(0)) : null;
+                    NodeList elements4 = storageServiceKeysElement.getElementsByTagName("Primary");
+                    Element primaryElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                     if (primaryElement != null) {
                         String primaryInstance;
                         primaryInstance = primaryElement.getTextContent();
                         result.setPrimaryKey(primaryInstance);
                     }
-
-                    NodeList elements5 = storageServiceKeysElement
-                            .getElementsByTagName("Secondary");
-                    Element secondaryElement = elements5.getLength() > 0 ? ((Element) elements5
-                            .item(0)) : null;
+                    
+                    NodeList elements5 = storageServiceKeysElement.getElementsByTagName("Secondary");
+                    Element secondaryElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                     if (secondaryElement != null) {
                         String secondaryInstance;
                         secondaryInstance = secondaryElement.getTextContent();
@@ -1306,13 +1045,12 @@ public class StorageAccountOperationsImpl implements
                     }
                 }
             }
-
+            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader(
-                        "x-ms-request-id").getValue());
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
@@ -1323,365 +1061,249 @@ public class StorageAccountOperationsImpl implements
             }
         }
     }
-
+    
     /**
-     * The List Storage Accounts operation lists the storage accounts available
-     * under the current subscription. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460787.aspx for
-     * more information)
-     * 
-     * @return The List Storage Accounts operation response.
-     */
+    * The List Storage Accounts operation lists the storage accounts available
+    * under the current subscription.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460787.aspx for
+    * more information)
+    *
+    * @return The List Storage Accounts operation response.
+    */
     @Override
     public Future<StorageAccountListResponse> listAsync() {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<StorageAccountListResponse>() {
-                    @Override
-                    public StorageAccountListResponse call() throws Exception {
-                        return list();
-                    }
-                });
+        return this.getClient().getExecutorService().submit(new Callable<StorageAccountListResponse>() { 
+            @Override
+            public StorageAccountListResponse call() throws Exception {
+                return list();
+            }
+         });
     }
-
+    
     /**
-     * The List Storage Accounts operation lists the storage accounts available
-     * under the current subscription. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460787.aspx for
-     * more information)
-     * 
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @throws ParserConfigurationException
-     *             Thrown if there was a serious configuration error with the
-     *             document parser.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the XML response.
-     * @throws URISyntaxException
-     *             Thrown if there was an error parsing a URI in the response.
-     * @return The List Storage Accounts operation response.
-     */
+    * The List Storage Accounts operation lists the storage accounts available
+    * under the current subscription.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460787.aspx for
+    * more information)
+    *
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
+    * @return The List Storage Accounts operation response.
+    */
     @Override
-    public StorageAccountListResponse list() throws IOException,
-            ServiceException, ParserConfigurationException, SAXException,
-            URISyntaxException {
+    public StorageAccountListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException {
         // Validate
-
+        
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
         if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
-            CloudTracing.enter(invocationId, this, "listAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "listAsync", tracingParameters);
         }
-
+        
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/"
-                + this.getClient().getCredentials().getSubscriptionId()
-                + "/services/storageservices";
-
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/storageservices";
+        
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
-
+        
         // Set Headers
         httpRequest.setHeader("x-ms-version", "2013-03-01");
-
+        
         // Send Request
         HttpResponse httpResponse = null;
         try {
             if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient()
-                    .execute(httpRequest);
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
             if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_OK) {
-                ServiceException ex = ServiceException.createFromXml(
-                        httpRequest, null, httpResponse,
-                        httpResponse.getEntity());
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-
+            
             // Create Result
             StorageAccountListResponse result = null;
             // Deserialize Response
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new StorageAccountListResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
-                    .newInstance();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory
-                    .newDocumentBuilder();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
-
-            NodeList elements = responseDoc
-                    .getElementsByTagName("StorageServices");
-            Element storageServicesSequenceElement = elements.getLength() > 0 ? ((Element) elements
-                    .item(0)) : null;
+            
+            NodeList elements = responseDoc.getElementsByTagName("StorageServices");
+            Element storageServicesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (storageServicesSequenceElement != null) {
-                for (int i1 = 0; i1 < storageServicesSequenceElement
-                        .getElementsByTagName("StorageService").getLength(); i1 = i1 + 1) {
-                    org.w3c.dom.Element storageServicesElement = ((org.w3c.dom.Element) storageServicesSequenceElement
-                            .getElementsByTagName("StorageService").item(i1));
+                for (int i1 = 0; i1 < storageServicesSequenceElement.getElementsByTagName("StorageService").getLength(); i1 = i1 + 1) {
+                    org.w3c.dom.Element storageServicesElement = ((org.w3c.dom.Element) storageServicesSequenceElement.getElementsByTagName("StorageService").item(i1));
                     StorageAccountListResponse.StorageService storageServiceInstance = new StorageAccountListResponse.StorageService();
                     result.getStorageServices().add(storageServiceInstance);
-
-                    NodeList elements2 = storageServicesElement
-                            .getElementsByTagName("Url");
-                    Element urlElement = elements2.getLength() > 0 ? ((Element) elements2
-                            .item(0)) : null;
+                    
+                    NodeList elements2 = storageServicesElement.getElementsByTagName("Url");
+                    Element urlElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                     if (urlElement != null) {
                         URI urlInstance;
                         urlInstance = new URI(urlElement.getTextContent());
                         storageServiceInstance.setUri(urlInstance);
                     }
-
-                    NodeList elements3 = storageServicesElement
-                            .getElementsByTagName("ServiceName");
-                    Element serviceNameElement = elements3.getLength() > 0 ? ((Element) elements3
-                            .item(0)) : null;
+                    
+                    NodeList elements3 = storageServicesElement.getElementsByTagName("ServiceName");
+                    Element serviceNameElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                     if (serviceNameElement != null) {
                         String serviceNameInstance;
-                        serviceNameInstance = serviceNameElement
-                                .getTextContent();
-                        storageServiceInstance
-                                .setServiceName(serviceNameInstance);
+                        serviceNameInstance = serviceNameElement.getTextContent();
+                        storageServiceInstance.setServiceName(serviceNameInstance);
                     }
-
-                    NodeList elements4 = storageServicesElement
-                            .getElementsByTagName("StorageServiceProperties");
-                    Element storageServicePropertiesElement = elements4
-                            .getLength() > 0 ? ((Element) elements4.item(0))
-                            : null;
+                    
+                    NodeList elements4 = storageServicesElement.getElementsByTagName("StorageServiceProperties");
+                    Element storageServicePropertiesElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                     if (storageServicePropertiesElement != null) {
                         StorageServiceProperties storageServicePropertiesInstance = new StorageServiceProperties();
-                        storageServiceInstance
-                                .setProperties(storageServicePropertiesInstance);
-
-                        NodeList elements5 = storageServicePropertiesElement
-                                .getElementsByTagName("Description");
-                        Element descriptionElement = elements5.getLength() > 0 ? ((Element) elements5
-                                .item(0)) : null;
+                        storageServiceInstance.setProperties(storageServicePropertiesInstance);
+                        
+                        NodeList elements5 = storageServicePropertiesElement.getElementsByTagName("Description");
+                        Element descriptionElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                         if (descriptionElement != null) {
                             boolean isNil = false;
-                            Attr nilAttribute = descriptionElement
-                                    .getAttributeNodeNS(
-                                            "http://www.w3.org/2001/XMLSchema-instance",
-                                            "nil");
+                            Attr nilAttribute = descriptionElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
                             if (nilAttribute != null) {
                                 isNil = "true".equals(nilAttribute.getValue());
                             }
                             if (isNil == false) {
                                 String descriptionInstance;
-                                descriptionInstance = descriptionElement
-                                        .getTextContent();
-                                storageServicePropertiesInstance
-                                        .setDescription(descriptionInstance);
+                                descriptionInstance = descriptionElement.getTextContent();
+                                storageServicePropertiesInstance.setDescription(descriptionInstance);
                             }
                         }
-
-                        NodeList elements6 = storageServicePropertiesElement
-                                .getElementsByTagName("AffinityGroup");
-                        Element affinityGroupElement = elements6.getLength() > 0 ? ((Element) elements6
-                                .item(0)) : null;
+                        
+                        NodeList elements6 = storageServicePropertiesElement.getElementsByTagName("AffinityGroup");
+                        Element affinityGroupElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                         if (affinityGroupElement != null) {
                             String affinityGroupInstance;
-                            affinityGroupInstance = affinityGroupElement
-                                    .getTextContent();
-                            storageServicePropertiesInstance
-                                    .setAffinityGroup(affinityGroupInstance);
+                            affinityGroupInstance = affinityGroupElement.getTextContent();
+                            storageServicePropertiesInstance.setAffinityGroup(affinityGroupInstance);
                         }
-
-                        NodeList elements7 = storageServicePropertiesElement
-                                .getElementsByTagName("Location");
-                        Element locationElement = elements7.getLength() > 0 ? ((Element) elements7
-                                .item(0)) : null;
+                        
+                        NodeList elements7 = storageServicePropertiesElement.getElementsByTagName("Location");
+                        Element locationElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                         if (locationElement != null) {
                             String locationInstance;
                             locationInstance = locationElement.getTextContent();
-                            storageServicePropertiesInstance
-                                    .setLocation(locationInstance);
+                            storageServicePropertiesInstance.setLocation(locationInstance);
                         }
-
-                        NodeList elements8 = storageServicePropertiesElement
-                                .getElementsByTagName("Label");
-                        Element labelElement = elements8.getLength() > 0 ? ((Element) elements8
-                                .item(0)) : null;
+                        
+                        NodeList elements8 = storageServicePropertiesElement.getElementsByTagName("Label");
+                        Element labelElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
                         if (labelElement != null) {
                             String labelInstance;
-                            labelInstance = labelElement.getTextContent() != null ? new String(
-                                    Base64.decodeBase64(labelElement
-                                            .getTextContent().getBytes()))
-                                    : null;
-                            storageServicePropertiesInstance
-                                    .setLabel(labelInstance);
+                            labelInstance = labelElement.getTextContent() != null ? new String(Base64.decodeBase64(labelElement.getTextContent().getBytes())) : null;
+                            storageServicePropertiesInstance.setLabel(labelInstance);
                         }
-
-                        NodeList elements9 = storageServicePropertiesElement
-                                .getElementsByTagName("Status");
-                        Element statusElement = elements9.getLength() > 0 ? ((Element) elements9
-                                .item(0)) : null;
+                        
+                        NodeList elements9 = storageServicePropertiesElement.getElementsByTagName("Status");
+                        Element statusElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
                         if (statusElement != null) {
                             StorageServiceStatus statusInstance;
-                            statusInstance = StorageServiceStatus
-                                    .valueOf(statusElement.getTextContent());
-                            storageServicePropertiesInstance
-                                    .setStatus(statusInstance);
+                            statusInstance = StorageServiceStatus.valueOf(statusElement.getTextContent());
+                            storageServicePropertiesInstance.setStatus(statusInstance);
                         }
-
-                        NodeList elements10 = storageServicePropertiesElement
-                                .getElementsByTagName("Endpoints");
-                        Element endpointsSequenceElement = elements10
-                                .getLength() > 0 ? ((Element) elements10
-                                .item(0)) : null;
+                        
+                        NodeList elements10 = storageServicePropertiesElement.getElementsByTagName("Endpoints");
+                        Element endpointsSequenceElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
                         if (endpointsSequenceElement != null) {
-                            for (int i2 = 0; i2 < endpointsSequenceElement
-                                    .getElementsByTagName("Endpoint")
-                                    .getLength(); i2 = i2 + 1) {
-                                org.w3c.dom.Element endpointsElement = ((org.w3c.dom.Element) endpointsSequenceElement
-                                        .getElementsByTagName("Endpoint").item(
-                                                i2));
-                                storageServicePropertiesInstance.getEndpoints()
-                                        .add(new URI(endpointsElement
-                                                .getTextContent()));
+                            for (int i2 = 0; i2 < endpointsSequenceElement.getElementsByTagName("Endpoint").getLength(); i2 = i2 + 1) {
+                                org.w3c.dom.Element endpointsElement = ((org.w3c.dom.Element) endpointsSequenceElement.getElementsByTagName("Endpoint").item(i2));
+                                storageServicePropertiesInstance.getEndpoints().add(new URI(endpointsElement.getTextContent()));
                             }
                         }
-
-                        NodeList elements11 = storageServicePropertiesElement
-                                .getElementsByTagName("GeoReplicationEnabled");
-                        Element geoReplicationEnabledElement = elements11
-                                .getLength() > 0 ? ((Element) elements11
-                                .item(0)) : null;
+                        
+                        NodeList elements11 = storageServicePropertiesElement.getElementsByTagName("GeoReplicationEnabled");
+                        Element geoReplicationEnabledElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
                         if (geoReplicationEnabledElement != null) {
                             boolean geoReplicationEnabledInstance;
-                            geoReplicationEnabledInstance = DatatypeConverter
-                                    .parseBoolean(geoReplicationEnabledElement
-                                            .getTextContent());
-                            storageServicePropertiesInstance
-                                    .setGeoReplicationEnabled(geoReplicationEnabledInstance);
+                            geoReplicationEnabledInstance = DatatypeConverter.parseBoolean(geoReplicationEnabledElement.getTextContent());
+                            storageServicePropertiesInstance.setGeoReplicationEnabled(geoReplicationEnabledInstance);
                         }
-
-                        NodeList elements12 = storageServicePropertiesElement
-                                .getElementsByTagName("GeoPrimaryRegion");
-                        Element geoPrimaryRegionElement = elements12
-                                .getLength() > 0 ? ((Element) elements12
-                                .item(0)) : null;
+                        
+                        NodeList elements12 = storageServicePropertiesElement.getElementsByTagName("GeoPrimaryRegion");
+                        Element geoPrimaryRegionElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
                         if (geoPrimaryRegionElement != null) {
                             String geoPrimaryRegionInstance;
-                            geoPrimaryRegionInstance = geoPrimaryRegionElement
-                                    .getTextContent();
-                            storageServicePropertiesInstance
-                                    .setGeoPrimaryRegion(geoPrimaryRegionInstance);
+                            geoPrimaryRegionInstance = geoPrimaryRegionElement.getTextContent();
+                            storageServicePropertiesInstance.setGeoPrimaryRegion(geoPrimaryRegionInstance);
                         }
-
-                        NodeList elements13 = storageServicePropertiesElement
-                                .getElementsByTagName("StatusOfPrimary");
-                        Element statusOfPrimaryElement = elements13.getLength() > 0 ? ((Element) elements13
-                                .item(0)) : null;
-                        if (statusOfPrimaryElement != null
-                                && (statusOfPrimaryElement.getTextContent() == null || statusOfPrimaryElement
-                                        .getTextContent().isEmpty() == true) == false) {
+                        
+                        NodeList elements13 = storageServicePropertiesElement.getElementsByTagName("StatusOfPrimary");
+                        Element statusOfPrimaryElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
+                        if (statusOfPrimaryElement != null && (statusOfPrimaryElement.getTextContent() == null || statusOfPrimaryElement.getTextContent().isEmpty() == true) == false) {
                             GeoRegionStatus statusOfPrimaryInstance;
-                            statusOfPrimaryInstance = GeoRegionStatus
-                                    .valueOf(statusOfPrimaryElement
-                                            .getTextContent());
-                            storageServicePropertiesInstance
-                                    .setStatusOfGeoPrimaryRegion(statusOfPrimaryInstance);
+                            statusOfPrimaryInstance = GeoRegionStatus.valueOf(statusOfPrimaryElement.getTextContent());
+                            storageServicePropertiesInstance.setStatusOfGeoPrimaryRegion(statusOfPrimaryInstance);
                         }
-
-                        NodeList elements14 = storageServicePropertiesElement
-                                .getElementsByTagName("LastGeoFailoverTime");
-                        Element lastGeoFailoverTimeElement = elements14
-                                .getLength() > 0 ? ((Element) elements14
-                                .item(0)) : null;
-                        if (lastGeoFailoverTimeElement != null
-                                && (lastGeoFailoverTimeElement.getTextContent() == null || lastGeoFailoverTimeElement
-                                        .getTextContent().isEmpty() == true) == false) {
+                        
+                        NodeList elements14 = storageServicePropertiesElement.getElementsByTagName("LastGeoFailoverTime");
+                        Element lastGeoFailoverTimeElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
+                        if (lastGeoFailoverTimeElement != null && (lastGeoFailoverTimeElement.getTextContent() == null || lastGeoFailoverTimeElement.getTextContent().isEmpty() == true) == false) {
                             Calendar lastGeoFailoverTimeInstance;
-                            lastGeoFailoverTimeInstance = DatatypeConverter
-                                    .parseDateTime(lastGeoFailoverTimeElement
-                                            .getTextContent());
-                            storageServicePropertiesInstance
-                                    .setLastGeoFailoverTime(lastGeoFailoverTimeInstance);
+                            lastGeoFailoverTimeInstance = DatatypeConverter.parseDateTime(lastGeoFailoverTimeElement.getTextContent());
+                            storageServicePropertiesInstance.setLastGeoFailoverTime(lastGeoFailoverTimeInstance);
                         }
-
-                        NodeList elements15 = storageServicePropertiesElement
-                                .getElementsByTagName("GeoSecondaryRegion");
-                        Element geoSecondaryRegionElement = elements15
-                                .getLength() > 0 ? ((Element) elements15
-                                .item(0)) : null;
+                        
+                        NodeList elements15 = storageServicePropertiesElement.getElementsByTagName("GeoSecondaryRegion");
+                        Element geoSecondaryRegionElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
                         if (geoSecondaryRegionElement != null) {
                             String geoSecondaryRegionInstance;
-                            geoSecondaryRegionInstance = geoSecondaryRegionElement
-                                    .getTextContent();
-                            storageServicePropertiesInstance
-                                    .setGeoSecondaryRegion(geoSecondaryRegionInstance);
+                            geoSecondaryRegionInstance = geoSecondaryRegionElement.getTextContent();
+                            storageServicePropertiesInstance.setGeoSecondaryRegion(geoSecondaryRegionInstance);
                         }
-
-                        NodeList elements16 = storageServicePropertiesElement
-                                .getElementsByTagName("StatusOfSecondary");
-                        Element statusOfSecondaryElement = elements16
-                                .getLength() > 0 ? ((Element) elements16
-                                .item(0)) : null;
-                        if (statusOfSecondaryElement != null
-                                && (statusOfSecondaryElement.getTextContent() == null || statusOfSecondaryElement
-                                        .getTextContent().isEmpty() == true) == false) {
+                        
+                        NodeList elements16 = storageServicePropertiesElement.getElementsByTagName("StatusOfSecondary");
+                        Element statusOfSecondaryElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
+                        if (statusOfSecondaryElement != null && (statusOfSecondaryElement.getTextContent() == null || statusOfSecondaryElement.getTextContent().isEmpty() == true) == false) {
                             GeoRegionStatus statusOfSecondaryInstance;
-                            statusOfSecondaryInstance = GeoRegionStatus
-                                    .valueOf(statusOfSecondaryElement
-                                            .getTextContent());
-                            storageServicePropertiesInstance
-                                    .setStatusOfGeoSecondaryRegion(statusOfSecondaryInstance);
+                            statusOfSecondaryInstance = GeoRegionStatus.valueOf(statusOfSecondaryElement.getTextContent());
+                            storageServicePropertiesInstance.setStatusOfGeoSecondaryRegion(statusOfSecondaryInstance);
                         }
                     }
-
-                    NodeList elements17 = storageServicesElement
-                            .getElementsByTagName("ExtendedProperties");
-                    Element extendedPropertiesSequenceElement = elements17
-                            .getLength() > 0 ? ((Element) elements17.item(0))
-                            : null;
+                    
+                    NodeList elements17 = storageServicesElement.getElementsByTagName("ExtendedProperties");
+                    Element extendedPropertiesSequenceElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
                     if (extendedPropertiesSequenceElement != null) {
-                        for (int i3 = 0; i3 < extendedPropertiesSequenceElement
-                                .getElementsByTagName("ExtendedProperty")
-                                .getLength(); i3 = i3 + 1) {
-                            org.w3c.dom.Element extendedPropertiesElement = ((org.w3c.dom.Element) extendedPropertiesSequenceElement
-                                    .getElementsByTagName("ExtendedProperty")
-                                    .item(i3));
-                            NodeList elements18 = extendedPropertiesElement
-                                    .getElementsByTagName("Name");
-                            String extendedPropertiesKey = elements18
-                                    .getLength() > 0 ? ((org.w3c.dom.Element) elements18
-                                    .item(0)).getTextContent() : null;
-                            NodeList elements19 = extendedPropertiesElement
-                                    .getElementsByTagName("Value");
-                            String extendedPropertiesValue = elements19
-                                    .getLength() > 0 ? ((org.w3c.dom.Element) elements19
-                                    .item(0)).getTextContent() : null;
-                            storageServiceInstance.getExtendedProperties().put(
-                                    extendedPropertiesKey,
-                                    extendedPropertiesValue);
+                        for (int i3 = 0; i3 < extendedPropertiesSequenceElement.getElementsByTagName("ExtendedProperty").getLength(); i3 = i3 + 1) {
+                            org.w3c.dom.Element extendedPropertiesElement = ((org.w3c.dom.Element) extendedPropertiesSequenceElement.getElementsByTagName("ExtendedProperty").item(i3));
+                            NodeList elements18 = extendedPropertiesElement.getElementsByTagName("Name");
+                            String extendedPropertiesKey = elements18.getLength() > 0 ? ((org.w3c.dom.Element) elements18.item(0)).getTextContent() : null;
+                            NodeList elements19 = extendedPropertiesElement.getElementsByTagName("Value");
+                            String extendedPropertiesValue = elements19.getLength() > 0 ? ((org.w3c.dom.Element) elements19.item(0)).getTextContent() : null;
+                            storageServiceInstance.getExtendedProperties().put(extendedPropertiesKey, extendedPropertiesValue);
                         }
                     }
                 }
             }
-
+            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader(
-                        "x-ms-request-id").getValue());
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
@@ -1692,61 +1314,49 @@ public class StorageAccountOperationsImpl implements
             }
         }
     }
-
+    
     /**
-     * The Regenerate Keys operation regenerates the primary or secondary access
-     * key for the specified storage account. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460795.aspx for
-     * more information)
-     * 
-     * @param parameters
-     *            Parameters supplied to the Regenerate Keys operation.
-     * @return The primary and secondary access keys for a storage account.
-     */
+    * The Regenerate Keys operation regenerates the primary or secondary access
+    * key for the specified storage account.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460795.aspx for
+    * more information)
+    *
+    * @param parameters Parameters supplied to the Regenerate Keys operation.
+    * @return The primary and secondary access keys for a storage account.
+    */
     @Override
-    public Future<StorageAccountRegenerateKeysResponse> regenerateKeysAsync(
-            final StorageAccountRegenerateKeysParameters parameters) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<StorageAccountRegenerateKeysResponse>() {
-                    @Override
-                    public StorageAccountRegenerateKeysResponse call()
-                            throws Exception {
-                        return regenerateKeys(parameters);
-                    }
-                });
+    public Future<StorageAccountRegenerateKeysResponse> regenerateKeysAsync(final StorageAccountRegenerateKeysParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<StorageAccountRegenerateKeysResponse>() { 
+            @Override
+            public StorageAccountRegenerateKeysResponse call() throws Exception {
+                return regenerateKeys(parameters);
+            }
+         });
     }
-
+    
     /**
-     * The Regenerate Keys operation regenerates the primary or secondary access
-     * key for the specified storage account. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460795.aspx for
-     * more information)
-     * 
-     * @param parameters
-     *            Parameters supplied to the Regenerate Keys operation.
-     * @throws ParserConfigurationException
-     *             Thrown if there was an error configuring the parser for the
-     *             response body.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the response body.
-     * @throws TransformerException
-     *             Thrown if there was an error creating the DOM transformer.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @throws URISyntaxException
-     *             Thrown if there was an error parsing a URI in the response.
-     * @return The primary and secondary access keys for a storage account.
-     */
+    * The Regenerate Keys operation regenerates the primary or secondary access
+    * key for the specified storage account.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460795.aspx for
+    * more information)
+    *
+    * @param parameters Parameters supplied to the Regenerate Keys operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
+    * @return The primary and secondary access keys for a storage account.
+    */
     @Override
-    public StorageAccountRegenerateKeysResponse regenerateKeys(
-            StorageAccountRegenerateKeysParameters parameters)
-            throws ParserConfigurationException, SAXException,
-            TransformerException, IOException, ServiceException,
-            URISyntaxException {
+    public StorageAccountRegenerateKeysResponse regenerateKeys(StorageAccountRegenerateKeysParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException {
         // Validate
         if (parameters == null) {
             throw new NullPointerException("parameters");
@@ -1754,7 +1364,7 @@ public class StorageAccountOperationsImpl implements
         if (parameters.getServiceName() == null) {
             throw new NullPointerException("parameters.ServiceName");
         }
-
+        
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -1762,121 +1372,96 @@ public class StorageAccountOperationsImpl implements
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this, "regenerateKeysAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "regenerateKeysAsync", tracingParameters);
         }
-
+        
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/"
-                + this.getClient().getCredentials().getSubscriptionId()
-                + "/services/storageservices/" + parameters.getServiceName()
-                + "/keys" + "?" + "action=regenerate";
-
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/storageservices/" + parameters.getServiceName() + "/keys" + "?" + "action=regenerate";
+        
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
-
+        
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
         httpRequest.setHeader("x-ms-version", "2013-03-01");
-
+        
         // Serialize Request
         String requestContent = null;
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
-                .newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory
-                .newDocumentBuilder();
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
         Document requestDoc = documentBuilder.newDocument();
-
-        Element regenerateKeysElement = requestDoc.createElementNS(
-                "http://schemas.microsoft.com/windowsazure", "RegenerateKeys");
+        
+        Element regenerateKeysElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RegenerateKeys");
         requestDoc.appendChild(regenerateKeysElement);
-
-        Element keyTypeElement = requestDoc.createElementNS(
-                "http://schemas.microsoft.com/windowsazure", "KeyType");
-        keyTypeElement.appendChild(requestDoc.createTextNode(parameters
-                .getKeyType().toString()));
+        
+        Element keyTypeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "KeyType");
+        keyTypeElement.appendChild(requestDoc.createTextNode(parameters.getKeyType().toString()));
         regenerateKeysElement.appendChild(keyTypeElement);
-
+        
         DOMSource domSource = new DOMSource(requestDoc);
         StringWriter stringWriter = new StringWriter();
         StreamResult streamResult = new StreamResult(stringWriter);
-        TransformerFactory transformerFactory = TransformerFactory
-                .newInstance();
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = transformerFactory.newTransformer();
         transformer.transform(domSource, streamResult);
         requestContent = stringWriter.toString();
         StringEntity entity = new StringEntity(requestContent);
         httpRequest.setEntity(entity);
         httpRequest.setHeader("Content-Type", "application/xml");
-
+        
         // Send Request
         HttpResponse httpResponse = null;
         try {
             if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient()
-                    .execute(httpRequest);
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
             if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_OK) {
-                ServiceException ex = ServiceException.createFromXml(
-                        httpRequest, requestContent, httpResponse,
-                        httpResponse.getEntity());
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-
+            
             // Create Result
             StorageAccountRegenerateKeysResponse result = null;
             // Deserialize Response
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new StorageAccountRegenerateKeysResponse();
-            DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory
-                    .newInstance();
+            DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
             documentBuilderFactory2.setNamespaceAware(true);
-            DocumentBuilder documentBuilder2 = documentBuilderFactory2
-                    .newDocumentBuilder();
+            DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
             Document responseDoc = documentBuilder2.parse(responseContent);
-
-            NodeList elements = responseDoc
-                    .getElementsByTagName("StorageService");
-            Element storageServiceElement = elements.getLength() > 0 ? ((Element) elements
-                    .item(0)) : null;
+            
+            NodeList elements = responseDoc.getElementsByTagName("StorageService");
+            Element storageServiceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (storageServiceElement != null) {
-                NodeList elements2 = storageServiceElement
-                        .getElementsByTagName("Url");
-                Element urlElement = elements2.getLength() > 0 ? ((Element) elements2
-                        .item(0)) : null;
+                NodeList elements2 = storageServiceElement.getElementsByTagName("Url");
+                Element urlElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                 if (urlElement != null) {
                     URI urlInstance;
                     urlInstance = new URI(urlElement.getTextContent());
                     result.setUri(urlInstance);
                 }
-
-                NodeList elements3 = storageServiceElement
-                        .getElementsByTagName("StorageServiceKeys");
-                Element storageServiceKeysElement = elements3.getLength() > 0 ? ((Element) elements3
-                        .item(0)) : null;
+                
+                NodeList elements3 = storageServiceElement.getElementsByTagName("StorageServiceKeys");
+                Element storageServiceKeysElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                 if (storageServiceKeysElement != null) {
-                    NodeList elements4 = storageServiceKeysElement
-                            .getElementsByTagName("Primary");
-                    Element primaryElement = elements4.getLength() > 0 ? ((Element) elements4
-                            .item(0)) : null;
+                    NodeList elements4 = storageServiceKeysElement.getElementsByTagName("Primary");
+                    Element primaryElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                     if (primaryElement != null) {
                         String primaryInstance;
                         primaryInstance = primaryElement.getTextContent();
                         result.setPrimaryKey(primaryInstance);
                     }
-
-                    NodeList elements5 = storageServiceKeysElement
-                            .getElementsByTagName("Secondary");
-                    Element secondaryElement = elements5.getLength() > 0 ? ((Element) elements5
-                            .item(0)) : null;
+                    
+                    NodeList elements5 = storageServiceKeysElement.getElementsByTagName("Secondary");
+                    Element secondaryElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                     if (secondaryElement != null) {
                         String secondaryInstance;
                         secondaryInstance = secondaryElement.getTextContent();
@@ -1884,13 +1469,12 @@ public class StorageAccountOperationsImpl implements
                     }
                 }
             }
-
+            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader(
-                        "x-ms-request-id").getValue());
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
@@ -1901,65 +1485,55 @@ public class StorageAccountOperationsImpl implements
             }
         }
     }
-
+    
     /**
-     * The Update Storage Account operation updates the label, the description,
-     * and enables or disables the geo-replication status for a storage account
-     * in Windows Azure. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/hh264516.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            Name of the storage account to update.
-     * @param parameters
-     *            Parameters supplied to the Update Storage Account operation.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * The Update Storage Account operation updates the label, the description,
+    * and enables or disables the geo-replication status for a storage account
+    * in Windows Azure.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/hh264516.aspx for
+    * more information)
+    *
+    * @param serviceName Name of the storage account to update.
+    * @param parameters Parameters supplied to the Update Storage Account
+    * operation.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public Future<OperationResponse> updateAsync(final String serviceName,
-            final StorageAccountUpdateParameters parameters) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<OperationResponse>() {
-                    @Override
-                    public OperationResponse call() throws Exception {
-                        return update(serviceName, parameters);
-                    }
-                });
+    public Future<OperationResponse> updateAsync(final String serviceName, final StorageAccountUpdateParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception {
+                return update(serviceName, parameters);
+            }
+         });
     }
-
+    
     /**
-     * The Update Storage Account operation updates the label, the description,
-     * and enables or disables the geo-replication status for a storage account
-     * in Windows Azure. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/hh264516.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            Name of the storage account to update.
-     * @param parameters
-     *            Parameters supplied to the Update Storage Account operation.
-     * @throws ParserConfigurationException
-     *             Thrown if there was an error configuring the parser for the
-     *             response body.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the response body.
-     * @throws TransformerException
-     *             Thrown if there was an error creating the DOM transformer.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * The Update Storage Account operation updates the label, the description,
+    * and enables or disables the geo-replication status for a storage account
+    * in Windows Azure.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/hh264516.aspx for
+    * more information)
+    *
+    * @param serviceName Name of the storage account to update.
+    * @param parameters Parameters supplied to the Update Storage Account
+    * operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public OperationResponse update(String serviceName,
-            StorageAccountUpdateParameters parameters)
-            throws ParserConfigurationException, SAXException,
-            TransformerException, IOException, ServiceException {
+    public OperationResponse update(String serviceName, StorageAccountUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
         if (serviceName == null) {
             throw new NullPointerException("serviceName");
@@ -1971,8 +1545,7 @@ public class StorageAccountOperationsImpl implements
             throw new IllegalArgumentException("serviceName");
         }
         for (char serviceNameChar : serviceName.toCharArray()) {
-            if (Character.isLowerCase(serviceNameChar) == false
-                    && Character.isDigit(serviceNameChar) == false) {
+            if (Character.isLowerCase(serviceNameChar) == false && Character.isDigit(serviceNameChar) == false) {
                 throw new IllegalArgumentException("serviceName");
             }
         }
@@ -1980,11 +1553,10 @@ public class StorageAccountOperationsImpl implements
         if (parameters == null) {
             throw new NullPointerException("parameters");
         }
-        if (parameters.getDescription() != null
-                && parameters.getDescription().length() > 1024) {
+        if (parameters.getDescription() != null && parameters.getDescription().length() > 1024) {
             throw new IllegalArgumentException("parameters.Description");
         }
-
+        
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -1993,152 +1565,109 @@ public class StorageAccountOperationsImpl implements
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this, "updateAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "updateAsync", tracingParameters);
         }
-
+        
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/"
-                + this.getClient().getCredentials().getSubscriptionId()
-                + "/services/storageservices/" + serviceName;
-
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/storageservices/" + serviceName;
+        
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
-
+        
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
         httpRequest.setHeader("x-ms-version", "2013-03-01");
-
+        
         // Serialize Request
         String requestContent = null;
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
-                .newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory
-                .newDocumentBuilder();
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
         Document requestDoc = documentBuilder.newDocument();
-
-        Element updateStorageServiceInputElement = requestDoc.createElementNS(
-                "http://schemas.microsoft.com/windowsazure",
-                "UpdateStorageServiceInput");
+        
+        Element updateStorageServiceInputElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "UpdateStorageServiceInput");
         requestDoc.appendChild(updateStorageServiceInputElement);
-
+        
         if (parameters.getDescription() != null) {
-            Element descriptionElement = requestDoc.createElementNS(
-                    "http://schemas.microsoft.com/windowsazure", "Description");
-            descriptionElement.appendChild(requestDoc.createTextNode(parameters
-                    .getDescription()));
+            Element descriptionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Description");
+            descriptionElement.appendChild(requestDoc.createTextNode(parameters.getDescription()));
             updateStorageServiceInputElement.appendChild(descriptionElement);
         } else {
-            Element emptyElement = requestDoc.createElementNS(
-                    "http://schemas.microsoft.com/windowsazure", "Description");
-            Attr nilAttribute = requestDoc.createAttributeNS(
-                    "http://www.w3.org/2001/XMLSchema-instance", "nil");
+            Element emptyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Description");
+            Attr nilAttribute = requestDoc.createAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
             nilAttribute.setValue("true");
             emptyElement.setAttributeNode(nilAttribute);
             updateStorageServiceInputElement.appendChild(emptyElement);
         }
-
+        
         if (parameters.getLabel() != null) {
-            Element labelElement = requestDoc.createElementNS(
-                    "http://schemas.microsoft.com/windowsazure", "Label");
-            labelElement.appendChild(requestDoc.createTextNode(new String(
-                    Base64.encodeBase64(parameters.getLabel().getBytes()))));
+            Element labelElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Label");
+            labelElement.appendChild(requestDoc.createTextNode(new String(Base64.encodeBase64(parameters.getLabel().getBytes()))));
             updateStorageServiceInputElement.appendChild(labelElement);
         }
-
+        
         if (parameters.isGeoReplicationEnabled() != null) {
-            Element geoReplicationEnabledElement = requestDoc.createElementNS(
-                    "http://schemas.microsoft.com/windowsazure",
-                    "GeoReplicationEnabled");
-            geoReplicationEnabledElement
-                    .appendChild(requestDoc
-                            .createTextNode(Boolean.toString(
-                                    parameters.isGeoReplicationEnabled())
-                                    .toLowerCase()));
-            updateStorageServiceInputElement
-                    .appendChild(geoReplicationEnabledElement);
+            Element geoReplicationEnabledElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "GeoReplicationEnabled");
+            geoReplicationEnabledElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.isGeoReplicationEnabled()).toLowerCase()));
+            updateStorageServiceInputElement.appendChild(geoReplicationEnabledElement);
         }
-
+        
         if (parameters.getExtendedProperties() != null) {
-            Element extendedPropertiesDictionaryElement = requestDoc
-                    .createElementNS(
-                            "http://schemas.microsoft.com/windowsazure",
-                            "ExtendedProperties");
-            for (Map.Entry<String, String> entry : parameters
-                    .getExtendedProperties().entrySet()) {
+            Element extendedPropertiesDictionaryElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperties");
+            for (Map.Entry<String, String> entry : parameters.getExtendedProperties().entrySet()) {
                 String extendedPropertiesKey = entry.getKey();
                 String extendedPropertiesValue = entry.getValue();
-                Element extendedPropertiesElement = requestDoc.createElementNS(
-                        "http://schemas.microsoft.com/windowsazure",
-                        "ExtendedProperty");
-                extendedPropertiesDictionaryElement
-                        .appendChild(extendedPropertiesElement);
-
-                Element extendedPropertiesKeyElement = requestDoc
-                        .createElementNS(
-                                "http://schemas.microsoft.com/windowsazure",
-                                "Name");
-                extendedPropertiesKeyElement.appendChild(requestDoc
-                        .createTextNode(extendedPropertiesKey));
-                extendedPropertiesElement
-                        .appendChild(extendedPropertiesKeyElement);
-
-                Element extendedPropertiesValueElement = requestDoc
-                        .createElementNS(
-                                "http://schemas.microsoft.com/windowsazure",
-                                "Value");
-                extendedPropertiesValueElement.appendChild(requestDoc
-                        .createTextNode(extendedPropertiesValue));
-                extendedPropertiesElement
-                        .appendChild(extendedPropertiesValueElement);
+                Element extendedPropertiesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperty");
+                extendedPropertiesDictionaryElement.appendChild(extendedPropertiesElement);
+                
+                Element extendedPropertiesKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                extendedPropertiesKeyElement.appendChild(requestDoc.createTextNode(extendedPropertiesKey));
+                extendedPropertiesElement.appendChild(extendedPropertiesKeyElement);
+                
+                Element extendedPropertiesValueElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Value");
+                extendedPropertiesValueElement.appendChild(requestDoc.createTextNode(extendedPropertiesValue));
+                extendedPropertiesElement.appendChild(extendedPropertiesValueElement);
             }
-            updateStorageServiceInputElement
-                    .appendChild(extendedPropertiesDictionaryElement);
+            updateStorageServiceInputElement.appendChild(extendedPropertiesDictionaryElement);
         }
-
+        
         DOMSource domSource = new DOMSource(requestDoc);
         StringWriter stringWriter = new StringWriter();
         StreamResult streamResult = new StreamResult(stringWriter);
-        TransformerFactory transformerFactory = TransformerFactory
-                .newInstance();
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = transformerFactory.newTransformer();
         transformer.transform(domSource, streamResult);
         requestContent = stringWriter.toString();
         StringEntity entity = new StringEntity(requestContent);
         httpRequest.setEntity(entity);
         httpRequest.setHeader("Content-Type", "application/xml");
-
+        
         // Send Request
         HttpResponse httpResponse = null;
         try {
             if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient()
-                    .execute(httpRequest);
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
             if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_OK) {
-                ServiceException ex = ServiceException.createFromXml(
-                        httpRequest, requestContent, httpResponse,
-                        httpResponse.getEntity());
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-
+            
             // Create Result
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader(
-                        "x-ms-request-id").getValue());
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }

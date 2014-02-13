@@ -25,10 +25,10 @@ package com.microsoft.windowsazure.management.virtualnetworks.models;
 
 public enum GatewayConnectivityState {
     Connected,
-
+    
     Connecting,
-
+    
     NotConnected,
-
+    
     Unknown,
 }

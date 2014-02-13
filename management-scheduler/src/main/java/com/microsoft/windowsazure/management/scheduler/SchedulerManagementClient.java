@@ -35,157 +35,137 @@ import java.util.concurrent.Future;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
-public interface SchedulerManagementClient extends
-        FilterableService<SchedulerManagementClient> {
+public interface SchedulerManagementClient extends FilterableService<SchedulerManagementClient> {
     /**
-     * @return The BaseUri value.
-     */
+    * @return The BaseUri value.
+    */
     URI getBaseUri();
-
+    
     /**
-     * @return The Credentials value.
-     */
+    * @return The Credentials value.
+    */
     SubscriptionCloudCredentials getCredentials();
-
+    
     /**
-     * @return The JobCollectionsOperations value.
-     */
+    * @return The JobCollectionsOperations value.
+    */
     JobCollectionOperations getJobCollectionsOperations();
-
+    
     /**
-     * The Get Operation Status operation returns the status of thespecified
-     * operation. After calling an asynchronous operation, you can call Get
-     * Operation Status to determine whether the operation has succeeded,
-     * failed, or is still in progress. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460783.aspx for
-     * more information)
-     * 
-     * @param requestId
-     *            The request ID for the request you wish to track. The request
-     *            ID is returned in the x-ms-request-id response header for
-     *            every request.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @throws ParserConfigurationException
-     *             Thrown if there was a serious configuration error with the
-     *             document parser.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the XML response.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
-    SchedulerOperationStatusResponse getOperationStatus(String requestId)
-            throws IOException, ServiceException, ParserConfigurationException,
-            SAXException;
-
+    * The Get Operation Status operation returns the status of thespecified
+    * operation. After calling an asynchronous operation, you can call Get
+    * Operation Status to determine whether the operation has succeeded,
+    * failed, or is still in progress.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460783.aspx for
+    * more information)
+    *
+    * @param requestId The request ID for the request you wish to track. The
+    * request ID is returned in the x-ms-request-id response header for every
+    * request.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    SchedulerOperationStatusResponse getOperationStatus(String requestId) throws IOException, ServiceException, ParserConfigurationException, SAXException;
+    
     /**
-     * The Get Operation Status operation returns the status of thespecified
-     * operation. After calling an asynchronous operation, you can call Get
-     * Operation Status to determine whether the operation has succeeded,
-     * failed, or is still in progress. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460783.aspx for
-     * more information)
-     * 
-     * @param requestId
-     *            The request ID for the request you wish to track. The request
-     *            ID is returned in the x-ms-request-id response header for
-     *            every request.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
-    Future<SchedulerOperationStatusResponse> getOperationStatusAsync(
-            String requestId);
-
+    * The Get Operation Status operation returns the status of thespecified
+    * operation. After calling an asynchronous operation, you can call Get
+    * Operation Status to determine whether the operation has succeeded,
+    * failed, or is still in progress.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460783.aspx for
+    * more information)
+    *
+    * @param requestId The request ID for the request you wish to track. The
+    * request ID is returned in the x-ms-request-id response header for every
+    * request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    Future<SchedulerOperationStatusResponse> getOperationStatusAsync(String requestId);
+    
     /**
-     * Gets a list of properties for the resource provider, including supported
-     * regions and plans.
-     * 
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @throws ParserConfigurationException
-     *             Thrown if there was a serious configuration error with the
-     *             document parser.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the XML response.
-     * @return The Resource Provider Get Properties operation response.
-     */
-    ResourceProviderGetPropertiesResponse getResourceProviderProperties()
-            throws IOException, ServiceException, ParserConfigurationException,
-            SAXException;
-
+    * Gets a list of properties for the resource provider, including supported
+    * regions and plans.
+    *
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return The Resource Provider Get Properties operation response.
+    */
+    ResourceProviderGetPropertiesResponse getResourceProviderProperties() throws IOException, ServiceException, ParserConfigurationException, SAXException;
+    
     /**
-     * Gets a list of properties for the resource provider, including supported
-     * regions and plans.
-     * 
-     * @return The Resource Provider Get Properties operation response.
-     */
+    * Gets a list of properties for the resource provider, including supported
+    * regions and plans.
+    *
+    * @return The Resource Provider Get Properties operation response.
+    */
     Future<ResourceProviderGetPropertiesResponse> getResourceProviderPropertiesAsync();
-
+    
     /**
-     * Register the Scheduler resource provider with your subscription.
-     * 
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
-    OperationResponse registerResourceProvider() throws IOException,
-            ServiceException;
-
+    * Register the Scheduler resource provider with your subscription.
+    *
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    OperationResponse registerResourceProvider() throws IOException, ServiceException;
+    
     /**
-     * Register the Scheduler resource provider with your subscription.
-     * 
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * Register the Scheduler resource provider with your subscription.
+    *
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     Future<OperationResponse> registerResourceProviderAsync();
-
+    
     /**
-     * Unregister the Scheduler resource provider with your subscription.
-     * 
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
-    OperationResponse unregisterResourceProvider() throws IOException,
-            ServiceException;
-
+    * Unregister the Scheduler resource provider with your subscription.
+    *
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    OperationResponse unregisterResourceProvider() throws IOException, ServiceException;
+    
     /**
-     * Unregister the Scheduler resource provider with your subscription.
-     * 
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * Unregister the Scheduler resource provider with your subscription.
+    *
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     Future<OperationResponse> unregisterResourceProviderAsync();
 }

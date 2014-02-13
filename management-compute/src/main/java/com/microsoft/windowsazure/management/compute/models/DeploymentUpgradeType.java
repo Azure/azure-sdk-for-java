@@ -24,10 +24,10 @@
 package com.microsoft.windowsazure.management.compute.models;
 
 /**
- * The type of the upgrade.
- */
+* The type of the upgrade.
+*/
 public enum DeploymentUpgradeType {
     Auto,
-
+    
     Manual,
 }

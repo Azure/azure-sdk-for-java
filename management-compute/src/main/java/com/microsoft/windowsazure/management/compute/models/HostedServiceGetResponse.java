@@ -27,76 +27,67 @@ import com.microsoft.windowsazure.core.OperationResponse;
 import java.net.URI;
 
 /**
- * The Get Hosted Service operation response.
- */
+* The Get Hosted Service operation response.
+*/
 public class HostedServiceGetResponse extends OperationResponse {
     private HostedServiceProperties properties;
-
+    
     /**
-     * The properties that are assigned to the cloud service.
-     * 
-     * @return The Properties value.
-     */
+    * The properties that are assigned to the cloud service.
+    * @return The Properties value.
+    */
     public HostedServiceProperties getProperties() {
         return this.properties;
     }
-
+    
     /**
-     * The properties that are assigned to the cloud service.
-     * 
-     * @param propertiesValue
-     *            The Properties value.
-     */
+    * The properties that are assigned to the cloud service.
+    * @param propertiesValue The Properties value.
+    */
     public void setProperties(final HostedServiceProperties propertiesValue) {
         this.properties = propertiesValue;
     }
-
+    
     private String serviceName;
-
+    
     /**
-     * The name of the cloud service. This name is the DNS prefix name and can
-     * be used to access the cloud service. For example, if the cloud service
-     * name is MyService you could access the access the cloud service by
-     * calling: http://MyService.cloudapp.net
-     * 
-     * @return The ServiceName value.
-     */
+    * The name of the cloud service. This name is the DNS prefix name and can
+    * be used to access the cloud service. For example, if the cloud service
+    * name is MyService you could access the access the cloud service by
+    * calling: http://MyService.cloudapp.net
+    * @return The ServiceName value.
+    */
     public String getServiceName() {
         return this.serviceName;
     }
-
+    
     /**
-     * The name of the cloud service. This name is the DNS prefix name and can
-     * be used to access the cloud service. For example, if the cloud service
-     * name is MyService you could access the access the cloud service by
-     * calling: http://MyService.cloudapp.net
-     * 
-     * @param serviceNameValue
-     *            The ServiceName value.
-     */
+    * The name of the cloud service. This name is the DNS prefix name and can
+    * be used to access the cloud service. For example, if the cloud service
+    * name is MyService you could access the access the cloud service by
+    * calling: http://MyService.cloudapp.net
+    * @param serviceNameValue The ServiceName value.
+    */
     public void setServiceName(final String serviceNameValue) {
         this.serviceName = serviceNameValue;
     }
-
+    
     private URI uri;
-
+    
     /**
-     * The Service Management API request URI used to performGet Hosted Service
-     * Properties requests against the cloud service.
-     * 
-     * @return The Uri value.
-     */
+    * The Service Management API request URI used to performGet Hosted Service
+    * Properties requests against the cloud service.
+    * @return The Uri value.
+    */
     public URI getUri() {
         return this.uri;
     }
-
+    
     /**
-     * The Service Management API request URI used to performGet Hosted Service
-     * Properties requests against the cloud service.
-     * 
-     * @param uriValue
-     *            The Uri value.
-     */
+    * The Service Management API request URI used to performGet Hosted Service
+    * Properties requests against the cloud service.
+    * @param uriValue The Uri value.
+    */
     public void setUri(final URI uriValue) {
         this.uri = uriValue;
     }
